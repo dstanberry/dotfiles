@@ -1,0 +1,78 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-plug
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call plug#begin('~/.config/vim/plugged')
+
+" nerdtree
+Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+
+" command line fuzzy finder
+Plug '/usr/bin/fzf'
+Plug 'junegunn/fzf.vim'
+
+" maintain git workflow within vim
+Plug 'jreybert/vimagit'
+" a git wrapper for vim
+Plug 'tpope/vim-fugitive'
+" display git changes in gutter
+Plug 'mhinz/vim-signify'
+
+" surround sequence with tags
+Plug 'tpope/vim-surround'
+" enable repeating supported plug maps with <.>
+Plug 'tpope/vim-repeat'
+
+" statusline theme
+Plug 'vim-airline/vim-airline'
+" color scheme
+Plug 'arcticicestudio/nord-vim'
+
+call plug#end()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vim-airline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" display all buffers
+let g:airline#extensions#tabline#enabled = 1
+" define file path label
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+" disable powerline glyphs
+let g:airline_powerline_fonts = 1
+" cache syntax highlight groups
+let g:airline_highlighting_cache = 1
+" hide empty sections
+let g:airline_skip_empty_sections = 1
+" define left separator
+let g:airline_left_sep = ' '
+" define alternate left separator
+let g:airline_alt_left_sep = '|'
+" define right separator
+let g:airline_right_sep = ' '
+" define alternate right separator
+let g:airline_alt_right_sep = '|'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => nord-vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+colorscheme nord
+
+" highliht current line number background
+let g:nord_cursor_line_number__background = 1
+" use foreground colors to denote file differences
+let g:nord_uniform_diff_background = 1
+" enable underline vt sequence
+let g:nord_underline = 1
+
+augroup nord-theme-overrides
+	autocmd!
+	autocmd ColorScheme nord highlight Normal guibg=#373737
+	autocmd ColorScheme nord highlight SignColumn guibg=#373737
+	autocmd ColorScheme nord highlight CursorLine guibg=#3B4358
+	autocmd ColorScheme nord highlight CursorLineNr guibg=#373737 cterm=bold
+	autocmd ColorScheme nord highlight LineNr guibg=#373737 guifg=#5a5a5a
+	autocmd ColorScheme nord highlight VertSplit guibg=#373737 guifg=#5a5a5a
+	autocmd ColorScheme nord highlight Statement ctermfg=3
+augroup END
