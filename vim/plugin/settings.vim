@@ -54,8 +54,10 @@ set wrapmargin=8
 set wrap
 " set soft line wrapping
 set linebreak
+" set emphasis on wrapped lines
+set breakindentopt=shift:2
 " define line wrap character
-set showbreak=↪
+set showbreak=↳
 
 " auto-indent new line
 set autoindent
@@ -84,6 +86,12 @@ set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
 
 " define glyph used for vertical separator
 set fillchars+=vert:┃
+
+" disable padding when joining mulitple lines
+set nojoinspaces
+
+" allow crossing of line boundaries
+set whichwrap=b,h,l,s,<,>,[,],~
 
 " enable enhanced command line completion
 set wildmenu
@@ -125,8 +133,21 @@ set ttyfast
 "reuse windows/tabs if possible
 set switchbuf=usetab
 
+" rows: begin scrolling before reaching viewport boundary
+set scrolloff=3
+" columns: begin scrolling before reaching viewport boundary
+set sidescrolloff=3
+
+" enable case insensitive spell check
+set spellcapcheck=
+
 " toggle paste
 set pastetoggle=<leader>v
+
+" avoid swapfile alert messages
+set shortmess+=A
+" disable splash screen
+set shortmess+=I
 
 " use blinking vertical bar in insert mode
 let &t_SI="\<Esc>[5 q"

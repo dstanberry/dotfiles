@@ -1,16 +1,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" save to disk
-nnoremap <leader>w :w<cr>
-" close file after saving
-nnoremap <leader>q :q<cr>
-" save to disk and close the file
-nnoremap <leader>x :x<cr>
-
-" trim trailing whitespace
-nmap <leader>zz :call leader#trim()<cr>
-
 " clear highlighted search matches
 nnoremap <c-l> :nohl<cr><c-l> :echo "Search cleared"<cr>
 
@@ -27,12 +17,31 @@ nnoremap K <nop>
 nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
 nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
 
-" list files available in the current directory
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Normal | Leader
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" save to disk
+nnoremap <leader>w :w<cr>
+" close file after saving
+nnoremap <leader>q :q<cr>
+" save to disk and close the file
+nnoremap <leader>x :x<cr>
+
+" trim trailing whitespace
+nmap <leader>zz :call leader#trim()<cr>
+
+" fzf: list files available in the current directory
 nnoremap <leader><leader> :Files<cr>
-" list git files available in the current directory
+" fzf: list git files available in the current directory
 nnoremap <leader>gi :GFiles<cr>
-" list all currently open file buffers
+" fzf: list all currently open file buffers
 nnoremap <leader><cr> :Buffers<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Normal | Local Leader
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" create/edit file within the current directory
+nnoremap <LocalLeader>e :edit <C-R>=expand('%:p:h') . '/'<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal, Visual, Select, Operator-pending
