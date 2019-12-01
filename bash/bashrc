@@ -158,12 +158,13 @@ if test -x `which tmux`; then
 fi
 
 # setup shell prompt
-if test -s "${BASH_CONFIG_HOME}/prompt"; then
-	source "${BASH_CONFIG_HOME}/prompt"
+if test -s "${BASH_CONFIG_HOME}/prompt.bash"; then
+	source "${BASH_CONFIG_HOME}/prompt.bash"
 fi
 
 # define alias to reload bash configuration
 alias reload='source "${BASH_CONFIG_HOME}/bashrc"'
+
 ###############################################################
 # fzf
 ###############################################################
