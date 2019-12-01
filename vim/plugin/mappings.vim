@@ -25,6 +25,21 @@ nnoremap <c-l> :nohl<cr><c-l> :echo "Search cleared"<cr>
 vmap < <gv
 vmap > >gv
 
-" Enable very magic mode during search operations
+" enable very magic mode during search operations
 nnoremap / /\v
 vnoremap / /\v
+
+" move between windows.
+xnoremap <C-h> <C-w>h
+xnoremap <C-j> <C-w>j
+xnoremap <C-k> <C-w>k
+xnoremap <C-l> <C-w>l
+
+" move to the beginning of the command
+cnoremap <C-a> <Home>
+" move to the end of the command
+cnoremap <C-e> <End>
+
+" enable cycling through matches using <tab> / <s-tab>
+cnoremap <expr> <Tab> getcmdtype() == '/' \|\| getcmdtype() == '?' ? '<CR>/<C-r>/' : '<C-z>'
+cnoremap <expr> <S-Tab> getcmdtype() == '/' \|\| getcmdtype() == '?' ? '<CR>?<C-r>/' : '<S-Tab>'

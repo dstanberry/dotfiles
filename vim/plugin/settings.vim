@@ -135,5 +135,8 @@ let &t_SR="\<Esc>[3 q"
 " use solid block cursor in normal mode
 let &t_EI="\<Esc>[2 q"
 
+" define a mapleader for more key combinations
+let mapleader = ' '
+
 " highlight conflicts
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'

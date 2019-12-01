@@ -4,9 +4,6 @@
 " when idle, toggle cursor position to trigger autoread
 autocmd CursorHold * checktime | call feedkeys("lh")
 
-" remove all trailing whitespace on save
-autocmd BufWritePre * %s/\s\+$//e
-
 " enable clipboard support within wsl
 if system('uname -r') =~ "microsoft"
 	augroup Yank
