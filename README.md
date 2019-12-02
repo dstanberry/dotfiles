@@ -4,8 +4,10 @@ In a Linux environment, user-specific application configuration is traditionally
 
 The glue required to make this possible is to tell the system wide bash configuration file where to look:
 
-`if [ -s "${XDG_CONFIG_HOME:-$HOME/.config}/bash/bashrc" ]; then
+```bash
+if [ -s "${XDG_CONFIG_HOME:-$HOME/.config}/bash/bashrc" ]; then
         . "${XDG_CONFIG_HOME:-$HOME/.config}/bash/bashrc"
-fi`
+fi
+```
 
 Depending on the distro this file may exist in `/etc/bashrc`, `/etc/bash.bashrc` or `/etc/bash/bashrc`.
