@@ -174,7 +174,7 @@ if test -s "${BASH_CONFIG_HOME}/fzf-key-bindings.bash"; then
 fi
 
 # set fd as the default source for fzf
-export FZF_DEFAULT_COMMAND='fd --type f'
+export FZF_DEFAULT_COMMAND='fd --hidden --type f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # define default options for fzf
