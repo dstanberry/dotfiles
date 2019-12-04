@@ -133,9 +133,7 @@ if test -x `which dircolors`; then
 fi
 
 # wrap diff commands and colorize the output
-if test -x `which colordiff`; then
-	alias diff=colordiff
-fi
+test -x `which colordiff` && alias diff=colordiff
 
 ###############################################################
 # Workspace
@@ -153,14 +151,11 @@ export VIMINIT=$__viminit
 unset __viminit
 
 # set location for tmux runtime configuration
-if test -x `which tmux`; then
-	alias tmux='tmux -f "${TMUX_CONFIG_HOME}/tmux.conf"'
-fi
+test -x `which tmux` && alias tmux='tmux -f "${TMUX_CONFIG_HOME}/tmux.conf"'
 
 # setup shell prompt
-if test -s "${BASH_CONFIG_HOME}/prompt.bash"; then
-	source "${BASH_CONFIG_HOME}/prompt.bash"
-fi
+test -s "${BASH_CONFIG_HOME}/prompt.bash" && \
+source "${BASH_CONFIG_HOME}/prompt.bash"
 
 # define alias to reload bash configuration
 alias reload='source "${BASH_CONFIG_HOME}/bashrc"'
@@ -169,9 +164,8 @@ alias reload='source "${BASH_CONFIG_HOME}/bashrc"'
 # fzf
 ###############################################################
 # load fzf keybinds
-if test -s "${BASH_CONFIG_HOME}/fzf-key-bindings.bash"; then
-	source "${BASH_CONFIG_HOME}/fzf-key-bindings.bash"
-fi
+test -s "${BASH_CONFIG_HOME}/fzf-key-bindings.bash" && \
+source "${BASH_CONFIG_HOME}/fzf-key-bindings.bash"
 
 # set fd as the default source for fzf
 export FZF_DEFAULT_COMMAND='fd --hidden --type f'
@@ -190,6 +184,5 @@ alias dot='/usr/bin/git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HO
 # _Custom
 ###############################################################
 # check for machine-specific rc file and source it if available
-if test -s "${BASH_CONFIG_HOME}/private.bash"; then
-	source "${BASH_CONFIG_HOME}/private.bash"
-fi
+test -s "${BASH_CONFIG_HOME}/private.bash" && \
+source "${BASH_CONFIG_HOME}/private.bash"
