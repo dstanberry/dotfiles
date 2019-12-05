@@ -168,11 +168,16 @@ test -s "${BASH_CONFIG_HOME}/fzf-key-bindings.bash" && \
 source "${BASH_CONFIG_HOME}/fzf-key-bindings.bash"
 
 # set fd as the default source for fzf
-export FZF_DEFAULT_COMMAND='fd --hidden --type f'
+export FZF_DEFAULT_COMMAND='fd --hidden --follow --type f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # define default options for fzf
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+
+###############################################################
+# bat
+###############################################################
+# define configuration path for bat
+export BAT_CONFIG_PATH="${CONFIG_HOME}/bat/bat.conf"
 
 ###############################################################
 # Dotfiles
