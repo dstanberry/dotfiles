@@ -3,9 +3,9 @@ bash/private.bash
 htop
 less
 inkscape
-tmux/private
+tmux/private/*
 vim/plugged/*
-vim/plugin/private.vim
+vim/plugin/private/*
 vim/tmp/backup/*
 vim/tmp/swap/*
 vim/tmp/undo/*
