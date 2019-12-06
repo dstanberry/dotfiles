@@ -1,9 +1,13 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Load before plugins
+" => Configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" set the base directory
 set runtimepath+=~/.config/vim/
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" define where viminfo will be stored
+set viminfo+=n~/.config/viminfo
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-plug
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.config/vim/plugged')
@@ -31,13 +35,12 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 
 " statusline theme
-Plug 'vim-airline/vim-airline'
-" color scheme
-Plug 'arcticicestudio/nord-vim'
+Plug 'itchyny/lightline.vim'
 
 call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Load after plugins
+" => Configuration (overrides)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" set the after-directory 
 set runtimepath+=~/.config/vim/after/

@@ -18,6 +18,8 @@ set title
 " restore previous title
 set titleold=
 
+" display the tabline
+set showtabline=2
 " display the statusline
 set laststatus=2
 
@@ -165,3 +167,6 @@ let mapleader = ' '
 
 " highlight conflicts
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+
+"define a colorscheme
+colorscheme base16-kdark
