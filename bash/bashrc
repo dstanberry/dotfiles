@@ -172,6 +172,14 @@ export FZF_DEFAULT_COMMAND='fd --hidden --follow --type f'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 # define default options for fzf
+if test -x `which bat`; then
+	__fzf_preview_opts="--ansi --preview-window 'right:60%' "
+	__fzf_preview_opts+="--preview 'bat --color=always "
+	__fzf_preview_opts+="--style=header,grid --line-range :300 {}'"
+	export FZF_DEFAULT_OPTS=$__fzf_preview_opts
+	unset __fzf_preview_opts
+fi
+
 export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
  --color=dark
  --color=fg:#bebebe,bg:-1,hl:#a3be8c
