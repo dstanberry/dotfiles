@@ -29,6 +29,9 @@ Plug 'tpope/vim-fugitive'
 " display git changes in gutter
 Plug 'mhinz/vim-signify'
 
+" prettier for vim
+Plug 'prettier/vim-prettier', {'do': 'npm install' }
+
 " surround sequence with tags
 Plug 'tpope/vim-surround'
 " enable repeating supported plug maps with <.>
