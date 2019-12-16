@@ -14,16 +14,16 @@ __powerline() {
 	COLOR_ROOT=${COLOR_ROOT:-'\[\033[0;35m\]'} # magenta
 
 	# Symbols
-	SYMBOL_GIT_BRANCH=${SYMBOL_GIT_BRANCH:-}
+	SYMBOL_GIT_BRANCH=${SYMBOL_GIT_BRANCH:-}
 	SYMBOL_GIT_MODIFIED=${SYMBOL_GIT_MODIFIED:-*}
 	SYMBOL_GIT_PUSH=${SYMBOL_GIT_PUSH:-↑}
 	SYMBOL_GIT_PULL=${SYMBOL_GIT_PULL:-↓}
 
 	# Prompt symbol
-	PS_SYMBOL=${PS_SYMBOL:-}
+	PS_SYMBOL=${PS_SYMBOL:-❯}
 
 	# Root
-	ROOT_SYMBOL=${ROOT_SYMBOL:-}
+	ROOT_SYMBOL=${ROOT_SYMBOL:-}
 
 	__git_info() { 
 		[[ $POWERLINE_GIT = 0 ]] && return # disabled

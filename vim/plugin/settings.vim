@@ -82,7 +82,7 @@ set noshowmode
 " show whitespace characters
 set list
 " define glyphs used to visually identify invisible characters
-set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
+set listchars=tab:│\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
 
 " define glyph used for vertical separator
 set fillchars+=vert:┃
