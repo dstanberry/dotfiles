@@ -28,8 +28,3 @@ augroup nerdtree
 		" don't show cursorline
 		autocmd FileType nerdtree setlocal nocursorline
 augroup END
-
-" toggle file tree
-nmap <silent> <leader>n :NERDTreeToggle<cr>
-" navigate to current file in file tree
-nmap <silent> <leader>y :NERDTreeFind<cr>

@@ -16,3 +16,11 @@ end
 " => Syntax Highlighting
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd BufRead,BufNewFile *.cnf set filetype=dosini
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Restore Last Cursor Position
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+augroup RestoreCursor
+	autocmd!
+	autocmd BufWinEnter * call functions#rescursor()
+augroup END

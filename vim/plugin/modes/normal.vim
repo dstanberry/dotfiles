@@ -27,6 +27,9 @@ nnoremap <leader>q :q<cr>
 " save to disk and close the file
 nnoremap <leader>x :x<cr>
 
+" close the current buffer
+nnoremap <leader>z :bd<cr>
+
 " trim trailing whitespace
 nmap <leader>zz :call leader#trim()<cr>
 
@@ -36,6 +39,11 @@ nnoremap <leader><leader> :Files<cr>
 nnoremap <leader>gi :GFiles<cr>
 " fzf: list all currently open file buffers
 nnoremap <leader><cr> :Buffers<cr>
+
+" nerdtree: toggle file tree
+nmap <silent> <leader>n :NERDTreeToggle<cr>
+" nerdtree: navigate to current file in file tree
+nmap <silent> <leader>y :NERDTreeFind<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
