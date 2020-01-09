@@ -165,12 +165,12 @@ alias reload='source "${BASH_CONFIG_HOME}/bashrc"'
 ###############################################################
 # fzf
 ###############################################################
-# load fzf keybinds
-test -s "${BASH_CONFIG_HOME}/fzf-key-bindings.bash" && \
-source "${BASH_CONFIG_HOME}/fzf-key-bindings.bash"
-
-# set fd as the default source for fzf
 if hash fzf 2>/dev/null; then
+	# load fzf keybinds
+	test -s "${BASH_CONFIG_HOME}/fzf-key-bindings.bash" && \
+	source "${BASH_CONFIG_HOME}/fzf-key-bindings.bash"
+
+	# set fd as the default source for fzf
 	export FZF_DEFAULT_COMMAND='fd --hidden --follow --type f'
 	export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
