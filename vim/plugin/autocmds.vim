@@ -2,7 +2,7 @@
 " => Editor
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " when idle, toggle cursor position to trigger autoread
-autocmd CursorHold * checktime | call feedkeys("lh")
+autocmd CursorHold * checktime | call feedkeys("\<right>\<left>")
 
 " enable clipboard support within wsl
 if system('uname -r') =~ "microsoft"
