@@ -40,10 +40,13 @@ nnoremap <leader>l :wincmd l<cr>
 nnoremap <leader>j :wincmd j<cr>
 
 " increment window width
-nnoremap <silent> <Leader>= :vertical resize +5<CR>
-nnoremap <silent> <Leader>+ :vertical resize +5<CR>
+nnoremap <silent> <Leader>= :vertical resize +5<cr>
 " decrement window width
-nnoremap <silent> <Leader>- :vertical resize -5<CR>
+nnoremap <silent> <Leader>- :vertical resize -5<cr>
+" increment window height
+nnoremap <silent> <Leader>+ :resize +5<cr>
+" decrement window height
+nnoremap <silent> <Leader>_ :resize -5<cr>
 
 " trim trailing whitespace
 nmap <leader>zz :call leader#trim()<cr>
@@ -62,7 +65,7 @@ nnoremap <leader>u :UndotreeToggle<cr>
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " create/edit file within the current directory
-nnoremap <LocalLeader>e :edit <C-R>=expand('%:p:h') . '/'<CR>
+nnoremap <LocalLeader>e :edit <C-R>=expand('%:p:h') . '/'<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal, Visual, Select, Operator-pending
