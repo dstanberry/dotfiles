@@ -10,8 +10,8 @@ syntax on
 " enable true color
 set termguicolors t_Co=256
 " enable true color within tmux
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 
 " disable title modification
 set notitle
@@ -160,15 +160,6 @@ let &t_SR="\<Esc>[3 q"
 " use solid block cursor in normal mode
 let &t_EI="\<Esc>[2 q"
 
-" define a mapleader for more key combinations
-let mapleader="\<space>"
-
-" highlight conflicts
-match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
-
-"define a colorscheme
-colorscheme base16-kdark
-
 " suppress banner
 let g:netrw_banner=0
 " use wide listing
@@ -179,3 +170,9 @@ let g:netrw_browse_split=4
 let g:netrw_altv=1
 " specify window size
 let g:netrw_winsize=25
+
+" highlight conflicts
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+
+"define a colorscheme
+colorscheme base16-kdark
