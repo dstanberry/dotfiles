@@ -30,6 +30,21 @@ nnoremap <leader>x :x<cr>
 " close the current buffer
 nnoremap <leader>z :bd<cr>
 
+" switch to left window
+nnoremap <leader>h :wincmd h<cr>
+" switch to top window
+nnoremap <leader>k :wincmd k<cr>
+" switch to right window
+nnoremap <leader>l :wincmd l<cr>
+" switch to bottom window
+nnoremap <leader>j :wincmd j<cr>
+
+" increment window width
+nnoremap <silent> <Leader>= :vertical resize +5<CR>
+nnoremap <silent> <Leader>+ :vertical resize +5<CR>
+" decrement window width
+nnoremap <silent> <Leader>- :vertical resize -5<CR>
+
 " trim trailing whitespace
 nmap <leader>zz :call leader#trim()<cr>
 
@@ -40,10 +55,8 @@ nnoremap <leader>gi :GFiles<cr>
 " fzf: list all currently open file buffers
 nnoremap <leader><cr> :Buffers<cr>
 
-" nerdtree: toggle file tree
-nmap <silent> <leader>n :NERDTreeToggle<cr>
-" nerdtree: navigate to current file in file tree
-nmap <silent> <leader>y :NERDTreeFind<cr>
+" undotree: toggle undo-tree panel
+nnoremap <leader>u :UndotreeToggle<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader

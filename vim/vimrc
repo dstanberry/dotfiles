@@ -3,11 +3,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.config/vim/plugged')
 
-" nerdtree
-Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'ryanoasis/vim-devicons'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" undo history visualizer
+Plug 'mbbill/undotree'
 
 " command line fuzzy finder
 Plug '/usr/bin/fzf'
