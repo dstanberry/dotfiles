@@ -17,6 +17,7 @@ end
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd BufRead,BufNewFile *.cnf set filetype=dosini
 autocmd BufRead,BufNewFile *.conf set filetype=conf
+autocmd BufRead,BufNewFile gitconfig set filetype=.gitconfig
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Restore Last Cursor Position
