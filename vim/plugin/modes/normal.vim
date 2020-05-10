@@ -54,6 +54,10 @@ nnoremap <silent> <Leader>_ :resize -5<cr>
 " trim trailing whitespace
 nmap <leader>zz :call leader#trim()<cr>
 
+" insert newline without entering insert mode
+nnoremap o o<esc>
+nnoremap O O<esc>
+
 " fzf: list files available in the current directory
 nnoremap <leader><leader> :Files<cr>
 " fzf: list git files available in the current directory
