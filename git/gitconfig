@@ -55,9 +55,9 @@
 	log = 1000
 
 [pager]
-	diff = diff-highlight | less -iFMR --shift 5
-	log = diff-highlight | less -iFMR --shift 5
-	show = diff-highlight | less -iFMR --shift 5
-	whatchanged = diff-highlight | less -iFMR --shift 5
+	diff = diff-highlight | less -iFMR --shift 5 --pattern='^(commit|diff)'
+	log = diff-highlight | less -iFMR --shift 5 --pattern='^(commit|diff)'
+	show = diff-highlight | less -iFMR --shift 5 --pattern='^(commit|diff)'
+	whatchanged = diff-highlight | less -iFMR --shift 5 --pattern='^(commit|diff)'
 	show-branch = true
 	status = true
