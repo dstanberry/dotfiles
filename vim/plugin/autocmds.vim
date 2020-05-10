@@ -16,6 +16,7 @@ end
 " => Syntax Highlighting
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd BufRead,BufNewFile *.cnf set filetype=dosini
+autocmd BufRead,BufNewFile *.conf set filetype=conf
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Restore Last Cursor Position
