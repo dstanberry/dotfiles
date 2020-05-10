@@ -1,0 +1,63 @@
+[alias]
+	ack = grep --break --heading
+	amend = commit --amend -v
+	both = diff --ignore-submodules=dirty HEAD
+	br = branch
+	ci = commit -v
+	co = checkout
+	st = status
+	cp = cherry-pick
+	no-edit = commit --amend --no-edit
+	reword = commit --amend --only -v --
+	staged = diff --cached --ignore-submodules=dirty
+
+	count = !git --no-pager log --oneline | wc -l
+	dupes = !"git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40"
+	ga = !git --paginate log --graph --all --pretty=format:'%C(auto)%h%Creset%C(auto)%d%Creset %s %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
+	graph = !git --paginate log --graph --pretty=format:'%C(auto)%h%Creset%C(auto)%d%Creset %s %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
+	message = !git --paginate log -1 --pretty=format:%B
+	msg = message
+	gas = !git --paginate log --graph --pretty=format:'%C(auto)%h%Creset%C(auto)%d%Creset %s %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset' --all --simplify-by-decoration
+
+	rollback = !sh -c 'git reset --merge HEAD~${1-1}' -
+
+[color]
+	ui = auto
+
+[color "diff-highlight"]
+	newhighlight = reverse
+	newreset = noreverse
+	oldhighlight = reverse
+	oldreset = noreverse
+
+[color "interactive"]
+	prompt = blue reverse
+
+[color "status"]
+	untracked = blue
+
+[diff]
+	algorithm = histogram
+	compactionHeuristic = true	
+
+[grep]
+	lineNumber = true
+	patternType = perl
+
+[interactive]
+	diffFilter = diff-highlight
+
+[log]
+	decorate = short
+
+[merge]
+	conflictStyle = diff3
+	log = 1000
+
+[pager]
+	diff = diff-highlight | less -iFMR --shift 5
+	log = diff-highlight | less -iFMR --shift 5
+	show = diff-highlight | less -iFMR --shift 5
+	whatchanged = diff-highlight | less -iFMR --shift 5
+	show-branch = true
+	status = true
