@@ -112,6 +112,7 @@ function cd() {
 export TERM=xterm-256color
 
 # enable syntax highlighting for less
+export LESS="-iFMR --shift 5"
 export LESSCOLOR=always
 export LESSCOLORIZER=/usr/bin/src-hilite-lesspipe.sh
 
