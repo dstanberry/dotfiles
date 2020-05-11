@@ -59,5 +59,6 @@
 	log = diff-highlight | less -iFMR --shift 5 --pattern='^(commit|diff)'
 	show = diff-highlight | less -iFMR --shift 5 --pattern='^(commit|diff)'
 	whatchanged = diff-highlight | less -iFMR --shift 5 --pattern='^(commit|diff)'
+
 	show-branch = true
 	status = true
