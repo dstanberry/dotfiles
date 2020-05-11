@@ -23,15 +23,19 @@ nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" save to disk
+" write current buffer to disk
 nnoremap <leader>w :w<cr>
-" close file after saving
+" close app
 nnoremap <leader>q :q<cr>
-" save to disk and close the file
+" write current buffer to disk and close app
 nnoremap <leader>x :x<cr>
-
 " close the current buffer
 nnoremap <leader>z :bd<cr>
+
+" switch to next buffer
+nnoremap <tab> :bnext<cr>
+" switch to previous buffer
+nnoremap <s-tab> :bprevious<cr>
 
 " switch to left window
 nnoremap <leader>h :wincmd h<cr>
@@ -58,16 +62,21 @@ nmap <leader>zz :call leader#trim()<cr>
 nnoremap o o<esc>
 nnoremap O O<esc>
 
-" fzf: list files available in the current directory
+" capitalize all characters in string
+nnoremap <c-u> viwU<esc>
+
+" undotree: toggle undo-tree panel
+nnoremap <leader>u :UndotreeToggle<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Normal | Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" fzf list files available in the current directory
 nnoremap <leader><leader> :Files<cr>
 " fzf: list git files available in the current directory
 nnoremap <leader>gi :GFiles<cr>
 " fzf: list all currently open file buffers
 nnoremap <leader><cr> :Buffers<cr>
-
-" undotree: toggle undo-tree panel
-nnoremap <leader>u :UndotreeToggle<cr>
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -79,3 +88,6 @@ nnoremap <LocalLeader>e :edit <C-R>=expand('%:p:h') . '/'<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " yank to end of line
 noremap Y y$
+
+" bind ctl-c to escape key
+nnoremap <c-c> <esc>
