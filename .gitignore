@@ -3,13 +3,7 @@ bash/private.bash
 htop
 less
 inkscape
-<<<<<<< HEAD
 tmux/private/*
-||||||| parent of 495dc4f... update .gitignore
-tmux/private
-=======
-tmux/private*
->>>>>>> 495dc4f... update .gitignore
 vim/plugged/*
 vim/plugin/private/*
 vim/tmp/backup/*
