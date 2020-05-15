@@ -71,12 +71,21 @@ nnoremap <leader>u :UndotreeToggle<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" fzf list files available in the current directory
+" fzf: list files available in the current directory
 nnoremap <leader><leader> :Files<cr>
 " fzf: list git files available in the current directory
 nnoremap <leader>gi :GFiles<cr>
 " fzf: list all currently open file buffers
 nnoremap <leader><cr> :Buffers<cr>
+
+"vim-fugitive: execute git status
+nnoremap <leader>gs :G<cr>
+
+"vim-fugitive: resolve git conflict using left hunk
+nnoremap <leader>gf :diffget //2<cr>
+
+"vim-fugitive: resolve git conflict using right hunk
+nnoremap <leader>gh :diffget //3<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
