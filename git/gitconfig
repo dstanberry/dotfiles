@@ -56,10 +56,10 @@
 	tool = vimdiff3
 
 [pager]
-	diff = diff-highlight | less -iFMR --shift 5 --pattern='^(commit|diff)'
-	log = diff-highlight | less -iFMR --shift 5 --pattern='^(commit|diff)'
-	show = diff-highlight | less -iFMR --shift 5 --pattern='^(commit|diff)'
-	whatchanged = diff-highlight | less -iFMR --shift 5 --pattern='^(commit|diff)'
+	diff = diff-highlight | less -iFMRX --pattern='^(commit|diff)'
+	log = diff-highlight | less -iFMRX --pattern='^(commit|diff)'
+	show = diff-highlight | less -iFMRX --pattern='^(commit|diff)'
+	whatchanged = diff-highlight | less -iFMRX --pattern='^(commit|diff)'
 
 	show-branch = true
 	status = true
