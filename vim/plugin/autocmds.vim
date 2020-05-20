@@ -26,7 +26,7 @@ augroup RestoreCursor
 	autocmd!
 	autocmd BufWinEnter * call functions#rescursor()
 augroup END
-
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Restore Cursor Shape on Exit
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
