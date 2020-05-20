@@ -35,7 +35,10 @@ shopt -s nocaseglob;
 # disable the system bell
 bind "set bell-style none"
 
-# clear the scrollback buffer
+# keymap to clear scrollback buffer
+bind -x '"\C-l": clear'
+
+# alternate option clear the scrollback buffer
 alias cls='printf "\033c"'
 
 ###############################################################
