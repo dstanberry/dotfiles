@@ -174,11 +174,14 @@ alias reload='source "${BASH_CONFIG_HOME}/bashrc"'
 ###############################################################
 if hash fzf 2>/dev/null; then
 	# load fzf keybinds
-	test -s "${BASH_CONFIG_HOME}/fzf-key-bindings.bash" && \
-	source "${BASH_CONFIG_HOME}/fzf-key-bindings.bash"
+	test -s "${BASH_CONFIG_HOME}/fzf" && \
+	source "${BASH_CONFIG_HOME}/fzf"
+
+	# Use ~~ as the trigger sequence instead of the default **
+	export FZF_COMPLETION_TRIGGER='?'
 
 	# set fd as the default source for fzf
-	export FZF_DEFAULT_COMMAND='fd --hidden --follow --type f'
+	export FZF_DEFAULT_COMMAND='fd -HI --hidden --follow --type file --color=always'
 	export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 	# define default options for fzf
