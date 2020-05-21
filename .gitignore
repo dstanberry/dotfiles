@@ -2,7 +2,7 @@ bash/bash_history
 bash/private.bash
 configstore
 htop
-less
+less/less_history
 inkscape
 tmux/private/*
 vim/plugged/*
