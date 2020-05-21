@@ -22,7 +22,9 @@ dedup_pathvar () {
 # support user binaries
 LOCAL="${HOME}/.local/bin"
 
+test -s "${LOCAL}" && \
 export PATH=$PATH:$LOCAL
+
 dedup_pathvar PATH
 
 ###############################################################
