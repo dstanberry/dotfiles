@@ -1,20 +1,20 @@
 abort                             bell
 accept-line                       vi-command/accept-single-line-or vi-command/forward-first-non-space
-alias-expand-line                 -
+alias-expand-line                 vi_nmap/@edit alias-expand-line
 arrow-key-prefix                  -
-backward-byte                     -
+backward-byte                     vi-command/backward-byte
 backward-char                     vi-command/backward-char
 backward-delete-char              -
 backward-kill-line                -
 backward-kill-word                -
-backward-word                     -
+backward-word                     vi-command/backward-vword
 beginning-of-history              -
 beginning-of-line                 vi-command/beginning-of-line
 bracketed-paste-begin             vi-command/bracketed-paste
-call-last-kbd-macro               -
-capitalize-word                   -
-character-search                  -
-character-search-backward         -
+call-last-kbd-macro               call-keyboard-macro
+capitalize-word                   vi_nmap/capitalize-eword
+character-search                  vi_nmap/@motion character-search-forward
+character-search-backward         vi_nmap/@motion character-search-backward
 clear-screen                      clear-screen
 complete                          -
 complete-command                  -
@@ -30,41 +30,41 @@ dabbrev-expand                    -
 delete-char                       vi_nmap/kill-forward-char
 delete-char-or-list               -
 delete-horizontal-space           -
-digit-argument                    -
-display-shell-version             -
-do-lowercase-version              -
-downcase-word                     -
-dump-functions                    -
-dump-macros                       -
-dump-variables                    -
+digit-argument                    vi-command/append-arg
+display-shell-version             vi_nmap/@adjust display-shell-version
+do-lowercase-version              do-lowercase-version
+downcase-word                     vi_nmap/downcase-eword
+dump-functions                    vi_nmap/@adjust readline-dump-functions
+dump-macros                       vi_nmap/@adjust readline-dump-macros
+dump-variables                    vi_nmap/@adjust readline-dump-variables
 dynamic-complete-history          -
-edit-and-execute-command          -
-emacs-editing-mode                -
-end-kbd-macro                     -
+edit-and-execute-command          vi-command/edit-and-execute-line
+emacs-editing-mode                emacs-editing-mode
+end-kbd-macro                     end-keyboard-macro
 end-of-history                    -
 end-of-line                       vi-command/forward-eol
 exchange-point-and-mark           -
 forward-backward-delete-char      -
-forward-byte                      -
+forward-byte                      vi-command/forward-byte
 forward-char                      vi-command/forward-char
 forward-search-history            history-isearch-forward
-forward-word                      -
+forward-word                      vi-command/forward-vword
 glob-complete-word                -
 glob-expand-word                  -
 glob-list-expansions              -
-history-and-alias-expand-line     -
-history-expand-line               -
+history-and-alias-expand-line     vi_nmap/@edit history-and-alias-expand-line
+history-expand-line               vi_nmap/@edit history-expand-line
 history-search-backward           -
 history-search-forward            -
 history-substring-search-backward -
 history-substring-search-forward  -
-insert-comment                    -
+insert-comment                    vi-rlfunc/insert-comment
 insert-completions                -
 insert-last-argument              -
 kill-line                         vi_nmap/kill-forward-line
 kill-region                       -
 kill-whole-line                   -
-kill-word                         -
+kill-word                         vi-rlfunc/kill-word
 magic-space                       -
 menu-complete                     -
 menu-complete-backward            -
@@ -85,9 +85,9 @@ possible-username-completions     complete show_menu:context=username
 possible-variable-completions     complete show_menu:context=variable
 previous-history                  history-prev
 previous-screen-line              -
-print-last-kbd-macro              -
-quoted-insert                     -
-re-read-init-file                 -
+print-last-kbd-macro              print-keyboard-macro
+quoted-insert                     vi-rlfunc/quoted-insert
+re-read-init-file                 vi_nmap/@adjust re-read-init-file
 redraw-current-line               redraw-line
 reverse-search-history            history-isearch-backward
 revert-line                       vi_nmap/revert
@@ -98,19 +98,19 @@ shell-backward-word               -
 shell-expand-line                 -
 shell-forward-word                -
 shell-kill-word                   -
-skip-csi-sequence                 -
-start-kbd-macro                   -
+skip-csi-sequence                 <IGNORE>
+start-kbd-macro                   start-keyboard-macro
 tab-insert                        -
-tilde-expand                      -
+tilde-expand                      vi_nmap/@edit tilde-expand
 transpose-chars                   transpose-chars
 transpose-words                   -
 tty-status                        -
 undo                              vi_nmap/undo
 universal-argument                -
 unix-filename-rubout              -
-unix-line-discard                 -
+unix-line-discard                 vi-rlfunc/unix-line-discard
 unix-word-rubout                  -
-upcase-word                       -
+upcase-word                       vi_nmap/upcase-eword
 vi-append-eol                     vi_nmap/append-mode-at-end-of-line
 vi-append-mode                    vi_nmap/append-mode
 vi-arg-digit                      vi-command/append-arg
@@ -138,14 +138,14 @@ vi-complete                       -
 vi-delete                         vi_nmap/kill-forward-char
 vi-delete-to                      vi-rlfunc/delete-to
 vi-editing-mode                   -
-vi-eof-maybe                      -
+vi-eof-maybe                      vi-rlfunc/eof-maybe
 vi-fetch-history                  vi-command/history-end
 vi-first-print                    vi-command/first-non-space
 vi-goto-mark                      vi-command/goto-mark
 vi-insert-beg                     vi_nmap/insert-mode-at-first-non-space
 vi-insertion-mode                 vi_nmap/insert-mode
 vi-match                          vi-command/search-matchpair-or vi-command/percentage-line
-vi-movement-mode                  -
+vi-movement-mode                  nop
 vi-overstrike                     -
 vi-overstrike-delete              -
 vi-put                            vi-rlfunc/put
@@ -158,7 +158,7 @@ vi-set-mark                       vi-command/set-mark
 vi-subst                          vi-rlfunc/subst
 vi-tilde-expand                   -
 vi-unix-word-rubout               -
-vi-yank-arg                       -
+vi-yank-arg                       vi-rlfunc/yank-arg
 vi-yank-pop                       -
 vi-yank-to                        vi-rlfunc/yank-to
 yank                              yank

@@ -23,10 +23,11 @@ function ble/keymap:vi_test/check {
   local nl=$'\n' NL=$'\e[7m^J\e[m'
   ble-edit/content/reset "$in" edit
   _ble_edit_ind=$i
-  [[ $ima ]] && _ble_edit_imark=$ima
+  [[ $ima ]] && _ble_edit_mark=$ima
   local ret
   ble-decode-kbd "$kspecs"
-  ble-decode-key $ret &>/dev/null
+  local ble_decode=${_ble_keymap_vi_test_ble_decode:-ble-decode-key}
+  "$ble_decode" $ret &>/dev/null
   [[ $_ble_edit_ind == "$f" && $_ble_edit_str == "$fin" && ( ! $fma || $_ble_edit_mark == "$fma" ) ]]; local ext=$?
   if ((ext==0)); then
     ((ntest++,nsuccess++))
@@ -131,9 +132,11 @@ function ble/widget/vi-command:check-vi-mode/increment {
   ble/keymap:vi_test/show-summary
 }
 function ble/widget/vi-command:check-vi-mode/macro {
-  local _ble_decode_keylog_depth=0 # to enable ble-decode/keylog for automatic ble-decode-key
+  local _ble_decode_keylog_depth=0
+  local _ble_keymap_vi_test_ble_decode=ble-decode-char
+  local ble_decode_char_sync=1
   ble/keymap:vi_test/start-section 'qx..q'
-  ble/keymap:vi_test/check A1 '@:@123' 'q a A SP h e l l o C-[ q @ a' '@:123 hello hell@o'
+  ble/keymap:vi_test/check A1 '@:@123' 'q a A SP h e l l o @ESC q @ a' '@:123 hello hell@o'
   ble/keymap:vi_test/show-summary
 }
 function ble/widget/vi-command:check-vi-mode/surround {

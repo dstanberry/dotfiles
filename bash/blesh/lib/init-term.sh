@@ -1,11 +1,22 @@
 # this script is a part of blesh (https://github.com/akinomyoga/ble.sh) under BSD-3-Clause license
+_ble_term_tput=
 function ble/init:term/tput { return 1; }
 if ble/bin/.freeze-utility-path tput; then
-  _ble_term_hasput=1
-  if ble/bin/tput cuu 1 &>/dev/null; then
-    function ble/init:term/tput { ble/bin/tput "${1%%:*}" "${@:2}" 2>/dev/null; }
-  elif ble/bin/tput UP 1 &>/dev/null; then
-    function ble/init:term/tput { ble/bin/tput "${1#*:}" "${@:2}" 2>/dev/null; }
+  ble/bin/tput cuu 1 &>/dev/null && _ble_term_tput=${_ble_term_tput}i
+  ble/bin/tput UP  1 &>/dev/null && _ble_term_tput=${_ble_term_tput}c
+  if [[ $_ble_term_tput ]]; then
+    function ble/init:term/tput {
+      local type=$_ble_term_tput
+      if [[ $1 == -c ]]; then # termcap 優先
+        shift
+        [[ $type == ic ]] && type=c
+      fi
+      if [[ $type != c ]]; then
+        ble/bin/tput "${1%%:*}" "${@:2}" 2>/dev/null
+      else
+        ble/bin/tput "${1#*:}" "${@:2}" 2>/dev/null
+      fi
+    }
   fi
 fi
 function ble/init:term/register-varname {
@@ -15,13 +26,13 @@ function ble/init:term/register-varname {
 function ble/init:term/define-cap {
   local name=$1 def=$2
   shift 2
-  ble/util/assign "$name" "ble/init:term/tput $* || echo -n \"\$def\""
+  ble/util/assign "$name" "ble/init:term/tput $* || ble/util/put \"\$def\""
   ble/init:term/register-varname "$name"
 }
 function ble/init:term/define-cap.2 {
   local name=$1 def=$2
   shift 2
-  ble/util/assign "$name" "echo -n x; ble/init:term/tput $* || echo -n \"\$def\"; echo -n x"
+  ble/util/assign "$name" "ble/util/put x; ble/init:term/tput $* || ble/util/put \"\$def\"; ble/util/put x"
   builtin eval "$name=\${$name#x}; $name=\${$name%x}"
   ble/init:term/register-varname "$name"
 }
@@ -49,12 +60,12 @@ function ble/init:term/define-sgr-param {
 function ble/init:term/initialize {
   local -a varnames=()
   _ble_term_xenl=1
-  [[ $_ble_term_hasput ]] &&
+  [[ $_ble_term_tput ]] &&
     ! ble/init:term/tput xenl:xn &>/dev/null &&
     _ble_term_xenl=0
   ble/init:term/register-varname _ble_term_xenl
   _ble_term_it=8
-  if [[ $_ble_term_hasput ]]; then
+  if [[ $_ble_term_tput ]]; then
     ble/util/assign _ble_term_it 'ble/init:term/tput it:it'
     _ble_term_it=${_ble_term_it:-8}
   fi
@@ -62,12 +73,13 @@ function ble/init:term/initialize {
   ble/init:term/define-cap.2 _ble_term_ind $'\eD' ind:sf
   ble/init:term/define-cap   _ble_term_ri  $'\eM' ri:sr
   ble/init:term/define-cap   _ble_term_cr  $'\r'  cr:cr
-  _ble_term_nl=$'\n'
-  ble/init:term/register-varname _ble_term_nl
-  _ble_term_IFS=$' \t\n'
-  ble/init:term/register-varname _ble_term_IFS
-  _ble_term_fs=$'\034'
-  ble/init:term/register-varname _ble_term_fs
+  if [[ $OSTYPE == msys && ! $_ble_term_CR ]]; then # msys-1.0
+    [[ $_ble_term_cr ]] || _ble_term_cr=$'\e[G'
+    if [[ $TERM == cygwin ]]; then
+      [[ $_ble_term_ind == $'\eD' ]] && _ble_term_ind=$'\n'
+      _ble_term_xenl=0
+    fi
+  fi
   ble/init:term/define-cap _ble_term_cuu $'\e[%dA' cuu:UP 123
   ble/init:term/define-cap _ble_term_cud $'\e[%dB' cud:DO 123
   ble/init:term/define-cap _ble_term_cuf $'\e[%dC' cuf:RI 123
@@ -89,7 +101,7 @@ function ble/init:term/initialize {
   _ble_term_vpa=${_ble_term_vpa//124/%l}
   ble/init:term/define-cap _ble_term_clear $'\e[H\e[2J' clear:cl
   ble/init:term/define-cap _ble_term_il $'\e[%dL' il:AL 123
-  ble/init:term/define-cap _ble_term_dl $'\e[%dM' dl:DL 123
+  ble/init:term/define-cap _ble_term_dl $'\e[%dM' -c dl:DL 123
   _ble_term_il=${_ble_term_il//123/%d}
   _ble_term_dl=${_ble_term_dl//123/%d}
   ble/init:term/define-cap _ble_term_el  $'\e[K'  el:ce
@@ -100,7 +112,7 @@ function ble/init:term/initialize {
     _ble_term_el2=$_ble_term_el1$_ble_term_el
   fi
   ble/init:term/register-varname _ble_term_el2
-  ble/init:term/define-cap _ble_term_ed  $'\e[J' ed:cd
+  ble/init:term/define-cap _ble_term_ed  $'\e[J' -c ed:cd
   ble/init:term/define-cap _ble_term_ich '' ich:IC 123 # CSI @
   ble/init:term/define-cap _ble_term_dch '' dch:DC 123 # CSI P
   ble/init:term/define-cap _ble_term_ech '' ech:ec 123 # CSI X
@@ -109,10 +121,12 @@ function ble/init:term/initialize {
   _ble_term_ech=${_ble_term_ech//123/%d}
   ble/init:term/define-cap _ble_term_sc $'\e[s' sc:sc
   ble/init:term/define-cap _ble_term_rc $'\e[u' rc:rc
+  [[ $TERM == minix ]] && _ble_term_sc= _ble_term_rc=
   ble/init:term/define-cap _ble_term_Ss '' Ss:Ss 123 # DECSCUSR
   _ble_term_Ss=${_ble_term_Ss//123/@1}
   ble/init:term/define-cap _ble_term_cvvis $'\e[?25h' cvvis:vs
   ble/init:term/define-cap _ble_term_civis $'\e[?25l' civis:vi
+  [[ $TERM == minix ]] && _ble_term_cvvis= _ble_term_civis=
   [[ $_ble_term_cvvis == $'\e[?12;25h' || $_ble_term_cvvis == $'\e[?25;12h' ]] &&
     _ble_term_cvvis=$'\e[?25h'
   [[ $_ble_term_cvvis == $'\e[34l'* && $_ble_term_civis != *$'\e[34h'* ]] &&
@@ -181,6 +195,7 @@ function ble/init:term/initialize {
   ble/init:term/register-varname "_ble_term_sgr_ab"
   ble/util/declare-print-definitions "${varnames[@]}" >| "$_ble_base_cache/$TERM.term"
 }
-echo -n "ble/term.sh: updating tput cache for TERM=$TERM... " >&2
+ble/util/put "ble/term.sh: updating tput cache for TERM=$TERM... " >&2
 ble/init:term/initialize
-echo  "ble/term.sh: updating tput cache for TERM=$TERM... done" >&2
+ble/util/print $'\r'"ble/term.sh: updating tput cache for TERM=$TERM... done" >&2
+return 0

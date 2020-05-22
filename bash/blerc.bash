@@ -9,3 +9,9 @@ bleopt filename_ls_colors="$LS_COLORS"
 
 # define auto-suggestion text color
 ble-color-setface auto_complete fg=242
+
+# define alias text-color
+ble-color-setface command_alias fg=teal
+
+# define function text-color
+ble-color-setface command_function fg=teal

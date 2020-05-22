@@ -2,14 +2,14 @@
 function ble/syntax/urange#update {
   local prefix=$1
   local p1=$2 p2=${3:-$2}
-  ((0<=p1&&p1<p2)) || return
+  ((0<=p1&&p1<p2)) || return 1
   (((${prefix}umin<0||${prefix}umin>p1)&&(${prefix}umin=p1),
     (${prefix}umax<0||${prefix}umax<p2)&&(${prefix}umax=p2)))
 }
 function ble/syntax/wrange#update {
   local prefix=$1
   local p1=$2 p2=${3:-$2}
-  ((0<=p1&&p1<=p2)) || return
+  ((0<=p1&&p1<=p2)) || return 1
   (((${prefix}umin<0||${prefix}umin>p1)&&(${prefix}umin=p1),
     (${prefix}umax<0||${prefix}umax<p2)&&(${prefix}umax=p2)))
 }
@@ -41,8 +41,8 @@ _ble_syntax_attr=()
 _ble_syntax_TREE_WIDTH=5
 function ble/syntax/tree-enumerate/.initialize {
   if [[ ! ${_ble_syntax_stat[iN]} ]]; then
-    root= i=-1 nofs=0
-    return
+    TE_root= TE_i=-1 TE_nofs=0
+    return 0
   fi
   local -a stat nest
   ble/string#split-words stat "${_ble_syntax_stat[iN]}"
@@ -52,11 +52,11 @@ function ble/syntax/tree-enumerate/.initialize {
   ((inest=nlen<0?nlen:iN-nlen))
   local tclen=${stat[4]}
   local tplen=${stat[5]}
-  root=
-  ((iN>0)) && root=${_ble_syntax_tree[iN-1]}
+  TE_root=
+  ((iN>0)) && TE_root=${_ble_syntax_tree[iN-1]}
   while
     if ((wlen>=0)); then
-      root="$wtype $wlen $tclen $tplen -- $root"
+      TE_root="$wtype $wlen $tclen $tplen -- $TE_root"
       tclen=0
     fi
     ((inest>=0))
@@ -66,7 +66,7 @@ function ble/syntax/tree-enumerate/.initialize {
     local olen=$((iN-inest))
     tplen=${nest[4]}
     ((tplen>=0&&(tplen+=olen)))
-    root="${nest[7]} $olen $tclen $tplen -- $root"
+    TE_root="${nest[7]} $olen $tclen $tplen -- $TE_root"
     wtype=${nest[2]} wlen=${nest[1]} nlen=${nest[3]} tclen=0 tplen=${nest[5]}
     ((wlen>=0&&(wlen+=olen),
       tplen>=0&&(tplen+=olen),
@@ -74,41 +74,41 @@ function ble/syntax/tree-enumerate/.initialize {
       inest=nlen<0?nlen:iN-nlen))
     ble/util/assert '((nlen<0||nlen>olen))' "$FUNCNAME/FATAL2" || break
   done
-  if [[ $root ]]; then
-    ((i=iN))
+  if [[ $TE_root ]]; then
+    ((TE_i=iN))
   else
-    ((i=tclen>=0?iN-tclen:tclen))
+    ((TE_i=tclen>=0?iN-tclen:tclen))
   fi
-  ((nofs=0))
+  ((TE_nofs=0))
 }
 function ble/syntax/tree-enumerate/.impl {
   local islast=1
-  while ((i>0)); do
+  while ((TE_i>0)); do
     local -a node
-    if ((i<iN)); then
-      ble/string#split-words node "${_ble_syntax_tree[i-1]}"
+    if ((TE_i<iN)); then
+      ble/string#split-words node "${_ble_syntax_tree[TE_i-1]}"
     else
-      ble/string#split-words node "${root:-${_ble_syntax_tree[iN-1]}}"
+      ble/string#split-words node "${TE_root:-${_ble_syntax_tree[iN-1]}}"
     fi
-    ble/util/assert '((nofs<${#node[@]}))' "$FUNCNAME(i=$i,iN=$iN,nofs=$nofs,node=${node[*]},command=$@)/FATAL1" || break
-    local wtype=${node[nofs]} wlen=${node[nofs+1]} tclen=${node[nofs+2]} tplen=${node[nofs+3]} attr=${node[nofs+4]}
-    local wbegin=$((wlen<0?wlen:i-wlen))
-    local tchild=$((tclen<0?tclen:i-tclen))
-    local tprev=$((tplen<0?tplen:i-tplen))
+    ble/util/assert '((TE_nofs<${#node[@]}))' "$FUNCNAME(i=$TE_i,iN=$iN,TE_nofs=$TE_nofs,node=${node[*]},command=$@)/FATAL1" || break
+    local wtype=${node[TE_nofs]} wlen=${node[TE_nofs+1]} tclen=${node[TE_nofs+2]} tplen=${node[TE_nofs+3]} attr=${node[TE_nofs+4]}
+    local wbegin=$((wlen<0?wlen:TE_i-wlen))
+    local tchild=$((tclen<0?tclen:TE_i-tclen))
+    local tprev=$((tplen<0?tplen:TE_i-tplen))
     "$@"
-    ble/util/assert '((tprev<i))' "$FUNCNAME/FATAL2" || break
-    ((i=tprev,nofs=0,islast=0))
+    ble/util/assert '((tprev<TE_i))' "$FUNCNAME/FATAL2" || break
+    ((TE_i=tprev,TE_nofs=0,islast=0))
   done
 }
 function ble/syntax/tree-enumerate-children {
-  ((0<tchild&&tchild<=i)) || return
-  local nofs=$((i==tchild?nofs+_ble_syntax_TREE_WIDTH:0))
-  local i=$tchild
+  ((0<tchild&&tchild<=TE_i)) || return 1
+  local TE_nofs=$((TE_i==tchild?TE_nofs+_ble_syntax_TREE_WIDTH:0))
+  local TE_i=$tchild
   ble/syntax/tree-enumerate/.impl "$@"
 }
 function ble/syntax/tree-enumerate-break () ((tprev=-1))
 function ble/syntax/tree-enumerate {
-  local root i nofs
+  local TE_root TE_i TE_nofs
   [[ ${iN:+set} ]] || local iN=${#_ble_syntax_text}
   ble/syntax/tree-enumerate/.initialize
   ble/syntax/tree-enumerate/.impl "$@"
@@ -117,27 +117,26 @@ function ble/syntax/tree-enumerate-in-range {
   local beg=$1 end=$2
   local proc=$3
   local -a node
-  local i nofs
-  for ((i=end;i>=beg;i--)); do
-    ((i>0)) && [[ ${_ble_syntax_tree[i-1]} ]] || continue
-    ble/string#split-words node "${_ble_syntax_tree[i-1]}"
+  local TE_i TE_nofs
+  for ((TE_i=end;TE_i>=beg;TE_i--)); do
+    ((TE_i>0)) && [[ ${_ble_syntax_tree[TE_i-1]} ]] || continue
+    ble/string#split-words node "${_ble_syntax_tree[TE_i-1]}"
     local flagUpdateNode=
-    for ((nofs=0;nofs<${#node[@]};nofs+=_ble_syntax_TREE_WIDTH)); do
-      local wtype=${node[nofs]} wlen=${node[nofs+1]}
-      local wbeg=$((wlen<0?wlen:i-wlen)) wend=$i
+    for ((TE_nofs=0;TE_nofs<${#node[@]};TE_nofs+=_ble_syntax_TREE_WIDTH)); do
+      local wtype=${node[TE_nofs]} wlen=${node[TE_nofs+1]} wattr=${node[TE_nofs+4]}
+      local wbeg=$((wlen<0?wlen:TE_i-wlen)) wend=$TE_i
       "${@:3}"
     done
-    [[ $flagUpdateNode ]] && _ble_syntax_tree[i-1]="${node[*]}"
   done
 }
 function ble/syntax/print-status/.graph {
   local char=$1
   if ble/util/isprint+ "$char"; then
     graph="'$char'"
-    return
+    return 0
   else
     local ret
-    ble/util/s2c "$char" 0
+    ble/util/s2c "$char"
     local code=$ret
     if ((code<32)); then
       ble/util/c2s $((code+64))
@@ -171,7 +170,7 @@ function ble/syntax/print-status/ctx#get-text {
   ret=${ret#BLE_}
   if [[ ! $ret ]]; then
     ble/color/face2sgr syntax_error
-    ret="${sgr}CTX$1$_ble_term_sgr0"
+    ret="${ret}CTX$1$_ble_term_sgr0"
   fi
 }
 function ble/syntax/print-status/word.get-text {
@@ -251,7 +250,7 @@ function ble/syntax/print-status/nest.get-text {
     if [[ $nparam == none ]]; then
       nparam=
     else
-      nparam=" nparam=${nparam//$_ble_term_fs/$'\e[7m^\\\e[m'}"
+      nparam=" nparam=${nparam//$_ble_term_FS/$'\e[7m^\\\e[m'}"
     fi
     nest=" nest=($nctx w=$nword n=$nnest t=$nchild:$nprev$nparam)"
   fi
@@ -295,7 +294,7 @@ function ble/syntax/print-status/stat.get-text {
     if [[ $snparam == none ]]; then
       snparam=
     else
-      snparam=" nparam=${snparam//"$_ble_term_fs"/$'\e[7m^\\\e[m'}"
+      snparam=" nparam=${snparam//"$_ble_term_FS"/$'\e[7m^\\\e[m'}"
     fi
     local stat_lookahead=
     ((stat[7]!=1)) && stat_lookahead=" >>${stat[7]}"
@@ -307,11 +306,9 @@ function ble/syntax/print-status/.dump-arrays {
   tree=()
   char=()
   line=()
-  local sgr
-  ble/color/face2sgr syntax_error
-  local sgr_error=$sgr
-  ble/color/face2sgr syntax_quoted
-  local sgr_quoted=$sgr
+  local ret
+  ble/color/face2sgr syntax_error; local sgr_error=$ret
+  ble/color/face2sgr syntax_quoted; local sgr_quoted=$ret
   local i max_tree_width=0
   for ((i=0;i<=iN;i++)); do
     local attr="  ${_ble_syntax_attr[i]:-|}"
@@ -320,7 +317,6 @@ function ble/syntax/print-status/.dump-arrays {
     else
       attr="${attr:${#attr}-2:2} "
     fi
-    local ret
     [[ ${_ble_highlight_layer_syntax1_table[i]} ]] && ble/color/g2sgr "${_ble_highlight_layer_syntax1_table[i]}"
     ble/syntax/print-status/.dump-arrays/.append-attr-char "${ret}a${_ble_term_sgr0}"
     [[ ${_ble_highlight_layer_syntax2_table[i]} ]] && ble/color/g2sgr "${_ble_highlight_layer_syntax2_table[i]}"
@@ -364,11 +360,11 @@ function ble/syntax/print-status {
   ble/syntax/print-status/.dump-arrays
   local resultB
   ble/syntax/print-status/.dump-tree
-  local result=$resultA$_ble_term_NL$resultB
+  local result=$resultA$resultB
   if [[ $1 == -v && $2 ]]; then
     local "${2%%\[*\]}" && ble/util/upvar "$2" "$result"
   else
-    builtin echo "$result"
+    ble/util/print "$result"
   fi
 }
 function ble/syntax/parse/generate-stat {
@@ -379,11 +375,11 @@ function ble/syntax/parse/set-lookahead {
   ((i+$1>ilook&&(ilook=i+$1)))
 }
 function ble/syntax/parse/tree-append {
-  [[ $debug_p1 ]] && { ((i-1>=debug_p1)) || ble/util/stackdump "Wrong call of tree-append: Condition violation (p1=$debug_p1 i=$i iN=$iN)."; }
+  [[ $debug_p1 ]] && ble/util/assert '((i-1>=debug_p1))' "Wrong call of tree-append: Condition violation (p1=$debug_p1 i=$i iN=$iN)."
   local type=$1
   local beg=$2 end=$i
   local len=$((end-beg))
-  ((len==0)) && return
+  ((len==0)) && return 0
   local tchild=$3 tprev=$4
   local ochild=-1 oprev=-1
   ((tchild>=0&&(ochild=i-tchild)))
@@ -433,12 +429,12 @@ function ble/syntax/parse/nest-pop {
 }
 function ble/syntax/parse/nest-type {
   local _var=ntype
-  [[ $1 == -v ]] && _var="$2"
+  [[ $1 == -v ]] && _var=$2
   if ((inest<0)); then
-    eval "$_var="
+    builtin eval "$_var="
     return 1
   else
-    eval "$_var=\"\${_ble_syntax_nest[inest]##* }\""
+    builtin eval "$_var=\"\${_ble_syntax_nest[inest]##* }\""
   fi
 }
 function ble/syntax/parse/nest-ctx {
@@ -465,7 +461,9 @@ function ble/syntax/parse/nest-equals {
     local _nnest=${_ble_syntax_nest[parent_inest]}
     [[ $_onest != "$_nnest" ]] && return 1
     local -a onest; ble/string#split-words onest "$_onest"
-    ((onest[3]!=0&&onest[3]<=parent_inest)) || { ble/util/stackdump "invalid nest onest[3]=${onest[3]} parent_inest=$parent_inest text=$text" && return 0; }
+    ble/util/assert \
+      '((onest[3]!=0&&onest[3]<=parent_inest))' \
+      "invalid nest onest[3]=${onest[3]} parent_inest=$parent_inest text=$text" || return 0
     ((parent_inest=onest[3]<0?onest[3]:(parent_inest-onest[3])))
   done
 }
@@ -476,7 +474,7 @@ function ble/syntax/parse/touch-updated-attr {
       _ble_syntax_attr_umin=$1)))
 }
 function ble/syntax/parse/touch-updated-word {
-  (($1>0)) || ble/util/stackdump "invalid word position $1"
+  ble/util/assert "(($1>0))" "invalid word position $1"
   (((_ble_syntax_word_umin<0||_ble_syntax_word_umin>$1)&&(
       _ble_syntax_word_umin=$1)))
   (((_ble_syntax_word_umax<0||_ble_syntax_word_umax<$1)&&(
@@ -508,6 +506,8 @@ _ble_attr_HISTX=21
 _ble_attr_FUNCDEF=22
 _ble_ctx_PARAM=14
 _ble_ctx_PWORD=15
+_ble_ctx_PWORDE=73
+_ble_ctx_PWORDR=72
 _ble_ctx_RDRF=19
 _ble_ctx_RDRD=20
 _ble_ctx_RDRS=27
@@ -554,6 +554,8 @@ _ble_ctx_HERE1=47
 _ble_ctx_ARGEX=69
 _ble_ctx_ARGEI=70
 _ble_ctx_ARGER=71
+_ble_ctx_COARGX=74
+_ble_ctx_COARGI=75
 _ble_attr_CMD_BOLD=101
 _ble_attr_CMD_BUILTIN=102
 _ble_attr_CMD_ALIAS=103
@@ -578,6 +580,16 @@ _ble_attr_FILE_CHR=115
 _ble_attr_FILE_BLK=116
 _ble_attr_FILE_SOCK=117
 _ble_attr_FILE_WARN=113
+_ble_attr_FILE_URL=125
+_ble_attr_VAR_UNSET=126
+_ble_attr_VAR_EMPTY=127
+_ble_attr_VAR_NUMBER=128
+_ble_attr_VAR_EXPR=129
+_ble_attr_VAR_ARRAY=130
+_ble_attr_VAR_HASH=132
+_ble_attr_VAR_READONLY=131
+_ble_attr_VAR_TRANSFORM=133
+_ble_attr_VAR_EXPORT=134
 _ble_syntax_bash_ctx_names=(
   [0]=_ble_ctx_UNSPECIFIED
   [3]=_ble_ctx_ARGX
@@ -605,6 +617,8 @@ _ble_syntax_bash_ctx_names=(
   [22]=_ble_attr_FUNCDEF
   [14]=_ble_ctx_PARAM
   [15]=_ble_ctx_PWORD
+  [73]=_ble_ctx_PWORDE
+  [72]=_ble_ctx_PWORDR
   [19]=_ble_ctx_RDRF
   [20]=_ble_ctx_RDRD
   [27]=_ble_ctx_RDRS
@@ -651,6 +665,8 @@ _ble_syntax_bash_ctx_names=(
   [69]=_ble_ctx_ARGEX
   [70]=_ble_ctx_ARGEI
   [71]=_ble_ctx_ARGER
+  [74]=_ble_ctx_COARGX
+  [75]=_ble_ctx_COARGI
   [101]=_ble_attr_CMD_BOLD
   [102]=_ble_attr_CMD_BUILTIN
   [103]=_ble_attr_CMD_ALIAS
@@ -675,9 +691,19 @@ _ble_syntax_bash_ctx_names=(
   [116]=_ble_attr_FILE_BLK
   [117]=_ble_attr_FILE_SOCK
   [113]=_ble_attr_FILE_WARN
+  [125]=_ble_attr_FILE_URL
+  [126]=_ble_attr_VAR_UNSET
+  [127]=_ble_attr_VAR_EMPTY
+  [128]=_ble_attr_VAR_NUMBER
+  [129]=_ble_attr_VAR_EXPR
+  [130]=_ble_attr_VAR_ARRAY
+  [132]=_ble_attr_VAR_HASH
+  [131]=_ble_attr_VAR_READONLY
+  [133]=_ble_attr_VAR_TRANSFORM
+  [134]=_ble_attr_VAR_EXPORT
 )
 function ble/syntax/ctx#get-name {
-  ret=${_ble_syntax_bash_ctx_names[$1]}
+  ret=${_ble_syntax_bash_ctx_names[$1]#_ble_ctx_}
 }
 _BLE_SYNTAX_FCTX=()
 _BLE_SYNTAX_FEND=()
@@ -692,14 +718,14 @@ _ble_syntax_bash_IFS=$' \t\n'
 _ble_syntax_bash_RexSpaces=$'[ \t]+'
 _ble_syntax_bash_RexIFSs="[$_ble_syntax_bash_IFS]+"
 _ble_syntax_bash_RexDelimiter="[$_ble_syntax_bash_IFS;|&<>()]"
-_ble_syntax_bash_RexRedirect='((\{[a-zA-Z_][a-zA-Z_0-9]+\}|[0-9]+)?(&?>>?|>[|&]|<[>&]?|<<[-<]?))[ 	]*'
+_ble_syntax_bash_RexRedirect='((\{[a-zA-Z_][a-zA-Z_0-9]*\}|[0-9]+)?(&?>>?|>[|&]|<[>&]?|<<[-<]?))[ 	]*'
 _ble_syntax_bash_chars=()
 _ble_syntax_bashc_seed=
 function ble/syntax:bash/cclass/update/reorder {
-  eval "local a=\"\${$1}\""
+  builtin eval "local a=\"\${$1}\""
   [[ $a == *']'* ]] && a="]${a//]}"
   [[ $a == *'-'* ]] && a="${a//-}-"
-  eval "$1=\$a"
+  builtin eval "$1=\$a"
 }
 function ble/syntax:bash/cclass/update {
   local seed=$_ble_syntax_bash_histc12
@@ -731,6 +757,9 @@ function ble/syntax:bash/cclass/update {
     local extglob='@+!' # *? は既に登録されている筈
     _ble_syntax_bash_chars[_ble_ctx_ARGI]=${_ble_syntax_bash_chars[_ble_ctx_ARGI]}$extglob
     _ble_syntax_bash_chars[_ble_ctx_PATN]=${_ble_syntax_bash_chars[_ble_ctx_PATN]}$extglob
+    _ble_syntax_bash_chars[_ble_ctx_PWORD]=${_ble_syntax_bash_chars[_ble_ctx_PWORD]}$extglob
+    _ble_syntax_bash_chars[_ble_ctx_PWORDE]=${_ble_syntax_bash_chars[_ble_ctx_PWORDE]}$extglob
+    _ble_syntax_bash_chars[_ble_ctx_PWORDR]=${_ble_syntax_bash_chars[_ble_ctx_PWORDR]}$extglob
   fi
   if [[ $modified ]]; then
     for key in "${!_ble_syntax_bash_chars[@]}"; do
@@ -753,13 +782,17 @@ function ble/syntax:bash/cclass/initialize {
   _ble_syntax_bash_charsDef[_ble_ctx_PATN]="$expansions$glob(|)<>{!" # <> はプロセス置換のため。
   _ble_syntax_bash_charsDef[_ble_ctx_QUOT]="\$\"\`\\!"         # 文字列 "～" で特別な意味を持つのは $ ` \ " のみ。+履歴展開の ! も。
   _ble_syntax_bash_charsDef[_ble_ctx_EXPR]="][}()$expansions!" # ()[] は入れ子を数える為。} は ${var:ofs:len} の為。
-  _ble_syntax_bash_charsDef[_ble_ctx_PWORD]="}$expansions!"    # パラメータ展開 ${～}
+  _ble_syntax_bash_charsDef[_ble_ctx_PWORD]="}$expansions$glob!" # パラメータ展開 ${～}
+  _ble_syntax_bash_charsDef[_ble_ctx_PWORDE]="}$expansions$glob!" # パラメータ展開 ${～} エラー
+  _ble_syntax_bash_charsDef[_ble_ctx_PWORDR]="}/$expansions$glob!" # パラメータ展開 ${～} 置換前
   _ble_syntax_bash_charsDef[_ble_ctx_RDRH]="$delimiters$expansions"
   _ble_syntax_bash_charsFmt[_ble_ctx_ARGI]="$delimiters$expansions$glob{$tilde@q@h"
   _ble_syntax_bash_charsFmt[_ble_ctx_PATN]="$expansions$glob(|)<>{@h"
   _ble_syntax_bash_charsFmt[_ble_ctx_QUOT]="\$\"\`\\@h"
   _ble_syntax_bash_charsFmt[_ble_ctx_EXPR]="][}()$expansions@h"
-  _ble_syntax_bash_charsFmt[_ble_ctx_PWORD]="}$expansions@h"
+  _ble_syntax_bash_charsFmt[_ble_ctx_PWORD]="}$expansions$glob@h"
+  _ble_syntax_bash_charsFmt[_ble_ctx_PWORDE]="}$expansions$glob@h"
+  _ble_syntax_bash_charsFmt[_ble_ctx_PWORDR]="}/$expansions$glob@h"
   _ble_syntax_bash_charsFmt[_ble_ctx_RDRH]=${_ble_syntax_bash_charsDef[_ble_ctx_RDRH]}
   _ble_syntax_bash_chars_simpleDef="$delimiters$expansions^!"
   _ble_syntax_bash_chars_simpleFmt="$delimiters$expansions@q@h"
@@ -781,7 +814,7 @@ _ble_syntax_bash_simple_rex_incomplete_word1=
 _ble_syntax_bash_simple_rex_incomplete_word2=
 function ble/syntax:bash/simple-word/update {
   local q="'"
-  local letter='[^'${_ble_syntax_bashc_simple}']'
+  local letter='\[[!^]|[^'${_ble_syntax_bashc_simple}']'
   local param1='\$([-*@#?$!0_]|[1-9][0-9]*|[a-zA-Z_][a-zA-Z_0-9]*)'
   local param2='\$\{(#?[-*@#?$!0]|[#!]?([1-9][0-9]*|[a-zA-Z_][a-zA-Z_0-9]*))\}' # ${!!} ${!$} はエラーになる。履歴展開の所為?
   local param=$param1'|'$param2
@@ -904,7 +937,7 @@ function ble/syntax:bash/simple-word/reconstruct-incomplete-word {
       esac
     fi
     ret=$out
-    return
+    return 0
   fi
   return 1
 }
@@ -938,7 +971,7 @@ function ble/syntax:bash/simple-word/extract-parameter-names/.process-dquot {
   elif [[ $value == '"'*'"' ]]; then
     value=${value:1:${#value}-2}
   else
-    return
+    return 0
   fi
   local rex0='^([^'${_ble_syntax_bash_chars[_ble_ctx_QUOT]}']|\\.)+'
   local rex2='^('$param')'
@@ -950,6 +983,7 @@ function ble/syntax:bash/simple-word/extract-parameter-names/.process-dquot {
     [[ $var == [_a-zA-Z]* ]] && ble/array#push ret "$var"
   done
 }
+function ble/syntax:bash/simple-word/eval/.set-result { __ble_ret=("$@"); }
 function ble/syntax:bash/simple-word/eval-noglob/.impl {
   local -a ret
   ble/syntax:bash/simple-word/extract-parameter-names "$1"
@@ -958,15 +992,29 @@ function ble/syntax:bash/simple-word/eval-noglob/.impl {
     ble/util/assign __ble_defs 'ble/util/print-global-definitions --hidden-only "${ret[@]}"'
     builtin eval -- "$__ble_defs" &>/dev/null # 読み取り専用の変数のこともある
   fi
-  builtin eval -- "__ble_ret=$1"
+  local __ble_unset_f=
+  [[ $- != *f* ]] && { __ble_unset_f=1; set -f; }
+  builtin eval "ble/syntax:bash/simple-word/eval/.set-result $1"; local ext=$?
+  [[ $__ble_unset_f ]] && set +f
+  return "$ext"
 }
 function ble/syntax:bash/simple-word/eval-noglob {
   local __ble_ret
   ble/syntax:bash/simple-word/eval-noglob/.impl "$1"
-  ret=$__ble_ret
+  ret=("${__ble_ret[@]}")
 }
-function ble/syntax:bash/simple-word/eval/.set-result { __ble_ret=("$@"); }
 function ble/syntax:bash/simple-word/eval/.impl {
+  if ble/util/is-cygwin-slow-glob "$1"; then # Note: #D1168
+    if shopt -q failglob &>/dev/null; then
+      __ble_ret=()
+      return 1
+    elif shopt -q nullglob &>/dev/null; then
+      __ble_ret=()
+      return 0
+    else
+      ble/syntax:bash/simple-word/eval-noglob "$1"; return "$?"
+    fi
+  fi
   local -a ret=()
   ble/syntax:bash/simple-word/extract-parameter-names "$1"
   if ((${#ret[@]})); then
@@ -985,27 +1033,88 @@ function ble/syntax:bash/simple-word/eval {
   ret=("${__ble_ret[@]}")
   return "$ext"
 }
-function ble/syntax:bash/simple-word/evaluate-path-spec {
-  local word=$1 sep=${2:-'/:='}
-  spec=() path=()
+function ble/syntax:bash/simple-word/.get-rex_element {
+  local sep=$1
   local param=$_ble_syntax_bash_simple_rex_param
   local bquot=$_ble_syntax_bash_simple_rex_bquot
   local squot=$_ble_syntax_bash_simple_rex_squot
   local dquot=$_ble_syntax_bash_simple_rex_dquot
   local letter1='[^'$sep$_ble_syntax_bashc_simple']'
-  local rex_path_element='('$bquot'|'$squot'|'$dquot'|'$param'|'$letter1')+'
-  local rex='^['$sep']?'$rex_path_element
-  local tail=$word s= p=
+  rex_element='('$bquot'|'$squot'|'$dquot'|'$param'|'$letter1')+'
+}
+function ble/syntax:bash/simple-word/evaluate-path-spec {
+  local word=$1 sep=${2:-'/:='} opts=$3
+  ret=() spec=() path=()
+  [[ $word ]] || return 0
+  local eval_word=ble/syntax:bash/simple-word/eval
+  [[ :$opts: == *:noglob:* ]] && eval_word=ble/syntax:bash/simple-word/eval-noglob
+  local notilde=
+  [[ :$opts: == *:notilde:* ]] && notilde=\'\' # チルダ展開の抑制
+  local rex_element; ble/syntax:bash/simple-word/.get-rex_element "$sep"
+  local rex='^['$sep']?'$rex_element'|^['$sep']'
+  [[ :$opts: == *:after-sep:* ]] &&
+    local rex='^'$rex_element'['$sep']?|^['$sep']'
+  local tail=$word s= p= ext=0
   while [[ $tail =~ $rex ]]; do
     local rematch=$BASH_REMATCH
-    ble/syntax:bash/simple-word/eval "$rematch"
-    s=$s${tail::${#rematch}}
-    p=$p$ret
+    s=$s$rematch
+    "$eval_word" "$notilde$s"; ext=$?
+    p=$ret
     tail=${tail:${#rematch}}
     ble/array#push spec "$s"
     ble/array#push path "$p"
   done
-  [[ ! $tail ]]
+  [[ $tail ]] && return 1
+  ((ext)) && return "$ext"
+  return 0
+}
+function ble/syntax:bash/simple-word/locate-filename {
+  local word=$1 sep=${2:-':='} opts=$3
+  ret=0
+  [[ $word ]] || return 0
+  local eval_word=ble/syntax:bash/simple-word/eval
+  [[ :$opts: == *:noglob:* ]] && eval_word=ble/syntax:bash/simple-word/eval-noglob
+  local rex_element; ble/syntax:bash/simple-word/.get-rex_element "$sep"
+  local rex='^'$rex_element'['$sep']|^['$sep']'
+  local rex_url='^[a-z]+://'
+  local tail=$word p=0
+  while
+    if "$eval_word" "$tail"; then
+      if [[ ( $OSTYPE == cygwin || $OSTYPE == msys ) && $ret == //* ]]; then
+        [[ $ret == // ]] && break
+      else
+        [[ -e $ret || -h $ret ]] && break
+      fi
+    fi
+    [[ :$opts: == *:url:* && $ret =~ $rex_url ]] && break
+    [[ $tail =~ $rex ]]
+  do
+    ((p+=${#BASH_REMATCH}))
+    tail=${tail:${#BASH_REMATCH}}
+  done
+  ret=$p
+  return 0
+}
+function ble/syntax:bash/simple-word#break-word {
+  local word=$1 sep=${2:-':='}
+  if [[ ! $word ]]; then
+    ret=('')
+    return 0
+  fi
+  sep=${sep//[\"\'\$\`]}
+  local rex_element; ble/syntax:bash/simple-word/.get-rex_element "$sep"
+  local rex='^('$rex_element')?['$sep']+'
+  local -a out=()
+  local tail=$word p=0
+  while [[ $tail =~ $rex ]]; do
+    local rematch1=${BASH_REMATCH[1]}
+    ble/array#push out "$rematch1"
+    ble/array#push out "${BASH_REMATCH:${#rematch1}}"
+    tail=${tail:${#BASH_REMATCH}}
+  done
+  ble/array#push out "$tail"
+  ret=("${out[@]}")
+  return 0
 }
 function ble/syntax:bash/initialize-ctx {
   ctx=$_ble_ctx_CMDX # _ble_ctx_CMDX が ble/syntax:bash の最初の文脈
@@ -1025,30 +1134,81 @@ function ble/syntax:bash/initialize-vars {
   shopt -q extglob && histstop="$histstop("
   _ble_syntax_bash_histstop=$histstop
 }
+function ble/syntax/highlight/vartype {
+  local name=$1 opts=$2 tail=$3 rex='^-?[0-9]+(#[0-9a-zA-Z@_]*)?$'
+  if [[ ${!name+set} ]]; then
+    local attr; ble/variable#get-attr "$name"
+    if [[ ${!name} && :$opts: == *:expr:* && ! ( ${!name} =~ $rex ) ]]; then
+      ret=$_ble_attr_VAR_EXPR
+    elif [[ $attr == *x* ]]; then
+      ret=$_ble_attr_VAR_EXPORT
+    elif [[ $attr == *a* ]]; then
+      ret=$_ble_attr_VAR_ARRAY
+    elif [[ $attr == *A* ]]; then
+      ret=$_ble_attr_VAR_HASH
+    elif [[ $attr == *r* ]]; then
+      ret=$_ble_attr_VAR_READONLY
+    elif [[ $attr == *i* ]]; then
+      ret=$_ble_attr_VAR_NUMBER
+    elif [[ $attr == *[luc]* ]]; then
+      ret=$_ble_attr_VAR_TRANSFORM
+    elif [[ ! ${!name} ]]; then
+      ret=$_ble_attr_VAR_EMPTY
+    else
+      ret=$_ble_attr_VAR
+    fi
+  else
+    if [[ :$opts: == *:readvar:* && $_ble_bash_setu ]]; then
+      if [[ ! $tail ]] || {
+           local rex='^:?[-+?=]'
+           [[ $tail == :* ]] && lookahead=2
+           ! [[ $tail =~ $rex ]]; }
+      then
+        ret=$_ble_attr_ERR
+        return 0
+      fi
+    fi
+    ret=$_ble_attr_VAR_UNSET
+  fi
+}
 function ble/syntax:bash/check-dollar {
   [[ $tail == '$'* ]] || return 1
   local rex
   if [[ $tail == '${'* ]]; then
-    if rex='^(\$\{[#!]?)([-*@#?$!0]|[1-9][0-9]*|[a-zA-Z_][a-zA-Z_0-9]*)(\[?)' && [[ $tail =~ $rex ]]; then
+    local rex1='^(\$\{#)([-*@#?$!0]\}?|[1-9][0-9]*\}?|[a-zA-Z_][a-zA-Z_0-9]*[[}]?)'
+    local rex2='^(\$\{!?)([-*@#?$!0]|[1-9][0-9]*|[a-zA-Z_][a-zA-Z_0-9]*\[?)'
+    if 
+      [[ $tail =~ $rex1 ]] && {
+        [[ ${BASH_REMATCH[2]} == *['[}'] || $BASH_REMATCH == "$tail" ]] ||
+          { ble/syntax/parse/set-lookahead $((${#BASH_REMATCH}+1)); false; } } ||
+        [[ $tail =~ $rex2 ]]
+    then
       local rematch1=${BASH_REMATCH[1]}
       local rematch2=${BASH_REMATCH[2]}
-      local rematch3=${BASH_REMATCH[3]}
+      local varname=${rematch2%['[}']}
       local ntype='${'
       if ((ctx==_ble_ctx_QUOT)); then
         ntype='"${'
-      elif ((ctx==_ble_ctx_PWORD||ctx==_ble_ctx_EXPR)); then
+      elif ((ctx==_ble_ctx_PWORD||ctx==_ble_ctx_PWORDE||ctx==_ble_ctx_PWORDR||ctx==_ble_ctx_EXPR)); then
         local ntype2; ble/syntax/parse/nest-type -v ntype2
         [[ $ntype2 == '"${' ]] && ntype='"${'
       fi
+      local ret lookahead= tail2=${tail:${#rematch1}+${#varname}}
+      ble/syntax/highlight/vartype "$varname" readvar "$tail2"; local attr=$ret
       ble/syntax/parse/nest-push "$_ble_ctx_PARAM" "$ntype"
       ((_ble_syntax_attr[i]=ctx,
         i+=${#rematch1},
-        _ble_syntax_attr[i]=_ble_attr_VAR,
-        i+=${#rematch2}))
-      if [[ $rematch3 ]]; then
+        _ble_syntax_attr[i]=attr,
+        i+=${#varname}))
+      [[ $lookahead ]] && ble/syntax/parse/set-lookahead "$lookahead"
+      if rex='^\$\{![a-zA-Z_][a-zA-Z_0-9]*[*@]\}?'; [[ $tail =~ $rex ]]; then
+        ble/syntax/parse/set-lookahead 2
+        if [[ $BASH_REMATCH == *'}' ]]; then
+          ((i++,ctx=_ble_ctx_PWORDE))
+        fi
+      elif [[ $rematch2 == *'[' ]]; then
         ble/syntax/parse/nest-push "$_ble_ctx_EXPR" 'v['
-        ((_ble_syntax_attr[i]=_ble_ctx_EXPR,
-          i+=${#rematch3}))
+        ((_ble_syntax_attr[i++]=_ble_ctx_EXPR))
       fi
       return 0
     else
@@ -1070,10 +1230,12 @@ function ble/syntax:bash/check-dollar {
     ble/syntax/parse/nest-push "$_ble_ctx_CMDX" '$('
     ((i+=2))
     return 0
-  elif rex='^\$([-*@#?$!0_]|[1-9][0-9]*|[a-zA-Z_][a-zA-Z_0-9]*)' && [[ $tail =~ $rex ]]; then
+  elif rex='^\$([-*@#?$!0_]|[1-9]|[a-zA-Z_][a-zA-Z_0-9]*)' && [[ $tail =~ $rex ]]; then
+    local rematch=$BASH_REMATCH rematch1=${BASH_REMATCH[1]}
+    local ret; ble/syntax/highlight/vartype "$rematch1" readvar
     ((_ble_syntax_attr[i]=_ble_ctx_PARAM,
-      _ble_syntax_attr[i+1]=_ble_attr_VAR,
-      i+=${#BASH_REMATCH}))
+      _ble_syntax_attr[i+1]=ret,
+      i+=${#rematch}))
     return 0
   else
     ((_ble_syntax_attr[i++]=ctx))
@@ -1084,18 +1246,18 @@ function ble/syntax:bash/check-quotes {
   local rex aqdel=$_ble_attr_QDEL aquot=$_ble_ctx_QUOT
   if ((ctx==_ble_ctx_EXPR)); then
     local ntype
-    ble/syntax/parse/nest-type -v ntype
+    ble/syntax/parse/nest-type
     if [[ $ntype == '${' || $ntype == '$[' || $ntype == '$((' || $ntype == 'NQ(' ]]; then
       ((aqdel=_ble_attr_ERR,aquot=_ble_ctx_EXPR))
     elif [[ $ntype == '"${' ]] && ! { [[ $tail == '$'[\'\"]* ]] && shopt -q extquote; }; then
       ((aqdel=_ble_attr_ERR,aquot=_ble_ctx_EXPR))
     fi
-  elif ((ctx==_ble_ctx_PWORD)); then
+  elif ((ctx==_ble_ctx_PWORD||ctx==_ble_ctx_PWORDE||ctx==_ble_ctx_PWORDR)); then
     if [[ $tail == '$'[\'\"]* ]] && ! shopt -q extquote; then
       local ntype
-      ble/syntax/parse/nest-type -v ntype
+      ble/syntax/parse/nest-type
       if [[ $ntype == '"${' ]]; then
-        ((aqdel=_ble_ctx_PWORD,aquot=_ble_ctx_PWORD))
+        ((aqdel=ctx,aquot=ctx))
       fi
     fi
   fi
@@ -1116,7 +1278,7 @@ function ble/syntax:bash/check-quotes {
           _ble_syntax_attr[i-1]=aqdel))
       else
         ble/syntax/parse/nest-push "$_ble_ctx_QUOT"
-        if ((ctx==_ble_ctx_PWORD&&aqdel!=_ble_attr_QDEL)); then
+        if (((ctx==_ble_ctx_PWORD||ctx==_ble_ctx_PWORDE||ctx==_ble_ctx_PWORDR)&&aqdel!=_ble_attr_QDEL)); then
           ((_ble_syntax_attr[i]=aqdel,
             _ble_syntax_attr[i+${#rematch1}-1]=_ble_attr_QDEL,
             _ble_syntax_attr[i+${#rematch1}]=_ble_ctx_QUOT,
@@ -1162,8 +1324,10 @@ function ble/syntax:bash/check-glob {
   if ((ctx==_ble_ctx_VRHS||ctx==_ble_ctx_ARGVR||ctx==_ble_ctx_ARGER||ctx==_ble_ctx_VALR||ctx==_ble_ctx_RDRS)); then
     force_attr=$ctx
     ntype="glob_attr=$force_attr"
+  elif ((ctx==_ble_ctx_PWORD||ctx==_ble_ctx_PWORDE||ctx==_ble_ctx_PWORDR)); then
+    ntype="glob_ctx=$ctx"
   elif ((ctx==_ble_ctx_PATN||ctx==_ble_ctx_BRAX)); then
-    ble/syntax/parse/nest-type -v ntype
+    ble/syntax/parse/nest-type
     local exit_attr=
     if [[ $ntype == glob_attr=* ]]; then
       force_attr=${ntype#*=}
@@ -1172,12 +1336,8 @@ function ble/syntax:bash/check-glob {
       force_attr=$ctx
       ntype="glob_attr=$force_attr"
     elif ((ctx==_ble_ctx_PATN)); then
-      if [[ $ntype == glob_nest ]]; then
-        exit_attr=$_ble_ctx_PATN
-      else
-        exit_attr=$_ble_attr_GLOB
-      fi
-      ntype=
+      ((exit_attr=_ble_syntax_attr[inest]))
+      [[ $ntype != glob_ctx=* ]] && ntype=
     else
       ntype=
     fi
@@ -1215,7 +1375,7 @@ function ble/syntax:bash/check-glob {
     return 0
   elif ((ctx==_ble_ctx_PATN||ctx==_ble_ctx_BRAX)); then
     if [[ $tail == '('* ]]; then
-      ble/syntax/parse/nest-push "$_ble_ctx_PATN" "${ntype:-glob_nest}"
+      ble/syntax/parse/nest-push "$_ble_ctx_PATN" "$ntype"
       ((_ble_syntax_attr[i++]=${force_attr:-ctx}))
       return 0
     elif [[ $tail == ')'* ]]; then
@@ -1287,7 +1447,7 @@ function ble/syntax:bash/check-history-expansion/.check-modifiers {
     if [[ ${text:i} =~ $rex_substitute ]]; then
       ((i+=${#BASH_REMATCH}))
       ble/syntax:bash/check-history-expansion/.check-modifiers
-      return
+      return 0
     fi
   fi
   if [[ ${text:i} == ':'[gGa]* ]]; then
@@ -1382,9 +1542,22 @@ function ble/syntax:bash/ctx-case {
   fi
 }
 _BLE_SYNTAX_FCTX[_ble_ctx_PATN]=ble/syntax:bash/ctx-globpat
+_BLE_SYNTAX_FEND[_ble_ctx_PATN]=ble/syntax:bash/ctx-globpat.end
+function ble/syntax:bash/ctx-globpat/get-stop-chars {
+  chars=${_ble_syntax_bash_chars[_ble_ctx_PATN]}
+  local ntype; ble/syntax/parse/nest-type
+  if [[ $ntype == glob_ctx=* ]]; then
+    local gctx=${ntype#glob_ctx=}
+    if ((gctx==_ble_ctx_PWORD||gctx==_ble_ctx_PWORDE)); then
+      chars=}$chars
+    elif ((gctx==_ble_ctx_PWORDR)); then
+      chars=}/$chars
+    fi
+  fi
+}
 function ble/syntax:bash/ctx-globpat {
-  local rex
-  if rex='^([^'${_ble_syntax_bash_chars[_ble_ctx_PATN]}']|\\.)+' && [[ $tail =~ $rex ]]; then
+  local chars; ble/syntax:bash/ctx-globpat/get-stop-chars
+  if local rex='^([^'$chars']|\\.)+'; [[ $tail =~ $rex ]]; then
     ((_ble_syntax_attr[i]=ctx,
       i+=${#BASH_REMATCH}))
     return 0
@@ -1408,17 +1581,37 @@ function ble/syntax:bash/ctx-globpat {
   fi
   return 1
 }
+function ble/syntax:bash/ctx-globpat.end {
+  local is_end= tail=${text:i}
+  local ntype; ble/syntax/parse/nest-type
+  if [[ $ntype == glob_ctx=* ]]; then
+    local gctx=${ntype#glob_ctx=}
+    if ((gctx==_ble_ctx_PWORD||gctx==_ble_ctx_PWORDE)); then
+      [[ ! $tail || $tail == '}'* ]] && is_end=1
+    elif ((gctx==_ble_ctx_PWORDR)); then
+      [[ ! $tail || $tail == ['/}']* ]] && is_end=1
+    fi
+  fi
+  if [[ $is_end ]]; then
+    ble/syntax/parse/nest-pop
+    ble/syntax/parse/check-end
+    return 0
+  fi
+  return 0
+}
 _BLE_SYNTAX_FCTX[_ble_ctx_BRAX]=ble/syntax:bash/ctx-bracket-expression
 _BLE_SYNTAX_FEND[_ble_ctx_BRAX]=ble/syntax:bash/ctx-bracket-expression.end
 function ble/syntax:bash/ctx-bracket-expression {
   local nctx; ble/syntax/parse/nest-ctx
   if ((nctx==_ble_ctx_PATN)); then
-    local chars=${_ble_syntax_bash_chars[_ble_ctx_PATN]}
+    local chars; ble/syntax:bash/ctx-globpat/get-stop-chars
+  elif ((nctx==_ble_ctx_PWORD||nctx==_ble_ctx_PWORDE||nctx==_ble_ctx_PWORDR)); then
+    local chars=${_ble_syntax_bash_chars[nctx]}
   else
     local chars=${_ble_syntax_bash_chars[_ble_ctx_ARGI]//'~'}
   fi
   chars="]${chars#']'}"
-  local ntype; ble/syntax/parse/nest-type -v ntype
+  local ntype; ble/syntax/parse/nest-type
   local force_attr=; [[ $ntype == glob_attr=* ]] && force_attr=${ntype#*=}
   local rex
   if [[ $tail == ']'* ]]; then
@@ -1469,37 +1662,80 @@ function ble/syntax:bash/ctx-bracket-expression {
 }
 function ble/syntax:bash/ctx-bracket-expression.end {
   local is_end=
-  local nctx; ble/syntax/parse/nest-ctx
-  if ((nctx==_ble_ctx_PATN)); then
-    local tail=${text:i}
-    [[ ! $tail || $tail == ')'* ]] && is_end=1
+  local tail=${text:i}
+  if [[ ! $tail ]]; then
+    is_end=1
   else
-    ble/syntax:bash/check-word-end/is-delimiter && is_end=1
-    [[ $tail == ':'* && ${_ble_syntax_bash_command_IsAssign[ctx]} ]] && is_end=1
+    local nctx; ble/syntax/parse/nest-ctx
+    local external_ctx=$nctx
+    if ((nctx==_ble_ctx_PATN)); then
+      local ntype; ble/syntax/parse/nest-type
+      [[ $ntype == glob_ctx=* ]] &&
+        external_ctx=${ntype#glob_ctx=}
+    fi
+    if ((external_ctx==_ble_ctx_PATN)); then
+      [[ $tail == ')'* ]] && is_end=1
+    elif ((external_ctx==_ble_ctx_PWORD||external_ctx==_ble_ctx_PWORDE)); then
+      [[ $tail == '}'* ]] && is_end=1
+    elif ((external_ctx==_ble_ctx_PWORDR)); then
+      [[ $tail == ['}/']* ]] && is_end=1
+    else
+      if ble/syntax:bash/check-word-end/is-delimiter; then
+        is_end=1
+      elif [[ $tail == ':'* && ${_ble_syntax_bash_command_IsAssign[ctx]} ]]; then
+        is_end=1
+      fi
+    fi
   fi
   if [[ $is_end ]]; then
     ble/syntax/parse/nest-pop
     ble/syntax/parse/check-end
-    return
+    return "$?"
   fi
   return 0
 }
 _BLE_SYNTAX_FCTX[_ble_ctx_PARAM]=ble/syntax:bash/ctx-param
 _BLE_SYNTAX_FCTX[_ble_ctx_PWORD]=ble/syntax:bash/ctx-pword
+_BLE_SYNTAX_FCTX[_ble_ctx_PWORDR]=ble/syntax:bash/ctx-pword
+_BLE_SYNTAX_FCTX[_ble_ctx_PWORDE]=ble/syntax:bash/ctx-pword-error
 function ble/syntax:bash/ctx-param {
-  if [[ $tail == :[!-?=+]* ]]; then
-    ((_ble_syntax_attr[i]=_ble_ctx_EXPR,
-      ctx=_ble_ctx_EXPR,i++))
-    return 0
-  elif [[ $tail == '}'* ]]; then
+  if [[ $tail == '}'* ]]; then
     ((_ble_syntax_attr[i]=_ble_syntax_attr[inest]))
     ((i+=1))
     ble/syntax/parse/nest-pop
     return 0
+  fi
+  local rex='##?|%%?|:?[-?=+]|:|/[/#%]?'
+  ((_ble_bash>=40000)) && rex=$rex'|,,?|\^\^?'
+  if ((_ble_bash>=50100)); then
+    rex=$rex'|@[QEPAaUuLK]?'
+  elif ((_ble_bash>=40400)); then
+    rex=$rex'|@[QEPAa]?'
+  fi
+  rex='^('$rex')'
+  if [[ $tail =~ $rex ]]; then
+    ((_ble_syntax_attr[i]=_ble_ctx_PARAM,
+      i+=${#BASH_REMATCH}))
+    if [[ $BASH_REMATCH == '/'* ]]; then
+      ((ctx=_ble_ctx_PWORDR))
+    elif [[ $BASH_REMATCH == : ]]; then
+      ((ctx=_ble_ctx_EXPR,_ble_syntax_attr[i-1]=_ble_ctx_EXPR))
+    elif [[ $BASH_REMATCH == @* ]]; then
+      ((ctx=_ble_ctx_PWORDE))
+    else
+      ((ctx=_ble_ctx_PWORD))
+    fi
+    return 0
   else
+    local i0=$i
     ((ctx=_ble_ctx_PWORD))
-    ble/syntax:bash/ctx-pword
-    return
+    ble/syntax:bash/ctx-pword || return 1
+    if ((i0+2<=i)); then
+      ((_ble_syntax_attr[i0+1])) ||
+        ((_ble_syntax_attr[i0+1]=_ble_syntax_attr[i0]))
+    fi
+    ((_ble_syntax_attr[i0]=_ble_attr_ERR))
+    return 0
   fi
 }
 function ble/syntax:bash/ctx-pword {
@@ -1507,6 +1743,9 @@ function ble/syntax:bash/ctx-pword {
   if rex='^([^'"${_ble_syntax_bash_chars[ctx]}"']|\\.)+' && [[ $tail =~ $rex ]]; then
     ((_ble_syntax_attr[i]=ctx,
       i+=${#BASH_REMATCH}))
+    return 0
+  elif ((ctx==_ble_ctx_PWORDR)) && [[ $tail == '/'* ]]; then
+    ((_ble_syntax_attr[i++]=_ble_ctx_PARAM,ctx=_ble_ctx_PWORD))
     return 0
   elif [[ $tail == '}'* ]]; then
     ((_ble_syntax_attr[i]=_ble_syntax_attr[inest]))
@@ -1517,12 +1756,24 @@ function ble/syntax:bash/ctx-pword {
     return 0
   elif ble/syntax:bash/check-dollar; then
     return 0
+  elif ble/syntax:bash/check-glob; then
+    return 0
   elif ble/syntax:bash/starts-with-histchars; then
     ble/syntax:bash/check-history-expansion ||
       ((_ble_syntax_attr[i]=ctx,i++))
     return 0
   fi
   return 1
+}
+function ble/syntax:bash/ctx-pword-error {
+  local i0=$i
+  if ble/syntax:bash/ctx-pword; then
+    [[ $tail == '}'* ]] ||
+      ((_ble_syntax_attr[i0]=_ble_attr_ERR))
+    return 0
+  else
+    return 1
+  fi
 }
 _BLE_SYNTAX_FCTX[_ble_ctx_EXPR]=ble/syntax:bash/ctx-expr
 function ble/syntax:bash/ctx-expr/.count-paren {
@@ -1607,21 +1858,29 @@ function ble/syntax:bash/ctx-expr/.count-brace {
 }
 function ble/syntax:bash/ctx-expr {
   local rex
-  if rex='^([^'"${_ble_syntax_bash_chars[ctx]}"']|\\.)+' && [[ $tail =~ $rex ]]; then
+  if rex='^[a-zA-Z_][a-zA-Z_0-9]*'; [[ $tail =~ $rex ]]; then
+    local rematch=$BASH_REMATCH
+    local ret; ble/syntax/highlight/vartype "$BASH_REMATCH" readvar:expr
+    ((_ble_syntax_attr[i]=ret,i+=${#rematch}))
+    return 0
+  elif rex='^0[xX][0-9a-fA-F]*|^[0-9]+(#[0-9a-zA-Z@_]*)?'; [[ $tail =~ $rex ]]; then
+    ((_ble_syntax_attr[i]=_ble_attr_VAR_NUMBER,i+=${#BASH_REMATCH}))
+    return 0
+  elif rex='^([^'"${_ble_syntax_bash_chars[ctx]}"'a-zA-Z_0-9]|\\.)+'; [[ $tail =~ $rex ]]; then
     ((_ble_syntax_attr[i]=ctx,
       i+=${#BASH_REMATCH}))
     return 0
   elif [[ $tail == ['][()}']* ]]; then
     local char=${tail::1} ntype
-    ble/syntax/parse/nest-type -v ntype
+    ble/syntax/parse/nest-type
     if [[ $ntype == *'(' ]]; then
-      ble/syntax:bash/ctx-expr/.count-paren && return
+      ble/syntax:bash/ctx-expr/.count-paren && return 0
     elif [[ $ntype == *'[' ]]; then
-      ble/syntax:bash/ctx-expr/.count-bracket && return
+      ble/syntax:bash/ctx-expr/.count-bracket && return 0
     elif [[ $ntype == '${' || $ntype == '"${' ]]; then
-      ble/syntax:bash/ctx-expr/.count-brace && return
+      ble/syntax:bash/ctx-expr/.count-brace && return 0
     else
-      ble/util/stackdump "unexpected ntype=$ntype for arithmetic expression"
+      ble/util/assert 'false' "unexpected ntype=$ntype for arithmetic expression"
     fi
     ((_ble_syntax_attr[i++]=ctx))
     return 0
@@ -1647,7 +1906,7 @@ function ble/syntax:bash/check-brace-expansion {
   elif ((ctx==_ble_ctx_CONDI||ctx==_ble_ctx_CONDQ||ctx==_ble_ctx_RDRS||ctx==_ble_ctx_VRHS)); then
     inactive=1
   elif ((ctx==_ble_ctx_PATN||ctx==_ble_ctx_BRAX)); then
-    local ntype; ble/syntax/parse/nest-type -v ntype
+    local ntype; ble/syntax/parse/nest-type
     if [[ $ntype == glob_attr=* ]]; then
       force_attr=${ntype#*=}
       (((force_attr==_ble_ctx_RDRS||force_attr==_ble_ctx_VRHS||force_attr==_ble_ctx_ARGVR||force_attr==_ble_ctx_ARGER||force_attr==_ble_ctx_VALR)&&(inactive=1)))
@@ -1656,7 +1915,7 @@ function ble/syntax:bash/check-brace-expansion {
       (((nctx==_ble_ctx_CONDI||octx==_ble_ctx_CONDQ)&&(inactive=1)))
     fi
   elif ((ctx==_ble_ctx_BRACE1||ctx==_ble_ctx_BRACE2)); then
-    local ntype; ble/syntax/parse/nest-type -v ntype
+    local ntype; ble/syntax/parse/nest-type
     if [[ $ntype == glob_attr=* ]]; then
       force_attr=${ntype#*=}
     fi
@@ -1713,14 +1972,14 @@ _BLE_SYNTAX_FEND[_ble_ctx_BRACE2]=ble/syntax:bash/ctx-brace-expansion.end
 function ble/syntax:bash/ctx-brace-expansion {
   if [[ $tail == '}'* ]] && ((ctx==_ble_ctx_BRACE2)); then
     local force_attr=
-    local ntype; ble/syntax/parse/nest-type -v ntype
+    local ntype; ble/syntax/parse/nest-type
     [[ $ntype == glob_attr=* ]] && force_attr=$_ble_attr_ERR # ※${ntype#*=} ではなくエラー
     ((_ble_syntax_attr[i++]=${force_attr:-_ble_attr_BRACE}))
     ble/syntax/parse/nest-pop
     return 0
   elif [[ $tail == ','* ]]; then
     local force_attr=
-    local ntype; ble/syntax/parse/nest-type -v ntype
+    local ntype; ble/syntax/parse/nest-type
     [[ $ntype == glob_attr=* ]] && force_attr=${ntype#*=}
     ((_ble_syntax_attr[i++]=${force_attr:-_ble_attr_BRACE}))
     ((ctx=_ble_ctx_BRACE2))
@@ -1754,7 +2013,7 @@ function ble/syntax:bash/ctx-brace-expansion.end {
   if ((i==${#text})) || ble/syntax:bash/check-word-end/is-delimiter; then
     ble/syntax/parse/nest-pop
     ble/syntax/parse/check-end
-    return
+    return "$?"
   fi
   return 0
 }
@@ -1780,7 +2039,7 @@ function ble/syntax:bash/check-tilde-expansion {
     local rex='^(~[^'$chars']*)([^'$delimiters'/:]?)'; [[ $tail =~ $rex ]]
     local str=${BASH_REMATCH[1]}
     local path attr=$ctx
-    eval "path=$str"
+    builtin eval "path=$str"
     if [[ ! ${BASH_REMATCH[2]} && $path != "$str" ]]; then
       ((attr=_ble_attr_TILDE))
       if ((ctx==_ble_ctx_BRAX)); then
@@ -1797,6 +2056,7 @@ function ble/syntax:bash/check-tilde-expansion {
   return 0
 }
 _ble_syntax_bash_command_CtxAssign[_ble_ctx_CMDI]=$_ble_ctx_VRHS
+_ble_syntax_bash_command_CtxAssign[_ble_ctx_COARGI]=$_ble_ctx_VRHS
 _ble_syntax_bash_command_CtxAssign[_ble_ctx_ARGVI]=$_ble_ctx_ARGVR
 _ble_syntax_bash_command_CtxAssign[_ble_ctx_ARGEI]=$_ble_ctx_ARGER
 _ble_syntax_bash_command_CtxAssign[_ble_ctx_ARGI]=$_ble_ctx_ARGQ
@@ -1829,33 +2089,36 @@ function ble/syntax:bash/check-variable-assignment {
   else
     suffix="$suffix|\["
   fi
-  local rex_assign="^[a-zA-Z_][a-zA-Z_0-9]*($suffix)"
+  local rex_assign="^([a-zA-Z_][a-zA-Z_0-9]*)($suffix)"
   [[ $tail =~ $rex_assign ]] || return 1
+  local rematch=$BASH_REMATCH
   local rematch1=${BASH_REMATCH[1]} # for bash-3.1 ${#arr[n]} bug
-  if [[ $rematch1 == '+' ]]; then
-    ble/syntax/parse/set-lookahead $((${#BASH_REMATCH}+1))
+  local rematch2=${BASH_REMATCH[2]} # for bash-3.1 ${#arr[n]} bug
+  if [[ $rematch2 == '+' ]]; then
+    ble/syntax/parse/set-lookahead $((${#rematch}+1))
     return 1
   fi
   local variable_assign=
-  if ((ctx==_ble_ctx_CMDI||ctx==_ble_ctx_ARGVI||ctx==_ble_ctx_ARGEI&&${#rematch1})); then
+  if ((ctx==_ble_ctx_CMDI||ctx==_ble_ctx_ARGVI||ctx==_ble_ctx_ARGEI&&${#rematch2})); then
+    local ret; ble/syntax/highlight/vartype "$rematch1"
     ((wtype=_ble_attr_VAR,
-      _ble_syntax_attr[i]=_ble_attr_VAR,
-      i+=${#BASH_REMATCH},
-      ${#rematch1}&&(_ble_syntax_attr[i-${#rematch1}]=_ble_ctx_EXPR),
+      _ble_syntax_attr[i]=ret,
+      i+=${#rematch},
+      ${#rematch2}&&(_ble_syntax_attr[i-${#rematch2}]=_ble_ctx_EXPR),
       variable_assign=1,
       ctx=_ble_syntax_bash_command_CtxAssign[ctx]))
   else
     ((_ble_syntax_attr[i]=ctx,
-      i+=${#BASH_REMATCH}))
+      i+=${#rematch}))
   fi
-  if [[ $rematch1 == '[' ]]; then
+  if [[ $rematch2 == '[' ]]; then
     if [[ $variable_assign ]]; then
       i=$((i-1)) ble/syntax/parse/nest-push "$_ble_ctx_EXPR" 'a['
     else
       ((i--))
       tail=${text:i} ble/syntax:bash/check-glob assign
     fi
-  elif [[ $rematch1 == *'=' ]]; then
+  elif [[ $rematch2 == *'=' ]]; then
     if [[ $variable_assign && ${text:i} == '('* ]]; then
       ble/syntax:bash/ctx-values/enter
       ((_ble_syntax_attr[i++]=_ble_attr_DEL))
@@ -1922,6 +2185,8 @@ _BLE_SYNTAX_FCTX[_ble_ctx_TARGI1]=ble/syntax:bash/ctx-command
 _BLE_SYNTAX_FCTX[_ble_ctx_TARGI2]=ble/syntax:bash/ctx-command
 _BLE_SYNTAX_FEND[_ble_ctx_TARGI1]=ble/syntax:bash/ctx-command/check-word-end
 _BLE_SYNTAX_FEND[_ble_ctx_TARGI2]=ble/syntax:bash/ctx-command/check-word-end
+_BLE_SYNTAX_FCTX[_ble_ctx_COARGX]=ble/syntax:bash/ctx-command-compound-expect
+_BLE_SYNTAX_FEND[_ble_ctx_COARGI]=ble/syntax:bash/ctx-coproc/check-word-end
 function ble/syntax:bash/starts-with-delimiter-or-redirect {
   local delimiters=$_ble_syntax_bash_RexDelimiter
   local redirect=$_ble_syntax_bash_RexRedirect
@@ -1943,7 +2208,7 @@ function ble/syntax:bash/check-word-end/is-delimiter {
 function ble/syntax:bash/check-here-document-from {
   local spaces=$1
   [[ $nparam && $spaces == *$'\n'* ]] || return 1
-  local rex="$_ble_term_fs@([RI][QH][^$_ble_term_fs]*)(.*$)" && [[ $nparam =~ $rex ]] || return 1
+  local rex="$_ble_term_FS@([RI][QH][^$_ble_term_FS]*)(.*$)" && [[ $nparam =~ $rex ]] || return 1
   local rematch1=${BASH_REMATCH[1]}
   local rematch2=${BASH_REMATCH[2]}
   local padding=${spaces%%$'\n'*}
@@ -1953,6 +2218,50 @@ function ble/syntax:bash/check-here-document-from {
   ((i++))
   nparam=$rematch1
   return 0
+}
+function ble/syntax:bash/ctx-coproc/.is-next-compound {
+  local p=$i ahead=1 tail=${text:i}
+  if local rex=$'^[ \t]+'; [[ $tail =~ $rex ]]; then
+    ((p+=${#BASH_REMATCH}))
+    ahead=1 tail=${text:p}
+  fi
+  local is_compound=
+  if [[ $tail == '('* ]]; then
+    is_compound=1
+  elif rex='^[a-z]+|^\[\[?|^[{}!]'; [[ $tail =~ $rex ]]; then
+    local rematch=$BASH_REMATCH
+    ((p+=${#rematch}))
+    [[ $rematch == ['{}!'] || $rematch == '[[' ]]; ahead=$?
+    rex='^(\[\[|for|select|case|if|while|until|fi|done|esac|then|elif|else|do|[{}!]|coproc|function)$'
+    if  [[ $rematch =~ $rex ]]; then
+      if rex='^[;|&()'$_ble_term_IFS']|^$|^[<>]\(?' ahead=1; [[ ${text:p} =~ $rex ]]; then
+        local rematch=$BASH_REMATCH
+        ((p+=${#rematch}))
+        [[ $rematch && $rematch != ['<>'] ]]; ahead=$?
+        [[ $rematch != ['<>']'(' ]] && is_compound=1
+      fi
+    fi
+  fi
+  ble/syntax/parse/set-lookahead $((p+ahead-i))
+  [[ $is_compound ]]
+}
+function ble/syntax:bash/ctx-coproc/check-word-end {
+  ble/util/assert '((ctx==_ble_ctx_COARGI))'
+  ((wbegin<0)) && return 1
+  ble/syntax:bash/check-word-end/is-delimiter || return 1
+  local wbeg=$wbegin wlen=$((i-wbegin)) wend=$i
+  local word=${text:wbegin:wlen}
+  local wt=$wtype
+  if local rex='^[_a-zA-Z0-9]+$'; [[ $word =~ $rex ]]; then
+    if ble/syntax:bash/ctx-coproc/.is-next-compound; then
+      ((_ble_syntax_attr[wbegin]=_ble_attr_VAR))
+      ((ctx=_ble_ctx_CMDXC,type=_ble_ctx_ARGVI))
+      ble/syntax/parse/word-pop
+      return 0
+    fi
+  fi
+  ((ctx=_ble_ctx_CMDI,wtype=_ble_ctx_CMDX))
+  ble/syntax:bash/ctx-command/check-word-end
 }
 _ble_syntax_bash_command_EndCtx=()
 _ble_syntax_bash_command_EndCtx[_ble_ctx_ARGI]=$_ble_ctx_ARGX
@@ -2018,13 +2327,8 @@ function ble/syntax:bash/ctx-command/check-word-end {
       ((ctx=_ble_ctx_ARGX))
       return 0
     fi
-    local word_expanded=$word
-    local type; ble/util/type type "$word"
-    if [[ $type == alias ]]; then
-      local data; ble/util/assign data 'LANG=C alias "$word"' &>/dev/null
-      [[ $data == 'alias '*=* ]] &&
-        eval "word_expanded=${data#alias *=}"
-    fi
+    local ret
+    ble/util/expand-alias "$word"; local word_expanded=$ret
     local processed=
     case "$word_expanded" in
     ('[[')
@@ -2061,6 +2365,15 @@ function ble/syntax:bash/ctx-command/check-word-end {
     ('eval')
       ((ctx=_ble_ctx_ARGEX))
       processed=builtin ;;
+    ('coproc')
+      if ((_ble_bash>=40000)); then
+        if ble/syntax:bash/ctx-coproc/.is-next-compound; then
+          ((ctx=_ble_ctx_CMDXC))
+        else
+          ((ctx=_ble_ctx_COARGX))
+        fi
+        processed=keyword
+      fi ;;
     ('function')
       ((ctx=_ble_ctx_ARGX))
       local isfuncsymx=$'\t\n'' "$&'\''();<>\`|' rex_space=$'[ \t]' rex
@@ -2223,7 +2536,7 @@ function ble/syntax:bash/ctx-command/.check-delimiter-or-redirect {
     local m=${BASH_REMATCH[0]}
     if ((ctx==_ble_ctx_CMDX||ctx==_ble_ctx_CMDX1||ctx==_ble_ctx_CMDXT||ctx==_ble_ctx_CMDXC)); then
       ((_ble_syntax_attr[i]=_ble_attr_DEL))
-      ((ctx=_ble_ctx_ARGX0))
+      ((ctx=${#m}==1?_ble_ctx_CMDXE:_ble_ctx_ARGX0))
       [[ $_ble_syntax_bash_is_command_form_for && $tail == '(('* ]] && ((ctx=_ble_ctx_CMDXD0))
       ble/syntax/parse/nest-push $((${#m}==1?_ble_ctx_CMDX1:_ble_ctx_EXPR)) "$m"
       ((i+=${#m}))
@@ -2234,7 +2547,7 @@ function ble/syntax:bash/ctx-command/.check-delimiter-or-redirect {
     return 0
   elif [[ $tail == ')'* ]]; then
     local ntype
-    ble/syntax/parse/nest-type -v ntype
+    ble/syntax/parse/nest-type
     local attr=
     if [[ $ntype == '(' || $ntype == '$(' || $ntype == '((' || $ntype == '$((' ]]; then
       ((attr=_ble_syntax_attr[inest]))
@@ -2269,6 +2582,7 @@ _ble_syntax_bash_command_BeginCtx[_ble_ctx_CARGX1]=$_ble_ctx_CARGI1
 _ble_syntax_bash_command_BeginCtx[_ble_ctx_CARGX2]=$_ble_ctx_CARGI2
 _ble_syntax_bash_command_BeginCtx[_ble_ctx_TARGX1]=$_ble_ctx_TARGI1
 _ble_syntax_bash_command_BeginCtx[_ble_ctx_TARGX2]=$_ble_ctx_TARGI2
+_ble_syntax_bash_command_BeginCtx[_ble_ctx_COARGX]=$_ble_ctx_COARGI
 _ble_syntax_bash_command_isARGI[_ble_ctx_CMDI]=1
 _ble_syntax_bash_command_isARGI[_ble_ctx_VRHS]=1
 _ble_syntax_bash_command_isARGI[_ble_ctx_ARGI]=1
@@ -2286,29 +2600,29 @@ _ble_syntax_bash_command_isARGI[_ble_ctx_CARGQ1]=1 # value (= の後)
 _ble_syntax_bash_command_isARGI[_ble_ctx_CARGI2]=1 # in
 _ble_syntax_bash_command_isARGI[_ble_ctx_TARGI1]=1 # -p
 _ble_syntax_bash_command_isARGI[_ble_ctx_TARGI2]=1 # --
+_ble_syntax_bash_command_isARGI[_ble_ctx_COARGI]=1 # var (coproc の後)
 function ble/syntax:bash/ctx-command/.check-word-begin {
   if ((wbegin<0)); then
     local octx
     ((octx=ctx,
       wtype=octx,
       ctx=_ble_syntax_bash_command_BeginCtx[ctx]))
-    if ((ctx==0)); then
+    ble/util/assert '((ctx!=0))' "invalid ctx=$octx at the beginning of words" ||
       ((ctx=wtype=_ble_ctx_ARGI))
-      ble/util/stackdump "invalid ctx=$octx at the beginning of words"
-    fi
     ble/syntax/parse/word-push "$wtype" "$i"
-    ((octx!=_ble_ctx_ARGX0)); return # return unexpectedWbegin
+    ((octx!=_ble_ctx_ARGX0)); return "$?" # return unexpectedWbegin
   fi
-  ((_ble_syntax_bash_command_isARGI[ctx])) || ble/util/stackdump "invalid ctx=$ctx in words"
+  ble/util/assert '((_ble_syntax_bash_command_isARGI[ctx]))' "invalid ctx=$ctx in words"
   return 0
 }
 function ble/syntax:bash/ctx-command {
   if ble/syntax:bash/starts-with-delimiter-or-redirect; then
-    ((ctx==_ble_ctx_ARGX||ctx==_ble_ctx_ARGX0||ctx==_ble_ctx_ARGVX||ctx==_ble_ctx_ARGEX||ctx==_ble_ctx_FARGX2||ctx==_ble_ctx_FARGX3||
-        ctx==_ble_ctx_CMDX||ctx==_ble_ctx_CMDX1||ctx==_ble_ctx_CMDXT||ctx==_ble_ctx_CMDXC||
-        ctx==_ble_ctx_CMDXE||ctx==_ble_ctx_CMDXD||ctx==_ble_ctx_CMDXD0||ctx==_ble_ctx_CMDXV)) || ble/util/stackdump "invalid ctx=$ctx @ i=$i"
-    ((wbegin<0&&wtype<0)) || ble/util/stackdump "invalid word-context (wtype=$wtype wbegin=$wbegin) on non-word char."
-    ble/syntax:bash/ctx-command/.check-delimiter-or-redirect; return
+    ble/util/assert '
+      ((ctx==_ble_ctx_ARGX||ctx==_ble_ctx_ARGX0||ctx==_ble_ctx_ARGVX||ctx==_ble_ctx_ARGEX||ctx==_ble_ctx_FARGX2||ctx==_ble_ctx_FARGX3||ctx==_ble_ctx_COARGX||
+          ctx==_ble_ctx_CMDX||ctx==_ble_ctx_CMDX1||ctx==_ble_ctx_CMDXT||ctx==_ble_ctx_CMDXC||
+          ctx==_ble_ctx_CMDXE||ctx==_ble_ctx_CMDXD||ctx==_ble_ctx_CMDXD0||ctx==_ble_ctx_CMDXV))'  "invalid ctx=$ctx @ i=$i"
+    ble/util/assert '((wbegin<0&&wtype<0))' "invalid word-context (wtype=$wtype wbegin=$wbegin) on non-word char."
+    ble/syntax:bash/ctx-command/.check-delimiter-or-redirect; return "$?"
   fi
   ble/syntax:bash/check-comment && return 0
   local unexpectedWbegin=-1
@@ -2318,8 +2632,16 @@ function ble/syntax:bash/ctx-command {
   if ble/syntax:bash/check-variable-assignment; then
     flagConsume=1
   elif local rex='^([^'${_ble_syntax_bash_chars[_ble_ctx_ARGI]}']|\\.)+'; [[ $tail =~ $rex ]]; then
-    ((_ble_syntax_attr[i]=ctx,
-      i+=${#BASH_REMATCH}))
+    local rematch=$BASH_REMATCH
+    local attr=$ctx
+    if ((attr==_ble_ctx_FARGI1)); then
+      if rex='^[a-zA-Z_][a-zA-Z_0-9]*'; ((i==wbegin)) && [[ $rematch =~ $rex ]]; then
+        local ret; ble/syntax/highlight/vartype "$BASH_REMATCH"; attr=$ret
+      else
+        attr=$_ble_attr_ERR
+      fi
+    fi
+    ((_ble_syntax_attr[i]=attr,i+=${#rematch}))
     flagConsume=1
   elif ble/syntax:bash/check-process-subst; then
     flagConsume=1
@@ -2352,12 +2674,12 @@ function ble/syntax:bash/ctx-command {
   fi
 }
 function ble/syntax:bash/ctx-command-compound-expect {
-  ble/util/assert '((ctx==_ble_ctx_FARGX1||ctx==_ble_ctx_SARGX1||ctx==_ble_ctx_CARGX1||ctx==_ble_ctx_FARGX2||ctx==_ble_ctx_CARGX2))'
+  ble/util/assert '((ctx==_ble_ctx_FARGX1||ctx==_ble_ctx_SARGX1||ctx==_ble_ctx_CARGX1||ctx==_ble_ctx_FARGX2||ctx==_ble_ctx_CARGX2||ctx==_ble_ctx_COARGX))'
   local _ble_syntax_bash_is_command_form_for=
   if ble/syntax:bash/starts-with-delimiter-or-redirect; then
     if ((ctx==_ble_ctx_FARGX2)) && [[ $tail == [$';\n']* ]]; then
       ble/syntax:bash/ctx-command
-      return
+      return "$?"
     elif ((ctx==_ble_ctx_FARGX1)) && [[ $tail == '(('* ]]; then
       ((ctx=_ble_ctx_CMDX1,_ble_syntax_bash_is_command_form_for=1))
     elif [[ $tail == $'\n'* ]]; then
@@ -2370,7 +2692,7 @@ function ble/syntax:bash/ctx-command-compound-expect {
     elif [[ $tail =~ ^$_ble_syntax_bash_RexSpaces ]]; then
       ((_ble_syntax_attr[i]=ctx,i+=${#BASH_REMATCH}))
       return 0
-    else
+    elif ((ctx!=_ble_ctx_COARGX)); then
       local i0=$i
       ((ctx=_ble_ctx_ARGX))
       ble/syntax:bash/ctx-command/.check-delimiter-or-redirect || ((i++))
@@ -2380,7 +2702,7 @@ function ble/syntax:bash/ctx-command-compound-expect {
   fi
   local i0=$i
   if ble/syntax:bash/check-comment; then
-    if ((ctx==_ble_ctx_FARGX1||ctx==_ble_ctx_SARGX1||ctx==_ble_ctx_CARGX1)); then
+    if ((ctx==_ble_ctx_FARGX1||ctx==_ble_ctx_SARGX1||ctx==_ble_ctx_CARGX1||ctx==_ble_ctx_COARGX)); then
       ((_ble_syntax_attr[i0]=_ble_attr_ERR))
     fi
     return 0
@@ -2396,7 +2718,7 @@ function ble/syntax:bash/ctx-command-time-expect {
       return 0
     else
       ((ctx=_ble_ctx_CMDXT))
-      ble/syntax:bash/ctx-command/.check-delimiter-or-redirect; return
+      ble/syntax:bash/ctx-command/.check-delimiter-or-redirect; return "$?"
     fi
   fi
   local is_time_option=
@@ -2439,8 +2761,8 @@ function ble/syntax:bash/ctx-values/check-word-end {
 }
 function ble/syntax:bash/ctx-values {
   if ble/syntax:bash/starts-with-delimiter; then
-    ((ctx==_ble_ctx_VALX)) || ble/util/stackdump "invalid ctx=$ctx @ i=$i"
-    ((wbegin<0&&wtype<0)) || ble/util/stackdump "invalid word-context (wtype=$wtype wbegin=$wbegin) on non-word char."
+    ble/util/assert '((ctx==_ble_ctx_VALX))' "invalid ctx=$ctx @ i=$i"
+    ble/util/assert '((wbegin<0&&wtype<0))' "invalid word-context (wtype=$wtype wbegin=$wbegin) on non-word char."
     if [[ $tail =~ ^$_ble_syntax_bash_RexIFSs ]]; then
       local spaces=$BASH_REMATCH
       ble/syntax:bash/check-here-document-from "$spaces" && return 0
@@ -2514,8 +2836,8 @@ function ble/syntax:bash/ctx-conditions/check-word-end {
 }
 function ble/syntax:bash/ctx-conditions {
   if ble/syntax:bash/starts-with-delimiter; then
-    ((ctx==_ble_ctx_CONDX)) || ble/util/stackdump "invalid ctx=$ctx @ i=$i"
-    ((wbegin<0&&wtype<0)) || ble/util/stackdump "invalid word-context (wtype=$wtype wbegin=$wbegin) on non-word char."
+    ble/util/assert '((ctx==_ble_ctx_CONDX))' "invalid ctx=$ctx @ i=$i"
+    ble/util/assert '((wbegin<0&&wtype<0))' "invalid word-context (wtype=$wtype wbegin=$wbegin) on non-word char."
     if [[ $tail =~ ^$_ble_syntax_bash_RexIFSs ]]; then
       ((_ble_syntax_attr[i]=ctx,i+=${#BASH_REMATCH}))
       return 0
@@ -2575,7 +2897,7 @@ function ble/syntax:bash/ctx-redirect/check-word-end {
   ble/syntax:bash/check-word-end/is-delimiter || return 1
   ble/syntax/parse/word-pop
   ble/syntax/parse/nest-pop
-  ((!_ble_syntax_bash_command_isARGI[ctx])) || ble/util/stackdump "invalid ctx=$ctx in words"
+  ble/util/assert '((!_ble_syntax_bash_command_isARGI[ctx]))' "invalid ctx=$ctx in words"
   return 0
 }
 function ble/syntax:bash/ctx-redirect {
@@ -2626,7 +2948,7 @@ function ble/syntax:bash/ctx-heredoc-word/initialize {
   ble/util/sprintf _ble_syntax_bash_heredoc_EscHT '\\%03o' "$ret"
   ble/util/s2c $'\n'
   ble/util/sprintf _ble_syntax_bash_heredoc_EscLF '\\%03o' "$ret"
-  ble/util/s2c "$_ble_term_fs"
+  ble/util/s2c "$_ble_term_FS"
   ble/util/sprintf _ble_syntax_bash_heredoc_EscFS '\\%03o' "$ret"
 }
 ble/syntax:bash/ctx-heredoc-word/initialize
@@ -2649,13 +2971,13 @@ function ble/syntax:bash/ctx-heredoc-word/remove-quotes {
       fi
     elif [[ $rematch == \' ]]; then
       if rex="^('[^']*)'?"; [[ $text =~ $rex ]]; then
-        eval "result=\$result${BASH_REMATCH[1]}'"
+        builtin eval "result=\$result${BASH_REMATCH[1]}'"
         text=${text:${#BASH_REMATCH}}
         continue
       fi
     elif [[ $rematch == \$\' ]]; then
       if rex='^(\$'\''([^\'\'']|\\.)*)('\''|\\?$)'; [[ $text =~ $rex ]]; then
-        eval "result=\$result${BASH_REMATCH[1]}'"
+        builtin eval "result=\$result${BASH_REMATCH[1]}'"
         text=${text:${#BASH_REMATCH}}
         continue
       fi
@@ -2671,8 +2993,8 @@ function ble/syntax:bash/ctx-heredoc-word/remove-quotes {
 }
 function ble/syntax:bash/ctx-heredoc-word/escape-delimiter {
   local ret=$1
-  if [[ $ret == *[\\\'$_ble_syntax_bash_IFS$_ble_term_fs]* ]]; then
-    local a b fs=$_ble_term_fs
+  if [[ $ret == *[\\\'$_ble_syntax_bash_IFS$_ble_term_FS]* ]]; then
+    local a b fs=$_ble_term_FS
     a=\\   ; b="\\$a"; ret="${ret//"$a"/$b}"
     a=\'   ; b="\\$a"; ret="${ret//"$a"/$b}"
     a=' '  ; b="$_ble_syntax_bash_heredoc_EscSP"; ret="${ret//"$a"/$b}"
@@ -2683,7 +3005,7 @@ function ble/syntax:bash/ctx-heredoc-word/escape-delimiter {
   escaped=$ret
 }
 function ble/syntax:bash/ctx-heredoc-word/unescape-delimiter {
-  eval "delimiter=\$'$1'"
+  builtin eval "delimiter=\$'$1'"
 }
 _BLE_SYNTAX_FCTX[_ble_ctx_RDRH]=ble/syntax:bash/ctx-heredoc-word
 _BLE_SYNTAX_FEND[_ble_ctx_RDRH]=ble/syntax:bash/ctx-heredoc-word/check-word-end
@@ -2704,7 +3026,7 @@ function ble/syntax:bash/ctx-heredoc-word/check-word-end {
     Q=H; delimiter=$word
   fi
   local escaped; ble/syntax:bash/ctx-heredoc-word/escape-delimiter "$delimiter"
-  nparam=$nparam$_ble_term_fs@$I$Q$escaped
+  nparam=$nparam$_ble_term_FS@$I$Q$escaped
   return 0
 }
 function ble/syntax:bash/ctx-heredoc-word {
@@ -2760,10 +3082,10 @@ function ble/syntax:bash/is-complete {
   ((iN>0)) && ((_ble_syntax_attr[iN-1]==_ble_attr_ERR)) && return 1
   local stat=${_ble_syntax_stat[iN]}
   if [[ $stat ]]; then
-    stat=($stat)
+    ble/string#split-words stat "$stat"
     local nlen=${stat[3]}; ((nlen>=0)) && return 1
     local nparam=${stat[6]}; [[ $nparam == none ]] && nparam=
-    local rex="$_ble_term_fs@([RI][QH][^$_ble_term_fs]*)(.*$)"
+    local rex="$_ble_term_FS@([RI][QH][^$_ble_term_FS]*)(.*$)"
     [[ $nparam =~ $rex ]] && return 1
     local ctx=${stat[0]}
     ((ctx==_ble_ctx_ARGX||ctx==_ble_ctx_ARGX0||ctx==_ble_ctx_ARGVX||ctx==_ble_ctx_ARGEX||
@@ -2771,7 +3093,7 @@ function ble/syntax:bash/is-complete {
         ctx==_ble_ctx_TARGX1||ctx==_ble_ctx_TARGX2)) || return 1
   fi
   local attrs ret
-  IFS= eval 'attrs="::${_ble_syntax_attr[*]/%/::}"'
+  IFS= builtin eval 'attrs="::${_ble_syntax_attr[*]/%/::}"'
   ble/string#count-string "$attrs" ":$_ble_attr_KEYWORD_BEGIN:"; local nbeg=$ret
   ble/string#count-string "$attrs" ":$_ble_attr_KEYWORD_END:"; local nend=$ret
   ((nbeg>nend)) && return 1
@@ -2848,28 +3170,28 @@ function ble/syntax/vanishing-word/register {
   done
 }
 function ble/syntax/parse/shift.stat {
-  if [[ ${_ble_syntax_stat[j]} ]]; then
-    local -a stat; ble/string#split-words stat "${_ble_syntax_stat[j]}"
+  if [[ ${_ble_syntax_stat[shift2_j]} ]]; then
+    local -a stat; ble/string#split-words stat "${_ble_syntax_stat[shift2_j]}"
     local k klen kbeg
-    for k in 1 3 4 5; do
+    for k in 1 3 4 5; do # wlen nlen tclen tplen
       (((klen=stat[k])<0)) && continue
-      ((kbeg=j-klen))
+      ((kbeg=shift2_j-klen))
       if ((kbeg<beg)); then
         ((stat[k]+=shift))
       elif ((kbeg<end0)); then
         ((stat[k]-=end0-kbeg))
       fi
     done
-    _ble_syntax_stat[j]="${stat[*]}"
+    _ble_syntax_stat[shift2_j]="${stat[*]}"
   fi
 }
 function ble/syntax/parse/shift.tree/1 {
   local k klen kbeg
-  for k in 1 2 3; do
+  for k in 1 2 3; do # wlen/nlen tclen tplen
     ((klen=node[nofs+k]))
-    ((klen<0||(kbeg=j-klen)>end0)) && continue
+    ((klen<0||(kbeg=shift2_j-klen)>end0)) && continue
     if [[ $k == 1 && ${node[nofs]} =~ ^[0-9]$ ]]; then
-      ble/syntax/parse/touch-updated-word "$j"
+      ble/syntax/parse/touch-updated-word "$shift2_j"
       node[nofs+4]='-'
     fi
     if ((kbeg<beg)); then
@@ -2880,9 +3202,9 @@ function ble/syntax/parse/shift.tree/1 {
   done
 }
 function ble/syntax/parse/shift.tree {
-  [[ ${_ble_syntax_tree[j-1]} ]] || return
+  [[ ${_ble_syntax_tree[shift2_j-1]} ]] || return 1
   local -a node
-  ble/string#split-words node "${_ble_syntax_tree[j-1]}"
+  ble/string#split-words node "${_ble_syntax_tree[shift2_j-1]}"
   local nofs
   if [[ $1 ]]; then
     nofs=$1 ble/syntax/parse/shift.tree/1
@@ -2891,48 +3213,46 @@ function ble/syntax/parse/shift.tree {
       ble/syntax/parse/shift.tree/1
     done
   fi
-  _ble_syntax_tree[j-1]="${node[*]}"
+  _ble_syntax_tree[shift2_j-1]="${node[*]}"
 }
 function ble/syntax/parse/shift.nest {
-  if [[ ${_ble_syntax_nest[j]} ]]; then
+  if [[ ${_ble_syntax_nest[shift2_j]} ]]; then
     local -a nest
-    ble/string#split-words nest "${_ble_syntax_nest[j]}"
+    ble/string#split-words nest "${_ble_syntax_nest[shift2_j]}"
     local k klen kbeg
     for k in 1 3 4 5; do
       (((klen=nest[k])))
-      ((klen<0||(kbeg=j-klen)<0)) && continue
+      ((klen<0||(kbeg=shift2_j-klen)<0)) && continue
       if ((kbeg<beg)); then
         ((nest[k]+=shift))
       elif ((kbeg<end0)); then
         ((nest[k]-=end0-kbeg))
       fi
     done
-    _ble_syntax_nest[j]="${nest[*]}"
+    _ble_syntax_nest[shift2_j]="${nest[*]}"
   fi
 }
 function ble/syntax/parse/shift.impl2/.shift-until {
   local limit=$1
-  while ((j>=limit)); do
-    [[ $ble_debug ]] && _ble_syntax_stat_shift[j+shift]=1
+  while ((shift2_j>=limit)); do
+    [[ $ble_debug ]] && _ble_syntax_stat_shift[shift2_j+shift]=1
     ble/syntax/parse/shift.stat
     ble/syntax/parse/shift.nest
-    ((j--))
+    ((shift2_j--))
   done
 }
 function ble/syntax/parse/shift.impl2/.proc1 {
-  local j=$_shift2_j
-  if ((i<j2)); then
+  if ((TE_i<j2)); then
     ((tprev=-1)) # 中断
-    return
+    return 0
   fi
-  ble/syntax/parse/shift.impl2/.shift-until $((i+1))
-  ble/syntax/parse/shift.tree "$nofs"
-  ((_shift2_j=j))
-  if ((tprev>end0&&wbegin>end0)); then
-    [[ $ble_debug ]] && _ble_syntax_stat_shift[j+shift]=1
+  ble/syntax/parse/shift.impl2/.shift-until $((TE_i+1))
+  ble/syntax/parse/shift.tree "$TE_nofs"
+  if ((tprev>end0&&wbegin>end0)) && [[ ${wtype//[0-9]} ]]; then
+    [[ $ble_debug ]] && _ble_syntax_stat_shift[shift2_j+shift]=1
     ble/syntax/parse/shift.stat
     ble/syntax/parse/shift.nest
-    ((_shift2_j=wbegin)) # skip
+    ((shift2_j=wbegin)) # skip
   elif ((tchild>=0)); then
     ble/syntax/tree-enumerate-children ble/syntax/parse/shift.impl2/.proc1
   fi
@@ -2940,6 +3260,7 @@ function ble/syntax/parse/shift.impl2/.proc1 {
 function ble/syntax/parse/shift.method1 {
   local i j
   for ((i=i2,j=j2;i<=iN;i++,j++)); do
+    local shift2_j=$j
     ble/syntax/parse/shift.stat
     ((j>0))  && ble/syntax/parse/shift.tree
     ((i<iN)) && ble/syntax/parse/shift.nest
@@ -2948,9 +3269,8 @@ function ble/syntax/parse/shift.method1 {
 function ble/syntax/parse/shift.method2 {
   [[ $ble_debug ]] && _ble_syntax_stat_shift=()
   local iN=${#_ble_syntax_text} # tree-enumerate 起点は (古い text の長さ) である
-  local _shift2_j=$iN # proc1 に渡す変数
+  local shift2_j=$iN # proc1 に渡す変数
   ble/syntax/tree-enumerate ble/syntax/parse/shift.impl2/.proc1
-  local j=$_shift2_j
   ble/syntax/parse/shift.impl2/.shift-until "$j2" # 未処理部分
 }
 function ble/syntax/parse/shift {
@@ -2980,21 +3300,21 @@ function ble/syntax/parse/determine-parse-range {
       fi
     done
   fi
-  ((0<=i1&&i1<=beg&&end<=i2&&i2<=iN)) || ble/util/stackdump "X2 0 <= $i1 <= $beg <= $end <= $i2 <= $iN"
+  ble/util/assert '((0<=i1&&i1<=beg&&end<=i2&&i2<=iN))' "X2 0 <= $i1 <= $beg <= $end <= $i2 <= $iN"
 }
 function ble/syntax/parse/check-end {
   [[ ${_BLE_SYNTAX_FEND[ctx]} ]] && "${_BLE_SYNTAX_FEND[ctx]}"
 }
 function ble/syntax/parse {
-  local text=$1
-  local beg=${2:-0} end=${3:-${#text}}
-  local end0=${4:-$end}
-  ((end==beg&&end0==beg&&_ble_syntax_dbeg<0)) && return
-  local -r iN=${#text} shift=$((end-end0))
-  if ! ((0<=beg&&beg<=end&&end<=iN&&beg<=end0)); then
-    ble/util/stackdump "X1 0 <= beg:$beg <= end:$end <= iN:$iN, beg:$beg <= end0:$end0 (shift=$shift text=$text)"
+  local -r text=$1 iN=${#1}
+  local opts=$2
+  local beg=${3:-0} end=${4:-$iN} end0=${5:-0}
+  ((end==beg&&end0==beg&&_ble_syntax_dbeg<0)) && return 0
+  local shift=$((end-end0))
+  ble/util/assert \
+    '((0<=beg&&beg<=end&&end<=iN&&beg<=end0))' \
+    "X1 0 <= beg:$beg <= end:$end <= iN:$iN, beg:$beg <= end0:$end0 (shift=$shift text=$text)" ||
     ((beg=0,end=iN))
-  fi
   local i1 i2 j2
   ble/syntax/parse/determine-parse-range
   ble/syntax/vanishing-word/register _ble_syntax_tree 0 "$i1" "$j2" 0 "$i1"
@@ -3054,7 +3374,7 @@ function ble/syntax/parse {
     "${_BLE_SYNTAX_FCTX[ctx]}" || ((_ble_syntax_attr[i]=_ble_attr_ERR,i++))
     ble/syntax/parse/check-end
   done
-  unset -v debug_p1
+  builtin unset -v debug_p1
   ble/syntax/vanishing-word/register _tail_syntax_tree $((-i2)) $((i2+1)) "$i" 0 "$i"
   ble/syntax/urange#update _ble_syntax_attr_ "$i1" "$i"
   (((i>=i2)?(
@@ -3074,8 +3394,38 @@ function ble/syntax/parse {
       done
     fi
   fi
-  ((${#_ble_syntax_stat[@]}==iN+1)) ||
-    ble/util/stackdump "unexpected array length #arr=${#_ble_syntax_stat[@]} (expected to be $iN), #proto=${#_ble_array_prototype[@]} should be >= $iN"
+  ble/util/assert \
+    '((${#_ble_syntax_stat[@]}==iN+1))' \
+    "unexpected array length #arr=${#_ble_syntax_stat[@]} (expected to be $iN), #proto=${#_ble_array_prototype[@]} should be >= $iN"
+}
+function ble/syntax/highlight {
+  local text=$1 lang=${2:-bash} cache_prefix=$3
+  local -a _ble_highlight_layer__list=(plain syntax)
+  local -a vars=()
+  ble/array#push vars "${_ble_syntax_VARNAMES[@]}"
+  ble/array#push vars "${_ble_highlight_layer_plain_VARNAMES[@]}"
+  ble/array#push vars "${_ble_highlight_layer_syntax_VARNAMES[@]}"
+  local "${vars[@]}"
+  if [[ $cache_prefix ]] && ((${cache_prefix}_INITIALIZED++)); then
+    ble/util/restore-vars "$cache_prefix" "${vars[@]}"
+    ble/string#common-prefix "$_ble_syntax_text" "$text"
+    local beg=${#ret}
+    ble/string#common-suffix "${_ble_syntax_text:beg}" "${text:beg}"
+    local end=$((${#text}-${#ret})) end0=$((${#_ble_syntax_text}-${#ret}))
+  else
+    ble/syntax/initialize-vars
+    ble/highlight/layer:plain/initialize-vars
+    ble/highlight/layer:syntax/initialize-vars
+    _ble_syntax_lang=$lang
+    local beg=0 end=${#text} end0=0
+  fi
+  ble/syntax/parse "$text" '' "$beg" "$end" "$end0"
+  local HIGHLIGHT_BUFF HIGHLIGHT_UMIN HIGHLIGHT_UMAX
+  ble/highlight/layer/update "$text" '' "$beg" "$end" "$end0"
+  IFS= builtin eval "ret=\"\${$HIGHLIGHT_BUFF[*]}\""
+  [[ $cache_prefix ]] &&
+    ble/util/save-vars "$cache_prefix" "${vars[@]}"
+  return 0
 }
 function ble/syntax/completion-context/.add {
   local source=$1
@@ -3088,7 +3438,11 @@ function ble/syntax/completion-context/.check/parameter-expansion {
   if [[ ${text:istat:index-istat} =~ $rex_paramx ]]; then
     local rematch1=${BASH_REMATCH[1]}
     local source=variable
-    [[ $rematch1 == '${'* ]] && source=variable:b
+    if [[ $rematch1 == '${'* ]]; then
+      source=variable:b # suffix }
+    elif ((ctx==_ble_ctx_BRACE1||ctx==_ble_ctx_BRACE2)); then
+      source=variable:n # no suffix
+    fi
     ble/syntax/completion-context/.add "$source" $((istat+${#rematch1}))
   fi
 }
@@ -3109,12 +3463,13 @@ _ble_syntax_bash_complete_check_prefix[_ble_ctx_FARGI3]='inside-argument argumen
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_FARGQ3]='inside-argument argument'
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_CARGI1]='inside-argument argument'
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_CARGQ1]='inside-argument argument'
+_ble_syntax_bash_complete_check_prefix[_ble_ctx_COARGI]='inside-argument variable command'
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_VALI]='inside-argument file'
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_VALQ]='inside-argument file'
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_CONDI]='inside-argument file'
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_CONDQ]='inside-argument file'
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_ARGVI]='inside-argument variable:='
-_ble_syntax_bash_complete_check_prefix[_ble_ctx_ARGEI]='inside-argument variable:= command file'
+_ble_syntax_bash_complete_check_prefix[_ble_ctx_ARGEI]='inside-argument variable:= command:D file'
 function ble/syntax/completion-context/.check-prefix/ctx:inside-argument {
   if ((wlen>=0)); then
     local source
@@ -3157,6 +3512,7 @@ function ble/syntax/completion-context/.check-prefix/ctx:next-command {
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_ARGX]=next-argument
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_CARGX1]=next-argument
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_FARGX3]=next-argument
+_ble_syntax_bash_complete_check_prefix[_ble_ctx_COARGX]=next-argument
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_ARGVX]=next-argument
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_ARGEX]=next-argument
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_VALX]=next-argument
@@ -3166,10 +3522,12 @@ function ble/syntax/completion-context/.check-prefix/ctx:next-argument {
   local source
   if ((ctx==_ble_ctx_ARGX||ctx==_ble_ctx_CARGX1||ctx==_ble_ctx_FARGX3)); then
     source=(argument)
+  elif ((ctx==_ble_ctx_COARGX)); then
+    source=(variable command)
   elif ((ctx==_ble_ctx_ARGVX)); then
     source=(variable:=)
   elif ((ctx==_ble_ctx_ARGEX)); then
-    source=(variable:= command file)
+    source=(variable:= command:D file)
   else
     source=(file)
   fi
@@ -3203,18 +3561,25 @@ function ble/syntax/completion-context/.check-prefix/ctx:next-compound {
     ble/syntax/completion-context/.add wordlist:-r:'(:{:((:[[' "$istat"
   fi
 }
-_ble_syntax_bash_complete_check_prefix[_ble_ctx_CMDXE]="next-identifier wordlist:-r:'fi:done:esac:then:elif:else:do'"
-_ble_syntax_bash_complete_check_prefix[_ble_ctx_CMDXD0]="next-identifier wordlist:-r:';:{:do'"
-_ble_syntax_bash_complete_check_prefix[_ble_ctx_CMDXD]="next-identifier wordlist:-r:'{:do'"
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_FARGX1]="next-identifier variable:w" # _ble_ctx_FARGX1 → (( でなければ 変数名
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_SARGX1]="next-identifier variable:w"
-_ble_syntax_bash_complete_check_prefix[_ble_ctx_CARGX2]="next-identifier wordlist:-r:'in'"
-_ble_syntax_bash_complete_check_prefix[_ble_ctx_CARGI2]="next-identifier wordlist:-r:'in'"
-_ble_syntax_bash_complete_check_prefix[_ble_ctx_FARGX2]="next-identifier wordlist:-r:'in:do'"
-_ble_syntax_bash_complete_check_prefix[_ble_ctx_FARGI2]="next-identifier wordlist:-r:'in:do'"
 function ble/syntax/completion-context/.check-prefix/ctx:next-identifier {
-  local source=$1
-  if [[ ${text:istat:index-istat} =~ $rex_param ]]; then
+  local source=$1 word=${text:istat:index-istat}
+  if [[ $word =~ $rex_param ]]; then
+    ble/syntax/completion-context/.add "$source" "$istat"
+  fi
+}
+_ble_syntax_bash_complete_check_prefix[_ble_ctx_ARGX0]="next-word sabbrev"
+_ble_syntax_bash_complete_check_prefix[_ble_ctx_CMDXD0]="next-word wordlist:-rs:';:{:do'"
+_ble_syntax_bash_complete_check_prefix[_ble_ctx_CMDXD]="next-word wordlist:-rs:'{:do'"
+_ble_syntax_bash_complete_check_prefix[_ble_ctx_CMDXE]="next-word wordlist:-rs:'}:fi:done:esac:then:elif:else:do'"
+_ble_syntax_bash_complete_check_prefix[_ble_ctx_CARGX2]="next-word wordlist:-rs:'in'"
+_ble_syntax_bash_complete_check_prefix[_ble_ctx_CARGI2]="next-word wordlist:-rs:'in'"
+_ble_syntax_bash_complete_check_prefix[_ble_ctx_FARGX2]="next-word wordlist:-rs:'in:do'"
+_ble_syntax_bash_complete_check_prefix[_ble_ctx_FARGI2]="next-word wordlist:-rs:'in:do'"
+function ble/syntax/completion-context/.check-prefix/ctx:next-word {
+  local source=$1 word=${text:istat:index-istat} rex=$'^[^ \t]*$'
+  if [[ $word =~ $rex ]]; then
     ble/syntax/completion-context/.add "$source" "$istat"
   fi
 }
@@ -3223,6 +3588,7 @@ _ble_syntax_bash_complete_check_prefix[_ble_ctx_TARGI1]=time-argument
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_TARGX2]=time-argument
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_TARGI2]=time-argument
 function ble/syntax/completion-context/.check-prefix/ctx:time-argument {
+  ble/syntax/completion-context/.check/parameter-expansion
   ble/syntax/completion-context/.add command "$istat"
   if ((ctx==_ble_ctx_TARGX1)); then
     local rex='^-p?$'
@@ -3240,11 +3606,11 @@ function ble/syntax/completion-context/.check-prefix/ctx:quote {
   ble/syntax/completion-context/.check-prefix/ctx:quote/.check-container-word
 }
 function ble/syntax/completion-context/.check-prefix/ctx:quote/.check-container-word {
-  local nlen=${stat[3]}; ((nlen>=0)) || return
+  local nlen=${stat[3]}; ((nlen>=0)) || return 1
   local inest=$((nlen<0?nlen:istat-nlen))
   local nest; ble/string#split-words nest "${_ble_syntax_nest[inest]}"
-  [[ ${nest[0]} ]] || return
-  local wlen2=${nest[1]}; ((wlen2>=0)) || return
+  [[ ${nest[0]} ]] || return 1
+  local wlen2=${nest[1]}; ((wlen2>=0)) || return 1
   local wbeg2=$((wlen2<0?wlen2:inest-wlen2))
   if ble/syntax:bash/simple-word/is-simple-or-open-simple "${text:wbeg2:index-wbeg2}"; then
     ble/syntax/completion-context/.add argument "$wbeg2"
@@ -3252,6 +3618,7 @@ function ble/syntax/completion-context/.check-prefix/ctx:quote/.check-container-
 }
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_RDRF]=redirection
 function ble/syntax/completion-context/.check-prefix/ctx:redirection {
+  ble/syntax/completion-context/.check/parameter-expansion
   local p=$((wlen>=0?wbeg:istat))
   if ble/syntax:bash/simple-word/is-simple-or-open-simple "${text:p:index-p}"; then
     ble/syntax/completion-context/.add file "$p"
@@ -3262,6 +3629,7 @@ _ble_syntax_bash_complete_check_prefix[_ble_ctx_ARGVR]=rhs
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_ARGER]=rhs
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_VALR]=rhs
 function ble/syntax/completion-context/.check-prefix/ctx:rhs {
+  ble/syntax/completion-context/.check/parameter-expansion
   if ((wlen>=0)); then
     local p=$wbeg
     local rex='^[a-zA-Z0-9_]+(\+?=|\[)'
@@ -3294,15 +3662,15 @@ _ble_syntax_bash_complete_check_prefix[_ble_ctx_PARAM]=param
 function ble/syntax/completion-context/.check-prefix/ctx:param {
   local tail=${text:istat:index-istat}
   if [[ $tail == : ]]; then
-    return
+    return 0
   elif [[ $tail == '}'* ]]; then
     local nlen=${stat[3]}
     local inest=$((nlen<0?nlen:istat-nlen))
     ((0<=inest&&inest<istat)) &&
       ble/syntax/completion-context/.check-prefix "$inest"
-    return
+    return "$?"
   else
-    return
+    return 1
   fi
 }
 _ble_syntax_bash_complete_check_prefix[_ble_ctx_EXPR]=expr
@@ -3311,12 +3679,12 @@ function ble/syntax/completion-context/.check-prefix/ctx:expr {
   if [[ $tail =~ $rex ]]; then
     local p=$((index-${#BASH_REMATCH}))
     ble/syntax/completion-context/.add variable:a "$p"
-    return
+    return 0
   elif [[ $tail == ']'* ]]; then
     local inest=... ntype
-    local nlen=${stat[3]}; ((nlen>=0)) || return
+    local nlen=${stat[3]}; ((nlen>=0)) || return 1
     local inest=$((istat-nlen))
-    ble/syntax/parse/nest-type -v ntype # ([in] inest; [out] ntype)
+    ble/syntax/parse/nest-type # ([in] inest; [out] ntype)
     if [[ $ntype == [ad]'[' ]]; then
       if [[ $tail == ']' ]]; then
         ble/syntax/completion-context/.add wordlist:-rW:'=' $((istat+1))
@@ -3351,6 +3719,7 @@ function ble/syntax/completion-context/.check-prefix/ctx:brace {
   ble/string#split-words stat1 "${_ble_syntax_stat[istat1]}"
   local wlen=${stat1[1]}
   local wbeg=$((wlen>=0?istat1-wlen:istat1))
+  ble/syntax/completion-context/.check/parameter-expansion
   ble/syntax/completion-context/.add argument "$wbeg"
 }
 function ble/syntax/completion-context/.search-last-istat {
@@ -3368,10 +3737,10 @@ function ble/syntax/completion-context/.check-prefix {
   local rex_param='^[a-zA-Z_][a-zA-Z_0-9]*$'
   local from=${1:-$((index-1))}
   local ret
-  ble/syntax/completion-context/.search-last-istat "$from" || return
+  ble/syntax/completion-context/.search-last-istat "$from" || return 1
   local istat=$ret stat
   ble/string#split-words stat "${_ble_syntax_stat[istat]}"
-  [[ ${stat[0]} ]] || return
+  [[ ${stat[0]} ]] || return 1
   local ctx=${stat[0]} wlen=${stat[1]}
   local wbeg=$((wlen<0?wlen:istat-wlen))
   local name=${_ble_syntax_bash_complete_check_prefix[ctx]}
@@ -3380,7 +3749,7 @@ function ble/syntax/completion-context/.check-prefix {
   fi
 }
 function ble/syntax/completion-context/.check-here {
-  ((${#sources[*]})) && return
+  ((${#sources[*]})) && return 0
   local -a stat
   ble/string#split-words stat "${_ble_syntax_stat[index]}"
   if [[ ${stat[0]} ]]; then
@@ -3391,27 +3760,33 @@ function ble/syntax/completion-context/.check-here {
         ble/syntax/completion-context/.add variable:= "$index"
       fi
     elif ((ctx==_ble_ctx_CMDXC)); then
-      ble/syntax/completion-context/.add wordlist:-r:'(:{:((:[[:for:select:case:if:while:until' "$index"
+      ble/syntax/completion-context/.add wordlist:-rs:'(:{:((:[[:for:select:case:if:while:until' "$index"
     elif ((ctx==_ble_ctx_CMDXE)); then
-      ble/syntax/completion-context/.add wordlist:-r:'}:fi:done:esac:then:elif:else:do' "$index"
+      ble/syntax/completion-context/.add wordlist:-rs:'}:fi:done:esac:then:elif:else:do' "$index"
     elif ((ctx==_ble_ctx_CMDXD0)); then
-      ble/syntax/completion-context/.add wordlist:-r:';:{:do' "$index"
+      ble/syntax/completion-context/.add wordlist:-rs:';:{:do' "$index"
     elif ((ctx==_ble_ctx_CMDXD)); then
-      ble/syntax/completion-context/.add wordlist:-r:'{:do' "$index"
+      ble/syntax/completion-context/.add wordlist:-rs:'{:do' "$index"
+    elif ((ctx==_ble_ctx_ARGX0)); then
+      ble/syntax/completion-context/.add sabbrev "$index"
     elif ((ctx==_ble_ctx_ARGX||ctx==_ble_ctx_CARGX1||ctx==_ble_ctx_FARGX3)); then
       ble/syntax/completion-context/.add argument "$index"
     elif ((ctx==_ble_ctx_FARGX1||ctx==_ble_ctx_SARGX1)); then
       ble/syntax/completion-context/.add variable:w "$index"
+      ble/syntax/completion-context/.add sabbrev "$index"
     elif ((ctx==_ble_ctx_CARGX2)); then
-      ble/syntax/completion-context/.add wordlist:-r:'in' "$index"
+      ble/syntax/completion-context/.add wordlist:-rs:'in' "$index"
     elif ((ctx==_ble_ctx_FARGX2)); then
-      ble/syntax/completion-context/.add wordlist:-r:'in:do' "$index"
+      ble/syntax/completion-context/.add wordlist:-rs:'in:do' "$index"
     elif ((ctx==_ble_ctx_TARGX1)); then
       ble/syntax/completion-context/.add command "$index"
       ble/syntax/completion-context/.add wordlist:--:'-p' "$index"
     elif ((ctx==_ble_ctx_TARGX2)); then
       ble/syntax/completion-context/.add command "$index"
       ble/syntax/completion-context/.add wordlist:--:'--' "$index"
+    elif ((ctx==_ble_ctx_COARGX)); then
+      ble/syntax/completion-context/.add variable:w "$index"
+      ble/syntax/completion-context/.add command "$index"
     elif ((ctx==_ble_ctx_RDRF||ctx==_ble_ctx_RDRS)); then
       ble/syntax/completion-context/.add file "$index"
     elif ((ctx==_ble_ctx_VRHS||ctx==_ble_ctx_ARGVR||ctx==_ble_ctx_ARGER||ctx==_ble_ctx_VALR)); then
@@ -3428,10 +3803,10 @@ function ble/syntax/completion-context/generate {
 }
 function ble/syntax:bash/extract-command/.register-word {
   local wtxt=${_ble_syntax_text:wbegin:wlen}
-  if [[ ! $comp_cword ]] && ((wbegin<=pos)); then
-    if ((pos<=wbegin+wlen)); then
+  if [[ ! $comp_cword ]] && ((wbegin<=EC_pos)); then
+    if ((EC_pos<=wbegin+wlen)); then
       comp_cword=${#comp_words[@]}
-      comp_point=$((${#comp_line}+wbegin+wlen-pos))
+      comp_point=$((${#comp_line}+wbegin+wlen-EC_pos))
       comp_line="$wtxt$comp_line"
       ble/array#push comp_words "$wtxt"
     else
@@ -3444,17 +3819,19 @@ function ble/syntax:bash/extract-command/.register-word {
     comp_line="$wtxt$comp_line"
     ble/array#push comp_words "$wtxt"
   fi
+  [[ $EC_opts == *:treeinfo:* ]] &&
+    ble/array#push tree_words "$TE_i:$TE_nofs"
 }
 function ble/syntax:bash/extract-command/.construct-proc {
   if [[ $wtype =~ ^[0-9]+$ ]]; then
     if ((wtype==_ble_ctx_CMDI)); then
-      if ((pos<wbegin)); then
+      if ((EC_pos<wbegin)); then
         comp_line= comp_point= comp_cword= comp_words=()
       else
         ble/syntax:bash/extract-command/.register-word
         ble/syntax/tree-enumerate-break
-        extract_command_found=1
-        return
+        EC_found=1
+        return 0
       fi
     elif ((wtype==_ble_ctx_ARGI||wtype==_ble_ctx_ARGVI||wtype==_ble_ctx_ARGEI)); then
       ble/syntax:bash/extract-command/.register-word
@@ -3474,37 +3851,128 @@ function ble/syntax:bash/extract-command/.construct {
   ble/array#reverse comp_words
   ((comp_cword=${#comp_words[@]}-1-comp_cword,
     comp_point=${#comp_line}-comp_point))
+  [[ $EC_opts == *:treeinfo:* ]] &&
+    ble/array#reverse tree_words
 }
 function ble/syntax:bash/extract-command/.scan {
-  ((pos<wbegin)) && return
-  if ((wbegin+wlen<pos)); then
+  ((EC_pos<wbegin)) && return 0
+  if ((wbegin+wlen<EC_pos)); then
     ble/syntax/tree-enumerate-break
   else
-    local extract_has_word=
+    local EC_has_word=
     ble/syntax/tree-enumerate-children \
       ble/syntax:bash/extract-command/.scan
-    local has_word=$extract_has_word
-    ble/util/unlocal extract_has_word
-    if [[ $has_word && ! $extract_command_found ]]; then
+    local has_word=$EC_has_word
+    ble/util/unlocal EC_has_word
+    if [[ $has_word && ! $EC_found ]]; then
       ble/syntax:bash/extract-command/.construct nested
       ble/syntax/tree-enumerate-break
     fi
   fi
-  if [[ $wtype =~ ^[0-9]+$ && ! $extract_has_word ]]; then
-    extract_has_word=$wtype
-    return
+  if [[ $wtype =~ ^[0-9]+$ && ! $EC_has_word ]]; then
+    EC_has_word=$wtype
+    return 0
   fi
 }
 function ble/syntax:bash/extract-command {
-  local pos=$1
-  local extract_command_found=
-  local extract_has_word=
+  local EC_pos=$1 EC_opts=:$2:
+  local EC_found=
+  local EC_has_word=
   ble/syntax/tree-enumerate \
     ble/syntax:bash/extract-command/.scan
-  if [[ ! $extract_command_found && $extract_has_word ]]; then
+  if [[ ! $EC_found && $EC_has_word ]]; then
     ble/syntax:bash/extract-command/.construct
   fi
-  [[ $extract_command_found ]]
+  [[ $EC_found ]]
+}
+function ble/syntax/tree#previous-sibling {
+  local i0=${1%%:*} nofs0=0 opts=:$2:
+  [[ $1 == *:* ]] && nofs0=${1#*:}
+  local node
+  ble/string#split-words node "${_ble_syntax_tree[i0-1]}"
+  local tplen=${node[nofs0+3]}
+  ((tplen>=0)) || return 1
+  local i=$((i0-tplen)) nofs=0
+  ret=$i:$nofs
+  if [[ $opts == *:wvars:* ]]; then
+    ble/string#split-words node "${_ble_syntax_tree[i-1]}"
+    wtype=${node[nofs]}
+    wlen=${node[nofs+1]}
+    ((wbeg=i-wlen,wend=i))
+    wattr=${node[nofs+4]}
+  fi
+  return 0
+}
+function ble/syntax/tree#next-sibling {
+  local i0=${1%%:*} nofs0=0 opts=:$2:
+  [[ $1 == *:* ]] && nofs0=${1#*:}
+  ((nofs0)) && return 1
+  local iN=${#_ble_syntax_text} i nofs node
+  for ((i=i0+1;i<=iN;i++)); do
+    [[ ${_ble_syntax_tree[i-1]} ]] || continue
+    ble/string#split-words node "${_ble_syntax_tree[i-1]}"
+    nofs=${#node[@]}
+    while (((nofs-=_ble_syntax_TREE_WIDTH)>=0)); do
+      if ((i0==i-node[nofs+2])); then
+        return 1
+      elif ((i0==i-node[nofs+3])); then
+        ret=$i:$nofs
+        if [[ $opts == *:wvars:* ]]; then
+          wtype=${node[nofs]}
+          wlen=${node[nofs+1]}
+          ((wbeg=i-wlen,wend=i))
+          wattr=${node[nofs+4]}
+        fi
+        return 0
+      fi
+    done
+  done
+  return 1
+}
+function ble/syntax:bash/extract-command-by-noderef {
+  local i=${1%%:*} nofs=0 opts=:$2:
+  [[ $1 == *:* ]] && nofs=${1#*:}
+  comp_words=()
+  tree_words=()
+  comp_line=
+  comp_cword=0
+  comp_point=0
+  local ret node wtype wlen wbeg wend wattr
+  ble/string#split-words node "${_ble_syntax_tree[i-1]}"
+  wtype=${node[nofs]} wlen=${node[nofs+1]}
+  [[ ! ${wtype//[0-9]} ]] && ((wtype==_ble_ctx_CMDI||wtype==_ble_ctx_ARGI||wtype==_ble_ctx_ARGVI||wtype==_ble_ctx_ARGEI)) || return 1
+  ble/array#push comp_words "${_ble_syntax_text:i-wlen:wlen}"
+  [[ $opts == *:treeinfo:* ]] &&
+    ble/array#push tree_words "$i:$nofs"
+  ret=$i:$nofs
+  while
+    { [[ ${wtype//[0-9]} ]] || ((wtype!=_ble_ctx_CMDI)); } &&
+      ble/syntax/tree#previous-sibling "$ret" wvars
+  do
+    [[ ! ${wtype//[0-9]} ]] || continue
+    if ((wtype==_ble_ctx_CMDI||wtype==_ble_ctx_ARGI||wtype==_ble_ctx_ARGVI||wtype==_ble_ctx_ARGEI)); then
+      ble/array#push comp_words "${_ble_syntax_text:wbeg:wlen}"
+      [[ $opts == *:treeinfo:* ]] &&
+        ble/array#push tree_words "$ret"
+    fi
+  done
+  ble/array#reverse comp_words
+  [[ $opts == *:treeinfo:* ]] &&
+    ble/array#reverse tree_words
+  ((comp_cword=${#comp_words[@]}-1))
+  ret=$i:$nofs
+  while ble/syntax/tree#next-sibling "$ret" wvars; do
+    [[ ! ${wtype//[0-9]} ]] || continue
+    ((wtype==_ble_ctx_CMDI)) && break
+    if ((wtype==_ble_ctx_ARGI||wtype==_ble_ctx_ARGVI||wtype==_ble_ctx_ARGEI)); then
+      ble/array#push comp_words "${_ble_syntax_text:wbeg:wlen}"
+      [[ $opts == *:treeinfo:* ]] &&
+        ble/array#push tree_words "$ret"
+    fi
+  done
+  comp_line="${comp_words[*]}"
+  local tmp="${comp_words[*]::comp_cword+1}"
+  comp_point=${#tmp}
 }
 _ble_syntax_attr2iface=()
 function ble/syntax/attr2g { ble/color/initialize-faces && ble/syntax/attr2g "$@"; }
@@ -3539,7 +4007,7 @@ function ble/syntax/faces-onload-hook {
   ble/color/defface command_function    fg=92 # fg=purple
   ble/color/defface command_file        fg=green
   ble/color/defface command_keyword     fg=blue
-  ble/color/defface command_jobs        fg=red
+  ble/color/defface command_jobs        fg=red,bold
   ble/color/defface command_directory   fg=26,underline
   ble/color/defface filename_directory        underline,fg=26
   ble/color/defface filename_directory_sticky underline,fg=white,bg=26
@@ -3554,7 +4022,17 @@ function ble/syntax/faces-onload-hook {
   ble/color/defface filename_character        underline,fg=white,bg=black
   ble/color/defface filename_block            underline,fg=yellow,bg=black
   ble/color/defface filename_warning          underline,fg=red
+  ble/color/defface filename_url              underline,fg=blue
   ble/color/defface filename_ls_colors        underline
+  ble/color/defface varname_unset     fg=124
+  ble/color/defface varname_empty     fg=31
+  ble/color/defface varname_number    fg=64
+  ble/color/defface varname_expr      fg=92,bold
+  ble/color/defface varname_array     fg=orange,bold
+  ble/color/defface varname_hash      fg=70,bold
+  ble/color/defface varname_readonly  fg=200
+  ble/color/defface varname_transform fg=29,bold
+  ble/color/defface varname_export    fg=200,bold
   ble/syntax/attr2iface/.define _ble_ctx_ARGX     syntax_default
   ble/syntax/attr2iface/.define _ble_ctx_ARGX0    syntax_default
   ble/syntax/attr2iface/.define _ble_ctx_ARGI     syntax_default
@@ -3584,6 +4062,8 @@ function ble/syntax/faces-onload-hook {
   ble/syntax/attr2iface/.define _ble_attr_DEL     syntax_delimiter
   ble/syntax/attr2iface/.define _ble_ctx_PARAM    syntax_param_expansion
   ble/syntax/attr2iface/.define _ble_ctx_PWORD    syntax_default
+  ble/syntax/attr2iface/.define _ble_ctx_PWORDE   syntax_error
+  ble/syntax/attr2iface/.define _ble_ctx_PWORDR   syntax_default
   ble/syntax/attr2iface/.define _ble_attr_HISTX   syntax_history_expansion
   ble/syntax/attr2iface/.define _ble_attr_FUNCDEF syntax_function_name
   ble/syntax/attr2iface/.define _ble_ctx_VALX     syntax_default
@@ -3619,6 +4099,8 @@ function ble/syntax/faces-onload-hook {
   ble/syntax/attr2iface/.define _ble_ctx_TARGX2   syntax_default
   ble/syntax/attr2iface/.define _ble_ctx_TARGI1   syntax_default
   ble/syntax/attr2iface/.define _ble_ctx_TARGI2   syntax_default
+  ble/syntax/attr2iface/.define _ble_ctx_COARGX   syntax_default
+  ble/syntax/attr2iface/.define _ble_ctx_COARGI   syntax_command
   ble/syntax/attr2iface/.define _ble_ctx_RDRH    syntax_document_begin
   ble/syntax/attr2iface/.define _ble_ctx_RDRI    syntax_document_begin
   ble/syntax/attr2iface/.define _ble_ctx_HERE0   syntax_document
@@ -3647,8 +4129,18 @@ function ble/syntax/faces-onload-hook {
   ble/syntax/attr2iface/.define _ble_attr_FILE_SOCK     filename_socket
   ble/syntax/attr2iface/.define _ble_attr_FILE_BLK      filename_block
   ble/syntax/attr2iface/.define _ble_attr_FILE_CHR      filename_character
+  ble/syntax/attr2iface/.define _ble_attr_FILE_URL      filename_url
+  ble/syntax/attr2iface/.define _ble_attr_VAR_UNSET     varname_unset
+  ble/syntax/attr2iface/.define _ble_attr_VAR_EMPTY     varname_empty
+  ble/syntax/attr2iface/.define _ble_attr_VAR_NUMBER    varname_number
+  ble/syntax/attr2iface/.define _ble_attr_VAR_EXPR      varname_expr
+  ble/syntax/attr2iface/.define _ble_attr_VAR_ARRAY     varname_array
+  ble/syntax/attr2iface/.define _ble_attr_VAR_HASH      varname_hash
+  ble/syntax/attr2iface/.define _ble_attr_VAR_READONLY  varname_readonly
+  ble/syntax/attr2iface/.define _ble_attr_VAR_TRANSFORM varname_transform
+  ble/syntax/attr2iface/.define _ble_attr_VAR_EXPORT    varname_export
 }
-ble/array#push _ble_color_faces_defface_hook ble/syntax/faces-onload-hook
+blehook color_init_defface+=ble/syntax/faces-onload-hook
 function ble/syntax/highlight/cmdtype1 {
   type=$1
   local cmd=$2
@@ -3680,21 +4172,46 @@ function ble/syntax/highlight/cmdtype1 {
     fi ;;
   esac
 }
+function ble/syntax/highlight/cmdtype/.jobs { local LC_ALL=C; jobs; } 2>/dev/null
+function ble/syntax/highlight/cmdtype/.is-job-name {
+  ble/util/joblist.check
+  local value=$1 word=$2
+  if [[ $value == '%'* ]] && jobs -- "$value" &>/dev/null; then
+    return 0
+  fi
+  local quote=\'\"\\\`
+  if [[ ${auto_resume+set} && $word != *["$quote"]* ]]; then
+    if [[ $auto_resume == exact ]]; then
+      local jobs job ret
+      ble/util/assign-array jobs 'ble/syntax/highlight/cmdtype/.jobs'
+      for job in "${jobs[@]}"; do
+        ble/string#trim "${job#*' '}"
+        ble/string#trim "${ret#*' '}"
+        [[ $value == "$ret" ]] && return 0
+      done
+      return 1
+    elif [[ $auto_resume == substring ]]; then
+      jobs -- "%?$value" &>/dev/null; return "$?"
+    else
+      jobs -- "%$value" &>/dev/null; return "$?"
+    fi
+  fi
+  return 1
+}
 function ble/syntax/highlight/cmdtype/.impl {
   local cmd=$1 _0=$2
   local btype; ble/util/type btype "$cmd"
   ble/syntax/highlight/cmdtype1 "$btype" "$cmd"
   if [[ $type == "$_ble_attr_CMD_ALIAS" && $cmd != "$_0" ]]; then
     type=$(
-      unalias "$cmd"
+      builtin unalias "$cmd"
       ble/util/type btype "$cmd"
       ble/syntax/highlight/cmdtype1 "$btype" "$cmd"
-      builtin echo -n "$type")
+      printf %s "$type")
+  elif ble/syntax/highlight/cmdtype/.is-job-name "$cmd" "$_0"; then
+    ((type=_ble_attr_CMD_JOBS))
   elif [[ $type == "$_ble_attr_KEYWORD" ]]; then
-    ble/util/joblist.check
-    if [[ ! ${cmd##%*} ]] && jobs -- "$cmd" &>/dev/null; then
-      ((type=_ble_attr_CMD_JOBS))
-    elif ble/is-function "$cmd"; then
+    if ble/is-function "$cmd"; then
       ((type=_ble_attr_CMD_FUNCTION))
     elif enable -p | ble/bin/grep -q -F -x "enable $cmd" &>/dev/null; then
       ((type=_ble_attr_CMD_BUILTIN))
@@ -3714,7 +4231,7 @@ if ((_ble_bash>=40200||_ble_bash>=40000&&!_ble_bash_loaded_in_function)); then
       ((_ble_syntax_highlight_filetype_version=_ble_edit_LINENO))
     fi
     type=${_ble_syntax_highlight_filetype[x$_0]}
-    [[ $type ]] && return
+    [[ $type ]] && return 0
     ble/syntax/highlight/cmdtype/.impl "$cmd" "$_0"
     _ble_syntax_highlight_filetype["x$_0"]=$type
   }
@@ -3731,7 +4248,7 @@ else
     for ((i=0,iN=${#_ble_syntax_highlight_filetype[@]}/2;i<iN;i++)); do
       if [[ ${_ble_syntax_highlight_filetype[2*i]} == x"$_0" ]]; then
         type=${_ble_syntax_highlight_filetype[2*i+1]}
-        return
+        return 0
       fi
     done
     ble/syntax/highlight/cmdtype/.impl "$cmd" "$_0"
@@ -3741,6 +4258,10 @@ else
 fi
 function ble/syntax/highlight/filetype {
   local file=$1
+  if [[ ( $OSTYPE == cygwin || $OSTYPE == msys ) && $file == //* ]]; then
+    [[ $file == // ]] && ((type=_ble_attr_FILE_DIR))
+    return 0
+  fi
   type=
   if [[ -h $file ]]; then
     if [[ -e $file ]]; then
@@ -3752,6 +4273,8 @@ function ble/syntax/highlight/filetype {
     if [[ -d $file ]]; then
       if [[ -k $file ]]; then
         ((type=_ble_attr_FILE_STICKY))
+      elif [[ -h ${file%/} ]]; then
+        ((type=_ble_attr_FILE_LINK))
       else
         ((type=_ble_attr_FILE_DIR))
       fi
@@ -3774,6 +4297,8 @@ function ble/syntax/highlight/filetype {
     elif [[ -b $file ]]; then
       ((type=_ble_attr_FILE_BLK))
     fi
+  elif local rex='^https?://[^ ^`"<>\{|}]+$'; [[ $file =~ $rex ]]; then
+    ((type=_ble_attr_FILE_URL))
   fi
 }
 function ble/syntax/highlight/ls_colors/.clear {
@@ -3862,9 +4387,9 @@ function ble/syntax/highlight/getg-from-filename {
   ble/syntax/highlight/filetype "$filename"
   if [[ $bleopt_filename_ls_colors ]]; then
     if ble/syntax/highlight/ls_colors "$filename" && [[ $type == g:* ]]; then
-      ble/color/face2g filename_ls_colors
+      local ret; ble/color/face2g filename_ls_colors; g=$ret
       ((g|=${type:2}))
-      return
+      return 0
     fi
   fi
   if [[ $type ]]; then
@@ -3877,20 +4402,246 @@ function bleopt/check:filename_ls_colors {
   ble/syntax/highlight/ls_colors/.parse "$value"
 }
 value=$bleopt_filename_ls_colors bleopt/check:filename_ls_colors
+_ble_syntax_progcolor_vars=(node TE_i TE_nofs wtype wlen wbeg wend wattr)
+function ble/syntax/progcolor/setup-vars {
+  TE_i=${1%%:*} TE_nofs=${1#*:}
+  [[ $1 != *:* ]] && TE_nofs=0
+  ble/string#split-words node "${_ble_syntax_tree[TE_i-1]}"
+  wtype=${node[TE_nofs]}
+  wlen=${node[TE_nofs+1]}
+  wattr=${node[TE_nofs+4]}
+  wbeg=$((TE_i-wlen))
+  wend=$TE_i
+}
+function ble/syntax/progcolor/set-wattr {
+  ble/syntax/urange#update color_ "$wbeg" "$wend"
+  ble/syntax/wrange#update _ble_syntax_word_ "$TE_i"
+  node[TE_nofs+4]=$1
+  _ble_syntax_tree[TE_i-1]="${node[*]}"
+}
+function ble/syntax/progcolor/word:default/.update-for-pathname {
+  local filetype=$1
+  local -a wattr_buff=()
+  ((wbeg<p0)) && ble/array#push wattr_buff $((p0-wbeg)):d
+  local npath=${#path[@]}
+  if ((npath>1)); then
+    local ipath p=$p0
+    for ((ipath=0;ipath<npath-1;ipath++)); do
+      local epath=${path[ipath]} espec=${spec[ipath]}
+      local p_end=$((p0+${#espec}))
+      local g=d type=
+      [[ -d $epath ]] && ble/syntax/highlight/filetype "$epath"
+      [[ $type ]] && ble/syntax/attr2g "$type"
+      ((wtype==_ble_ctx_CMDI&&(g&=~_ble_color_gflags_Underline)))
+      ble/array#push wattr_buff $((p_end-p)):$g
+      p=$p_end
+    done
+  fi
+  local wattr=d
+  if ((${#wattr_buff[@]})); then
+    local g; ble/syntax/attr2g "$filetype"
+    IFS=, builtin eval 'wattr="m${wattr_buff[*]},\$:${g:-d}"'
+  elif [[ $filetype ]]; then
+    local g; ble/syntax/attr2g "$filetype"
+    if ((wbeg<p0)); then
+      wattr=m$((p0-wbeg)):d,\$:$g
+    else
+      wattr=${g:-d}
+    fi
+  fi
+  ble/syntax/progcolor/set-wattr "$wattr"
+  return 0
+}
+function ble/syntax/progcolor/word:default/.update-for-filename {
+  local value=$1
+  local type=
+  ble/syntax/highlight/filetype "$value"; local filetype=$type
+  local -a wattr_buff=()
+  ((wbeg<p0)) &&
+    ble/array#push wattr_buff $((p0-wbeg)):d
+  if ((filetype!=_ble_attr_FILE_URL)); then
+    local npath=${#path[@]}
+    if ((npath>1)); then
+      local ipath p=$p0
+      for ((ipath=0;ipath<npath-1;ipath++)); do
+        local epath=${path[ipath]} espec=${spec[ipath]}
+        local p_end=$((p0+${#espec}))
+        local g=d type=
+        [[ -d $epath ]] && ble/syntax/highlight/filetype "$epath"
+        [[ $type ]] && ble/syntax/attr2g "$type"
+        ble/array#push wattr_buff $((p_end-p)):$g
+        p=$p_end
+      done
+    fi
+  fi
+  type=$filetype
+  if ((wtype==_ble_ctx_RDRF)); then
+    if ((type==_ble_attr_FILE_DIR)); then
+      type=$_ble_attr_ERR
+    elif ((_ble_syntax_TREE_WIDTH<=TE_nofs)); then
+      local redirect_ntype=${node[TE_nofs-_ble_syntax_TREE_WIDTH]:1}
+      if [[ ( $redirect_ntype == *'>' || $redirect_ntype == '>|' ) ]]; then
+        if [[ -e $value || -h $value ]]; then
+          if [[ -d $value || ! -w $value ]]; then
+            type=$_ble_attr_ERR
+          elif [[ ( $redirect_ntype == [\<\&]'>' || $redirect_ntype == '>' ) && -f $value ]]; then
+            if [[ -o noclobber ]]; then
+              type=$_ble_attr_ERR
+            else
+              type=$_ble_attr_FILE_WARN
+            fi
+          fi
+        elif [[ $value == */* && ! -w ${value%/*}/ || $value != */* && ! -w ./ ]]; then
+          type=$_ble_attr_ERR
+        fi
+      elif [[ $redirect_ntype == '<' && ! -r $value ]]; then
+        type=$_ble_attr_ERR
+      fi
+    fi
+  fi
+  local g=
+  if [[ $bleopt_filename_ls_colors ]]; then
+    if ble/syntax/highlight/ls_colors "$value" && [[ $type == g:* ]]; then
+      local ret; ble/color/face2g filename_ls_colors; g=$ret
+      type=g:$((${type:2}|g))
+    fi
+  fi
+  [[ $type && ! $g ]] && ble/syntax/attr2g "$type"
+  if ((${#wattr_buff[@]})); then
+    IFS=, builtin eval 'local wattr="m${wattr_buff[*]},\$:${g:-d}"'
+  else
+    local wattr=${g:-d}
+  fi
+  ble/syntax/progcolor/set-wattr "$wattr"
+  return 0
+}
+function ble/syntax/progcolor/word:default {
+  [[ $wtype =~ ^[0-9]+$ ]] || return 1
+  [[ $wattr == - ]] || return 1
+  local p0=$wbeg p1=$((wbeg+wlen))
+  if ((wtype==_ble_attr_VAR||wtype==_ble_ctx_VALI)); then
+    local ret
+    ble/syntax:bash/find-rhs "$wtype" "$wbeg" "$wlen" element-assignment && p0=$ret
+  fi
+  local type=
+  if ((wtype==_ble_ctx_RDRH||wtype==_ble_ctx_RDRI||wtype==_ble_attr_FUNCDEF||wtype==_ble_attr_ERR)); then
+    ((type=wtype))
+  elif local wtxt=${text:p0:p1-p0}; ble/syntax:bash/simple-word/is-simple "$wtxt"; then
+    local path_opts=after-sep
+    if ((wtype==_ble_ctx_ARGI||wtype==_ble_ctx_ARGEI||wtype==_ble_ctx_VALI||wtype==_ble_attr_VAR||wtype==_ble_ctx_RDRS)); then
+      local ret; ble/syntax:bash/simple-word/locate-filename "$wtxt" '' url
+      if ((ret)); then
+        ((p0+=ret))
+        wtxt=${wtxt:ret}
+        [[ $wtxt == '~'* ]] && ((_ble_syntax_attr[p0]!=_ble_attr_TILDE)) && path_opts=$path_opts:notilde
+      fi
+    fi
+    ((wtype==_ble_ctx_RDRS||wtype==_ble_attr_VAR||wtype==_ble_ctx_VALI&&wbeg<p0)) && path_opts=$path_opts:noglob
+    local ret path spec ext value
+    ble/syntax:bash/simple-word/evaluate-path-spec "$wtxt" / "$path_opts"; ext=$? value=("${ret[@]}")
+    if ((ext&&(wtype==_ble_ctx_CMDI||wtype==_ble_ctx_ARGI||wtype==_ble_ctx_ARGEI||wtype==_ble_ctx_RDRF||wtype==_ble_ctx_RDRS||wtype==_ble_ctx_VALI))); then
+      ble/syntax/progcolor/word:default/.update-for-pathname "$_ble_attr_ERR" && return 0
+    elif (((wtype==_ble_ctx_RDRF||wtype==_ble_ctx_RDRD)&&${#value[@]}>=2)); then
+      type=$_ble_attr_ERR
+    elif ((wtype==_ble_ctx_CMDI)); then
+      local attr=${_ble_syntax_attr[wbeg]}
+      if ((attr!=_ble_attr_KEYWORD&&attr!=_ble_attr_KEYWORD_BEGIN&&attr!=_ble_attr_KEYWORD_END&&attr!=_ble_attr_KEYWORD_MID&&attr!=_ble_attr_DEL)); then
+        ble/syntax/highlight/cmdtype "$value" "$wtxt"
+        ((type==_ble_attr_CMD_FILE||type==_ble_attr_CMD_FILE||type==_ble_attr_ERR)) &&
+          ble/syntax/progcolor/word:default/.update-for-pathname "$type" && return 0
+      fi
+    elif ((wtype==_ble_ctx_ARGI||wtype==_ble_ctx_ARGEI||wtype==_ble_ctx_RDRF||wtype==_ble_ctx_RDRS||wtype==_ble_attr_VAR||wtype==_ble_ctx_VALI)); then
+      ble/syntax/progcolor/word:default/.update-for-filename "$value" && return 0
+    fi
+  fi
+  local wattr=d
+  if [[ $type ]]; then
+    local g; ble/syntax/attr2g "$type"
+    if ((wbeg<p0)); then
+      wattr=m$((p0-wbeg)):d,\$:$g
+    else
+      wattr=${g:-d}
+    fi
+  fi
+  ble/syntax/progcolor/set-wattr "$wattr"
+  return 0
+}
+function ble/syntax/progcolor/default {
+  local i "${_ble_syntax_progcolor_vars[@]}"
+  for ((i=1;i<${#comp_words[@]};i++)); do
+    local ref=${tree_words[i]}
+    [[ $ref ]] || continue
+    ble/syntax/progcolor/setup-vars "$ref"
+    ble/syntax/progcolor/word:default
+  done
+}
+function ble/syntax/progcolor/.compline-rewrite-command {
+  local ocmd=${comp_words[0]}
+  [[ $1 != "$ocmd" ]] || (($#>=2)) || return 1
+  local ins="$*"
+  comp_line=$ins${comp_line:${#ocmd}}
+  ((comp_point-=${#ocmd},comp_point<0&&(comp_point=0),comp_point+=${#ins}))
+  comp_words=("$@" "${comp_words[@]:1}")
+  ((comp_cword&&(comp_cword+=$#-1)))
+  ble/array#reserve-prototype $#
+  tree_words=("${tree_words[0]}" "${_ble_array_prototype[@]::$#-1}" "${tree_words[@]:1}")
+}
+function ble/syntax/progcolor {
+  local cmd=$1 opts=$2
+  local -a alias_args=()
+  local checked=" " processed=
+  while :; do
+    if ble/is-function "ble/cmdinfo/color:$cmd"; then
+      ble/syntax/progcolor/.compline-rewrite-command "$cmd" "${alias_args[@]}"
+      "ble/cmdinfo/color:$cmd" "$opts"
+      processed=1
+      break
+    elif [[ $cmd == */?* ]] && ble/is-function "ble/cmdinfo/color:${cmd##*/}"; then
+      ble/syntax/progcolor/.compline-rewrite-command "${cmd##*/}" "${alias_args[@]}"
+      "ble/cmdinfo/color:${cmd##*/}" "$opts"
+      processed=1
+      break
+    fi
+    checked="$checked$cmd "
+    local ret
+    ble/util/expand-alias "$cmd"
+    ble/string#split-words ret "$ret"
+    [[ $checked == *" $ret "* ]] && break
+    cmd=$ret
+    ((${#ret[@]}>=2)) &&
+      alias_args=("${ret[@]:1}" "${alias_args[@]}")
+  done
+  [[ $processed ]] ||
+    ble/syntax/progcolor/default
+  if [[ ${tree_words[0]} ]]; then
+    local "${_ble_syntax_progcolor_vars[@]}"
+    ble/syntax/progcolor/setup-vars "${tree_words[0]}"
+    [[ $wattr == - ]] && ble/syntax/progcolor/word:default
+  fi
+}
 function ble/highlight/layer:syntax/touch-range {
   ble/syntax/urange#update '' "$@"
 }
 function ble/highlight/layer:syntax/fill {
   local _i _arr=$1 _i1=$2 _i2=$3 _v=$4
   for ((_i=_i1;_i<_i2;_i++)); do
-    eval "$_arr[_i]=\"\$_v\""
+    builtin eval "$_arr[_i]=\"\$_v\""
   done
 }
-_ble_highlight_layer_syntax_buff=()
-_ble_highlight_layer_syntax1_table=()
-_ble_highlight_layer_syntax2_table=()
-_ble_highlight_layer_syntax3_list=()
-_ble_highlight_layer_syntax3_table=() # errors
+_ble_highlight_layer_syntax_VARNAMES=(
+  _ble_highlight_layer_syntax_buff
+  _ble_highlight_layer_syntax1_table
+  _ble_highlight_layer_syntax2_table
+  _ble_highlight_layer_syntax3_list
+  _ble_highlight_layer_syntax3_table)
+function ble/highlight/layer:syntax/initialize-vars {
+  _ble_highlight_layer_syntax_buff=()
+  _ble_highlight_layer_syntax1_table=()
+  _ble_highlight_layer_syntax2_table=()
+  _ble_highlight_layer_syntax3_list=()
+  _ble_highlight_layer_syntax3_table=() # errors
+}
+ble/highlight/layer:syntax/initialize-vars
 function ble/highlight/layer:syntax/update-attribute-table {
   ble/highlight/layer/update/shift _ble_highlight_layer_syntax1_table
   if ((_ble_syntax_attr_umin>=0)); then
@@ -3908,88 +4659,20 @@ function ble/highlight/layer:syntax/update-attribute-table {
   fi
 }
 function ble/highlight/layer:syntax/word/.update-attributes/.proc {
-  [[ ${node[nofs]} =~ ^[0-9]+$ ]] || return
-  [[ ${node[nofs+4]} == - ]] || return
-  ble/syntax/urange#update color_ "$wbeg" "$wend"
-  local p0=$wbeg p1=$((wbeg+wlen))
-  if ((wtype==_ble_attr_VAR||wtype==_ble_ctx_VALI)); then
-    local ret
-    ble/syntax:bash/find-rhs "$wtype" "$wbeg" "$wlen" element-assignment && p0=$ret
-  fi
-  local type=
-  if ((wtype==_ble_ctx_RDRH||wtype==_ble_ctx_RDRI)); then
-    ((type=wtype))
-  elif local wtxt=${text:p0:p1-p0}; ble/syntax:bash/simple-word/is-simple "$wtxt"; then
-    local ret
-    if ((wtype==_ble_ctx_RDRS||wtype==_ble_attr_VAR||wtype==_ble_ctx_VALI&&wbeg<p0)); then
-      ble/syntax:bash/simple-word/eval-noglob "$wtxt"; local ext=$? value=$ret
-    else
-      ble/syntax:bash/simple-word/eval "$wtxt"; local ext=$?
-      local -a value; value=("${ret[@]}")
-    fi
-    if ((ext&&(wtype==_ble_ctx_CMDI||wtype==_ble_ctx_ARGI||wtype==_ble_ctx_RDRF||wtype==_ble_ctx_RDRS||wtype==_ble_ctx_VALI))); then
-      type=$_ble_attr_ERR
-    elif (((wtype==_ble_ctx_RDRF||wtype==_ble_ctx_RDRD)&&${#value[@]}>=2)); then
-      type=$_ble_attr_ERR
-    elif ((wtype==_ble_ctx_CMDI)); then
-      local attr=${_ble_syntax_attr[wbeg]}
-      if ((attr!=_ble_attr_KEYWORD&&attr!=_ble_attr_KEYWORD_BEGIN&&attr!=_ble_attr_KEYWORD_END&&attr!=_ble_attr_KEYWORD_MID&&attr!=_ble_attr_DEL)); then
-        ble/syntax/highlight/cmdtype "$value" "$wtxt"
-      fi
-    elif ((wtype==_ble_attr_FUNCDEF||wtype==_ble_attr_ERR)); then
-      ((type=wtype))
-    elif ((wtype==_ble_ctx_ARGI||wtype==_ble_ctx_RDRF||wtype==_ble_ctx_RDRS||wtype==_ble_attr_VAR||wtype==_ble_ctx_VALI)); then
-      ble/syntax/highlight/filetype "$value"
-      if ((wtype==_ble_ctx_RDRF)); then
-        if ((type==_ble_attr_FILE_DIR)); then
-          type=$_ble_attr_ERR
-        elif ((_ble_syntax_TREE_WIDTH<=nofs)); then
-          local redirect_ntype=${node[nofs-_ble_syntax_TREE_WIDTH]:1}
-          if [[ ( $redirect_ntype == *'>' || $redirect_ntype == '>|' ) ]]; then
-            if [[ -e $value || -h $value ]]; then
-              if [[ -d $value || ! -w $value ]]; then
-                type=$_ble_attr_ERR
-              elif [[ ( $redirect_ntype == [\<\&]'>' || $redirect_ntype == '>' ) && -f $value ]]; then
-                if [[ -o noclobber ]]; then
-                  type=$_ble_attr_ERR
-                else
-                  type=$_ble_attr_FILE_WARN
-                fi
-              fi
-            elif [[ $value == */* && ! -w ${value%/*}/ || $value != */* && ! -w ./ ]]; then
-              type=$_ble_attr_ERR
-            fi
-          elif [[ $redirect_ntype == '<' && ! -r $value ]]; then
-            type=$_ble_attr_ERR
-          fi
-        fi
-      fi
-      if [[ $bleopt_filename_ls_colors ]]; then
-        if ble/syntax/highlight/ls_colors "$value" && [[ $type == g:* ]]; then
-          local g; ble/color/face2g filename_ls_colors
-          type=g:$((${type:2}|g))
-        fi
-      fi
+  [[ $wtype =~ ^[0-9]+$ ]] || return 1
+  [[ ${node[TE_nofs+4]} == - ]] || return 1
+  if ((wtype==_ble_ctx_CMDI||wtype==_ble_ctx_ARGI||wtype==_ble_ctx_ARGVI||wtype==_ble_ctx_ARGEI)); then
+    local comp_line comp_point comp_words comp_cword tree_words
+    if ble/syntax:bash/extract-command-by-noderef "$TE_i:$TE_nofs" treeinfo; then
+      local cmd=${comp_words[0]}
+      ble/syntax/progcolor "$cmd"
+      return 0
     fi
   fi
-  if [[ $type ]]; then
-    if [[ $type == g:* ]]; then
-      local g=${type:2}
-    else
-      local g; ble/syntax/attr2g "$type"
-    fi
-    if ((wbeg<p0)); then
-      node[nofs+4]=m$((p0-wbeg)):d,\$:$g
-    else
-      node[nofs+4]=${g:-d}
-    fi
-  else
-    node[nofs+4]='d'
-  fi
-  flagUpdateNode=1
+  ble/syntax/progcolor/word:default
 }
 function ble/highlight/layer:syntax/word/.update-attributes {
-  ((_ble_syntax_word_umin>=0)) || return
+  ((_ble_syntax_word_umin>=0)) || return 1
   ble/syntax/tree-enumerate-in-range "$_ble_syntax_word_umin" "$_ble_syntax_word_umax" \
     ble/highlight/layer:syntax/word/.update-attributes/.proc
 }
@@ -3997,7 +4680,7 @@ function ble/highlight/layer:syntax/word/.apply-attribute {
   local wbeg=$1 wend=$2 wattr=$3
   ((wbeg<color_umin&&(wbeg=color_umin),
     wend>color_umax&&(wend=color_umax),
-    wbeg<wend)) || return
+    wbeg<wend)) || return 1
   if [[ $wattr =~ ^[0-9]+$ ]]; then
     ble/highlight/layer:syntax/fill _ble_highlight_layer_syntax2_table "$wbeg" "$wend" "$wattr"
   elif [[ $wattr == m* ]]; then
@@ -4019,7 +4702,7 @@ function ble/highlight/layer:syntax/word/.apply-attribute {
 }
 function ble/highlight/layer:syntax/word/.proc-childnode {
   if [[ $wtype =~ ^[0-9]+$ ]]; then
-    local wbeg=$wbegin wend=$i
+    local wbeg=$wbegin wend=$TE_i
     ble/highlight/layer:syntax/word/.apply-attribute "$wbeg" "$wend" "$attr"
   fi
   ((tchild>=0)) && ble/syntax/tree-enumerate-children "$proc_children"
@@ -4032,26 +4715,26 @@ function ble/highlight/layer:syntax/update-word-table {
   ble/syntax/wrange#update color_ "$_ble_syntax_vanishing_word_umin" "$_ble_syntax_vanishing_word_umax"
   _ble_syntax_vanishing_word_umin=-1 _ble_syntax_vanishing_word_umax=-1
   ble/highlight/layer:syntax/word/.apply-attribute 0 "$iN" d # clear word color
-  local i
-  for ((i=_ble_syntax_word_umax;i>=_ble_syntax_word_umin;)); do
-    if ((i>0)) && [[ ${_ble_syntax_tree[i-1]} ]]; then
+  local TE_i
+  for ((TE_i=_ble_syntax_word_umax;TE_i>=_ble_syntax_word_umin;)); do
+    if ((TE_i>0)) && [[ ${_ble_syntax_tree[TE_i-1]} ]]; then
       local -a node
-      ble/string#split-words node "${_ble_syntax_tree[i-1]}"
+      ble/string#split-words node "${_ble_syntax_tree[TE_i-1]}"
       local wlen=${node[1]}
-      local wbeg=$((i-wlen)) wend=$i
+      local wbeg=$((TE_i-wlen)) wend=$TE_i
       if [[ ${node[0]} =~ ^[0-9]+$ ]]; then
         local attr=${node[4]}
         ble/highlight/layer:syntax/word/.apply-attribute "$wbeg" "$wend" "$attr"
       fi
       local tclen=${node[2]}
       if ((tclen>=0)); then
-        local tchild=$((i-tclen))
-        local tree= nofs=0 proc_children=ble/highlight/layer:syntax/word/.proc-childnode
+        local tchild=$((TE_i-tclen))
+        local tree= TE_nofs=0 proc_children=ble/highlight/layer:syntax/word/.proc-childnode
         ble/syntax/tree-enumerate-children "$proc_children"
       fi
-      ((i=wbeg))
+      ((TE_i=wbeg))
     else
-      ((i--))
+      ((TE_i--))
     fi
   done
   ((color_umin>=0)) && ble/highlight/layer:syntax/touch-range "$color_umin" "$color_umax"
@@ -4083,7 +4766,7 @@ function ble/highlight/layer:syntax/update-error-table {
     _ble_highlight_layer_syntax3_list=()
   fi
   if ((iN>0)) && [[ ${_ble_syntax_stat[iN]} ]]; then
-    local g; ble/color/face2g syntax_error
+    local ret; ble/color/face2g syntax_error; local g=$ret
     local -a stat
     ble/string#split-words stat "${_ble_syntax_stat[iN]}"
     local ctx=${stat[0]} nlen=${stat[3]} nparam=${stat[6]}
@@ -4106,7 +4789,7 @@ function ble/highlight/layer:syntax/update-error-table {
         done
       fi
     fi
-    if ((ctx==_ble_ctx_CMDX1||ctx==_ble_ctx_CMDXC||ctx==_ble_ctx_FARGX1||ctx==_ble_ctx_SARGX1||ctx==_ble_ctx_FARGX2||ctx==_ble_ctx_CARGX1||ctx==_ble_ctx_CARGX2)); then
+    if ((ctx==_ble_ctx_CMDX1||ctx==_ble_ctx_CMDXC||ctx==_ble_ctx_FARGX1||ctx==_ble_ctx_SARGX1||ctx==_ble_ctx_FARGX2||ctx==_ble_ctx_CARGX1||ctx==_ble_ctx_CARGX2||ctx==_ble_ctx_COARGX)); then
       ble/highlight/layer:syntax/update-error-table/set $((iN-1)) "$iN" "$g"
     fi
   fi
@@ -4114,7 +4797,6 @@ function ble/highlight/layer:syntax/update-error-table {
 function ble/highlight/layer:syntax/update {
   local text=$1 player=$2
   local i iN=${#text}
-  ble-edit/content/update-syntax
   local umin=-1 umax=-1
   ((DMIN>=0)) && umin=$DMIN umax=$DMAX
   if [[ $ble_debug ]]; then
@@ -4176,4 +4858,6 @@ function ble/highlight/layer:syntax/getg {
   fi
 }
 function ble/syntax/import { :; }
+blehook/invoke syntax_load
 ble/function#try ble/textarea#invalidate str
+return 0

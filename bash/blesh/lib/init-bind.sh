@@ -1,17 +1,17 @@
 # this script is a part of blesh (https://github.com/akinomyoga/ble.sh) under BSD-3-Clause license
 function ble/init:bind/append {
-  local xarg="\"$1\":ble-decode/.hook $2; builtin eval \"\$_ble_decode_bind_hook\""
+  local xarg="\"$1\":ble-decode/.hook $2; builtin eval -- \"\$_ble_decode_bind_hook\""
   local rarg=$1 condition=$3
-  echo "$condition${condition:+ && }builtin bind -x '${xarg//$apos/$APOS}'" >> "$fbind1"
-  echo "$condition${condition:+ && }builtin bind -r '${rarg//$apos/$APOS}'" >> "$fbind2"
+  ble/util/print "$condition${condition:+ && }builtin bind -x '${xarg//$apos/$APOS}'" >> "$fbind1"
+  ble/util/print "$condition${condition:+ && }builtin bind -r '${rarg//$apos/$APOS}'" >> "$fbind2"
 }
 function ble/init:bind/bind-s {
-  local sarg="$1"
-  echo "builtin bind '${sarg//$apos/$APOS}'" >> "$fbind1"
+  local sarg=$1
+  ble/util/print "builtin bind '${sarg//$apos/$APOS}'" >> "$fbind1"
 }
 function ble/init:bind/bind-r {
-  local rarg="$1"
-  echo "builtin bind -r '${rarg//$apos/$APOS}'" >> "$fbind2"
+  local rarg=$1
+  ble/util/print "builtin bind -r '${rarg//$apos/$APOS}'" >> "$fbind2"
 }
 function ble/init:bind/generate-binder {
   local fbind1=$_ble_base_cache/ble-decode-bind.$_ble_bash.$bleopt_input_encoding.bind
@@ -27,7 +27,7 @@ function ble/init:bind/generate-binder {
   local esc1B1B=$((40100<=_ble_bash&&_ble_bash<40300))
   local i
   for i in {128..255} {0..127}; do
-    local ret; ble-decode-bind/c2dqs "$i"
+    local ret; ble/decode/c2dqs "$i"
     if ((i==0)); then
       if ((esc00)); then
         ble/init:bind/bind-s '"\C-@":"\xC0\x80"'
@@ -70,15 +70,15 @@ function ble/init:bind/generate-binder {
       fi
       if ((i==27&&esc1B1B)); then
         ble/init:bind/bind-s '"\e\e":"\e[^"'
-        echo "ble-bind -k 'ESC [ ^' __esc__"                >> "$fbind1"
-        echo "ble-bind -f __esc__ '.ble-decode-char 27 27'" >> "$fbind1"
+        ble/util/print "ble-bind -k 'ESC [ ^' __esc__"                >> "$fbind1"
+        ble/util/print "ble-bind -f __esc__ '.CHARS 27 27'" >> "$fbind1"
         ble/init:bind/bind-r '\e\e'
       fi
     fi
   done
   if ((bindAllSeq)); then
-    echo 'source "$_ble_decode_bind_fbinder.bind"' >> "$fbind1"
-    echo 'source "$_ble_decode_bind_fbinder.unbind"' >> "$fbind2"
+    ble/util/print 'source "$_ble_decode_bind_fbinder.bind"' >> "$fbind1"
+    ble/util/print 'source "$_ble_decode_bind_fbinder.unbind"' >> "$fbind2"
   fi
   ble/function#try ble/encoding:"$bleopt_input_encoding"/generate-binder
   ble-edit/info/immediate-show text "ble.sh: updating binders... done"
