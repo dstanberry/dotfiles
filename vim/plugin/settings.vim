@@ -160,6 +160,8 @@ let &t_SR="\<Esc>[3 q"
 " use solid block cursor in normal mode
 let &t_EI="\<Esc>[2 q"
 
+" define location for netrw history file
+let g:netrw_home="~/.config/vim/tmp/netrw"
 " suppress banner
 let g:netrw_banner=0
 " use wide listing
