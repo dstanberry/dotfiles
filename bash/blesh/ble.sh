@@ -3630,9 +3630,9 @@ function ble/term/stty/TRAPEXIT {
   ble/bin/stty echo -nl \
                "${_ble_term_stty_flags_leave[@]}"
 }
-bleopt/declare -v term_cursor_external 0
+bleopt/declare -v term_cursor_external 6
 _ble_term_cursor_current=unknown
-_ble_term_cursor_internal=0
+_ble_term_cursor_internal=6
 _ble_term_cursor_hidden_current=unknown
 _ble_term_cursor_hidden_internal=reveal
 function ble/term/cursor-state/.update {
