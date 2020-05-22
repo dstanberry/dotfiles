@@ -18,6 +18,7 @@ end
 autocmd BufRead,BufNewFile *.cnf set filetype=dosini
 autocmd BufRead,BufNewFile *.conf set filetype=conf
 autocmd BufRead,BufNewFile gitconfig set filetype=.gitconfig
+autocmd BufRead,BufNewFile zprofile set filetype=zsh
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Restore Last Cursor Position
