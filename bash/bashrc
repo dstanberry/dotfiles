@@ -43,12 +43,6 @@ TMUX_CONFIG_HOME="${CONFIG_HOME}/tmux"
 VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
 
 ###############################################################
-# Pre-Hook | ble.sh
-###############################################################
-# Load ble.sh
-[[ $- == *i* ]] && source ${BASH_CONFIG_HOME}/blesh/ble.sh --noattach --rcfile ${BASH_CONFIG_HOME}/blerc.bash
-
-###############################################################
 # General Options
 ###############################################################
 # check the window size after each command and, if necessary,
@@ -256,9 +250,3 @@ alias dot='/usr/bin/git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HO
 # check for machine-specific rc file and source it if available
 test -s "${BASH_CONFIG_HOME}/private.bash" && \
 source "${BASH_CONFIG_HOME}/private.bash"
-
-###############################################################
-# Post-hook | ble.sh
-###############################################################
-# Attach ble.sh
-((_ble_bash)) && ble-attach
