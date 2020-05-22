@@ -108,7 +108,7 @@ export HISTCONTROL=erasedups:ignoreboth
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 
 # use standard ISO 8601 timestamp
-HISTTIMEFORMAT='%F %T '
+export HISTTIMEFORMAT='%F %T '
 
 # enable incremental history search with up/down arrows
 bind '"\e[A": history-search-backward'
@@ -203,8 +203,8 @@ alias reload='source "${BASH_CONFIG_HOME}/bashrc"'
 ###############################################################
 if hash fzf 2>/dev/null; then
 	# load fzf keybinds
-	test -s "${BASH_CONFIG_HOME}/fzf" && \
-	source "${BASH_CONFIG_HOME}/fzf"
+	test -s "${BASH_CONFIG_HOME}/plugins/fzf" && \
+	source "${BASH_CONFIG_HOME}/plugins/fzf"
 
 	# Use ~~ as the trigger sequence instead of the default **
 	export FZF_COMPLETION_TRIGGER='?'
