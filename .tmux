@@ -4,7 +4,7 @@ SESSION="dotfiles"
 SESSION_AVAILABLE=$(tmux list-sessions | grep $SESSION)
 
 if test -z "$SESSION_AVAILABLE"; then
-	tmux -f "${TMUX_CONFIG_HOME}/tmux.conf" new-session -d -s $SESSION -n \
+	tmux new-session -d -s $SESSION -n \
 	vim -x $(tput cols) -y $(tput lines)
 
 	tmux send-keys -t $SESSION:vim "cd ${CONFIG_HOME}" Enter
