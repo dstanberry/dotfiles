@@ -23,6 +23,7 @@ LOCAL="${HOME}/.local/bin"
 # include directory in PATH
 test -s "${LOCAL}" && \
 export PATH=$PATH:$LOCAL
+unset LOCAL
 
 # ensure no duplicate entries are present in PATH
 dedup_pathvar PATH
@@ -159,14 +160,15 @@ if hash dircolors 2>/dev/null; then
 	test -r ${BASH_CONFIG_HOME}/dircolors && \
 	eval "$(dircolors -b ${BASH_CONFIG_HOME}/dircolors)" \
 	|| eval "$(dircolors -b)"
-
-	# enable color support for ls
-	alias ls='ls --color=auto --ignore=ntuser\.* --ignore=NTUSER\.* --almost-all --group-directories-first'
-	# enable color support for grep
-	alias grep='grep --color=auto'
-	alias fgrep='fgrep --color=auto'
-	alias egrep='egrep --color=auto'
 fi
+
+# enable color support for ls
+alias ls='ls --color=auto --ignore=ntuser\.* --ignore=NTUSER\.* --almost-all --group-directories-first'
+
+# enable color support for grep
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 
 # wrap diff commands and colorize the output
 hash colordiff 2>/dev/null && alias diff=colordiff
@@ -251,5 +253,6 @@ alias dot='/usr/bin/git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HO
 # _Custom
 ###############################################################
 # check for machine-specific rc file and source it if available
-test -s "${BASH_CONFIG_HOME}/private.bash" && \
-source "${BASH_CONFIG_HOME}/private.bash"
+if [[ -s "${BASH_CONFIG_HOME}/private.bash" ]]; then
+	source "${BASH_CONFIG_HOME}/private.bash"
+fi
