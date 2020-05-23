@@ -1,30 +1,30 @@
 ###############################################################
-# Helper Function to Deduplicate variables
+# Environment Variables
 ###############################################################
+# helper functions to trim duplicate occurences from a string
 get_var () {
-    eval 'printf "%s\n" "${'"$1"'}"'
+	eval 'printf "%s\n" "${'"$1"'}"'
 }
 
 set_var () {
-    eval "$1=\"\$2\""
+	eval "$1=\"\$2\""
 }
 
 dedup_pathvar () {
-    pathvar_name="$1"
-    pathvar_value="$(get_var "$pathvar_name")"
-    deduped_path="$(perl -e 'print join(":",grep { not $seen{$_}++ } split(/:/, $ARGV[0]))' "$pathvar_value")"
-    set_var "$pathvar_name" "$deduped_path"
+	pathvar_name="$1"
+	pathvar_value="$(get_var "$pathvar_name")"
+	deduped_path="$(perl -e 'print join(":",grep { not $seen{$_}++ } split(/:/, $ARGV[0]))' "$pathvar_value")"
+	set_var "$pathvar_name" "$deduped_path"
 }
 
-###############################################################
-# Environment Variables
-###############################################################
-# support user binaries
+# base directory for user local binaries
 LOCAL="${HOME}/.local/bin"
 
+# include directory in PATH
 test -s "${LOCAL}" && \
 export PATH=$PATH:$LOCAL
 
+# ensure no duplicate entries are present in PATH
 dedup_pathvar PATH
 
 ###############################################################
