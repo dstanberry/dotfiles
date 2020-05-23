@@ -49,7 +49,7 @@ function () {
 	fi
 	
 	# define the primary prompt
-	export PS1="%F{green}${SSH_TTY:+%n@%m}%f%B${SSH_TTY:+:}%b${PREFIX}%F{blue}%B%1~%b%F{yellow}%B%(1j.*.)%(?..!)%b%f %B${SUFFIX}%b "
+	export PS1="%F{green}${SSH_TTY:+%n@%m}%f%B${SSH_TTY:+:}%b${PREFIX}%F{blue}%B%3~%b%F{yellow}%B%(1j.*.)%(?..!)%b%f %B${SUFFIX}%b "
 	if [[ -n "$TMUXING" ]]; then
 		# outside tmux, ZLE_RPROMPT_INDENT ends up eating the space after PS1, and
 		# prompt still gets corrupted even if we add an extra space to compensate.
@@ -59,3 +59,6 @@ function () {
 
 # define the description used for spelling correction
 export SPROMPT="zsh: correct %F{red}'%R'%f to %F{red}'%r'%f? [%B%Uy%u%bes, %B%Un%u%bo, %B%Ue%u%bdit, %B%Ua%u%bbort] "
+
+# don't trigger spell check on dotfiles
+export CORRECT_IGNORE_FILE='.*'

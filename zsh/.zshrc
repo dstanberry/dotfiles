@@ -17,15 +17,8 @@ dedup_pathvar () {
 	set_var "$pathvar_name" "$deduped_path"
 }
 
-# base directory for user local binaries
-LOCAL="${HOME}/.local/bin"
-
-# include directory in PATH
-test -s "${LOCAL}" && \
-export PATH=$PATH:$LOCAL
-
-# ensure no duplicate entries are present in PATH
-dedup_pathvar PATH
+# include custom defined functions
+fpath=($ZSH_CONFIG_HOME/site-functions $fpath)
 
 ###############################################################
 # General Options
@@ -144,18 +137,6 @@ PROMPT_COMMAND='history -a'
 HISTSIZE=500000
 HISTFILESIZE=100000
 
-# use standard ISO 8601 timestamp
-export HISTTIMEFORMAT='%F %T '
-
-# ignore commands that have no forensicalue
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
-
-# define history file location
-export HISTFILE="${ZSH_CONFIG_HOME}/zsh_history"
-
-# save the history
-export SAVEHIST=$HISTSIZE
-
 ###############################################################
 # Navigation
 ###############################################################
@@ -230,59 +211,26 @@ bindkey '^Z' fg-bg
 ###############################################################
 # Color
 ###############################################################
-# enable true color support
-export TERM=xterm-256color
-
-# enable syntax highlighting for less
-export LESS="-iFMRX"
-export LESSCOLOR=always
-export LESSCOLORIZER=/usr/bin/src-hilite-lesspipe.sh
-
-# set location for less history file
-export LESSHISTFILE="${CONFIG_HOME}/less/less_history"
-
 # enable dircolors if it is available
 if hash dircolors 2>/dev/null; then
 	test -r ${BASH_CONFIG_HOME}/dircolors && \
 	eval "$(dircolors -b ${BASH_CONFIG_HOME}/dircolors)" \
 	|| eval "$(dircolors -b)"
-
-	# enable color support for ls
-	alias ls='ls --color=auto --almost-all'
-	# enable color support for grep
-	alias grep='grep --color=auto'
-	alias fgrep='fgrep --color=auto'
-	alias egrep='egrep --color=auto'
 fi
-
-# wrap diff commands and colorize the output
-hash colordiff 2>/dev/null && alias diff=colordiff
 
 ###############################################################
 # Workspace
 ###############################################################
-# set the default editor
-export EDITOR=/usr/bin/vim
-
-# set location forim runtime configuration
-export MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
-__viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
-__viminit+="${VIM_CONFIG_HOME}/after"
-__viminit+="|set viminfo='10,\\\"100,:20,%,n${VIM_CONFIG_HOME}/viminfo"
-__viminit+="|:source ${MYVIMRC}"
-__viminit+="|:set runtimepath+=${VIM_CONFIG_HOME},"
-__viminit+="${VIM_CONFIG_HOME}/after"
-export VIMINIT=$__viminit
-unset __viminit
-
-# set location for tmux runtime configuration
-hash tmux 2>/dev/null && alias tmux='tmux -f "${TMUX_CONFIG_HOME}/tmux.conf"'
-
-# define alias to reload zsh configuration
-alias reload='source "${ZSH_CONFIG_HOME}/.zshrc"'
-
+# only treat alpha-numeric strings as words
 autoload -U select-word-style
 select-word-style bash
+
+# load runtime configuration files
+if [ -d "$ZSH_CONFIG_HOME/rc" ]; then
+	for RC_FILE in $(find $ZSH_CONFIG_HOME/rc -type f | sort); do
+		source "$RC_FILE"
+	done
+fi
 
 ###############################################################
 # Shell Prompt
@@ -298,37 +246,6 @@ if hash fzf 2>/dev/null; then
 	# load fzf keybinds
 	test -s "${ZSH_CONFIG_HOME}/plugins/fzf" && \
 	source "${ZSH_CONFIG_HOME}/plugins/fzf"
-
-	# Use ~~ as the trigger sequence instead of the default **
-	export FZF_COMPLETION_TRIGGER='?'
-
-	# set fd as the default source for fzf
-	export FZF_DEFAULT_COMMAND='fd -HI --hidden --follow --type file --color=always'
-	export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-	# define default options for fzf
-	if test -x `which bat`; then
-		__fzf_preview_opts="--ansi --preview-window 'right:60%' "
-		__fzf_preview_opts+="--preview 'bat --color=always "
-		__fzf_preview_opts+="--style=header,grid --line-range :300 {}'"
-		export FZF_DEFAULT_OPTS=$__fzf_preview_opts
-		unset __fzf_preview_opts
-	fi
-
-	export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-	 --color=dark
-	 --color=fg:#bebebe,bg:-1,hl:#a3be8c
-	 --color=fg+:#e7ebf1,bg+:-1,hl+:#a3be8c
-	 --color=info:#4c566a,prompt:#81a1c1,pointer:#bf616a
-	 --color=marker:#ebcb8b,spinner:#4c566a,header:#5f5f5f'
-fi
-
-###############################################################
-# bat
-###############################################################
-# define configuration path for bat
-if hash bat 2>/dev/null; then
-	export BAT_CONFIG_PATH="${CONFIG_HOME}/bat/bat.conf"
 fi
 
 ###############################################################
@@ -490,12 +407,6 @@ function -maybe-show-vcs-info() {
 }
 
 add-zsh-hook precmd -maybe-show-vcs-info	
-
-###############################################################
-# Dotfiles
-###############################################################
-# define alias to manage dotfiles repository
-alias dot='/usr/bin/git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME'
 
 ###############################################################
 # _Custom

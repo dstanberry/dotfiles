@@ -1,0 +1,10 @@
+# base directory for user local binaries
+LOCAL="${HOME}/.local/bin"
+
+# include directory in PATH
+test -s "${LOCAL}" && \
+export PATH=$PATH:$LOCAL
+unset LOCAL
+
+# ensure no duplicate entries are present in PATH
+dedup_pathvar PATH
