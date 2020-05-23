@@ -1,30 +1,30 @@
 ###############################################################
-## Helper Function to Deduplicateariables
+# Environment Variables
 ###############################################################
+# helper functions to trim duplicate occurences from a string
 get_var () {
-    eval 'printf "%s\n" "${'"$1"'}"'
+	eval 'printf "%s\n" "${'"$1"'}"'
 }
 
 set_var () {
-    eval "$1=\"\$2\""
+	eval "$1=\"\$2\""
 }
 
 dedup_pathvar () {
-    pathvar_name="$1"
-    pathvar_value="$(get_var "$pathvar_name")"
-    deduped_path="$(perl -e 'print join(":",grep { not $seen{$_}++ } split(/:/, $ARGV[0]))' "$pathvar_value")"
-    set_var "$pathvar_name" "$deduped_path"
+	pathvar_name="$1"
+	pathvar_value="$(get_var "$pathvar_name")"
+	deduped_path="$(perl -e 'print join(":",grep { not $seen{$_}++ } split(/:/, $ARGV[0]))' "$pathvar_value")"
+	set_var "$pathvar_name" "$deduped_path"
 }
 
-###############################################################
-# Environment Variables
-###############################################################
-# support user binaries
+# base directory for user local binaries
 LOCAL="${HOME}/.local/bin"
 
+# include directory in PATH
 test -s "${LOCAL}" && \
 export PATH=$PATH:$LOCAL
 
+# ensure no duplicate entries are present in PATH
 dedup_pathvar PATH
 
 ###############################################################
@@ -63,9 +63,13 @@ setopt NO_NOMATCH
 # print exit status on error
 setopt PRINT_EXIT_VALUE
 
+# enable command substitution and parameter/arigthmetic expansion
+setopt PROMPT_SUBST
+
 ###############################################################
 # Completions
 ###############################################################
+# load completion function
 autoload -U compinit
 compinit
 
@@ -133,9 +137,6 @@ setopt HIST_VERIFY
 # share history across shells
 setopt SHARE_HISTORY
 
-# track the number of commands local to this shell
-HISTCMD_LOCAL=0
-
 # record each line as it gets issued
 PROMPT_COMMAND='history -a'
 
@@ -176,18 +177,38 @@ setopt PUSHD_SILENT
 # emacs bindings, set to -v for vi bindings
 bindkey -e
 
-# Use "cbt" capability ("back_tab", as per `man terminfo`), if we have it:
+# use "cbt" capability ("back_tab", as per `man terminfo`), if we have it:
 if tput cbt &> /dev/null; then
 	bindkey "$(tput cbt)" reverse-menu-complete # make Shift-tab go to previous completion
 fi
 
+# enable incremental history search with up/down arrows
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
-bindkey '^P' history-substring-search-up
-bindkey '^N' history-substring-search-down
 
+# add ability to clear the buffer
+function clear-scrollback-buffer {
+	# clear screen
+	clear
+	# clear buffer. The following sequence code is available for xterm.
+	printf '\e[3J'
+	# .reset-prompt: bypass the zsh-syntax-highlighting wrapper
+	# https://github.com/sorin-ionescu/prezto/issues/1026
+	# https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
+	# -R: redisplay the prompt to avoid old prompts being eaten up
+	# https://github.com/Powerlevel9k/powerlevel9k/pull/1176#discussion_r299303453
+  zle .reset-prompt && zle -R
+}
+
+# add keymap to clear the buffer
+zle -N clear-scrollback-buffer
+bindkey '^L' clear-scrollback-buffer
+
+# enable editing the command line using via editor
 autoload -U edit-command-line
 zle -N edit-command-line
+
+# add keymap to edit command line
 bindkey '^x^x' edit-command-line
 
 # do history expansion on space
@@ -195,12 +216,14 @@ bindkey ' ' magic-space
 
 # make (c-z) toggle between bg and fg for processes
 function fg-bg() {
-  if [[ $#BUFFER -eq 0 ]]; then
-    fg
-  else
-    zle push-input
-  fi
+	if [[ $#BUFFER -eq 0 ]]; then
+		fg
+	else
+		zle push-input
+	fi
 }
+
+# add keymap to toggle fg/bg process
 zle -N fg-bg
 bindkey '^Z' fg-bg
 
@@ -210,12 +233,12 @@ bindkey '^Z' fg-bg
 # enable true color support
 export TERM=xterm-256color
 
-# # enable syntax highlighting for less
+# enable syntax highlighting for less
 export LESS="-iFMRX"
 export LESSCOLOR=always
 export LESSCOLORIZER=/usr/bin/src-hilite-lesspipe.sh
 
-# # set location for less history file
+# set location for less history file
 export LESSHISTFILE="${CONFIG_HOME}/less/less_history"
 
 # enable dircolors if it is available
@@ -255,15 +278,18 @@ unset __viminit
 # set location for tmux runtime configuration
 hash tmux 2>/dev/null && alias tmux='tmux -f "${TMUX_CONFIG_HOME}/tmux.conf"'
 
-# setup shell prompt
-test -s "${ZSH_CONFIG_HOME}/prompt.zsh" && \
-source "${ZSH_CONFIG_HOME}/prompt.zsh"
-#
 # define alias to reload zsh configuration
 alias reload='source "${ZSH_CONFIG_HOME}/.zshrc"'
 
 autoload -U select-word-style
 select-word-style bash
+
+###############################################################
+# Shell Prompt
+###############################################################
+# load prompt definitions
+test -s "${ZSH_CONFIG_HOME}/prompt.zsh" && \
+source "${ZSH_CONFIG_HOME}/prompt.zsh"
 
 ###############################################################
 # fzf
@@ -324,6 +350,146 @@ HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 ###############################################################
 test -s "${ZSH_CONFIG_HOME}/plugins/zsh-syntax-highlighting.zsh" && \
 source "${ZSH_CONFIG_HOME}/plugins/zsh-syntax-highlighting.zsh"
+
+###############################################################
+# Hooks
+###############################################################
+# local hash table for storing variables
+typeset -A __HTABLE
+
+# track the number of commands local to this shell
+HISTCMD_LOCAL=0
+
+# enable hook functions
+autoload -U add-zsh-hook
+
+function -set-tab-and-window-title() {
+	emulate -L zsh
+	local CMD="${1:gs/$/\\$}"
+	print -Pn "\e]0;$CMD:q\a"
+}
+
+# executed before displaying prompt.
+function -update-window-title-precmd() {
+	emulate -L zsh
+	if [[ HISTCMD_LOCAL -eq 0 ]]; then
+		# About to display prompt for the first time; nothing interesting to show in
+		# the history. Show $PWD.
+		-set-tab-and-window-title "$(basename $PWD)"
+	else
+		local LAST=$(history | tail -1 | awk '{print $2}')
+		if [ -n "$TMUX" ]; then
+			# inside tmux, just show the last command: tmux will prefix it with the
+			# session name (for context).
+			-set-tab-and-window-title "$LAST"
+		else
+			# outside tmux, show $PWD (for context) followed by the last command.
+			-set-tab-and-window-title "$(basename $PWD) > $LAST"
+		fi
+	fi
+}
+
+add-zsh-hook precmd -update-window-title-precmd
+
+# executed before executing a command: $2 is one-line (truncated) version of
+# the command.
+function -update-window-title-preexec() {
+	emulate -L zsh
+	setopt EXTENDED_GLOB
+	HISTCMD_LOCAL=$((++HISTCMD_LOCAL))
+
+	# skip ENV=settings, sudo, ssh; show first distinctive word of command;
+	# mostly stolen from:
+	# https://github.com/robbyrussell/oh-my-zsh/blob/master/lib/termsupport.zsh
+	local TRIMMED="${2[(wr)^(*=*|mosh|ssh|sudo)]}"
+	if [ -n "$TMUX" ]; then
+		# inside tmux, show the running command: tmux will prefix it with the
+		# session name (for context).
+		-set-tab-and-window-title "$TRIMMED"
+	else
+		# outside tmux, show $PWD (for context) followed by the running command.
+		-set-tab-and-window-title "$(basename $PWD) > $TRIMMED"
+	fi
+}
+
+add-zsh-hook preexec -update-window-title-preexec
+
+typeset -F SECONDS
+
+function -record-start-time() {
+	emulate -L zsh
+	ZSH_START_TIME=${ZSH_START_TIME:-$SECONDS}
+}
+
+add-zsh-hook preexec -record-start-time
+
+function -report-start-time() {
+	emulate -L zsh
+	if [ $ZSH_START_TIME ]; then
+		local DELTA=$(($SECONDS - $ZSH_START_TIME))
+		local DAYS=$((~~($DELTA / 86400)))
+		local HOURS=$((~~(($DELTA - $DAYS * 86400) / 3600)))
+		local MINUTES=$((~~(($DELTA - $DAYS * 86400 - $HOURS * 3600) / 60)))
+		local SECS=$(($DELTA - $DAYS * 86400 - $HOURS * 3600 - $MINUTES * 60))
+		local ELAPSED=''
+		test "$DAYS" != '0' && ELAPSED="${DAYS}d"
+		test "$HOURS" != '0' && ELAPSED="${ELAPSED}${HOURS}h"
+		test "$MINUTES" != '0' && ELAPSED="${ELAPSED}${MINUTES}m"
+		if [ "$ELAPSED" = '' ]; then
+			SECS="$(print -f "%.2f" $SECS)s"
+		elif [ "$DAYS" != '0' ]; then
+			SECS=''
+		else
+			SECS="$((~~$SECS))s"
+		fi
+		ELAPSED="${ELAPSED}${SECS}"
+		export RPROMPT="%F{cyan}${ELAPSED}%f"
+		unset ZSH_START_TIME
+	else
+		export RPROMPT=""
+	fi
+}
+
+add-zsh-hook precmd -report-start-time
+
+function -auto-ls-after-cd() {
+	emulate -L zsh
+	# only in response to a user-initiated `cd`, not indirectly (eg. via another
+	# function).
+	if [ "$ZSH_EVAL_CONTEXT" = "toplevel:shfunc" ]; then
+		ls -a
+	fi
+}
+
+add-zsh-hook chpwd -auto-ls-after-cd
+
+# remember each command we run.
+function -record-command() {
+	__HTABLE[LAST_COMMAND]="$2"
+}
+
+add-zsh-hook preexec -record-command
+
+# update vcs_info (slow) after any command that probably changed it.
+function -maybe-show-vcs-info() {
+	local LAST="$__HTABLE[LAST_COMMAND]"
+
+	# in case user just hit enter, overwrite LAST_COMMAND, because preexec
+	# won't run and it will otherwise linger.
+	__HTABLE[LAST_COMMAND]="<unset>"
+
+	# check first word; via:
+	# http://tim.vanwerkhoven.org/post/2012/10/28/ZSH/Bash-string-manipulation
+	case "$LAST[(w)1]" in
+		cd|cp|git|rm|touch|mv)
+			vcs_info
+			;;
+		*)
+			;;
+	esac
+}
+
+add-zsh-hook precmd -maybe-show-vcs-info	
 
 ###############################################################
 # Dotfiles
