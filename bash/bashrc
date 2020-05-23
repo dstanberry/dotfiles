@@ -191,12 +191,15 @@ unset __viminit
 # set location for tmux runtime configuration
 hash tmux 2>/dev/null && alias tmux='tmux -f "${TMUX_CONFIG_HOME}/tmux.conf"'
 
-# setup shell prompt
-test -s "${BASH_CONFIG_HOME}/prompt.bash" && \
-source "${BASH_CONFIG_HOME}/prompt.bash"
-
 # define alias to reload bash configuration
 alias reload='source "${BASH_CONFIG_HOME}/bashrc"'
+
+###############################################################
+# Shell Prompt
+###############################################################
+# load prompt definitions
+test -s "${BASH_CONFIG_HOME}/prompt.bash" && \
+source "${BASH_CONFIG_HOME}/prompt.bash"
 
 ###############################################################
 # fzf
