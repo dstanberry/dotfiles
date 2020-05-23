@@ -31,11 +31,6 @@ if hash fzf 2>/dev/null; then
 	 --color=marker:#ebcb8b,spinner:#4c566a,header:#5f5f5f'
 fi
 
-# enable color support for grep
-alias egrep='egrep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias grep='grep --color=auto'
-
 # use standard ISO 8601 timestamp
 export HISTTIMEFORMAT='%F %T '
 
@@ -52,9 +47,6 @@ export LESSCOLORIZER=/usr/bin/src-hilite-lesspipe.sh
 
 # set location for less history file
 export LESSHISTFILE="${CONFIG_HOME}/less/less_history"
-
-# enable color support for ls
-alias ls='ls --color=auto --almost-all --group-directories-first'
 
 # set location forim runtime configuration
 export MYVIMRC="${VIM_CONFIG_HOME}/vimrc"

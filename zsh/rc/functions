@@ -1,10 +1,6 @@
 function tmux() {
 	emulate -L zsh
 
-	# set location for tmux runtime configuration
-	# aliased here to ensure function wrapper is recognized
-	hash tmux 2>/dev/null && alias tmux='tmux -f "${TMUX_CONFIG_HOME}/tmux.conf"'
-
 	# make sure even pre-existing tmux sessions use the latest SSH_AUTH_SOCK.
 	local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
 	if [ -r "$SSH_AUTH_SOCK" -a ! -L "$SSH_AUTH_SOCK" ]; then

@@ -4,5 +4,13 @@ hash colordiff 2>/dev/null && alias diff=colordiff
 # define alias to manage dotfiles repository
 alias dot='/usr/bin/git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME'
 
+# enable color support for grep
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias grep='grep --color=auto'
+
+# enable color support for ls
+alias ls='ls --color=auto --ignore=ntuser\.* --ignore=NTUSER\.* --almost-all --group-directories-first'
+
 # define alias to reload zsh configuration
 alias reload='source "${ZSH_CONFIG_HOME}/.zshrc"'

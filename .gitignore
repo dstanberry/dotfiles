@@ -5,7 +5,6 @@ htop
 less/less_history
 inkscape
 tmux/tmux.digests
-tmux/private/*
 vim/plugged/*
 vim/plugin/private/*
 vim/tmp/backup/*
