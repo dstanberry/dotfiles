@@ -19,6 +19,9 @@ nnoremap Q <nop>
 " avoid unintentional switches to man(ual)
 nnoremap K <nop>
 
+" show directory of current file in explorer
+nnoremap <silent> - :silent edit <c-r>=empty(expand('%')) ? '.' : expand('%:p:h')<cr><cr>
+
 " store relative jumps in the jumplist if they exceed a threshold.
 nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
 nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
