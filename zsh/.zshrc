@@ -374,6 +374,7 @@ function -auto-ls-after-cd() {
 	# only in response to a user-initiated `cd`, not indirectly (eg. via another
 	# function).
 	if [ "$ZSH_EVAL_CONTEXT" = "toplevel:shfunc" ]; then
+		setopt nullglob
 		ls -a
 	fi
 }
