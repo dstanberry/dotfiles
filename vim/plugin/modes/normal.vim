@@ -1,6 +1,9 @@
 " define a mapleader for more key combinations
 let mapleader="\<space>"
 
+" define a maplocalleader for more key combinations
+let maplocalleader="\\"
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -56,7 +59,7 @@ nnoremap <silent> <Leader>+ :resize +5<cr>
 nnoremap <silent> <Leader>_ :resize -5<cr>
 
 " trim trailing whitespace
-nmap <leader>zz :call leader#trim()<cr>
+nmap <leader>zz :call  normal#trim()<cr>
 
 " insert newline without entering insert mode
 nnoremap o o<esc>
@@ -84,20 +87,24 @@ nnoremap <silent> <leader>n :call functions#netrwToggle()<cr>
 " undotree: toggle the undo-tree panel
 nnoremap <F5> :UndotreeToggle<cr>
 
-"vim-fugitive: execute git status
-nnoremap <leader>gs :G<cr>
-
-"vim-fugitive: resolve git conflict using left hunk
-nnoremap <leader>gf :diffget //2<cr>
-
-"vim-fugitive: resolve git conflict using right hunk
-nnoremap <leader>gh :diffget //3<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " create/edit file within the current directory
-nnoremap <LocalLeader>e :edit <C-R>=expand('%:p:h') . '/'<cr>
+nnoremap <localleader>e :edit <C-R>=expand('%:p:h') . '/'<cr>
 
+"vim-fugitive: execute git diff
+nnoremap <localleader>gd :GVdiff<cr>
+
+"vim-fugitive: execute git status
+nnoremap <localleader>gs :Gstatus<cr>
+
+"vim-fugitive: resolve git conflict using left hunk
+nnoremap <localleader>gh :diffget //2<cr>
+
+"vim-fugitive: resolve git conflict using right hunk
+nnoremap <localleader>gl :diffget //3<cr>
+"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal, Visual, Select, Operator-pending
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

@@ -111,8 +111,8 @@ set path+=**
 " allow <backspace> to cross line boundaries
 set backspace=indent,eol,start
 
-" disable mouse in visual mode
-set mouse=nicr
+" enable mouse features
+set mouse=a
 
 " define location for backup files
 set backupdir=~/.config/vim/tmp/backup//,.
@@ -145,8 +145,8 @@ set sidescrolloff=3
 " enable case insensitive spell check
 set spellcapcheck=
 
-" toggle paste
-set pastetoggle=<leader>v
+" toggle paste mode (to be able to accurately paste from external apps)
+set pastetoggle=<F2>
 
 " avoid swapfile alert messages
 set shortmess+=A
