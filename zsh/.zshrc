@@ -301,7 +301,7 @@ function -update-window-title-precmd() {
 			-set-tab-and-window-title "$LAST"
 		else
 			# outside tmux, show $PWD (for context) followed by the last command.
-			-set-tab-and-window-title "$(basename $PWD) > $LAST"
+			-set-tab-and-window-title "$(basename $PWD) | $LAST"
 		fi
 	fi
 }
