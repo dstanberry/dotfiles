@@ -18,6 +18,7 @@ function! functions#rescursor()
 		return 1
 	endif
 endfunction
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Toggle netrw buffer
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
