@@ -2,7 +2,7 @@
 LOCAL="${HOME}/.local/bin"
 
 # include directory in PATH
-test -s "${LOCAL}" && \
+test -d "${LOCAL}" && \
 export PATH=$PATH:$LOCAL
 unset LOCAL
 
