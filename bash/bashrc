@@ -138,7 +138,8 @@ CDPATH="."
 # list directory contents after changing to it
 function cd() {
 	builtin cd "$@" &> /dev/null
-	ls
+	ls --color=auto --ignore=ntuser\.* \
+	--ignore=NTUSER\.* --almost-all --group-directories-first
 }
 
 ###############################################################
