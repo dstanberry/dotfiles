@@ -49,7 +49,7 @@ function () {
 	fi
 	
 	# define the primary prompt
-	export PS1="${PREFIX} %F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%b%F{blue}%B%3~%b%F{yellow}%B%(1j.*.)%(?..!)%b%f %B${SUFFIX}%b "
+	export PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%b%F{blue}%B%3~%b%F{yellow}%B%(1j.*.)%(?..!)%b%f %B${SUFFIX}%b "
 	if [[ -n "$TMUXING" ]]; then
 		# outside tmux, ZLE_RPROMPT_INDENT ends up eating the space after PS1, and
 		# prompt still gets corrupted even if we add an extra space to compensate.
