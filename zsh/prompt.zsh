@@ -17,6 +17,10 @@ zstyle ':vcs_info:git+set-message:*' hooks git-untracked
 zstyle ':vcs_info:git*:*' formats '%F{cyan} %b%m%c%u%f '
 zstyle ':vcs_info:git*:*' actionformats '%F{cyan} %b|%a%m%c%u %f'
 
+precmd() {
+	vcs_info
+}
+
 function +vi-git-untracked() {
 	emulate -L zsh
 	if [[ -n $(git ls-files --exclude-standard --others 2> /dev/null) ]]; then
