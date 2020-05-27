@@ -167,6 +167,10 @@ fi
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
+# enable advancing to the next/previous word in a command
+bindkey "^[[1;5C" forward-word
+bindkey "^[[1;5D" backward-word
+
 # add ability to clear the buffer
 function clear-scrollback-buffer {
 	# clear screen
