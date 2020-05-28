@@ -4,7 +4,10 @@ set statusline=
 set statusline+=%7*%{(mode()=='n')?'\ \ N\ ':''}
 set statusline+=%6*%{(mode()=='i')?'\ \ I\ ':''}
 set statusline+=%8*%{(mode()=='R')?'\ \ R\ ':''}
-set statusline+=%9*%{(mode()=='v')?'\ \ V\ ':''}
+set statusline+=%9*%{(mode()==#'v')?'\ \ V\ ':''}
+set statusline+=%9*%{(mode()==#'V')?'\ \ V-Line\ ':''}
+" paste indicator
+set statusline+=%3*%{(&paste)?'\ \ 📋':''}
 " Read-only indicator
 set statusline+=%3*\ %{functions#readOnly()}
 " relative file path
