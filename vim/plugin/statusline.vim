@@ -19,4 +19,4 @@ set statusline+=%=
 " file format and encoding (if not unix || utf-8)
 set statusline+=%5*\ %{functions#getFileFormat()}\ 
 " line/column numbering
-set statusline+=%4*\ ℓ\ %l\ с\ %c\ %3p%%\ 
+set statusline+=%4*\ ℓ\ %l/%L\ с\ %c\ %3p%%\ 
