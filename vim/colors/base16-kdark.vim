@@ -54,59 +54,59 @@ let g:base16_cterm0D = "04"
 let s:cterm0E        = "05"
 let g:base16_cterm0E = "05"
 if exists("base16colorspace") && base16colorspace == "256"
-let s:cterm01        = "18"
-let g:base16_cterm01 = "18"
-let s:cterm02        = "19"
-let g:base16_cterm02 = "19"
-let s:cterm04        = "20"
-let g:base16_cterm04 = "20"
-let s:cterm06        = "21"
-let g:base16_cterm06 = "21"
-let s:cterm09        = "16"
-let g:base16_cterm09 = "16"
-let s:cterm0F        = "17"
-let g:base16_cterm0F = "17"
+	let s:cterm01        = "18"
+	let g:base16_cterm01 = "18"
+	let s:cterm02        = "19"
+	let g:base16_cterm02 = "19"
+	let s:cterm04        = "20"
+	let g:base16_cterm04 = "20"
+	let s:cterm06        = "21"
+	let g:base16_cterm06 = "21"
+	let s:cterm09        = "16"
+	let g:base16_cterm09 = "16"
+	let s:cterm0F        = "17"
+	let g:base16_cterm0F = "17"
 else
-let s:cterm01        = "10"
-let g:base16_cterm01 = "10"
-let s:cterm02        = "11"
-let g:base16_cterm02 = "11"
-let s:cterm04        = "12"
-let g:base16_cterm04 = "12"
-let s:cterm06        = "13"
-let g:base16_cterm06 = "13"
-let s:cterm09        = "09"
-let g:base16_cterm09 = "09"
-let s:cterm0F        = "14"
-let g:base16_cterm0F = "14"
+	let s:cterm01        = "10"
+	let g:base16_cterm01 = "10"
+	let s:cterm02        = "11"
+	let g:base16_cterm02 = "11"
+	let s:cterm04        = "12"
+	let g:base16_cterm04 = "12"
+	let s:cterm06        = "13"
+	let g:base16_cterm06 = "13"
+	let s:cterm09        = "09"
+	let g:base16_cterm09 = "09"
+	let s:cterm0F        = "14"
+	let g:base16_cterm0F = "14"
 endif
 
 " Neovim terminal colours
 if has("nvim")
-let g:terminal_color_0 =  "#373737"
-let g:terminal_color_1 =  "#6f8fb4"
-let g:terminal_color_2 =  "#93b379"
-let g:terminal_color_3 =  "#e5c179"
-let g:terminal_color_4 =  "#6d8eb5"
-let g:terminal_color_5 =  "#a4799d"
-let g:terminal_color_6 =  "#77b3c5"
-let g:terminal_color_7 =  "#cfd6e4"
-let g:terminal_color_8 =  "#5f5f5f"
-let g:terminal_color_9 =  "#6f8fb4"
-let g:terminal_color_10 = "#93b379"
-let g:terminal_color_11 = "#e5c179"
-let g:terminal_color_12 = "#6d8eb5"
-let g:terminal_color_13 = "#a4799d"
-let g:terminal_color_14 = "#77b3c5"
-let g:terminal_color_15 = "#dfe3ec"
-let g:terminal_color_background = g:terminal_color_0
-let g:terminal_color_foreground = g:terminal_color_5
-if &background == "light"
-	let g:terminal_color_background = g:terminal_color_7
-	let g:terminal_color_foreground = g:terminal_color_2
-endif
+	let g:terminal_color_0 =  "#373737"
+	let g:terminal_color_1 =  "#6f8fb4"
+	let g:terminal_color_2 =  "#93b379"
+	let g:terminal_color_3 =  "#e5c179"
+	let g:terminal_color_4 =  "#6d8eb5"
+	let g:terminal_color_5 =  "#a4799d"
+	let g:terminal_color_6 =  "#77b3c5"
+	let g:terminal_color_7 =  "#cfd6e4"
+	let g:terminal_color_8 =  "#5f5f5f"
+	let g:terminal_color_9 =  "#6f8fb4"
+	let g:terminal_color_10 = "#93b379"
+	let g:terminal_color_11 = "#e5c179"
+	let g:terminal_color_12 = "#6d8eb5"
+	let g:terminal_color_13 = "#a4799d"
+	let g:terminal_color_14 = "#77b3c5"
+	let g:terminal_color_15 = "#dfe3ec"
+	let g:terminal_color_background = g:terminal_color_0
+	let g:terminal_color_foreground = g:terminal_color_5
+	if &background == "light"
+		let g:terminal_color_background = g:terminal_color_7
+		let g:terminal_color_foreground = g:terminal_color_2
+	endif
 elseif has("terminal")
-let g:terminal_ansi_colors = [
+	let g:terminal_ansi_colors = [
 		\ "#373737",
 		\ "#6f8fb4",
 		\ "#93b379",
@@ -134,33 +134,33 @@ let g:colors_name = "base16-kdark"
 " Highlighting function
 " Optional variables are attributes and guisp
 function! g:Base16hi(group, guifg, guibg, ctermfg, ctermbg, ...)
-let l:attr = get(a:, 1, "")
-let l:guisp = get(a:, 2, "")
+	let l:attr = get(a:, 1, "")
+	let l:guisp = get(a:, 2, "")
 
-if a:guifg != ""
-	exec "hi " . a:group . " guifg=#" . a:guifg
-endif
-if a:guibg != ""
-	exec "hi " . a:group . " guibg=#" . a:guibg
-endif
-if a:ctermfg != ""
-	exec "hi " . a:group . " ctermfg=" . a:ctermfg
-endif
-if a:ctermbg != ""
-	exec "hi " . a:group . " ctermbg=" . a:ctermbg
-endif
-if l:attr != ""
-	exec "hi " . a:group . " gui=" . l:attr . " cterm=" . l:attr
-endif
-if l:guisp != ""
-	exec "hi " . a:group . " guisp=#" . l:guisp
-endif
+	if a:guifg != ""
+		exec "hi " . a:group . " guifg=#" . a:guifg
+	endif
+	if a:guibg != ""
+		exec "hi " . a:group . " guibg=#" . a:guibg
+	endif
+	if a:ctermfg != ""
+		exec "hi " . a:group . " ctermfg=" . a:ctermfg
+	endif
+	if a:ctermbg != ""
+		exec "hi " . a:group . " ctermbg=" . a:ctermbg
+	endif
+	if l:attr != ""
+		exec "hi " . a:group . " gui=" . l:attr . " cterm=" . l:attr
+	endif
+	if l:guisp != ""
+		exec "hi " . a:group . " guisp=#" . l:guisp
+	endif
 endfunction
 
 
-fun <sid>hi(group, guifg, guibg, ctermfg, ctermbg, attr, guisp)
-call g:Base16hi(a:group, a:guifg, a:guibg, a:ctermfg, a:ctermbg, a:attr, a:guisp)
-endfun
+function <sid>hi(group, guifg, guibg, ctermfg, ctermbg, attr, guisp)
+	call g:Base16hi(a:group, a:guifg, a:guibg, a:ctermfg, a:ctermbg, a:attr, a:guisp)
+endfunction
 
 " Vim editor colors
 call <sid>hi("Normal",        s:gui05, s:gui00, s:cterm05, s:cterm00, "", "")
@@ -267,6 +267,7 @@ call <sid>hi("DiffLine",     s:gui0D, s:gui00,  s:cterm0D, s:cterm00, "", "")
 call <sid>hi("DiffRemoved",  s:gui08, s:gui00,  s:cterm08, s:cterm00, "", "")
 
 " Git highlighting
+call <sid>hi("gitcommitBlank",          s:gui05, "", s:cterm05, "", "", "")
 call <sid>hi("gitcommitOverflow",       s:gui08, "", s:cterm08, "", "", "")
 call <sid>hi("gitcommitSummary",        s:gui0B, "", s:cterm0B, "", "", "")
 call <sid>hi("gitcommitComment",        s:gui03, "", s:cterm03, "", "", "")
@@ -389,9 +390,24 @@ call <sid>hi("StartifySpecial",  s:gui03, "", s:cterm03, "", "", "")
 " Java highlighting
 call <sid>hi("javaOperator",     s:gui0D, "", s:cterm0D, "", "", "")
 
+" StatusLine highlight groups
+let s:gui10 = substitute(functions#Lighten(s:gui05, 6), '#', '', 'g')
+let s:gui11 = substitute(functions#Darken(s:gui07, 18), '#', '', 'g')
+let s:gui12 = substitute(functions#Darken(s:gui07, 29), '#', '', 'g')
+
+call <sid>hi("User1",        s:gui11, s:gui02, s:cterm04, s:cterm00, "", "")
+call <sid>hi("User2",        s:gui10, s:gui02, s:cterm05, s:cterm00, "bold", "")
+call <sid>hi("User3",        s:gui11, s:gui02, s:cterm0C, s:cterm00, "italic", "")
+call <sid>hi("User4",        s:gui00, s:gui12, s:cterm0C, s:cterm00, "bold", "")
+call <sid>hi("User5",        s:gui11, s:gui02, s:cterm04, s:cterm00, "italic", "")
+call <sid>hi("User6",        "", "", s:cterm00, s:cterm0B, "", "")
+call <sid>hi("User7",        "", "", s:cterm00, s:cterm0D, "", "")
+call <sid>hi("User8",        "", "", s:cterm00, s:cterm0C, "", "")
+call <sid>hi("User9",        "", "", s:cterm00, s:cterm09, "", "")
+
 " Remove functions
-delf <sid>hi
+delfunction <sid>hi
 
 " Remove color variables
-unlet s:gui00 s:gui01 s:gui02 s:gui03  s:gui04  s:gui05  s:gui06  s:gui07  s:gui08  s:gui09 s:gui0A  s:gui0B  s:gui0C  s:gui0D  s:gui0E  s:gui0F
+unlet s:gui00 s:gui01 s:gui02 s:gui03  s:gui04  s:gui05  s:gui06  s:gui07  s:gui08  s:gui09 s:gui0A  s:gui0B  s:gui0C  s:gui0D  s:gui0E  s:gui0F  s:gui10  s:gui11  s:gui12
 unlet s:cterm00 s:cterm01 s:cterm02 s:cterm03 s:cterm04 s:cterm05 s:cterm06 s:cterm07 s:cterm08 s:cterm09 s:cterm0A s:cterm0B s:cterm0C s:cterm0D s:cterm0E s:cterm0F

@@ -41,22 +41,6 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => StatusLine
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#statusLineHighlighter()
-	hi InsertMode         ctermfg=0  ctermbg=2
-	hi NormalMode         ctermfg=0  ctermbg=4
-	hi ReplaceMode        ctermfg=0  ctermbg=6
-	hi VisualMode         ctermfg=0  ctermbg=9
-
-	hi clear StatusLine
-	hi clear StatusLineNC
-	hi User1              ctermfg=12 ctermbg=0 guifg=#8f8f8f guibg=#434345
-	hi User2 cterm=bold   ctermfg=7  ctermbg=0 guifg=#dfe3ec guibg=#434345
-	hi User3 cterm=italic ctermfg=6  ctermbg=0 guifg=#b04b57 guibg=#434345
-	hi User4 cterm=bold   ctermfg=6  ctermbg=0 guifg=#000000 guibg=#a2a2a2
-	hi StatusLine                    ctermbg=0 guibg=#434345
-	hi StatusLineNC                  ctermbg=10 guifg=#5f5f5f guibg=#393939
-endfunction
-
 function! functions#readOnly()
 	if &readonly || !&modifiable
 		return ''
@@ -68,6 +52,112 @@ function! functions#getRelativeFilePath()
 	let path = expand('%:h')
 	if (path == '.')
 		return ''
+	elseif (path == '')
+		return ''
 	else
 		return path . '/'
+endfunction
+
+function! functions#getFileFormat()
+	let format = ''
+	let encoding = ''
+	if strlen(&ff) && &ff !=# 'unix'
+		let format = &ff
+	endif
+	if strlen(&fenc) && &fenc !=# 'utf-8'
+		let encoding = &fenc
+	endif
+
+	if format != '' && encoding != ''
+		return '[' . join([format, encoding], ',') . ']'
+	elseif format == '' && encoding == ''
+		return ''
+	else
+		return '[' . format . encoding . ']'
+	endif
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Color Manipulation
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let s:patterns = {}
+let s:patterns['hex']      = '\v#?(\x{2})(\x{2})(\x{2})'
+let s:patterns['shortHex'] = '\v#(\x{1})(\x{1})(\x{1})'
+
+function! functions#RGBtoHex (...)
+	let [r, g, b] = ( a:0==1 ? a:1 : a:000 )
+	let num = printf('%02x', float2nr(r)) . ''
+			\ . printf('%02x', float2nr(g)) . ''
+			\ . printf('%02x', float2nr(b)) . ''
+	return '#' . num
+endfunction
+
+function! functions#HexToRGB (color)
+	if type(a:color) == 2
+		let color = printf('%x', a:color)
+	else
+		let color = a:color | end
+
+	let matches = matchlist(color, s:patterns['hex'])
+	let factor  = 0x1
+
+	if empty(matches)
+		let matches = matchlist(color, s:patterns['shortHex'])
+		let factor  = 0x10
+	end
+
+	if len(matches) < 4
+		echohl Error
+		echom 'Couldnt parse ' . string(color) . ' ' .  string(matches)
+		echohl None
+		return | end
+
+	let r = str2nr(matches[1], 16) * factor
+	let g = str2nr(matches[2], 16) * factor
+	let b = str2nr(matches[3], 16) * factor
+
+	return [r, g, b]
+endfunction
+
+function! functions#Lighten(color, ...)
+	let amount = a:0 ?
+				\(type(a:1) < 2 ?
+					\str2float(a:1) : a:1 )
+				\: 5.0
+
+	if(amount < 1.0)
+		let amount = 1.0 + amount
+	else
+		let amount = 1.0 + (amount / 100.0)
+	end
+
+	let rgb = functions#HexToRGB(a:color)
+	let rgb = map(rgb, 'v:val * amount')
+	let rgb = map(rgb, 'v:val > 255.0 ? 255.0 : v:val')
+	let rgb = map(rgb, 'float2nr(v:val)')
+	let hex = functions#RGBtoHex(rgb)
+	return hex
+endfunction
+
+function! functions#Darken(color, ...)
+	let amount = a:0 ?
+				\(type(a:1) < 2 ?
+					\str2float(a:1) : a:1 )
+				\: 5.0
+
+	if(amount < 1.0)
+		let amount = 1.0 - amount
+	else
+		let amount = 1.0 - (amount / 100.0)
+	end
+
+	if(amount < 0.0)
+		let amount = 0.0 | end
+
+	let rgb = functions#HexToRGB(a:color)
+	let rgb = map(rgb, 'v:val * amount')
+	let rgb = map(rgb, 'v:val > 255.0 ? 255.0 : v:val')
+	let rgb = map(rgb, 'float2nr(v:val)')
+	let hex = functions#RGBtoHex(rgb)
+	return hex
 endfunction

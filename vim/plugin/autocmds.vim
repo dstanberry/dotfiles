@@ -35,9 +35,3 @@ augroup RestoreCursorShape
 	autocmd!
 	autocmd VimLeave * :!printf '\e[5 q'
 augroup END
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => StatusLine Processing
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd ColorScheme * call functions#statusLineHighlighter()
-autocmd BufEnter * call functions#statusLineHighlighter()
