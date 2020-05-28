@@ -11,8 +11,8 @@ let s:gui04        = "8f8f8f"
 let g:base16_gui04 = "8f8f8f"
 let s:gui05        = "cfd6e4"
 let g:base16_gui05 = "cfd6e4"
-let s:gui06        = "dfe3ed"
-let g:base16_gui06 = "dfe3ed"
+let s:gui06        = "d8dee9"
+let g:base16_gui06 = "d8dee9"
 let s:gui07        = "e7ebf1"
 let g:base16_gui07 = "e7ebf1"
 let s:gui08        = "6f8fb4"
@@ -200,7 +200,7 @@ call <sid>hi("VertSplit",     s:gui02, s:gui02, s:cterm02, s:cterm02, "none", ""
 call <sid>hi("ColorColumn",   "", s:gui01, "", s:cterm01, "none", "")
 call <sid>hi("CursorColumn",  "", s:gui01, "", s:cterm01, "none", "")
 call <sid>hi("CursorLine",    "", s:gui01, "", s:cterm01, "none", "")
-call <sid>hi("CursorLineNr",  s:gui04, s:gui01, s:cterm04, s:cterm01, "bold", "")
+call <sid>hi("CursorLineNr",  s:gui0A, s:gui01, s:cterm04, s:cterm01, "bold", "")
 call <sid>hi("QuickFixLine",  "", s:gui01, "", s:cterm01, "none", "")
 call <sid>hi("PMenu",         s:gui05, s:gui01, s:cterm05, s:cterm01, "none", "")
 call <sid>hi("PMenuSel",      s:gui01, s:gui05, s:cterm01, s:cterm05, "", "")

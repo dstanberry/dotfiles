@@ -29,6 +29,6 @@ Plug 'tpope/vim-repeat'
 Plug 'machakann/vim-highlightedyank'
 
 " statusline theme
-Plug 'itchyny/lightline.vim'
+"Plug 'itchyny/lightline.vim'
 
 call plug#end()

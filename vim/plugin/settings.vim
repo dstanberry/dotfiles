@@ -16,8 +16,8 @@ let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 " disable title modification
 set notitle
 
-" display the tabline
-set showtabline=2
+" hide the tabline
+set showtabline=0
 " display the statusline
 set laststatus=2
 
@@ -152,6 +152,8 @@ set pastetoggle=<F2>
 set shortmess+=A
 " disable splash screen
 set shortmess+=I
+" disable showing file info
+set shortmess+=F
 
 " use blinking vertical bar in insert mode
 let &t_SI="\<Esc>[5 q"
