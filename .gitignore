@@ -20,4 +20,4 @@ vim/viminfo
 zsh/zsh_history
 zsh/.zcompdump
 zsh/rc.private/*
-!zsh/rc.private.keep
+!zsh/rc.private/.keep
