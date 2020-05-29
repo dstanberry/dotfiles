@@ -39,16 +39,24 @@ function! functions#netrwToggle()
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => StatusLine
+" => File Metadata
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#readOnly()
+function! functions#readOnly() abort
 	if &readonly || !&modifiable
-		return ''
+		return 'RO,'
 	else
 		return ''
 endfunction
 
-function! functions#getRelativeFilePath()
+function! functions#getFileType() abort
+	if strlen(&ft)
+		return &ft
+	else
+		return ''
+	endif
+endfunction
+
+function! functions#getRelativeFilePath() abort
 	let path = expand('%:h')
 	if (path == '.')
 		return ''
@@ -58,7 +66,7 @@ function! functions#getRelativeFilePath()
 		return path . '/'
 endfunction
 
-function! functions#getFileFormat()
+function! functions#getFileFormat() abort
 	let format = ''
 	let encoding = ''
 	if strlen(&ff) && &ff !=# 'unix'
