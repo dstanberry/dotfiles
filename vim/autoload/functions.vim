@@ -77,11 +77,11 @@ function! functions#getFileFormat() abort
 	endif
 
 	if format != '' && encoding != ''
-		return '[' . join([format, encoding], ',') . ']'
+		return ',' . join([format, encoding], ',')
 	elseif format == '' && encoding == ''
 		return ''
 	else
-		return '[' . format . encoding . ']'
+		return ',' . format . encoding
 	endif
 endfunction
 

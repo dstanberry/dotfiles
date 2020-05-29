@@ -19,12 +19,10 @@ function! FocusStatusLine()
 	let l:statusline .= "%1*\ %{functions#getRelativeFilePath()}"
 	" filename
 	let l:statusline .= "%2*%t%*"
-	" read-only indicator and filetype
-	let l:statusline .= "%3*\ %([%{functions#readOnly()}%{functions#getFileType()}]%)"
+	" read-only indicator, filetype, file format and encoding (if not unix || utf-8)
+	let l:statusline .= "%3*\ %([%{functions#readOnly()}%{functions#getFileType()}%{functions#getFileFormat()}]%)"
 	" right-hand side
 	let l:statusline .= "%="
-	" file format and encoding (if not unix || utf-8)
-	let l:statusline .= "%5*\ %{functions#getFileFormat()}\ "
 	" line/column numbering
 	let l:statusline .= "%4*\ ℓ\ %l/%L\ с\ %c\ %3p%%\ "
 
@@ -54,7 +52,7 @@ endfunction
 
 function! s:setStatusLine(mode)
 	let l:bn = bufname("%")
-	if &buftype == "nofile" || &filetype == "netrw" || l:bn == "[BufExplorer]" || l:bn == "undotree_2"
+	if &buftype == "nofile" || &filetype == "netrw" || &filetype == "vim-plug" || l:bn == "[BufExplorer]" || l:bn == "undotree_2"
 		" don't set a status line for special windows.
 		setlocal statusline=%=
 	elseif a:mode == "inactive"
