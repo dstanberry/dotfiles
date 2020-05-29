@@ -1,4 +1,26 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Lazy Loading of expensive operations
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! functions#idleboot() abort
+	" make sure functions#idleboot is called only once.
+	augroup DeferInit
+		autocmd!
+	augroup END
+
+	" make sure deferred tasks are run exactly once.
+	doautocmd User LazyLoad
+	autocmd! User LazyLoad
+endfunction
+
+function! functions#defer(evalable) abort
+	if has('autocmd') && has('vim_starting')
+		execute 'autocmd User LazyLoad ' . a:evalable
+	else
+		execute a:evalable
+	endif
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => String Substitution
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! functions#substitute(pattern, replacement, flags) abort

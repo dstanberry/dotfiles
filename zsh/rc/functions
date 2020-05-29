@@ -43,3 +43,31 @@ function tmux() {
 	local SESSION_NAME=$(basename "${$(pwd)//[.:]/_}")
 	env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
 }
+
+function jump() {
+	emulate -L zsh
+
+	if [ $# -eq 0 ]; then
+		fd
+	else
+		local DIR="${*%%/}"
+
+		if [ $(hash -d|cut -d= -f1|grep -c "^${DIR}\$") = 0 ]; then
+			# not in `hash -d`: use as initial argument to fd.
+			fd "$*"
+		else
+			cd ~"$DIR"
+		fi
+	fi
+}
+
+function _jump_complete() {
+	emulate -L zsh
+
+	local COMPLETIONS
+	COMPLETIONS="$(hash -d|cut -d= -f1)"
+	reply=( "${(ps:\n:)COMPLETIONS}" )
+}
+
+# complete filenames and `hash -d` entries.
+compctl -f -K _jump_complete jump
