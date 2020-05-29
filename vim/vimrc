@@ -1,6 +1,3 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => vim-plug
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.config/vim/plugged')
 
 " undo history visualizer
@@ -28,7 +25,10 @@ Plug 'tpope/vim-repeat'
 " make the yanked region apparent
 Plug 'machakann/vim-highlightedyank'
 
-" statusline theme
-"Plug 'itchyny/lightline.vim'
+" create file and parent direcory at the same time
+Plug 'duggiefresh/vim-easydir'
+
+" enable focus events
+Plug 'tmux-plugins/vim-tmux-focus-events'
 
 call plug#end()
