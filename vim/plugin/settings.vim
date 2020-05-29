@@ -97,6 +97,9 @@ set nojoinspaces
 " allow crossing of line boundaries
 set whichwrap=b,h,l,s,<,>,[,],~
 
+" allow buffers with unsaved changes to be hidden
+set hidden
+
 " enable enhanced command line completion
 set wildmenu
 " enable file auto-completion
