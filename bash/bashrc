@@ -17,17 +17,6 @@ dedup_pathvar () {
 	set_var "$pathvar_name" "$deduped_path"
 }
 
-# base directory for user local binaries
-LOCAL="${HOME}/.local/bin"
-
-# include directory in PATH
-test -s "${LOCAL}" && \
-export PATH=$PATH:$LOCAL
-unset LOCAL
-
-# ensure no duplicate entries are present in PATH
-dedup_pathvar PATH
-
 ###############################################################
 # Directories
 ###############################################################
@@ -42,6 +31,28 @@ TMUX_CONFIG_HOME="${CONFIG_HOME}/tmux"
 
 # base directory for vim configuration files
 VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
+
+# ensure that vimruntime directories exist
+if [ ! -d ${VIM_CONFIG_HOME}/tmp/backup ]; then
+	mkdir -p ${VIM_CONFIG_HOME}/tmp/backup;
+fi
+
+if [ ! -d ${VIM_CONFIG_HOME}/tmp/netrw ]; then
+	mkdir -p ${CONFIG_HOME}/vim/tmp/netrw;
+fi
+
+if [ ! -d ${VIM_CONFIG_HOME}/tmp/swap ]; then
+	mkdir -p ${VIM_CONFIG_HOME}/tmp/swap;
+fi
+
+if [ ! -d ${VIM_CONFIG_HOME}/tmp/undo ]; then
+	mkdir -p ${VIM_CONFIG_HOME}/tmp/undo;
+fi
+
+# ensure that bash private directories exist
+if [ ! -d ${BASH_CONFIG_HOME}/rc.private ]; then
+	mkdir -p ${BASH_CONFIG_HOME}/rc.private;
+fi
 
 ###############################################################
 # General Options
@@ -67,9 +78,6 @@ bind "set bell-style none"
 
 # keymap to clear scrollback buffer
 bind -x '"\C-l": clear'
-
-# alternate option clear the scrollback buffer
-alias cls='printf "\033c"'
 
 ###############################################################
 # Tab Completion
@@ -102,23 +110,11 @@ PROMPT_COMMAND='history -a'
 HISTSIZE=500000
 HISTFILESIZE=100000
 
-# don't put duplicate lines in the history.
-export HISTCONTROL=erasedups:ignoreboth
-
-# ignore commands that have no forensic value
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
-
-# use standard ISO 8601 timestamp
-export HISTTIMEFORMAT='%F %T '
-
 # enable incremental history search with up/down arrows
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 bind '"\e[C": forward-char'
 bind '"\e[D": backward-char'
-
-# define history file location
-export HISTFILE="${BASH_CONFIG_HOME}/bash_history"
 
 ###############################################################
 # Navigation
@@ -145,17 +141,6 @@ function cd() {
 ###############################################################
 # Color
 ###############################################################
-# enable true color support
-export TERM=xterm-256color
-
-# enable syntax highlighting for less
-export LESS="-iFMRX"
-export LESSCOLOR=always
-export LESSCOLORIZER=/usr/bin/src-hilite-lesspipe.sh
-
-# set location for less history file
-export LESSHISTFILE="${CONFIG_HOME}/less/less_history"
-
 # enable dircolors if it is available
 if hash dircolors 2>/dev/null; then
 	test -r ${BASH_CONFIG_HOME}/dircolors && \
@@ -163,39 +148,15 @@ if hash dircolors 2>/dev/null; then
 	|| eval "$(dircolors -b)"
 fi
 
-# enable color support for ls
-alias ls='ls --color=auto --ignore=ntuser\.* --ignore=NTUSER\.* --almost-all --group-directories-first'
-
-# enable color support for grep
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-
-# wrap diff commands and colorize the output
-hash colordiff 2>/dev/null && alias diff=colordiff
-
 ###############################################################
 # Workspace
 ###############################################################
-# set the default editor
-export EDITOR=/usr/bin/vim
-
-# set location for vim runtime configuration
-export MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
-__viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
-__viminit+="${VIM_CONFIG_HOME}/after"
-__viminit+="|set viminfo='10,\\\"100,:20,%,n${VIM_CONFIG_HOME}/viminfo"
-__viminit+="|:source ${MYVIMRC}"
-__viminit+="|:set runtimepath+=${VIM_CONFIG_HOME},"
-__viminit+="${VIM_CONFIG_HOME}/after"
-export VIMINIT=$__viminit
-unset __viminit
-
-# set location for tmux runtime configuration
-hash tmux 2>/dev/null && alias tmux='tmux -f "${TMUX_CONFIG_HOME}/tmux.conf"'
-
-# define alias to reload bash configuration
-alias reload='source "${BASH_CONFIG_HOME}/bashrc"'
+# load runtime configuration files
+if [ -d "$BASH_CONFIG_HOME/rc" ]; then
+	for RC_FILE in $(find $BASH_CONFIG_HOME/rc -type f | sort); do
+		source "$RC_FILE"
+	done
+fi
 
 ###############################################################
 # Shell Prompt
@@ -205,96 +166,20 @@ test -s "${BASH_CONFIG_HOME}/prompt.bash" && \
 source "${BASH_CONFIG_HOME}/prompt.bash"
 
 ###############################################################
-# tmux
-###############################################################
-function tmx() {
-	# make sure even pre-existing tmux sessions use the latest SSH_AUTH_SOCK.
-	local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
-	if [ -r "$SSH_AUTH_SOCK" -a ! -L "$SSH_AUTH_SOCK" ]; then
-		ln -sf "$SSH_AUTH_SOCK" $SOCK_SYMLINK
-	fi
-
-	# if provided with args, pass them through.
-	if [[ -n "$@" ]]; then
-		env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux "$@"
-		return
-	fi
-
-	# check for .tmux file (poor man's tmuxinator).
-	if [ -x .tmux ]; then
-		# prompt the first time we see a given .tmux file before running it.
-		local DIGEST="$(openssl dgst -sha512 .tmux)"
-		if ! grep -q "$DIGEST" ${TMUX_CONFIG_HOME}/tmux.digests 2> /dev/null; then
-			cat .tmux
-			read -k 1 -r \
-			'REPLY?Trust (and run) this .tmux file? (t = trust, otherwise = skip) '
-			echo
-			if [[ $REPLY =~ ^[Tt]$ ]]; then
-				echo "$DIGEST" >> ${TMUX_CONFIG_HOME}/tmux.digests
-				./.tmux
-				return
-			fi
-		else
-			./.tmux
-			return
-		fi
-	fi
-
-	# attach to existing session, or create one, based on current directory.
-	local SESSION_NAME=$(basename "${$(pwd)//[.:]/_}")
-	env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
-}
-
-###############################################################
 # fzf
 ###############################################################
 if hash fzf 2>/dev/null; then
 	# load fzf keybinds
 	test -s "${BASH_CONFIG_HOME}/plugins/fzf" && \
 	source "${BASH_CONFIG_HOME}/plugins/fzf"
-
-	# Use ~~ as the trigger sequence instead of the default **
-	export FZF_COMPLETION_TRIGGER='?'
-
-	# set fd as the default source for fzf
-	export FZF_DEFAULT_COMMAND='fd -HI --hidden --follow --type file --color=always'
-	export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-	# define default options for fzf
-	if test -x `which bat`; then
-		__fzf_preview_opts="--ansi --preview-window 'right:60%' "
-		__fzf_preview_opts+="--preview 'bat --color=always "
-		__fzf_preview_opts+="--style=header,grid --line-range :300 {}'"
-		export FZF_DEFAULT_OPTS=$__fzf_preview_opts
-		unset __fzf_preview_opts
-	fi
-
-	export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-	 --color=dark
-	 --color=fg:#bebebe,bg:-1,hl:#a3be8c
-	 --color=fg+:#e7ebf1,bg+:-1,hl+:#a3be8c
-	 --color=info:#4c566a,prompt:#81a1c1,pointer:#bf616a
-	 --color=marker:#ebcb8b,spinner:#4c566a,header:#5f5f5f'
 fi
-
-###############################################################
-# bat
-###############################################################
-# define configuration path for bat
-if hash bat 2>/dev/null; then
-	export BAT_CONFIG_PATH="${CONFIG_HOME}/bat/bat.conf"
-fi
-
-###############################################################
-# Dotfiles
-###############################################################
-# define alias to manage dotfiles repository
-alias dot='/usr/bin/git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME'
 
 ###############################################################
 # _Custom
 ###############################################################
-# check for machine-specific rc file and source it if available
-if [[ -s "${BASH_CONFIG_HOME}/private.bash" ]]; then
-	source "${BASH_CONFIG_HOME}/private.bash"
+# check for machine-specific rc files and source them if available
+if [ -d "$BASH_CONFIG_HOME/rc.private" ]; then
+	for RC_FILE in $(find $BASH_CONFIG_HOME/rc -type f | sort); do
+		source "$RC_FILE"
+	done
 fi

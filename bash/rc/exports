@@ -1,0 +1,72 @@
+# define configuration path for bat
+if hash bat 2>/dev/null; then
+	export BAT_CONFIG_PATH="${CONFIG_HOME}/bat/bat.conf"
+fi
+
+# set the default editor
+export EDITOR=$(which vim)
+
+if hash fzf 2>/dev/null; then
+	# Use ? as the trigger sequence instead of the default **
+	export FZF_COMPLETION_TRIGGER='?'
+
+	# set fd as the default source for fzf
+	export FZF_DEFAULT_COMMAND='fd -HI --hidden --follow --type file --color=always'
+	export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
+	# define default options for fzf
+	if test -x `which bat`; then
+		__fzf_preview_opts="--ansi --preview-window 'right:60%' "
+		__fzf_preview_opts+="--preview 'bat --color=always "
+		__fzf_preview_opts+="--style=header,grid --line-range :300 {}'"
+		export FZF_DEFAULT_OPTS=$__fzf_preview_opts
+		unset __fzf_preview_opts
+	fi
+
+	export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+	 --color=dark
+	 --color=fg:#bebebe,bg:-1,hl:#a3be8c
+	 --color=fg+:#e7ebf1,bg+:-1,hl+:#a3be8c
+	 --color=info:#4c566a,prompt:#81a1c1,pointer:#bf616a
+	 --color=marker:#ebcb8b,spinner:#4c566a,header:#5f5f5f'
+fi
+
+# use standard ISO 8601 timestamp
+export HISTTIMEFORMAT='%F %T '
+
+# don't put duplicate lines in the history.
+export HISTCONTROL=erasedups:ignoreboth
+
+# ignore commands that have no forensic value
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+
+# define history file location
+export HISTFILE="${BASH_CONFIG_HOME}/bash_history"
+
+# enable syntax highlighting for less
+export LESS="-iFMRX"
+export LESSCOLOR=always
+export LESSCOLORIZER=/usr/bin/src-hilite-lesspipe.sh
+
+# set location for less history file
+export LESSHISTFILE="${CONFIG_HOME}/less/less_history"
+
+# set location forim runtime configuration
+export MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
+__viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
+__viminit+="${VIM_CONFIG_HOME}/after"
+__viminit+="|set viminfo='10,\\\"100,:20,%,n${VIM_CONFIG_HOME}/viminfo"
+__viminit+="|:source ${MYVIMRC}"
+__viminit+="|:set runtimepath+=${VIM_CONFIG_HOME},"
+__viminit+="${VIM_CONFIG_HOME}/after"
+export VIMINIT=$__viminit
+unset __viminit
+
+# define the default pager
+export PAGER=$(which less)
+
+# save the history
+export SAVEHIST=$HISTSIZE
+
+# enable true color support
+export TERM=xterm-256color

@@ -5,8 +5,8 @@ function! variables#init() abort
 	" set up shortcut variables for "hash -d" directories.
 	let l:dirs=system(
 		\ 'zsh -c "' .
-		\ 'test -e ~/.config/zsh/rc.private/directories.zsh && ' .
-		\ 'source ~/.config/zsh/rc.private/directories.zsh; ' .
+		\ 'test -e ~/.config/zsh/rc.private/hashes && ' .
+		\ 'source ~/.config/zsh/rc.private/hashes; ' .
 		\ 'hash -d"'
 		\ )
 	let l:lines=split(l:dirs, '\n')

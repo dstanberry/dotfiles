@@ -103,6 +103,28 @@ TMUX_CONFIG_HOME="${CONFIG_HOME}/tmux"
 # base directory forim configuration files
 VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
 
+# ensure that vimruntime directories exist
+if [ ! -d ${VIM_CONFIG_HOME}/tmp/backup ]; then
+	mkdir -p ${VIM_CONFIG_HOME}/tmp/backup;
+fi
+
+if [ ! -d ${VIM_CONFIG_HOME}/tmp/netrw ]; then
+	mkdir -p ${CONFIG_HOME}/vim/tmp/netrw;
+fi
+
+if [ ! -d ${VIM_CONFIG_HOME}/tmp/swap ]; then
+	mkdir -p ${VIM_CONFIG_HOME}/tmp/swap;
+fi
+
+if [ ! -d ${VIM_CONFIG_HOME}/tmp/undo ]; then
+	mkdir -p ${VIM_CONFIG_HOME}/tmp/undo;
+fi
+
+# ensure that zsh private directories exist
+if [ ! -d ${ZSH_CONFIG_HOME}/rc.private ]; then
+	mkdir -p ${ZSH_CONFIG_HOME}/rc.private;
+fi
+
 ###############################################################
 # History
 ###############################################################
