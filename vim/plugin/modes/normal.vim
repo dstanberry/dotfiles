@@ -39,18 +39,18 @@ nnoremap <leader>x :x<cr>
 nnoremap <leader>z :bd<cr>
 
 " switch to next buffer
-nnoremap <tab> :bnext<cr>
+nnoremap <silent> <tab> :bnext<cr>
 " switch to previous buffer
-nnoremap <s-tab> :bprevious<cr>
+nnoremap <silent> <s-tab> :bprevious<cr>
 
 " switch to left window
-nnoremap <leader>h :wincmd h<cr>
+nnoremap <silent> <leader>h :wincmd h<cr>
 " switch to top window
-nnoremap <leader>k :wincmd k<cr>
+nnoremap <silent> <leader>k :wincmd k<cr>
 " switch to right window
-nnoremap <leader>l :wincmd l<cr>
+nnoremap <silent> <leader>l :wincmd l<cr>
 " switch to bottom window
-nnoremap <leader>j :wincmd j<cr>
+nnoremap <silent> <leader>j :wincmd j<cr>
 
 " increment window width
 nnoremap <silent> <Leader>= :vertical resize +5<cr>
