@@ -42,6 +42,17 @@ function! BlurStatusLine()
 	return l:statusline
 endfunction
 
+function! BlurExplorerStatusLine()
+	" initialize statusline
+	let l:statusline = ""
+	" relative file path
+	let l:statusline .= "%3*\ %{functions#getFilePath()}"
+	" right-hand side
+	let l:statusline .= "%="
+
+	return l:statusline
+endfunction
+
 function! s:BlurWindows()
 	for winnum in range(1, winnr('$'))
 		if winnum != winnr()
@@ -52,7 +63,9 @@ endfunction
 
 function! s:setStatusLine(mode)
 	let l:bn = bufname("%")
-	if &buftype == "nofile" || &filetype == "netrw" || &filetype == "vim-plug" || l:bn == "[BufExplorer]" || l:bn == "undotree_2"
+	if l:bn ==? "netrwtreelisting" || &filetype == "netrw"
+		setlocal statusline=%!BlurExplorerStatusLine()
+	elseif &buftype == "nofile" || &filetype == "vim-plug" || l:bn == "[BufExplorer]" || l:bn == "undotree_2"
 		" don't set a status line for special windows.
 		setlocal statusline=%=
 	elseif a:mode == "inactive"

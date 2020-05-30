@@ -78,6 +78,10 @@ function! functions#getFileType() abort
 	endif
 endfunction
 
+function! functions#getFilePath() abort
+	return expand('%:p:h')
+endfunction
+
 function! functions#getRelativeFilePath() abort
 	let path = expand('%:h')
 	if (path == '.')
