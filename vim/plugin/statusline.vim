@@ -29,7 +29,7 @@ function! FocusStatusLine()
 	return l:statusline
 endfunction
 
-function! BlurStatusLine()
+function! DimStatusLine()
 	" initialize statusline
 	let l:statusline = ""
 	" relative file path
@@ -42,7 +42,7 @@ function! BlurStatusLine()
 	return l:statusline
 endfunction
 
-function! BlurExplorerStatusLine()
+function! DimExplorerStatusLine()
 	" initialize statusline
 	let l:statusline = ""
 	" relative file path
@@ -53,10 +53,10 @@ function! BlurExplorerStatusLine()
 	return l:statusline
 endfunction
 
-function! s:BlurWindows()
+function! s:DimCurrentStatusLine()
 	for winnum in range(1, winnr('$'))
 		if winnum != winnr()
-			call setwinvar(winnum, '&statusline', '%!BlurStatusLine()')
+			call setwinvar(winnum, '&statusline', '%!DimStatusLine()')
 		endif
 	endfor
 endfunction
@@ -64,12 +64,12 @@ endfunction
 function! s:setStatusLine(mode)
 	let l:bn = bufname("%")
 	if l:bn ==? "netrwtreelisting" || &filetype == "netrw"
-		setlocal statusline=%!BlurExplorerStatusLine()
+		setlocal statusline=%!DimExplorerStatusLine()
 	elseif &buftype == "nofile" || &filetype == "vim-plug" || l:bn == "[BufExplorer]" || l:bn == "undotree_2"
 		" don't set a status line for special windows.
 		setlocal statusline=%=
 	elseif a:mode == "inactive"
-		setlocal statusline=%!BlurStatusLine()
+		setlocal statusline=%!DimStatusLine()
 	else
 		setlocal statusline=%!FocusStatusLine()
 	endif
@@ -77,7 +77,7 @@ endfunction
 
 augroup Status
 	autocmd!
-	autocmd VimEnter * call s:BlurWindows()
+	autocmd VimEnter * call s:DimCurrentStatusLine()
 	autocmd BufWinEnter,WinEnter * call s:setStatusLine("active")
 	autocmd FocusLost,WinLeave * call s:setStatusLine("inactive")
 	autocmd CmdwinEnter,CmdlineEnter * call s:setStatusLine("command") | redraw
