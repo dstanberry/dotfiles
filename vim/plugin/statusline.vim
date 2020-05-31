@@ -53,7 +53,7 @@ function! DimExplorerStatusLine()
 	return l:statusline
 endfunction
 
-function! s:DimCurrentStatusLine()
+function! s:CheckStatusLines()
 	for winnum in range(1, winnr('$'))
 		if winnum != winnr()
 			call setwinvar(winnum, '&statusline', '%!DimStatusLine()')
@@ -70,14 +70,16 @@ function! s:setStatusLine(mode)
 		setlocal statusline=%=
 	elseif a:mode == "inactive"
 		setlocal statusline=%!DimStatusLine()
+		setlocal nocursorline
 	else
 		setlocal statusline=%!FocusStatusLine()
+		setlocal cursorline
 	endif
 endfunction
 
 augroup Status
 	autocmd!
-	autocmd VimEnter * call s:DimCurrentStatusLine()
+	autocmd VimEnter * call s:CheckStatusLines()
 	autocmd BufWinEnter,WinEnter * call s:setStatusLine("active")
 	autocmd FocusLost,WinLeave * call s:setStatusLine("inactive")
 	autocmd CmdwinEnter,CmdlineEnter * call s:setStatusLine("command") | redraw
