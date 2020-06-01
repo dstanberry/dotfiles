@@ -63,7 +63,7 @@ endfunction
 
 function! s:setStatusLine(mode)
 	let l:bn = bufname("%")
-	if l:bn ==? "netrwtreelisting" || &filetype == "netrw"
+	if &filetype == "netrw" || &filetype == "help"
 		setlocal statusline=%!DimExplorerStatusLine()
 	elseif &buftype == "nofile" || &filetype == "vim-plug" || l:bn == "[BufExplorer]" || l:bn == "undotree_2"
 		" don't set a status line for special windows.
