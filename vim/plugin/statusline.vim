@@ -24,7 +24,7 @@ function! FocusStatusLine()
 	" right-hand side
 	let l:statusline .= "%="
 	" line/column numbering
-	let l:statusline .= "%4*\ ℓ\ %l/%L\ с\ %c\ %3p%%\ "
+	let l:statusline .= "%4*\ ℓ\ %l/%L\ с\ %c\ "
 
 	return l:statusline
 endfunction
