@@ -272,6 +272,9 @@ if hash fzf 2>/dev/null; then
 	# load fzf keybinds
 	test -s "${ZSH_CONFIG_HOME}/plugins/fzf" && \
 	source "${ZSH_CONFIG_HOME}/plugins/fzf"
+
+	autoload _fzf
+	_fzf
 fi
 
 ###############################################################
