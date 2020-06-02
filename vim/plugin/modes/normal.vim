@@ -44,22 +44,22 @@ nnoremap <silent> <tab> :bnext<cr>
 nnoremap <silent> <s-tab> :bprevious<cr>
 
 " switch to left window
-nnoremap <silent> <leader>h :wincmd h<cr>
+nnoremap <silent> <c-h> :wincmd h<cr>
 " switch to top window
-nnoremap <silent> <leader>k :wincmd k<cr>
+nnoremap <silent> <c-k> :wincmd k<cr>
 " switch to right window
-nnoremap <silent> <leader>l :wincmd l<cr>
+nnoremap <silent> <c-l> :wincmd l<cr>
 " switch to bottom window
-nnoremap <silent> <leader>j :wincmd j<cr>
+nnoremap <silent> <c-j> :wincmd j<cr>
 
 " increment window width
-nnoremap <silent> <Leader>= :vertical resize +5<cr>
+nnoremap <silent> <leader>= :vertical resize +5<cr>
 " decrement window width
-nnoremap <silent> <Leader>- :vertical resize -5<cr>
+nnoremap <silent> <leader>- :vertical resize -5<cr>
 " increment window height
-nnoremap <silent> <Leader>+ :resize +5<cr>
+nnoremap <silent> <leader>+ :resize +5<cr>
 " decrement window height
-nnoremap <silent> <Leader>_ :resize -5<cr>
+nnoremap <silent> <leader>_ :resize -5<cr>
 
 " trim trailing whitespace
 nmap <leader>zz :call  normal#trim()<cr>
