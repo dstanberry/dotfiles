@@ -14,7 +14,7 @@ function! FocusStatusLine()
 	let l:statusline .= "%9*%{(mode()==#'v')?'\ \ visual\ ':''}"
 	let l:statusline .= "%9*%{(mode()==#'V')?'\ \ v-line\ ':''}"
 	" paste indicator
-	let l:statusline .= "%3*%{(&paste)?'\ \ 📋':''}"
+	let l:statusline .= "%3*%{(&paste)?'\ \ \(paste\)':''}"
 	" relative file path
 	let l:statusline .= "%1*\ %{functions#getRelativeFilePath()}"
 	" filename
@@ -47,6 +47,8 @@ function! DimExplorerStatusLine()
 	let l:statusline = ""
 	" relative file path
 	let l:statusline .= "%3*\ %{functions#getFilePath()}"
+	" filetype
+	let l:statusline .= "%3*\ %y"
 	" right-hand side
 	let l:statusline .= "%="
 
