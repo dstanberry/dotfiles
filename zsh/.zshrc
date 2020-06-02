@@ -185,10 +185,6 @@ if tput cbt &> /dev/null; then
 	bindkey "$(tput cbt)" reverse-menu-complete # make Shift-tab go to previous completion
 fi
 
-# enable incremental history search with up/down arrows
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
 # enable advancing to the next/previous word in a command
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
@@ -285,17 +281,21 @@ source "${ZSH_CONFIG_HOME}/plugins/zsh-autosuggestions.zsh" && \
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=59'
 
 ###############################################################
+# zsh-syntax-highlighting
+###############################################################
+test -s "${ZSH_CONFIG_HOME}/plugins/zsh-syntax-highlighting.zsh" && \
+source "${ZSH_CONFIG_HOME}/plugins/zsh-syntax-highlighting.zsh"
+
+###############################################################
 # zsh-history-substring-search
 ###############################################################
 test -s "${ZSH_CONFIG_HOME}/plugins/zsh-history-substring-search.zsh" && \
 source "${ZSH_CONFIG_HOME}/plugins/zsh-history-substring-search.zsh" && \
 HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
-###############################################################
-# zsh-syntax-highlighting
-###############################################################
-test -s "${ZSH_CONFIG_HOME}/plugins/zsh-syntax-highlighting.zsh" && \
-source "${ZSH_CONFIG_HOME}/plugins/zsh-syntax-highlighting.zsh"
+# enable incremental history search with up/down arrows
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 ###############################################################
 # Hooks
