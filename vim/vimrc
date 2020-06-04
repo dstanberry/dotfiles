@@ -37,4 +37,7 @@ Plug 'tmux-plugins/vim-tmux-focus-events'
 " dim the current window/buffer when not active
 Plug 'blueyed/vim-diminactive'
 
+" show completion entries for typed characters
+Plug 'vim-scripts/AutoComplPop'
+
 call plug#end()
