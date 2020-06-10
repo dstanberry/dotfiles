@@ -1,8 +1,74 @@
+# poor man's ag runtime configuration
+function ag() {
+	command ag --pager="less -iFMRSX" --color-path=34\;3 --color-line-number=33 --color-match=35\;1\;4 "$@"
+}
+
+# interactively delete filename(s) by name
+function del() {
+	if [ $# -eq 0 ]; then
+		echo "error: at least one argument is required"
+		return 1
+	fi
+
+	local filename=$1
+
+	if [[ $filename == .* ]]; then
+		filename=${filename/#/\\}
+	fi
+
+	if [ $# -eq 2 ]; then
+		fd "^${filename}$" $2 -tf -X rm -i
+	else
+		fd "^${filename}$" -tf -X rm -i
+	fi
+}
+
+# poor man's fd runtime configuration
+function fd() {
+	command fd -H "$@"
+}
+
 # find in history
 function fh() {
 	print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')
 }
 
+# print response headers, following redirects.
+function headers() {
+  emulate -L zsh
+
+  if [ $# -ne 1 ]; then
+    echo "error: a host argument is required"
+    return 1
+  fi
+
+  local REMOTE=$1
+
+  curl -sSL -D - "$REMOTE" -o /dev/null
+}
+
+# poor man's rg runtime configuration
+function rg()
+{
+	command rg --colors line:fg:yellow --colors line:style:bold --colors path:fg:blue --colors path:style:bold --colors match:fg:magenta --colors match:style:underline -p "$@" | less -iFMRSX
+}
+
+# display information about a remote ssl certificate
+function ssl() {
+	if [ $# -ne 1 ]; then
+		echo "error: a host argument is required"
+		return 1
+	fi
+
+	local REMOTE=$1
+
+	echo | openssl s_client -showcerts -servername "$REMOTE" -connect "$REMOTE:443" 2>/dev/null | openssl x509 -inform pem -noout -text
+}
+
+# print a pruned version of a tree
+function subtree() {
+	tree -a --prune -P "$@"
+}
 # try to run tmux with session management
 function tmx() {
 	# make sure even pre-existing tmux sessions use the latest SSH_AUTH_SOCK.
