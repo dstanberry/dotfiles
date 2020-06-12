@@ -7,8 +7,8 @@ let maplocalleader="\\"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" clear highlighted search matches
-nnoremap <c-l> :nohl<cr><c-l> :echo "Search cleared"<cr>
+" toggle highlighting of search matches
+nnoremap <f3> :set hlsearch!<cr>
 
 " enable very magic mode during search operations
 nnoremap / /\v

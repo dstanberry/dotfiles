@@ -37,11 +37,3 @@ augroup RestoreCursor
 	autocmd!
 	autocmd BufWinEnter * call functions#rescursor()
 augroup END
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Restore Cursor Shape on Exit
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-augroup RestoreCursorShape
-	autocmd!
-	autocmd VimLeave * :!printf '\e[5 q'
-augroup END
