@@ -177,8 +177,15 @@ setopt PUSHD_IGNORE_DUPS
 # don't print dir stack after pushing/popping
 setopt PUSHD_SILENT
 
-# emacs bindings, set to -v for vi bindings
-bindkey -e
+# enable vi style keybinds
+bindkey -v
+
+# use emacs style keybind to go to the beginning/end of a line
+bindkey "^A" beginning-of-line
+bindkey "^E" end-of-line
+
+# use emacs style keybind to copy the current line
+bindkey -M viins "^Y" yank
 
 # use "cbt" capability ("back_tab", as per `man terminfo`), if we have it:
 if tput cbt &> /dev/null; then
@@ -437,6 +444,44 @@ function -maybe-show-vcs-info() {
 }
 
 add-zsh-hook precmd -maybe-show-vcs-info	
+
+# change cursor shape
+function -set-cursor() {
+	if [[ $TMUX = '' ]]; then
+		echo -ne $1
+	else
+		echo -ne "\ePtmux;\e\e$1\e\\"
+	fi
+}
+
+# block cursor
+function -set-block-cursor() {
+	-set-cursor '\e[1 q'
+}
+
+# beam cursor
+function -set-beam-cursor() {
+	-set-cursor '\e[5 q'
+}
+
+# set the cursor shape depending on current vi mode
+function zle-keymap-select {
+  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
+      -set-block-cursor
+  else
+      -set-beam-cursor
+  fi
+}
+
+zle -N zle-keymap-select
+
+# begin the line editor in vi insert mode on startup
+function zle-line-init() {
+	zle -K viins
+	-set-beam-cursor
+}
+
+zle -N zle-line-init
 
 ###############################################################
 # _Custom
