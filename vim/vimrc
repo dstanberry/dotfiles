@@ -4,7 +4,6 @@ call plug#begin('~/.config/vim/plugged')
 Plug 'mbbill/undotree'
 
 " command line fuzzy finder
-Plug '/usr/bin/fzf'
 Plug 'junegunn/fzf.vim'
 
 " maintain git workflow within vim
