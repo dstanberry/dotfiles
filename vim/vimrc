@@ -21,7 +21,7 @@ Plug 'tpope/vim-surround'
 " enable repeating supported plug maps with <.>
 Plug 'tpope/vim-repeat'
 
-" make the yanked region apparent
+" highlight the yanked region
 Plug 'machakann/vim-highlightedyank'
 
 " create file and parent direcory at the same time
