@@ -400,10 +400,10 @@ call <sid>hi("User2",        s:gui10, s:gui02, s:cterm05, s:cterm00, "bold", "")
 call <sid>hi("User3",        s:gui11, s:gui02, s:cterm0C, s:cterm00, "italic", "")
 call <sid>hi("User4",        s:gui00, s:gui12, s:cterm0C, s:cterm00, "bold", "")
 call <sid>hi("User5",        s:gui11, s:gui02, s:cterm04, s:cterm00, "italic", "")
-call <sid>hi("User6",        "", "", s:cterm00, s:cterm0B, "", "")
-call <sid>hi("User7",        "", "", s:cterm00, s:cterm0D, "", "")
-call <sid>hi("User8",        "", "", s:cterm00, s:cterm0C, "", "")
-call <sid>hi("User9",        "", "", s:cterm00, s:cterm09, "", "")
+call <sid>hi("User6",        s:gui00, s:gui0B, s:cterm00, s:cterm0D, "", "")
+call <sid>hi("User7",        s:gui00, s:gui08, s:cterm00, s:cterm0D, "", "")
+call <sid>hi("User8",        s:gui00, s:gui0C, s:cterm00, s:cterm0D, "", "")
+call <sid>hi("User9",        s:gui00, s:gui0F, s:cterm00, s:cterm0D, "", "")
 
 " Remove functions
 delfunction <sid>hi
