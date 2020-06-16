@@ -52,10 +52,10 @@ export LESSHISTFILE="${CONFIG_HOME}/less/less_history"
 export MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
 __viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
 __viminit+="${VIM_CONFIG_HOME}/after"
-__viminit+="|set viminfo='10,\\\"100,:20,%,n${VIM_CONFIG_HOME}/viminfo"
 __viminit+="|:source ${MYVIMRC}"
 __viminit+="|:set runtimepath+=${VIM_CONFIG_HOME},"
 __viminit+="${VIM_CONFIG_HOME}/after"
+__viminit+="|call functions#neoviminit()"
 export VIMINIT=$__viminit
 unset __viminit
 

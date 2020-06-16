@@ -1,4 +1,13 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Ad hoc definitions for (neo)vim settings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! functions#neoviminit() abort
+	if !has('nvim')
+		set viminfo='10,\"100,:20,%,n${VIM_CONFIG_HOME}/viminfo
+	endif
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Lazy Loading of expensive operations
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! functions#idleboot() abort
