@@ -4,7 +4,10 @@
 call plug#begin('~/.config/vim/pack/remote/opt')
 
 " show completion entries for typed characters
-Plug 'vim-scripts/AutoComplPop'
+Plug 'vim-scripts/AutoComplPop', { 'on': [] }
+
+" intellisense engine with language server protocol support
+Plug 'neoclide/coc.nvim', { 'branch': 'release' }
 
 " command line fuzzy finder
 Plug 'junegunn/fzf.vim', { 'on': ['Files', 'Buffers', 'Ag', 'Rg', 'Windows'] }
