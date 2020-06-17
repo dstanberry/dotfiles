@@ -204,3 +204,10 @@ function! functions#Darken(color, ...)
 	let hex = functions#RGBtoHex(rgb)
 	return hex
 endfunction
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Check file for disk changes
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! functions#checkFile(timer)
+	silent! checktime
+	call timer_start(1000, 'functions#checkFile')
+endfunction
