@@ -42,6 +42,28 @@ function! DimStatusLine()
 	return l:statusline
 endfunction
 
+function! DimQuickfixStatusLine()
+	" initialize statusline
+	let l:statusline = ""
+	" relative file path
+	let l:statusline .= "%3*\ \ [Quickfix]"
+	" right-hand side
+	let l:statusline .= "%="
+
+	return l:statusline
+endfunction
+
+function! DimFzfStatusLine()
+	" initialize statusline
+	let l:statusline = ""
+	" relative file path
+	let l:statusline .= "%3*\ \ fzf"
+	" right-hand side
+	let l:statusline .= "%="
+
+	return l:statusline
+endfunction
+
 function! DimExplorerStatusLine()
 	" initialize statusline
 	let l:statusline = ""
@@ -65,7 +87,11 @@ endfunction
 
 function! s:setStatusLine(mode)
 	let l:bn = bufname("%")
-	if &filetype == "netrw" || &filetype == "help" || &filetype == "qf"
+	if &filetype == "qf"
+		setlocal statusline=%!DimQuickfixStatusLine()
+	elseif &filetype == "fzf"
+		setlocal statusline=%!DimFzfStatusLine()
+	elseif &filetype == "netrw" || &filetype == "help"
 		setlocal statusline=%!DimExplorerStatusLine()
 	elseif &buftype == "nofile" || &filetype == "vim-plug" || l:bn == "[BufExplorer]" || l:bn == "undotree_2"
 		" don't set a status line for special windows.
@@ -82,6 +108,7 @@ endfunction
 augroup Status
 	autocmd!
 	autocmd VimEnter * call s:CheckStatusLines()
+	autocmd User FzfStatusLine call <SID>setStatusLine("active")
 	autocmd BufWinEnter,WinEnter * call s:setStatusLine("active")
 	autocmd FocusLost,WinLeave * call s:setStatusLine("inactive")
 	autocmd CmdwinEnter,CmdlineEnter * call s:setStatusLine("command") | redraw
