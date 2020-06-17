@@ -7,13 +7,13 @@ call plug#begin('~/.config/vim/pack/remote/opt')
 Plug 'vim-scripts/AutoComplPop'
 
 " command line fuzzy finder
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf.vim', { 'on': ['Files', 'Buffers', 'Ag', 'Rg', 'Windows'] }
 
 " emphasize the current matched search pattern
 Plug 'wincent/loupe'
 
 " undo history visualizer
-Plug 'mbbill/undotree'
+Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 
 " dim the current window/buffer when not active
 Plug 'blueyed/vim-diminactive'
@@ -28,7 +28,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'machakann/vim-highlightedyank'
 
 " prettier for vim
-Plug 'prettier/vim-prettier', {'do': 'npm install' }
+Plug 'prettier/vim-prettier', {'do': 'npm install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 " enable repeating supported plug maps with <.>
 Plug 'tpope/vim-repeat'
