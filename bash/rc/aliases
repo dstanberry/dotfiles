@@ -12,5 +12,8 @@ alias grep='grep --color=auto'
 # enable color support for ls
 alias ls='ls --color=auto --ignore=ntuser\.* --ignore=NTUSER\.* --almost-all --group-directories-first'
 
+# use neovim in place of vim (if available)
+hash nvim 2>/dev/null && alias vim=nvim
+
 # define alias to reload bash configuration
 alias reload='source "${BASH_CONFIG_HOME}/bashrc"'
