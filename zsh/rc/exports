@@ -64,6 +64,3 @@ export PAGER=$(which less)
 
 # save the history
 export SAVEHIST=$HISTSIZE
-
-# enable true color support
-export TERM=xterm-256color
