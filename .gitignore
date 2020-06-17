@@ -5,7 +5,7 @@ htop
 less/less_history
 inkscape
 tmux/tmux.digests
-vim/bundle/*
+vim/pack/remote/opt/*
 vim/tmp/backup/*
 vim/tmp/netrw/*
 vim/tmp/swap/*

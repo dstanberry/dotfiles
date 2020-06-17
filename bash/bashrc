@@ -33,6 +33,10 @@ TMUX_CONFIG_HOME="${CONFIG_HOME}/tmux"
 VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
 
 # ensure that vimruntime directories exist
+if [ ! -d ${VIM_CONFIG_HOME}/pack/remote/opt ]; then
+	mkdir -p ${VIM_CONFIG_HOME}/pack/remote/opt;
+fi
+
 if [ ! -d ${VIM_CONFIG_HOME}/tmp/backup ]; then
 	mkdir -p ${VIM_CONFIG_HOME}/tmp/backup;
 fi

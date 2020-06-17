@@ -1,42 +1,48 @@
-call plug#begin('~/.config/vim/bundle')
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin Manager
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call plug#begin('~/.config/vim/pack/remote/opt')
 
-" undo history visualizer
-Plug 'mbbill/undotree'
+" show completion entries for typed characters
+Plug 'vim-scripts/AutoComplPop'
 
 " command line fuzzy finder
 Plug 'junegunn/fzf.vim'
 
-" maintain git workflow within vim
-Plug 'jreybert/vimagit'
-" a git wrapper for vim
-Plug 'tpope/vim-fugitive'
-" display git changes in gutter
-Plug 'mhinz/vim-signify'
-
-" prettier for vim
-Plug 'prettier/vim-prettier', {'do': 'npm install' }
-
-" surround sequence with tags
-Plug 'tpope/vim-surround'
-" enable repeating supported plug maps with <.>
-Plug 'tpope/vim-repeat'
-
-" highlight the yanked region
-Plug 'machakann/vim-highlightedyank'
-
-" create file and parent direcory at the same time
-Plug 'duggiefresh/vim-easydir'
-
 " emphasize the current matched search pattern
 Plug 'wincent/loupe'
 
-" enable focus events
-Plug 'tmux-plugins/vim-tmux-focus-events'
+" undo history visualizer
+Plug 'mbbill/undotree'
 
 " dim the current window/buffer when not active
 Plug 'blueyed/vim-diminactive'
 
-" show completion entries for typed characters
-Plug 'vim-scripts/AutoComplPop'
+" create file and parent direcory at the same time
+Plug 'duggiefresh/vim-easydir'
+
+" a git wrapper for vim
+Plug 'tpope/vim-fugitive'
+
+" highlight the yanked region
+Plug 'machakann/vim-highlightedyank'
+
+" prettier for vim
+Plug 'prettier/vim-prettier', {'do': 'npm install' }
+
+" enable repeating supported plug maps with <.>
+Plug 'tpope/vim-repeat'
+
+" display git changes in gutter
+Plug 'mhinz/vim-signify'
+
+" surround sequence with tags
+Plug 'tpope/vim-surround'
+
+" enable focus events
+Plug 'tmux-plugins/vim-tmux-focus-events'
+
+" maintain git workflow within vim
+Plug 'jreybert/vimagit'
 
 call plug#end()
