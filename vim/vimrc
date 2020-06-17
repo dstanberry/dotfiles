@@ -1,4 +1,4 @@
-call plug#begin('~/.config/vim/plugged')
+call plug#begin('~/.config/vim/bundle')
 
 " undo history visualizer
 Plug 'mbbill/undotree'
