@@ -1,5 +1,7 @@
 #!/bin/sh
 
+cd "${0%/*}"
+
 SESSION="dotfiles"
 SESSION_AVAILABLE=$(tmux list-sessions | grep $SESSION)
 
@@ -12,4 +14,4 @@ if test -z "$SESSION_AVAILABLE"; then
 	tmux send-keys -t $SESSION:vim.bottom "dot status" Enter
 fi
 
-tmux attach -t $SESSION:vim.bottom
+tmux attach -t $SESSION:vim.top
