@@ -26,6 +26,12 @@ nnoremap <silent> - :silent edit <c-r>=empty(expand('%')) ? '.' : expand('%:p:h'
 nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
 nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
 
+" navigate quickfix list using arrow keys
+nnoremap <silent> <up> :cprevious<cr>
+nnoremap <silent> <down> :cnext<cr>
+nnoremap <silent> <left> :cpfile<cr>
+nnoremap <silent> <right> :cnfile<cr>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
