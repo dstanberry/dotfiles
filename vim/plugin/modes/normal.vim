@@ -10,6 +10,9 @@ let maplocalleader="\\"
 " toggle highlighting of search matches
 nnoremap <f3> :set hlsearch!<cr>
 
+" undotree: toggle the undo-tree panel
+nnoremap <F5> :UndotreeToggle<cr>
+
 " enable very magic mode during search operations
 nnoremap / /\v
 
@@ -77,9 +80,6 @@ nnoremap O O<esc>
 " capitalize all characters in string
 nnoremap <c-u> viwU<esc>
 
-" undotree: toggle undo-tree panel
-nnoremap <leader>u :UndotreeToggle<cr>
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -92,9 +92,6 @@ nnoremap <leader><cr> :Buffers<cr>
 
 " netrw: toggle netrw buffer
 nnoremap <silent> <leader>n :call functions#netrwToggle()<cr>
-
-" undotree: toggle the undo-tree panel
-nnoremap <F5> :UndotreeToggle<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
