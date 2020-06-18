@@ -17,9 +17,6 @@ dedup_pathvar () {
 	set_var "$pathvar_name" "$deduped_path"
 }
 
-# include custom defined functions
-fpath=($ZSH_CONFIG_HOME/site-functions $fpath)
-
 ###############################################################
 # General Options
 ###############################################################
@@ -102,6 +99,9 @@ TMUX_CONFIG_HOME="${CONFIG_HOME}/tmux"
 
 # base directory forim configuration files
 VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
+
+# include custom defined functions
+fpath=(${ZSH_CONFIG_HOME}/site-functions $fpath)
 
 # ensure that vimruntime directories exist
 if [ ! -d ${VIM_CONFIG_HOME}/pack/remote/opt ]; then
