@@ -103,23 +103,41 @@ VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
 # include custom defined functions
 fpath=(${ZSH_CONFIG_HOME}/site-functions $fpath)
 
-# ensure that vimruntime directories exist
+# ensure that local binaries are available
+if [ ! -d ${HOME}/.local/bin ]; then
+	mkdir -p ${HOME}/.local/bin;
+fi
+
+if [ ! -L ${HOME}/.local/bin/menos ]; then
+	ln -s ${CONFIG_HOME}/less/menos ${HOME}/.local/bin/menos;
+fi
+
+# ensure tmux configuration exists
+if [ ! -L ${HOME}/.tmux.conf ]; then
+	ln -s ${TMUX_CONFIG_HOME}/tmux.conf ${HOME}/.tmux.conf
+fi
+
+# ensure that vim packages directories exist
 if [ ! -d ${VIM_CONFIG_HOME}/pack/remote/opt ]; then
 	mkdir -p ${VIM_CONFIG_HOME}/pack/remote/opt;
 fi
 
+# ensure that vim backup directory exists
 if [ ! -d ${VIM_CONFIG_HOME}/tmp/backup ]; then
 	mkdir -p ${VIM_CONFIG_HOME}/tmp/backup;
 fi
 
+# ensure that vim netrw directory exists
 if [ ! -d ${VIM_CONFIG_HOME}/tmp/netrw ]; then
 	mkdir -p ${CONFIG_HOME}/vim/tmp/netrw;
 fi
 
+# ensure that vim swap directory exists
 if [ ! -d ${VIM_CONFIG_HOME}/tmp/swap ]; then
 	mkdir -p ${VIM_CONFIG_HOME}/tmp/swap;
 fi
 
+# ensure that vim undo directory exists
 if [ ! -d ${VIM_CONFIG_HOME}/tmp/undo ]; then
 	mkdir -p ${VIM_CONFIG_HOME}/tmp/undo;
 fi
