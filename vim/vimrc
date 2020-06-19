@@ -7,7 +7,9 @@ call plug#begin('~/.config/vim/pack/remote/opt')
 Plug 'vim-scripts/AutoComplPop', { 'on': [] }
 
 " intellisense engine with language server protocol support
-Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+if has('nvim')
+	Plug 'neoclide/coc.nvim', { 'branch': 'release' }
+endif
 
 " command line fuzzy finder
 Plug 'junegunn/fzf.vim', { 'on': ['Files', 'Buffers', 'Ag', 'Rg', 'Windows'] }
@@ -29,9 +31,6 @@ Plug 'tpope/vim-fugitive'
 
 " highlight the yanked region
 Plug 'machakann/vim-highlightedyank'
-
-" prettier for vim
-Plug 'prettier/vim-prettier', {'do': 'npm install', 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
 
 " enable repeating supported plug maps with <.>
 Plug 'tpope/vim-repeat'

@@ -103,7 +103,11 @@ set hidden
 " enable enhanced command line completion
 set wildmenu
 " enable file auto-completion
-set wildmode=list:longest
+set wildmode=full
+" enable completion menu
+if has('nvim')
+	set wildoptions+=pum
+endif
 
 " default behaviour when creating new panes
 set splitbelow splitright

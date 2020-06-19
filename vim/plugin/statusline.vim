@@ -21,6 +21,8 @@ function! FocusStatusLine()
 	let l:statusline .= "%2*%t%*"
 	" read-only indicator, filetype, file format and encoding (if not unix || utf-8)
 	let l:statusline .= "%3*\ %([%{functions#readOnly()}%{functions#getFileType()}%{functions#getFileFormat()}]%)"
+	" show coc status
+	let l:statusline .= "%1*\ %{coc#status()}%{get(b:,'coc_current_function','')}"
 	" right-hand side
 	let l:statusline .= "%="
 	" line/column numbering
