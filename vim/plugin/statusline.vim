@@ -21,10 +21,12 @@ function! FocusStatusLine()
 	let l:statusline .= "%2*%t%*"
 	" read-only indicator, filetype, file format and encoding (if not unix || utf-8)
 	let l:statusline .= "%3*\ %([%{functions#readOnly()}%{functions#getFileType()}%{functions#getFileFormat()}]%)"
-	" show coc status
-	let l:statusline .= "%1*\ %{coc#status()}%{get(b:,'coc_current_function','')}"
 	" right-hand side
 	let l:statusline .= "%="
+	" show coc status
+	if has('nvim')
+		let l:statusline .= "%1*%{coc#status()}\ "
+	endif
 	" line/column numbering
 	let l:statusline .= "%4*\ ℓ\ %l/%L\ с\ %c\ "
 
@@ -79,7 +81,7 @@ function! DimExplorerStatusLine()
 	return l:statusline
 endfunction
 
-function! s:CheckStatusLines()
+function! s:CheckStatusLines(...) abort
 	for winnum in range(1, winnr('$'))
 		if winnum != winnr()
 			call setwinvar(winnum, '&statusline', '%!DimStatusLine()')
@@ -107,11 +109,17 @@ function! s:setStatusLine(mode)
 	endif
 endfunction
 
+if exists('*timer_start')
+	call timer_start(100, function('s:CheckStatusLines'))
+else
+	call s:CheckStatusLines()
+endif
+
 augroup Status
 	autocmd!
 	autocmd VimEnter * call s:CheckStatusLines()
 	autocmd User FzfStatusLine call <SID>setStatusLine("active")
-	autocmd BufWinEnter,WinEnter * call s:setStatusLine("active")
+	autocmd BufWinEnter,WinEnter,ShellCmdPost,BufWritePost * call s:setStatusLine("active")
 	autocmd FocusLost,WinLeave * call s:setStatusLine("inactive")
 	autocmd CmdwinEnter,CmdlineEnter * call s:setStatusLine("command") | redraw
 augroup END
