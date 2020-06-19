@@ -46,7 +46,7 @@ function! DimStatusLine()
 	return l:statusline
 endfunction
 
-function! DimQuickfixStatusLine()
+function! SetQuickfixStatusLine()
 	" initialize statusline
 	let l:statusline = ""
 	" relative file path
@@ -57,7 +57,7 @@ function! DimQuickfixStatusLine()
 	return l:statusline
 endfunction
 
-function! DimFzfStatusLine()
+function! SetFzfStatusLine()
 	" initialize statusline
 	let l:statusline = ""
 	" relative file path
@@ -68,7 +68,7 @@ function! DimFzfStatusLine()
 	return l:statusline
 endfunction
 
-function! DimExplorerStatusLine()
+function! SetExplorerStatusLine()
 	" initialize statusline
 	let l:statusline = ""
 	" relative file path
@@ -83,20 +83,24 @@ endfunction
 
 function! s:CheckStatusLines(...) abort
 	for winnum in range(1, winnr('$'))
+		let l:bn = bufname(winbufnr(winnum))
 		if winnum != winnr()
 			call setwinvar(winnum, '&statusline', '%!DimStatusLine()')
+		endif
+		if l:bn == "[Plugins]"
+			call setwinvar(winnum, '&statusline', '')
 		endif
 	endfor
 endfunction
 
-function! s:setStatusLine(mode)
+function! s:SetStatusLine(mode)
 	let l:bn = bufname("%")
 	if &filetype == "qf"
-		setlocal statusline=%!DimQuickfixStatusLine()
+		setlocal statusline=%!SetQuickfixStatusLine()
 	elseif &filetype == "fzf"
-		setlocal statusline=%!DimFzfStatusLine()
+		setlocal statusline=%!SetFzfStatusLine()
 	elseif &filetype == "netrw" || &filetype == "help"
-		setlocal statusline=%!DimExplorerStatusLine()
+		setlocal statusline=%!SetExplorerStatusLine()
 	elseif &buftype == "nofile" || &filetype == "vim-plug" || l:bn == "[BufExplorer]" || l:bn == "undotree_2"
 		" don't set a status line for special windows.
 		setlocal statusline=%=
@@ -118,8 +122,10 @@ endif
 augroup Status
 	autocmd!
 	autocmd VimEnter * call s:CheckStatusLines()
-	autocmd User FzfStatusLine call <SID>setStatusLine("active")
-	autocmd BufWinEnter,WinEnter,ShellCmdPost,BufWritePost * call s:setStatusLine("active")
-	autocmd FocusLost,WinLeave * call s:setStatusLine("inactive")
-	autocmd CmdwinEnter,CmdlineEnter * call s:setStatusLine("command") | redraw
+	autocmd BufEnter,BufWinEnter * call s:CheckStatusLines()
+	autocmd BufLeave,BufWinLeave * call s:SetStatusLine("inactive")
+	autocmd FocusGained,WinEnter * call s:SetStatusLine("active")
+	autocmd FocusLost,WinLeave * call s:SetStatusLine("inactive")
+	autocmd CmdwinEnter,CmdlineEnter * call s:SetStatusLine("command") | redraw
+	autocmd User FzfStatusLine call <SID>SetStatusLine("active")
 augroup END
