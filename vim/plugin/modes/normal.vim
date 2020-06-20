@@ -13,24 +13,11 @@ nnoremap <f3> :set hlsearch!<cr>
 " undotree: toggle the undo-tree panel
 nnoremap <F5> :UndotreeToggle<cr>
 
-" enable very magic mode during search operations
-nnoremap / /\v
+" capitalize all characters in string
+nnoremap <c-u> viwU<esc>
 
-" avoid unintentional switches to Ex mode.
-nnoremap Q <nop>
-
-" disable recording to a register
-nnoremap q <nop>
-
-" avoid unintentional switches to man(ual)
-nnoremap K <nop>
-
-" show directory of current file in explorer
-nnoremap <silent> - :silent edit <c-r>=empty(expand('%')) ? '.' : expand('%:p:h')<cr><cr>
-
-" store relative jumps in the jumplist if they exceed a threshold.
-nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
-nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
+" bind ctl-c to escape key
+nnoremap <c-c> <esc>
 
 " navigate quickfix list using arrow keys
 nnoremap <silent> <up> :cprevious<cr>
@@ -38,9 +25,40 @@ nnoremap <silent> <down> :cnext<cr>
 nnoremap <silent> <left> :cpfile<cr>
 nnoremap <silent> <right> :cnfile<cr>
 
-" move to the beginning/end of the current line
+" enable very magic mode during search operations
+nnoremap / /\v
+
+" allow semi-colon to enter command mode
+nnoremap ; :
+
+" move to the beginningof the current line
 nnoremap H ^
+
+" avoid unintentional switches to man(ual)
+nnoremap K <nop>
+
+" move to the end of the current line
 nnoremap L g_
+
+" insert newline without entering insert mode
+nnoremap o o<esc>
+nnoremap O O<esc>
+
+" disable recording to a register
+nnoremap q <nop>
+
+" avoid unintentional switches to Ex mode.
+nnoremap Q <nop>
+
+" yank to end of line
+noremap Y y$
+
+" show directory of current file in explorer
+nnoremap <silent> - :silent edit <c-r>=empty(expand('%')) ? '.' : expand('%:p:h')<cr><cr>
+
+" store relative jumps in the jumplist if they exceed a threshold.
+nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
+nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader
@@ -80,13 +98,6 @@ nnoremap <silent> <leader>_ :resize -5<cr>
 " trim trailing whitespace
 nmap <leader>zz :call  normal#trim()<cr>
 
-" insert newline without entering insert mode
-nnoremap o o<esc>
-nnoremap O O<esc>
-
-" capitalize all characters in string
-nnoremap <c-u> viwU<esc>
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -117,12 +128,3 @@ nnoremap <localleader>gh :diffget //2<cr>
 
 "vim-fugitive: resolve git conflict using right hunk
 nnoremap <localleader>gl :diffget //3<cr>
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Normal, Visual, Select, Operator-pending
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" yank to end of line
-noremap Y y$
-
-" bind ctl-c to escape key
-nnoremap <c-c> <esc>
