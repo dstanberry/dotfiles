@@ -4,7 +4,13 @@
 augroup DeferInit
 	autocmd!
 	if has('vim_starting')
-		autocmd CursorHold,CursorHoldI * call functions#idleboot()
+		" CursorHold events have not been firing in neovim
+		" ... so the following bad hack will have to do for now
+		if has('nvim')
+			autocmd CursorMoved,CursorMovedI * call functions#idleboot()
+		else
+			autocmd CursorHold,CursorHoldI * call functions#idleboot()
+		endif
 	endif
 augroup END
 "
