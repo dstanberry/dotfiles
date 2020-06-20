@@ -20,6 +20,9 @@ Plug 'wincent/loupe'
 " undo history visualizer
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 
+" file-type aware comments
+Plug 'tpope/vim-commentary'
+
 " dim the current window/buffer when not active
 Plug 'blueyed/vim-diminactive'
 

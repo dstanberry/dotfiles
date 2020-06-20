@@ -19,6 +19,9 @@ nnoremap / /\v
 " avoid unintentional switches to Ex mode.
 nnoremap Q <nop>
 
+" disable recording to a register
+nnoremap q <nop>
+
 " avoid unintentional switches to man(ual)
 nnoremap K <nop>
 
@@ -34,6 +37,10 @@ nnoremap <silent> <up> :cprevious<cr>
 nnoremap <silent> <down> :cnext<cr>
 nnoremap <silent> <left> :cpfile<cr>
 nnoremap <silent> <right> :cnfile<cr>
+
+" move to the beginning/end of the current line
+nnoremap H ^
+nnoremap L g_
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader
