@@ -104,7 +104,7 @@ function! s:CheckStatusLines(...) abort
 				call setwinvar(winnum, '&statusline', '%!DimStatusLine()')
 			else
 				" don't set a statusline for special windows.
-				call setwinvar(winnum, '&statusline', '')
+				call setwinvar(winnum, '&statusline', '%=')
 			endif
 		endif
 		if winnum == winnr()
