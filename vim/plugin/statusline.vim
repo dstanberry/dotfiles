@@ -83,33 +83,37 @@ endfunction
 
 function! s:CheckStatusLines(...) abort
 	for winnum in range(1, winnr('$'))
-		let l:bn = bufname(winbufnr(winnum))
+		let l:ftype = getftype(bufname(winbufnr(winnum))) 
 		if winnum != winnr()
 			call setwinvar(winnum, '&statusline', '%!DimStatusLine()')
 		endif
-		if l:bn == "[Plugins]"
+		if winnum == winnr() && l:ftype != "file"
 			call setwinvar(winnum, '&statusline', '')
+			echom l:ftype
 		endif
 	endfor
 endfunction
 
 function! s:SetStatusLine(mode)
+	" get buffer name
 	let l:bn = bufname("%")
+	" get buffer type
+	let l:ftype = getftype(bufname(winbufnr("%"))) 
 	if &filetype == "qf"
 		setlocal statusline=%!SetQuickfixStatusLine()
 	elseif &filetype == "fzf"
 		setlocal statusline=%!SetFzfStatusLine()
 	elseif &filetype == "netrw" || &filetype == "help"
 		setlocal statusline=%!SetExplorerStatusLine()
-	elseif &buftype == "nofile" || &filetype == "vim-plug" || l:bn == "[BufExplorer]" || l:bn == "undotree_2"
-		" don't set a status line for special windows.
-		setlocal statusline=%=
 	elseif a:mode == "inactive"
 		setlocal statusline=%!DimStatusLine()
 		setlocal nocursorline
-	else
+	elseif a:mode == "active" && l:ftype == "file"
 		setlocal statusline=%!FocusStatusLine()
 		setlocal cursorline
+	else
+		" don't set a status line for special windows.
+		setlocal statusline=%=
 	endif
 endfunction
 
@@ -126,6 +130,5 @@ augroup Status
 	autocmd BufLeave,BufWinLeave * call s:SetStatusLine("inactive")
 	autocmd FocusGained,WinEnter * call s:SetStatusLine("active")
 	autocmd FocusLost,WinLeave * call s:SetStatusLine("inactive")
-	autocmd CmdwinEnter,CmdlineEnter * call s:SetStatusLine("command") | redraw
 	autocmd User FzfStatusLine call <SID>SetStatusLine("active")
 augroup END
