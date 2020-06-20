@@ -83,13 +83,33 @@ endfunction
 
 function! s:CheckStatusLines(...) abort
 	for winnum in range(1, winnr('$'))
+		" get buffer filetype
+		let l:filetype = getbufvar(winbufnr(winnum),'&filetype')
+		" get buffer type
 		let l:ftype = getftype(bufname(winbufnr(winnum))) 
+
+		" dim statusline if appropriate
 		if winnum != winnr()
-			call setwinvar(winnum, '&statusline', '%!DimStatusLine()')
+			if l:filetype == "qf"
+				" special statusline for quickfix list
+				call setwinvar(winnum, '&statusline', '%!SetQuickfixStatusLine()')
+			elseif l:filetype == "fzf"
+				" special statusline for fzf
+				call setwinvar(winnum, '&statusline', '%!SetFzfStatusLine()')
+			elseif l:filetype == "netrw" || l:filetype == "help"
+				" special statusline for netrw and help buffers
+				call setwinvar(winnum, '&statusline', '%!SetExplorerStatusLine()')
+			elseif l:ftype == "file"
+				" dim statusline
+				call setwinvar(winnum, '&statusline', '%!DimStatusLine()')
+			else
+				" don't set a statusline for special windows.
+				call setwinvar(winnum, '&statusline', '')
+			endif
 		endif
-		if winnum == winnr() && l:ftype != "file"
-			call setwinvar(winnum, '&statusline', '')
-			echom l:ftype
+		if winnum == winnr()
+			" focus statusline
+			call s:SetStatusLine("active")
 		endif
 	endfor
 endfunction
@@ -99,20 +119,26 @@ function! s:SetStatusLine(mode)
 	let l:bn = bufname("%")
 	" get buffer type
 	let l:ftype = getftype(bufname(winbufnr("%"))) 
+
 	if &filetype == "qf"
+		" special statusline for quickfix list
 		setlocal statusline=%!SetQuickfixStatusLine()
 	elseif &filetype == "fzf"
+		" special statusline for fzf
 		setlocal statusline=%!SetFzfStatusLine()
 	elseif &filetype == "netrw" || &filetype == "help"
+		" special statusline for netrw and help buffers
 		setlocal statusline=%!SetExplorerStatusLine()
-	elseif a:mode == "inactive"
+	elseif a:mode == "inactive" && l:ftype == "file"
+		" dim the statusline for standard text buffers
 		setlocal statusline=%!DimStatusLine()
 		setlocal nocursorline
 	elseif a:mode == "active" && l:ftype == "file"
+		" focus the statusline for standard text buffers
 		setlocal statusline=%!FocusStatusLine()
 		setlocal cursorline
 	else
-		" don't set a status line for special windows.
+		" don't set a statusline for special windows.
 		setlocal statusline=%=
 	endif
 endfunction
@@ -123,7 +149,7 @@ else
 	call s:CheckStatusLines()
 endif
 
-augroup Status
+augroup StatusLine
 	autocmd!
 	autocmd VimEnter * call s:CheckStatusLines()
 	autocmd BufEnter,BufWinEnter * call s:CheckStatusLines()
