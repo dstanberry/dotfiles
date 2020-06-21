@@ -13,9 +13,6 @@ nnoremap <f3> :set hlsearch!<cr>
 " undotree: toggle the undo-tree panel
 nnoremap <F5> :UndotreeToggle<cr>
 
-" capitalize all characters in string
-nnoremap <c-u> viwU<esc>
-
 " bind ctl-c to escape key
 nnoremap <c-c> <esc>
 
