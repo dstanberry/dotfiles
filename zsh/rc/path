@@ -3,7 +3,7 @@ LOCAL="${HOME}/.local/bin"
 
 # include directory in PATH
 test -d "${LOCAL}" && \
-export PATH=$PATH:$LOCAL
+export PATH=$LOCAL:$PATH
 unset LOCAL
 
 # ensure no duplicate entries are present in PATH
