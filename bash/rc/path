@@ -1,9 +1,13 @@
+# base directory for system-wide available scripts
+ULOCAL="/usr/local/bin"
+
 # base directory for user local binaries
 LOCAL="${HOME}/.local/bin"
 
 # include directory in PATH
 test -d "${LOCAL}" && \
-export PATH=$LOCAL:$PATH
+export PATH=$LOCAL:$ULOCAL:$PATH
+unset ULOCAL
 unset LOCAL
 
 # ensure no duplicate entries are present in PATH
