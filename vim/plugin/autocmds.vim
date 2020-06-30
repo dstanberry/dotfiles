@@ -13,17 +13,6 @@ augroup DeferInit
 		endif
 	endif
 augroup END
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Editor
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" enable clipboard support within wsl
-if system('uname -r') =~ "microsoft"
-	augroup Yank
-		autocmd!
-		autocmd TextYankPost * :call system('clip.exe ',@")
-	augroup END
-end
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Syntax Highlighting
