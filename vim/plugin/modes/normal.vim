@@ -75,13 +75,13 @@ nnoremap <silent> <tab> :bnext<cr>
 nnoremap <silent> <s-tab> :bprevious<cr>
 
 " switch to left window
-nnoremap <silent> <c-h> :wincmd h<cr>
+nmap <silent> <leader>h :wincmd h<cr>
 " switch to top window
-nnoremap <silent> <c-k> :wincmd k<cr>
+nmap <silent> <leader>k :wincmd k<cr>
 " switch to right window
-nnoremap <silent> <c-l> :wincmd l<cr>
+nmap <silent> <leader>l :wincmd l<cr>
 " switch to bottom window
-nnoremap <silent> <c-j> :wincmd j<cr>
+nmap <silent> <leader>j :wincmd j<cr>
 
 " increment window width
 nnoremap <silent> <leader>= :vertical resize +5<cr>
