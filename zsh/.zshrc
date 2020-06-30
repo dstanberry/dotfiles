@@ -124,6 +124,14 @@ if [[ $(uname -r) == *"microsoft"* ]]; then
 	fi
 fi
 
+# ensure general purpose scripts exists in PATH
+for file in $(ls ${CONFIG_HOME}/bin)
+do
+	if [ ! -L ${HOME}/.local/bin/$file ]; then
+		ln -s ${CONFIG_HOME}/bin/$file ${HOME}/.local/bin/$file;
+	fi
+done
+
 # ensure tmux configuration exists
 if [ ! -L ${HOME}/.tmux.conf ]; then
 	ln -s ${TMUX_CONFIG_HOME}/tmux.conf ${HOME}/.tmux.conf

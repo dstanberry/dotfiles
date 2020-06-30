@@ -42,11 +42,6 @@ if [ ! -L ${HOME}/.local/bin/menos ]; then
 	ln -s ${CONFIG_HOME}/less/menos ${HOME}/.local/bin/menos;
 fi
 
-# ensure tmux configuration exists
-if [ ! -L ${HOME}/.tmux.conf ]; then
-	ln -s ${TMUX_CONFIG_HOME}/tmux.conf ${HOME}/.tmux.conf
-fi
-
 # in wsl environments, ensure clipboard scripts exist in PATH
 if [[ $(uname -r) == *"microsoft"* ]]; then
 	if [ ! -L ${HOME}/.local/bin/pbcopy ]; then
@@ -56,6 +51,19 @@ if [[ $(uname -r) == *"microsoft"* ]]; then
 	if [ ! -L ${HOME}/.local/bin/pbpaste ]; then
 		ln -s ${CONFIG_HOME}/wsl/pbpaste ${HOME}/.local/bin/pbpaste;
 	fi
+fi
+
+# ensure general purpose scripts exists in PATH
+for file in $(ls ${CONFIG_HOME}/bin)
+do
+	if [ ! -L ${HOME}/.local/bin/$file ]; then
+		ln -s ${CONFIG_HOME}/bin/$file ${HOME}/.local/bin/$file;
+	fi
+done
+
+# ensure tmux configuration exists
+if [ ! -L ${HOME}/.tmux.conf ]; then
+	ln -s ${TMUX_CONFIG_HOME}/tmux.conf ${HOME}/.tmux.conf
 fi
 
 # ensure that vim packages directories exist
