@@ -17,3 +17,8 @@ hash nvim 2>/dev/null && alias vim=nvim
 
 # define alias to reload bash configuration
 alias reload='source "${BASH_CONFIG_HOME}/bashrc"'
+
+# dirty hack to expose native specific Windows utils
+if [[ $(uname -r) == *"microsoft"* ]]; then
+	alias code='sh /mnt/c/Program\ Files/Microsoft\ VS\ Code/bin/code'
+fi

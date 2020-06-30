@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# poor man's pbpaste within wsl
+if [[ $(uname -r) == *"microsoft"* ]]; then
+	powershell.exe -NoProfile Get-Clipboard | sed 's/\r$//' | sed -z '$ s/\n$//'
+	exit 0
+fi

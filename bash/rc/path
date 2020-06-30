@@ -1,14 +1,26 @@
 # base directory for system-wide available scripts
 ULOCAL="/usr/local/bin"
-
 # base directory for user local binaries
 LOCAL="${HOME}/.local/bin"
 
 # include directory in PATH
-test -d "${LOCAL}" && \
 export PATH=$LOCAL:$ULOCAL:$PATH
+
 unset ULOCAL
 unset LOCAL
+
+# dirty hack to expose native specific Windows utils
+if [[ $(uname -r) == *"microsoft"* ]]; then
+	WIN="/mnt/c/Windows"
+	SYS32="/mnt/c/Windows/System32"
+	PWSH="/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
+
+	export PATH=$WIN:$SYS32:$PWSH:$PATH
+
+	unset WIN
+	unset SYS32
+	unset PWSH
+fi
 
 # ensure no duplicate entries are present in PATH
 dedup_pathvar PATH

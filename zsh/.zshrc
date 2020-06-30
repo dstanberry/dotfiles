@@ -108,8 +108,20 @@ if [ ! -d ${HOME}/.local/bin ]; then
 	mkdir -p ${HOME}/.local/bin;
 fi
 
+# ensure less wrapper exists in PATH
 if [ ! -L ${HOME}/.local/bin/menos ]; then
 	ln -s ${CONFIG_HOME}/less/menos ${HOME}/.local/bin/menos;
+fi
+
+# in wsl environments, ensure clipboard scripts exist in PATH
+if [[ $(uname -r) == *"microsoft"* ]]; then
+	if [ ! -L ${HOME}/.local/bin/pbcopy ]; then
+		ln -s ${CONFIG_HOME}/wsl/pbcopy ${HOME}/.local/bin/pbcopy;
+	fi
+
+	if [ ! -L ${HOME}/.local/bin/pbpaste ]; then
+		ln -s ${CONFIG_HOME}/wsl/pbpaste ${HOME}/.local/bin/pbpaste;
+	fi
 fi
 
 # ensure tmux configuration exists
