@@ -204,6 +204,7 @@ function! functions#Darken(color, ...)
 	let hex = functions#RGBtoHex(rgb)
 	return hex
 endfunction
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Check file for disk changes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -211,3 +212,43 @@ function! functions#checkFile(timer)
 	silent! checktime
 	call timer_start(1000, 'functions#checkFile')
 endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Base64 Encoding
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! functions#str2bytes(str)
+	return map(range(len(a:str)), 'char2nr(a:str[v:val])')
+endfunction
+
+function! functions#b64encode(str)
+	let s:b64_table = [
+		\ "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P",
+		\ "Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f",
+		\ "g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v",
+		\ "w","x","y","z","0","1","2","3","4","5","6","7","8","9","+","/"]
+	let bytes = functions#str2bytes(a:str)
+	let b64 = []
+	
+	for i in range(0, len(bytes) - 1, 3)
+		let n = bytes[i] * 0x10000
+			\ + get(bytes, i + 1, 0) * 0x100
+			\ + get(bytes, i + 2, 0)
+		call add(b64, s:b64_table[n / 0x40000])
+		call add(b64, s:b64_table[n / 0x1000 % 0x40])
+		call add(b64, s:b64_table[n / 0x40 % 0x40])
+		call add(b64, s:b64_table[n % 0x40])
+	endfor
+
+	if len(bytes) % 3 == 1
+		let b64[-1] = '='
+		let b64[-2] = '='
+	endif
+
+	if len(bytes) % 3 == 2
+		let b64[-1] = '='
+	endif
+
+	return join(b64, '')
+endfunction
+
+
