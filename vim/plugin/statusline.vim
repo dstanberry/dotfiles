@@ -119,6 +119,8 @@ function! s:SetStatusLine(mode)
 	let l:bn = bufname("%")
 	" get buffer type
 	let l:ftype = getftype(bufname(winbufnr("%"))) 
+	" get filename
+	let l:fname = expand('%:t')
 
 	if &filetype == "qf"
 		" special statusline for quickfix list
@@ -133,7 +135,7 @@ function! s:SetStatusLine(mode)
 		" dim the statusline for standard text buffers
 		setlocal statusline=%!DimStatusLine()
 		setlocal nocursorline
-	elseif a:mode == "active" && l:ftype == "file"
+	elseif a:mode == "active" && l:ftype == "file" || strlen(l:fname) > 0
 		" focus the statusline for standard text buffers
 		setlocal statusline=%!FocusStatusLine()
 		setlocal cursorline
