@@ -28,8 +28,26 @@ function +vi-git-untracked() {
 	fi
 }
 
-# anonymous function to avoid leaking variables.
-function () {
+# change cursor shape
+function -set-cursor() {
+	if [[ $TMUX = '' ]]; then
+		echo -ne $1
+	else
+		echo -ne "\ePtmux;\e\e$1\e\\"
+	fi
+}
+
+# block cursor
+function -set-block-cursor() {
+	-set-cursor '\e[2 q'
+}
+
+# beam cursor
+function -set-beam-cursor() {
+	-set-cursor '\e[5 q'
+}
+
+function -set-prompt() {
 	# check for tmux by looking at $TERM, because $TMUX won't be propagated to any
 	# nested sudo shells but $TERM will.
 	local TMUXING=$([[ "$TERM" =~ "tmux" ]] && echo tmux)
@@ -42,18 +60,20 @@ function () {
 		local LVL=$SHLVL
 	fi
 	if [[ $EUID -eq 0 ]]; then
-		local PREFIX='%F{red}%f '
+		local PREFIX='%F{red}\uE0A2%f '
 	else
 		local PREFIX=''
 	fi
-	if [[ $EUID -eq 0 ]]; then
+	local mode=$1
+	if [[ $mode == insert ]]; then
 		local SUFFIX='${vcs_info_msg_0_}%f'$(printf '%%F{green}\u276f%.0s%%f' {1..$LVL})
 	else
-		local SUFFIX='${vcs_info_msg_0_}%f'$(printf '%%F{green}\u276f%.0s%%f' {1..$LVL})
+		local SUFFIX='${vcs_info_msg_0_}%f'$(printf '%%F{magenta}\u276f%.0s%%f' {1..$LVL})
 	fi
 	
 	# define the primary prompt
-	export PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%b%F{blue}%B%3~%b%F{yellow}%B%(1j.*.)%(?..!)%b%f %B${SUFFIX}%b "
+	PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%b%F{blue}%B%3~%b%F{yellow}%B%(1j.*.)%(?..!)%b%f %B${SUFFIX}%b "
+
 	if [[ -n "$TMUXING" ]]; then
 		# outside tmux, ZLE_RPROMPT_INDENT ends up eating the space after PS1, and
 		# prompt still gets corrupted even if we add an extra space to compensate.
@@ -66,3 +86,25 @@ export SPROMPT="zsh: correct %F{red}'%R'%f to %F{red}'%r'%f? [%B%Uy%u%bes, %B%Un
 
 # don't trigger spell check on dotfiles
 export CORRECT_IGNORE_FILE='.*'
+
+# set the cursor shape depending on current vi mode
+function zle-keymap-select {
+	if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
+		-set-prompt normal
+	else
+		-set-prompt insert
+	fi
+	zle reset-prompt
+}
+
+zle -N zle-keymap-select
+
+# begin the line editor in vi insert mode on startup
+function zle-line-init() {
+	zle -K viins
+	-set-prompt insert
+	-set-block-cursor
+	zle reset-prompt
+}
+
+zle -N zle-line-init

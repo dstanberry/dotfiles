@@ -487,44 +487,6 @@ function -maybe-show-vcs-info() {
 
 add-zsh-hook precmd -maybe-show-vcs-info	
 
-# change cursor shape
-function -set-cursor() {
-	if [[ $TMUX = '' ]]; then
-		echo -ne $1
-	else
-		echo -ne "\ePtmux;\e\e$1\e\\"
-	fi
-}
-
-# block cursor
-function -set-block-cursor() {
-	-set-cursor '\e[1 q'
-}
-
-# beam cursor
-function -set-beam-cursor() {
-	-set-cursor '\e[5 q'
-}
-
-# set the cursor shape depending on current vi mode
-function zle-keymap-select {
-  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
-      -set-block-cursor
-  else
-      -set-beam-cursor
-  fi
-}
-
-zle -N zle-keymap-select
-
-# begin the line editor in vi insert mode on startup
-function zle-line-init() {
-	zle -K viins
-	-set-beam-cursor
-}
-
-zle -N zle-line-init
-
 ###############################################################
 # _Custom
 ###############################################################
