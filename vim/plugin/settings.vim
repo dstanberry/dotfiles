@@ -153,7 +153,7 @@ set sidescrolloff=3
 set spellcapcheck=
 
 " setup clipboard
-set clipboard=unnamed
+set clipboard=unnamed,unnamedplus
 
 " toggle paste mode (to be able to accurately paste from external apps)
 set pastetoggle=<F2>

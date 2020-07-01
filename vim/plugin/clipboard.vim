@@ -1,4 +1,4 @@
-function s:copy(lines, regtype)
+function s:copy(lines, ...)
 	let str = join(a:lines, "\n")
 	let jid = jobstart('tmux load-buffer -')
 
@@ -10,30 +10,24 @@ function s:copy(lines, regtype)
 	call chansend(v:stderr, "\033]52;;" . str . "\007")
 endfunction
 
+function! s:paste(mode)
+	let @" = system('pbpaste')
+	return a:mode
+endfunction
+
+function! s:tmux_paste(mode)
+	let @" = system('tmux save-buffer -')
+	return a:mode
+endfunction
+
 if !empty($SSH_CONNECTION) || !empty($SSH_TTY) || !empty($SSH_CLIENT)
-	let g:clipboard = {
-		\ 'name': 'SSHClipboard',
-		\ 'copy': {
-		\   '+': function('s:copy'),
-		\   '*': function('s:copy'),
-		\   },
-		\ 'paste': {
-		\   '+': 'tmux save-buffer -',
-		\   '*': 'tmux save-buffer -',
-		\   },
-		\ 'cache_enabled': 0
-		\ }
+	autocmd TextYankPost * call s:copy(split(@"), "\n"))
+
+	map <expr> p <SID>tmux_paste('p')
+	map <expr> P <SID>tmux_paste('P')
 elseif system('uname -r') =~ 'microsoft'
-	let g:clipboard = {
-		\ 'name': 'WSLClipboard',
-		\ 'copy': {
-		\   '+': 'clip.exe',
-		\   '*': 'clip.exe',
-		\   },
-		\ 'paste': {
-		\   '+': 'pbpaste',
-		\   '*': 'pbpaste',
-		\   },
-		\ 'cache_enabled': 1
-		\ }
+	autocmd TextYankPost * call system('clip.exe', @")
+
+	map <expr> p <SID>paste('p')
+	map <expr> P <SID>paste('P')
 endif
