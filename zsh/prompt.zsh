@@ -60,7 +60,7 @@ function -set-prompt() {
 		local LVL=$SHLVL
 	fi
 	if [[ $EUID -eq 0 ]]; then
-		local PREFIX='%F{red}\uE0A2%f '
+		local PREFIX=$(printf '%%F{red}\ue0a2%.0s%%f ')
 	else
 		local PREFIX=''
 	fi
