@@ -73,8 +73,6 @@ function! SetExplorerStatusLine()
 	let l:statusline = ""
 	" relative file path
 	let l:statusline .= "%3*\ %{functions#getFilePath()}"
-	" filetype
-	let l:statusline .= "%3*\ %y"
 	" right-hand side
 	let l:statusline .= "%="
 
