@@ -113,15 +113,14 @@ if [ ! -L ${HOME}/.local/bin/menos ]; then
 	ln -s ${CONFIG_HOME}/less/menos ${HOME}/.local/bin/menos;
 fi
 
-# in wsl environments, ensure clipboard scripts exist in PATH
-if [[ $(uname -r) == *"microsoft"* ]]; then
-	if [ ! -L ${HOME}/.local/bin/pbcopy ]; then
-		ln -s ${CONFIG_HOME}/wsl/pbcopy ${HOME}/.local/bin/pbcopy;
-	fi
-
-	if [ ! -L ${HOME}/.local/bin/pbpaste ]; then
-		ln -s ${CONFIG_HOME}/wsl/pbpaste ${HOME}/.local/bin/pbpaste;
-	fi
+# include wsl scripts where appropriate
+if [[ $(uname -r) == *"Microsoft"* || $(uname -r) == *"microsoft"* ]]; then
+	for file in $(ls ${CONFIG_HOME}/wsl)
+	do
+		if [ ! -L ${HOME}/.local/wsl/$file ]; then
+			ln -s ${CONFIG_HOME}/wsl/$file ${HOME}/.local/bin/$file;
+		fi
+	done
 fi
 
 # ensure general purpose scripts exists in PATH
