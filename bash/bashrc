@@ -46,7 +46,7 @@ fi
 if [[ $(uname -r) == *"Microsoft"* || $(uname -r) == *"microsoft"* ]]; then
 	for file in $(ls ${CONFIG_HOME}/wsl)
 	do
-		if [ ! -L ${HOME}/.local/wsl/$file ]; then
+		if [ ! -L ${HOME}/.local/bin/$file ]; then
 			ln -s ${CONFIG_HOME}/wsl/$file ${HOME}/.local/bin/$file;
 		fi
 	done
