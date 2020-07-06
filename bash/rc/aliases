@@ -19,6 +19,7 @@ hash nvim 2>/dev/null && alias vim=nvim
 alias reload='source "${BASH_CONFIG_HOME}/bashrc"'
 
 # dirty hack to expose native specific Windows utils
-if [[ $(uname -r) == *"microsoft"* ]]; then
+if is_wsl; then
 	alias code='sh /mnt/c/Program\ Files/Microsoft\ VS\ Code/bin/code'
+	alias posh=powershell.exe
 fi

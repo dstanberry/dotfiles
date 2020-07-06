@@ -17,6 +17,11 @@ dedup_pathvar () {
 	set_var "$pathvar_name" "$deduped_path"
 }
 
+# helper function to determine if this is a wsl distribution
+is_wsl() {
+	[[ $(uname -r) == *"Microsoft"* || $(uname -r) == *"microsoft"* ]]
+}
+
 ###############################################################
 # General Options
 ###############################################################
@@ -114,7 +119,7 @@ if [ ! -L ${HOME}/.local/bin/menos ]; then
 fi
 
 # include wsl scripts where appropriate
-if [[ $(uname -r) == *"Microsoft"* || $(uname -r) == *"microsoft"* ]]; then
+if is_wsl; then
 	for file in $(ls ${CONFIG_HOME}/wsl)
 	do
 		if [ ! -L ${HOME}/.local/bin/$file ]; then

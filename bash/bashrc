@@ -17,6 +17,11 @@ dedup_pathvar () {
 	set_var "$pathvar_name" "$deduped_path"
 }
 
+# helper function to determine if this is a wsl distribution
+is_wsl() {
+	[[ $(uname -r) == *"Microsoft"* || $(uname -r) == *"microsoft"* ]]
+}
+
 ###############################################################
 # Directories
 ###############################################################

@@ -1,7 +1,7 @@
-#!/bin/bash
+#!/bin/sh
 
 # poor man's pbcopy within wsl
-if [[ $(uname -r) == *"microsoft"* ]]; then
+if is_wsl; then
 	tee <&0 | clip.exe
 	exit 0
 fi

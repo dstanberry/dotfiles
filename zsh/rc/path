@@ -10,7 +10,7 @@ unset ULOCAL
 unset LOCAL
 
 # dirty hack to expose native specific Windows utils
-if [[ $(uname -r) == *"microsoft"* ]]; then
+if is_wsl; then
 	WIN="/mnt/c/Windows"
 	SYS32="/mnt/c/Windows/System32"
 	PWSH="/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
