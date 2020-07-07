@@ -177,15 +177,6 @@ let &t_SR="\<Esc>[3 q"
 " use solid block cursor in normal mode
 let &t_EI="\<Esc>[2 q"
 
-" define location for netrw history file
-let g:netrw_home="~/.config/vim/tmp/netrw"
-" suppress banner
-let g:netrw_banner=0
-" use tree listing
-let g:netrw_liststyle=3
-" open file in existing window
-let g:netrw_browse_split=0
-
 " highlight conflicts
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
