@@ -181,14 +181,10 @@ let &t_EI="\<Esc>[2 q"
 let g:netrw_home="~/.config/vim/tmp/netrw"
 " suppress banner
 let g:netrw_banner=0
-" use wide listing
+" use tree listing
 let g:netrw_liststyle=3
-" open file in previous window
-let g:netrw_browse_split=4
-" open split to the right
-let g:netrw_altv=1
-" specify window size
-let g:netrw_winsize=20
+" open file in existing window
+let g:netrw_browse_split=0
 
 " highlight conflicts
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'

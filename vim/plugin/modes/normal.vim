@@ -105,9 +105,6 @@ nnoremap <leader>gi :GFiles<cr>
 " fzf: list all currently open file buffers
 nnoremap <leader><cr> :Buffers<cr>
 
-" netrw: toggle netrw buffer
-nnoremap <silent> <leader>n :call functions#netrwToggle()<cr>
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
