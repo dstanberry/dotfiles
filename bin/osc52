@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 # OSC52 copy to clipboard.
-
 if [ ! -t 0 ]; then
 	content="$(base64)"
 else

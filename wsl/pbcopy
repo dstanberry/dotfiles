@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# include helper functions
+source ${HOME}/.config/scripts/helpers.sh
+
 # poor man's pbcopy within wsl
 if is_wsl; then
 	tee <&0 | clip.exe

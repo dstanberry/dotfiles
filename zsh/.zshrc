@@ -1,28 +1,4 @@
 ###############################################################
-# Environment Variables
-###############################################################
-# helper functions to trim duplicate occurences from a string
-get_var () {
-	eval 'printf "%s\n" "${'"$1"'}"'
-}
-
-set_var () {
-	eval "$1=\"\$2\""
-}
-
-dedup_pathvar () {
-	pathvar_name="$1"
-	pathvar_value="$(get_var "$pathvar_name")"
-	deduped_path="$(perl -e 'print join(":",grep { not $seen{$_}++ } split(/:/, $ARGV[0]))' "$pathvar_value")"
-	set_var "$pathvar_name" "$deduped_path"
-}
-
-# helper function to determine if this is a wsl distribution
-is_wsl() {
-	[[ $(uname -r) == *"Microsoft"* || $(uname -r) == *"microsoft"* ]]
-}
-
-###############################################################
 # General Options
 ###############################################################
 # allow simple commands to resume backgrounded jobs
@@ -104,6 +80,9 @@ TMUX_CONFIG_HOME="${CONFIG_HOME}/tmux"
 
 # base directory forim configuration files
 VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
+
+# include helper functions
+source ${CONFIG_HOME}/scripts/helpers.sh
 
 # include custom defined functions
 fpath=(${ZSH_CONFIG_HOME}/site-functions $fpath)
