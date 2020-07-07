@@ -115,6 +115,9 @@ do
 	fi
 done
 
+# ensure there are no broken symlinks
+find ${HOME}/.local/bin -xtype l -delete
+
 # ensure tmux configuration exists
 if [ ! -L ${HOME}/.tmux.conf ]; then
 	ln -s ${TMUX_CONFIG_HOME}/tmux.conf ${HOME}/.tmux.conf

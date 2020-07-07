@@ -11,7 +11,7 @@ function s:copy(lines, ...)
 endfunction
 
 function! s:paste(mode)
-	let @" = system('pbpaste')
+	let @" = system('paste')
 	return a:mode
 endfunction
 

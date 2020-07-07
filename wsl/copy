@@ -3,7 +3,7 @@
 # include helper functions
 source ${HOME}/.config/scripts/helpers.sh
 
-# poor man's pbcopy within wsl
+# (wsl) send text to windows cipboard
 if is_wsl; then
 	tee <&0 | clip.exe
 	exit 0

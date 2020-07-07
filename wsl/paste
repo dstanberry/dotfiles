@@ -3,7 +3,7 @@
 # include helper functions
 source ${HOME}/.config/scripts/helpers.sh
 
-# poor man's pbpaste within wsl
+# (wsl) get content of windows clipboard
 if is_wsl; then
 	powershell.exe -NoProfile Get-Clipboard | sed 's/\r$//' | sed -z '$ s/\n$//'
 	exit 0
