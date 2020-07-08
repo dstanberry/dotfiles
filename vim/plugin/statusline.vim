@@ -37,7 +37,7 @@ function! DimStatusLine()
 	" initialize statusline
 	let l:statusline = ""
 	" relative file path
-	let l:statusline .= "%3*\ \ \ \ \ \ \ \ %{functions#getRelativeFilePath()}"
+	let l:statusline .= "%3*\ \ \ \ \ \ \ \ \ %{functions#getRelativeFilePath()}"
 	" filename
 	let l:statusline .= "%3*%t%*"
 	" right-hand side
