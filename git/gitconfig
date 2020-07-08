@@ -64,3 +64,5 @@
 
 	show-branch = true
 	status = true
+[pull]
+	rebase = false
