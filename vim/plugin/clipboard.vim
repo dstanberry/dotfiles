@@ -21,10 +21,12 @@ function! s:tmux_paste(mode)
 endfunction
 
 if !empty($SSH_CONNECTION) || !empty($SSH_TTY) || !empty($SSH_CLIENT)
-	autocmd TextYankPost * call s:copy(split(@"), "\n"))
+	if has('nvim')
+		autocmd TextYankPost * call s:copy(split(@", "\n"))
 
-	map <expr> p <SID>tmux_paste('p')
-	map <expr> P <SID>tmux_paste('P')
+		map <expr> p <SID>tmux_paste('p')
+		map <expr> P <SID>tmux_paste('P')
+	endif
 elseif system('uname -r') =~ 'microsoft'
 	autocmd TextYankPost * call system('clip.exe', @")
 
