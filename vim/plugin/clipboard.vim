@@ -1,13 +1,19 @@
 function s:copy(lines, ...)
 	let str = join(a:lines, "\n")
-	let jid = jobstart('tmux load-buffer -')
+	let enc = functions#b64encode(str)
+	let buf = "\e]52;0;" . enc . "\x07"
 
-	call chansend(jid, str)
-	call chanclose(jid)
+	if has('nvim')
+		let jid = jobstart('tmux load-buffer -')
 
-	let str = functions#b64encode(str)
-
-	call chansend(v:stderr, "\033]52;;" . str . "\007")
+		call chansend(jid, str)
+		call chanclose(jid)
+		call chansend(v:stderr, buf)
+	else
+		execute "silent! !echo " . shellescape("print -l " . str . " | tmux load-buffer -")
+		execute "silent! !echo " . shellescape("printf '". buf . "' > /dev/stderr")
+		redraw!
+	endif
 endfunction
 
 function! s:paste(mode)
@@ -21,12 +27,10 @@ function! s:tmux_paste(mode)
 endfunction
 
 if !empty($SSH_CONNECTION) || !empty($SSH_TTY) || !empty($SSH_CLIENT)
-	if has('nvim')
-		autocmd TextYankPost * call s:copy(split(@", "\n"))
+	autocmd TextYankPost * call s:copy(split(@", "\n"))
 
-		map <expr> p <SID>tmux_paste('p')
-		map <expr> P <SID>tmux_paste('P')
-	endif
+	map <expr> p <SID>tmux_paste('p')
+	map <expr> P <SID>tmux_paste('P')
 elseif system('uname -r') =~ 'microsoft'
 	autocmd TextYankPost * call system('clip.exe', @")
 
