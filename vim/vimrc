@@ -14,6 +14,11 @@ endif
 " command line fuzzy finder
 Plug 'junegunn/fzf.vim', { 'on': ['Files', 'Buffers', 'Ag', 'Rg', 'Windows'] }
 
+" syntax highlighting for portage
+if has('nvim')
+	Plug 'gentoo/gentoo-syntax'
+endif
+
 " emphasize the current matched search pattern
 Plug 'wincent/loupe'
 
