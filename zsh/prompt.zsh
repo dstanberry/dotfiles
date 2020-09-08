@@ -66,13 +66,15 @@ function -set-prompt() {
 	fi
 	local mode=$1
 	if [[ $mode == insert ]]; then
-		local SUFFIX='${vcs_info_msg_0_}%f'$(printf '%%F{green}\u276f%.0s%%f' {1..$LVL})
+		local SUFFIX=$(printf '%%F{green}\u276f%.0s%%f' {1..$LVL})
 	else
-		local SUFFIX='${vcs_info_msg_0_}%f'$(printf '%%F{magenta}\u276f%.0s%%f' {1..$LVL})
+		local SUFFIX=$(printf '%%F{magenta}\u276f%.0s%%f' {1..$LVL})
 	fi
 	
 	# define the primary prompt
 	PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%b%F{blue}%B%3~%b%F{yellow}%B%(1j.*.)%(?..!)%b%f %B${SUFFIX}%b "
+
+	RPROMPT_BASE="\${vcs_info_msg_0_}%F"
 
 	if [[ -n "$TMUXING" ]]; then
 		# outside tmux, ZLE_RPROMPT_INDENT ends up eating the space after PS1, and
