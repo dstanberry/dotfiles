@@ -5,7 +5,6 @@ configstore
 htop
 less/less_history
 inkscape
-nvim/.netrwhist
 tmux/tmux.digests
 vim/pack/remote/opt/*
 vim/tmp/backup/*
