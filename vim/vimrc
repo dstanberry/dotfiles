@@ -19,6 +19,12 @@ if has('nvim')
 	Plug 'gentoo/gentoo-syntax'
 endif
 
+" distraction-free writing
+Plug 'junegunn/goyo.vim'
+
+" hyperfocus-writing
+Plug 'junegunn/limelight.vim'
+
 " emphasize the current matched search pattern
 Plug 'wincent/loupe'
 
