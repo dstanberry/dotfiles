@@ -1,15 +1,5 @@
-let g:coc_bash = {
-		\ "languageserver": {
-			\ "bash": {
-				\ "command": "bash-language-server",
-				\ "args": ["start"],
-				\ "filetypes": ["sh"],
-				\ "ignoredRootPaths": ["~"]
-			\ }
-		\ },
-	\ }
-
-let g:coc_prettier = {
+let g:coc_general = {
+		\ "http.proxyStrictSSL": v:true,
 		\ "prettier.arrowParens": "always",
 		\ "prettier.bracketSpacing": v:true,
 		\ "prettier.endOfLine": "lf",
@@ -21,7 +11,18 @@ let g:coc_prettier = {
 		\ "prettier.useTabs": v:true
 	\}
 
-let g:coc_user_config = extend(g:coc_bash, g:coc_prettier)
+let g:coc_languageservers = {
+		\ "languageserver": {
+			\ "bash": {
+				\ "command": "bash-language-server",
+				\ "args": ["start"],
+				\ "filetypes": ["sh"],
+				\ "ignoredRootPaths": ["~"]
+			\ }
+		\ },
+	\ }
+
+let g:coc_user_config = extend(g:coc_general, g:coc_languageservers)
 
 let g:coc_global_extensions = [
 		\ 'coc-css',
