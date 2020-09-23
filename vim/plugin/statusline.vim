@@ -8,13 +8,11 @@ function! FocusStatusLine()
 	" initialize statusline
 	let l:statusline = ""
 	" mode indicator
-	let l:statusline .= "%7*%{(mode()=='n')?'\ \ normal\ ':''}"
-	let l:statusline .= "%6*%{(mode()=='i')?'\ \ insert\ ':''}"
-	let l:statusline .= "%8*%{(mode()=='R')?'\ \ replace\ ':''}"
-	let l:statusline .= "%9*%{(mode()==#'v')?'\ \ visual\ ':''}"
-	let l:statusline .= "%9*%{(mode()==#'V')?'\ \ v-line\ ':''}"
-	" paste indicator
-	let l:statusline .= "%3*%{(&paste)?'\ \ \(paste\)':''}"
+	let l:statusline .= "%7*%{(mode()=='n')?(&paste)?'\ \ normal\ |\ paste\ ':'\ \ normal\ ':''}"
+	let l:statusline .= "%6*%{(mode()=='i')?(&paste)?'\ \ insert\ |\ paste\ ':'\ \ insert\ ':''}"
+	let l:statusline .= "%8*%{(mode()=='R')?(&paste)?'\ \ replace\ |\ paste\ ':'\ \ replace\ ':''}"
+	let l:statusline .= "%9*%{(mode()==#'v')?(&paste)?'\ \ visual\ |\ paste\ ':'\ \ visual\ ':''}"
+	let l:statusline .= "%9*%{(mode()==#'V')?(&paste)?'\ \ visual\ |\ paste\ ':'\ \ visual\ ':''}"
 	" relative file path
 	let l:statusline .= "%1*\ %{functions#getRelativeFilePath()}"
 	" filename
