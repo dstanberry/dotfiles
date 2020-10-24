@@ -47,6 +47,21 @@ function fix_hist() {
 	rm ${ZSH_CONFIG_HOME}/zsh_hist_corrupt
 }
 
+# add subcommand to git
+function git() {
+	if [ "$1" = root ]; then
+		shift
+		local ROOT="$(command git rev-parse --show-toplevel 2> /dev/null || echo -n .)"
+		if [ $# -eq 0 ]; then
+			cd "$ROOT"
+		else
+			(cd "$ROOT" && eval "$@")
+		fi
+	else
+		command git "$@"
+	fi
+}
+
 # print response headers, following redirects.
 function headers() {
   if [ $# -ne 1 ]; then

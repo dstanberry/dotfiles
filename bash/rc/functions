@@ -33,6 +33,21 @@ function fh() {
 	print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')
 }
 
+# add subcommand to git
+function git() {
+	if [ "$1" = root ]; then
+		shift
+		local ROOT="$(command git rev-parse --show-toplevel 2> /dev/null || echo -n .)"
+		if [ $# -eq 0 ]; then
+			cd "$ROOT"
+		else
+			(cd "$ROOT" && eval "$@")
+		fi
+	else
+		command git "$@"
+	fi
+}
+
 # print response headers, following redirects.
 function headers() {
   emulate -L zsh
