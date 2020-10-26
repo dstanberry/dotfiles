@@ -45,7 +45,7 @@ do
 done
 
 # ensure there are no broken symlinks
-find ${HOME}/.local/bin -xtype l -delete
+find ${HOME}/.local/bin -type l ! -exec test -e {} \; -delete
 
 # ensure tmux configuration exists
 if [ ! -L ${HOME}/.tmux.conf ]; then
