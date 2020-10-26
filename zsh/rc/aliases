@@ -10,7 +10,9 @@ alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
 
 # enable color support for ls
-if is_wsl; then
+if is_darwin; then
+	alias ls='gls --color=auto --almost-all --group-directories-first'
+elif is_wsl
 	alias ls='ls --color=auto --ignore=ntuser\.* --ignore=NTUSER\.* --almost-all --group-directories-first'
 else
 	alias ls='ls --color=auto --almost-all --group-directories-first'
