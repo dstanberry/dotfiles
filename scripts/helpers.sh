@@ -14,6 +14,11 @@ dedup_pathvar () {
 	set_var "$pathvar_name" "$deduped_path"
 }
 
+# determine if this is a macOS distribution
+is_darwin() {
+	[[ $(uname) == *"Darwin"* || $(uname) == *"darwin"* ]]
+}
+
 # determine if this is a wsl distribution
 is_wsl() {
 	[[ $(uname -r) == *"Microsoft"* || $(uname -r) == *"microsoft"* ]]
