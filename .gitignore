@@ -6,6 +6,7 @@ configstore
 htop
 less/less_history
 inkscape
+karabiner/automatic_backups/*
 tmux/tmux.digests
 vim/pack/remote/opt/*
 vim/tmp/backup/*
