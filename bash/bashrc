@@ -198,8 +198,12 @@ source "${BASH_CONFIG_HOME}/prompt.bash"
 ###############################################################
 if hash fzf 2>/dev/null; then
 	# load fzf keybinds
-	test -s "${BASH_CONFIG_HOME}/plugins/fzf" && \
-	source "${BASH_CONFIG_HOME}/plugins/fzf"
+	test -s "${BASH_CONFIG_HOME}/plugins/fzf/key-bindings.bash" && \
+	source "${BASH_CONFIG_HOME}/plugins/fzf/key-bindings.bash"
+
+	# load fzf completion
+	test -s "${BASH_CONFIG_HOME}/plugins/fzf/completion.bash" && \
+	source "${BASH_CONFIG_HOME}/plugins/fzf/completion.bash"
 fi
 
 ###############################################################

@@ -301,8 +301,12 @@ source "${ZSH_CONFIG_HOME}/prompt.zsh"
 ###############################################################
 if hash fzf 2>/dev/null; then
 	# load fzf keybinds
-	test -s "${ZSH_CONFIG_HOME}/plugins/fzf" && \
-	source "${ZSH_CONFIG_HOME}/plugins/fzf"
+	test -s "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings.zsh" && \
+	source "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings.zsh"
+
+	# load fzf completion
+	test -s "${ZSH_CONFIG_HOME}/plugins/fzf/completion.zsh" && \
+	source "${ZSH_CONFIG_HOME}/plugins/fzf/completion.zsh"
 
 	autoload _fzf
 	_fzf
