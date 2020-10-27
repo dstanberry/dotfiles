@@ -1,2 +1,0 @@
-.gitattributes !filter !diff
-beets/discogs_token.json filter=git-crypt diff=git-crypt
