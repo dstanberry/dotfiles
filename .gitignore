@@ -1,6 +1,5 @@
 bash/bash_history
 bash/rc.private/*
-beets/discogs_token.json
 coc/*
 configstore
 htop
