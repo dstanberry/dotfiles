@@ -1,3 +1,8 @@
+# add ruby gems to path if present
+if hash gem 2>/dev/null; then
+	export PATH="$(gem environment gemdir)/bin:$PATH"
+fi
+
 # base directory for system-wide available scripts
 ULOCAL="/usr/local/bin"
 # base directory for user local binaries
