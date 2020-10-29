@@ -15,8 +15,10 @@ endif
 Plug 'junegunn/fzf.vim', { 'on': ['Files', 'Buffers', 'Ag', 'Rg', 'Windows'] }
 
 " syntax highlighting for portage
-if has('nvim')
+if has('nvim') && has('unix') && isdirectory("/etc/portage")
 	Plug 'gentoo/gentoo-syntax'
+else
+	Plug 'gentoo/gentoo-syntax', { 'on': [] }
 endif
 
 " distraction-free writing
@@ -46,6 +48,8 @@ Plug 'tpope/vim-fugitive'
 " highlight the yanked region
 if !exists('##TextYankPost')
 	Plug 'machakann/vim-highlightedyank'
+else
+	Plug 'machakann/vim-highlightedyank', { 'on': [] }
 endif
 " enable repeating supported plug maps with <.>
 Plug 'tpope/vim-repeat'
