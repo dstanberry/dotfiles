@@ -70,14 +70,21 @@ function rg()
 
 # display information about a remote ssl certificate
 function ssl() {
-	if [ $# -ne 1 ]; then
+	if [ $# -eq 0 ]; then
 		echo "error: a host argument is required"
 		return 1
 	fi
 
 	local REMOTE=$1
 
-	echo | openssl s_client -showcerts -servername "$REMOTE" -connect "$REMOTE:443" 2>/dev/null | openssl x509 -inform pem -noout -text
+	if [ $# -eq 2 ];then
+		local PORT=$2
+
+		echo | openssl s_client -showcerts -servername "$REMOTE" -connect "$REMOTE:$PORT" 2>/dev/null | openssl x509 -inform pem -noout -text
+	else
+
+		echo | openssl s_client -showcerts -servername "$REMOTE" -connect "$REMOTE:443" 2>/dev/null | openssl x509 -inform pem -noout -text
+	fi
 }
 
 # print a pruned version of a tree
