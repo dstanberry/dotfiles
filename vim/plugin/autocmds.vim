@@ -33,3 +33,13 @@ augroup RestoreCursor
 	autocmd!
 	autocmd BufWinEnter * call functions#rescursor()
 augroup END
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Highlight Yanked Text
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if exists('##TextYankPost')
+	augroup LuaHighlight
+		autocmd!
+		autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=200}
+	augroup END
+endif

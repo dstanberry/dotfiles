@@ -44,8 +44,9 @@ Plug 'duggiefresh/vim-easydir'
 Plug 'tpope/vim-fugitive'
 
 " highlight the yanked region
-Plug 'machakann/vim-highlightedyank'
-
+if !exists('##TextYankPost')
+	Plug 'machakann/vim-highlightedyank'
+endif
 " enable repeating supported plug maps with <.>
 Plug 'tpope/vim-repeat'
 
