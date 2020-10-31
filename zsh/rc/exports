@@ -4,7 +4,11 @@ if hash bat 2>/dev/null; then
 fi
 
 # set the default editor
-export EDITOR=vim
+if hash nvim 2>/dev/null;then
+	export EDITOR=nvim
+else
+	export EDITOR=vim
+fi
 
 if hash fzf 2>/dev/null; then
 	# Use ? as the trigger sequence instead of the default **
