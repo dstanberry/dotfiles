@@ -42,7 +42,11 @@ setopt PROMPT_SUBST
 ###############################################################
 # load completion function
 autoload -U compinit
-compinit
+if [ is_darwin ] && [ "$(whoami)" = "root" ]; then
+	compinit -i
+else
+	compinit
+fi
 
 # cache completions
 zstyle ':completion::complete:*' use-cache 1
