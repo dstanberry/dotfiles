@@ -15,7 +15,13 @@ unset ULOCAL
 unset LOCAL
 
 # dirty hack to expose native specific Windows utils
-if is_wsl; then
+if is_darwin; then
+	BREW="/usr/local/sbin"
+
+	export PATH=$BREW:$PATH
+
+	unset BREW
+elif is_wsl; then
 	WIN="/mnt/c/Windows"
 	SYS32="/mnt/c/Windows/System32"
 	PWSH="/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
