@@ -157,7 +157,6 @@ function! g:Base16hi(group, guifg, guibg, ctermfg, ctermbg, ...)
 	endif
 endfunction
 
-
 function <sid>hi(group, guifg, guibg, ctermfg, ctermbg, attr, guisp)
 	call g:Base16hi(a:group, a:guifg, a:guibg, a:ctermfg, a:ctermbg, a:attr, a:guisp)
 endfunction
@@ -175,7 +174,7 @@ call <sid>hi("Folded",        s:gui03, s:gui01, s:cterm03, s:cterm01, "", "")
 call <sid>hi("IncSearch",     s:gui01, s:gui09, s:cterm01, s:cterm09, "none", "")
 call <sid>hi("Italic",        "", "", "", "", "none", "")
 call <sid>hi("Macro",         s:gui08, "", s:cterm08, "", "", "")
-call <sid>hi("MatchParen",    "", s:gui03, "", s:cterm03,  "", "")
+call <sid>hi("MatchParen",    s:gui0A, s:cterm00, "", s:cterm00,  "italic", "")
 call <sid>hi("ModeMsg",       s:gui0B, "", s:cterm0B, "", "", "")
 call <sid>hi("MoreMsg",       s:gui0B, "", s:cterm0B, "", "", "")
 call <sid>hi("Question",      s:gui0D, "", s:cterm0D, "", "", "")
