@@ -173,11 +173,8 @@ function _jump_complete() {
 	reply=( "${(ps:\n:)COMPLETIONS}" )
 }
 
-# complete filenames and `hash -d` entries.
-compctl -f -K _jump_complete jump
-
 # list contents of specially hashed directories from anywhere on the filesystem
-function show() {
+function peek() {
 	emulate -L zsh
 
 	if [ $# -eq 0 ]; then
@@ -194,14 +191,6 @@ function show() {
 	fi
 }
 
-# enable autocomplete for hashed directories
-function _show_complete() {
-	emulate -L zsh
-
-	local COMPLETIONS
-	COMPLETIONS="$(hash -d|cut -d= -f1)"
-	reply=( "${(ps:\n:)COMPLETIONS}" )
-}
-
 # complete filenames and `hash -d` entries.
-compctl -f -K _show_complete show
+compctl -f -K _jump_complete jump
+compctl -f -K _jump_complete peek
