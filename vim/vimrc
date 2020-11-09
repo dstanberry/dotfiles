@@ -30,6 +30,9 @@ Plug 'junegunn/limelight.vim'
 " emphasize the current matched search pattern
 Plug 'wincent/loupe'
 
+" easily identify nested parentheses
+Plug 'junegunn/rainbow_parentheses.vim'
+
 " undo history visualizer
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 
@@ -51,6 +54,10 @@ if !exists('##TextYankPost')
 else
 	Plug 'machakann/vim-highlightedyank', { 'on': [] }
 endif
+
+" highlight sets of matching text
+Plug 'andymass/vim-matchup'
+
 " enable repeating supported plug maps with <.>
 Plug 'tpope/vim-repeat'
 
