@@ -161,10 +161,3 @@ function show() {
 		fi
 	fi
 }
-
-# enable autocomplete for hashed directories
-function _show_complete() {
-	local COMPLETIONS
-	COMPLETIONS="$(hash -d|cut -d= -f1)"
-	reply=( "${(ps:\n:)COMPLETIONS}" )
-}
