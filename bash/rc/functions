@@ -158,13 +158,13 @@ function show() {
 	emulate -L zsh
 
 	if [ $# -eq 0 ]; then
-		fd
+		ls
 	else
 		local DIR="${*%%/}"
 
 		if [ $(hash -d|cut -d= -f1|grep -c "^${DIR}\$") = 0 ]; then
-			# not in `hash -d`: use as initial argument to fd.
-			fd "$*"
+			# not in `hash -d`: use as initial argument to ls.
+			ls "$*"
 		else
 			ls ~"$DIR"
 		fi
