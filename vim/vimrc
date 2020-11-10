@@ -17,8 +17,6 @@ Plug 'junegunn/fzf.vim', { 'on': ['Files', 'Buffers', 'Ag', 'Rg', 'Windows'] }
 " syntax highlighting for portage
 if has('nvim') && has('unix') && isdirectory("/etc/portage")
 	Plug 'gentoo/gentoo-syntax'
-else
-	Plug 'gentoo/gentoo-syntax', { 'on': [] }
 endif
 
 " distraction-free writing
