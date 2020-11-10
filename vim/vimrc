@@ -39,9 +39,6 @@ Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 " file-type aware comments
 Plug 'tpope/vim-commentary'
 
-" dim the current window/buffer when not active
-Plug 'blueyed/vim-diminactive'
-
 " create file and parent direcory at the same time
 Plug 'duggiefresh/vim-easydir'
 
@@ -69,6 +66,9 @@ Plug 'tpope/vim-surround'
 
 " enable focus events
 Plug 'tmux-plugins/vim-tmux-focus-events'
+
+" dim the current window/buffer when not active
+Plug 'TaDaa/vimade'
 
 " maintain git workflow within vim
 Plug 'jreybert/vimagit'
