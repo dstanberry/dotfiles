@@ -1,5 +1,5 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Request runtime variables
+" => Request expensive/greedy resources
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call functions#defer('call variables#init()')
-call functions#defer('call dimmer#init()')
+call functions#defer('call async#loadHashes()')
+call functions#defer('call async#vimade()')
