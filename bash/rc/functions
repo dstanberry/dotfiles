@@ -147,7 +147,7 @@ function jump() {
 }
 
 # list contents of specially hashed directories from anywhere on the filesystem
-function show() {
+function peek() {
 	if [ $# -eq 0 ]; then
 		ls
 	else
