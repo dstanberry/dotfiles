@@ -2,7 +2,7 @@
 " => Load private directory hashes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! variables#init() abort
-	" set up shortcut variables for "hash -d" directories.
+	" set up shortcut variables for 'hash -d' directories.
 	let l:dirs=system(
 		\ 'zsh -c "' .
 		\ 'test -e ~/.config/zsh/rc.private/hashes && ' .
