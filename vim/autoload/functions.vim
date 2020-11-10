@@ -81,6 +81,7 @@ function! functions#getRelativeFilePath() abort
 		return ''
 	else
 		return path . '/'
+	endif
 endfunction
 
 function! functions#getFileFormat() abort
