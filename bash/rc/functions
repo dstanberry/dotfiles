@@ -92,7 +92,7 @@ function subtree() {
 	tree -a --prune -P "$@"
 }
 # try to run tmux with session management
-function tmx() {
+function tmux() {
 	# make sure even pre-existing tmux sessions use the latest SSH_AUTH_SOCK.
 	local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
 	if [ -r "$SSH_AUTH_SOCK" -a ! -L "$SSH_AUTH_SOCK" ]; then
