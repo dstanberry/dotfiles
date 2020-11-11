@@ -27,10 +27,10 @@ if hash fzf 2>/dev/null; then
 
 	export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
 	 --color=dark
-	 --color=fg:#bebebe,bg:-1,hl:#a3be8c
-	 --color=fg+:#ebcb8b,bg+:-1,hl+:#a3be8c
-	 --color=info:#4c566a,prompt:#81a1c1,pointer:#bf616a
-	 --color=marker:#ebcb8b,spinner:#4c566a,header:#5f5f5f'
+	 --color=fg:#bebebe,bg:-1,hl:#93b379
+	 --color=fg+:#dfe3ec,bg+:-1,hl+:#93b379
+	 --color=info:#4c566a,prompt:#6f8fb4,pointer:#b04b57
+	 --color=marker:#e5c179,spinner:#4c566a,header:#5f5f5f'
 fi
 
 # use standard ISO 8601 timestamp
@@ -43,7 +43,7 @@ export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 export HISTFILE="${ZSH_CONFIG_HOME}/zsh_history"
 
 # enable syntax highlighting for less
-export LESS="-iFMRX"
+export LESS="-iFMRX -x4"
 export LESSCOLOR=always
 export LESSCOLORIZER=/usr/bin/src-hilite-lesspipe.sh
 
