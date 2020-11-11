@@ -62,6 +62,47 @@ function headers() {
   curl -sSL -D - "$REMOTE" -o /dev/null
 }
 
+# cd to specially hashed directories from anywhere on the filesystem
+function jump() {
+	if [ $# -eq 0 ]; then
+		fd
+	else
+		local DIR="${*%%/}"
+		local BASE=$(echo "$DIR"|cut -d/ -f1)
+
+		if [ $(hash -d|cut -d= -f1|grep -c "^${BASE}\$") = 0 ]; then
+			# not in `hash -d`: use as initial argument to fd.
+			fd "$*"
+		else
+			cd ~"$DIR"
+		fi
+	fi
+}
+
+# list contents of specially hashed directories from anywhere on the filesystem
+function peek() {
+	if [ $# -eq 0 ]; then
+		ls
+	else
+		local DIR="${*%%/}"
+
+		local DIR="${*%%/}"
+		local BASE=$(echo "$DIR"|cut -d/ -f1)
+
+		if [ $(hash -d|cut -d= -f1|grep -c "^${BASE}\$") = 0 ]; then
+			# not in `hash -d`: use as initial argument to ls.
+			ls "$*"
+		else
+			ls ~"$DIR"
+		fi
+	fi
+}
+
+# search for process by name and highlight
+function psgrep() {
+	ps aux | grep -v grep | grep "$@" -i
+}
+
 # poor man's rg runtime configuration
 function rg()
 {
@@ -130,34 +171,17 @@ function tmux() {
 	env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
 }
 
-# cd to specially hashed directories from anywhere on the filesystem
-function jump() {
-	if [ $# -eq 0 ]; then
-		fd
+# traverse parent directories in a trivial manner
+function up() {
+	if [[ "$#" == 0 ]]; then
+		cd ..
 	else
-		local DIR="${*%%/}"
+		local DIR=""
 
-		if [ $(hash -d|cut -d= -f1|grep -c "^${DIR}\$") = 0 ]; then
-			# not in `hash -d`: use as initial argument to fd.
-			fd "$*"
-		else
-			cd ~"$DIR"
-		fi
-	fi
-}
+		for i in {1..$1} ; do
+			CDSTR="../$CDSTR"
+		done
 
-# list contents of specially hashed directories from anywhere on the filesystem
-function peek() {
-	if [ $# -eq 0 ]; then
-		ls
-	else
-		local DIR="${*%%/}"
-
-		if [ $(hash -d|cut -d= -f1|grep -c "^${DIR}\$") = 0 ]; then
-			# not in `hash -d`: use as initial argument to ls.
-			ls "$*"
-		else
-			ls ~"$DIR"
-		fi
+		cd $CDSTR
 	fi
 }

@@ -1,3 +1,11 @@
+# enable autocomplete for hashed directories
+function _hash_completion() {
+	emulate -L zsh
+
+	COMPLETIONS="$(hash -d|cut -d= -f1)/"
+	reply=( "${(ps:\n:)COMPLETIONS}" )
+}
+
 # poor man's ag runtime configuration
 function ag() {
 	emulate -L zsh
@@ -73,6 +81,51 @@ function headers() {
 
   curl -sSL -D - "$REMOTE" -o /dev/null
 }
+# cd to specially hashed directories from anywhere on the filesystem
+function jump() {
+	emulate -L zsh
+
+	if [ $# -eq 0 ]; then
+		fd
+	else
+		local DIR="${*%%/}"
+		local BASE=$(echo "$DIR"|cut -d/ -f1)
+
+		if [ $(hash -d|cut -d= -f1|grep -c "^${BASE}\$") = 0 ]; then
+			# not in `hash -d`: use as initial argument to fd.
+			fd "$*"
+		else
+			cd ~"$DIR"
+		fi
+	fi
+}
+
+# list contents of specially hashed directories from anywhere on the filesystem
+function peek() {
+	emulate -L zsh
+
+	if [ $# -eq 0 ]; then
+		ls
+	else
+		local DIR="${*%%/}"
+
+		local DIR="${*%%/}"
+		local BASE=$(echo "$DIR"|cut -d/ -f1)
+
+		if [ $(hash -d|cut -d= -f1|grep -c "^${BASE}\$") = 0 ]; then
+			# not in `hash -d`: use as initial argument to ls.
+			ls "$*"
+		else
+			ls ~"$DIR"
+		fi
+	fi
+}
+
+# search for process by name and highlight
+function psgrep() {
+	ps aux | grep -v grep | grep "$@" -i
+}
+
 
 # poor man's rg runtime configuration
 function rg() {
@@ -146,51 +199,21 @@ function tmux() {
 	env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
 }
 
-# cd to specially hashed directories from anywhere on the filesystem
-function jump() {
-	emulate -L zsh
-
+# traverse parent directories in a trivial manner
+function up() {
 	if [ $# -eq 0 ]; then
-		fd
+		cd ..
 	else
-		local DIR="${*%%/}"
+		local DIR=""
 
-		if [ $(hash -d|cut -d= -f1|grep -c "^${DIR}\$") = 0 ]; then
-			# not in `hash -d`: use as initial argument to fd.
-			fd "$*"
-		else
-			cd ~"$DIR"
-		fi
+		for i in {1..$1} ; do
+			CDSTR="../$CDSTR"
+		done
+
+		cd $CDSTR
 	fi
 }
 
-# enable autocomplete for hashed directories
-function _jump_complete() {
-	emulate -L zsh
-
-	local COMPLETIONS
-	COMPLETIONS="$(hash -d|cut -d= -f1)"
-	reply=( "${(ps:\n:)COMPLETIONS}" )
-}
-
-# list contents of specially hashed directories from anywhere on the filesystem
-function peek() {
-	emulate -L zsh
-
-	if [ $# -eq 0 ]; then
-		ls
-	else
-		local DIR="${*%%/}"
-
-		if [ $(hash -d|cut -d= -f1|grep -c "^${DIR}\$") = 0 ]; then
-			# not in `hash -d`: use as initial argument to ls.
-			ls "$*"
-		else
-			ls ~"$DIR"
-		fi
-	fi
-}
-
-# complete filenames and `hash -d` entries.
-compctl -f -K _jump_complete jump
-compctl -f -K _jump_complete peek
+# include 'hash -d' entries to the autocomplete for these functions
+compctl -f -K _hash_completion jump
+compctl -f -K _hash_completion peek
