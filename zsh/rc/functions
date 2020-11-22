@@ -10,7 +10,10 @@ function _hash_completion() {
 function ag() {
 	emulate -L zsh
 
-	command ag --pager="less -iFMRSX" --color-path=34\;3 --color-line-number=33 --color-match=35\;1\;4 "$@"
+	command ag --pager="less -iFMRSX" \
+		--color-path=34\;3 \
+		--color-line-number=33 \
+		--color-match=35\;1\;4 "$@"
 }
 
 # interactively delete file(s) by name
@@ -44,7 +47,10 @@ function fd() {
 
 # find in history
 function fh() {
-	print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')
+	print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) \
+		| fzf +s --tac \
+		| sed -r 's/ *[0-9]*\*? *//' \
+		| sed -r 's/\\/\\\\/g')
 }
 
 # fix corrupt history file
@@ -192,7 +198,12 @@ function psgrep() {
 
 # poor man's rg runtime configuration
 function rg() {
-	command rg --colors line:fg:yellow --colors line:style:bold --colors path:fg:blue --colors path:style:bold --colors match:fg:magenta --colors match:style:underline -p "$@" | less -iFMRSX
+	command rg --colors line:fg:yellow \
+		--colors line:style:bold \
+		--colors path:fg:blue \
+		--colors path:style:bold \
+		--colors match:fg:magenta \
+		--colors match:style:underline -p "$@" | less -iFMRSX
 }
 
 # display information about a remote ssl certificate
@@ -209,10 +220,14 @@ function ssl() {
 	if [ $# -eq 2 ];then
 		local PORT=$2
 
-		echo | openssl s_client -showcerts -servername "$REMOTE" -connect "$REMOTE:$PORT" 2>/dev/null | openssl x509 -inform pem -noout -text
+		echo | openssl s_client -showcerts -servername "$REMOTE" \
+			-connect "$REMOTE:$PORT" 2>/dev/null \
+			| openssl x509 -inform pem -noout -text
 	else
 
-		echo | openssl s_client -showcerts -servername "$REMOTE" -connect "$REMOTE:443" 2>/dev/null | openssl x509 -inform pem -noout -text
+		echo | openssl s_client -showcerts -servername "$REMOTE" \
+			-connect "$REMOTE:443" 2>/dev/null \
+			| openssl x509 -inform pem -noout -text
 	fi
 }
 
