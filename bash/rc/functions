@@ -41,16 +41,26 @@ function git() {
 		elif [ "$1" = root ]; then
 			shift
 			local ROOT
-			if [ "$(command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME rev-parse --is-inside-git-dir 2> /dev/null)" = true ]; then
-				if [ "$(command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME rev-parse --is-bare-repository)" = true ]; then
-					ROOT="$(command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME rev-parse --absolute-git-dir)"
+			local git_dir=$(command git --git-dir=$HOME/Git/dotfiles/.git \
+				--work-tree=$CONFIG_HOME rev-parse --is-inside-git-dir)
+			local bare_repo=$(command git --git-dir=$HOME/Git/dotfiles/.git \
+				--work-tree=$CONFIG_HOME rev-parse --is-bare-repository)
+			local abs_git_dir=$(command git --git-dir=$HOME/Git/dotfiles/.git \
+				--work-tree=$CONFIG_HOME rev-parse --absolute-git-dir)
+			local working_tree=$(command git --git-dir=$HOME/Git/dotfiles/.git \
+				--work-tree=$CONFIG_HOME rev-parse --show-superproject-working-tree)
+			local toplevel=$(command git --git-dir=$HOME/Git/dotfiles/.git \
+				--work-tree=$CONFIG_HOME rev-parse --show-toplevel)
+			if [ "$($git_dir 2> /dev/null)" = true ]; then
+				if [ "$($bare_repo)" = true ]; then
+					ROOT="$($abs_git_dir)"
 				else
-					ROOT="$(command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME rev-parse --git-dir)/.."
+					ROOT="$($git_dir)"
 				fi
 			else
-				ROOT="$(command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME rev-parse --show-superproject-working-tree 2> /dev/null)"
+				ROOT="$($working_tree)"
 				if [ -z "$ROOT" ]; then
-					ROOT="$(command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME rev-parse --show-toplevel 2> /dev/null)"
+					ROOT="$($toplevel 2> /dev/null)"
 				fi
 			fi
 			if [ -z "$ROOT" ]; then
@@ -70,16 +80,21 @@ function git() {
 		elif [ "$1" = root ]; then
 			shift
 			local ROOT
-			if [ "$(command git rev-parse --is-inside-git-dir 2> /dev/null)" = true ]; then
-				if [ "$(command git rev-parse --is-bare-repository)" = true ]; then
-					ROOT="$(command git rev-parse --absolute-git-dir)"
+			local git_dir=$(command git rev-parse --is-inside-git-dir)
+			local bare_repo=$(command git rev-parse --is-bare-repository)
+			local abs_git_dir=$(command git rev-parse --absolute-git-dir)
+			local working_tree=$(command git rev-parse --show-superproject-working-tree)
+			local toplevel=$(command git rev-parse --show-toplevel)
+			if [ "$($git_dir 2> /dev/null)" = true ]; then
+				if [ "$($bare_repo)" = true ]; then
+					ROOT="$($abs_git_dir)"
 				else
-					ROOT="$(command git rev-parse --git-dir)/.."
+					ROOT="$($git_dir)"
 				fi
 			else
-				ROOT="$(command git rev-parse --show-superproject-working-tree 2> /dev/null)"
+				ROOT="$($working_tree)"
 				if [ -z "$ROOT" ]; then
-					ROOT="$(command git rev-parse --show-toplevel 2> /dev/null)"
+					ROOT="$($toplevel 2> /dev/null)"
 				fi
 			fi
 			if [ -z "$ROOT" ]; then
