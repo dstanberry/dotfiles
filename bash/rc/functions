@@ -33,35 +33,66 @@ function fh() {
 	print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed -r 's/ *[0-9]*\*? *//' | sed -r 's/\\/\\\\/g')
 }
 
-# add subcommand to git
+# recognize dotfiles repository and make git support custom sub-commands
 function git() {
-	if [ $# -eq 0 ]; then
-		command git status
-	elif [ "$1" = root ]; then
-		shift
-		local ROOT
-		if [ "$(command git rev-parse --is-inside-git-dir 2> /dev/null)" = true ]; then
-			if [ "$(command git rev-parse --is-bare-repository)" = true ]; then
-				ROOT="$(command git rev-parse --absolute-git-dir)"
-			else
-				ROOT="$(command git rev-parse --git-dir)/.."
-			fi
-		else
-			ROOT="$(command git rev-parse --show-superproject-working-tree 2> /dev/null)"
-			if [ -z "$ROOT" ]; then
-				ROOT="$(command git rev-parse --show-toplevel 2> /dev/null)"
-			fi
-		fi
-		if [ -z "$ROOT" ]; then
-			ROOT=.
-		fi
+	if [ "$PWD" = "$CONFIG_HOME" ]; then
 		if [ $# -eq 0 ]; then
-			cd "$ROOT"
+			command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME status
+		elif [ "$1" = root ]; then
+			shift
+			local ROOT
+			if [ "$(command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME rev-parse --is-inside-git-dir 2> /dev/null)" = true ]; then
+				if [ "$(command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME rev-parse --is-bare-repository)" = true ]; then
+					ROOT="$(command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME rev-parse --absolute-git-dir)"
+				else
+					ROOT="$(command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME rev-parse --git-dir)/.."
+				fi
+			else
+				ROOT="$(command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME rev-parse --show-superproject-working-tree 2> /dev/null)"
+				if [ -z "$ROOT" ]; then
+					ROOT="$(command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME rev-parse --show-toplevel 2> /dev/null)"
+				fi
+			fi
+			if [ -z "$ROOT" ]; then
+				ROOT=.
+			fi
+			if [ $# -eq 0 ]; then
+				cd "$ROOT"
+			else
+				(cd "$ROOT" && eval "$@")
+			fi
 		else
-			(cd "$ROOT" && eval "$@")
+			command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME "$@"
 		fi
 	else
-		command git "$@"
+		if [ $# -eq 0 ]; then
+			command git status
+		elif [ "$1" = root ]; then
+			shift
+			local ROOT
+			if [ "$(command git rev-parse --is-inside-git-dir 2> /dev/null)" = true ]; then
+				if [ "$(command git rev-parse --is-bare-repository)" = true ]; then
+					ROOT="$(command git rev-parse --absolute-git-dir)"
+				else
+					ROOT="$(command git rev-parse --git-dir)/.."
+				fi
+			else
+				ROOT="$(command git rev-parse --show-superproject-working-tree 2> /dev/null)"
+				if [ -z "$ROOT" ]; then
+					ROOT="$(command git rev-parse --show-toplevel 2> /dev/null)"
+				fi
+			fi
+			if [ -z "$ROOT" ]; then
+				ROOT=.
+			fi
+			if [ $# -eq 0 ]; then
+				cd "$ROOT"
+			else
+				(cd "$ROOT" && eval "$@")
+			fi
+		else
+			command git "$@"
+		fi
 	fi
 }
 

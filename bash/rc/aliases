@@ -1,9 +1,6 @@
 # wrap diff commands and colorize the output
 hash colordiff 2>/dev/null && alias diff=colordiff
 
-# define alias to manage dotfiles repository
-alias dot='/usr/bin/git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME'
-
 # enable color support for grep
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
