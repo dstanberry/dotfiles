@@ -11,7 +11,7 @@ if test -z "$SESSION_AVAILABLE"; then
 
 	tmux send-keys -t $SESSION:vim "vim -c Files" Enter
 	tmux split-window -t $SESSION:vim -v
-	tmux send-keys -t $SESSION:vim.bottom "dot status" Enter
+	tmux send-keys -t $SESSION:vim.bottom "git status" Enter
 fi
 
 tmux attach -t $SESSION:vim.top
