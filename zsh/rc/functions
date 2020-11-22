@@ -55,7 +55,7 @@ function fix_hist() {
 	rm ${ZSH_CONFIG_HOME}/zsh_hist_corrupt
 }
 
-# recognize dotfiles and make git support custom sub-commands
+# recognize dotfiles repository and make git support custom sub-commands
 function git() {
 	if [ "$PWD" = "$CONFIG_HOME" ]; then
 		if [ $# -eq 0 ]; then
