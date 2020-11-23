@@ -1,6 +1,5 @@
 bash/bash_history
 bash/rc.private/*
-coc/*
 configstore
 htop
 less/less_history

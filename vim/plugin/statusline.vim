@@ -21,10 +21,6 @@ function! FocusStatusLine()
 	let l:statusline .= "%3*\ %([%{functions#readOnly()}%{functions#getFileType()}%{functions#getFileFormat()}]%)"
 	" right-hand side
 	let l:statusline .= "%="
-	" show coc status
-	if has('nvim')
-		let l:statusline .= "%1*%{coc#status()}\ "
-	endif
 	" line/column numbering
 	let l:statusline .= "%4*\ ℓ\ %l/%L\ с\ %c\ "
 
