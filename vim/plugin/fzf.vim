@@ -5,7 +5,7 @@ if executable('bat')
 endif
 
 " define size and position of window
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
 
 " overload rg to support searching in arbitrary locations
 function! RipgrepFzf(query, fullscreen)
