@@ -10,7 +10,7 @@ function _hash_completion() {
 function ag() {
 	emulate -L zsh
 
-	command ag --pager="less -iFMRSX" \
+	command ag --pager="less -iFMRSX -x4" \
 		--color-path=34\;3 \
 		--color-line-number=33 \
 		--color-match=35\;1\;4 "$@"
