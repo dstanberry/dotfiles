@@ -8,17 +8,25 @@ function! FocusStatusLine()
 	" initialize statusline
 	let l:statusline = ""
 	" mode indicator
-	let l:statusline .= "%7*%{(mode()=='n')?(&paste)?'\ \ normal\ |\ paste\ ':'\ \ normal\ ':''}"
-	let l:statusline .= "%6*%{(mode()=='i')?(&paste)?'\ \ insert\ |\ paste\ ':'\ \ insert\ ':''}"
-	let l:statusline .= "%8*%{(mode()=='R')?(&paste)?'\ \ replace\ |\ paste\ ':'\ \ replace\ ':''}"
-	let l:statusline .= "%9*%{(mode()==#'v')?(&paste)?'\ \ visual\ |\ paste\ ':'\ \ visual\ ':''}"
-	let l:statusline .= "%9*%{(mode()==#'V')?(&paste)?'\ \ visual\ |\ paste\ ':'\ \ visual\ ':''}"
+	if mode() == 'n'
+		let l:statusline .= "%7*%{functions#getMode()}"
+	elseif mode() == 'i'
+		let l:statusline .= "%6*%{functions#getMode()}"
+	elseif mode() == 'R'
+		let l:statusline .= "%8*%{functions#getMode()}"
+	elseif mode() == 'v'
+		let l:statusline .= "%9*%{functions#getMode()}"
+	elseif mode() == 'V'
+		let l:statusline .= "%9*%{functions#getMode()}"
+	endif
 	" relative file path
 	let l:statusline .= "%1*\ %{functions#getRelativeFilePath()}"
 	" filename
 	let l:statusline .= "%2*%t%*"
+	" modified
+	let l:statusline .= "%2*\ %{functions#getModifiedSymbol()}"
 	" read-only indicator, filetype, file format and encoding (if not unix || utf-8)
-	let l:statusline .= "%3*\ %([%{functions#readOnly()}%{functions#getFileType()}%{functions#getFileFormat()}]%)"
+	let l:statusline .= "%3*\ %([%{functions#getFileMetadata()}]%)"
 	" right-hand side
 	let l:statusline .= "%="
 	" line/column numbering
@@ -34,6 +42,8 @@ function! DimStatusLine()
 	let l:statusline .= "%3*\ \ \ \ \ \ \ \ \ %{functions#getRelativeFilePath()}"
 	" filename
 	let l:statusline .= "%3*%t%*"
+	" modified
+	let l:statusline .= "%3*\ %{functions#getModifiedSymbol()}"
 	" right-hand side
 	let l:statusline .= "%="
 

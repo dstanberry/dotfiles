@@ -51,9 +51,27 @@ function! functions#rescursor()
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => File Metadata
+" => File Properties and Metadata
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#readOnly() abort
+function! functions#getMode() abort
+	let paste = ''
+	if &paste == 1
+		let paste = ' | paste '
+	endif
+	if mode() == 'n'
+		return '  normal ' . paste
+	elseif mode() == 'i'
+		return '  insert ' . paste
+	elseif mode() == 'R'
+		return '  replace ' . paste
+	elseif mode() == 'v'
+		return '  visual ' . paste
+	elseif mode() == 'V'
+		return '  visual ' . paste
+	endif
+endfunction
+
+function! functions#getReadOnly() abort
 	if &readonly || !&modifiable
 		return 'RO,'
 	else
@@ -101,6 +119,18 @@ function! functions#getFileFormat() abort
 	else
 		return ',' . format . encoding
 	endif
+endfunction
+
+function! functions#getModifiedSymbol() abort
+	if &modified == 1
+		return '●'
+	else
+		return ''
+	endif
+endfunction
+
+function! functions#getFileMetadata() abort
+	return functions#getReadOnly().functions#getFileType().functions#getFileFormat()
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
