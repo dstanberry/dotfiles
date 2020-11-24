@@ -56,7 +56,7 @@ function fix_hist() {
 
 # recognize dotfiles repository and make git support custom sub-commands
 function git() {
-	if [ "$PWD" = "$CONFIG_HOME" ]; then
+	if [ "$PWD" =~ "$CONFIG_HOME" ]; then
 		if [ $# -eq 0 ]; then
 			command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME status
 		elif [ "$1" = root ]; then
@@ -72,16 +72,16 @@ function git() {
 				--work-tree=$CONFIG_HOME rev-parse --show-superproject-working-tree)
 			local toplevel=$(command git --git-dir=$HOME/Git/dotfiles/.git \
 				--work-tree=$CONFIG_HOME rev-parse --show-toplevel)
-			if [ "$($git_dir 2> /dev/null)" = true ]; then
-				if [ "$($bare_repo)" = true ]; then
-					ROOT="$($abs_git_dir)"
+			if [ $git_dir 2> /dev/null = true ]; then
+				if [ $bare_repo = true ]; then
+					ROOT=$abs_git_dir
 				else
-					ROOT="$($git_dir)"
+					ROOT=$git_dir
 				fi
 			else
-				ROOT="$($working_tree)"
+				ROOT=$working_tree
 				if [ -z "$ROOT" ]; then
-					ROOT="$($toplevel 2> /dev/null)"
+					ROOT=$toplevel 2> /dev/null
 				fi
 			fi
 			if [ -z "$ROOT" ]; then
@@ -106,16 +106,16 @@ function git() {
 			local abs_git_dir=$(command git rev-parse --absolute-git-dir)
 			local working_tree=$(command git rev-parse --show-superproject-working-tree)
 			local toplevel=$(command git rev-parse --show-toplevel)
-			if [ "$($git_dir 2> /dev/null)" = true ]; then
-				if [ "$($bare_repo)" = true ]; then
-					ROOT="$($abs_git_dir)"
+			if [ $git_dir 2> /dev/null = true ]; then
+				if [ $bare_repo = true ]; then
+					ROOT=$abs_git_dir
 				else
-					ROOT="$($git_dir)"
+					ROOT=$git_dir
 				fi
 			else
-				ROOT="$($working_tree)"
+				ROOT=$working_tree
 				if [ -z "$ROOT" ]; then
-					ROOT="$($toplevel 2> /dev/null)"
+					ROOT=$toplevel 2> /dev/null
 				fi
 			fi
 			if [ -z "$ROOT" ]; then
