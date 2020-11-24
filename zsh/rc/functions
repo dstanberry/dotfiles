@@ -1,7 +1,6 @@
 # enable autocomplete for hashed directories
 function _hash_completion() {
 	emulate -L zsh
-
 	COMPLETIONS="$(hash -d|cut -d= -f1)/"
 	reply=( "${(ps:\n:)COMPLETIONS}" )
 }
@@ -9,7 +8,6 @@ function _hash_completion() {
 # poor man's ag runtime configuration
 function ag() {
 	emulate -L zsh
-
 	command ag --pager="less -iFMRSX -x4" \
 		--color-path=34\;3 \
 		--color-line-number=33 \
@@ -19,18 +17,14 @@ function ag() {
 # interactively delete file(s) by name
 function del() {
 	emulate -L zsh
-
 	if [ $# -eq 0 ]; then
 		echo "error: at least one argument is required"
 		return 1
 	fi
-
 	local filename=$1
-
 	if [[ $filename == .* ]]; then
 		filename=${filename/#/\\}
 	fi
-
 	if [ $# -eq 2 ]; then
 		fd "^${filename}$" $2 -tf -X rm -i
 	else
@@ -41,7 +35,6 @@ function del() {
 # poor man's fd runtime configuration
 function fd() {
 	emulate -L zsh
-
 	command fd -H "$@"
 }
 
@@ -141,27 +134,24 @@ function git() {
 
 # print response headers, following redirects.
 function headers() {
-  if [ $# -ne 1 ]; then
-    echo "error: a host argument is required"
-    return 1
-  fi
-
-  local REMOTE=$1
-
-  curl -sSL -D - "$REMOTE" -o /dev/null
+	if [ $# -ne 1 ]; then
+		echo "error: a host argument is required"
+		return 1
+	fi
+	local REMOTE=$1
+	curl -sSL -D - "$REMOTE" -o /dev/null
 }
-# cd to specially hashed directories from anywhere on the filesystem
-function jump() {
-	emulate -L zsh
 
+# cd to specially hashed directories from anywhere on the filesystem
+function jump()
+{
+	emulate -L zsh
 	if [ $# -eq 0 ]; then
 		fd
 	else
 		local DIR="${*%%/}"
 		local BASE=$(echo "$DIR"|cut -d/ -f1)
-
 		if [ $(hash -d|cut -d= -f1|grep -c "^${BASE}\$") = 0 ]; then
-			# not in `hash -d`: use as initial argument to fd.
 			fd "$*"
 		else
 			cd ~"$DIR"
@@ -170,19 +160,16 @@ function jump() {
 }
 
 # list contents of specially hashed directories from anywhere on the filesystem
-function peek() {
+function peek()
+{
 	emulate -L zsh
-
 	if [ $# -eq 0 ]; then
 		ls
 	else
 		local DIR="${*%%/}"
-
 		local DIR="${*%%/}"
 		local BASE=$(echo "$DIR"|cut -d/ -f1)
-
 		if [ $(hash -d|cut -d= -f1|grep -c "^${BASE}\$") = 0 ]; then
-			# not in `hash -d`: use as initial argument to ls.
 			ls "$*"
 		else
 			ls ~"$DIR"
@@ -209,7 +196,6 @@ function rg() {
 # display information about a remote ssl certificate
 function ssl() {
 	emulate -L zsh
-
 	if [ $# -eq 0 ]; then
 		echo "error: a host argument is required"
 		return 1
@@ -239,22 +225,15 @@ function subtree() {
 # try to run tmux with session management
 function tmux() {
 	emulate -L zsh
-
-	# make sure even pre-existing tmux sessions use the latest SSH_AUTH_SOCK.
 	local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
 	if [ -r "$SSH_AUTH_SOCK" -a ! -L "$SSH_AUTH_SOCK" ]; then
 		ln -sf "$SSH_AUTH_SOCK" $SOCK_SYMLINK
 	fi
-
-	# if provided with args, pass them through.
 	if [[ -n "$@" ]]; then
 		env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux "$@"
 		return
 	fi
-
-	# check for .tmux file (poor man's tmuxinator).
 	if [ -x .tmux ]; then
-		# prompt the first time we see a given .tmux file before running it.
 		local DIGEST="$(openssl dgst -sha512 .tmux)"
 		if ! grep -q "$DIGEST" ${TMUX_CONFIG_HOME}/tmux.digests 2> /dev/null; then
 			cat .tmux
@@ -271,8 +250,6 @@ function tmux() {
 			return
 		fi
 	fi
-
-	# attach to existing session, or create one, based on current directory.
 	local SESSION_NAME=$(basename "${$(pwd)//[.:]/_}")
 	env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
 }
@@ -283,11 +260,9 @@ function up() {
 		cd ..
 	else
 		local DIR=""
-
 		for i in {1..$1} ; do
 			CDSTR="../$CDSTR"
 		done
-
 		cd $CDSTR
 	fi
 }

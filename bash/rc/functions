@@ -12,13 +12,10 @@ function del() {
 		echo "error: at least one argument is required"
 		return 1
 	fi
-
 	local filename=$1
-
 	if [[ $filename == .* ]]; then
 		filename=${filename/#/\\}
 	fi
-
 	if [ $# -eq 2 ]; then
 		fd "^${filename}$" $2 -tf -X rm -i
 	else
@@ -119,16 +116,14 @@ function git() {
 
 # print response headers, following redirects.
 function headers() {
-  emulate -L zsh
+	emulate -L zsh
 
-  if [ $# -ne 1 ]; then
-    echo "error: a host argument is required"
-    return 1
-  fi
-
-  local REMOTE=$1
-
-  curl -sSL -D - "$REMOTE" -o /dev/null
+	if [ $# -ne 1 ]; then
+		echo "error: a host argument is required"
+		return 1
+	fi
+	local REMOTE=$1
+	curl -sSL -D - "$REMOTE" -o /dev/null
 }
 
 # cd to specially hashed directories from anywhere on the filesystem
@@ -138,7 +133,6 @@ function jump() {
 	else
 		local DIR="${*%%/}"
 		local BASE=$(echo "$DIR"|cut -d/ -f1)
-
 		if [ $(hash -d|cut -d= -f1|grep -c "^${BASE}\$") = 0 ]; then
 			# not in `hash -d`: use as initial argument to fd.
 			fd "$*"
@@ -154,12 +148,9 @@ function peek() {
 		ls
 	else
 		local DIR="${*%%/}"
-
 		local DIR="${*%%/}"
 		local BASE=$(echo "$DIR"|cut -d/ -f1)
-
 		if [ $(hash -d|cut -d= -f1|grep -c "^${BASE}\$") = 0 ]; then
-			# not in `hash -d`: use as initial argument to ls.
 			ls "$*"
 		else
 			ls ~"$DIR"
@@ -173,8 +164,7 @@ function psgrep() {
 }
 
 # poor man's rg runtime configuration
-function rg()
-{
+function rg() {
 	command rg --colors line:fg:yellow \
 		--colors line:style:bold \
 		--colors path:fg:blue \
@@ -189,17 +179,13 @@ function ssl() {
 		echo "error: a host argument is required"
 		return 1
 	fi
-
 	local REMOTE=$1
-
 	if [ $# -eq 2 ];then
 		local PORT=$2
-
 		echo | openssl s_client -showcerts -servername "$REMOTE" \
 			-connect "$REMOTE:$PORT" 2>/dev/null \
 			| openssl x509 -inform pem -noout -text
 	else
-
 		echo | openssl s_client -showcerts -servername "$REMOTE" \
 			-connect "$REMOTE:443" 2>/dev/null \
 			| openssl x509 -inform pem -noout -text
@@ -212,21 +198,15 @@ function subtree() {
 }
 # try to run tmux with session management
 function tmux() {
-	# make sure even pre-existing tmux sessions use the latest SSH_AUTH_SOCK.
 	local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
 	if [ -r "$SSH_AUTH_SOCK" -a ! -L "$SSH_AUTH_SOCK" ]; then
 		ln -sf "$SSH_AUTH_SOCK" $SOCK_SYMLINK
 	fi
-
-	# if provided with args, pass them through.
 	if [[ -n "$@" ]]; then
 		env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux "$@"
 		return
 	fi
-
-	# check for .tmux file (poor man's tmuxinator).
 	if [ -x .tmux ]; then
-		# prompt the first time we see a given .tmux file before running it.
 		local DIGEST="$(openssl dgst -sha512 .tmux)"
 		if ! grep -q "$DIGEST" ${TMUX_CONFIG_HOME}/tmux.digests 2> /dev/null; then
 			cat .tmux
@@ -243,8 +223,6 @@ function tmux() {
 			return
 		fi
 	fi
-
-	# attach to existing session, or create one, based on current directory.
 	local SESSION_NAME=$(basename "${$(pwd)//[.:]/_}")
 	env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
 }
@@ -255,11 +233,9 @@ function up() {
 		cd ..
 	else
 		local DIR=""
-
 		for i in {1..$1} ; do
 			CDSTR="../$CDSTR"
 		done
-
 		cd $CDSTR
 	fi
 }
