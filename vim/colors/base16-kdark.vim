@@ -407,6 +407,24 @@ call <sid>hi("User7",        s:gui00, s:gui08, s:cterm00, s:cterm0D, "", "")
 call <sid>hi("User8",        s:gui00, s:gui0C, s:cterm00, s:cterm0D, "", "")
 call <sid>hi("User9",        s:gui00, s:gui0F, s:cterm00, s:cterm0D, "", "")
 
+" LSP Diagnostic highlighting
+call <sid>hi("LspDiagnosticsDefaultError", s:gui0F, "", s:cterm0F, "", "", "")
+call <sid>hi("LspDiagnosticsFloatingError", s:gui0F, "", s:cterm0F, "", "", "")
+call <sid>hi("LspDiagnosticsSignError", s:gui0F, s:gui01, s:cterm0F, "", "", "")
+call <sid>hi("LspDiagnosticsDefaultWarning", s:gui08, "", s:cterm08, "", "", "")
+call <sid>hi("LspDiagnosticsFloatingWarning", s:gui08, "", s:cterm08, "", "", "")
+call <sid>hi("LspDiagnosticsSignWarning", s:gui08, s:gui01, s:cterm08, "", "", "")
+call <sid>hi("LspDiagnosticsDefaultHint", s:gui0E, "", s:cterm0E, "", "", "")
+call <sid>hi("LspDiagnosticsFloatingHint", s:gui0E, "", s:cterm0E, "", "", "")
+call <sid>hi("LspDiagnosticsSignHint", s:gui0E, s:gui01, s:cterm0E, s:gui01, "", "")
+call <sid>hi("LspDiagnosticsDefaultInformation", s:gui05, "", s:cterm05, "", "", "")
+call <sid>hi("LspDiagnosticsFloatingInformation", s:gui05, "", s:cterm05, "", "", "")
+call <sid>hi("LspDiagnosticsSignInformation", s:gui05, s:gui01, s:cterm05, s:gui01, "", "")
+call <sid>hi("LspDiagnosticsUnderlineError", s:gui0F, "", s:cterm0F, "", "underline", "")
+call <sid>hi("LspDiagnosticsUnderlineWarning", s:gui08, "", s:cterm08, "", "underline", "")
+call <sid>hi("LspDiagnosticsUnderlineHint", s:gui0E, "", s:cterm0E, "", "underline", "")
+call <sid>hi("LspDiagnosticsUnderlineInfo", s:gui05, "", s:cterm05, "", "underline", "")
+
 " Remove functions
 delfunction <sid>hi
 
