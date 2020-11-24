@@ -1,7 +1,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Load private directory hashes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! async#loadHashes() abort
+function! deferred#loadHashes() abort
 	" set up shortcut variables for 'hash -d' directories.
 	let l:dirs=system(
 		\ 'zsh -c "' .
@@ -25,7 +25,7 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Setup vimade to work inside tmux
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! async#vimade() abort
+function! deferred#vimade() abort
 		autocmd! FocusGained * VimadeUnfadeActive
 		autocmd! FocusLost * VimadeFadeActive
 endfunction

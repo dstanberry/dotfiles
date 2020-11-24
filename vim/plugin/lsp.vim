@@ -1,5 +1,1 @@
-lua << EOF
-require'lspconfig'.bashls.setup{}
-require'lspconfig'.jsonls.setup{}
-require'lspconfig'.vimls.setup{}
-EOF
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
