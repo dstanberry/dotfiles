@@ -143,8 +143,7 @@ function headers() {
 }
 
 # cd to specially hashed directories from anywhere on the filesystem
-function jump()
-{
+function jump() {
 	emulate -L zsh
 	if [ $# -eq 0 ]; then
 		fd
@@ -160,8 +159,7 @@ function jump()
 }
 
 # list contents of specially hashed directories from anywhere on the filesystem
-function peek()
-{
+function peek() {
 	emulate -L zsh
 	if [ $# -eq 0 ]; then
 		ls
