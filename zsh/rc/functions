@@ -56,79 +56,43 @@ function fix_hist() {
 
 # recognize dotfiles repository and make git support custom sub-commands
 function git() {
-	if [ "$PWD" =~ "$CONFIG_HOME" ]; then
-		if [ $# -eq 0 ]; then
-			command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME status
-		elif [ "$1" = root ]; then
-			shift
-			local ROOT
-			local git_dir=$(command git --git-dir=$HOME/Git/dotfiles/.git \
-				--work-tree=$CONFIG_HOME rev-parse --is-inside-git-dir)
-			local bare_repo=$(command git --git-dir=$HOME/Git/dotfiles/.git \
-				--work-tree=$CONFIG_HOME rev-parse --is-bare-repository)
-			local abs_git_dir=$(command git --git-dir=$HOME/Git/dotfiles/.git \
-				--work-tree=$CONFIG_HOME rev-parse --absolute-git-dir)
-			local working_tree=$(command git --git-dir=$HOME/Git/dotfiles/.git \
-				--work-tree=$CONFIG_HOME rev-parse --show-superproject-working-tree)
-			local toplevel=$(command git --git-dir=$HOME/Git/dotfiles/.git \
-				--work-tree=$CONFIG_HOME rev-parse --show-toplevel)
-			if [ $git_dir 2> /dev/null = true ]; then
-				if [ $bare_repo = true ]; then
-					ROOT=$abs_git_dir
-				else
-					ROOT=$git_dir
-				fi
+	local worktree=""
+	if [ "$PWD" = "$CONFIG_HOME" ] || [[ $PWD = ${CONFIG_HOME}/* ]]; then
+		worktree="--git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME"
+	fi
+	local cmd="command git"
+	local inside_git_dir="$cmd $worktree rev-parse --is-inside-git-dir"
+	local bare_repo="$cmd $worktree rev-parse --is-bare-repository"
+	local absolute_git_dir="$cmd $worktree rev-parse --absolute-git-dir"
+	local show_working_tree="$cmd $worktree rev-parse --show-superproject-working-tree"
+	local show_toplevel="$cmd $worktree rev-parse --show-toplevel"
+	if [ $# -eq 0 ]; then
+		eval "$cmd $worktree status"
+	elif [ "$1" = root ]; then
+		shift
+		local ROOT
+		if [ "$($inside_git_dir 2> /dev/null)" = true ]; then
+			if [ "$($bare_repo)" = true ]; then
+				ROOT="$($absolute_git_dir)"
 			else
-				ROOT=$working_tree
-				if [ -z "$ROOT" ]; then
-					ROOT=$toplevel 2> /dev/null
-				fi
-			fi
-			if [ -z "$ROOT" ]; then
-				ROOT=.
-			fi
-			if [ $# -eq 0 ]; then
-				cd "$ROOT"
-			else
-				(cd "$ROOT" && eval "$@")
+				ROOT="$($inside_git_dir)"
 			fi
 		else
-			command git --git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME "$@"
+			ROOT="$($show_working_tree 2> /dev/null)"
+			if [ -z "$ROOT" ]; then
+				ROOT="$($show_toplevel 2> /dev/null)"
+			fi
+		fi
+		if [ -z "$ROOT" ]; then
+			ROOT=.
+		fi
+		if [ $# -eq 0 ]; then
+			cd "$ROOT"
+		else
+			(cd "$ROOT" && eval "$@")
 		fi
 	else
-		if [ $# -eq 0 ]; then
-			command git status
-		elif [ "$1" = root ]; then
-			shift
-			local ROOT
-			local git_dir=$(command git rev-parse --is-inside-git-dir)
-			local bare_repo=$(command git rev-parse --is-bare-repository)
-			local abs_git_dir=$(command git rev-parse --absolute-git-dir)
-			local working_tree=$(command git rev-parse --show-superproject-working-tree)
-			local toplevel=$(command git rev-parse --show-toplevel)
-			if [ $git_dir 2> /dev/null = true ]; then
-				if [ $bare_repo = true ]; then
-					ROOT=$abs_git_dir
-				else
-					ROOT=$git_dir
-				fi
-			else
-				ROOT=$working_tree
-				if [ -z "$ROOT" ]; then
-					ROOT=$toplevel 2> /dev/null
-				fi
-			fi
-			if [ -z "$ROOT" ]; then
-				ROOT=.
-			fi
-			if [ $# -eq 0 ]; then
-				cd "$ROOT"
-			else
-				(cd "$ROOT" && eval "$@")
-			fi
-		else
-			command git "$@"
-		fi
+		eval "$cmd $worktree $@"
 	fi
 }
 
