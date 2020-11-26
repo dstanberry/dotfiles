@@ -36,12 +36,24 @@ function fh() {
 		| sed -r 's/\\/\\\\/g')
 }
 
-# recognize dotfiles repository and make git support custom sub-commands
+# recognize defined worktrees and make git support custom sub-commands
 function git() {
+	local INPUT="${CONFIG_HOME}/git/worktrees"
+	local OLDIFS=$IFS
+	IFS=','
 	local worktree=""
-	if [ "$PWD" = "$CONFIG_HOME" ] || [[ $PWD = ${CONFIG_HOME}/* ]]; then
-		worktree="--git-dir=$HOME/Git/dotfiles/.git --work-tree=$CONFIG_HOME"
+	if [ -f "$INPUT" ]; then
+		while read col1 col2; do
+			if [[ "$col1" != "GIT_DIR" ]]; then
+				gd=$(eval echo "$col1")
+				wt=$(eval echo "$col2")
+				if [ "$PWD" = "$wt" ] || [[ $PWD = ${wt}/* ]]; then
+					worktree="--git-dir=$gd --work-tree=$wt"
+				fi
+			fi
+		done < $INPUT
 	fi
+	IFS=$OLDIFS
 	local cmd="command git"
 	local inside_git_dir="$cmd $worktree rev-parse --is-inside-git-dir"
 	local bare_repo="$cmd $worktree rev-parse --is-bare-repository"
@@ -55,14 +67,14 @@ function git() {
 		local ROOT
 		if [ "$($inside_git_dir 2> /dev/null)" = true ]; then
 			if [ "$($bare_repo)" = true ]; then
-				ROOT="$($absolute_git_dir)"
+				ROOT="$(eval $absolute_git_dir)"
 			else
-				ROOT="$($inside_git_dir)"
+				ROOT="$(eval $inside_git_dir)"
 			fi
 		else
-			ROOT="$($show_working_tree 2> /dev/null)"
+			ROOT="$(eval $show_working_tree 2> /dev/null)"
 			if [ -z "$ROOT" ]; then
-				ROOT="$($show_toplevel 2> /dev/null)"
+				ROOT="$(eval $show_toplevel 2> /dev/null)"
 			fi
 		fi
 		if [ -z "$ROOT" ]; then
