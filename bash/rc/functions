@@ -85,6 +85,10 @@ function git() {
 		else
 			(cd "$ROOT" && eval "$@")
 		fi
+	elif [[ "$@" == *"rev-parse --show-toplevel"* ]]; then
+		if [ "$(eval $bare_repo)" = true ]; then
+			return ""
+		fi
 	else
 		eval "$cmd $worktree $@"
 	fi
