@@ -25,10 +25,29 @@ function! FocusStatusLine()
 	let l:statusline .= "%2*%t%*"
 	" modified
 	let l:statusline .= "%2*\ %{functions#getModifiedSymbol()}"
-	" read-only indicator, filetype, file format and encoding (if not unix || utf-8)
-	let l:statusline .= "%3*\ %([%{functions#getFileMetadata()}]%)"
 	" right-hand side
 	let l:statusline .= "%="
+	" read-only indicator
+	let l:readonly=functions#getReadOnly()
+	if l:readonly != ''
+		let l:statusline .= "%#SpecialText#%(%{functions#getReadOnly()}%)\ "
+	endif
+	" filetype
+	let l:ft=functions#getFileType()
+	if l:ft != ''
+		if l:readonly != ''
+			let l:statusline .= "%#SpecialText#|"
+		endif
+		let l:statusline .= "%#SpecialText#\ %(%{functions#getFileType()}%)\ "
+	endif
+	" file format and encoding (if not unix || utf-8)
+	let l:ff=functions#getFileFormat()
+	if l:ff != ''
+		if l:ft != ''
+			let l:statusline .= "%#SpecialText#|"
+		endif
+		let l:statusline .= "%#SpecialText#\ %(%{functions#getFileFormat()}%)\ "
+	endif
 	" line/column numbering
 	let l:statusline .= "%4*\ ℓ\ %l/%L\ с\ %c\ "
 
