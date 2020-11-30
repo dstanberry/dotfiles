@@ -73,7 +73,7 @@ endfunction
 
 function! functions#getReadOnly() abort
 	if &readonly || !&modifiable
-		return 'RO,'
+		return ''
 	else
 		return ''
 	endif
