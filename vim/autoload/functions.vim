@@ -44,9 +44,11 @@ endfunction
 " => Restore Cursor Position
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! functions#rescursor()
-	if line("'\"") <= line("$")
-		normal! g`"
-		return 1
+	if &filetype != "netrw" && &filetype != "help"
+		if line("'\"") <= line("$")
+			normal! g`"
+			return 1
+		endif
 	endif
 endfunction
 
