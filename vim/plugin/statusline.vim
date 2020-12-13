@@ -36,7 +36,7 @@ function! FocusStatusLine()
 	let l:ft=functions#getFileType()
 	if l:ft != ''
 		if l:readonly != ''
-			let l:statusline .= "%#SpecialText#\ \•\ "
+			let l:statusline .= "%#SpecialText#\ •\ "
 		endif
 		let l:statusline .= "%#SpecialText#%(%{functions#getFileType()}%)"
 	endif
