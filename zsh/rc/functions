@@ -54,6 +54,11 @@ function fix_hist() {
 	rm ${ZSH_CONFIG_HOME}/zsh_hist_corrupt
 }
 
+# find process by name and highlight
+function fp() {
+	ps aux | grep -v grep | grep -i "$@"
+}
+
 # recognize defined worktrees and make git support custom sub-commands
 function git() {
 	local INPUT="${CONFIG_HOME}/git/worktrees"
@@ -154,12 +159,6 @@ function peek() {
 		fi
 	fi
 }
-
-# search for process by name and highlight
-function psgrep() {
-	ps aux | grep -v grep | grep "$@" -i
-}
-
 
 # poor man's rg runtime configuration
 function rg() {
