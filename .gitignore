@@ -1,6 +1,7 @@
 bash/bash_history
 bash/rc.private/*
 configstore
+iterm2/*
 htop
 less/less_history
 inkscape
