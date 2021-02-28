@@ -111,38 +111,6 @@ function headers() {
 	curl -sSL -D - "$REMOTE" -o /dev/null
 }
 
-# cd to specially hashed directories from anywhere on the filesystem
-function jump() {
-	if [ $# -eq 0 ]; then
-		fd
-	else
-		local DIR="${*%%/}"
-		local BASE=$(echo "$DIR"|cut -d/ -f1)
-		if [ $(hash -d|cut -d= -f1|grep -c "^${BASE}\$") = 0 ]; then
-			# not in `hash -d`: use as initial argument to fd.
-			fd "$*"
-		else
-			cd ~"$DIR"
-		fi
-	fi
-}
-
-# list contents of specially hashed directories from anywhere on the filesystem
-function peek() {
-	if [ $# -eq 0 ]; then
-		ls
-	else
-		local DIR="${*%%/}"
-		local DIR="${*%%/}"
-		local BASE=$(echo "$DIR"|cut -d/ -f1)
-		if [ $(hash -d|cut -d= -f1|grep -c "^${BASE}\$") = 0 ]; then
-			ls "$*"
-		else
-			ls ~"$DIR"
-		fi
-	fi
-}
-
 # poor man's rg runtime configuration
 function rg() {
 	command rg --colors line:fg:yellow \
