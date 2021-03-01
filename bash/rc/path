@@ -1,6 +1,14 @@
 # add ruby gems to path if present
 if hash gem 2>/dev/null; then
-	export PATH="$(gem environment gemdir)/bin:$PATH"
+	local gempath=$(gem environment gempath)
+	eval "local arr=(${gempath//:/ })"
+
+	for i in "${arr[@]}"
+	do
+		if [ -d "$i/bin" ]; then
+			export PATH="$i/bin":$PATH
+		fi
+	done
 fi
 
 # base directory for system-wide available scripts
@@ -10,24 +18,29 @@ LOCAL="${HOME}/.local/bin"
 
 # include directory in PATH
 export PATH=$LOCAL:$ULOCAL:$PATH
-
 unset ULOCAL
 unset LOCAL
 
-# dirty hack to expose native specific Windows utils
+# define macOS specific paths
 if is_darwin; then
+	# homebrew may install binaries here
 	BREW="/usr/local/sbin"
 
 	export PATH=$BREW:$PATH
-
 	unset BREW
+
+	# include fzf
+	FZF="/usr/local/opt/fzf/bin"
+	export PATH=$FZF:$PATH
+	unset FZF
+# define wsl specific paths
 elif is_wsl; then
+	# dirty hack to expose native specific Windows utils
 	WIN="/mnt/c/Windows"
 	SYS32="/mnt/c/Windows/System32"
 	PWSH="/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
 
 	export PATH=$WIN:$SYS32:$PWSH:$PATH
-
 	unset WIN
 	unset SYS32
 	unset PWSH
