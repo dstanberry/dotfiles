@@ -211,7 +211,7 @@ fi
 ###############################################################
 # check for machine-specific rc files and source them if available
 if [ -d "$BASH_CONFIG_HOME/rc.private" ]; then
-	for RC_FILE in $(find $BASH_CONFIG_HOME/rc -type f | sort); do
+	for RC_FILE in $(find $BASH_CONFIG_HOME/rc.private -type f | sort); do
 		source "$RC_FILE"
 	done
 fi
