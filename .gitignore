@@ -7,7 +7,7 @@ less/less_history
 inkscape
 karabiner/automatic_backups/*
 tmux/tmux.digests
-vim/pack/remote/opt/*
+vim/remote/*
 vim/tmp/backup/*
 vim/tmp/netrw/*
 vim/tmp/swap/*

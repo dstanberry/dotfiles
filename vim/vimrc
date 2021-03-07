@@ -1,7 +1,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin Manager
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call plug#begin('~/.config/vim/pack/remote/opt')
+call plug#begin('~/.config/vim/remote')
 
 " show completion entries for typed characters
 Plug 'vim-scripts/AutoComplPop', { 'on': [] }
