@@ -14,9 +14,7 @@ function! FocusStatusLine()
 		let l:statusline .= "%6*%{functions#getMode()}"
 	elseif mode() == 'R'
 		let l:statusline .= "%8*%{functions#getMode()}"
-	elseif mode() == 'v'
-		let l:statusline .= "%9*%{functions#getMode()}"
-	elseif mode() == 'V'
+	elseif mode() == 'v' || mode() == 'V'
 		let l:statusline .= "%9*%{functions#getMode()}"
 	endif
 	" relative file path
@@ -27,29 +25,44 @@ function! FocusStatusLine()
 	let l:statusline .= "%2*\ %{functions#getModifiedSymbol()}"
 	" right-hand side
 	let l:statusline .= "%="
+	let l:prefix = ""
+	" colorize meatdata based on mode
+	if mode() == 'n'
+		let l:statusline .= "%#Custom2#"
+		let l:prefix .= "%#Custom2#"
+	elseif mode() == 'i'
+		let l:statusline .= "%#Custom1#"
+		let l:prefix .= "%#Custom1#"
+	elseif mode() == 'R'
+		let l:statusline .= "%#Custom3#"
+		let l:prefix .= "%#Custom3#"
+	elseif mode() == 'v' || mode() == 'V'
+		let l:statusline .= "%#Custom4#"
+		let l:prefix .= "%#Custom4#"
+	endif
 	" read-only indicator
 	let l:readonly=functions#getReadOnly()
 	if l:readonly != ''
-		let l:statusline .= "%#SpecialText#%(%{functions#getReadOnly()}%)"
+		let l:statusline .= "%(%{functions#getReadOnly()}%)"
 	endif
 	" filetype
 	let l:ft=functions#getFileType()
 	if l:ft != ''
 		if l:readonly != ''
-			let l:statusline .= "%#SpecialText#\ •\ "
+			let l:statusline .= "%#SpecialText#\ •\ " . l:prefix
 		endif
-		let l:statusline .= "%#SpecialText#%(%{functions#getFileType()}%)"
+		let l:statusline .= "%(%{functions#getFileType()}%)"
 	endif
 	" file format and encoding (if not unix || utf-8)
 	let l:ff=functions#getFileFormat()
 	if l:ff != ''
 		if l:ft != ''
-			let l:statusline .= "%#SpecialText#\ \•\ "
+			let l:statusline .= "%#SpecialText#\ \•\ " . l:prefix
 		endif
-		let l:statusline .= "%#SpecialText#%(%{functions#getFileFormat()}%)"
+		let l:statusline .= "%(%{functions#getFileFormat()}%)"
 	endif
 	if l:readonly != '' || l:ft != '' || l:ff != ''
-		let l:statusline .= "%#SpecialText#\ "
+		let l:statusline .= "\ "
 	endif
 	" line/column numbering
 	let l:statusline .= "%4*\ ℓ\ %l/%L\ с\ %c\ "

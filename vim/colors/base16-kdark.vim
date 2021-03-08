@@ -407,6 +407,11 @@ call <sid>hi("User7",        s:gui00, s:gui08, s:cterm00, s:cterm0D, "", "")
 call <sid>hi("User8",        s:gui00, s:gui0C, s:cterm00, s:cterm0D, "", "")
 call <sid>hi("User9",        s:gui00, s:gui0F, s:cterm00, s:cterm0D, "", "")
 
+call <sid>hi("Custom1",        s:gui0B, s:gui02, s:cterm0D, s:cterm00, "", "")
+call <sid>hi("Custom2",        s:gui08, s:gui02, s:cterm0D, s:cterm00, "", "")
+call <sid>hi("Custom3",        s:gui0C, s:gui02, s:cterm0D, s:cterm00, "", "")
+call <sid>hi("Custom4",        s:gui0F, s:gui02, s:cterm0D, s:cterm00, "", "")
+
 " LSP Diagnostic highlighting
 call <sid>hi("LspDiagnosticsDefaultError", s:gui0F, "", s:cterm0F, "", "", "")
 call <sid>hi("LspDiagnosticsFloatingError", s:gui0F, "", s:cterm0F, "", "", "")
