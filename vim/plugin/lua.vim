@@ -3,6 +3,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if has('nvim')
 lua << EOF
-require('plugin.telescope')
+require('remote.telescope')
 EOF
 endif
