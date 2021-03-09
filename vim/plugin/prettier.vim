@@ -1,5 +1,5 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => prettier
+" => Prettier Configuration
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " disable auto formatting of files with '@format' tag
 let g:prettier#autoformat = 0

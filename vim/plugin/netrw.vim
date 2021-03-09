@@ -1,3 +1,6 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => NETRW Configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " define location for netrw history file
 let g:netrw_home="~/.config/vim/tmp/netrw"
 " suppress banner

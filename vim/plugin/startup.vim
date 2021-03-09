@@ -1,9 +1,10 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Request expensive/greedy/time-sensitive resources
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-lua require("deferred")
-
+" vim functions
 call functions#defer('call deferred#loadHashes()')
 call functions#defer('call deferred#vimade()')
 
+" lua functions
+lua require("deferred")
 call functions#defer('lua startLSP()')

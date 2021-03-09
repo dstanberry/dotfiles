@@ -1,3 +1,6 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Seamless clipboard experience
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function s:copy(lines, ...)
 	let str = join(a:lines, "\n")
 	let enc = functions#b64encode(str)

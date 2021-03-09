@@ -1,3 +1,6 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => GoYo Configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:goyo_enter()
 	if executable('tmux') && strlen($TMUX)
 		silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z

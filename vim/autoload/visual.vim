@@ -1,3 +1,6 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Move block selection up/down
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:Visual()
 	return visualmode() == 'V'
 endfunction

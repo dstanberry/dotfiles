@@ -1,3 +1,6 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => FZF Configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " define default options
 if executable('bat')
 	let s:fzf_default_opts = $FZF_DEFAULT_OPTS
