@@ -29,6 +29,14 @@ Plug 'junegunn/limelight.vim'
 " emphasize the current matched search pattern
 Plug 'wincent/loupe'
 
+" modular fuzzy finder
+if has('nvim')
+	Plug 'nvim-lua/popup.nvim'
+	Plug 'nvim-lua/plenary.nvim'
+	Plug 'nvim-telescope/telescope.nvim'
+	Plug 'nvim-telescope/telescope-fzy-native.nvim'
+endif
+
 " code formatter
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
