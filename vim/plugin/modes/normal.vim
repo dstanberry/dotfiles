@@ -98,39 +98,33 @@ nmap <leader>zz :call  normal#trim()<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" fzf: list files available in the current directory
-nnoremap <leader><leader> :Files<cr>
-" fzf: list git files available in the current directory
-nnoremap <leader>gi :GFiles<cr>
-" fzf: list all currently open file buffers
-nnoremap <leader><cr> :Buffers<cr>
-
 " lsp: jump to the declaration of the symbol under the cursor
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.declaration()<cr>
-
 " lsp: jump to the definition of the symbol under the cursor
 nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
-
 " lsp: display hover information about the symbol under the cursor
 nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<cr>
-
 " lsp: list all implementations for the symbol under the cursor
 nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<cr>
-
 " lsp: display signature information under the cursor
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
-
 " lsp: jump to the definition of the type of the symbol under the cursor
 nnoremap <silent> 1gD <cmd>lua vim.lsp.buf.type_definition()<cr>
-
 " lsp: list all references to the symbol under the cursor in the quickfix list
 nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<cr>
-
 " lsp: list all symbols in the current buffer in the quickfix list
 nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<cr>
-
 " lsp: list all symbols in the current workspace in the quickfix list
 nnoremap <silent> gW <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
+
+" telescope: search files available in the current directory
+nnoremap <leader><leader> :Telescope find_files<cr>
+" telescope: search git files available in the current directory
+nnoremap <leader>fg :Telescope git_files<cr>
+" telescope: search all currently open file buffers
+nnoremap <leader>fb :Telescope buffers<cr>
+" telescope: search files available in dotfiles repository
+nnoremap <leader>fd :lua require('remote.telescope').search_dotfiles()<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
@@ -149,3 +143,13 @@ nnoremap <localleader>gh :diffget //2<cr>
 
 "vim-fugitive: resolve git conflict using right hunk
 nnoremap <localleader>gl :diffget //3<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Normal | Local Leader | Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" fzf: search files available in the current directory
+nnoremap <localleader>ff :Files<cr>
+" fzf: search git files available in the current directory
+nnoremap <localleader>fg :GFiles<cr>
+" fzf: search all currently open file buffers
+nnoremap <localleader>fb :Buffers<cr>
