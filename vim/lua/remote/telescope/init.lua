@@ -27,7 +27,7 @@ require('telescope').setup {
 		selection_strategy = "reset",
 		sorting_strategy = "descending",
 		scroll_strategy = "cycle",
-		prompt_position = "top",
+		prompt_position = "bottom",
 		color_devicons = false,
 		mappings= {
 			i = {
@@ -38,8 +38,8 @@ require('telescope').setup {
 		},
 		borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},
 		file_sorter = sorters.get_fzy_sorter,
-		file_previewer   = require('telescope.previewers').vim_buffer_cat.new,
-		grep_previewer   = require('telescope.previewers').vim_buffer_vimgrep.new,
+		file_previewer = require('telescope.previewers').vim_buffer_cat.new,
+		grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
 		qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
 	},
 	extensions= {
@@ -49,3 +49,21 @@ require('telescope').setup {
 		},
 	},
 }
+
+require('telescope').load_extension('fzy_native')
+
+local M = {}
+M.search_dotfiles = function()
+	require("telescope.builtin").find_files({
+		shorten_path = false,
+		cwd = "~/.config/",
+		prompt_title = "~ dotfiles ~",
+		hidden = true,
+
+		layout_strategy = 'horizontal',
+		layout_config = {
+			preview_width = 0.55,
+		},
+	})
+end
+return M
