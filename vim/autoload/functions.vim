@@ -243,7 +243,7 @@ function! functions#b64encode(str)
 		\ "w","x","y","z","0","1","2","3","4","5","6","7","8","9","+","/"]
 	let bytes = functions#str2bytes(a:str)
 	let b64 = []
-	
+
 	for i in range(0, len(bytes) - 1, 3)
 		let n = bytes[i] * 0x10000
 			\ + get(bytes, i + 1, 0) * 0x100
@@ -276,6 +276,20 @@ function! functions#loadFile() abort
 	elseif &filetype == 'lua'
 		:silent! write
 		:luafile %
+	endif
+	return
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Comment current line based on filetype
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! functions#insertComment() abort
+	if &filetype == 'sh'
+		:silent! norm 0i#
+	elseif &filetype == 'vim'
+		:silent! norm 0i"
+	elseif &filetype == 'lua'
+		:silent! norm 0i--
 	endif
 	return
 endfunction

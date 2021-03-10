@@ -55,7 +55,7 @@ nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
 nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
 
 " clear hlsearch if set, otherwise send default
-nnoremap <expr> <CR> {-> v:hlsearch ? ":nohl\<CR>" : "\<CR>"}()
+nnoremap <expr> <cr> {-> v:hlsearch ? ":nohl\<cr>" : "\<cr>"}()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader
@@ -94,6 +94,9 @@ nnoremap <silent> <leader>_ :resize -5<cr>
 
 " trim trailing whitespace
 nmap <leader>zz :call  normal#trim()<cr>
+
+" insert comment on current line based on filetype
+nnoremap <silent> <leader>' :call functions#insertComment()<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Plugins
