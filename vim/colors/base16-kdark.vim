@@ -396,9 +396,10 @@ call <sid>hi("StartifySpecial",  s:gui03, "", s:cterm03, "", "", "")
 call <sid>hi("javaOperator",     s:gui0D, "", s:cterm0D, "", "", "")
 
 " StatusLine highlight groups
-let s:gui10 = substitute(functions#Lighten(s:gui05, 6), '#', '', 'g')
-let s:gui11 = substitute(functions#Darken(s:gui07, 22), '#', '', 'g')
-let s:gui12 = substitute(functions#Darken(s:gui07, 29), '#', '', 'g')
+let s:gui10 = substitute(functions#Lighten(s:gui05, 5), '#', '', 'g')
+let s:gui11 = substitute(functions#Darken(s:gui07, 20), '#', '', 'g')
+let s:gui12 = substitute(functions#Darken(s:gui07, 30), '#', '', 'g')
+let s:gui13 = substitute(functions#Darken(s:gui07, 65), '#', '', 'g')
 
 call <sid>hi("User1",        s:gui11, s:gui02, s:cterm04, s:cterm00, "", "")
 call <sid>hi("User2",        s:gui10, s:gui02, s:cterm05, s:cterm00, "bold", "")
@@ -414,6 +415,7 @@ call <sid>hi("Custom1",        s:gui0B, s:gui02, s:cterm0D, s:cterm00, "", "")
 call <sid>hi("Custom2",        s:gui08, s:gui02, s:cterm0D, s:cterm00, "", "")
 call <sid>hi("Custom3",        s:gui0C, s:gui02, s:cterm0D, s:cterm00, "", "")
 call <sid>hi("Custom4",        s:gui0F, s:gui02, s:cterm0D, s:cterm00, "", "")
+call <sid>hi("Custom5",        s:gui11, s:gui13, s:cterm0D, s:cterm00, "", "")
 
 " LSP Diagnostic highlighting
 call <sid>hi("LspDiagnosticsDefaultError", s:gui0F, "", s:cterm0F, "", "", "")

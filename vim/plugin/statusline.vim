@@ -67,8 +67,10 @@ function! FocusStatusLine()
 	if l:readonly != '' || l:ft != '' || l:ff != ''
 		let l:statusline .= "\ "
 	endif
-	" line/column numbering
-	let l:statusline .= "%4*\ ℓ\ %l/%L\ с\ %c\ "
+	" line numbering
+	let l:statusline .= "%#Custom5#\ %l:%L\ "
+	" column numbering
+	let l:statusline .= "%4*\ \ %c\ "
 
 	return l:statusline
 endfunction
