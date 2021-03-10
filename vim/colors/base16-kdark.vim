@@ -433,6 +433,14 @@ call <sid>hi("LspDiagnosticsUnderlineWarning", s:gui08, "", s:cterm08, "", "unde
 call <sid>hi("LspDiagnosticsUnderlineHint", s:gui0E, "", s:cterm0E, "", "underline", "")
 call <sid>hi("LspDiagnosticsUnderlineInfo", s:gui05, "", s:cterm05, "", "underline", "")
 
+" StatusLine highlight groups
+let s:gui20 = substitute(functions#Darken(s:gui00, 25), '#', '', 'g')
+
+" Telescope window highlighting
+call <sid>hi("TelescopeSelection", "", s:gui20, s:cterm00, s:cterm00, "bold", "")
+call <sid>hi("TelescopeSelectionCaret", s:gui0A, s:gui20, s:cterm00, s:cterm00, "bold", "")
+call <sid>hi("TelescopeBorder", s:gui03, s:gui00, s:cterm00, s:cterm00, "", "")
+
 " Remove functions
 delfunction <sid>hi
 

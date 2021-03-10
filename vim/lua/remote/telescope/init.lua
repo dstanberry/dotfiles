@@ -5,6 +5,7 @@ local actions = require('telescope.actions')
 local sorters = require('telescope.sorters')
 local themes = require('telescope.themes')
 
+-- default options
 require('telescope').setup {
 	defaults = {
 		prompt_prefix = '❯ ',
@@ -36,7 +37,7 @@ require('telescope').setup {
 				["<C-q>"] = actions.send_to_qflist,
 			},
 		},
-		borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰'},
+		borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└'},
 		file_sorter = sorters.get_fzy_sorter,
 		file_previewer = require('telescope.previewers').vim_buffer_cat.new,
 		grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
@@ -50,20 +51,74 @@ require('telescope').setup {
 	},
 }
 
+-- load additional extensions
 require('telescope').load_extension('fzy_native')
 
+-- custom functions
 local M = {}
-M.search_dotfiles = function()
-	require("telescope.builtin").find_files({
-		shorten_path = false,
-		cwd = "~/.config/",
-		prompt_title = "~ dotfiles ~",
-		hidden = true,
 
+-- search dotfiles from anywhere
+function M.search_dotfiles()
+	require("telescope.builtin").find_files({
+		cwd = "~/.config",
+		hidden = true,
+		shorten_path = false,
 		layout_strategy = 'horizontal',
-		layout_config = {
-			preview_width = 0.55,
-		},
+		prompt_title = "~ dotfiles ~",
+		preview_title = false,
+		results_title = false,
 	})
 end
+
+-- customize find_files
+function M.search_cwd()
+	require("telescope.builtin").find_files({
+		hidden = true,
+		shorten_path = false,
+		layout_strategy = 'horizontal',
+		preview_title = false,
+		results_title = false,
+	})
+end
+
+-- search installed vim plugins
+function M.installed_plugins()
+	require("telescope.builtin").find_files({
+		cwd = "~/.config/vim/remote",
+		previewer = false,
+		layout_strategy = 'vertical',
+		results_title = false,
+	})
+end
+
+-- grep files in cwd
+function M.grep_files()
+	require("telescope.builtin").grep_string({
+		shorten_path = true,
+		search = vim.fn.input("Grep ❯ "),
+		preview_title = false,
+		results_title = false,
+	})
+end
+
+-- grep all files in cwd
+function M.grep_all_files()
+	require("telescope.builtin").find_files({
+		find_command = { 'rg', '--no-ignore', '--files', },
+		preview_title = false,
+		results_title = false,
+	})
+end
+
+-- search tracked files in git repository
+function M.git_files()
+	require("telescope.builtin").find_files(themes.get_dropdown {
+		cwd = vim.fn.expand("%:p:h"),
+		winblend = 10,
+		border = true,
+		previewer = false,
+		results_title = false,
+	})
+end
+
 return M

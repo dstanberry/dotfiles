@@ -117,14 +117,20 @@ nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<cr>
 " lsp: list all symbols in the current workspace in the quickfix list
 nnoremap <silent> gW <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
 
-" telescope: search files available in the current directory
-nnoremap <leader><leader> :Telescope find_files<cr>
-" telescope: search git files available in the current directory
-nnoremap <leader>fg :Telescope git_files<cr>
 " telescope: search all currently open file buffers
 nnoremap <leader>fb :Telescope buffers<cr>
+" telescope: search files available in the current directory
+nnoremap <leader><leader> :lua require('remote.telescope').search_cwd()<cr>
+" telescope: search git files available in the current directory
+nnoremap <leader>fg :lua require('remote.telescope').git_files()<cr>
 " telescope: search files available in dotfiles repository
 nnoremap <leader>fd :lua require('remote.telescope').search_dotfiles()<cr>
+" telescope: search files available in vim remote plugin directory
+nnoremap <leader>fp :lua require('remote.telescope').installed_plugins()<cr>
+" telescope: grep files in current directory
+nnoremap <leader>gf :lua require('remote.telescope').grep_files()<cr>
+" telescope: grep all files in current directory
+nnoremap <leader>gg :lua require('remote.telescope').grep_all_files()<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
