@@ -6,5 +6,5 @@ call functions#defer('call deferred#loadHashes()')
 call functions#defer('call deferred#vimade()')
 
 " lua functions
-lua require("deferred")
+lua require("startup")
 call functions#defer('lua startLSP()')

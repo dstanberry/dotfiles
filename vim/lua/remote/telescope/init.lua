@@ -1,11 +1,28 @@
 ---------------------------------------------------------------
 -- => Telescope Configuration
 ---------------------------------------------------------------
+-- verify telescope is available
+if not pcall(require, 'telescope') then
+	return
+end
+
+-- reload telescope and it's dependencies
+local should_reload = true
+local reloader = function()
+	if should_reload then
+		RELOAD('plenary')
+		RELOAD('popup')
+		RELOAD('telescope')
+	end
+end
+reloader()
+
+-- bring telescope functions into local scope
 local actions = require('telescope.actions')
 local sorters = require('telescope.sorters')
 local themes = require('telescope.themes')
 
--- default options
+-- set default options
 require('telescope').setup {
 	defaults = {
 		prompt_prefix = '❯ ',
@@ -33,6 +50,9 @@ require('telescope').setup {
 		mappings= {
 			i = {
 				["<C-x>"] = false,
+				["ZZ"] = actions.close,
+				["jk"] = actions.close,
+				["<esc>"] = actions.close,
 				["<C-s>"] = actions.select_horizontal,
 				["<C-q>"] = actions.send_to_qflist,
 			},
@@ -54,10 +74,10 @@ require('telescope').setup {
 -- load additional extensions
 require('telescope').load_extension('fzy_native')
 
--- custom functions
+-- initialize modules table
 local M = {}
 
--- search dotfiles from anywhere
+-- fuzzy search dotfiles from anywhere
 function M.search_dotfiles()
 	require("telescope.builtin").find_files({
 		cwd = "~/.config",
@@ -70,18 +90,18 @@ function M.search_dotfiles()
 	})
 end
 
--- customize find_files
+-- customize generic fuzzy finder
 function M.search_cwd()
 	require("telescope.builtin").find_files({
 		hidden = true,
-		shorten_path = false,
+		shorten_path = true,
 		layout_strategy = 'horizontal',
 		preview_title = false,
 		results_title = false,
 	})
 end
 
--- search installed vim plugins
+-- fuzzy search installed vim plugins
 function M.installed_plugins()
 	require("telescope.builtin").find_files({
 		cwd = "~/.config/vim/remote",
@@ -110,7 +130,7 @@ function M.grep_all_files()
 	})
 end
 
--- search tracked files in git repository
+-- fuzzy search tracked files in git repository
 function M.git_files()
 	require("telescope.builtin").find_files(themes.get_dropdown {
 		cwd = vim.fn.expand("%:p:h"),
@@ -121,4 +141,14 @@ function M.git_files()
 	})
 end
 
-return M
+-- call setmetatable whenever any of the custom modules are called
+return setmetatable({}, {
+	__index = function(_, k)
+		reloader()
+		if M[k] then
+			return M[k]
+		else
+			return require('telescope.builtin')[k]
+		end
+	end
+})
