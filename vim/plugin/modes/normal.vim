@@ -66,9 +66,9 @@ nnoremap <leader>w :w<cr>
 nnoremap <leader>q :q<cr>
 " write current buffer to disk and close app
 nnoremap <leader>x :x<cr>
+
 " close the current buffer
 nnoremap <silent> <leader>z :bd<cr>
-
 " switch to next buffer
 nnoremap <silent> <tab> :bnext<cr>
 " switch to previous buffer
@@ -121,26 +121,42 @@ nnoremap <silent> gn :lua vim.lsp.buf.workspace_symbol()<cr>
 " lsp: get the previous diagnostic closest to the cursor
 nnoremap <silent> gp :lua vim.lsp.buf.workspace_symbol()<cr>
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Normal | Leader | Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " telescope: search all currently open file buffers
-nnoremap <leader>fb :Telescope buffers<cr>
+nnoremap <silent> <leader>fb :Telescope buffers<cr>
 " telescope: search files available in the current directory
-nnoremap <leader><leader> :lua R('remote.telescope').search_cwd()<cr>
+nnoremap <silent> <leader><leader> :lua R('remote.telescope').search_cwd()<cr>
 " telescope: search git files available in the current directory
-nnoremap <leader>fg :lua R('remote.telescope').git_files()<cr>
+nnoremap <silent> <leader>fg :lua R('remote.telescope').git_files()<cr>
 " telescope: search files available in dotfiles repository
-nnoremap <leader>fd :lua R('remote.telescope').search_dotfiles()<cr>
+nnoremap <silent> <leader>fd :lua R('remote.telescope').search_dotfiles()<cr>
 " telescope: search files available in vim remote plugin directory
-nnoremap <leader>fp :lua R('remote.telescope').installed_plugins()<cr>
+nnoremap <silent> <leader>fp :lua R('remote.telescope').installed_plugins()<cr>
 " telescope: grep files in current directory
-nnoremap <leader>gf :lua R('remote.telescope').grep_files()<cr>
+nnoremap <silent> <leader>gf :lua R('remote.telescope').grep_files()<cr>
 " telescope: grep all files in current directory
-nnoremap <leader>gg :lua R('remote.telescope').grep_all_files()<cr>
+nnoremap <silent> <leader>gg :lua R('remote.telescope').grep_all_files()<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" save current buffer to disk and source it
+nnoremap <silent> <localleader>x :call functions#loadFile()<cr>
+
 " create/edit file within the current directory
 nnoremap <localleader>e :edit <C-R>=expand('%:p:h') . '/'<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Normal | Local Leader | Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" fzf: search files available in the current directory
+nnoremap <localleader>ff :Files<cr>
+" fzf: search git files available in the current directory
+nnoremap <localleader>fg :GFiles<cr>
+" fzf: search all currently open file buffers
+nnoremap <localleader>fb :Buffers<cr>
 
 "vim-fugitive: execute git diff
 nnoremap <localleader>gd :GVdiff<cr>
@@ -153,13 +169,3 @@ nnoremap <localleader>gh :diffget //2<cr>
 
 "vim-fugitive: resolve git conflict using right hunk
 nnoremap <localleader>gl :diffget //3<cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Normal | Local Leader | Plugins
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" fzf: search files available in the current directory
-nnoremap <localleader>ff :Files<cr>
-" fzf: search git files available in the current directory
-nnoremap <localleader>fg :GFiles<cr>
-" fzf: search all currently open file buffers
-nnoremap <localleader>fb :Buffers<cr>

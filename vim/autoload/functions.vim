@@ -266,4 +266,16 @@ function! functions#b64encode(str)
 	return join(b64, '')
 endfunction
 
-
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Save and execute vim/lua file
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! functions#loadFile() abort
+	if &filetype == 'vim'
+		:silent! write
+		:source %
+	elseif &filetype == 'lua'
+		:silent! write
+		:luafile %
+	endif
+	return
+endfunction
