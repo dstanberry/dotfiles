@@ -6,5 +6,7 @@ call functions#defer('call deferred#loadHashes()')
 call functions#defer('call deferred#vimade()')
 
 " load lua startup functions
-lua require("startup")
-lua require("remote.lsp")
+if has('nvim')
+	lua require("startup")
+	lua require("remote.lsp")
+endif
