@@ -181,4 +181,4 @@ let &t_EI="\<Esc>[2 q"
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 "define a colorscheme
-colorscheme base16-kdark
+colorscheme kdark
