@@ -115,7 +115,7 @@ end
 function M.grep_files()
 	require("telescope.builtin").grep_string({
 		shorten_path = true,
-		search = vim.fn.input("Grep ❯ "),
+		search = vim.fn.input("grep: "),
 		preview_title = false,
 		results_title = false,
 	})
