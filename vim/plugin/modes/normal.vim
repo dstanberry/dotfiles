@@ -7,9 +7,6 @@ let maplocalleader="\\"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" toggle highlighting of search matches
-nnoremap <f3> :set hlsearch!<cr>
-
 " undotree: toggle the undo-tree panel
 nnoremap <F5> :UndotreeToggle<cr>
 
@@ -56,6 +53,9 @@ nnoremap <silent> - :silent edit <c-r>=empty(expand('%')) ? '.' : expand('%:p:h'
 " store relative jumps in the jumplist if they exceed a threshold.
 nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
 nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
+
+" clear hlsearch if set, otherwise send default
+nnoremap <expr> <CR> {-> v:hlsearch ? ":nohl\<CR>" : "\<CR>"}()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader
