@@ -132,7 +132,7 @@ endif
 " Theme setup
 hi clear
 syntax reset
-let g:colors_name = "base16-kdark"
+let g:colors_name = "kdark"
 
 " Highlighting function
 " Optional variables are attributes and guisp
@@ -177,7 +177,7 @@ call <sid>hi("Folded",        s:gui03, s:gui01, s:cterm03, s:cterm01, "", "")
 call <sid>hi("IncSearch",     s:gui01, s:gui09, s:cterm01, s:cterm09, "none", "")
 call <sid>hi("Italic",        "", "", "", "", "none", "")
 call <sid>hi("Macro",         s:gui08, "", s:cterm08, "", "", "")
-call <sid>hi("MatchParen",    s:gui0A, s:cterm00, "", s:cterm00,  "", "")
+call <sid>hi("MatchParen",    s:gui0A, s:gui00, "", s:cterm00,  "", "")
 call <sid>hi("ModeMsg",       s:gui0B, "", s:cterm0B, "", "", "")
 call <sid>hi("MoreMsg",       s:gui0B, "", s:cterm0B, "", "", "")
 call <sid>hi("Question",      s:gui0D, "", s:cterm0D, "", "", "")
