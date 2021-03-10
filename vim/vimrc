@@ -9,6 +9,7 @@ Plug 'vim-scripts/AutoComplPop', { 'on': [] }
 " language server protocol support
 if has('nvim')
 	Plug 'nvim-lua/completion-nvim'
+	Plug 'tjdevries/nlua.nvim'
 	Plug 'neovim/nvim-lspconfig'
 endif
 

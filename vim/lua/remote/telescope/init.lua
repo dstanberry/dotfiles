@@ -94,7 +94,7 @@ end
 function M.search_cwd()
 	require("telescope.builtin").find_files({
 		hidden = true,
-		shorten_path = true,
+		shorten_path = false,
 		layout_strategy = 'horizontal',
 		preview_title = false,
 		results_title = false,

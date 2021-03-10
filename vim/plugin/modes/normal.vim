@@ -99,23 +99,27 @@ nmap <leader>zz :call  normal#trim()<cr>
 " => Normal | Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " lsp: jump to the declaration of the symbol under the cursor
-nnoremap <silent> gd <cmd>lua vim.lsp.buf.declaration()<cr>
+nnoremap <silent> gd :lua vim.lsp.buf.declaration()<cr>
 " lsp: jump to the definition of the symbol under the cursor
-nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<cr>
+nnoremap <silent> <c-]> :lua vim.lsp.buf.definition()<cr>
 " lsp: display hover information about the symbol under the cursor
-nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<cr>
+nnoremap <silent> K :lua vim.lsp.buf.hover()<cr>
 " lsp: list all implementations for the symbol under the cursor
-nnoremap <silent> gD <cmd>lua vim.lsp.buf.implementation()<cr>
+nnoremap <silent> gD :lua vim.lsp.buf.implementation()<cr>
 " lsp: display signature information under the cursor
-nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<cr>
+nnoremap <silent> <c-k> :lua vim.lsp.buf.signature_help()<cr>
 " lsp: jump to the definition of the type of the symbol under the cursor
-nnoremap <silent> 1gD <cmd>lua vim.lsp.buf.type_definition()<cr>
+nnoremap <silent> 1gD :lua vim.lsp.buf.type_definition()<cr>
 " lsp: list all references to the symbol under the cursor in the quickfix list
-nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<cr>
+nnoremap <silent> gr :lua vim.lsp.buf.references()<cr>
 " lsp: list all symbols in the current buffer in the quickfix list
-nnoremap <silent> g0 <cmd>lua vim.lsp.buf.document_symbol()<cr>
+nnoremap <silent> g0 :lua vim.lsp.buf.document_symbol()<cr>
 " lsp: list all symbols in the current workspace in the quickfix list
-nnoremap <silent> gW <cmd>lua vim.lsp.buf.workspace_symbol()<cr>
+nnoremap <silent> gW :lua vim.lsp.buf.workspace_symbol()<cr>
+" lsp: get the next diagnostic closest to the cursor
+nnoremap <silent> gn :lua vim.lsp.buf.workspace_symbol()<cr>
+" lsp: get the previous diagnostic closest to the cursor
+nnoremap <silent> gp :lua vim.lsp.buf.workspace_symbol()<cr>
 
 " telescope: search all currently open file buffers
 nnoremap <leader>fb :Telescope buffers<cr>
