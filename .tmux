@@ -11,13 +11,15 @@ if test -z "$SESSION_AVAILABLE"; then
 	vim -x $(tput cols) -y $(tput lines)
 
 	if [[ $(tput cols) > 200 ]]; then
-		tmux send-keys -t $SESSION:vim "vim -c Files" Enter
+		tmux send-keys -t $SESSION:vim \
+			"vim -c \"lua require'remote.telescope'.search_dotfiles()\"" Enter
 		tmux split-window -t $SESSION:vim -h
 		tmux send-keys -t $SESSION:vim.right "git status" Enter
 
 		POS="left"
 	else
-		tmux send-keys -t $SESSION:vim "vim -c Files" Enter
+		tmux send-keys -t $SESSION:vim \
+			"vim -c \"lua require'remote.telescope'.search_dotfiles()\"" Enter
 		tmux split-window -t $SESSION:vim -v
 		tmux send-keys -t $SESSION:vim.bottom "git status" Enter
 	fi
