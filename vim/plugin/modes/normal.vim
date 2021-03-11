@@ -143,6 +143,8 @@ nnoremap <silent> <leader><leader> :lua R('remote.telescope').search_cwd()<cr>
 nnoremap <silent> <leader>fg :lua R('remote.telescope').git_files()<cr>
 " telescope: search files available in dotfiles repository
 nnoremap <silent> <leader>fd :lua R('remote.telescope').search_dotfiles()<cr>
+" telescope: open file browser at current directory
+nnoremap <silent> <leader>fe :lua R('remote.telescope').file_browser()<cr>
 " telescope: search files available in vim remote plugin directory
 nnoremap <silent> <leader>fp :lua R('remote.telescope').installed_plugins()<cr>
 " telescope: grep files in current directory
