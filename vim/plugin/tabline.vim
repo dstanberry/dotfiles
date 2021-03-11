@@ -1,4 +1,7 @@
-function! s:GetCurrBufNames(tabCount)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Tabline
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! s:getBufNames(tabCount)
 let bufNames = {}
 	for i in range(a:tabCount)
 		let tabNum = i + 1
@@ -33,10 +36,10 @@ let bufNames = {}
 	return bufNames
 endfunction
 
-function! MyTabline()
+function! SetTabline()
 	let s = ''
 	let tabCount = tabpagenr('$')
-	let bufNames = s:GetCurrBufNames(tabCount)
+	let bufNames = s:getBufNames(tabCount)
 	for i in range(tabCount)
 		let tabNum = i + 1
 		let winNum = tabpagewinnr(tabNum)
@@ -81,5 +84,7 @@ function! MyTabline()
 	return s
 endfunction
 
-" set the tabline
-set tabline=%!MyTabline()
+augroup Tabline
+	autocmd!
+	autocmd VimEnter * call SetTabline()
+augroup END
