@@ -12,7 +12,7 @@ end
 local on_attach_vim = function(_,bufnr)
 	require('completion').on_attach()
 end
-local servers = {'bashls', 'jsonls', 'vimls'}
+local servers = {'bashls', 'jsonls', 'pyright', 'vimls'}
 for _, server in ipairs(servers) do
 	require'lspconfig'[server].setup {
 		on_attach=on_attach_vim
