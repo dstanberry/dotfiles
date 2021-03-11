@@ -72,6 +72,9 @@ nnoremap <leader>q :q<cr>
 " write current buffer to disk and close app
 nnoremap <leader>x :x<cr>
 
+" save current buffer to disk and source it
+nnoremap <silent> <leader>0 :call functions#loadFile()<cr>
+
 " close the current buffer
 nnoremap <silent> <leader>z :bd<cr>
 " switch to next buffer
@@ -150,9 +153,6 @@ nnoremap <silent> <leader>gg :lua R('remote.telescope').grep_all_files()<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" save current buffer to disk and source it
-nnoremap <silent> <localleader>x :call functions#loadFile()<cr>
-
 " create/edit file within the current directory
 nnoremap <localleader>e :edit <C-R>=expand('%:p:h') . '/'<cr>
 
