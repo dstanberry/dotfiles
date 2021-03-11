@@ -305,6 +305,9 @@ call <sid>hi("htmlItalic",  s:gui0E, "", s:cterm0E, "", "", "")
 call <sid>hi("htmlEndTag",  s:gui05, "", s:cterm05, "", "", "")
 call <sid>hi("htmlTag",     s:gui05, "", s:cterm05, "", "", "")
 
+" Java highlighting
+call <sid>hi("javaOperator",     s:gui0D, "", s:cterm0D, "", "", "")
+
 " JavaScript highlighting
 call <sid>hi("javaScript",        s:gui05, "", s:cterm05, "", "", "")
 call <sid>hi("javaScriptBraces",  s:gui05, "", s:cterm05, "", "", "")
@@ -341,10 +344,6 @@ call <sid>hi("markdownCode",              s:gui0B, "", s:cterm0B, "", "", "")
 call <sid>hi("markdownError",             s:gui05, s:gui00, s:cterm05, s:cterm00, "", "")
 call <sid>hi("markdownCodeBlock",         s:gui0B, "", s:cterm0B, "", "", "")
 call <sid>hi("markdownHeadingDelimiter",  s:gui0D, "", s:cterm0D, "", "", "")
-
-" NERDTree highlighting
-call <sid>hi("NERDTreeDirSlash",  s:gui0D, "", s:cterm0D, "", "", "")
-call <sid>hi("NERDTreeExecFile",  s:gui05, "", s:cterm05, "", "", "")
 
 " PHP highlighting
 call <sid>hi("phpMemberSelector",  s:gui05, "", s:cterm05, "", "", "")
@@ -385,19 +384,16 @@ call <sid>hi("SpellCap",     "", "", "", "", "undercurl", s:gui0D)
 call <sid>hi("SpellRare",    "", "", "", "", "undercurl", s:gui0E)
 
 " Startify highlighting
-call <sid>hi("StartifyBracket",  s:gui03, "", s:cterm03, "", "", "")
+call <sid>hi("StartifyBracket",  s:gui05, "", s:cterm03, "", "", "")
 call <sid>hi("StartifyFile",     s:gui07, "", s:cterm07, "", "", "")
-call <sid>hi("StartifyFooter",   s:gui03, "", s:cterm03, "", "", "")
+call <sid>hi("StartifyFooter",   s:gui04, "", s:cterm03, "", "", "")
 call <sid>hi("StartifyHeader",   s:gui0B, "", s:cterm0B, "", "", "")
 call <sid>hi("StartifyNumber",   s:gui09, "", s:cterm09, "", "", "")
-call <sid>hi("StartifyPath",     s:gui03, "", s:cterm03, "", "", "")
+call <sid>hi("StartifyPath",     s:gui04, "", s:cterm03, "", "", "")
 call <sid>hi("StartifySection",  s:gui0E, "", s:cterm0E, "", "", "")
 call <sid>hi("StartifySelect",   s:gui0C, "", s:cterm0C, "", "", "")
-call <sid>hi("StartifySlash",    s:gui03, "", s:cterm03, "", "", "")
-call <sid>hi("StartifySpecial",  s:gui03, "", s:cterm03, "", "", "")
-
-" Java highlighting
-call <sid>hi("javaOperator",     s:gui0D, "", s:cterm0D, "", "", "")
+call <sid>hi("StartifySlash",    s:gui04, "", s:cterm03, "", "", "")
+call <sid>hi("StartifySpecial",  s:gui04, "", s:cterm03, "", "", "")
 
 " StatusLine highlight groups
 let s:gui10 = substitute(functions#Lighten(s:gui05, 5), '#', '', 'g')
