@@ -19,6 +19,11 @@ nnoremap <silent> <down> :cnext<cr>
 nnoremap <silent> <left> :cpfile<cr>
 nnoremap <silent> <right> :cnfile<cr>
 
+" switch to next tab
+nnoremap <c-right> gt
+" switch to previous tab
+nnoremap <c-left> gT
+
 " enable very magic mode during search operations
 nnoremap / /\v
 
