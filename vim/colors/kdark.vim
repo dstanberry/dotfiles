@@ -206,9 +206,13 @@ call <sid>hi("CursorLineNr",  s:gui0C, s:gui01, s:cterm04, s:cterm01, "bold", ""
 call <sid>hi("QuickFixLine",  s:gui01, s:gui0A, "", s:cterm02, "none", "")
 call <sid>hi("PMenu",         s:gui05, s:gui01, s:cterm05, s:cterm01, "none", "")
 call <sid>hi("PMenuSel",      s:gui01, s:gui05, s:cterm01, s:cterm05, "", "")
-call <sid>hi("TabLine",       s:gui03, s:gui01, s:cterm03, s:cterm01, "none", "")
-call <sid>hi("TabLineFill",   s:gui03, s:gui01, s:cterm03, s:cterm01, "none", "")
-call <sid>hi("TabLineSel",    s:gui0B, s:gui01, s:cterm0B, s:cterm01, "none", "")
+
+"vim tabline colors
+let s:guixx = substitute(functions#Darken(s:gui00, 40), '#', '', 'g')
+
+call <sid>hi("TabLine",       s:gui03, s:gui00, s:cterm03, s:cterm01, "none", "")
+call <sid>hi("TabLineFill",   s:gui03, s:gui00, s:cterm03, s:cterm01, "none", "")
+call <sid>hi("TabLineSel",    s:gui0C, s:guixx, s:cterm0B, s:cterm01, "none", "")
 
 " Neovim syntax highlighting
 call <sid>hi("NvimInternalError", s:gui0F, s:gui00, s:cterm0F, s:cterm00, "", "")
@@ -440,8 +444,15 @@ let s:gui20 = substitute(functions#Darken(s:gui00, 25), '#', '', 'g')
 
 " Telescope window highlighting
 call <sid>hi("TelescopeSelection", "", s:gui20, s:cterm00, s:cterm00, "bold", "")
-call <sid>hi("TelescopeSelectionCaret", s:gui0A, s:gui20, s:cterm00, s:cterm00, "bold", "")
+call <sid>hi("TelescopeSelectionCaret", s:gui04, s:gui20, s:cterm00, s:cterm00, "bold", "")
+call <sid>hi("TelescopeMultiSelection", s:gui0E, "", s:cterm0E, "", "none", "")
+call <sid>hi("TelescopeNormal", s:gui05, s:gui00, s:cterm00, s:cterm00, "", "")
 call <sid>hi("TelescopeBorder", s:gui03, s:gui00, s:cterm00, s:cterm00, "", "")
+call <sid>hi("TelescopePromptBorder", s:gui04, s:gui00, s:cterm00, s:cterm00, "", "")
+call <sid>hi("TelescopeResultsBorder", s:gui04, s:gui00, s:cterm00, s:cterm00, "", "")
+call <sid>hi("TelescopePreviewBorder", s:gui04, s:gui00, s:cterm00, s:cterm00, "", "")
+call <sid>hi("TelescopeMatching", s:gui0C, "", s:cterm0C, "", "", "")
+call <sid>hi("TelescopePromptPrefix", s:gui0F, "", s:cterm08, "", "none", "")
 
 " Remove functions
 delfunction <sid>hi
