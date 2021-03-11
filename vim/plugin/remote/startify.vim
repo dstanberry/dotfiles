@@ -1,0 +1,17 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Startify Configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" specify where to save session data
+let g:startify_session_dir = "~/.config/vim/plugin/remote/session"
+
+" set landing page
+let g:startify_lists = [
+	\ { 'type': 'files', 'header': [' MRU'] },
+	\ { 'type': 'sessions', 'header': [' Sessions'] },
+	\ ]
+
+" ignore the following paths/files
+let g:startify_skiplist = [
+	\ 'COMMIT_EDITMSG',
+	\ 'startify.txt',
+	\ ]
