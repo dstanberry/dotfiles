@@ -8,4 +8,5 @@ call functions#defer('call deferred#loadHashes()')
 if has('nvim')
 	lua require("startup")
 	lua require("remote.lsp")
+	lua require("remote.tree-sitter")
 endif

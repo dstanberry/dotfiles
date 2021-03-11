@@ -30,6 +30,11 @@ Plug 'junegunn/limelight.vim'
 " emphasize the current matched search pattern
 Plug 'wincent/loupe'
 
+" parser generator tool
+if has('nvim')
+	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+endif
+
 " modular fuzzy finder
 if has('nvim')
 	Plug 'nvim-lua/popup.nvim'
@@ -37,11 +42,6 @@ if has('nvim')
 	Plug 'nvim-telescope/telescope.nvim'
 	Plug 'nvim-telescope/telescope-fzy-native.nvim'
 endif
-
-" code formatter
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'yaml', 'html'] }
 
 " easily identify nested parentheses
 Plug 'junegunn/rainbow_parentheses.vim'
@@ -67,6 +67,11 @@ endif
 
 " highlight sets of matching text
 Plug 'andymass/vim-matchup'
+
+" code formatter
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'yaml', 'html'] }
 
 " enable repeating supported plug maps with <.>
 Plug 'tpope/vim-repeat'
