@@ -79,55 +79,74 @@ local M = {}
 
 -- fuzzy search dotfiles from anywhere
 function M.search_dotfiles()
-	require("telescope.builtin").find_files({
+	require("telescope.builtin").find_files {
 		cwd = "~/.config",
 		hidden = true,
+		file_ignore_patterns = {
+			".git-crypt/*",".gitattributes","%.gpg","karabiner/assets/*"
+		},
 		shorten_path = false,
 		layout_strategy = 'horizontal',
 		prompt_title = "~ dotfiles ~",
 		preview_title = false,
 		results_title = false,
-	})
+	}
 end
 
 -- customize generic fuzzy finder
 function M.search_cwd()
-	require("telescope.builtin").find_files({
+	require("telescope.builtin").find_files {
 		hidden = true,
+		file_ignore_patterns = {
+			".gitattributes",".gitignore","%.gpg","karabiner/assets/*", "node_modules/*"
+		},
 		shorten_path = false,
 		layout_strategy = 'horizontal',
 		preview_title = false,
 		results_title = false,
-	})
+	}
+end
+
+--customize generic file browser
+function M.file_browser()
+	require("telescope.builtin").file_browser {
+		hidden = true,
+		sorting_strategy = "ascending",
+		scroll_strategy = "cycle",
+		prompt_position = "top",
+		prompt_title = "File Browser",
+		preview_title = false,
+		results_title = false,
+	}
 end
 
 -- fuzzy search installed vim plugins
 function M.installed_plugins()
-	require("telescope.builtin").find_files({
+	require("telescope.builtin").find_files {
 		cwd = "~/.config/vim/remote",
 		previewer = false,
 		layout_strategy = 'vertical',
 		results_title = false,
-	})
+	}
 end
 
 -- grep files in cwd
 function M.grep_files()
-	require("telescope.builtin").grep_string({
+	require("telescope.builtin").grep_string {
 		shorten_path = true,
 		search = vim.fn.input("grep: "),
 		preview_title = false,
 		results_title = false,
-	})
+	}
 end
 
 -- grep all files in cwd
 function M.grep_all_files()
-	require("telescope.builtin").find_files({
+	require("telescope.builtin").find_files {
 		find_command = { 'rg', '--no-ignore', '--files', },
 		preview_title = false,
 		results_title = false,
-	})
+	}
 end
 
 -- fuzzy search tracked files in git repository
