@@ -22,10 +22,3 @@ function! deferred#loadHashes() abort
 	endfor
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Setup vimade to work inside tmux
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! deferred#vimade() abort
-		autocmd! FocusGained * VimadeUnfadeActive
-		autocmd! FocusLost * VimadeFadeActive
-endfunction

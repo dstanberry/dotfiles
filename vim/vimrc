@@ -74,14 +74,14 @@ Plug 'tpope/vim-repeat'
 " display git changes in gutter
 Plug 'mhinz/vim-signify'
 
+" start screen
+Plug 'mhinz/vim-startify'
+
 " surround sequence with tags
 Plug 'tpope/vim-surround'
 
 " enable focus events
 Plug 'tmux-plugins/vim-tmux-focus-events'
-
-" dim the current window/buffer when not active
-Plug 'TaDaa/vimade'
 
 " maintain git workflow within vim
 Plug 'jreybert/vimagit'
