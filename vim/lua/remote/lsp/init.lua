@@ -47,3 +47,6 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 		}
 	}
 )
+
+-- load lsp completion settings
+require('remote.completion')

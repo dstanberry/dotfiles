@@ -168,7 +168,7 @@ set shortmess+=F
 " include dictionary in completion matches
 set complete+=kspell
 " use popup menu to show possible completions
-set completeopt=menuone,longest,noinsert,noselect
+set completeopt=menuone,noinsert,noselect
 
 " use blinking vertical bar in insert mode
 let &t_SI="\<Esc>[5 q"

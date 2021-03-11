@@ -11,6 +11,7 @@ if has('nvim')
 	Plug 'nvim-lua/completion-nvim'
 	Plug 'tjdevries/nlua.nvim'
 	Plug 'neovim/nvim-lspconfig'
+	Plug 'tjdevries/complextras.nvim'
 endif
 
 " command line fuzzy finder
