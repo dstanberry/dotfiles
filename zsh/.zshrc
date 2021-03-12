@@ -228,6 +228,9 @@ fi
 bindkey "^[[1;5C" forward-word
 bindkey "^[[1;5D" backward-word
 
+# delete character when delete key is pressed
+bindkey -a "^[[3~" vi-delete-char
+
 # add ability to clear the buffer
 function clear-scrollback-buffer {
 	# clear screen
