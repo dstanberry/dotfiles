@@ -27,7 +27,7 @@ function! visual#move_down() abort range
 	call s:move(l:address, l:should_move)
 endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Begin substitution of selected text
+" => send selection to clipboard
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! visual#get_selection() range
 	let reg_save = getreg('"')

@@ -1,9 +1,3 @@
-" define a mapleader for more key combinations
-let mapleader="\<space>"
-
-" define a maplocalleader for more key combinations
-let maplocalleader="\\"
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -62,9 +56,18 @@ nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
 " clear hlsearch if set, otherwise send default
 nnoremap <expr> <cr> {-> v:hlsearch ? ":nohl\<cr>" : "\<cr>"}()
 
+" find all occurences in file of word under cursor
+nnoremap <c-f>f /\v<c-r><c-w>
+
+" begin substitution for word under cursor
+nnoremap <c-f>r :%s/\<<c-r><c-w>\>//gc<left><left><left>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" define a mapleader for more key combinations
+let mapleader="\<space>"
+
 " write current buffer to disk
 nnoremap <leader>w :w<cr>
 " close app
@@ -155,6 +158,9 @@ nnoremap <silent> <leader>gg :lua R('remote.telescope').grep_all_files()<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" define a maplocalleader for more key combinations
+let maplocalleader="\\"
+
 " create/edit file within the current directory
 nnoremap <localleader>e :edit <C-R>=expand('%:p:h') . '/'<cr>
 
