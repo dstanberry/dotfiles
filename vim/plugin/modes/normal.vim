@@ -73,7 +73,7 @@ nnoremap <leader>q :q<cr>
 nnoremap <leader>x :x<cr>
 
 " save current buffer to disk and source it
-nnoremap <silent> <leader>0 :call functions#loadFile()<cr>
+nnoremap <silent> <leader>0 :call functions#load_file()<cr>
 
 " close the current buffer
 nnoremap <silent> <leader>z :bd<cr>
@@ -104,7 +104,7 @@ nnoremap <silent> <leader>_ :resize -5<cr>
 nmap <leader>zz :call  normal#trim()<cr>
 
 " insert comment on current line based on filetype
-nnoremap <silent> <leader>' :call functions#insertComment()<cr>
+nnoremap <silent> <leader>' :call functions#insert_comment()<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Plugins

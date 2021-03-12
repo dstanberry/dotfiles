@@ -1,7 +1,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Ad hoc definitions for (neo)vim settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#neoviminit() abort
+function! functions#init() abort
 	if !has('nvim')
 		set viminfo='10,\"100,:20,%,n${VIM_CONFIG_HOME}/viminfo
 	endif
@@ -43,7 +43,7 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Restore Cursor Position
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#rescursor()
+function! functions#restore_cursor_position()
 	if &filetype != "netrw" && &filetype != "help"
 		if line("'\"") <= line("$")
 			normal! g`"
@@ -55,7 +55,7 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => File Properties and Metadata
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#getMode() abort
+function! functions#get_mode() abort
 	let paste = ''
 	if &paste == 1
 		let paste = ' | paste '
@@ -73,7 +73,7 @@ function! functions#getMode() abort
 	endif
 endfunction
 
-function! functions#getReadOnly() abort
+function! functions#is_readonly() abort
 	if &readonly || !&modifiable
 		return '∅'
 	else
@@ -81,7 +81,7 @@ function! functions#getReadOnly() abort
 	endif
 endfunction
 
-function! functions#getFileType() abort
+function! functions#get_filetype() abort
 	if strlen(&ft)
 		return &ft
 	else
@@ -89,11 +89,11 @@ function! functions#getFileType() abort
 	endif
 endfunction
 
-function! functions#getFilePath() abort
+function! functions#get_filepath() abort
 	return expand('%:p:h')
 endfunction
 
-function! functions#getRelativeFilePath() abort
+function! functions#get_relative_filepath() abort
 	let path = expand('%:h')
 	if (path == '.')
 		return ''
@@ -104,7 +104,7 @@ function! functions#getRelativeFilePath() abort
 	endif
 endfunction
 
-function! functions#getFileFormat() abort
+function! functions#get_fileformat() abort
 	let format = ''
 	let encoding = ''
 	if strlen(&ff) && &ff !=# 'unix'
@@ -123,7 +123,7 @@ function! functions#getFileFormat() abort
 	endif
 endfunction
 
-function! functions#getModifiedSymbol() abort
+function! functions#show_modified() abort
 	if &modified == 1
 		return '●'
 	else
@@ -131,8 +131,8 @@ function! functions#getModifiedSymbol() abort
 	endif
 endfunction
 
-function! functions#getFileMetadata() abort
-	return functions#getReadOnly().functions#getFileType().functions#getFileFormat()
+function! functions#show_metadata() abort
+	return functions#is_readonly().functions#get_filetype().functions#get_fileformat()
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -142,7 +142,7 @@ let s:patterns = {}
 let s:patterns['hex']      = '\v#?(\x{2})(\x{2})(\x{2})'
 let s:patterns['shortHex'] = '\v#(\x{1})(\x{1})(\x{1})'
 
-function! functions#RGBtoHex (...)
+function! functions#rgb_to_hex (...)
 	let [r, g, b] = ( a:0==1 ? a:1 : a:000 )
 	let num = printf('%02x', float2nr(r)) . ''
 			\ . printf('%02x', float2nr(g)) . ''
@@ -150,7 +150,7 @@ function! functions#RGBtoHex (...)
 	return '#' . num
 endfunction
 
-function! functions#HexToRGB (color)
+function! functions#hex_to_rgb (color)
 	if type(a:color) == 2
 		let color = printf('%x', a:color)
 	else
@@ -177,7 +177,7 @@ function! functions#HexToRGB (color)
 	return [r, g, b]
 endfunction
 
-function! functions#Lighten(color, ...)
+function! functions#lighten(color, ...)
 	let amount = a:0 ?
 				\(type(a:1) < 2 ?
 					\str2float(a:1) : a:1 )
@@ -189,15 +189,15 @@ function! functions#Lighten(color, ...)
 		let amount = 1.0 + (amount / 100.0)
 	end
 
-	let rgb = functions#HexToRGB(a:color)
+	let rgb = functions#hex_to_rgb(a:color)
 	let rgb = map(rgb, 'v:val * amount')
 	let rgb = map(rgb, 'v:val > 255.0 ? 255.0 : v:val')
 	let rgb = map(rgb, 'float2nr(v:val)')
-	let hex = functions#RGBtoHex(rgb)
+	let hex = functions#rgb_to_hex(rgb)
 	return hex
 endfunction
 
-function! functions#Darken(color, ...)
+function! functions#darken(color, ...)
 	let amount = a:0 ?
 				\(type(a:1) < 2 ?
 					\str2float(a:1) : a:1 )
@@ -212,36 +212,36 @@ function! functions#Darken(color, ...)
 	if(amount < 0.0)
 		let amount = 0.0 | end
 
-	let rgb = functions#HexToRGB(a:color)
+	let rgb = functions#hex_to_rgb(a:color)
 	let rgb = map(rgb, 'v:val * amount')
 	let rgb = map(rgb, 'v:val > 255.0 ? 255.0 : v:val')
 	let rgb = map(rgb, 'float2nr(v:val)')
-	let hex = functions#RGBtoHex(rgb)
+	let hex = functions#rgb_to_hex(rgb)
 	return hex
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Check file for disk changes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#checkFile(timer)
+function! functions#check_file(timer)
 	silent! checktime
-	call timer_start(1000, 'functions#checkFile')
+	call timer_start(1000, 'functions#check_file')
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Base64 Encoding
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#str2bytes(str)
+function! functions#str_to_bytes(str)
 	return map(range(len(a:str)), 'char2nr(a:str[v:val])')
 endfunction
 
-function! functions#b64encode(str)
+function! functions#b64_encode(str)
 	let s:b64_table = [
 		\ "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P",
 		\ "Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f",
 		\ "g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v",
 		\ "w","x","y","z","0","1","2","3","4","5","6","7","8","9","+","/"]
-	let bytes = functions#str2bytes(a:str)
+	let bytes = functions#str_to_bytes(a:str)
 	let b64 = []
 
 	for i in range(0, len(bytes) - 1, 3)
@@ -269,7 +269,7 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Save and execute vim/lua file
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#loadFile() abort
+function! functions#load_file() abort
 	if &filetype == 'vim'
 		:silent! write
 		:source %
@@ -283,7 +283,7 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Comment current line based on filetype
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#insertComment() abort
+function! functions#insert_comment() abort
 	if &filetype == 'sh' || &filetype == 'zsh'
 		:silent! norm 0i# 
 	elseif &filetype == 'vim'

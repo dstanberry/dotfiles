@@ -1,5 +1,5 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Custom terminal theme
+" => Custom Terminal Theme
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " GUI color definitions
 let s:gui00        = "373737"
@@ -136,7 +136,7 @@ let g:colors_name = "kdark"
 
 " Highlighting function
 " Optional variables are attributes and guisp
-function! g:Base16hi(group, guifg, guibg, ctermfg, ctermbg, ...)
+function! kdark#highlight(group, guifg, guibg, ctermfg, ctermbg, ...)
 	let l:attr = get(a:, 1, "")
 	let l:guisp = get(a:, 2, "")
 
@@ -161,7 +161,7 @@ function! g:Base16hi(group, guifg, guibg, ctermfg, ctermbg, ...)
 endfunction
 
 function <sid>hi(group, guifg, guibg, ctermfg, ctermbg, attr, guisp)
-	call g:Base16hi(a:group, a:guifg, a:guibg, a:ctermfg, a:ctermbg, a:attr, a:guisp)
+	call kdark#highlight(a:group, a:guifg, a:guibg, a:ctermfg, a:ctermbg, a:attr, a:guisp)
 endfunction
 
 " Vim editor colors
@@ -208,11 +208,11 @@ call <sid>hi("PMenu",         s:gui05, s:gui01, s:cterm05, s:cterm01, "none", ""
 call <sid>hi("PMenuSel",      s:gui01, s:gui05, s:cterm01, s:cterm05, "", "")
 
 "vim tabline colors
-let s:guixx = substitute(functions#Darken(s:gui00, 40), '#', '', 'g')
+let s:tl00 = substitute(functions#darken(s:gui00, 40), '#', '', 'g')
 
 call <sid>hi("TabLine",       s:gui03, s:gui00, s:cterm03, s:cterm01, "none", "")
 call <sid>hi("TabLineFill",   s:gui03, s:gui00, s:cterm03, s:cterm01, "none", "")
-call <sid>hi("TabLineSel",    s:gui0C, s:guixx, s:cterm0B, s:cterm01, "none", "")
+call <sid>hi("TabLineSel",    s:gui0C, s:tl00, s:cterm0B, s:cterm01, "none", "")
 
 " Neovim syntax highlighting
 call <sid>hi("NvimInternalError", s:gui0F, s:gui00, s:cterm0F, s:cterm00, "", "")
@@ -396,16 +396,16 @@ call <sid>hi("StartifySlash",    s:gui04, "", s:cterm03, "", "", "")
 call <sid>hi("StartifySpecial",  s:gui04, "", s:cterm03, "", "", "")
 
 " StatusLine highlight groups
-let s:gui10 = substitute(functions#Lighten(s:gui05, 5), '#', '', 'g')
-let s:gui11 = substitute(functions#Darken(s:gui07, 20), '#', '', 'g')
-let s:gui12 = substitute(functions#Darken(s:gui07, 30), '#', '', 'g')
-let s:gui13 = substitute(functions#Darken(s:gui07, 65), '#', '', 'g')
+let s:sl00 = substitute(functions#lighten(s:gui05, 5), '#', '', 'g')
+let s:sl01 = substitute(functions#darken(s:gui07, 20), '#', '', 'g')
+let s:sl02 = substitute(functions#darken(s:gui07, 30), '#', '', 'g')
+let s:sl03 = substitute(functions#darken(s:gui07, 65), '#', '', 'g')
 
-call <sid>hi("User1",        s:gui11, s:gui02, s:cterm04, s:cterm00, "", "")
-call <sid>hi("User2",        s:gui10, s:gui02, s:cterm05, s:cterm00, "bold", "")
-call <sid>hi("User3",        s:gui11, s:gui02, s:cterm0C, s:cterm00, "italic", "")
-call <sid>hi("User4",        s:gui00, s:gui12, s:cterm0C, s:cterm00, "bold", "")
-call <sid>hi("User5",        s:gui11, s:gui02, s:cterm04, s:cterm00, "italic", "")
+call <sid>hi("User1",        s:sl01, s:gui02, s:cterm04, s:cterm00, "", "")
+call <sid>hi("User2",        s:sl00, s:gui02, s:cterm05, s:cterm00, "bold", "")
+call <sid>hi("User3",        s:sl01, s:gui02, s:cterm0C, s:cterm00, "italic", "")
+call <sid>hi("User4",        s:gui00, s:sl02, s:cterm0C, s:cterm00, "bold", "")
+call <sid>hi("User5",        s:sl01, s:gui02, s:cterm04, s:cterm00, "italic", "")
 call <sid>hi("User6",        s:gui00, s:gui0B, s:cterm00, s:cterm0D, "", "")
 call <sid>hi("User7",        s:gui00, s:gui08, s:cterm00, s:cterm0D, "", "")
 call <sid>hi("User8",        s:gui00, s:gui0C, s:cterm00, s:cterm0D, "", "")
@@ -415,7 +415,7 @@ call <sid>hi("Custom1",        s:gui0B, s:gui02, s:cterm0D, s:cterm00, "", "")
 call <sid>hi("Custom2",        s:gui08, s:gui02, s:cterm0D, s:cterm00, "", "")
 call <sid>hi("Custom3",        s:gui0C, s:gui02, s:cterm0D, s:cterm00, "", "")
 call <sid>hi("Custom4",        s:gui0F, s:gui02, s:cterm0D, s:cterm00, "", "")
-call <sid>hi("Custom5",        s:gui11, s:gui13, s:cterm0D, s:cterm00, "", "")
+call <sid>hi("Custom5",        s:sl01, s:sl03, s:cterm0D, s:cterm00, "", "")
 
 " LSP Diagnostic highlighting
 call <sid>hi("LspDiagnosticsDefaultError", s:gui0F, "", s:cterm0F, "", "", "")
@@ -436,11 +436,11 @@ call <sid>hi("LspDiagnosticsUnderlineHint", s:gui0E, "", s:cterm0E, "", "underli
 call <sid>hi("LspDiagnosticsUnderlineInfo", s:gui05, "", s:cterm05, "", "underline", "")
 
 " StatusLine highlight groups
-let s:gui20 = substitute(functions#Darken(s:gui00, 25), '#', '', 'g')
+let s:tel00 = substitute(functions#darken(s:gui00, 25), '#', '', 'g')
 
 " Telescope window highlighting
-call <sid>hi("TelescopeSelection", "", s:gui20, s:cterm00, s:cterm00, "bold", "")
-call <sid>hi("TelescopeSelectionCaret", s:gui04, s:gui20, s:cterm00, s:cterm00, "bold", "")
+call <sid>hi("TelescopeSelection", "", s:tel00, s:cterm00, s:cterm00, "bold", "")
+call <sid>hi("TelescopeSelectionCaret", s:gui04, s:tel00, s:cterm00, s:cterm00, "bold", "")
 call <sid>hi("TelescopeMultiSelection", s:gui0E, "", s:cterm0E, "", "none", "")
 call <sid>hi("TelescopeNormal", s:gui05, s:gui00, s:cterm00, s:cterm00, "", "")
 call <sid>hi("TelescopeBorder", s:gui03, s:gui00, s:cterm00, s:cterm00, "", "")
@@ -452,7 +452,3 @@ call <sid>hi("TelescopePromptPrefix", s:gui0F, "", s:cterm08, "", "none", "")
 
 " Remove functions
 delfunction <sid>hi
-
-" Remove color variables
-unlet s:gui00 s:gui01 s:gui02 s:gui03  s:gui04  s:gui05  s:gui06  s:gui07  s:gui08  s:gui09 s:gui0A  s:gui0B  s:gui0C  s:gui0D  s:gui0E  s:gui0F  s:gui10  s:gui11  s:gui12
-unlet s:cterm00 s:cterm01 s:cterm02 s:cterm03 s:cterm04 s:cterm05 s:cterm06 s:cterm07 s:cterm08 s:cterm09 s:cterm0A s:cterm0B s:cterm0C s:cterm0D s:cterm0E s:cterm0F

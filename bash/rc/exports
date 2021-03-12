@@ -62,7 +62,7 @@ if is_darwin; then
 	__viminit+=",/usr/local/opt/fzf"
 fi
 __viminit+="|:source ${MYVIMRC}"
-__viminit+="|call functions#neoviminit()"
+__viminit+="|call functions#init()"
 export VIMINIT=$__viminit
 unset __viminit
 

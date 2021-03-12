@@ -1,7 +1,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Load private directory hashes
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! deferred#loadHashes() abort
+function! deferred#load_dir_hash() abort
 	" set up shortcut variables for 'hash -d' directories.
 	let l:dirs=system(
 		\ 'zsh -c "' .
@@ -21,4 +21,3 @@ function! deferred#loadHashes() abort
 		endif
 	endfor
 endfunction
-

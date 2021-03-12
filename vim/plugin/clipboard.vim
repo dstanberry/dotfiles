@@ -3,7 +3,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function s:copy(lines, ...)
 	let str = join(a:lines, "\n")
-	let enc = functions#b64encode(str)
+	let enc = functions#b64_encode(str)
 	let buf = "\e]52;0;" . enc . "\x07"
 
 	if has('nvim')

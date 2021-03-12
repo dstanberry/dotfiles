@@ -31,7 +31,7 @@ autocmd BufRead,BufNewFile ~/.config/zsh/rc.private/* set filetype=zsh
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup RestoreCursor
 	autocmd!
-	autocmd BufWinEnter * call functions#rescursor()
+	autocmd BufWinEnter * call functions#restore_cursor_position()
 augroup END
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
