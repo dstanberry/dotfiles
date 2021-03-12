@@ -30,3 +30,17 @@ function! visual#move_down() abort range
 	let l:should_move=l:movement > 0
 	call s:Move(l:address, l:should_move)
 endfunction
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Begin substitution of selected text
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! visual#get_selection() range
+	let reg_save = getreg('"')
+	let regtype_save = getregtype('"')
+	let cb_save = &clipboard
+	set clipboard&
+	normal! ""gvy
+	let selection = getreg('"')
+	call setreg('"', reg_save, regtype_save)
+	let &clipboard = cb_save
+	return selection
+endfunction
