@@ -10,7 +10,7 @@ cnoremap <C-e> <End>
 cnoremap <expr> <up> pumvisible() ? "<C-p>" : "<up>"
 cnoremap <expr> <down> pumvisible() ? "<C-n>" : "<down>"
 
-" if the following are enabled, tab completion will not work in the command menu
+" the following breaks tab completioin in command mode
 " go the next match
 "cnoremap <expr> <tab> getcmdtype() == '/' \|\| getcmdtype() == '?' ? '<CR>/<C-r>/' : '<C-z>'
 " go to the previous match

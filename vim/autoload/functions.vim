@@ -284,12 +284,12 @@ endfunction
 " => Comment current line based on filetype
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! functions#insertComment() abort
-	if &filetype == 'sh'
-		:silent! norm 0i#
+	if &filetype == 'sh' || &filetype == 'zsh'
+		:silent! norm 0i# 
 	elseif &filetype == 'vim'
-		:silent! norm 0i"
+		:silent! norm 0i" 
 	elseif &filetype == 'lua'
-		:silent! norm 0i--
+		:silent! norm 0i--\ 
 	endif
 	return
 endfunction
