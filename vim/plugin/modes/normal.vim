@@ -115,52 +115,58 @@ nmap <leader>zz :call  normal#trim()<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" lsp: jump to the declaration of the symbol under the cursor
-nnoremap <silent> gd :lua vim.lsp.buf.declaration()<cr>
-" lsp: jump to the definition of the symbol under the cursor
-nnoremap <silent> <c-]> :lua vim.lsp.buf.definition()<cr>
-" lsp: display hover information about the symbol under the cursor
-nnoremap <silent> K :lua vim.lsp.buf.hover()<cr>
-" lsp: list all implementations for the symbol under the cursor
-nnoremap <silent> gD :lua vim.lsp.buf.implementation()<cr>
-" lsp: display signature information under the cursor
-nnoremap <silent> <c-k> :lua vim.lsp.buf.signature_help()<cr>
-" lsp: jump to the definition of the type of the symbol under the cursor
-nnoremap <silent> 1gD :lua vim.lsp.buf.type_definition()<cr>
-" lsp: list all references to the symbol under the cursor in the quickfix list
-nnoremap <silent> gr :lua vim.lsp.buf.references()<cr>
-" lsp: list all symbols in the current buffer in the quickfix list
-nnoremap <silent> g0 :lua vim.lsp.buf.document_symbol()<cr>
-" lsp: list all symbols in the current workspace in the quickfix list
-nnoremap <silent> gW :lua vim.lsp.buf.workspace_symbol()<cr>
-" lsp: get the next diagnostic closest to the cursor
-nnoremap <silent> gn :lua vim.lsp.buf.workspace_symbol()<cr>
-" lsp: get the previous diagnostic closest to the cursor
-nnoremap <silent> gp :lua vim.lsp.buf.workspace_symbol()<cr>
+if has('nvim')
+  " lsp: jump to the declaration of the symbol under the cursor
+  nnoremap <silent> gd :lua vim.lsp.buf.declaration()<cr>
+  " lsp: jump to the definition of the symbol under the cursor
+  nnoremap <silent> <c-]> :lua vim.lsp.buf.definition()<cr>
+  " lsp: display hover information about the symbol under the cursor
+  nnoremap <silent> K :lua vim.lsp.buf.hover()<cr>
+  " lsp: list all implementations for the symbol under the cursor
+  nnoremap <silent> gD :lua vim.lsp.buf.implementation()<cr>
+  " lsp: display signature information under the cursor
+  nnoremap <silent> <c-k> :lua vim.lsp.buf.signature_help()<cr>
+  " lsp: jump to the definition of the type of the symbol under the cursor
+  nnoremap <silent> 1gD :lua vim.lsp.buf.type_definition()<cr>
+  " lsp: list all references to the symbol under the cursor in the quickfix list
+  nnoremap <silent> gr :lua vim.lsp.buf.references()<cr>
+  " lsp: list all symbols in the current buffer in the quickfix list
+  nnoremap <silent> g0 :lua vim.lsp.buf.document_symbol()<cr>
+  " lsp: list all symbols in the current workspace in the quickfix list
+  nnoremap <silent> gW :lua vim.lsp.buf.workspace_symbol()<cr>
+  " lsp: get the next diagnostic closest to the cursor
+  nnoremap <silent> gn :lua vim.lsp.buf.workspace_symbol()<cr>
+  " lsp: get the previous diagnostic closest to the cursor
+  nnoremap <silent> gp :lua vim.lsp.buf.workspace_symbol()<cr>
+  " lsp: send diagnostics list to the local list
+  nnoremap <silent> gl :call functions#vim_lsp_diagnostic_set_loclist()<cr>
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader | Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" telescope: search all currently open file buffers
-nnoremap <silent> <leader>fb :Telescope buffers<cr>
-" telescope: search all currently open file buffers
-nnoremap <silent> <leader>ff :lua R('remote.telescope').current_buffer()<cr>
-" telescope: search files available in the current directory
-nnoremap <silent> <leader><leader> :lua R('remote.telescope').search_cwd()<cr>
-" telescope: search git files available in the current directory
-nnoremap <silent> <leader>fg :lua R('remote.telescope').git_files()<cr>
-" telescope: search files available in dotfiles repository
-nnoremap <silent> <leader>fd :lua R('remote.telescope').search_dotfiles()<cr>
-" telescope: open file browser at current directory
-nnoremap <silent> <leader>fe :lua R('remote.telescope').file_browser()<cr>
-" telescope: search files available in vim remote plugin directory
-nnoremap <silent> <leader>fp :lua R('remote.telescope').installed_plugins()<cr>
-" telescope: search files available in vim remote plugin directory
-nnoremap <silent> <leader>fh :lua R('remote.telescope').help_tags()<cr>
-" telescope: grep files in current directory
-nnoremap <silent> <leader>gf :lua R('remote.telescope').grep_files()<cr>
-" telescope: grep all files in current directory
-nnoremap <silent> <leader>gg :lua R('remote.telescope').grep_all_files()<cr>
+if has('nvim')
+  " telescope: search all currently open file buffers
+  nnoremap <silent> <leader>fb :Telescope buffers<cr>
+  " telescope: search all currently open file buffers
+  nnoremap <silent> <leader>ff :lua R('remote.telescope').current_buffer()<cr>
+  " telescope: search files available in the current directory
+  nnoremap <silent> <leader><leader> :lua R('remote.telescope').search_cwd()<cr>
+  " telescope: search git files available in the current directory
+  nnoremap <silent> <leader>fg :lua R('remote.telescope').git_files()<cr>
+  " telescope: search files available in dotfiles repository
+  nnoremap <silent> <leader>fd :lua R('remote.telescope').search_dotfiles()<cr>
+  " telescope: open file browser at current directory
+  nnoremap <silent> <leader>fe :lua R('remote.telescope').file_browser()<cr>
+  " telescope: search files available in vim remote plugin directory
+  nnoremap <silent> <leader>fp :lua R('remote.telescope').installed_plugins()<cr>
+  " telescope: search files available in vim remote plugin directory
+  nnoremap <silent> <leader>fh :lua R('remote.telescope').help_tags()<cr>
+  " telescope: grep files in current directory
+  nnoremap <silent> <leader>gf :lua R('remote.telescope').grep_files()<cr>
+  " telescope: grep all files in current directory
+  nnoremap <silent> <leader>gg :lua R('remote.telescope').grep_all_files()<cr>
+end
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader

@@ -278,3 +278,11 @@ function! functions#load_file() abort
   endif
   return
 endfunction
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => LSP send diagnostics info to loclist
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! functions#vim_lsp_diagnostic_set_loclist() abort
+  if has('nvim')
+    lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
+  end
+endfunction

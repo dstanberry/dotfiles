@@ -51,3 +51,10 @@ augroup GitCommitMsg
   autocmd FileType gitcommit autocmd! BufEnter COMMIT_EDITMSG call setpos('.',[0, 1, 1, 0])
 augroup END
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Attempt to populate loclist if ft supported by LSP
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+augroup LSP
+  autocmd!
+  autocmd BufWrite,BufEnter,InsertLeave * :call functions#vim_lsp_diagnostic_set_loclist()
+augroup END
