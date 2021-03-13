@@ -170,6 +170,11 @@ set complete+=kspell
 " use popup menu to show possible completions
 set completeopt=menuone,noinsert,noselect
 
+" set grep program to use
+set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+" set grep output format
+set grepformat=%f:%l:%c:%m
+
 " use blinking vertical bar in insert mode
 let &t_SI="\<Esc>[5 q"
 " use blinking underscore cursor in replace mode
