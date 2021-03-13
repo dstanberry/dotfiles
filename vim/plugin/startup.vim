@@ -6,5 +6,5 @@ call functions#defer('call deferred#load_dir_hash()')
 
 " load lua startup function
 if has('nvim')
-	lua require("startup")
+  lua require("startup")
 endif

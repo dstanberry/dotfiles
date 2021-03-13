@@ -2,16 +2,16 @@
 " => Lazy Loading
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup DeferInit
-	autocmd!
-	if has('vim_starting')
-		" CursorHold events have not been firing in neovim
-		" ... so the following bad hack will have to do for now
-		if has('nvim')
-			autocmd CursorMoved,CursorMovedI * call functions#idleboot()
-		else
-			autocmd CursorHold,CursorHoldI * call functions#idleboot()
-		endif
-	endif
+  autocmd!
+  if has('vim_starting')
+    " CursorHold events have not been firing in neovim
+    " ... so the following bad hack will have to do for now
+    if has('nvim')
+      autocmd CursorMoved,CursorMovedI * call functions#idleboot()
+    else
+      autocmd CursorHold,CursorHoldI * call functions#idleboot()
+    endif
+  endif
 augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -30,24 +30,24 @@ autocmd BufRead,BufNewFile ~/.config/zsh/rc.private/* set filetype=zsh
 " => Restore Last Cursor Position
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup RestoreCursor
-	autocmd!
-	autocmd BufWinEnter * call functions#restore_cursor_position()
+  autocmd!
+  autocmd BufWinEnter * call functions#restore_cursor_position()
 augroup END
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Highlight Yanked Text
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if exists('##TextYankPost')
-	augroup LuaHighlight
-		autocmd!
-		autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=200}
-	augroup END
+  augroup LuaHighlight
+    autocmd!
+    autocmd TextYankPost * silent! lua vim.highlight.on_yank {higroup="IncSearch", timeout=200}
+  augroup END
 endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Place cursor on first line of git commit message
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup GitCommitMsg
-	autocmd!
-	autocmd FileType gitcommit autocmd! BufEnter COMMIT_EDITMSG call setpos('.',[0, 1, 1, 0])
+  autocmd!
+  autocmd FileType gitcommit autocmd! BufEnter COMMIT_EDITMSG call setpos('.',[0, 1, 1, 0])
 augroup END
 

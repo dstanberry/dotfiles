@@ -8,11 +8,11 @@ alias grep='grep --color=auto'
 
 # enable color support for ls
 if is_darwin; then
-	alias ls="gls --color=auto --almost-all --group-directories-first"
+  alias ls="gls --color=auto --almost-all --group-directories-first"
 elif is_wsl; then
-	alias ls="ls --color=auto --ignore='ntuser\.*' --ignore='NTUSER\.*' --almost-all --group-directories-first"
+  alias ls="ls --color=auto --ignore='ntuser\.*' --ignore='NTUSER\.*' --almost-all --group-directories-first"
 else
-	alias ls="ls --color=auto --almost-all --group-directories-first"
+  alias ls="ls --color=auto --almost-all --group-directories-first"
 fi
 
 # use neovim in place of vim (if available)
@@ -23,8 +23,8 @@ alias reload='source "${ZSH_CONFIG_HOME}/.zshrc"'
 
 # dirty hack to expose native specific Windows utils
 if is_wsl; then
-	alias code='sh /mnt/c/Program\ Files/Microsoft\ VS\ Code/bin/code'
-	alias posh='powershell.exe -NoProfile'
+  alias code='sh /mnt/c/Program\ Files/Microsoft\ VS\ Code/bin/code'
+  alias posh='powershell.exe -NoProfile'
 fi
 
 alias wget='wget --hsts-file "${CONFIG_HOME}/wget/wget-hsts"'

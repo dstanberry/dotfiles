@@ -3,18 +3,18 @@
 ---------------------------------------------------------------
 -- print inspection of variable
 P = function(v)
-	print(vim.inspect(v))
-	return v
+  print(vim.inspect(v))
+  return v
 end
 
 -- enable live-reloading of lua functions
 if pcall(require, 'plenary') then
-	RELOAD = require('plenary.reload').reload_module
+  RELOAD = require('plenary.reload').reload_module
 
-R = function(name)
-		RELOAD(name)
-		return require(name)
-	end
+  R = function(name)
+    RELOAD(name)
+    return require(name)
+  end
 end
 
 ---------------------------------------------------------------

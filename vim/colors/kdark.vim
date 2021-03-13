@@ -57,76 +57,76 @@ let g:base16_cterm0D = "04"
 let s:cterm0E        = "05"
 let g:base16_cterm0E = "05"
 if exists("base16colorspace") && base16colorspace == "256"
-	let s:cterm01        = "18"
-	let g:base16_cterm01 = "18"
-	let s:cterm02        = "19"
-	let g:base16_cterm02 = "19"
-	let s:cterm04        = "20"
-	let g:base16_cterm04 = "20"
-	let s:cterm06        = "21"
-	let g:base16_cterm06 = "21"
-	let s:cterm09        = "16"
-	let g:base16_cterm09 = "16"
-	let s:cterm0F        = "17"
-	let g:base16_cterm0F = "17"
+  let s:cterm01        = "18"
+  let g:base16_cterm01 = "18"
+  let s:cterm02        = "19"
+  let g:base16_cterm02 = "19"
+  let s:cterm04        = "20"
+  let g:base16_cterm04 = "20"
+  let s:cterm06        = "21"
+  let g:base16_cterm06 = "21"
+  let s:cterm09        = "16"
+  let g:base16_cterm09 = "16"
+  let s:cterm0F        = "17"
+  let g:base16_cterm0F = "17"
 else
-	let s:cterm01        = "10"
-	let g:base16_cterm01 = "10"
-	let s:cterm02        = "11"
-	let g:base16_cterm02 = "11"
-	let s:cterm04        = "12"
-	let g:base16_cterm04 = "12"
-	let s:cterm06        = "13"
-	let g:base16_cterm06 = "13"
-	let s:cterm09        = "09"
-	let g:base16_cterm09 = "09"
-	let s:cterm0F        = "14"
-	let g:base16_cterm0F = "14"
+  let s:cterm01        = "10"
+  let g:base16_cterm01 = "10"
+  let s:cterm02        = "11"
+  let g:base16_cterm02 = "11"
+  let s:cterm04        = "12"
+  let g:base16_cterm04 = "12"
+  let s:cterm06        = "13"
+  let g:base16_cterm06 = "13"
+  let s:cterm09        = "09"
+  let g:base16_cterm09 = "09"
+  let s:cterm0F        = "14"
+  let g:base16_cterm0F = "14"
 endif
 
 " Neovim terminal colours
 if has("nvim")
-	let g:terminal_color_0 =  "#373737"
-	let g:terminal_color_1 =  "#6f8fb4"
-	let g:terminal_color_2 =  "#93b379"
-	let g:terminal_color_3 =  "#e5c179"
-	let g:terminal_color_4 =  "#6d8eb5"
-	let g:terminal_color_5 =  "#a4799d"
-	let g:terminal_color_6 =  "#77b3c5"
-	let g:terminal_color_7 =  "#cfd6e4"
-	let g:terminal_color_8 =  "#5f5f5f"
-	let g:terminal_color_9 =  "#6f8fb4"
-	let g:terminal_color_10 = "#93b379"
-	let g:terminal_color_11 = "#e5c179"
-	let g:terminal_color_12 = "#6d8eb5"
-	let g:terminal_color_13 = "#a4799d"
-	let g:terminal_color_14 = "#77b3c5"
-	let g:terminal_color_15 = "#dfe3ec"
-	let g:terminal_color_background = g:terminal_color_0
-	let g:terminal_color_foreground = g:terminal_color_5
-	if &background == "light"
-		let g:terminal_color_background = g:terminal_color_7
-		let g:terminal_color_foreground = g:terminal_color_2
-	endif
+  let g:terminal_color_0 =  "#373737"
+  let g:terminal_color_1 =  "#6f8fb4"
+  let g:terminal_color_2 =  "#93b379"
+  let g:terminal_color_3 =  "#e5c179"
+  let g:terminal_color_4 =  "#6d8eb5"
+  let g:terminal_color_5 =  "#a4799d"
+  let g:terminal_color_6 =  "#77b3c5"
+  let g:terminal_color_7 =  "#cfd6e4"
+  let g:terminal_color_8 =  "#5f5f5f"
+  let g:terminal_color_9 =  "#6f8fb4"
+  let g:terminal_color_10 = "#93b379"
+  let g:terminal_color_11 = "#e5c179"
+  let g:terminal_color_12 = "#6d8eb5"
+  let g:terminal_color_13 = "#a4799d"
+  let g:terminal_color_14 = "#77b3c5"
+  let g:terminal_color_15 = "#dfe3ec"
+  let g:terminal_color_background = g:terminal_color_0
+  let g:terminal_color_foreground = g:terminal_color_5
+  if &background == "light"
+    let g:terminal_color_background = g:terminal_color_7
+    let g:terminal_color_foreground = g:terminal_color_2
+  endif
 elseif has("terminal")
-	let g:terminal_ansi_colors = [
-		\ "#373737",
-		\ "#6f8fb4",
-		\ "#93b379",
-		\ "#e5c179",
-		\ "#6d8eb5",
-		\ "#a4799d",
-		\ "#77b3c5",
-		\ "#cfd6e4",
-		\ "#5f5f5f",
-		\ "#6f8fb4",
-		\ "#93b379",
-		\ "#e5c179",
-		\ "#6d8eb5",
-		\ "#a4799d",
-		\ "#77b3c5",
-		\ "#dfe3ec",
-		\ ]
+  let g:terminal_ansi_colors = [
+        \ "#373737",
+        \ "#6f8fb4",
+        \ "#93b379",
+        \ "#e5c179",
+        \ "#6d8eb5",
+        \ "#a4799d",
+        \ "#77b3c5",
+        \ "#cfd6e4",
+        \ "#5f5f5f",
+        \ "#6f8fb4",
+        \ "#93b379",
+        \ "#e5c179",
+        \ "#6d8eb5",
+        \ "#a4799d",
+        \ "#77b3c5",
+        \ "#dfe3ec",
+        \ ]
 endif
 
 " Theme setup
@@ -137,31 +137,31 @@ let g:colors_name = "kdark"
 " Highlighting function
 " Optional variables are attributes and guisp
 function! kdark#highlight(group, guifg, guibg, ctermfg, ctermbg, ...)
-	let l:attr = get(a:, 1, "")
-	let l:guisp = get(a:, 2, "")
+  let l:attr = get(a:, 1, "")
+  let l:guisp = get(a:, 2, "")
 
-	if a:guifg != ""
-		exec "hi " . a:group . " guifg=#" . a:guifg
-	endif
-	if a:guibg != ""
-		exec "hi " . a:group . " guibg=#" . a:guibg
-	endif
-	if a:ctermfg != ""
-		exec "hi " . a:group . " ctermfg=" . a:ctermfg
-	endif
-	if a:ctermbg != ""
-		exec "hi " . a:group . " ctermbg=" . a:ctermbg
-	endif
-	if l:attr != ""
-		exec "hi " . a:group . " gui=" . l:attr . " cterm=" . l:attr
-	endif
-	if l:guisp != ""
-		exec "hi " . a:group . " guisp=#" . l:guisp
-	endif
+  if a:guifg != ""
+    exec "hi " . a:group . " guifg=#" . a:guifg
+  endif
+  if a:guibg != ""
+    exec "hi " . a:group . " guibg=#" . a:guibg
+  endif
+  if a:ctermfg != ""
+    exec "hi " . a:group . " ctermfg=" . a:ctermfg
+  endif
+  if a:ctermbg != ""
+    exec "hi " . a:group . " ctermbg=" . a:ctermbg
+  endif
+  if l:attr != ""
+    exec "hi " . a:group . " gui=" . l:attr . " cterm=" . l:attr
+  endif
+  if l:guisp != ""
+    exec "hi " . a:group . " guisp=#" . l:guisp
+  endif
 endfunction
 
 function <sid>hi(group, guifg, guibg, ctermfg, ctermbg, attr, guisp)
-	call kdark#highlight(a:group, a:guifg, a:guibg, a:ctermfg, a:ctermbg, a:attr, a:guisp)
+  call kdark#highlight(a:group, a:guifg, a:guibg, a:ctermfg, a:ctermbg, a:attr, a:guisp)
 endfunction
 
 " Vim editor colors

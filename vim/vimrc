@@ -3,8 +3,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " install missing plugins
 autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-	\| PlugInstall --sync | source $MYVIMRC
-\| endif
+	  \| PlugInstall --sync | source $MYVIMRC
+	  \| endif
 
 " define plugin installation directory
 call plug#begin('~/.config/vim/remote')
@@ -14,10 +14,10 @@ Plug 'vim-scripts/AutoComplPop', { 'on': [] }
 
 " language server protocol support
 if has('nvim')
-	Plug 'nvim-lua/completion-nvim'
-	Plug 'tjdevries/nlua.nvim'
-	Plug 'neovim/nvim-lspconfig'
-	Plug 'tjdevries/complextras.nvim'
+  Plug 'nvim-lua/completion-nvim'
+  Plug 'tjdevries/nlua.nvim'
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'tjdevries/complextras.nvim'
 endif
 
 " command line fuzzy finder
@@ -25,7 +25,7 @@ Plug 'junegunn/fzf.vim', { 'on': ['Files', 'Buffers', 'Ag', 'Rg', 'Windows'] }
 
 " syntax highlighting for portage
 if has('nvim') && has('unix') && isdirectory("/etc/portage")
-	Plug 'gentoo/gentoo-syntax'
+  Plug 'gentoo/gentoo-syntax'
 endif
 
 " distraction-free writing
@@ -39,15 +39,15 @@ Plug 'wincent/loupe'
 
 " parser generator tool
 if has('nvim')
-	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 endif
 
 " modular fuzzy finder
 if has('nvim')
-	Plug 'nvim-lua/popup.nvim'
-	Plug 'nvim-lua/plenary.nvim'
-	Plug 'nvim-telescope/telescope.nvim'
-	Plug 'nvim-telescope/telescope-fzy-native.nvim'
+  Plug 'nvim-lua/popup.nvim'
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'nvim-telescope/telescope.nvim'
+  Plug 'nvim-telescope/telescope-fzy-native.nvim'
 endif
 
 " easily identify nested parentheses
@@ -67,9 +67,9 @@ Plug 'tpope/vim-fugitive'
 
 " highlight the yanked region
 if !exists('##TextYankPost')
-	Plug 'machakann/vim-highlightedyank'
+  Plug 'machakann/vim-highlightedyank'
 else
-	Plug 'machakann/vim-highlightedyank', { 'on': [] }
+  Plug 'machakann/vim-highlightedyank', { 'on': [] }
 endif
 
 " highlight sets of matching text
@@ -77,8 +77,8 @@ Plug 'andymass/vim-matchup'
 
 " code formatter
 Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'yaml', 'html'] }
+	  \ 'do': 'yarn install',
+	  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'yaml', 'html'] }
 
 " enable repeating supported plug maps with <.>
 Plug 'tpope/vim-repeat'

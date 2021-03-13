@@ -106,7 +106,7 @@ set wildmenu
 set wildmode=full
 " enable completion menu
 if has('nvim')
-	set wildoptions+=pum
+  set wildoptions+=pum
 endif
 
 " default behaviour when creating new panes

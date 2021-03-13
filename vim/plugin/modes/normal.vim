@@ -48,7 +48,7 @@ noremap Y y$
 
 " show directory of current file in explorer
 nnoremap <silent>
-	\ - :silent edit <c-r>=empty(expand('%')) ? '.' : expand('%:p:h')<cr><cr>
+	  \ - :silent edit <c-r>=empty(expand('%')) ? '.' : expand('%:p:h')<cr><cr>
 
 " store relative jumps in the jumplist if they exceed a threshold.
 nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
@@ -65,8 +65,8 @@ nnoremap <c-f>r :%s/\<<c-r><c-w>\>//gc<left><left><left>
 
 " begin substitution in quickfix list for word under cursor
 nnoremap <c-f><space>
-	\ :cfdo %s/\<<c-r><c-w>\>//gce \| update
-	\ <left><left><left><left><left><left><left><left><left><left><left><left><left><left>
+	  \ :cfdo %s/\<<c-r><c-w>\>//gce \| update
+	  \ <left><left><left><left><left><left><left><left><left><left><left><left><left><left>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader

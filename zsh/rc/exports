@@ -1,36 +1,36 @@
 # define configuration path for bat
 if hash bat 2>/dev/null; then
-	export BAT_CONFIG_PATH="${CONFIG_HOME}/bat/bat.conf"
+  export BAT_CONFIG_PATH="${CONFIG_HOME}/bat/bat.conf"
 fi
 
 # set the default editor
 if hash nvim 2>/dev/null;then
-	export EDITOR=nvim
+  export EDITOR=nvim
 else
-	export EDITOR=vim
+  export EDITOR=vim
 fi
 
 if hash fzf 2>/dev/null; then
-	# Use ? as the trigger sequence instead of the default **
-	export FZF_COMPLETION_TRIGGER='?'
+  # Use ? as the trigger sequence instead of the default **
+  export FZF_COMPLETION_TRIGGER='?'
 
-	# set fd as the default source for fzf
-	export FZF_DEFAULT_COMMAND='fd -H --follow --type f --color=always -E .git'
-	export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+    # set fd as the default source for fzf
+    export FZF_DEFAULT_COMMAND='fd -H --follow --type f --color=always -E .git'
+    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-	# define default options for fzf
-	if hash bat 2>/dev/null; then
-		__fzf_preview_opts="--ansi --preview-window 'right:60%' "
-		export FZF_DEFAULT_OPTS=$__fzf_preview_opts
-		unset __fzf_preview_opts
-	fi
+    # define default options for fzf
+    if hash bat 2>/dev/null; then
+      __fzf_preview_opts="--ansi --preview-window 'right:60%' "
+      export FZF_DEFAULT_OPTS=$__fzf_preview_opts
+      unset __fzf_preview_opts
+    fi
 
-	export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
-	 --color=dark
-	 --color=fg:#bebebe,bg:-1,hl:#93b379
-	 --color=fg+:#dfe3ec,bg+:-1,hl+:#93b379
-	 --color=info:#4c566a,prompt:#6f8fb4,pointer:#b04b57
-	 --color=marker:#e5c179,spinner:#4c566a,header:#5f5f5f'
+    export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+    --color=dark
+    --color=fg:#bebebe,bg:-1,hl:#93b379
+    --color=fg+:#dfe3ec,bg+:-1,hl+:#93b379
+    --color=info:#4c566a,prompt:#6f8fb4,pointer:#b04b57
+    --color=marker:#e5c179,spinner:#4c566a,header:#5f5f5f'
 fi
 
 # use standard ISO 8601 timestamp
@@ -55,8 +55,8 @@ export MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
 __viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
 __viminit+="${VIM_CONFIG_HOME}/after"
 if is_darwin; then
-	# add fzf binary to rtp
-	__viminit+=",/usr/local/opt/fzf"
+  # add fzf binary to rtp
+  __viminit+=",/usr/local/opt/fzf"
 fi
 __viminit+="|:source ${MYVIMRC}"
 __viminit+="|call functions#init()"
@@ -71,10 +71,10 @@ export SAVEHIST=$HISTSIZE
 
 # define mocOS specific options
 if is_darwin; then
-	# ensure utf-8 is set
-	export LC_CTYPE=en_US.UTF-8
-	export LC_ALL=en_US.UTF-8
+  # ensure utf-8 is set
+  export LC_CTYPE=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
 
-	# ensure brew apps are not quarantined
-	export HOMEBREW_CASK_OPTS=--no-quarantine
+    # ensure brew apps are not quarantined
+    export HOMEBREW_CASK_OPTS=--no-quarantine
 fi

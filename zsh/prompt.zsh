@@ -18,70 +18,70 @@ zstyle ':vcs_info:git*:*' formats '%F{cyan} %b%m%c%u%f '
 zstyle ':vcs_info:git*:*' actionformats '%F{cyan} %b|%a%m%c%u %f'
 
 precmd() {
-	vcs_info
+  vcs_info
 }
 
 function +vi-git-untracked() {
-	emulate -L zsh
-	if [ $(git rev-parse --is-inside-work-tree 2> /dev/null) = true ] && \
-	git status --porcelain | grep '??' &> /dev/null ; then
-		hook_com[unstaged]+="%F{blue}●%f"
-	fi
+  emulate -L zsh
+  if [ $(git rev-parse --is-inside-work-tree 2> /dev/null) = true ] && \
+    git status --porcelain | grep '??' &> /dev/null ; then
+    hook_com[unstaged]+="%F{blue}●%f"
+  fi
 }
 
 # change cursor shape
 function -set-cursor() {
-	if [[ $TMUX = '' ]]; then
-		echo -ne $1
-	else
-		echo -ne "\ePtmux;\e\e$1\e\\"
-	fi
+  if [[ $TMUX = '' ]]; then
+    echo -ne $1
+  else
+    echo -ne "\ePtmux;\e\e$1\e\\"
+  fi
 }
 
 # block cursor
 function -set-block-cursor() {
-	-set-cursor '\e[2 q'
+  -set-cursor '\e[2 q'
 }
 
 # beam cursor
 function -set-beam-cursor() {
-	-set-cursor '\e[5 q'
+  -set-cursor '\e[5 q'
 }
 
 function -set-prompt() {
-	# check for tmux by looking at $TERM, because $TMUX won't be propagated to any
-	# nested sudo shells but $TERM will.
-	local TMUXING=$([[ "$TERM" =~ "tmux" ]] && echo tmux)
-	if [ -n "$TMUXING" -a -n "$TMUX" ]; then
-		# in a a tmux session created in a non-root or root shell.
-		local LVL=$(($SHLVL - 1))
-	else
-		# either in a root shell created inside a non-root tmux session,
-		# or not in a tmux session.
-		local LVL=$SHLVL
-	fi
-	if [[ $EUID -eq 0 ]]; then
-		local PREFIX=$(printf '%%F{red}\ue0a2%.0s%%f ')
-	else
-		local PREFIX=''
-	fi
-	local mode=$1
-	if [[ $mode == insert ]]; then
-		local SUFFIX=$(printf '%%F{green}\u276f%.0s%%f' {1..$LVL})
-	else
-		local SUFFIX=$(printf '%%F{magenta}\u276f%.0s%%f' {1..$LVL})
-	fi
-	
-	# define the primary prompt
-	PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%b%F{blue}%B%3~%b%F{yellow}%B%(1j.*.)%(?..!)%b%f %B${SUFFIX}%b "
+  # check for tmux by looking at $TERM, because $TMUX won't be propagated to any
+  # nested sudo shells but $TERM will.
+  local TMUXING=$([[ "$TERM" =~ "tmux" ]] && echo tmux)
+  if [ -n "$TMUXING" -a -n "$TMUX" ]; then
+    # in a a tmux session created in a non-root or root shell.
+    local LVL=$(($SHLVL - 1))
+  else
+    # either in a root shell created inside a non-root tmux session,
+    # or not in a tmux session.
+    local LVL=$SHLVL
+  fi
+  if [[ $EUID -eq 0 ]]; then
+    local PREFIX=$(printf '%%F{red}\ue0a2%.0s%%f ')
+  else
+    local PREFIX=''
+  fi
+  local mode=$1
+  if [[ $mode == insert ]]; then
+    local SUFFIX=$(printf '%%F{green}\u276f%.0s%%f' {1..$LVL})
+  else
+    local SUFFIX=$(printf '%%F{magenta}\u276f%.0s%%f' {1..$LVL})
+  fi
 
-	RPROMPT_BASE="\${vcs_info_msg_0_}%F"
+  # define the primary prompt
+  PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%b%F{blue}%B%3~%b%F{yellow}%B%(1j.*.)%(?..!)%b%f %B${SUFFIX}%b "
 
-	if [[ -n "$TMUXING" ]]; then
-		# outside tmux, ZLE_RPROMPT_INDENT ends up eating the space after PS1, and
-		# prompt still gets corrupted even if we add an extra space to compensate.
-		export ZLE_RPROMPT_INDENT=0
-	fi
+  RPROMPT_BASE="\${vcs_info_msg_0_}%F"
+
+  if [[ -n "$TMUXING" ]]; then
+    # outside tmux, ZLE_RPROMPT_INDENT ends up eating the space after PS1, and
+    # prompt still gets corrupted even if we add an extra space to compensate.
+    export ZLE_RPROMPT_INDENT=0
+  fi
 }
 
 # define the description used for spelling correction
@@ -92,22 +92,22 @@ export CORRECT_IGNORE_FILE='.*'
 
 # set the cursor shape depending on current vi mode
 function zle-keymap-select {
-	if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
-		-set-prompt normal
-	else
-		-set-prompt insert
-	fi
-	zle reset-prompt
+  if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
+    -set-prompt normal
+  else
+    -set-prompt insert
+  fi
+  zle reset-prompt
 }
 
 zle -N zle-keymap-select
 
 # begin the line editor in vi insert mode on startup
 function zle-line-init() {
-	zle -K viins
-	-set-prompt insert
-	-set-block-cursor
-	zle reset-prompt
+  zle -K viins
+  -set-prompt insert
+  -set-block-cursor
+  zle reset-prompt
 }
 
 zle -N zle-line-init

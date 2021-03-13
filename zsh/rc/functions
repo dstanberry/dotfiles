@@ -1,205 +1,205 @@
 # poor man's ag runtime configuration
 function ag() {
-	emulate -L zsh
-	command ag --pager="less -iFMRSX -x4" \
-		--color-path=34\;3 \
-		--color-line-number=33 \
-		--color-match=35\;1\;4 "$@"
-}
+  emulate -L zsh
+  command ag --pager="less -iFMRSX -x4" \
+    --color-path=34\;3 \
+    --color-line-number=33 \
+    --color-match=35\;1\;4 "$@"
+  }
 
 # interactively delete file(s) by name
 function del() {
-	emulate -L zsh
-	if [ $# -eq 0 ]; then
-		echo "error: at least one argument is required"
-		return 1
-	fi
-	local filename=$1
-	if [[ $filename == .* ]]; then
-		filename=${filename/#/\\}
-	fi
-	if [ $# -eq 2 ]; then
-		fd "^${filename}$" $2 -tf -X rm -i
-	else
-		fd "^${filename}$" -tf -X rm -i
-	fi
+  emulate -L zsh
+  if [ $# -eq 0 ]; then
+    echo "error: at least one argument is required"
+    return 1
+  fi
+  local filename=$1
+  if [[ $filename == .* ]]; then
+    filename=${filename/#/\\}
+  fi
+  if [ $# -eq 2 ]; then
+    fd "^${filename}$" $2 -tf -X rm -i
+  else
+    fd "^${filename}$" -tf -X rm -i
+  fi
 }
 
 # poor man's fd runtime configuration
 function fd() {
-	emulate -L zsh
-	command fd -H "$@"
+  emulate -L zsh
+  command fd -H "$@"
 }
 
 # find in history
 function fh() {
-	print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) \
-		| fzf +s --tac \
-		| sed -r 's/ *[0-9]*\*? *//' \
-		| sed -r 's/\\/\\\\/g')
-}
+  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) \
+    | fzf +s --tac \
+    | sed -r 's/ *[0-9]*\*? *//' \
+    | sed -r 's/\\/\\\\/g')
+  }
 
 # fix corrupt history file
 function fix_hist() {
-	mv ${ZSH_CONFIG_HOME}/zsh_history ${ZSH_CONFIG_HOME}/zsh_hist_corrupt
-	strings ${ZSH_CONFIG_HOME}/zsh_hist_corrupt > ${ZSH_CONFIG_HOME}/zsh_history
-	fc -R ${ZSH_CONFIG_HOME}/zsh_history
-	rm ${ZSH_CONFIG_HOME}/zsh_hist_corrupt
+  mv ${ZSH_CONFIG_HOME}/zsh_history ${ZSH_CONFIG_HOME}/zsh_hist_corrupt
+  strings ${ZSH_CONFIG_HOME}/zsh_hist_corrupt > ${ZSH_CONFIG_HOME}/zsh_history
+  fc -R ${ZSH_CONFIG_HOME}/zsh_history
+  rm ${ZSH_CONFIG_HOME}/zsh_hist_corrupt
 }
 
 # find process by name and highlight
 function fp() {
-	ps aux | grep -v grep | grep -i "$@"
+  ps aux | grep -v grep | grep -i "$@"
 }
 
 # recognize defined worktrees and make git support custom sub-commands
 function git() {
-	local INPUT="${CONFIG_HOME}/git/worktrees"
-	local OLDIFS=$IFS
-	IFS=','
-	local worktree=""
-	if [ -f "$INPUT" ]; then
-		while read col1 col2; do
-			if [[ "$col1" != "GIT_DIR" ]]; then
-				gd=$(eval echo "$col1")
-				wt=$(eval echo "$col2")
-				if [ "$PWD" = "$wt" ] || [[ $PWD = ${wt}/* ]]; then
-					worktree="--git-dir=$gd --work-tree=$wt"
-				fi
-			fi
-		done < $INPUT
-	fi
-	IFS=$OLDIFS
-	local cmd="command git"
-	local inside_git_dir="$cmd $worktree rev-parse --is-inside-git-dir"
-	local bare_repo="$cmd $worktree rev-parse --is-bare-repository"
-	local absolute_git_dir="$cmd $worktree rev-parse --absolute-git-dir"
-	local show_working_tree="$cmd $worktree rev-parse --show-superproject-working-tree"
-	local show_toplevel="$cmd $worktree rev-parse --show-toplevel"
-	if [ $# -eq 0 ]; then
-		eval "$cmd $worktree status"
-	elif [ "$1" = root ]; then
-		shift
-		local ROOT
-		if [ "$($inside_git_dir 2> /dev/null)" = true ]; then
-			if [ "$($bare_repo)" = true ]; then
-				ROOT="$(eval $absolute_git_dir)"
-			else
-				ROOT="$(eval $inside_git_dir)"
-			fi
-		else
-			ROOT="$(eval $show_working_tree 2> /dev/null)"
-			if [ -z "$ROOT" ]; then
-				ROOT="$(eval $show_toplevel 2> /dev/null)"
-			fi
-		fi
-		if [ -z "$ROOT" ]; then
-			ROOT=.
-		fi
-		if [ $# -eq 0 ]; then
-			cd "$ROOT"
-		else
-			(cd "$ROOT" && eval "$@")
-		fi
-	elif [[ "$@" == *"rev-parse --show-toplevel"* ]]; then
-		if [ "$(eval $bare_repo)" = true ]; then
-			return ""
-		fi
-	else
-		eval "$cmd $worktree $@"
-	fi
+  local INPUT="${CONFIG_HOME}/git/worktrees"
+  local OLDIFS=$IFS
+  IFS=','
+  local worktree=""
+  if [ -f "$INPUT" ]; then
+    while read col1 col2; do
+      if [[ "$col1" != "GIT_DIR" ]]; then
+        gd=$(eval echo "$col1")
+        wt=$(eval echo "$col2")
+        if [ "$PWD" = "$wt" ] || [[ $PWD = ${wt}/* ]]; then
+          worktree="--git-dir=$gd --work-tree=$wt"
+        fi
+      fi
+    done < $INPUT
+  fi
+  IFS=$OLDIFS
+  local cmd="command git"
+  local inside_git_dir="$cmd $worktree rev-parse --is-inside-git-dir"
+  local bare_repo="$cmd $worktree rev-parse --is-bare-repository"
+  local absolute_git_dir="$cmd $worktree rev-parse --absolute-git-dir"
+  local show_working_tree="$cmd $worktree rev-parse --show-superproject-working-tree"
+  local show_toplevel="$cmd $worktree rev-parse --show-toplevel"
+  if [ $# -eq 0 ]; then
+    eval "$cmd $worktree status"
+  elif [ "$1" = root ]; then
+    shift
+    local ROOT
+    if [ "$($inside_git_dir 2> /dev/null)" = true ]; then
+      if [ "$($bare_repo)" = true ]; then
+        ROOT="$(eval $absolute_git_dir)"
+      else
+        ROOT="$(eval $inside_git_dir)"
+      fi
+    else
+      ROOT="$(eval $show_working_tree 2> /dev/null)"
+      if [ -z "$ROOT" ]; then
+        ROOT="$(eval $show_toplevel 2> /dev/null)"
+      fi
+    fi
+    if [ -z "$ROOT" ]; then
+      ROOT=.
+    fi
+    if [ $# -eq 0 ]; then
+      cd "$ROOT"
+    else
+      (cd "$ROOT" && eval "$@")
+    fi
+  elif [[ "$@" == *"rev-parse --show-toplevel"* ]]; then
+    if [ "$(eval $bare_repo)" = true ]; then
+      return ""
+    fi
+  else
+    eval "$cmd $worktree $@"
+  fi
 }
 
 # print response headers, following redirects.
 function headers() {
-	if [ $# -ne 1 ]; then
-		echo "error: a host argument is required"
-		return 1
-	fi
-	local REMOTE=$1
-	curl -sSL -D - "$REMOTE" -o /dev/null
+  if [ $# -ne 1 ]; then
+    echo "error: a host argument is required"
+    return 1
+  fi
+  local REMOTE=$1
+  curl -sSL -D - "$REMOTE" -o /dev/null
 }
 
 # poor man's rg runtime configuration
 function rg() {
-	command rg --colors line:fg:yellow \
-		--colors line:style:bold \
-		--colors path:fg:blue \
-		--colors path:style:bold \
-		--colors match:fg:magenta \
-		--colors match:style:underline -p "$@" | less -iFMRSX
-}
+  command rg --colors line:fg:yellow \
+    --colors line:style:bold \
+    --colors path:fg:blue \
+    --colors path:style:bold \
+    --colors match:fg:magenta \
+    --colors match:style:underline -p "$@" | less -iFMRSX
+  }
 
 # display information about a remote ssl certificate
 function ssl() {
-	emulate -L zsh
-	if [ $# -eq 0 ]; then
-		echo "error: a host argument is required"
-		return 1
-	fi
+  emulate -L zsh
+  if [ $# -eq 0 ]; then
+    echo "error: a host argument is required"
+    return 1
+  fi
 
-	local REMOTE=$1
+  local REMOTE=$1
 
-	if [ $# -eq 2 ];then
-		local PORT=$2
+  if [ $# -eq 2 ];then
+    local PORT=$2
 
-		echo | openssl s_client -showcerts -servername "$REMOTE" \
-			-connect "$REMOTE:$PORT" 2>/dev/null \
-			| openssl x509 -inform pem -noout -text
-	else
+    echo | openssl s_client -showcerts -servername "$REMOTE" \
+      -connect "$REMOTE:$PORT" 2>/dev/null \
+      | openssl x509 -inform pem -noout -text
+        else
 
-		echo | openssl s_client -showcerts -servername "$REMOTE" \
-			-connect "$REMOTE:443" 2>/dev/null \
-			| openssl x509 -inform pem -noout -text
-	fi
+          echo | openssl s_client -showcerts -servername "$REMOTE" \
+            -connect "$REMOTE:443" 2>/dev/null \
+            | openssl x509 -inform pem -noout -text
+  fi
 }
 
 # print a pruned version of a tree
 function subtree() {
-	tree -a --prune -P "$@"
+  tree -a --prune -P "$@"
 }
 
 # try to run tmux with session management
 function tmux() {
-	emulate -L zsh
-	local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
-	if [ -r "$SSH_AUTH_SOCK" -a ! -L "$SSH_AUTH_SOCK" ]; then
-		ln -sf "$SSH_AUTH_SOCK" $SOCK_SYMLINK
-	fi
-	if [[ -n "$@" ]]; then
-		env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux "$@"
-		return
-	fi
-	if [ -x .tmux ]; then
-		local DIGEST="$(openssl dgst -sha512 .tmux)"
-		if ! grep -q "$DIGEST" ${TMUX_CONFIG_HOME}/tmux.digests 2> /dev/null; then
-			cat .tmux
-			read -k 1 -r \
-			'REPLY?Trust (and run) this .tmux file? (t = trust, otherwise = skip) '
-			echo
-			if [[ $REPLY =~ ^[Tt]$ ]]; then
-				echo "$DIGEST" >> ${TMUX_CONFIG_HOME}/tmux.digests
-				./.tmux
-				return
-			fi
-		else
-			./.tmux
-			return
-		fi
-	fi
-	local SESSION_NAME=$(basename "${$(pwd)//[.:]/_}")
-	env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
+  emulate -L zsh
+  local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
+  if [ -r "$SSH_AUTH_SOCK" -a ! -L "$SSH_AUTH_SOCK" ]; then
+    ln -sf "$SSH_AUTH_SOCK" $SOCK_SYMLINK
+  fi
+  if [[ -n "$@" ]]; then
+    env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux "$@"
+    return
+  fi
+  if [ -x .tmux ]; then
+    local DIGEST="$(openssl dgst -sha512 .tmux)"
+    if ! grep -q "$DIGEST" ${TMUX_CONFIG_HOME}/tmux.digests 2> /dev/null; then
+      cat .tmux
+      read -k 1 -r \
+        'REPLY?Trust (and run) this .tmux file? (t = trust, otherwise = skip) '
+              echo
+              if [[ $REPLY =~ ^[Tt]$ ]]; then
+                echo "$DIGEST" >> ${TMUX_CONFIG_HOME}/tmux.digests
+                ./.tmux
+                return
+              fi
+            else
+              ./.tmux
+              return
+    fi
+  fi
+  local SESSION_NAME=$(basename "${$(pwd)//[.:]/_}")
+  env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
 }
 
 # traverse parent directories in a trivial manner
 function up() {
-	if [ $# -eq 0 ]; then
-		cd ..
-	else
-		local DIR=""
-		for i in {1..$1} ; do
-			CDSTR="../$CDSTR"
-		done
-		cd $CDSTR
-	fi
+  if [ $# -eq 0 ]; then
+    cd ..
+  else
+    local DIR=""
+    for i in {1..$1} ; do
+      CDSTR="../$CDSTR"
+    done
+    cd $CDSTR
+  fi
 }
