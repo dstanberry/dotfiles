@@ -163,7 +163,7 @@ nnoremap <silent> <leader>gg :lua R('remote.telescope').grep_all_files()<cr>
 let maplocalleader="\\"
 
 " create/edit file within the current directory
-nnoremap <localleader>e :edit <C-R>=expand('%:p:h') . '/'<cr>
+nnoremap <localleader>e :edit <c-r>=expand('%:p:h') . '/'<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader | Plugins
