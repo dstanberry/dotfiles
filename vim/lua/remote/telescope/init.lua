@@ -83,7 +83,8 @@ function M.search_dotfiles()
 		cwd = "~/.config",
 		hidden = true,
 		file_ignore_patterns = {
-			".git-crypt/*",".gitattributes","%.gpg","karabiner/assets/*"
+			".gitattributes", ".gitignore", "%.gpg", "%.db", 
+			"karabiner/assets/*",
 		},
 		shorten_path = false,
 		layout_strategy = 'horizontal',
@@ -98,7 +99,8 @@ function M.search_cwd()
 	require("telescope.builtin").find_files {
 		hidden = true,
 		file_ignore_patterns = {
-			".gitattributes",".gitignore","%.gpg","karabiner/assets/*", "node_modules/*"
+			".gitattributes", ".gitignore", "%.gpg", "%.db", 
+			"karabiner/assets/*", "node_modules/*"
 		},
 		shorten_path = false,
 		layout_strategy = 'horizontal',
