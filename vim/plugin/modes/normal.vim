@@ -47,7 +47,8 @@ nnoremap Q <nop>
 noremap Y y$
 
 " show directory of current file in explorer
-nnoremap <silent> - :silent edit <c-r>=empty(expand('%')) ? '.' : expand('%:p:h')<cr><cr>
+nnoremap <silent>
+	\ - :silent edit <c-r>=empty(expand('%')) ? '.' : expand('%:p:h')<cr><cr>
 
 " store relative jumps in the jumplist if they exceed a threshold.
 nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
@@ -56,11 +57,16 @@ nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
 " clear hlsearch if set, otherwise send default
 nnoremap <expr> <cr> {-> v:hlsearch ? ":nohl\<cr>" : "\<cr>"}()
 
-" find all occurences in file of word under cursor
+" find all occurences in buffer of word under cursor
 nnoremap <c-f>f /\v<c-r><c-w>
 
-" begin substitution for word under cursor
+" begin substitution in buffer for word under cursor
 nnoremap <c-f>r :%s/\<<c-r><c-w>\>//gc<left><left><left>
+
+" begin substitution in quickfix list for word under cursor
+nnoremap <c-f><space>
+	\ :cfdo %s/\<<c-r><c-w>\>//gce \| update
+	\ <left><left><left><left><left><left><left><left><left><left><left><left><left><left>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader
