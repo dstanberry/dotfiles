@@ -13,6 +13,12 @@ nnoremap <silent> <down> :cnext<cr>
 nnoremap <silent> <left> :cpfile<cr>
 nnoremap <silent> <right> :cnfile<cr>
 
+" navigate loclist list using ctrl <hjkl> keys
+nnoremap <silent> <c-k> :lprevious<cr>
+nnoremap <silent> <c-j> :lnext<cr>
+nnoremap <silent> <c-h> :lpfile<cr>
+nnoremap <silent> <c-l> :lnfile<cr>
+
 " switch to next tab
 nnoremap <c-right> gt
 " switch to previous tab
@@ -125,7 +131,7 @@ if has('nvim')
   " lsp: list all implementations for the symbol under the cursor
   nnoremap <silent> gD :lua vim.lsp.buf.implementation()<cr>
   " lsp: display signature information under the cursor
-  nnoremap <silent> <c-k> :lua vim.lsp.buf.signature_help()<cr>
+  nnoremap <silent> gh :lua vim.lsp.buf.signature_help()<cr>
   " lsp: jump to the definition of the type of the symbol under the cursor
   nnoremap <silent> 1gD :lua vim.lsp.buf.type_definition()<cr>
   " lsp: list all references to the symbol under the cursor in the quickfix list
