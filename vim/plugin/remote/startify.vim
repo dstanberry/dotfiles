@@ -1,6 +1,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Startify Configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" don't change directory when opening a file
+let g:startify_change_to_dir = 0
+
 " specify where to save session data
 let g:startify_session_dir = "~/.config/vim/plugin/remote/session"
 
