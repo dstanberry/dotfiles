@@ -110,7 +110,7 @@ nnoremap <silent> <leader>+ :resize +5<cr>
 nnoremap <silent> <leader>_ :resize -5<cr>
 
 " trim trailing whitespace
-nmap <leader>zz :call  normal#trim()<cr>
+nmap <leader>zz :call  functions#trim()<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Plugins

@@ -41,6 +41,13 @@ function! functions#substitute(pattern, replacement, flags) abort
 endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Wrapper to trim whitespace
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+function! functions#trim() abort
+  call functions#substitute('\s\+$', '', '')
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Restore Cursor Position
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! functions#restore_cursor_position()
