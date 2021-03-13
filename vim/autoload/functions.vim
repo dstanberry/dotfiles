@@ -279,17 +279,3 @@ function! functions#load_file() abort
 	endif
 	return
 endfunction
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Comment current line based on filetype
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#insert_comment() abort
-	if &filetype == 'sh' || &filetype == 'zsh'
-		:silent! norm 0i# 
-	elseif &filetype == 'vim'
-		:silent! norm 0i" 
-	elseif &filetype == 'lua'
-		:silent! norm 0i--\ 
-	endif
-	return
-endfunction

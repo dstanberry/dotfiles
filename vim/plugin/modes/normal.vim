@@ -106,9 +106,6 @@ nnoremap <silent> <leader>_ :resize -5<cr>
 " trim trailing whitespace
 nmap <leader>zz :call  normal#trim()<cr>
 
-" insert comment on current line based on filetype
-nnoremap <silent> <leader>' :call functions#insert_comment()<cr>
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
