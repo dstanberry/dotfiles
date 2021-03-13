@@ -162,6 +162,25 @@ function M.git_files()
 	})
 end
 
+-- fuzzy find text within current buffer
+function M.current_buffer()
+	local opts =themes.get_dropdown {
+		winblend = 10,
+		border = true,
+		previewer = false,
+		shorten_path = false,
+		prompt_title = "Find in File",
+	}
+	require('telescope.builtin').current_buffer_fuzzy_find(opts)
+end
+
+-- search help files
+function M.help_tags()
+	require('telescope.builtin').help_tags {
+		show_version = true,
+	}
+end
+
 -- call setmetatable whenever any of the custom modules are called
 return setmetatable({}, {
 	__index = function(_, k)

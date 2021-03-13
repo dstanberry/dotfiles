@@ -137,6 +137,8 @@ nnoremap <silent> gp :lua vim.lsp.buf.workspace_symbol()<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " telescope: search all currently open file buffers
 nnoremap <silent> <leader>fb :Telescope buffers<cr>
+" telescope: search all currently open file buffers
+nnoremap <silent> <leader>ff :lua R('remote.telescope').current_buffer()<cr>
 " telescope: search files available in the current directory
 nnoremap <silent> <leader><leader> :lua R('remote.telescope').search_cwd()<cr>
 " telescope: search git files available in the current directory
@@ -147,6 +149,8 @@ nnoremap <silent> <leader>fd :lua R('remote.telescope').search_dotfiles()<cr>
 nnoremap <silent> <leader>fe :lua R('remote.telescope').file_browser()<cr>
 " telescope: search files available in vim remote plugin directory
 nnoremap <silent> <leader>fp :lua R('remote.telescope').installed_plugins()<cr>
+" telescope: search files available in vim remote plugin directory
+nnoremap <silent> <leader>fh :lua R('remote.telescope').help_tags()<cr>
 " telescope: grep files in current directory
 nnoremap <silent> <leader>gf :lua R('remote.telescope').grep_files()<cr>
 " telescope: grep all files in current directory
