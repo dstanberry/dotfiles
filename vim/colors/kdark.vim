@@ -210,9 +210,9 @@ call <sid>hi("PMenuSel",      s:gui01, s:gui05, s:cterm01, s:cterm05, "", "")
 "vim tabline colors
 let s:tl00 = substitute(functions#darken(s:gui00, 40), '#', '', 'g')
 
-call <sid>hi("TabLine",       s:gui03, s:gui00, s:cterm03, s:cterm01, "none", "")
-call <sid>hi("TabLineFill",   s:gui03, s:gui00, s:cterm03, s:cterm01, "none", "")
-call <sid>hi("TabLineSel",    s:gui0C, s:tl00, s:cterm0B, s:cterm01, "none", "")
+call <sid>hi("TabLine",       s:gui03, s:tl00, s:cterm03, s:cterm01, "none", "")
+call <sid>hi("TabLineFill",   s:gui03, s:tl00, s:cterm03, s:cterm01, "none", "")
+call <sid>hi("TabLineSel",    s:gui05, s:gui00, s:cterm0B, s:cterm01, "none", "")
 
 " Neovim syntax highlighting
 call <sid>hi("NvimInternalError", s:gui0F, s:gui00, s:cterm0F, s:cterm00, "", "")
