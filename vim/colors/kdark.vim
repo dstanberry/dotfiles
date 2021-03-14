@@ -383,16 +383,20 @@ call <sid>hi("SpellLocal",   "", "", "", "", "undercurl", s:gui0C)
 call <sid>hi("SpellCap",     "", "", "", "", "undercurl", s:gui0D)
 call <sid>hi("SpellRare",    "", "", "", "", "undercurl", s:gui0E)
 
+" Startify highlight groups
+let s:sfy00 = substitute(functions#darken(s:gui09, 50), '#', '', 'g')
+let s:sfy01 = substitute(functions#darken(s:gui0D, 35), '#', '', 'g')
+
 " Startify highlighting
-call <sid>hi("StartifyBracket",  s:gui05, "", s:cterm03, "", "", "")
-call <sid>hi("StartifyFile",     s:gui07, "", s:cterm07, "", "", "")
+call <sid>hi("StartifyBracket",  s:sfy00, "", s:cterm03, "", "", "")
+call <sid>hi("StartifyFile",     s:gui0D, "", s:cterm07, "", "", "")
 call <sid>hi("StartifyFooter",   s:gui04, "", s:cterm03, "", "", "")
 call <sid>hi("StartifyHeader",   s:gui0B, "", s:cterm0B, "", "", "")
 call <sid>hi("StartifyNumber",   s:gui09, "", s:cterm09, "", "", "")
-call <sid>hi("StartifyPath",     s:gui04, "", s:cterm03, "", "", "")
+call <sid>hi("StartifyPath",     s:sfy01, "", s:cterm03, "", "", "")
 call <sid>hi("StartifySection",  s:gui0E, "", s:cterm0E, "", "", "")
 call <sid>hi("StartifySelect",   s:gui0C, "", s:cterm0C, "", "", "")
-call <sid>hi("StartifySlash",    s:gui04, "", s:cterm03, "", "", "")
+call <sid>hi("StartifySlash",    s:sfy01, "", s:cterm03, "", "", "")
 call <sid>hi("StartifySpecial",  s:gui04, "", s:cterm03, "", "", "")
 
 " StatusLine highlight groups
