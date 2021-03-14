@@ -1,0 +1,6 @@
+bash-language-server@1.17.0
+neovim@4.9.0
+npm@6.14.11
+pyright@1.1.120
+vim-language-server@2.1.1
+yarn@1.22.10

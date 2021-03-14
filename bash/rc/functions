@@ -112,6 +112,20 @@ function headers() {
 }
 
 # support custom sub-commands
+function npm() {
+  local PKG=$CONFIG_HOME/scripts/packages/npm.txt
+  if [ "$1" = "save" ]; then
+    command npm list -g --depth=0  | awk '{ print $2 }' \
+      | sed -r 's/^\(empty\)//' \
+      | sed '/^$/d' > "$PKG"
+  elif [ "$1" = "load" ]; then
+    cat $PKG | xargs sudo npm install -g
+  else
+    command npm "$@"
+  fi
+}
+
+# support custom sub-commands
 function pip() {
   local PKG=$CONFIG_HOME/scripts/packages/pip.txt
   if [ "$1" = "save" ]; then
