@@ -69,8 +69,9 @@ function! tabline#set_tabline()
     let s .= hl
     " set the tab page number (for mouse clicks)
     let s .= '%' . tabNum . 'T'
-    let s .= ' [' . tabNum . '] '
-    let s .= fname . ' '
+    " let s .= ' [' . tabNum . '] '
+    let s .= '   '
+    let s .= fname . '   '
     if bufmodified
       let s .= '● '
     endif
