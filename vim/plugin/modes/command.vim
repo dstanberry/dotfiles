@@ -10,6 +10,9 @@ cnoremap <C-e> <End>
 cnoremap <expr> <up> pumvisible() ? "<C-p>" : "<up>"
 cnoremap <expr> <down> pumvisible() ? "<C-n>" : "<down>"
 
+" exit command mode
+cnoremap jk <c-c>
+
 " the following breaks tab completioin in command mode
 " go the next match
 "cnoremap <expr> <tab> getcmdtype() == '/' \|\| getcmdtype() == '?' ? '<CR>/<C-r>/' : '<C-z>'
