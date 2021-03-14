@@ -1,0 +1,6 @@
+beets==1.4.9
+coloredlogs==15.0
+neovim-remote==2.4.0
+pip-autoremove==0.9.1
+pipdeptree==2.0.0
+yapf==0.30.0

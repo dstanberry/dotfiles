@@ -111,6 +111,31 @@ function headers() {
   curl -sSL -D - "$REMOTE" -o /dev/null
 }
 
+# support custom sub-commands
+function pip() {
+  local PKG=$CONFIG_HOME/scripts/packages/pip.txt
+  if [ "$1" = "save" ]; then
+    if hash pipdeptree 2>/dev/null; then
+      if [ is_gentoo ]; then
+        command pipdeptree --user --warn silence | grep -E '^\w+' > "$PKG"
+      else
+        command pipdeptree --warn silence | grep -E '^\w+' > "$PKG"
+      fi
+    else
+      echo "unable to find pipdeptree. try running 'pip install pipdeptree'"
+      return 1
+    fi
+  elif [ "$1" = "load" ]; then
+    if [ is_gentoo ]; then
+      command pip install --user --requirement "$PKG" --upgrade
+    else
+      command pip install --requirement "$PKG" --upgrade
+    fi
+  else
+    command pip "$@"
+  fi
+}
+
 # poor man's rg runtime configuration
 function rg() {
   command rg --colors line:fg:yellow \

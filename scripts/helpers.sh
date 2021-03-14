@@ -14,9 +14,14 @@ dedup_pathvar () {
 	set_var "$pathvar_name" "$deduped_path"
 }
 
-# determine if this is a macOS distribution
+# determine if this is a macos distribution
 is_darwin() {
 	[[ $(uname) == *"Darwin"* || $(uname) == *"darwin"* ]]
+}
+
+# determine if this is a gentoo distribution
+is_gentoo() {
+  test -f /etc/gentoo-release
 }
 
 # determine if this is a wsl distribution
