@@ -46,28 +46,32 @@ Restart the shell/terminal for the changes to take effect.
 
 Dependencies
 ------------
- Vim can be compiled with support for Lua, Perl, Python and Ruby.
- 
- Neovim supports remote plugins written in the same set of languages, but they need to be installed separately. Currently the necessary packages can be pulled in without too much effort.
- 
- - NodeJS
-    - npm (should be installed with nodejs) `npm --version`
 
- Read through `scripts/packages/npm.txt` and remove delete any lines that contain unwanted packages.
- Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
+[Delta](https://github.com/dandavison/delta); or
+
+[diff-highlight](https://github.com/git/git/tree/master/contrib/diff-highlight) (perl script included in repo)
+
+[Vim](https://github.com/vim/vim) can be compiled with support for Lua, Perl, Python and Ruby.
+
+[Neovim](https://github.com/neovim/neovim) supports remote plugins written in the same set of languages, but they need to be installed separately. Currently the necessary packages can be pulled in without too much effort.
+
+Read through `scripts/packages/npm.txt`, `scripts/packages/pip.txt`, `scripts/packages/gem.txt` and remove delete any lines that contain unwanted packages.
+
+- NodeJS
+   - npm (should be installed with nodejs) `npm --version`
+
+Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
  
- - Perl
-    - _currently not in use_ 
+- Perl
+   - _currently not in use_ 
 
- - Python
-    - pip (should be installed with Python) `python -m pip --version`
-    - pipdeptree (required to manage package dependency graph) `pip install pipdeptree`
+- Python
+   - pip (should be installed with Python) `python -m pip --version`
+   - pipdeptree (required to manage package dependency graph) `pip install pipdeptree`
 
- Read through `scripts/packages/pip.txt` and remove delete any lines that contain unwanted packages.
- Run `pip load` to install/update the files listed in `scripts/packages/pip.txt`
+Run `pip load` to install/update the files listed in `scripts/packages/pip.txt`
  
- - Ruby
-    - gem (should be installed with Ruby) `gem --version`
+- Ruby
+   - gem (should be installed with Ruby) `gem --version`
 
- Read through `scripts/packages/gem.txt` and remove delete any lines that contain unwanted packages.
- Run `gem load` to install the files listed in `scripts/packages/gem.txt`
+Run `gem load` to install the files listed in `scripts/packages/gem.txt`
