@@ -17,15 +17,26 @@ zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 zstyle ':vcs_info:git*:*' formats '%F{cyan} %b%m%c%u%f '
 zstyle ':vcs_info:git*:*' actionformats '%F{cyan} %b|%a%m%c%u %f'
 
-precmd() {
-  vcs_info
-}
-
+# show untracked status in git prompt
 function +vi-git-untracked() {
   emulate -L zsh
   if [ $(git rev-parse --is-inside-work-tree 2> /dev/null) = true ] && \
     git status --porcelain | grep '??' &> /dev/null ; then
     hook_com[unstaged]+="%F{blue}●%f"
+  fi
+}
+
+# save commands to global variable and prevent it being saved to histfile
+function zshaddhistory() {
+  LASTHIST=$1
+  return 2
+}
+
+# check git state and prevent unsuccessful commands from being saved to histfile
+function precmd() {
+  vcs_info
+  if [[ $? == 0 && -n $LASTHIST && -n $HISTFILE ]] ; then
+    print -sr -- ${=${LASTHIST%%'\n'}}
   fi
 }
 
