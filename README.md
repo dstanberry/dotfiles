@@ -50,15 +50,24 @@ Dependencies
  
  Neovim supports remote plugins written in the same set of languages, but they need to be installed separately. Currently the necessary packages can be pulled in without too much effort.
  
-- NodeJS
-   - npm (should be installed with nodejs) `npm --version`
+ - NodeJS
+    - npm (should be installed with nodejs) `npm --version`
 
-Read through `scripts/packages/npm.txt` and remove delete any lines that contain unwanted packages.
-Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
+ Read through `scripts/packages/npm.txt` and remove delete any lines that contain unwanted packages.
+ Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
+ 
+ - Perl
+    - _currently not in use_ 
 
  - Python
-   - pip (should be installed with Python) `python -m pip --version`
-   - pipdeptree (required to manage package dependency graph) `pip install pipdeptree`
+    - pip (should be installed with Python) `python -m pip --version`
+    - pipdeptree (required to manage package dependency graph) `pip install pipdeptree`
 
-Read through `scripts/packages/pip.txt` and remove delete any lines that contain unwanted packages.
-Run `pip load` to install/update the files listed in `scripts/packages/pip.txt`
+ Read through `scripts/packages/pip.txt` and remove delete any lines that contain unwanted packages.
+ Run `pip load` to install/update the files listed in `scripts/packages/pip.txt`
+ 
+ - Ruby
+    - gem (should be installed with Ruby) `gem --version`
+
+ Read through `scripts/packages/gem.txt` and remove delete any lines that contain unwanted packages.
+ Run `gem load` to install the files listed in `scripts/packages/gem.txt`
