@@ -39,6 +39,22 @@
 [color "status"]
 	untracked = blue
 
+[delta]
+	commit-decoration-style = bold yellow box ul
+	features = line-numbers decorations
+	file-decoration-style = none
+	file-style = bold blue ul
+	hunk-header-style = omit
+	hunk-header-decoration-style = black box ul
+	line-numbers-left-style = black
+	line-numbers-right-style = black
+	line-numbers-minus-style = "#F75149"
+	line-numbers-plus-style = "#3FB950"
+	line-numbers-zero-style = 243
+	plus-style = syntax "#132E1F"
+	minus-style = syntax "#36191C"
+	syntax-theme = kdark
+
 [diff]
 	algorithm = histogram
 	compactionHeuristic = true	
@@ -48,7 +64,10 @@
 	patternType = perl
 
 [interactive]
-	diffFilter = diff-highlight
+	diffFilter = delta --color-only
+
+[interactive]
+	diffFilter = delta --color-only
 
 [log]
 	decorate = short
@@ -59,10 +78,10 @@
 	tool = vimdiff3
 
 [pager]
-	diff = diff-highlight | menos -iFMRX -x4 --pattern='^(commit|diff)'
-	log = diff-highlight | menos -iFMRX -x4 --pattern='^(commit|diff)'
-	show = diff-highlight | menos -iFMRX -x4 --pattern='^(commit|diff)'
-	whatchanged = diff-highlight | menos -iFMRX -x4 --pattern='^(commit|diff)'
+	diff = delta
+	log = delta
+	show = delta
+	whatchanged = delta
 
 	show-branch = true
 	status = true
