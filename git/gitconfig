@@ -40,6 +40,7 @@
 	untracked = blue
 
 [delta]
+	colorMoved = default
 	commit-decoration-style = bold yellow box ul
 	features = line-numbers decorations
 	file-decoration-style = none
@@ -51,20 +52,17 @@
 	line-numbers-minus-style = "#F75149"
 	line-numbers-plus-style = "#3FB950"
 	line-numbers-zero-style = 243
-	plus-style = syntax "#132E1F"
+	plus-style = bold syntax "#002800"
 	minus-style = syntax "#36191C"
 	syntax-theme = kdark
 
 [diff]
 	algorithm = histogram
-	compactionHeuristic = true	
+	compactionHeuristic = true
 
 [grep]
 	lineNumber = true
 	patternType = perl
-
-[interactive]
-	diffFilter = delta --color-only
 
 [interactive]
 	diffFilter = delta --color-only

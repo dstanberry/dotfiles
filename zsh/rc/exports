@@ -1,3 +1,9 @@
+# this is incorrect but required
+if is_wsl; then
+  # announce true color support
+  export COLORTERM=truecolor
+fi
+
 # define configuration path for bat
 if hash bat 2>/dev/null; then
   export BAT_CONFIG_PATH="${CONFIG_HOME}/bat/bat.conf"
