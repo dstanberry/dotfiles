@@ -67,11 +67,7 @@ export VIMINIT=$__viminit
 unset __viminit
 
 # define the default pager
-if hash delta 2>/dev/null; then
-  export PAGER=$(which delta)
-else
-  export PAGER=$(which less)
-fi
+export PAGER=$(which less)
 
 # save the history
 export SAVEHIST=$HISTSIZE
