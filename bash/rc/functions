@@ -41,6 +41,16 @@ function fp() {
   ps aux | grep -v grep | grep -i "$@"
 }
 
+# support custom sub-commands
+function gem() {
+  local PKG=$CONFIG_HOME/scripts/packages/gem.txt
+  if [ "$1" = "load" ]; then
+    cat $PKG | xargs gem install
+  else
+    command gem "$@"
+  fi
+}
+
 # recognize defined worktrees and make git support custom sub-commands
 function git() {
   local INPUT="${CONFIG_HOME}/git/worktrees"
