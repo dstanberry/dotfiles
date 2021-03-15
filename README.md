@@ -1,8 +1,11 @@
-# Dotfiles
+Dotfiles
+--------
 
-In a Linux environment, user-specific application configuration is traditionally stored in so called dotfiles (files whose filename starts with a dot). The schema is constructed such that it adheres to the XDG Base Directory Specification.
+The schema is constructed such that it adheres to the XDG Base Directory Specification.
 
 This configuration adopts what I think is a more elegant solution; the `.config` directory is maintained as a worktree linked to a git bare repository. To setup the environment, a number of one-time tasks will need to be executed:
+
+Clone the repository:
 
 ```bash
 # If desired, replace '$HOME/Git/dotfiles' with another location that is preferred.
@@ -15,6 +18,7 @@ git --git-dir=$working_dir --work-tree=$HOME/.config checkout
 The glue required to make this possible is to tell the system wide configuration file where to look for the user shell profile:
 
 Bash:
+Depending on the distro this file may exist in `/etc/bashrc`, `/etc/bash.bashrc` or `/etc/bash/bashrc`.
 
 ```bash
 if [ -s "${XDG_CONFIG_HOME:-$HOME/.config}/bash/bashrc" ]; then
@@ -22,18 +26,16 @@ if [ -s "${XDG_CONFIG_HOME:-$HOME/.config}/bash/bashrc" ]; then
 fi
 ```
 
-Depending on the distro this file may exist in `/etc/bashrc`, `/etc/bash.bashrc` or `/etc/bash/bashrc`.
-
 ZSH:
+This will need to be set in `/etc/zsh/zshenv`.
 
 ```zsh
 export XDG_CONFIG_HOME="${HOME}/.config"
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh/"
 ```
 
-This will need to be set in `/etc/zsh/zshenv`
-
-Optional: tell the global `.gitconfig` file to include this file:
+Git (Optional):
+Have the global `.gitconfig` file include the configurations maintained here.
 
 ```gitconfig
 [include]
@@ -41,3 +43,22 @@ Optional: tell the global `.gitconfig` file to include this file:
 ```
 
 Restart the shell/terminal for the changes to take effect.
+
+Dependencies
+------------
+ Vim can be compiled with support for Lua, Perl, Python and Ruby.
+ 
+ Neovim supports remote plugins written in the same set of languages, but they need to be installed separately. Currently the necessary packages can be pulled in without too much effort.
+ 
+- NodeJS
+   - npm (should be installed with nodejs) `npm --version`
+
+Read through `scripts/packages/npm.txt` and remove delete any lines that contain unwanted packages.
+Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
+
+ - Python
+   - pip (should be installed with Python) `python -m pip --version`
+   - pipdeptree (required to manage package dependency graph) `pip install pipdeptree`
+
+Read through `scripts/packages/pip.txt` and remove delete any lines that contain unwanted packages.
+Run `pip load` to install/update the files listed in `scripts/packages/pip.txt`
