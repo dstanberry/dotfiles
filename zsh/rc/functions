@@ -138,7 +138,11 @@ function npm() {
       | sed -r 's/^\(empty\)//' \
       | sed '/^$/d' > "$PKG"
   elif [ "$1" = "load" ]; then
-    cat $PKG | xargs sudo npm install -g
+    if [ "$EUID" -eq 0 ]; then
+      cat $PKG | xargs  npm install -g
+    else
+      cat $PKG | xargs sudo npm install -g
+    fi
   else
     command npm "$@"
   fi
