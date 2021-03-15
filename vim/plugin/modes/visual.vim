@@ -23,3 +23,6 @@ vnoremap <silent> J :call visual#move_down()<cr>
 
 " begin substitution for current selection
 vmap <c-r> :<bs><bs><bs><bs><bs>%s/<c-r>=visual#get_selection()<cr>//gc<left><left><left>
+
+" exit visual mode
+vnoremap ZZ <esc>
