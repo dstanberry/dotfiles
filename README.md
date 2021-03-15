@@ -55,12 +55,12 @@ Dependencies
 
 [Neovim](https://github.com/neovim/neovim) supports remote plugins written in the same set of languages, but they need to be installed separately. Currently the necessary packages can be pulled in without too much effort.
 
-Read through `scripts/packages/npm.txt`, `scripts/packages/pip.txt`, `scripts/packages/gem.txt` and remove delete any lines that contain unwanted packages.
+Read through `scripts/packages/npm.txt`, `scripts/packages/pip.txt`, `scripts/packages/gem.txt` and remove delete any lines that contain unwanted packages before running any of the `load` commands.
 
 - NodeJS
    - npm (should be installed with nodejs) `npm --version`
 
-Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
+  Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
  
 - Perl
    - _currently not in use_ 
@@ -69,9 +69,9 @@ Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
    - pip (should be installed with Python) `python -m pip --version`
    - pipdeptree (required to manage package dependency graph) `pip install pipdeptree`
 
-Run `pip load` to install/update the files listed in `scripts/packages/pip.txt`
+  Run `pip load` to install/update the files listed in `scripts/packages/pip.txt`
  
 - Ruby
    - gem (should be installed with Ruby) `gem --version`
 
-Run `gem load` to install the files listed in `scripts/packages/gem.txt`
+  Run `gem load` to install the files listed in `scripts/packages/gem.txt`
