@@ -1,39 +1,39 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Custom Terminal Theme
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" GUI color definitions
-let s:gui00        = "373737"
-let g:base16_gui00 = "373737"
-let s:gui01        = "404040"
-let g:base16_gui01 = "404040"
-let s:gui02        = "434345"
-let g:base16_gui02 = "434345"
-let s:gui03        = "5f5f5f"
-let g:base16_gui03 = "5f5f5f"
-let s:gui04        = "8f8f8f"
-let g:base16_gui04 = "8f8f8f"
-let s:gui05        = "cfd6e4"
-let g:base16_gui05 = "cfd6e4"
-let s:gui06        = "d8dee9"
-let g:base16_gui06 = "d8dee9"
-let s:gui07        = "e7ebf1"
-let g:base16_gui07 = "e7ebf1"
-let s:gui08        = "6f8fb4"
-let g:base16_gui08 = "6f8fb4"
-let s:gui09        = "e6c274"
-let g:base16_gui09 = "e6c274"
-let s:gui0A        = "e5c179"
-let g:base16_gui0A = "e5c179"
-let s:gui0B        = "93b379"
-let g:base16_gui0B = "93b379"
-let s:gui0C        = "77b3c5"
-let g:base16_gui0C = "77b3c5"
-let s:gui0D        = "6d8eb5"
-let g:base16_gui0D = "6d8eb5"
-let s:gui0E        = "a4799d"
-let g:base16_gui0E = "a4799d"
-let s:gui0F        = "b04b57"
-let g:base16_gui0F = "b04b57"
+" UI color definitions
+let s:gui00        = "373737" " #373737
+let g:base16_gui00 = "373737" " #373737
+let s:gui01        = "404040" " #404040
+let g:base16_gui01 = "404040" " #404040
+let s:gui02        = "434345" " #434345
+let g:base16_gui02 = "434345" " #434345
+let s:gui03        = "5f5f5f" " #5f5f5f
+let g:base16_gui03 = "5f5f5f" " #5f5f5f
+let s:gui04        = "8f8f8f" " #8f8f8f
+let g:base16_gui04 = "8f8f8f" " #8f8f8f
+let s:gui05        = "cfd6e4" " #cfd6e4
+let g:base16_gui05 = "cfd6e4" " #cfd6e4
+let s:gui06        = "d8dee9" " #d8dee9
+let g:base16_gui06 = "d8dee9" " #d8dee9
+let s:gui07        = "e7ebf1" " #e7ebf1
+let g:base16_gui07 = "e7ebf1" " #e7ebf1
+let s:gui08        = "6f8fb4" " #6f8fb4
+let g:base16_gui08 = "6f8fb4" " #6f8fb4
+let s:gui09        = "e6c274" " #e6c274
+let g:base16_gui09 = "e6c274" " #e6c274
+let s:gui0A        = "e5c179" " #e5c179
+let g:base16_gui0A = "e5c179" " #e5c179
+let s:gui0B        = "93b379" " #93b379
+let g:base16_gui0B = "93b379" " #93b379
+let s:gui0C        = "77b3c5" " #77b3c5
+let g:base16_gui0C = "77b3c5" " #77b3c5
+let s:gui0D        = "6d8eb5" " #6d8eb5
+let g:base16_gui0D = "6d8eb5" " #6d8eb5
+let s:gui0E        = "a4799d" " #a4799d
+let g:base16_gui0E = "a4799d" " #a4799d
+let s:gui0F        = "b04b57" " #b04b57
+let g:base16_gui0F = "b04b57" " #b04b57
 
 " Terminal color definitions
 let s:cterm00        = "00"
@@ -87,7 +87,7 @@ endif
 " Neovim terminal colours
 if has("nvim")
   let g:terminal_color_0 =  "#373737"
-  let g:terminal_color_1 =  "#6f8fb4"
+  let g:terminal_color_1 =  "#b04b57"
   let g:terminal_color_2 =  "#93b379"
   let g:terminal_color_3 =  "#e5c179"
   let g:terminal_color_4 =  "#6d8eb5"
@@ -95,7 +95,7 @@ if has("nvim")
   let g:terminal_color_6 =  "#77b3c5"
   let g:terminal_color_7 =  "#cfd6e4"
   let g:terminal_color_8 =  "#5f5f5f"
-  let g:terminal_color_9 =  "#6f8fb4"
+  let g:terminal_color_9 =  "#b04b57"
   let g:terminal_color_10 = "#93b379"
   let g:terminal_color_11 = "#e5c179"
   let g:terminal_color_12 = "#6d8eb5"
@@ -111,7 +111,7 @@ if has("nvim")
 elseif has("terminal")
   let g:terminal_ansi_colors = [
         \ "#373737",
-        \ "#6f8fb4",
+        \ "#b04b57",
         \ "#93b379",
         \ "#e5c179",
         \ "#6d8eb5",
@@ -119,7 +119,7 @@ elseif has("terminal")
         \ "#77b3c5",
         \ "#cfd6e4",
         \ "#5f5f5f",
-        \ "#6f8fb4",
+        \ "#b04b57",
         \ "#93b379",
         \ "#e5c179",
         \ "#6d8eb5",

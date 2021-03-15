@@ -37,6 +37,11 @@ Plug 'junegunn/limelight.vim'
 " emphasize the current matched search pattern
 Plug 'wincent/loupe'
 
+" color highlighter
+if has('nvim')
+  Plug 'norcalli/nvim-colorizer.lua'
+endif
+
 " parser generator tool
 if has('nvim')
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}

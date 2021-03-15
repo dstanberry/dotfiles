@@ -14,4 +14,3 @@ plugin.source = function()
 end
 
 return plugin
-
