@@ -207,6 +207,13 @@ if hash fzf 2>/dev/null; then
 fi
 
 ###############################################################
+# git
+###############################################################
+# load git completion
+test -s "${BASH_CONFIG_HOME}/plugins/git/git-completion.bash" && \
+  source "${BASH_CONFIG_HOME}/plugin/git/git-completion.bash"
+
+###############################################################
 # _Custom
 ###############################################################
 # check for machine-specific rc files and source them if available
