@@ -130,6 +130,27 @@ function headers() {
   curl -sSL -D - "$REMOTE" -o /dev/null
 }
 
+# inform neovim of repo defined git worktrees
+function nvim {
+  local INPUT="${CONFIG_HOME}/git/worktrees"
+  local OLDIFS=$IFS
+  IFS=','
+  local worktree=""
+  if [ -f "$INPUT" ]; then
+    while read col1 col2; do
+      if [[ "$col1" != "GIT_DIR" ]]; then
+        gd=$(eval echo "$col1")
+        wt=$(eval echo "$col2")
+        if [ "$PWD" = "$wt" ] || [[ $PWD = ${wt}/* ]]; then
+          worktree="GIT_DIR=$gd GIT_WORK_TREE=$wt"
+        fi
+      fi
+    done < $INPUT
+  fi
+  IFS=$OLDIFS
+  eval "$worktree command nvim"
+}
+
 # support custom sub-commands
 function npm() {
   local PKG=$CONFIG_HOME/scripts/packages/npm.txt
@@ -240,7 +261,7 @@ function tmux() {
               return
     fi
   fi
-  local SESSION_NAME=$(basename "${$(pwd)//[.:]/_}")
+  local SESSION_NAME=$(basename ${$(pwd)//[.:]/_})
   env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
 }
 
@@ -255,4 +276,25 @@ function up() {
     done
     cd $CDSTR
   fi
+}
+
+# inform (neo)vim of repo defined git worktrees
+function vim {
+  local INPUT="${CONFIG_HOME}/git/worktrees"
+  local OLDIFS=$IFS
+  IFS=','
+  local worktree=""
+  if [ -f "$INPUT" ]; then
+    while read col1 col2; do
+      if [[ "$col1" != "GIT_DIR" ]]; then
+        gd=$(eval echo "$col1")
+        wt=$(eval echo "$col2")
+        if [ "$PWD" = "$wt" ] || [[ $PWD = ${wt}/* ]]; then
+          worktree="GIT_DIR=$gd GIT_WORK_TREE=$wt"
+        fi
+      fi
+    done < $INPUT
+  fi
+  IFS=$OLDIFS
+  eval "$worktree command vim"
 }
