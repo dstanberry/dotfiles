@@ -84,7 +84,7 @@ function M.search_dotfiles()
     hidden = true,
     file_ignore_patterns = {
       ".gitattributes", ".gitignore", "%.gpg", "%.db", 
-      "karabiner/assets/*",
+      ".git/*", "karabiner/assets/*",
     },
     shorten_path = false,
     layout_strategy = 'horizontal',
@@ -100,7 +100,7 @@ function M.search_cwd()
     hidden = true,
     file_ignore_patterns = {
       ".gitattributes", ".gitignore", "%.gpg", "%.db", 
-      "karabiner/assets/*", "node_modules/*"
+      ".git/*", "karabiner/assets/*", "node_modules/*"
     },
     shorten_path = false,
     layout_strategy = 'horizontal',
