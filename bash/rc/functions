@@ -139,7 +139,7 @@ function nvim {
     done < $INPUT
   fi
   IFS=$OLDIFS
-  eval "$worktree command nvim"
+  eval "$worktree command nvim $@"
 }
 
 # support custom sub-commands
@@ -280,5 +280,5 @@ function vim {
     done < $INPUT
   fi
   IFS=$OLDIFS
-  eval "$worktree command vim"
+  eval "$worktree command vim $@"
 }
