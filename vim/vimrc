@@ -100,7 +100,4 @@ Plug 'tpope/vim-surround'
 " enable focus events
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
-" maintain git workflow within vim
-Plug 'jreybert/vimagit'
-
 call plug#end()
