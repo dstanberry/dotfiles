@@ -17,8 +17,10 @@ function! s:set_git_env()
   let l:fname = expand('%:t')
   " get buffer type
   let l:ftype = getftype(bufname(winbufnr("%"))) 
-  let l:git_dir = s:loaded_git_dir
-  let l:git_worktree = s:loaded_git_worktree
+  if exists('s:loaded_git_dir') && exists('s:loaded_git_worktree')
+    let l:git_dir = s:loaded_git_dir
+    let l:git_worktree = s:loaded_git_worktree
+  endif
   " restore variables if buffer is vim-plug
   if l:fname == "[Plugins]" || l:ftype == "vim-plug"
     if len(l:git_dir) > 0 && len(l:git_worktree) > 0
