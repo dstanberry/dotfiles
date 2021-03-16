@@ -919,11 +919,15 @@ function! s:prepare(...)
     throw 'Invalid current working directory. Cannot proceed.'
   endif
 
-  for evar in ['$GIT_DIR', '$GIT_WORK_TREE']
-    if exists(evar)
-      throw evar.' detected. Cannot proceed.'
-    endif
-  endfor
+  if(s:plug_getcwd() != g:plug_home)
+    for evar in ['$GIT_DIR', '$GIT_WORK_TREE']
+      if exists(evar)
+        " throw evar.' detected. Cannot proceed.'
+        unlet $GIT_DIR
+        unlet $GIT_WORK_TREE
+      endif
+    endfor
+  endif
 
   call s:job_abort()
   if s:switch_in()
