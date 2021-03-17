@@ -42,6 +42,11 @@ if has('nvim')
   Plug 'norcalli/nvim-colorizer.lua'
 endif
 
+" preview/browse json files with ease
+if has('nvim')
+  Plug 'gennaro-tedesco/nvim-jqx'
+endif
+
 " parser generator tool
 if has('nvim')
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
