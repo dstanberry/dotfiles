@@ -79,6 +79,8 @@ function! s:plug_closed()
   endif
 endfunction
 
+command! Gtoggle call <sid>set_git_dir(expand("%:p:h"), 1)
+
 augroup GitWorkspace
   autocmd!
   autocmd BufEnter,BufWinEnter * call s:check_dir()
