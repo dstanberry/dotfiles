@@ -34,10 +34,10 @@ function zshaddhistory() {
 
 # check git state and prevent unsuccessful commands from being saved to histfile
 function precmd() {
-  vcs_info
   if [[ $? == 0 && -n $LASTHIST && -n $HISTFILE ]] ; then
     print -sr -- ${=${LASTHIST%%'\n'}}
   fi
+  vcs_info
 }
 
 # change cursor shape
