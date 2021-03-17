@@ -1,2 +1,2 @@
 GIT_DIR,WORK_TREE
-$HOME/Git/dotfiles,$CONFIG_HOME
+$HOME/Git/dotfiles,$HOME/.config
