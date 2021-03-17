@@ -51,6 +51,16 @@ Dependencies
 
 [diff-highlight](https://github.com/git/git/tree/master/contrib/diff-highlight) (perl script included in repo)
 
+[RipGrep](https://github.com/BurntSushi/ripgrep)
+
+[Ack3](https://github.com/beyondgrep/ack3) (Optional)
+
+[Ag](https://github.com/ggreer/the_silver_searcher)
+
+[FZF](https://github.com/junegunn/fzf)
+
+[Bat](https://github.com/sharkdp/bat)
+
 [Vim](https://github.com/vim/vim) can be compiled with support for Lua, Perl, Python and Ruby.
 
 [Neovim](https://github.com/neovim/neovim) supports remote plugins written in the same set of languages, but they need to be installed separately. Currently the necessary packages can be pulled in without too much effort.
