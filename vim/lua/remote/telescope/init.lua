@@ -25,7 +25,7 @@ local themes = require('telescope.themes')
 -- set default options
 require('telescope').setup {
   defaults = {
-    prompt_prefix = '❯ ',
+    prompt_prefix = '🔍 ',
     selection_caret = '❯ ',
     winblend = 0,
     preview_cutoff = 120,
@@ -83,8 +83,8 @@ function M.search_dotfiles()
     cwd = "~/.config",
     hidden = true,
     file_ignore_patterns = {
-      ".gitattributes", ".gitignore", "%.gpg", "%.db", 
-      ".git/*", "karabiner/assets/*",
+      ".git/", ".gitattributes", ".gitignore",
+      "%.gpg", "%.db", "karabiner/assets/*",
     },
     shorten_path = false,
     layout_strategy = 'horizontal',
@@ -99,8 +99,8 @@ function M.search_cwd()
   require("telescope.builtin").find_files {
     hidden = true,
     file_ignore_patterns = {
-      ".gitattributes", ".gitignore", "%.gpg", "%.db", 
-      ".git/*", "karabiner/assets/*", "node_modules/*"
+      ".git/", ".gitattributes", ".gitignore",
+      "%.gpg", "%.db", "karabiner/assets/*", "node_modules/*"
     },
     shorten_path = false,
     layout_strategy = 'horizontal',
