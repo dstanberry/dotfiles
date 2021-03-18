@@ -12,22 +12,13 @@ function! statusline#focus()
   let l:statusline = ""
   " mode indicator
   if mode() == 'n'
-    let l:statusline .= "%7*\ "
+    let l:statusline .= "%#Custom2#▊%{functions#get_mode()}"
   elseif mode() == 'i'
-    let l:statusline .= "%6*\ "
+    let l:statusline .= "%#Custom1#▊%{functions#get_mode()}"
   elseif mode() == 'R'
-    let l:statusline .= "%8*\ "
+    let l:statusline .= "%#Custom3#▊%{functions#get_mode()}"
   elseif mode() == 'v' || mode() == 'V'
-    let l:statusline .= "%9*\ "
-  endif
-  if mode() == 'n'
-    let l:statusline .= "%#Custom2#%{functions#get_mode()}"
-  elseif mode() == 'i'
-    let l:statusline .= "%#Custom1#%{functions#get_mode()}"
-  elseif mode() == 'R'
-    let l:statusline .= "%#Custom3#%{functions#get_mode()}"
-  elseif mode() == 'v' || mode() == 'V'
-    let l:statusline .= "%#Custom4#%{functions#get_mode()}"
+    let l:statusline .= "%#Custom4#▊%{functions#get_mode()}"
   endif
   " relative file path
   let l:statusline .= "%1*\ %{functions#get_relative_filepath()}"

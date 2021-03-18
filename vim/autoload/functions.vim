@@ -74,7 +74,7 @@ function! functions#get_mode() abort
   elseif mode() == "R"
     return " R " . paste
   elseif mode() == "v"
-    return " R " . paste
+    return " V " . paste
   elseif mode() == "V"
     return " V " . paste
   endif
