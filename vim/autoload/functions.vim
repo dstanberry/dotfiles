@@ -65,18 +65,18 @@ endfunction
 function! functions#get_mode() abort
   let paste = ''
   if &paste == 1
-    let paste = ' | paste '
+    let paste = "(P)"
   endif
-  if mode() == 'n'
-    return '  normal ' . paste
-  elseif mode() == 'i'
-    return '  insert ' . paste
-  elseif mode() == 'R'
-    return '  replace ' . paste
-  elseif mode() == 'v'
-    return '  visual ' . paste
-  elseif mode() == 'V'
-    return '  visual ' . paste
+  if mode() == "n"
+    return " N " . paste
+  elseif mode() == "i"
+    return " I " . paste
+  elseif mode() == "R"
+    return " R " . paste
+  elseif mode() == "v"
+    return " R " . paste
+  elseif mode() == "V"
+    return " V " . paste
   endif
 endfunction
 
