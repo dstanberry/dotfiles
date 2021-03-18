@@ -52,6 +52,9 @@ function! s:set_git_dir(...)
     let $GIT_DIR = l:git_dir
   else
   endif
+  if exists('g:loaded_signify')
+    execute "SignifyToggle"
+  endif
 endfunction
 
 function! s:check_dir()
