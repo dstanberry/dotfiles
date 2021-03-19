@@ -121,6 +121,26 @@ function headers() {
   curl -sSL -D - "$REMOTE" -o /dev/null
 }
 
+# support custom sub-commands
+function luarocks() {
+  local PKG=$CONFIG_HOME/scripts/packages/luarocks.txt
+  if [ "$1" = "load" ]; then
+    command luarocks install --local "$PKG"
+  else
+    command luarocks "$@"
+  fi
+}
+
+# support custom sub-commands
+function go() {
+  local PKG=$CONFIG_HOME/scripts/packages/go.txt
+  if [ "$1" = "load" ]; then
+    command go get "$PKG"
+  else
+    command go "$@"
+  fi
+}
+
 # inform neovim of repo defined git worktrees
 function nvim {
   local INPUT="${CONFIG_HOME}/git/worktrees"

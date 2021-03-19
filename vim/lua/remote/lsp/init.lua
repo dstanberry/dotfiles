@@ -9,34 +9,103 @@ if not has_lsp then
 end
 
 -- add language servers
-local on_attach_vim = function(_,bufnr)
+local on_attach_vim = function(client,bufnr)
+  local function buf_set_keymap(...)
+    vim.api.nvim_buf_set_keymap(bufnr, ...)
+  end
+
+  local opts = {noremap = true, silent = true}
+  if client.resolved_capabilities.document_formatting then
+    buf_set_keymap("n", "lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
+  elseif client.resolved_capabilities.document_range_formatting then
+    buf_set_keymap("n", "lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
+  end
+
   require('completion').on_attach()
 end
+
 local servers = {'bashls', 'jsonls', 'pyright', 'vimls'}
 for _, server in ipairs(servers) do
-  require'lspconfig'[server].setup {
-    on_attach=on_attach_vim
+  lspconfig[server].setup {
+    on_attach = on_attach_vim
   }
 end
+
+local project_root = function(fname)
+  if string.find(vim.fn.fnamemodify(fname, ":p"), ".config") then
+    return vim.fn.expand("~/.config")
+  end
+  return lspconfig_util.find_git_ancestor(fname)
+    or lspconfig.util.root_pattern("yarn.lock")
+    or lspconfig.util.root_pattern("package.json")
+    or lspconfig_util.path.dirname(fname)
+end
+
 
 -- add lua language server
 require('nlua.lsp.nvim').setup(lspconfig, {
   on_attach = on_attach_vim,
-  root_dir = function(fname)
-    if string.find(vim.fn.fnamemodify(fname, ":p"), ".config") then
-      return vim.fn.expand("~/.config")
-    end
-    return lspconfig_util.find_git_ancestor(fname)
-    or lspconfig_util.path.dirname(fname)
-  end,
+  root_dir = project_root,
   globals = {
     "Color", "c", "Group", "g", "s",
     "RELOAD",
   }
 })
 
--- set diagnostics options
+-- efm-langserver configuration
+local eslint = require'remote.lsp.linters.eslint'
+local flake = require'remote.lsp.linters.flake8'
+
+local isort = require'remote.lsp.formatters.isort'
+local luafmt = require'remote.lsp.formatters.luafmt'
+local prettier = require'remote.lsp.formatters.prettier'
+local yapf = require'remote.lsp.formatters.yapf'
+
+local languages = {
+  lua = {luafmt},
+  javascript = {prettier, eslint},
+  yaml = {prettier},
+  html = {prettier},
+  scss = {prettier},
+  css = {prettier},
+  markdown = {prettier},
+  python = {flake, isort, yapf}
+}
+
+lspconfig.efm.setup {
+  root_dir = project_root,
+  filetypes = vim.tbl_keys(languages),
+  init_options = {
+    documentFormatting = true,
+    codeAction = true
+  },
+  settings = {
+    languages = languages,
+    log_level = 1,
+  },
+  on_attach = on_attach_vim
+}
+
+-- set enhancements
+vim.lsp.handlers['textDocument/codeAction'] =
+  require'lsputil.codeAction'.code_action_handler
+vim.lsp.handlers['textDocument/references'] =
+  require'lsputil.locations'.references_handler
+vim.lsp.handlers['textDocument/definition'] =
+  require'lsputil.locations'.definition_handler
+vim.lsp.handlers['textDocument/declaration'] =
+  require'lsputil.locations'.declaration_handler
+vim.lsp.handlers['textDocument/typeDefinition'] =
+  require'lsputil.locations'.typeDefinition_handler
+vim.lsp.handlers['textDocument/implementation'] =
+  require'lsputil.locations'.implementation_handler
+vim.lsp.handlers['textDocument/documentSymbol'] =
+  require'lsputil.symbols'.document_handler
+vim.lsp.handlers['workspace/symbol'] =
+  require'lsputil.symbols'.workspace_handler
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+
+-- set diagnostics options
 vim.lsp.diagnostic.on_publish_diagnostics, {
   underline = false,
   signs = true,
@@ -45,8 +114,7 @@ vim.lsp.diagnostic.on_publish_diagnostics, {
     prefix = '▪',
     spacing = 4
   }
-}
-)
+})
 
 -- load lsp completion settings
 require('remote.completion')

@@ -16,6 +16,11 @@ if hash go 2>/dev/null; then
   export GOPATH="${HOME}/go"
 fi
 
+# set lua path
+if hash luarocks 2>/dev/null; then
+  eval $(luarocks path)
+fi
+
 # base directory for system-wide available scripts
 ULOCAL="/usr/local/bin"
 # base directory for user local binaries

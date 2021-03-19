@@ -120,6 +120,16 @@ function git() {
   fi
 }
 
+# support custom sub-commands
+function go() {
+  local PKG=$CONFIG_HOME/scripts/packages/go.txt
+  if [ "$1" = "load" ]; then
+    command go get "$PKG"
+  else
+    command go "$@"
+  fi
+}
+
 # print response headers, following redirects.
 function headers() {
   if [ $# -ne 1 ]; then
@@ -128,6 +138,16 @@ function headers() {
   fi
   local REMOTE=$1
   curl -sSL -D - "$REMOTE" -o /dev/null
+}
+
+# support custom sub-commands
+function luarocks() {
+  local PKG=$CONFIG_HOME/scripts/packages/luarocks.txt
+  if [ "$1" = "load" ]; then
+    command luarocks install --local "$PKG"
+  else
+    command luarocks "$@"
+  fi
 }
 
 # inform neovim of repo defined git worktrees
@@ -160,7 +180,7 @@ function npm() {
       | sed '/^$/d' > "$PKG"
   elif [ "$1" = "load" ]; then
     if [ "$EUID" -eq 0 ]; then
-      cat $PKG | xargs  npm install -g
+      cat $PKG | xargs npm install -g
     else
       cat $PKG | xargs sudo npm install -g
     fi
