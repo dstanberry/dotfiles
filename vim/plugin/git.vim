@@ -53,7 +53,7 @@ function! s:set_git_dir(...)
   else
   endif
   if exists('g:loaded_signify')
-    execute "SignifyToggle"
+    execute "SignifyDisable | SignifyEnable"
   endif
 endfunction
 
