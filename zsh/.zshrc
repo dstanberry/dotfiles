@@ -119,6 +119,14 @@ do
 	fi
 done
 
+# ensure go binaries exist in PATH
+for file in $(ls ${HOME}/go/bin)
+do
+	if [ ! -L ${HOME}/.local/bin/$file ]; then
+		ln -s ${HOME}/go/bin/$file ${HOME}/.local/bin/$file;
+	fi
+done
+
 # ensure there are no broken symlinks
 find ${HOME}/.local/bin -type l ! -exec test -e {} \; -delete
 
