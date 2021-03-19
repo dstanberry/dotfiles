@@ -164,6 +164,8 @@ function <sid>hi(group, guifg, guibg, ctermfg, ctermbg, attr, guisp)
   call kdark#highlight(a:group, a:guifg, a:guibg, a:ctermfg, a:ctermbg, a:attr, a:guisp)
 endfunction
 
+let s:gui10 = substitute(functions#darken(s:gui02, 40), '#', '', 'g')
+
 " Vim editor colors
 call <sid>hi("Normal",        s:gui05, s:gui00, s:cterm05, s:cterm00, "", "")
 call <sid>hi("Bold",          "", "", "", "", "bold", "")
@@ -186,7 +188,7 @@ call <sid>hi("Substitute",    s:gui01, s:gui05, s:cterm01, s:cterm0A, "none", ""
 call <sid>hi("SpecialKey",    s:gui03, "", s:cterm03, "", "", "")
 call <sid>hi("TooLong",       s:gui08, "", s:cterm08, "", "", "")
 call <sid>hi("Underlined",    s:gui08, "", s:cterm08, "", "", "")
-call <sid>hi("Visual",        "", s:gui02, "", s:cterm02, "", "")
+call <sid>hi("Visual",        "", s:gui10, "", s:cterm02, "", "")
 call <sid>hi("VisualNOS",     s:gui08, "", s:cterm08, "", "", "")
 call <sid>hi("WarningMsg",    s:gui08, "", s:cterm08, "", "", "")
 call <sid>hi("WildMenu",      s:gui08, s:gui05, s:cterm08, "", "", "")
