@@ -62,24 +62,6 @@ endfunction
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => File Properties and Metadata
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#get_mode() abort
-  let paste = ''
-  if &paste == 1
-    let paste = "(P)"
-  endif
-  if mode() == "n"
-    return " N " . paste
-  elseif mode() == "i"
-    return " I " . paste
-  elseif mode() == "R"
-    return " R " . paste
-  elseif mode() == "v"
-    return " V " . paste
-  elseif mode() == "V"
-    return " V " . paste
-  endif
-endfunction
-
 function! functions#is_readonly() abort
   if &readonly || !&modifiable
     return '∅'

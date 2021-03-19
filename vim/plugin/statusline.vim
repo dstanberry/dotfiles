@@ -12,13 +12,16 @@ function! statusline#focus()
   let l:statusline = ""
   " mode indicator
   if mode() == 'n'
-    let l:statusline .= "%#Custom2#▊%{functions#get_mode()}"
+    let l:statusline .= "%#Custom2#▊"
   elseif mode() == 'i'
-    let l:statusline .= "%#Custom1#▊%{functions#get_mode()}"
+    let l:statusline .= "%#Custom1#▊"
   elseif mode() == 'R'
-    let l:statusline .= "%#Custom3#▊%{functions#get_mode()}"
+    let l:statusline .= "%#Custom3#▊"
   elseif mode() == 'v' || mode() == 'V'
-    let l:statusline .= "%#Custom4#▊%{functions#get_mode()}"
+    let l:statusline .= "%#Custom4#▊"
+  endif
+  if &paste == 1
+    let l:statusline .= "📋"
   endif
   " relative file path
   let l:statusline .= "%1*\ %{functions#get_relative_filepath()}"
@@ -78,7 +81,7 @@ function! statusline#dim()
   " initialize statusline
   let l:statusline = ""
   " relative file path
-  let l:statusline .= "%3*\ \ \ \ \ %{functions#get_relative_filepath()}"
+  let l:statusline .= "%3*\ \ %{functions#get_relative_filepath()}"
   " filename
   let l:statusline .= "%3*%t%*"
   " modified
