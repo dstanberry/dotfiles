@@ -121,6 +121,11 @@ nmap <leader>zz :call  functions#trim()<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" select text to use ad $TM_SELECTED_TEXT in the next snippet
+nmap s <plug>(vsnip-select-text)
+" cut text to use ad $TM_SELECTED_TEXT in the next snippet
+nmap S <plug>(vsnip-cut-text)
+
 if has('nvim')
   " lsp: jump to the declaration of the symbol under the cursor
   nnoremap <silent> gd :lua vim.lsp.buf.declaration()<cr>
@@ -147,7 +152,6 @@ if has('nvim')
   " lsp: send diagnostics list to the local list
   nnoremap <silent> gl :call functions#vim_lsp_diagnostic_set_loclist()<cr>
 endif
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader | Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

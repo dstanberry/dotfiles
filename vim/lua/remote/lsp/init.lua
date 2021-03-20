@@ -9,6 +9,9 @@ if not has_lsp then
 end
 
 -- add language servers
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 local on_attach_vim = function(client,bufnr)
   local function buf_set_keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
@@ -27,6 +30,7 @@ end
 local servers = {'bashls', 'jsonls', 'pyright', 'vimls'}
 for _, server in ipairs(servers) do
   lspconfig[server].setup {
+    capabilities = capabilities,
     on_attach = on_attach_vim
   }
 end
@@ -41,15 +45,19 @@ local project_root = function(fname)
     or lspconfig_util.path.dirname(fname)
 end
 
-
 -- add lua language server
 require('nlua.lsp.nvim').setup(lspconfig, {
+  capabilities = capabilities,
   on_attach = on_attach_vim,
   root_dir = project_root,
-  globals = {
-    "Color", "c", "Group", "g", "s",
-    "RELOAD",
-  }
+  diagnostics = {
+    globals = {"vim"}
+  },
+  workspace = {
+    library = {
+      [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+    }
+  },
 })
 
 -- efm-langserver configuration
@@ -83,6 +91,7 @@ lspconfig.efm.setup {
     languages = languages,
     log_level = 1,
   },
+  capabilities = capabilities,
   on_attach = on_attach_vim
 }
 
@@ -115,6 +124,3 @@ vim.lsp.diagnostic.on_publish_diagnostics, {
     spacing = 4
   }
 })
-
--- load lsp completion settings
-require('remote.completion')

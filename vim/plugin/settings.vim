@@ -164,6 +164,8 @@ set shortmess+=A
 set shortmess+=I
 " disable showing file info
 set shortmess+=F
+" don't show completion menu messages
+set shortmess+=c
 
 " include dictionary in completion matches
 set complete+=kspell

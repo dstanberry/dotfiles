@@ -267,6 +267,7 @@ function! functions#load_file() abort
   endif
   return
 endfunction
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => LSP send diagnostics info to loclist
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""

@@ -12,23 +12,8 @@ call plug#begin('~/.config/vim/remote')
 " show completion entries for typed characters
 Plug 'vim-scripts/AutoComplPop', { 'on': [] }
 
-" language server protocol support
-if has('nvim')
-  Plug 'nvim-lua/completion-nvim'
-  Plug 'neovim/nvim-lspconfig'
-  Plug 'tjdevries/nlua.nvim'
-  Plug 'tjdevries/complextras.nvim'
-  Plug 'RishabhRD/popfix'
-  Plug 'RishabhRD/nvim-lsputils'
-endif
-
 " command line fuzzy finder
 Plug 'junegunn/fzf.vim', { 'on': ['Files', 'Buffers', 'Ag', 'Rg', 'Windows'] }
-
-" syntax highlighting for portage
-if has('nvim') && has('unix') && isdirectory("/etc/portage")
-  Plug 'gentoo/gentoo-syntax'
-endif
 
 " distraction-free writing
 Plug 'junegunn/goyo.vim'
@@ -47,19 +32,6 @@ endif
 " preview/browse json files with ease
 if has('nvim')
   Plug 'gennaro-tedesco/nvim-jqx'
-endif
-
-" parser generator tool
-if has('nvim')
-  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-endif
-
-" modular fuzzy finder
-if has('nvim')
-  Plug 'nvim-lua/popup.nvim'
-  Plug 'nvim-lua/plenary.nvim'
-  Plug 'nvim-telescope/telescope.nvim'
-  Plug 'nvim-telescope/telescope-fzy-native.nvim'
 endif
 
 " easily identify nested parentheses
@@ -101,5 +73,46 @@ Plug 'tpope/vim-surround'
 
 " enable focus events
 Plug 'tmux-plugins/vim-tmux-focus-events'
+
+" code snippets
+Plug 'hrsh7th/vim-vsnip'
+" code snippets
+Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'cstrap/python-snippets'
+Plug 'ylcnfrht/vscode-python-snippet-pack'
+
+" neovim specific plugins
+if has('nvim')
+  " syntax highlighting for portage
+  if isdirectory("/etc/portage")
+    Plug 'gentoo/gentoo-syntax'
+  endif
+
+  " library that extends core features
+  Plug 'nvim-lua/plenary.nvim'
+  " framework for setting up language servers
+  Plug 'neovim/nvim-lspconfig'
+  " auto completion framework
+  Plug 'nvim-lua/completion-nvim'
+  " centralize installation of lua-language-server (sumneko)
+  Plug 'tjdevries/nlua.nvim'
+  " extension for completion menu
+  Plug 'tjdevries/complextras.nvim'
+
+  " extends quickfix window functionality
+  Plug 'RishabhRD/popfix'
+  " better defaults for builtin-lsp actions
+  Plug 'RishabhRD/nvim-lsputils'
+
+  " parser generator tool
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
+  " popup API implementation (WIP)
+  Plug 'nvim-lua/popup.nvim'
+  " modular fuzzy finder
+  Plug 'nvim-telescope/telescope.nvim'
+  " pre-compiled fzy sorter
+  Plug 'nvim-telescope/telescope-fzy-native.nvim'
+endif
 
 call plug#end()
