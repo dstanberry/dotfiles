@@ -188,7 +188,7 @@ call <sid>hi("Substitute",    s:gui01, s:gui05, s:cterm01, s:cterm0A, "none", ""
 call <sid>hi("SpecialKey",    s:gui03, "", s:cterm03, "", "", "")
 call <sid>hi("TooLong",       s:gui08, "", s:cterm08, "", "", "")
 call <sid>hi("Underlined",    s:gui08, "", s:cterm08, "", "", "")
-call <sid>hi("Visual",        "", s:gui10, "", s:cterm02, "", "")
+call <sid>hi("Visual",        s:gui00, s:gui0A, "", s:cterm02, "", "")
 call <sid>hi("VisualNOS",     s:gui08, "", s:cterm08, "", "", "")
 call <sid>hi("WarningMsg",    s:gui08, "", s:cterm08, "", "", "")
 call <sid>hi("WildMenu",      s:gui08, s:gui05, s:cterm08, "", "", "")
@@ -206,7 +206,7 @@ call <sid>hi("CursorColumn",  "", s:gui01, "", s:cterm01, "none", "")
 call <sid>hi("CursorLine",    "", s:gui01, "", s:cterm01, "none", "")
 call <sid>hi("CursorLineNr",  s:gui0C, s:gui01, s:cterm04, s:cterm01, "bold", "")
 call <sid>hi("QuickFixLine",  s:gui01, s:gui0A, "", s:cterm02, "none", "")
-call <sid>hi("PMenu",         s:gui05, s:gui01, s:cterm05, s:cterm01, "none", "")
+call <sid>hi("PMenu",         s:gui05, s:gui10, s:cterm05, s:cterm01, "none", "")
 call <sid>hi("PMenuSel",      s:gui01, s:gui05, s:cterm01, s:cterm05, "", "")
 
 "vim tabline colors
