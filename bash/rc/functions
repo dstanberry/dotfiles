@@ -109,6 +109,16 @@ function git() {
   fi
 }
 
+# support custom sub-commands
+function go() {
+  local PKG=$CONFIG_HOME/scripts/packages/go.txt
+  if [ "$1" = "load" ]; then
+    cat $PKG | xargs command go get
+  else
+    command go "$@"
+  fi
+}
+
 # print response headers, following redirects.
 function headers() {
   emulate -L zsh
@@ -125,19 +135,9 @@ function headers() {
 function luarocks() {
   local PKG=$CONFIG_HOME/scripts/packages/luarocks.txt
   if [ "$1" = "load" ]; then
-    command luarocks install --local "$PKG"
+    cat $PKG | xargs command luarocks install --local
   else
     command luarocks "$@"
-  fi
-}
-
-# support custom sub-commands
-function go() {
-  local PKG=$CONFIG_HOME/scripts/packages/go.txt
-  if [ "$1" = "load" ]; then
-    command go get "$PKG"
-  else
-    command go "$@"
   fi
 }
 
