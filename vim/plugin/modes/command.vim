@@ -2,13 +2,13 @@
 " => Command (Line)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " move to the beginning of the command
-cnoremap <C-a> <Home>
+cnoremap <c-a> <Home>
 " move to the end of the command
-cnoremap <C-e> <End>
+cnoremap <c-e> <End>
 
 " navigate completion menu using up/down keys
-cnoremap <expr> <up> pumvisible() ? "<C-p>" : "<up>"
-cnoremap <expr> <down> pumvisible() ? "<C-n>" : "<down>"
+cnoremap <expr> <up> pumvisible() ? "<c-p>" : "<up>"
+cnoremap <expr> <down> pumvisible() ? "<c-n>" : "<down>"
 
 " exit command mode
 cnoremap jk <c-c>
