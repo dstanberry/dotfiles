@@ -79,7 +79,6 @@ Plug 'hrsh7th/vim-vsnip'
 " code snippets
 Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'cstrap/python-snippets'
-Plug 'ylcnfrht/vscode-python-snippet-pack'
 
 " neovim specific plugins
 if has('nvim')
