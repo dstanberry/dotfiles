@@ -109,6 +109,9 @@ if has('nvim')
   set wildoptions+=pum
 endif
 
+" set the maximum number of entries shown in completion menu
+set pumheight=5
+
 " default behaviour when creating new panes
 set splitbelow splitright
 
