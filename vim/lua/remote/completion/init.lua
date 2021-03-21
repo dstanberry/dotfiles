@@ -2,7 +2,9 @@
 -- => completion.nvim
 ---------------------------------------------------------------
 -- set completion confirm key
-vim.g.completion_confirm_key = "<cr>"
+-- vim.g.completion_confirm_key = "<cr>"
+-- confirm key is still 'enter' but handled by autopairs/init.lue
+vim.g.completion_confirm_key = ""
 
 -- set completion list priority
 vim.g.completion_matching_strategy_list = {'exact', 'substring', 'fuzzy'}
