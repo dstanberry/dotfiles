@@ -1,7 +1,4 @@
 ---------------------------------------------------------------
 -- => python formatter
 ---------------------------------------------------------------
-return {
-  formatCommand = "yapf --quiet",
-  formatStdin = true
-}
+return {formatCommand = "yapf --quiet", formatStdin = true}

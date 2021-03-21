@@ -8,8 +8,4 @@ if not has_colorizer then
 end
 
 -- setup configuration.
-colorizer.setup {
-  '*';
-  css = { rgb_fn = true; };
-  html = { names = false; }
-}
+colorizer.setup {'*', css = {rgb_fn = true}, html = {names = false}}

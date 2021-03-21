@@ -1,7 +1,4 @@
 ---------------------------------------------------------------
 -- => python import sorter
 ---------------------------------------------------------------
-return {
-  formatCommand = "isort --quiet -",
-  formatStdin = true
-}
+return {formatCommand = "isort --quiet -", formatStdin = true}

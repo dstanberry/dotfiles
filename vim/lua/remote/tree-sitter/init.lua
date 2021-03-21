@@ -18,13 +18,7 @@ local enabled = true
 
 -- set default options
 require('nvim-treesitter.configs').setup {
-  ensure_installed = { 'bash', 'jsonc', 'lua', 'python' },
-  highlight = {
-    enable = enabled,
-    use_languagetree = false,
-    disable = {""},
-  },
-  incremental_selection = {
-    enable = enabled,
-  },
+  ensure_installed = {'bash', 'jsonc', 'lua', 'python'},
+  highlight = {enable = enabled, use_languagetree = false, disable = {""}},
+  incremental_selection = {enable = enabled}
 }
