@@ -19,9 +19,9 @@ local on_attach_vim = function(client,bufnr)
 
   local opts = {noremap = true, silent = true}
   if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
+    buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
   elseif client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("n", "lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
+    buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
   end
 
   require('completion').on_attach()
