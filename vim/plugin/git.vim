@@ -45,10 +45,10 @@ function! s:set_git_dir(...)
     if exists("$GIT_WORK_TREE") | unlet $GIT_WORK_TREE | endif
     return
   endif
-  if len(l:git_worktree)
+  if exists('l:git_worktree') && len(l:git_worktree)
     let $GIT_WORK_TREE = l:git_worktree
   endif
-  if len(l:git_dir)
+  if exists('l:git_dir') && len(l:git_dir)
     let $GIT_DIR = l:git_dir
   else
   endif
