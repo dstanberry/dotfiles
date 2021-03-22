@@ -43,9 +43,9 @@ setopt PROMPT_SUBST
 # load completion function
 autoload -U compinit
 if [ is_darwin ] && [ "$(whoami)" = "root" ]; then
-	compinit -i
+  compinit -i
 else
-	compinit
+  compinit
 fi
 
 # cache completions
@@ -86,83 +86,83 @@ TMUX_CONFIG_HOME="${CONFIG_HOME}/tmux"
 VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
 
 # include helper functions
-source ${CONFIG_HOME}/scripts/helpers.sh
+source "${CONFIG_HOME}/scripts/helpers.sh"
 
 # include custom defined functions
 fpath=(${ZSH_CONFIG_HOME}/site-functions $fpath)
 
 # ensure that local binaries are available
-if [ ! -d ${HOME}/.local/bin ]; then
-	mkdir -p ${HOME}/.local/bin;
+if [ ! -d "${HOME}"/.local/bin ]; then
+  mkdir -p "${HOME}"/.local/bin
 fi
 
 # ensure less wrapper exists in PATH
-if [ ! -L ${HOME}/.local/bin/menos ]; then
-	ln -s ${CONFIG_HOME}/less/menos ${HOME}/.local/bin/menos;
+if [ ! -L "${HOME}"/.local/bin/menos ]; then
+  ln -s "${CONFIG_HOME}"/less/menos "${HOME}"/.local/bin/menos
 fi
 
 # include wsl scripts where appropriate
 if is_wsl; then
-	for file in $(ls ${CONFIG_HOME}/wsl)
-	do
-		if [ ! -L ${HOME}/.local/bin/$file ]; then
-			ln -s ${CONFIG_HOME}/wsl/$file ${HOME}/.local/bin/$file;
-		fi
-	done
+  for file in "${CONFIG_HOME}"/wsl/*; do
+    f=$(basename "$file")
+    if [ ! -L "${HOME}"/.local/bin/"$f" ]; then
+      ln -s "$file" "${HOME}"/.local/bin/"$file"
+    fi
+  done
 fi
 
 # ensure general purpose scripts exists in PATH
-for file in $(ls ${CONFIG_HOME}/bin)
-do
-	if [ ! -L ${HOME}/.local/bin/$file ]; then
-		ln -s ${CONFIG_HOME}/bin/$file ${HOME}/.local/bin/$file;
-	fi
+for file in "${CONFIG_HOME}"/bin/*; do
+  f=$(basename "$file")
+  if [ ! -L "${HOME}"/.local/bin/"$f" ]; then
+    ln -s "$file" "${HOME}"/.local/bin/"$file"
+  fi
 done
 
 # ensure go binaries exist in PATH
-for file in $(ls ${HOME}/go/bin)
-do
-	if [ ! -L ${HOME}/.local/bin/$file ]; then
-		ln -s ${HOME}/go/bin/$file ${HOME}/.local/bin/$file;
-	fi
+for file in "${HOME}"/go/bin/*; do
+  f=$(basename "$file")
+  if [ ! -L "${HOME}"/.local/bin/"$f" ]; then
+    ln -s "$file" "${HOME}"/.local/bin/"$file"
+  fi
 done
 
 # ensure there are no broken symlinks
-find ${HOME}/.local/bin -type l ! -exec test -e {} \; -delete
+find "${HOME}"/.local/bin -type l ! -exec test -e {} \; -delete
 
 # ensure tmux configuration exists
-if [ ! -L ${HOME}/.tmux.conf ]; then
-	ln -s ${TMUX_CONFIG_HOME}/tmux.conf ${HOME}/.tmux.conf
+if [ ! -L "${HOME}"/.tmux.conf ]; then
+  ln -s "${TMUX_CONFIG_HOME}"/tmux.conf "${HOME}"/.tmux.conf
 fi
 
 # ensure that vim packages directories exist
-if [ ! -d ${VIM_CONFIG_HOME}/pack/remote/opt ]; then
-	mkdir -p ${VIM_CONFIG_HOME}/pack/remote/opt;
+if [ ! -d "${VIM_CONFIG_HOME}"/pack/remote/opt ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/pack/remote/opt
 fi
 
 # ensure that vim backup directory exists
-if [ ! -d ${VIM_CONFIG_HOME}/tmp/backup ]; then
-	mkdir -p ${VIM_CONFIG_HOME}/tmp/backup;
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/backup ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/tmp/backup
 fi
 
 # ensure that vim netrw directory exists
-if [ ! -d ${VIM_CONFIG_HOME}/tmp/netrw ]; then
-	mkdir -p ${CONFIG_HOME}/vim/tmp/netrw;
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/netrw ]; then
+  mkdir -p "${CONFIG_HOME}"/vim/tmp/netrw
 fi
 
 # ensure that vim swap directory exists
-if [ ! -d ${VIM_CONFIG_HOME}/tmp/swap ]; then
-	mkdir -p ${VIM_CONFIG_HOME}/tmp/swap;
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/swap ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/tmp/swap
 fi
 
 # ensure that vim undo directory exists
-if [ ! -d ${VIM_CONFIG_HOME}/tmp/undo ]; then
-	mkdir -p ${VIM_CONFIG_HOME}/tmp/undo;
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/undo ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/tmp/undo
 fi
 
 # ensure that zsh private directories exist
-if [ ! -d ${ZSH_CONFIG_HOME}/rc.private ]; then
-	mkdir -p ${ZSH_CONFIG_HOME}/rc.private;
+if [ ! -d "${ZSH_CONFIG_HOME}"/rc.private ]; then
+  mkdir -p "${ZSH_CONFIG_HOME}"/rc.private
 fi
 
 ###############################################################
@@ -229,7 +229,8 @@ bindkey -M viins "^Y" yank
 
 # use "cbt" capability ("back_tab", as per `man terminfo`), if we have it:
 if tput cbt &> /dev/null; then
-	bindkey "$(tput cbt)" reverse-menu-complete # make Shift-tab go to previous completion
+  # make Shift-tab go to previous completion
+  bindkey "$(tput cbt)" reverse-menu-complete
 fi
 
 # enable advancing to the next/previous word in a command
@@ -240,16 +241,16 @@ bindkey "^[[1;5D" backward-word
 bindkey -a "^[[3~" vi-delete-char
 
 # add ability to clear the buffer
-function clear-scrollback-buffer {
-	# clear screen
-	clear
-	# clear buffer. The following sequence code is available for xterm.
-	printf '\e[3J'
-	# .reset-prompt: bypass the zsh-syntax-highlighting wrapper
-	# https://github.com/sorin-ionescu/prezto/issues/1026
-	# https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
-	# -R: redisplay the prompt to avoid old prompts being eaten up
-	# https://github.com/Powerlevel9k/powerlevel9k/pull/1176#discussion_r299303453
+function clear-scrollback-buffer() {
+  # clear screen
+  clear
+  # clear buffer. The following sequence code is available for xterm.
+  printf '\e[3J'
+  # .reset-prompt: bypass the zsh-syntax-highlighting wrapper
+  # https://github.com/sorin-ionescu/prezto/issues/1026
+  # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
+  # -R: redisplay the prompt to avoid old prompts being eaten up
+  # https://github.com/Powerlevel9k/powerlevel9k/pull/1176#discussion_r299303453
   zle .reset-prompt && zle -R
 }
 
@@ -265,15 +266,15 @@ zle -N edit-command-line
 bindkey '^x^x' edit-command-line
 
 # do history expansion on space
-bindkey ' ' magic-space 
+bindkey ' ' magic-space
 
 # make (c-z) toggle between bg and fg for processes
 function fg-bg() {
-	if [[ $#BUFFER -eq 0 ]]; then
-		fg
-	else
-		zle push-input
-	fi
+  if [[ $#BUFFER -eq 0 ]]; then
+    fg
+  else
+    zle push-input
+  fi
 }
 
 # add keymap to toggle fg/bg process
@@ -284,10 +285,9 @@ bindkey '^Z' fg-bg
 # Color
 ###############################################################
 # enable dircolors if it is available
-if hash dircolors 2>/dev/null; then
-	test -r ${BASH_CONFIG_HOME}/dircolors && \
-	eval "$(dircolors -b ${BASH_CONFIG_HOME}/dircolors)" \
-	|| eval "$(dircolors -b)"
+if hash dircolors 2> /dev/null; then
+  (test -r "${BASH_CONFIG_HOME}"/dircolors && eval "$(dircolors -b "${BASH_CONFIG_HOME}"/dircolors)") \
+    || eval "$(dircolors -b)"
 fi
 
 ###############################################################
@@ -299,53 +299,53 @@ select-word-style bash
 
 # load runtime configuration files
 if [ -d "$ZSH_CONFIG_HOME/rc" ]; then
-	for RC_FILE in $(find $ZSH_CONFIG_HOME/rc -type f | sort); do
-		source "$RC_FILE"
-	done
+  for RC_FILE in $(find "$ZSH_CONFIG_HOME"/rc -type f | sort); do
+    source "$RC_FILE"
+  done
 fi
 
 ###############################################################
 # Shell Prompt
 ###############################################################
 # load prompt definitions
-test -s "${ZSH_CONFIG_HOME}/prompt.zsh" && \
-source "${ZSH_CONFIG_HOME}/prompt.zsh"
+test -s "${ZSH_CONFIG_HOME}/prompt.zsh" \
+  && source "${ZSH_CONFIG_HOME}/prompt.zsh"
 
 ###############################################################
 # fzf
 ###############################################################
-if hash fzf 2>/dev/null; then
-	# load fzf keybinds
-	test -s "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings.zsh" && \
-	source "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings.zsh"
+if hash fzf 2> /dev/null; then
+  # load fzf keybinds
+  test -s "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings.zsh" \
+    && source "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings.zsh"
 
-	# load fzf completion
-	test -s "${ZSH_CONFIG_HOME}/plugins/fzf/completion.zsh" && \
-	source "${ZSH_CONFIG_HOME}/plugins/fzf/completion.zsh"
+  # load fzf completion
+  test -s "${ZSH_CONFIG_HOME}/plugins/fzf/completion.zsh" \
+    && source "${ZSH_CONFIG_HOME}/plugins/fzf/completion.zsh"
 
-	autoload _fzf
-	_fzf
+  autoload _fzf
+  _fzf
 fi
 
 ###############################################################
 # zsh-autosuggestions
 ###############################################################
-test -s "${ZSH_CONFIG_HOME}/plugins/zsh-autosuggestions.zsh" && \
-source "${ZSH_CONFIG_HOME}/plugins/zsh-autosuggestions.zsh" && \
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=59'
+test -s "${ZSH_CONFIG_HOME}/plugins/zsh-autosuggestions.zsh" \
+  && source "${ZSH_CONFIG_HOME}/plugins/zsh-autosuggestions.zsh" \
+  && ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=59'
 
 ###############################################################
 # zsh-syntax-highlighting
 ###############################################################
-test -s "${ZSH_CONFIG_HOME}/plugins/zsh-syntax-highlighting.zsh" && \
-source "${ZSH_CONFIG_HOME}/plugins/zsh-syntax-highlighting.zsh"
+test -s "${ZSH_CONFIG_HOME}/plugins/zsh-syntax-highlighting.zsh" \
+  && source "${ZSH_CONFIG_HOME}/plugins/zsh-syntax-highlighting.zsh"
 
 ###############################################################
 # zsh-history-substring-search
 ###############################################################
-test -s "${ZSH_CONFIG_HOME}/plugins/zsh-history-substring-search.zsh" && \
-source "${ZSH_CONFIG_HOME}/plugins/zsh-history-substring-search.zsh" && \
-HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
+test -s "${ZSH_CONFIG_HOME}/plugins/zsh-history-substring-search.zsh" \
+  && source "${ZSH_CONFIG_HOME}/plugins/zsh-history-substring-search.zsh" \
+  && HISTORY_SUBSTRING_SEARCH_ENSURE_UNIQUE=1
 
 # enable incremental history search with up/down arrows
 bindkey '^[[A' history-substring-search-up
@@ -364,29 +364,29 @@ HISTCMD_LOCAL=0
 autoload -U add-zsh-hook
 
 function -set-tab-and-window-title() {
-	emulate -L zsh
-	local CMD="${1:gs/$/\\$}"
-	print -Pn "\e]0;$CMD:q\a"
+  emulate -L zsh
+  local CMD="${1:gs/$/\\$}"
+  print -Pn "\e]0;$CMD:q\a"
 }
 
 # executed before displaying prompt.
 function -update-window-title-precmd() {
-	emulate -L zsh
-	if [[ HISTCMD_LOCAL -eq 0 ]]; then
-		# About to display prompt for the first time; nothing interesting to show in
-		# the history. Show $PWD.
-		-set-tab-and-window-title "$(basename $PWD)"
-	else
-		local LAST=$(history | tail -1 | awk '{print $2}')
-		if [ -n "$TMUX" ]; then
-			# inside tmux, just show the last command: tmux will prefix it with the
-			# session name (for context).
-			-set-tab-and-window-title "$LAST"
-		else
-			# outside tmux, show $PWD (for context) followed by the last command.
-			-set-tab-and-window-title "$(basename $PWD) | $LAST"
-		fi
-	fi
+  emulate -L zsh
+  if [[ HISTCMD_LOCAL -eq 0 ]]; then
+    # About to display prompt for the first time; nothing interesting to show in
+    # the history. Show $PWD.
+    -set-tab-and-window-title "$(basename "$PWD")"
+  else
+    local LAST=$(history | tail -1 | awk '{print $2}')
+    if [ -n "$TMUX" ]; then
+      # inside tmux, just show the last command: tmux will prefix it with the
+      # session name (for context).
+      -set-tab-and-window-title "$LAST"
+    else
+      # outside tmux, show $PWD (for context) followed by the last command.
+      -set-tab-and-window-title "$(basename "$PWD") | $LAST"
+    fi
+  fi
 }
 
 add-zsh-hook precmd -update-window-title-precmd
@@ -394,22 +394,22 @@ add-zsh-hook precmd -update-window-title-precmd
 # executed before executing a command: $2 is one-line (truncated) version of
 # the command.
 function -update-window-title-preexec() {
-	emulate -L zsh
-	setopt EXTENDED_GLOB
-	HISTCMD_LOCAL=$((++HISTCMD_LOCAL))
+  emulate -L zsh
+  setopt EXTENDED_GLOB
+  HISTCMD_LOCAL=$((++HISTCMD_LOCAL))
 
-	# skip ENV=settings, sudo, ssh; show first distinctive word of command;
-	# mostly stolen from:
-	# https://github.com/robbyrussell/oh-my-zsh/blob/master/lib/termsupport.zsh
-	local TRIMMED="${2[(wr)^(*=*|mosh|ssh|sudo)]}"
-	if [ -n "$TMUX" ]; then
-		# inside tmux, show the running command: tmux will prefix it with the
-		# session name (for context).
-		-set-tab-and-window-title "$TRIMMED"
-	else
-		# outside tmux, show $PWD (for context) followed by the running command.
-		-set-tab-and-window-title "$(basename $PWD) > $TRIMMED"
-	fi
+  # skip ENV=settings, sudo, ssh; show first distinctive word of command;
+  # mostly stolen from:
+  # https://github.com/robbyrussell/oh-my-zsh/blob/master/lib/termsupport.zsh
+  local TRIMMED=${2[(wr)^(*=*|mosh|ssh|sudo)]}
+  if [ -n "$TMUX" ]; then
+  	# inside tmux, show the running command: tmux will prefix it with the
+  	# session name (for context).
+  	-set-tab-and-window-title "$TRIMMED"
+  else
+  	# outside tmux, show $PWD (for context) followed by the running command.
+  	-set-tab-and-window-title "$(basename $PWD) > $TRIMMED"
+  fi
 }
 
 add-zsh-hook preexec -update-window-title-preexec
@@ -417,87 +417,87 @@ add-zsh-hook preexec -update-window-title-preexec
 typeset -F SECONDS
 
 function -record-start-time() {
-	emulate -L zsh
-	ZSH_START_TIME=${ZSH_START_TIME:-$SECONDS}
+  emulate -L zsh
+  ZSH_START_TIME=${ZSH_START_TIME:-$SECONDS}
 }
 
 add-zsh-hook preexec -record-start-time
 
 function -report-start-time() {
-	emulate -L zsh
-	if [ $ZSH_START_TIME ]; then
-		local DELTA=$(($SECONDS - $ZSH_START_TIME))
-		local DAYS=$((~~($DELTA / 86400)))
-		local HOURS=$((~~(($DELTA - $DAYS * 86400) / 3600)))
-		local MINUTES=$((~~(($DELTA - $DAYS * 86400 - $HOURS * 3600) / 60)))
-		local SECS=$(($DELTA - $DAYS * 86400 - $HOURS * 3600 - $MINUTES * 60))
-		local ELAPSED=''
-		test "$DAYS" != '0' && ELAPSED="${DAYS}d"
-		test "$HOURS" != '0' && ELAPSED="${ELAPSED}${HOURS}h"
-		test "$MINUTES" != '0' && ELAPSED="${ELAPSED}${MINUTES}m"
-		if [ "$ELAPSED" = '' ]; then
-			SECS="$(print -f "%.2f" $SECS)s"
-		elif [ "$DAYS" != '0' ]; then
-			SECS=''
-		else
-			SECS="$((~~$SECS))s"
-		fi
-		ELAPSED="${ELAPSED}${SECS}"
-		export RPROMPT="$RPROMPT_BASE %F{244}${ELAPSED}%f"
-		unset ZSH_START_TIME
-	else
-		export RPROMPT=""
-	fi
+  emulate -L zsh
+  if [ "$ZSH_START_TIME" ]; then
+    local DELTA=$((SECONDS - ZSH_START_TIME))
+    local DAYS=$((~~(DELTA / 86400)))
+    local HOURS=$((~~((DELTA - DAYS * 86400) / 3600)))
+    local MINUTES=$((~~((DELTA - DAYS * 86400 - HOURS * 3600) / 60)))
+    local SECS=$((DELTA - DAYS * 86400 - HOURS * 3600 - MINUTES * 60))
+    local ELAPSED=''
+    test "$DAYS" != '0' && ELAPSED="${DAYS}d"
+    test "$HOURS" != '0' && ELAPSED="${ELAPSED}${HOURS}h"
+    test "$MINUTES" != '0' && ELAPSED="${ELAPSED}${MINUTES}m"
+    if [ "$ELAPSED" = '' ]; then
+      SECS="$(print -f "%.2f" $SECS)s"
+    elif [ "$DAYS" != '0' ]; then
+      SECS=''
+    else
+      SECS="$((~~SECS))s"
+    fi
+    ELAPSED="${ELAPSED}${SECS}"
+    export RPROMPT="$RPROMPT_BASE %F{244}${ELAPSED}%f"
+    unset ZSH_START_TIME
+  else
+    export RPROMPT=""
+  fi
 }
 
 add-zsh-hook precmd -report-start-time
 
 function -auto-ls-after-cd() {
-	emulate -L zsh
-	# only in response to a user-initiated `cd`, not indirectly (eg. via another
-	# function).
-	if [ "$ZSH_EVAL_CONTEXT" = "toplevel:shfunc" ]; then
-		setopt nullglob
-		ls -a
-	fi
+  emulate -L zsh
+  # only in response to a user-initiated `cd`, not indirectly (eg. via another
+  # function).
+  if [ "$ZSH_EVAL_CONTEXT" = "toplevel:shfunc" ]; then
+    setopt nullglob
+    ls -a
+  fi
 }
 
 add-zsh-hook chpwd -auto-ls-after-cd
 
 # remember each command we run.
 function -record-command() {
-	__HTABLE[LAST_COMMAND]="$2"
+  __HTABLE[LAST_COMMAND]="$2"
 }
 
 add-zsh-hook preexec -record-command
 
 # update vcs_info (slow) after any command that probably changed it.
 function -maybe-show-vcs-info() {
-	local LAST="$__HTABLE[LAST_COMMAND]"
+  local LAST="$__HTABLE[LAST_COMMAND]"
 
-	# in case user just hit enter, overwrite LAST_COMMAND, because preexec
-	# won't run and it will otherwise linger.
-	__HTABLE[LAST_COMMAND]="<unset>"
+  # in case user just hit enter, overwrite LAST_COMMAND, because preexec
+  # won't run and it will otherwise linger.
+  __HTABLE[LAST_COMMAND]="<unset>"
 
-	# check first word; via:
-	# http://tim.vanwerkhoven.org/post/2012/10/28/ZSH/Bash-string-manipulation
-	case "$LAST[(w)1]" in
-		cd|cp|git|rm|touch|mv)
-			vcs_info
-			;;
-		*)
-			;;
-	esac
+  # check first word; via:
+  # http://tim.vanwerkhoven.org/post/2012/10/28/ZSH/Bash-string-manipulation
+  case "$LAST[(w)1]" in
+    cd | cp | git | rm | touch | mv)
+      vcs_info
+      ;;
+    *) ;;
+
+  esac
 }
 
-add-zsh-hook precmd -maybe-show-vcs-info	
+add-zsh-hook precmd -maybe-show-vcs-info
 
 ###############################################################
 # _Custom
 ###############################################################
 # check for machine-specific rc files and source them if available
 if [ -d "$ZSH_CONFIG_HOME/rc.private" ]; then
-	for RC_FILE in $(find $ZSH_CONFIG_HOME/rc.private -type f | sort); do
-		source "$RC_FILE"
-	done
+  for RC_FILE in $(find "$ZSH_CONFIG_HOME"/rc.private -type f | sort); do
+    source "$RC_FILE"
+  done
 fi

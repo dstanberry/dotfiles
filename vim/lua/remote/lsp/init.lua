@@ -76,9 +76,54 @@ lspconfig.efm.setup {
   root_dir = project_root,
   filetypes = vim.tbl_keys(languages),
   init_options = {documentFormatting = true, codeAction = true},
-  settings = {languages = languages, log_level = 1},
+  settings = {
+    languages = languages,
+    log_level = 1,
+    log_file = "~/.config/efm.log"
+  },
   capabilities = capabilities,
   on_attach = on_attach_vim
+}
+
+-- shellcheck/shfmt breaks efm-langserver
+lspconfig.diagnosticls.setup {
+  on_attach = on_attach_vim,
+  capabilities = capabilities,
+  cmd = {"diagnostic-languageserver", "--stdio"},
+  filetypes = {"sh"},
+  init_options = {
+    linters = {
+      shellcheck = {
+        command = "shellcheck",
+        debounce = 100,
+        args = {"--format", "json", "-"},
+        sourceName = "shellcheck",
+        parseJson = {
+          line = "line",
+          column = "column",
+          endLine = "endLine",
+          endColumn = "endColumn",
+          message = "${message} [${code}]",
+          security = "level"
+        },
+        securities = {
+          error = "error",
+          warning = "warning",
+          info = "info",
+          style = "hint"
+        }
+      }
+    },
+    filetypes = {sh = "shellcheck", zsh = "shellcheck"},
+    formatters = {
+      shfmt = {command = "shfmt", args = {"-i", "2", "-bn", "-ci", "-sr"}},
+      prettier = {
+        command = "prettier",
+        args = {"--stdin-filepath", "%filepath"}
+      }
+    },
+    formatFiletypes = {sh = "shfmt", zsh = "shfmt"}
+  }
 }
 
 -- set enhancements

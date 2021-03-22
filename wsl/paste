@@ -5,6 +5,6 @@ source ${HOME}/.config/scripts/helpers.sh
 
 # (wsl) get content of windows clipboard
 if is_wsl; then
-	powershell.exe -NoProfile Get-Clipboard | sed 's/\r$//' | sed -z '$ s/\n$//'
-	exit 0
+  powershell.exe -NoProfile Get-Clipboard | sed 's/\r$//' | sed -z '$ s/\n$//'
+  exit 0
 fi

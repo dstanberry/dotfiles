@@ -1,5 +1,5 @@
 # wrap diff commands and colorize the output
-hash colordiff 2>/dev/null && alias diff=colordiff
+hash colordiff 2> /dev/null && alias diff=colordiff
 
 # enable color support for grep
 alias egrep='egrep --color=auto'
@@ -16,7 +16,7 @@ else
 fi
 
 # use neovim in place of vim (if available)
-hash nvim 2>/dev/null && alias vim=nvim
+hash nvim 2> /dev/null && alias vim=nvim
 
 # define alias to reload zsh configuration
 alias reload='source "${ZSH_CONFIG_HOME}/.zshrc"'

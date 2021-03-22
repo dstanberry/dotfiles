@@ -5,6 +5,6 @@ source ${HOME}/.config/scripts/helpers.sh
 
 # (wsl) send text to windows cipboard
 if is_wsl; then
-	tee <&0 | clip.exe
-	exit 0
+  tee <&0 | clip.exe
+  exit 0
 fi

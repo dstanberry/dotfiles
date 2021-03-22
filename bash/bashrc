@@ -14,80 +14,80 @@ TMUX_CONFIG_HOME="${CONFIG_HOME}/tmux"
 VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
 
 # include helper functions
-source ${CONFIG_HOME}/scripts/helpers.sh
+source "${CONFIG_HOME}/scripts/helpers.sh"
 
 # ensure that local binaries are available
-if [ ! -d ${HOME}/.local/bin ]; then
-  mkdir -p ${HOME}/.local/bin;
+if [ ! -d "${HOME}"/.local/bin ]; then
+  mkdir -p "${HOME}"/.local/bin
 fi
 
 # ensure less wrapper exists in PATH
-if [ ! -L ${HOME}/.local/bin/menos ]; then
-  ln -s ${CONFIG_HOME}/less/menos ${HOME}/.local/bin/menos;
+if [ ! -L "${HOME}"/.local/bin/menos ]; then
+  ln -s "${CONFIG_HOME}"/less/menos "${HOME}"/.local/bin/menos
 fi
 
-# in wsl environments, ensure clipboard scripts exist in PATH
+# include wsl scripts where appropriate
 if is_wsl; then
-  for file in $(ls ${CONFIG_HOME}/wsl)
-  do
-    if [ ! -L ${HOME}/.local/bin/$file ]; then
-      ln -s ${CONFIG_HOME}/wsl/$file ${HOME}/.local/bin/$file;
+  for file in "${CONFIG_HOME}"/wsl/*; do
+    f=$(basename "$file")
+    if [ ! -L "${HOME}"/.local/bin/"$f" ]; then
+      ln -s "$file" "${HOME}"/.local/bin/"$file"
     fi
   done
 fi
 
 # ensure general purpose scripts exists in PATH
-for file in $(ls ${CONFIG_HOME}/bin)
-do
-  if [ ! -L ${HOME}/.local/bin/$file ]; then
-    ln -s ${CONFIG_HOME}/bin/$file ${HOME}/.local/bin/$file;
+for file in "${CONFIG_HOME}"/bin/*; do
+  f=$(basename "$file")
+  if [ ! -L "${HOME}"/.local/bin/"$f" ]; then
+    ln -s "$file" "${HOME}"/.local/bin/"$file"
   fi
 done
 
 # ensure go binaries exist in PATH
-for file in $(ls ${HOME}/go/bin)
-do
-	if [ ! -L ${HOME}/.local/bin/$file ]; then
-		ln -s ${HOME}/go/bin/$file ${HOME}/.local/bin/$file;
-	fi
+for file in "${HOME}"/go/bin/*; do
+  f=$(basename "$file")
+  if [ ! -L "${HOME}"/.local/bin/"$f" ]; then
+    ln -s "$file" "${HOME}"/.local/bin/"$file"
+  fi
 done
 
 # ensure there are no broken symlinks
-find ${HOME}/.local/bin -type l ! -exec test -e {} \; -delete
+find "${HOME}"/.local/bin -type l ! -exec test -e {} \; -delete
 
 # ensure tmux configuration exists
-if [ ! -L ${HOME}/.tmux.conf ]; then
-  ln -s ${TMUX_CONFIG_HOME}/tmux.conf ${HOME}/.tmux.conf
+if [ ! -L "${HOME}"/.tmux.conf ]; then
+  ln -s "${TMUX_CONFIG_HOME}"/tmux.conf "${HOME}"/.tmux.conf
 fi
 
 # ensure that vim packages directories exist
-if [ ! -d ${VIM_CONFIG_HOME}/pack/remote/opt ]; then
-  mkdir -p ${VIM_CONFIG_HOME}/pack/remote/opt;
+if [ ! -d "${VIM_CONFIG_HOME}"/pack/remote/opt ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/pack/remote/opt
 fi
 
 # ensure that vim backup directory exists
-if [ ! -d ${VIM_CONFIG_HOME}/tmp/backup ]; then
-  mkdir -p ${VIM_CONFIG_HOME}/tmp/backup;
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/backup ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/tmp/backup
 fi
 
 # ensure that vim netrw directory exists
-if [ ! -d ${VIM_CONFIG_HOME}/tmp/netrw ]; then
-  mkdir -p ${CONFIG_HOME}/vim/tmp/netrw;
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/netrw ]; then
+  mkdir -p "${CONFIG_HOME}"/vim/tmp/netrw
 fi
 
 # ensure that vim swap directory exists
-if [ ! -d ${VIM_CONFIG_HOME}/tmp/swap ]; then
-  mkdir -p ${VIM_CONFIG_HOME}/tmp/swap;
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/swap ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/tmp/swap
 fi
 
 # ensure that vim undo directory exists
-if [ ! -d ${VIM_CONFIG_HOME}/tmp/undo ]; then
-  mkdir -p ${VIM_CONFIG_HOME}/tmp/undo;
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/undo ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/tmp/undo
 fi
 
 # ensure that bash private directories exist
-if [ ! -d ${BASH_CONFIG_HOME}/rc.private ]; then
-  mkdir -p ${BASH_CONFIG_HOME}/rc.private;
+if [ ! -d "${BASH_CONFIG_HOME}"/rc.private ]; then
+  mkdir -p "${BASH_CONFIG_HOME}"/rc.private
 fi
 
 ###############################################################
@@ -107,7 +107,7 @@ bind Space:magic-space
 shopt -s globstar 2> /dev/null
 
 # case-insensitive globbing (used in pathname expansion)
-shopt -s nocaseglob;
+shopt -s nocaseglob
 
 # disable the system bell
 bind "set bell-style none"
@@ -169,18 +169,18 @@ CDPATH="."
 
 # list directory contents after changing to it
 function cd() {
-  builtin cd "$@" &> /dev/null
+  builtin cd "$@" &> /dev/null || exit
   ls --color=auto --ignore=ntuser\.* \
     --ignore=NTUSER\.* --almost-all --group-directories-first
-  }
+}
 
 ###############################################################
 # Color
 ###############################################################
 # enable dircolors if it is available
-if hash dircolors 2>/dev/null; then
-  test -r ${BASH_CONFIG_HOME}/dircolors && \
-    eval "$(dircolors -b ${BASH_CONFIG_HOME}/dircolors)" \
+if hash dircolors 2> /dev/null; then
+  test -r "${BASH_CONFIG_HOME}"/dircolors \
+    && eval "$(dircolors -b "${BASH_CONFIG_HOME}"/dircolors)" \
     || eval "$(dircolors -b)"
 fi
 
@@ -189,7 +189,7 @@ fi
 ###############################################################
 # load runtime configuration files
 if [ -d "$BASH_CONFIG_HOME/rc" ]; then
-  for RC_FILE in $(find $BASH_CONFIG_HOME/rc -type f | sort); do
+  for RC_FILE in $(find "$BASH_CONFIG_HOME"/rc -type f | sort); do
     source "$RC_FILE"
   done
 fi
@@ -198,35 +198,35 @@ fi
 # Shell Prompt
 ###############################################################
 # load prompt definitions
-test -s "${BASH_CONFIG_HOME}/prompt.bash" && \
-  source "${BASH_CONFIG_HOME}/prompt.bash"
+test -s "${BASH_CONFIG_HOME}/prompt.bash" \
+  && source "${BASH_CONFIG_HOME}/prompt.bash"
 
 ###############################################################
 # fzf
 ###############################################################
-if hash fzf 2>/dev/null; then
+if hash fzf 2> /dev/null; then
   # load fzf keybinds
-  test -s "${BASH_CONFIG_HOME}/plugins/fzf/key-bindings.bash" && \
-    source "${BASH_CONFIG_HOME}/plugins/fzf/key-bindings.bash"
+  test -s "${BASH_CONFIG_HOME}/plugins/fzf/key-bindings.bash" \
+    && source "${BASH_CONFIG_HOME}/plugins/fzf/key-bindings.bash"
 
-    # load fzf completion
-    test -s "${BASH_CONFIG_HOME}/plugins/fzf/completion.bash" && \
-      source "${BASH_CONFIG_HOME}/plugins/fzf/completion.bash"
+  # load fzf completion
+  test -s "${BASH_CONFIG_HOME}/plugins/fzf/completion.bash" \
+    && source "${BASH_CONFIG_HOME}/plugins/fzf/completion.bash"
 fi
 
 ###############################################################
 # git
 ###############################################################
 # load git completion
-test -s "${BASH_CONFIG_HOME}/plugins/git/git-completion.bash" && \
-  source "${BASH_CONFIG_HOME}/plugin/git/git-completion.bash"
+test -s "${BASH_CONFIG_HOME}/plugins/git/git-completion.bash" \
+  && source "${BASH_CONFIG_HOME}/plugins/git/git-completion.bash"
 
 ###############################################################
 # _Custom
 ###############################################################
 # check for machine-specific rc files and source them if available
 if [ -d "$BASH_CONFIG_HOME/rc.private" ]; then
-  for RC_FILE in $(find $BASH_CONFIG_HOME/rc.private -type f | sort); do
+  for RC_FILE in $(find "$BASH_CONFIG_HOME"/rc.private -type f | sort); do
     source "$RC_FILE"
   done
 fi

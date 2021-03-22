@@ -33,18 +33,18 @@ function fd() {
 
 # find in history
 function fh() {
-  print -z $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) \
+  print -z "$( ([ -n "$ZSH_NAME" ] && fc -l 1) || history \
     | fzf +s --tac \
     | sed -r 's/ *[0-9]*\*? *//' \
-    | sed -r 's/\\/\\\\/g')
+    | sed -r 's/\\/\\\\/g')"
   }
 
 # fix corrupt history file
 function fix_hist() {
-  mv ${ZSH_CONFIG_HOME}/zsh_history ${ZSH_CONFIG_HOME}/zsh_hist_corrupt
-  strings ${ZSH_CONFIG_HOME}/zsh_hist_corrupt > ${ZSH_CONFIG_HOME}/zsh_history
-  fc -R ${ZSH_CONFIG_HOME}/zsh_history
-  rm ${ZSH_CONFIG_HOME}/zsh_hist_corrupt
+  mv "${ZSH_CONFIG_HOME}"/zsh_history "${ZSH_CONFIG_HOME}"/zsh_hist_corrupt
+  strings "${ZSH_CONFIG_HOME}"/zsh_hist_corrupt > "${ZSH_CONFIG_HOME}"/zsh_history
+  fc -R "${ZSH_CONFIG_HOME}"/zsh_history
+  rm "${ZSH_CONFIG_HOME}"/zsh_hist_corrupt
 }
 
 # find process by name and highlight
@@ -56,7 +56,7 @@ function fp() {
 function gem() {
   local PKG=$CONFIG_HOME/scripts/packages/gem.txt
   if [ "$1" = "load" ]; then
-    cat $PKG | xargs gem install
+    < "$PKG" xargs "gem" install
   else
     command gem "$@"
   fi
@@ -69,7 +69,7 @@ function git() {
   IFS=','
   local worktree=""
   if [ -f "$INPUT" ]; then
-    while read col1 col2; do
+    while read -r col1 col2; do
       if [[ "$col1" != "GIT_DIR" ]]; then
         gd=$(eval echo "$col1")
         wt=$(eval echo "$col2")
@@ -77,7 +77,7 @@ function git() {
           worktree="--git-dir=$gd --work-tree=$wt"
         fi
       fi
-    done < $INPUT
+    done < "$INPUT"
   fi
   IFS=$OLDIFS
   local cmd="command git"
@@ -93,30 +93,30 @@ function git() {
     local ROOT
     if [ "$($inside_git_dir 2> /dev/null)" = true ]; then
       if [ "$($bare_repo)" = true ]; then
-        ROOT="$(eval $absolute_git_dir)"
+        ROOT="$(eval "$absolute_git_dir")"
       else
-        ROOT="$(eval $inside_git_dir)"
+        ROOT="$(eval "$inside_git_dir")"
       fi
     else
-      ROOT="$(eval $show_working_tree 2> /dev/null)"
+      ROOT="$(eval "$show_working_tree" 2> /dev/null)"
       if [ -z "$ROOT" ]; then
-        ROOT="$(eval $show_toplevel 2> /dev/null)"
+        ROOT="$(eval "$show_toplevel" 2> /dev/null)"
       fi
     fi
     if [ -z "$ROOT" ]; then
       ROOT=.
     fi
     if [ $# -eq 0 ]; then
-      cd "$ROOT"
+      cd "$ROOT" || exit
     else
       (cd "$ROOT" && eval "$@")
     fi
-  elif [[ "$@" == *"rev-parse --show-toplevel"* ]]; then
-    if [ "$(eval $bare_repo)" = true ]; then
-      return ""
+  elif [[ "$*" == *"rev-parse --show-toplevel"* ]]; then
+    if [ "$(eval "$bare_repo")" = true ]; then
+      return 0
     fi
   else
-    eval "$cmd $worktree $@"
+    eval "$cmd $worktree $*"
   fi
 }
 
@@ -124,7 +124,7 @@ function git() {
 function go() {
   local PKG=$CONFIG_HOME/scripts/packages/go.txt
   if [ "$1" = "load" ]; then
-    cat $PKG | xargs command go get
+    < "$PKG" xargs command "go" get
   else
     command go "$@"
   fi
@@ -144,7 +144,7 @@ function headers() {
 function luarocks() {
   local PKG=$CONFIG_HOME/scripts/packages/luarocks.txt
   if [ "$1" = "load" ]; then
-    cat $PKG | xargs command luarocks install --local
+    < "$PKG" xargs command "luarocks" install --local
   else
     command luarocks "$@"
   fi
@@ -157,7 +157,7 @@ function nvim {
   IFS=','
   local worktree=""
   if [ -f "$INPUT" ]; then
-    while read col1 col2; do
+    while read -r col1 col2; do
       if [[ "$col1" != "GIT_DIR" ]]; then
         gd=$(eval echo "$col1")
         wt=$(eval echo "$col2")
@@ -165,10 +165,10 @@ function nvim {
           worktree="GIT_DIR=$gd GIT_WORK_TREE=$wt"
         fi
       fi
-    done < $INPUT
+    done < "$INPUT"
   fi
   IFS=$OLDIFS
-  eval "$worktree command nvim $@"
+  eval "$worktree command nvim $*"
 }
 
 # support custom sub-commands
@@ -180,9 +180,9 @@ function npm() {
       | sed '/^$/d' > "$PKG"
   elif [ "$1" = "load" ]; then
     if [ "$EUID" -eq 0 ]; then
-      cat $PKG | xargs npm install -g
+      < "$PKG" xargs "npm" install -g
     else
-      cat $PKG | xargs sudo npm install -g
+      < "$PKG" xargs sudo "npm" install -g
     fi
   else
     command npm "$@"
@@ -257,22 +257,23 @@ function subtree() {
 function tmux() {
   emulate -L zsh
   local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
-  if [ -r "$SSH_AUTH_SOCK" -a ! -L "$SSH_AUTH_SOCK" ]; then
+  if [ -r "$SSH_AUTH_SOCK" ] && [ ! -L "$SSH_AUTH_SOCK" ]; then
     ln -sf "$SSH_AUTH_SOCK" $SOCK_SYMLINK
   fi
-  if [[ -n "$@" ]]; then
+  if [[ -n "$*" ]]; then
     env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux "$@"
     return
   fi
   if [ -x .tmux ]; then
-    local DIGEST="$(openssl dgst -sha512 .tmux)"
-    if ! grep -q "$DIGEST" ${TMUX_CONFIG_HOME}/tmux.digests 2> /dev/null; then
+    local DIGEST
+	DIGEST="$(openssl dgst -sha512 .tmux)"
+    if ! grep -q "$DIGEST" "${TMUX_CONFIG_HOME}"/tmux.digests 2> /dev/null; then
       cat .tmux
       read -k 1 -r \
         'REPLY?Trust (and run) this .tmux file? (t = trust, otherwise = skip) '
-              echo
+             s echo
               if [[ $REPLY =~ ^[Tt]$ ]]; then
-                echo "$DIGEST" >> ${TMUX_CONFIG_HOME}/tmux.digests
+                echo "$DIGEST" >> "${TMUX_CONFIG_HOME}"/tmux.digests
                 ./.tmux
                 return
               fi
@@ -281,7 +282,8 @@ function tmux() {
               return
     fi
   fi
-  local SESSION_NAME=$(basename ${$(pwd)//[.:]/_})
+  local SESSION_NAME
+  SESSION_NAME=$(basename ${$(pwd)//[.:]/_})
   env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
 }
 
@@ -290,11 +292,10 @@ function up() {
   if [ $# -eq 0 ]; then
     cd ..
   else
-    local DIR=""
-    for i in {1..$1} ; do
+    for ((i=0; i<$1; i++)) ; do
       CDSTR="../$CDSTR"
     done
-    cd $CDSTR
+    cd "$CDSTR" || exit
   fi
 }
 
@@ -305,7 +306,7 @@ function vim {
   IFS=','
   local worktree=""
   if [ -f "$INPUT" ]; then
-    while read col1 col2; do
+    while read -r col1 col2; do
       if [[ "$col1" != "GIT_DIR" ]]; then
         gd=$(eval echo "$col1")
         wt=$(eval echo "$col2")
@@ -313,8 +314,8 @@ function vim {
           worktree="GIT_DIR=$gd GIT_WORK_TREE=$wt"
         fi
       fi
-    done < $INPUT
+    done < "$INPUT"
   fi
   IFS=$OLDIFS
-  eval "$worktree command vim $@"
+  eval "$worktree command vim $*"
 }

@@ -5,33 +5,33 @@ if is_wsl; then
 fi
 
 # define configuration path for bat
-if hash bat 2>/dev/null; then
+if hash bat 2> /dev/null; then
   export BAT_CONFIG_PATH="${CONFIG_HOME}/bat/bat.conf"
 fi
 
 # set the default editor
-if hash nvim 2>/dev/null;then
+if hash nvim 2> /dev/null; then
   export EDITOR=nvim
 else
   export EDITOR=vim
 fi
 
-if hash fzf 2>/dev/null; then
+if hash fzf 2> /dev/null; then
   # Use ? as the trigger sequence instead of the default **
   export FZF_COMPLETION_TRIGGER='?'
 
-    # set fd as the default source for fzf
-    export FZF_DEFAULT_COMMAND='fd -H --follow --type f --color=always -E .git'
-    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+  # set fd as the default source for fzf
+  export FZF_DEFAULT_COMMAND='fd -H --follow --type f --color=always -E .git'
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-    # define default options for fzf
-    if hash bat 2>/dev/null; then
-      __fzf_preview_opts="--ansi --preview-window 'right:60%' "
-      export FZF_DEFAULT_OPTS=$__fzf_preview_opts
-      unset __fzf_preview_opts
-    fi
+  # define default options for fzf
+  if hash bat 2> /dev/null; then
+    __fzf_preview_opts="--ansi --preview-window 'right:60%' "
+    export FZF_DEFAULT_OPTS=$__fzf_preview_opts
+    unset __fzf_preview_opts
+  fi
 
-    export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+  export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
     --color=dark
     --color=fg:#bebebe,bg:-1,hl:#93b379
     --color=fg+:#dfe3ec,bg+:-1,hl+:#93b379
@@ -84,6 +84,6 @@ if is_darwin; then
   export LC_CTYPE=en_US.UTF-8
   export LC_ALL=en_US.UTF-8
 
-    # ensure brew apps are not quarantined
-    export HOMEBREW_CASK_OPTS=--no-quarantine
+  # ensure brew apps are not quarantined
+  export HOMEBREW_CASK_OPTS=--no-quarantine
 fi
