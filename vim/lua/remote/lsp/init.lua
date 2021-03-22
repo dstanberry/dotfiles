@@ -3,7 +3,6 @@
 ---------------------------------------------------------------
 -- verify lspconfig is available
 local has_lsp, lspconfig = pcall(require, 'lspconfig')
-local lspconfig_util = pcall(require, 'lspconfig.util')
 if not has_lsp then
   return
 end
@@ -37,17 +36,14 @@ local project_root = function(fname)
   if string.find(vim.fn.fnamemodify(fname, ":p"), ".config") then
     return vim.fn.expand("~/.config")
   end
-  return lspconfig_util.find_git_ancestor(fname) or
-           lspconfig.util.root_pattern("yarn.lock") or
-           lspconfig.util.root_pattern("package.json") or
-           lspconfig_util.path.dirname(fname)
+  return lspconfig.util.path.dirname(fname)
 end
 
 -- add lua language server
 require('nlua.lsp.nvim').setup(lspconfig, {
   capabilities = capabilities,
   on_attach = on_attach_vim,
-  root_dir = project_root,
+  -- root_dir = project_root,
   diagnostics = {globals = {"vim"}},
   workspace = {library = {[vim.fn.expand('$VIMRUNTIME/lua')] = true}}
 })
