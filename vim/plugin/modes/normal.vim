@@ -126,32 +126,6 @@ nmap s <plug>(vsnip-select-text)
 " cut text to use ad $TM_SELECTED_TEXT in the next snippet
 nmap S <plug>(vsnip-cut-text)
 
-if has('nvim')
-  " lsp: jump to the declaration of the symbol under the cursor
-  nnoremap <silent> gd :lua vim.lsp.buf.declaration()<cr>
-  " lsp: jump to the definition of the symbol under the cursor
-  nnoremap <silent> <c-]> :lua vim.lsp.buf.definition()<cr>
-  " lsp: display hover information about the symbol under the cursor
-  nnoremap <silent> K :lua vim.lsp.buf.hover()<cr>
-  " lsp: list all implementations for the symbol under the cursor
-  nnoremap <silent> gD :lua vim.lsp.buf.implementation()<cr>
-  " lsp: display signature information under the cursor
-  nnoremap <silent> gh :lua vim.lsp.buf.signature_help()<cr>
-  " lsp: jump to the definition of the type of the symbol under the cursor
-  nnoremap <silent> 1gD :lua vim.lsp.buf.type_definition()<cr>
-  " lsp: list all references to the symbol under the cursor in the quickfix list
-  nnoremap <silent> gr :lua vim.lsp.buf.references()<cr>
-  " lsp: list all symbols in the current buffer in the quickfix list
-  nnoremap <silent> g0 :lua vim.lsp.buf.document_symbol()<cr>
-  " lsp: list all symbols in the current workspace in the quickfix list
-  nnoremap <silent> gW :lua vim.lsp.buf.workspace_symbol()<cr>
-  " lsp: get the next diagnostic closest to the cursor
-  nnoremap <silent> gn :lua vim.lsp.buf.workspace_symbol()<cr>
-  " lsp: get the previous diagnostic closest to the cursor
-  nnoremap <silent> gp :lua vim.lsp.buf.workspace_symbol()<cr>
-  " lsp: send diagnostics list to the local list
-  nnoremap <silent> gl :call functions#vim_lsp_diagnostic_set_loclist()<cr>
-endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader | Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
