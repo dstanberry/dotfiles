@@ -34,9 +34,6 @@ if has('nvim')
   Plug 'gennaro-tedesco/nvim-jqx'
 endif
 
-" easily identify nested parentheses
-Plug 'junegunn/rainbow_parentheses.vim'
-
 " undo history visualizer
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 
@@ -106,6 +103,8 @@ if has('nvim')
 
   " parser generator tool
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  " easily identify nested parentheses
+  Plug 'p00f/nvim-ts-rainbow'
 
   " popup API implementation (WIP)
   Plug 'nvim-lua/popup.nvim'
