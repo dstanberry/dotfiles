@@ -96,11 +96,9 @@ lspconfig.efm.setup {
 }
 
 local lfiles = {sh = "shellcheck"}
-
 local linters = {shellcheck = shellcheck}
 
 local ffiles = {sh = "shfmt"}
-
 local formatters = {shfmt = shfmt}
 
 -- shellcheck/shfmt breaks efm-langserver
