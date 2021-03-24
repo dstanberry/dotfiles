@@ -58,3 +58,12 @@ augroup LSP
   autocmd!
   autocmd BufWrite,BufEnter,InsertLeave * :call functions#vim_lsp_diagnostic_set_loclist()
 augroup END
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Disable smartcase when in command mode
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+augroup CmdTabComplete
+    autocmd!
+    autocmd CmdLineEnter : set nosmartcase
+    autocmd CmdLineLeave : set smartcase
+augroup END
