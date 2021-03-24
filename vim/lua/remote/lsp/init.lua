@@ -69,6 +69,7 @@ nluaconfig.setup(lspconfig, {
 local eslint = require 'remote.lsp.linters.eslint'
 local flake = require 'remote.lsp.linters.flake8'
 local shellcheck = require 'remote.lsp.linters.shellcheck'
+local vint = require 'remote.lsp.linters.vint'
 
 local isort = require 'remote.lsp.formatters.isort'
 local luafmt = require 'remote.lsp.formatters.luafmt'
@@ -83,6 +84,8 @@ local languages = {
   lua = {luafmt},
   markdown = {prettier},
   python = {flake, isort, yapf},
+  sh = {shellcheck, shfmt},
+  vim = {vint},
   yaml = {prettier}
 }
 
@@ -93,26 +96,6 @@ lspconfig.efm.setup {
   settings = {languages = languages, log_level = 1},
   capabilities = capabilities,
   on_attach = on_attach_vim
-}
-
-local lfiles = {sh = "shellcheck"}
-local linters = {shellcheck = shellcheck}
-
-local ffiles = {sh = "shfmt"}
-local formatters = {shfmt = shfmt}
-
--- shellcheck/shfmt breaks efm-langserver
-lspconfig.diagnosticls.setup {
-  on_attach = on_attach_vim,
-  capabilities = capabilities,
-  cmd = {"diagnostic-languageserver", "--stdio"},
-  filetypes = vim.tbl_keys(ffiles),
-  init_options = {
-    filetypes = lfiles,
-    linters = linters,
-    formatFiletypes = ffiles,
-    formatters = formatters
-  }
 }
 
 -- set enhancements

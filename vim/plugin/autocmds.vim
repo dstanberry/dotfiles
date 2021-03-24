@@ -64,7 +64,7 @@ augroup END
 " => Disable smartcase when in command mode
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup CmdTabComplete
-    autocmd!
-    autocmd CmdLineEnter : set nosmartcase
-    autocmd CmdLineLeave : set smartcase
+  autocmd!
+  autocmd CmdLineEnter : set nosmartcase
+  autocmd CmdLineLeave : set smartcase
 augroup END

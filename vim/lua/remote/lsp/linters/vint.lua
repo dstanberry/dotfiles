@@ -1,8 +1,8 @@
 ---------------------------------------------------------------
--- => shell program formatter
+-- => vimscript linter
 ---------------------------------------------------------------
 return {
-  -- brew install shfmt
-  formatCommand = "shfmt -i 2 -ci -sr -s -bn",
-  formatStdin = true
+  lintCommand = "vint --enable-neovim -",
+  lintStdin = true,
+  lintFormats = {"%f:%l:%c: %m"}
 }
