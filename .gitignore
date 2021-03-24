@@ -9,8 +9,6 @@ karabiner/automatic_backups/*
 tmux/tmux.digests
 vim/plugin/remote/session/*
 vim/remote/*
-vim/tmp/*
-vim/viminfo
 wget/*
 wireshark/*
 zsh/zsh_history
