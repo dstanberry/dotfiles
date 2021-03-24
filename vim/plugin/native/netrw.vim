@@ -3,9 +3,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " define location for netrw history file
 if has('nvim')
-  let g:netrw_home="~/.config/vim/tmp/nvim/netrw"
+  let g:netrw_home=$XDG_DATA_HOME."/nvim/netrw"
 else
-  let g:netrw_home="~/.config/vim/tmp/vim/netrw"
+  let g:netrw_home=$XDG_DATA_HOME."/vim/netrw"
 endif
 
 " suppress banner

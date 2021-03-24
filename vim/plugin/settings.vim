@@ -126,18 +126,18 @@ set mouse=a
 
 if has('nvim')
   " define location for backup files
-  set backupdir=~/.config/vim/tmp/nvim/backup//,.
+  set backupdir=$XDG_CACHE_HOME/nvim/backup//,.
   " define location for swap files
-  set directory=~/.config/vim/tmp/nvim/swap//,.
+  set directory=$XDG_CACHE_HOME/nvim/swap//,.
   " define location for undo files
-  set undodir=~/.config/vim/tmp/nvim/undo//,.
+  set undodir=$XDG_CACHE_HOME/nvim/undo//,.
 else
   " define location for backup files
-  set backupdir=~/.config/vim/tmp/vim/backup//,.
+  set backupdir=$XDG_CACHE_HOME/vim/backup//,.
   " define location for swap files
-  set directory=~/.config/vim/tmp/vim/swap//,.
+  set directory=$XDG_CACHE_HOME/vim/swap//,.
   " define location for undo files
-  set undodir=~/.config/vim/tmp/vim/undo//,.
+  set undodir=$XDG_CACHE_HOME/vim/undo//,.
 endif
 
 " maintain undo history across sessions
