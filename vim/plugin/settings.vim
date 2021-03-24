@@ -188,11 +188,12 @@ set completeopt=menuone,noinsert,noselect
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 elseif executable('ag')
-  set grepprg=ag\ --vimgrep
+  set grepprg=ag\ --vimgrep\ --noheading\ --smart-case
+elseif executable('ack')
+  set grepprg=ack\ --nogroup\ --nocolor\ --column\ --no-heading\ --smart-case
 else
   set grepprg=grep\ -R\ -n\ --exclude-dir=.git,.cache,node_modules
 endif
-
 " set grep output format
 set grepformat=%f:%l:%c:%m
 
