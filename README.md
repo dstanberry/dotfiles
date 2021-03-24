@@ -53,9 +53,9 @@ Dependencies
 
 [RipGrep](https://github.com/BurntSushi/ripgrep); or
 
-[Ack3](https://github.com/beyondgrep/ack3); or
+[Ag](https://github.com/ggreer/the_silver_searcher); or
 
-[Ag](https://github.com/ggreer/the_silver_searcher)
+[Ack3](https://github.com/beyondgrep/ack3)
 
 [FZF](https://github.com/junegunn/fzf)
 
