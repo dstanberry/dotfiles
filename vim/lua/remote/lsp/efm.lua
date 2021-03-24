@@ -4,6 +4,7 @@
 -- linter configuration
 local eslint = require 'remote.lsp.linters.eslint'
 local flake = require 'remote.lsp.linters.flake8'
+local markdown = require 'remote.lsp.linters.markdown'
 local shellcheck = require 'remote.lsp.linters.shellcheck'
 local vint = require 'remote.lsp.linters.vint'
 
@@ -20,7 +21,7 @@ local languages = {
   html = {prettier},
   javascript = {prettier, eslint},
   lua = {luafmt},
-  markdown = {prettier},
+  markdown = {markdown, prettier},
   python = {flake, isort, yapf},
   sh = {shellcheck, shfmt},
   vim = {vint},

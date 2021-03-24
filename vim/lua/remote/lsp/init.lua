@@ -8,6 +8,9 @@ if not has_lsp and not has_nlua then
   return
 end
 
+-- enable debugging
+-- vim.lsp.set_log_level("debug")
+
 -- identify project root directory
 local project_root = function(fname)
   if string.find(vim.fn.fnamemodify(fname, ":p"), ".config") then
@@ -85,17 +88,25 @@ end
 -- load defined servers
 local function load_servers()
   -- manually curated list of language servers
-  local servers = {'bashls', 'efm', 'jsonls', 'luals', 'pyright', 'vimls'}
+  local servers = {
+    'bashls', 'cssls', 'efm', 'html', 'jsonls', 'sumneko_ls', 'pyright', 'vimls'
+  }
   for _, server in ipairs(servers) do
     local config = get_server_configuration()
-    if server == 'luals' then
+    if server == 'sumneko_ls' then
       local sumneko = require 'remote.lsp.sumneko'
       config = vim.tbl_extend('force', config, sumneko)
       nluaconfig.setup(lspconfig, config)
     else
-      if server == 'efm' then
+      if server == 'cssls' then
+        local css = require 'remote.lsp.css'
+        config = vim.tbl_extend('force', config, css)
+      elseif server == 'efm' then
         local efm = require 'remote.lsp.efm'
         config = vim.tbl_extend('force', config, efm)
+      elseif server == 'html' then
+        local html = require 'remote.lsp.html'
+        config = vim.tbl_extend('force', config, html)
       end
       lspconfig[server].setup(config)
     end
