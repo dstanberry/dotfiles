@@ -19,6 +19,8 @@ function! statusline#focus()
     let l:statusline .= "%#Custom3#▊"
   elseif mode() == 'v' || mode() == 'V'
     let l:statusline .= "%#Custom4#▊"
+  elseif mode() == 'c'
+    let l:statusline .= "%#Custom5#▊"
   endif
   if &paste == 1
     let l:statusline .= "📋"
@@ -71,7 +73,7 @@ function! statusline#focus()
     let l:statusline .= "\ "
   endif
   " line numbering
-  let l:statusline .= "%#Custom5#\ %l:%L\ "
+  let l:statusline .= "%#Custom6#\ %l:%L\ "
   " column numbering
   let l:statusline .= "%4*\ \ %c\ "
   return l:statusline
