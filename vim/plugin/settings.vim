@@ -185,7 +185,14 @@ set complete+=kspell
 set completeopt=menuone,noinsert,noselect
 
 " set grep program to use
-set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
+elseif executable('ag')
+  set grepprg=ag\ --vimgrep
+else
+  set grepprg=grep\ -R\ -n\ --exclude-dir=.git,.cache,node_modules
+endif
+
 " set grep output format
 set grepformat=%f:%l:%c:%m
 
