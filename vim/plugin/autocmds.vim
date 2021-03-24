@@ -49,6 +49,7 @@ endif
 augroup GitCommitMsg
   autocmd!
   autocmd FileType gitcommit autocmd! BufEnter COMMIT_EDITMSG call setpos('.',[0, 1, 1, 0])
+  autocmd FileType gitcommit startinsert
 augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
