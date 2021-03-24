@@ -51,9 +51,9 @@ Dependencies
 
 [diff-highlight](https://github.com/git/git/tree/master/contrib/diff-highlight) (perl script included in repo)
 
-[RipGrep](https://github.com/BurntSushi/ripgrep)
+[RipGrep](https://github.com/BurntSushi/ripgrep); or
 
-[Ack3](https://github.com/beyondgrep/ack3) (Optional)
+[Ack3](https://github.com/beyondgrep/ack3); or
 
 [Ag](https://github.com/ggreer/the_silver_searcher)
 
