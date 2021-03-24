@@ -130,14 +130,14 @@ if has('nvim')
   " define location for swap files
   set directory=~/.config/vim/tmp/nvim/swap//,.
   " define location for undo files
-  set undodir=~/.config/vim/tmp/undo/nvim//,.
+  set undodir=~/.config/vim/tmp/nvim/undo//,.
 else
   " define location for backup files
-  set backupdir=~/.config/vim/tmp/backup/vim//,.
+  set backupdir=~/.config/vim/tmp/vim/backup//,.
   " define location for swap files
-  set directory=~/.config/vim/tmp/swap/vim//,.
+  set directory=~/.config/vim/tmp/vim/swap//,.
   " define location for undo files
-  set undodir=~/.config/vim/tmp/undo/vim//,.
+  set undodir=~/.config/vim/tmp/vim/undo//,.
 endif
 
 " maintain undo history across sessions
