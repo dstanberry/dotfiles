@@ -124,12 +124,21 @@ set backspace=indent,eol,start
 " enable mouse features
 set mouse=a
 
-" define location for backup files
-set backupdir=~/.config/vim/tmp/backup//,.
-" define location for swap files
-set directory=~/.config/vim/tmp/swap//,.
-" define location for undo files
-set undodir=~/.config/vim/tmp/undo//,.
+if has('nvim')
+  " define location for backup files
+  set backupdir=~/.config/vim/tmp/nvim/backup//,.
+  " define location for swap files
+  set directory=~/.config/vim/tmp/nvim/swap//,.
+  " define location for undo files
+  set undodir=~/.config/vim/tmp/undo/nvim//,.
+else
+  " define location for backup files
+  set backupdir=~/.config/vim/tmp/backup/vim//,.
+  " define location for swap files
+  set directory=~/.config/vim/tmp/swap/vim//,.
+  " define location for undo files
+  set undodir=~/.config/vim/tmp/undo/vim//,.
+endif
 
 " maintain undo history across sessions
 set undofile

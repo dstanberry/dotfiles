@@ -15,9 +15,6 @@ else
   alias ls="ls --color=auto --almost-all --group-directories-first"
 fi
 
-# use neovim in place of vim (if available)
-hash nvim 2> /dev/null && alias vim=nvim
-
 # define alias to reload bash configuration
 alias reload='source "${BASH_CONFIG_HOME}/bashrc"'
 

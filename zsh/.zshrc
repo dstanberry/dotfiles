@@ -136,28 +136,48 @@ if [ ! -L "${HOME}"/.tmux.conf ]; then
 fi
 
 # ensure that vim packages directories exist
-if [ ! -d "${VIM_CONFIG_HOME}"/pack/remote/opt ]; then
-  mkdir -p "${VIM_CONFIG_HOME}"/pack/remote/opt
+if [ ! -d "${VIM_CONFIG_HOME}"/remote ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/remote
+fi
+
+# ensure that nvim backup directory exists
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/nvim/backup ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/tmp/nvim/backup
 fi
 
 # ensure that vim backup directory exists
-if [ ! -d "${VIM_CONFIG_HOME}"/tmp/backup ]; then
-  mkdir -p "${VIM_CONFIG_HOME}"/tmp/backup
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/vim/backup ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/tmp/vim/backup
+fi
+
+# ensure that nvim netrw directory exists
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/nvim/netrw ]; then
+  mkdir -p "${CONFIG_HOME}"/vim/tmp/nvim/netrw
 fi
 
 # ensure that vim netrw directory exists
-if [ ! -d "${VIM_CONFIG_HOME}"/tmp/netrw ]; then
-  mkdir -p "${CONFIG_HOME}"/vim/tmp/netrw
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/vim/netrw ]; then
+  mkdir -p "${CONFIG_HOME}"/vim/tmp/vim/netrw
+fi
+
+# ensure that nvim swap directory exists
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/nvim/swap ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/tmp/nvim/swap
 fi
 
 # ensure that vim swap directory exists
-if [ ! -d "${VIM_CONFIG_HOME}"/tmp/swap ]; then
-  mkdir -p "${VIM_CONFIG_HOME}"/tmp/swap
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/vim/swap ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/tmp/vim/swap
+fi
+
+# ensure that nvim undo directory exists
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/nvim/undo ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/tmp/nvim/undo
 fi
 
 # ensure that vim undo directory exists
-if [ ! -d "${VIM_CONFIG_HOME}"/tmp/undo ]; then
-  mkdir -p "${VIM_CONFIG_HOME}"/tmp/undo
+if [ ! -d "${VIM_CONFIG_HOME}"/tmp/vim/undo ]; then
+  mkdir -p "${VIM_CONFIG_HOME}"/tmp/vim/undo
 fi
 
 # ensure that zsh private directories exist
