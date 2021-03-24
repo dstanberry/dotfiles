@@ -1,3 +1,9 @@
+# define XDG_CONFIG_HOME
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+
+# define XDG_CACHE_HOME
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+
 # this is incorrect but required
 if is_wsl; then
   # announce true color support

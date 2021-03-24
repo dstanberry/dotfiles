@@ -2,8 +2,43 @@
 " => Ad hoc definitions for (neo)vim settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! functions#init() abort
-  if !has('nvim')
-    set viminfo='10,\"100,:20,%,n${VIM_CONFIG_HOME}/viminfo
+  " ensure XDG_CACHE_HOME is defined
+  if empty($XDG_CACHE_HOME)
+    let $XDG_CACHE_HOME=$HOME.'/.cache'
+  endif
+
+  if has('nvim')
+    " ensure backup directory exists
+    if !isdirectory($XDG_CACHE_HOME . '/nvim/backup')
+      call mkdir($XDG_CACHE_HOME . '/nvim/backup', 'p')
+    endif
+    " ensure swap directory exists
+    if !isdirectory($XDG_CACHE_HOME . '/nvim/swap')
+      call mkdir($XDG_CACHE_HOME . '/nvim/swap', 'p')
+    endif
+    " ensure undo directory exists
+    if !isdirectory($XDG_CACHE_HOME . '/nvim/undo')
+      call mkdir($XDG_CACHE_HOME . '/nvim/undo', 'p')
+    endif
+
+    " set viminfo
+    set viminfo+=n${$XDG_CACHE_HOME}/nvim/viminfo
+  else
+    " ensure backup directory exists
+    if !isdirectory($XDG_CACHE_HOME . '/vim/backup')
+      call mkdir($XDG_CACHE_HOME . '/vim/backup', 'p')
+    endif
+    " ensure swap directory exists
+    if !isdirectory($XDG_CACHE_HOME . '/vim/swap')
+      call mkdir($XDG_CACHE_HOME . '/vim/swap', 'p')
+    endif
+    " ensure undo directory exists
+    if !isdirectory($XDG_CACHE_HOME . '/vim/undo')
+      call mkdir($XDG_CACHE_HOME . '/vim/undo', 'p')
+    endif
+
+    " set viminfo
+    set viminfo='10,\"100,:20,%,n${$XDG_CACHE_HOME}/vim/viminfo
   endif
 endfunction
 
