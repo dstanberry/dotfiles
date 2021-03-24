@@ -47,6 +47,9 @@ function! statusline#focus()
   elseif mode() == 'v' || mode() == 'V'
     let l:statusline .= "%#Custom4#"
     let l:prefix .= "%#Custom4#"
+  elseif mode() == 'c'
+    let l:statusline .= "%#Custom5#"
+    let l:prefix .= "%#Custom5#"
   endif
   " read-only indicator
   let l:readonly=functions#is_readonly()
