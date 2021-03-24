@@ -1,14 +1,19 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin Manager
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" auto-update: {{{
 " install missing plugins at startup
-autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-      \| PlugInstall --sync | source $MYVIMRC
-      \| endif
+augroup PLUGGED
+  autocmd VimEnter * if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+        \| PlugInstall --sync | source $MYVIMRC
+        \| endif
+augroup end
+" }}}
 
 " define plugin installation directory
 call plug#begin('~/.config/vim/remote')
 
+" shared plugins: {{{
 " command line fuzzy finder
 Plug 'junegunn/fzf.vim', { 'on': ['Files', 'Buffers', 'Ag', 'Rg', 'Windows'] }
 
@@ -20,9 +25,6 @@ Plug 'junegunn/limelight.vim'
 " emphasize the current matched search pattern
 Plug 'wincent/loupe'
 
-" undo history visualizer
-Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-
 " file-type aware comments
 Plug 'tpope/vim-commentary'
 
@@ -30,7 +32,7 @@ Plug 'tpope/vim-commentary'
 Plug 'duggiefresh/vim-easydir'
 
 " a git wrapper for vim
-Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive', { 'on': ['Gstatus', 'Git'] }
 
 " highlight sets of matching keywords
 Plug 'andymass/vim-matchup'
@@ -55,7 +57,9 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 " language snippets
 Plug 'cstrap/python-snippets'
+" }}}
 
+" neovim plugins: {{{
 if has('nvim')
   " syntax highlighting for portage
   if isdirectory("/etc/portage")
@@ -96,9 +100,7 @@ if has('nvim')
   Plug 'nvim-telescope/telescope-fzy-native.nvim'
 
   Plug 'windwp/nvim-autopairs'
-else
-  " show completion entries for typed characters
-  Plug 'vim-scripts/AutoComplPop', { 'on': [] }
 endif
+" }}}
 
 call plug#end()
