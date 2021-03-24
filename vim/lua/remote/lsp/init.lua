@@ -8,19 +8,24 @@ if not has_lsp and not has_nlua then
   return
 end
 
--- define lsp capabilities
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+-- identify project root directory
+local project_root = function(fname)
+  if string.find(vim.fn.fnamemodify(fname, ":p"), ".config") then
+    return vim.fn.expand("~/.config")
+  end
+  return lspconfig.util.path.dirname(fname)
+end
 
+-- define buffer local features
 local on_attach_vim = function(client, bufnr)
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-
+  -- define keybind for document formatting if supported by server
   local opts = {noremap = true, silent = true}
   if client.resolved_capabilities.document_formatting or
     client.resolved_capabilities.document_range_formatting then
     buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
   end
-
+  -- define keybinds for code actions / diagnostics
   buf_set_keymap("n", "ga", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
   buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
   buf_set_keymap("n", "<c-]>", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
@@ -36,67 +41,8 @@ local on_attach_vim = function(client, bufnr)
   buf_set_keymap("n", "gl",
                  "<cmd>call functions#vim_lsp_diagnostic_set_loclist()<cr>",
                  opts)
-
   require('completion').on_attach()
 end
-
--- add language servers
-local servers = {'bashls', 'jsonls', 'pyright', 'vimls'}
-for _, server in ipairs(servers) do
-  lspconfig[server].setup {
-    capabilities = capabilities,
-    on_attach = on_attach_vim
-  }
-end
-
-local project_root = function(fname)
-  if string.find(vim.fn.fnamemodify(fname, ":p"), ".config") then
-    return vim.fn.expand("~/.config")
-  end
-  return lspconfig.util.path.dirname(fname)
-end
-
--- add lua language server
-nluaconfig.setup(lspconfig, {
-  capabilities = capabilities,
-  on_attach = on_attach_vim,
-  root_dir = project_root,
-  diagnostics = {globals = {"vim"}},
-  workspace = {library = {[vim.fn.expand('$VIMRUNTIME/lua')] = true}}
-})
-
--- linter/formatter configuration
-local eslint = require 'remote.lsp.linters.eslint'
-local flake = require 'remote.lsp.linters.flake8'
-local shellcheck = require 'remote.lsp.linters.shellcheck'
-local vint = require 'remote.lsp.linters.vint'
-
-local isort = require 'remote.lsp.formatters.isort'
-local luafmt = require 'remote.lsp.formatters.luafmt'
-local prettier = require 'remote.lsp.formatters.prettier'
-local shfmt = require 'remote.lsp.formatters.shfmt'
-local yapf = require 'remote.lsp.formatters.yapf'
-
-local languages = {
-  css = {prettier},
-  html = {prettier},
-  javascript = {prettier, eslint},
-  lua = {luafmt},
-  markdown = {prettier},
-  python = {flake, isort, yapf},
-  sh = {shellcheck, shfmt},
-  vim = {vint},
-  yaml = {prettier}
-}
-
-lspconfig.efm.setup {
-  root_dir = project_root,
-  filetypes = vim.tbl_keys(languages),
-  init_options = {documentFormatting = true, codeAction = true},
-  settings = {languages = languages, log_level = 1},
-  capabilities = capabilities,
-  on_attach = on_attach_vim
-}
 
 -- set enhancements
 vim.lsp.handlers['textDocument/codeAction'] =
@@ -123,3 +69,37 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] =
     update_in_insert = false,
     virtual_text = {prefix = '▪', spacing = 4}
   })
+
+-- pack lsp configuration
+local function get_server_configuration()
+  -- enable snippet support
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  return {
+    capabilities = capabilities,
+    on_attach = on_attach_vim,
+    root_dir = project_root
+  }
+end
+
+-- load defined servers
+local function load_servers()
+  -- manually curated list of language servers
+  local servers = {'bashls', 'efm', 'jsonls', 'luals', 'pyright', 'vimls'}
+  for _, server in ipairs(servers) do
+    local config = get_server_configuration()
+    if server == 'luals' then
+      local sumneko = require 'remote.lsp.sumneko'
+      config = vim.tbl_extend('force', config, sumneko)
+      nluaconfig.setup(lspconfig, config)
+    else
+      if server == 'efm' then
+        local efm = require 'remote.lsp.efm'
+        config = vim.tbl_extend('force', config, efm)
+      end
+      lspconfig[server].setup(config)
+    end
+  end
+end
+
+load_servers()
