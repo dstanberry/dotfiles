@@ -140,6 +140,8 @@ else
   set undodir=$XDG_CACHE_HOME/vim/undo//,.
 endif
 
+" maintain file backup across sessions
+set backup
 " maintain undo history across sessions
 set undofile
 
@@ -154,6 +156,7 @@ set visualbell t_vb=
 set ttyfast
 
 "reuse windows/tabs if possible
+"
 set switchbuf=usetab
 
 " rows: begin scrolling before reaching viewport boundary
