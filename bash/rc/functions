@@ -6,7 +6,7 @@ function ag() {
     --color-match=35\;1\;4 "$@"
   }
 
-# interactively delete filename(s) by name
+# interactively delete file(s) by name
 function del() {
   if [ $# -eq 0 ]; then
     echo "error: at least one argument is required"
@@ -113,7 +113,7 @@ function git() {
 function go() {
   local PKG=$CONFIG_HOME/scripts/packages/go.txt
   if [ "$1" = "load" ]; then
-    < "$PKG" xargs command go get
+    < "$PKG" xargs command "go" get
   else
     command go "$@"
   fi
@@ -121,8 +121,6 @@ function go() {
 
 # print response headers, following redirects.
 function headers() {
-  emulate -L zsh
-
   if [ $# -ne 1 ]; then
     echo "error: a host argument is required"
     return 1
@@ -148,7 +146,7 @@ function nvim {
   IFS=','
   local worktree=""
   if [ -f "$INPUT" ]; then
-    while read col1 col2; do
+    while read -r col1 col2; do
       if [[ "$col1" != "GIT_DIR" ]]; then
         gd=$(eval echo "$col1")
         wt=$(eval echo "$col2")
@@ -173,7 +171,7 @@ function npm() {
     if [ "$EUID" -eq 0 ]; then
       < "$PKG" xargs "npm" install -g
     else
-      < "$PKG" xargs sudo npm install -g
+      < "$PKG" xargs sudo "npm" install -g
     fi
   else
     command npm "$@"

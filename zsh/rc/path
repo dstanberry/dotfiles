@@ -5,6 +5,12 @@ if hash gem 2> /dev/null; then
   for i in $(gem environment gempath); do
     if [ -d "$i/bin" ]; then
       export PATH="$i/bin":$PATH
+    else
+      ud=$(gem env | grep 'USER INSTALLATION DIRECTORY' | awk -F':' '{ print $2 }')
+      p="${ud##*/.gem/}"
+      if [ -d "$i/$p/bin" ];then
+        export PATH="$i/$p/bin":$PATH
+      fi
     fi
   done
   IFS=$OLDIFS

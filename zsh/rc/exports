@@ -7,6 +7,15 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 # define XDG_DATA_HOME
 export XDG_DATA_HOME="${XDG_DATA_HOME:-$HOME/.local/share}"
 
+# define XDG_RUNTIME_DIR
+if test -z "${XDG_RUNTIME_DIR}"; then
+  export XDG_RUNTIME_DIR="/tmp/${UID}-runtime-dir"
+  if ! test -d "${XDG_RUNTIME_DIR}"; then
+    mkdir "${XDG_RUNTIME_DIR}"
+    chmod 0700 "${XDG_RUNTIME_DIR}"
+  fi
+fi
+
 # this is incorrect but required
 if is_wsl; then
   # announce true color support
@@ -51,11 +60,14 @@ fi
 # use standard ISO 8601 timestamp
 export HISTTIMEFORMAT='%F %T '
 
+# don't put duplicate lines in the history.
+export HISTCONTROL=erasedups:ignoreboth
+
 # ignore commands that have no forensic value
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 
 # define history file location
-export HISTFILE="${ZSH_CONFIG_HOME}/zsh_history"
+export HISTFILE="${ZSH_CONFIG_HOME}/history"
 
 # enable syntax highlighting for less
 export LESS="-iFMRX -x4"
@@ -63,7 +75,7 @@ export LESSCOLOR=always
 export LESSCOLORIZER=/usr/bin/src-hilite-lesspipe.sh
 
 # set location for less history file
-export LESSHISTFILE="${CONFIG_HOME}/less/less_history"
+export LESSHISTFILE="${CONFIG_HOME}/less/history"
 
 # set location for vim runtime configuration
 export MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
@@ -79,7 +91,7 @@ export VIMINIT=$__viminit
 unset __viminit
 
 # define the default pager
-export PAGER=$(which less)
+export PAGER=less
 
 # save the history
 export SAVEHIST=$HISTSIZE
@@ -92,4 +104,57 @@ if is_darwin; then
 
   # ensure brew apps are not quarantined
   export HOMEBREW_CASK_OPTS=--no-quarantine
+fi
+
+# enforce XDG standards for rust-cargo
+if cargo gem 2> /dev/null; then
+  export CARGO_HOME="$XDG_DATA_HOME/cargo"
+fi
+
+# enforce XDG standards for rubygems
+if hash gem 2> /dev/null; then
+  export GEM_HOME="${XDG_DATA_HOME}/gem"
+  export GEM_SPEC_CACHE="${XDG_CACHE_HOME}/gem"
+fi
+
+# enforce XDG standards for gpg
+if hash gpg 2> /dev/null; then
+  export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
+fi
+
+# enforce XDG standards for mysql
+if hash mysql 2> /dev/null; then
+  export MYSQL_HISTFILE="$XDG_DATA_HOME/mysql_history"
+fi
+
+# enforce XDG standards for ncurses
+export TERMINFO="$XDG_DATA_HOME/TERMINFO"
+export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
+
+# enforce XDG standards for node.js
+if hash node 2> /dev/null; then
+  export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
+fi
+
+# enforce XDG standards for npm
+if hash npm 2> /dev/null; then
+  export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+  npm config set cache "${XDG_CACHE_HOME}/npm"
+  npm config set init-module "${XDG_CONFIG_HOME}/npm/config/npm-init.js"
+  npm config set prefix "${XDG_DATA_HOME}/npm"
+  npm config set tmp "${XDG_RUNTIME_DIR}/npm"
+fi
+
+# enforce XDG standards for postgresql
+if hash psql 2> /dev/null; then
+  export PSQLRC="$XDG_CONFIG_HOME/pg/psqlrc"
+  export PSQL_HISTORY="$XDG_CACHE_HOME/pg/psql_history"
+  export PGPASSFILE="$XDG_CONFIG_HOME/pg/pgpass"
+  export PGSERVICEFILE="$XDG_CONFIG_HOME/pg/pg_service.conf"
+  if [ ! -d "$XDG_CONFIG_HOME/pg" ]; then
+    mkdir "$XDG_CONFIG_HOME/pg"
+  fi
+  if [ ! -d "$XDG_CACHE_HOME/pg" ]; then
+    mkdir "$XDG_CACHE_HOME/pg"
+  fi
 fi
