@@ -39,7 +39,19 @@ Have the global `.gitconfig` file include the configurations maintained here.
 
 ```gitconfig
 [include]
+    ; use this if config file is located at $XDG_CONFIG_HOME/git/config
+    path = gitconfig
+    ; or use the following if config file is located at $HOME/.gitconfig
     path = .config/git/gitconfig
+```
+
+Luarocks:
+In order to make luarocks partially compliant, edit `/etc/luarocks/config-<version>.lua` and replace the user path with the following:
+```lua
+--rocks_trees = {
+    { name = "user", root = (os_getenv("XDG_DATA_HOME") or (home .. '/.local/share')) .. "/luarocks" };
+--  { name = "system", root = "/usr/share/lua/<version>" };
+--}
 ```
 
 Restart the shell/terminal for the changes to take effect.
@@ -47,19 +59,13 @@ Restart the shell/terminal for the changes to take effect.
 Dependencies
 ------------
 
-[Delta](https://github.com/dandavison/delta); or
+[Delta](https://github.com/dandavison/delta) or [diff-highlight](https://github.com/git/git/tree/master/contrib/diff-highlight) (perl script included in repo)
 
-[diff-highlight](https://github.com/git/git/tree/master/contrib/diff-highlight) (perl script included in repo)
-
-[RipGrep](https://github.com/BurntSushi/ripgrep); or
-
-[Ag](https://github.com/ggreer/the_silver_searcher); or
-
-[Ack3](https://github.com/beyondgrep/ack3)
+[RipGrep](https://github.com/BurntSushi/ripgrep) or [Ag](https://github.com/ggreer/the_silver_searcher) or [Ack3](https://github.com/beyondgrep/ack3)
 
 [FZF](https://github.com/junegunn/fzf)
 
-[Bat](https://github.com/sharkdp/bat)
+[Bat](https://github.com/sharkdp/bat) (required by delta and fzf)
 
 [Vim](https://github.com/vim/vim) can be compiled with support for Lua, Perl, Python and Ruby.
 
@@ -69,6 +75,14 @@ Read through `scripts/packages/npm.txt`, `scripts/packages/pip.txt`, `scripts/pa
 
 - NodeJS
    - npm (should be installed with nodejs) `npm --version`
+   - If npm is installed, the following will be enforced in npm's configuration file:
+    ```
+    prefix=${XDG_DATA_HOME}/npm
+    cache=${XDG_CACHE_HOME}/npm
+    tmp=${XDG_RUNTIME_DIR}/npm
+    init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
+    ```
+
 
   Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
  
