@@ -44,8 +44,8 @@
 	commit-decoration-style = "#bebebe" box ul
 	features = line-numbers decorations
 	file-decoration-style = none
-	file-style = "#bebebe"
-	hunk-header-style = omit
+	file-style = "#6f8fb4" ul
+	hunk-header-style = box
 	hunk-header-decoration-style = black box ul
 	line-numbers-left-style = "#5f5f5f"
 	line-numbers-right-style = "#5f5f5f"
