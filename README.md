@@ -48,7 +48,10 @@ Have the global `.gitconfig` file include the configurations maintained here.
 Luarocks:
 In order to make luarocks partially compliant, edit `/etc/luarocks/config-<version>.lua` and replace the user path with the following:
 ```lua
+--rocks_trees = {
     { name = "user", root = (os_getenv("XDG_DATA_HOME") or (home .. '/.local/share')) .. "/luarocks" };
+--  { name = "system", root = "/usr/share/lua/<version>" };
+--}
 ```
 
 Restart the shell/terminal for the changes to take effect.
