@@ -163,3 +163,6 @@ if hash psql 2> /dev/null; then
     mkdir "$XDG_CACHE_HOME/pg"
   fi
 fi
+
+# enforce XDG standards for wget
+export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"

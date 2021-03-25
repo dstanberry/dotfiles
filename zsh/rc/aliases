@@ -24,4 +24,4 @@ if is_wsl; then
   alias posh='powershell.exe -NoProfile'
 fi
 
-alias wget='wget --hsts-file "${CONFIG_HOME}/wget/wget-hsts"'
+alias wget='wget --hsts-file "${XDG_CACHE_HOME}/wget/wget-hsts"'
