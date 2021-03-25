@@ -10,6 +10,8 @@ augroup PLUGGED
 augroup end
 " }}}
 
+set encoding=utf-8
+
 " define plugin installation directory
 call plug#begin('~/.config/vim/remote')
 

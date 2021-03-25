@@ -1,6 +1,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Tabline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+scriptencoding utf-8
+
 function! s:get_bufnames(tabCount)
   let bufNames = {}
   for i in range(a:tabCount)

@@ -2,7 +2,7 @@
 " => Move block selection up/down
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! s:move(address, should_move)
-  if visualmode() == 'V' && a:should_move
+  if visualmode() ==? 'v' && a:should_move
     execute "'<,'>move " . a:address
     call feedkeys('gv=', 'n')
   endif

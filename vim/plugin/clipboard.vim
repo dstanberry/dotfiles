@@ -13,8 +13,8 @@ function s:copy(lines, ...)
     call chanclose(jid)
     call chansend(v:stderr, buf)
   else
-    execute "silent! !echo " . shellescape("print -l " . str . " | tmux load-buffer -")
-    execute "silent! !echo " . shellescape("printf '". buf . "' > /dev/stderr")
+    execute 'silent! !echo ' . shellescape('print -l ' . str . ' | tmux load-buffer -')
+    execute 'silent! !echo ' . shellescape('printf "'. buf . '" > /dev/stderr')
     redraw!
   endif
 endfunction
@@ -34,7 +34,7 @@ if !empty($SSH_CONNECTION) || !empty($SSH_TTY) || !empty($SSH_CLIENT)
 
   map <expr> p <SID>tmux_paste('p')
   map <expr> P <SID>tmux_paste('P')
-elseif system('uname -r') =~ 'microsoft'
+elseif system('uname -r') =~? 'microsoft'
   autocmd TextYankPost * call system('clip.exe', @")
 
   map <expr> p <SID>paste('p')

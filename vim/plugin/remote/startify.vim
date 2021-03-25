@@ -5,7 +5,7 @@
 let g:startify_change_to_dir = 0
 
 " specify where to save session data
-let g:startify_session_dir = "~/.config/vim/plugin/remote/session"
+let g:startify_session_dir = '~/.config/vim/plugin/remote/session'
 
 " set landing page
 let g:startify_lists = [

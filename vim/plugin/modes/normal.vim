@@ -61,7 +61,7 @@ nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
 nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
 
 " clear hlsearch if set, otherwise send default
-nnoremap <expr> <cr> {-> v:hlsearch ? ":nohl\<cr>" : "\<cr>"}()
+nnoremap <expr> <cr> {-> v:hlsearch ? ":nohl<cr>" : "<cr>"}()
 
 " find all occurences in buffer of word under cursor
 nnoremap <c-f>f /\v<c-r><c-w>
@@ -78,7 +78,7 @@ nnoremap <c-f><space>
 " => Normal | Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " define a mapleader for more key combinations
-let mapleader="\<space>"
+let mapleader=' '
 
 " write current buffer to disk
 nnoremap <leader>w :w<cr>
@@ -156,7 +156,7 @@ end
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " define a maplocalleader for more key combinations
-let maplocalleader="\\"
+let maplocalleader='\'
 
 " create/edit file within the current directory
 nnoremap <localleader>e :edit <c-r>=expand('%:p:h') . '/'<cr>

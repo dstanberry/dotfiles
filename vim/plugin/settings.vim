@@ -2,7 +2,8 @@
 " => Editor
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " set default encoding
-set encoding=utf8
+set encoding=utf-8
+scriptencoding utf-8
 
 " enable syntax highlighting
 syntax on
@@ -208,7 +209,7 @@ let &t_SR="\<Esc>[3 q"
 let &t_EI="\<Esc>[2 q"
 
 " highlight conflicts
-match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+match ErrorMsg "^\(<\|=\|>\)\{7\}\([^=].\+\)\?$"
 
 "define a colorscheme
 colorscheme kdark

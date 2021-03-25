@@ -1,6 +1,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Ad hoc definitions for (neo)vim settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+scriptencoding utf-8
+
 function! functions#init() abort
   " ensure XDG_CACHE_HOME is defined
   if empty($XDG_CACHE_HOME)
@@ -107,8 +109,8 @@ endfunction
 " => Restore Cursor Position
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! functions#restore_cursor_position()
-  if &filetype != "netrw" && &filetype != "help"
-    if line("'\"") <= line("$")
+  if &filetype !=# 'netrw' && &filetype !=# 'help'
+    if line("'\"") <= line('$')
       normal! g`"
       return 1
     endif
@@ -281,10 +283,10 @@ endfunction
 
 function! functions#b64_encode(str)
   let s:b64_table = [
-        \ "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P",
-        \ "Q","R","S","T","U","V","W","X","Y","Z","a","b","c","d","e","f",
-        \ "g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v",
-        \ "w","x","y","z","0","1","2","3","4","5","6","7","8","9","+","/"]
+        \ 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
+        \ 'Q','R','S','T','U','V','W','X','Y','Z','a','b','c','d','e','f',
+        \ 'g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v',
+        \ 'w','x','y','z','0','1','2','3','4','5','6','7','8','9','+','/']
   let bytes = functions#str_to_bytes(a:str)
   let b64 = []
 
@@ -314,10 +316,10 @@ endfunction
 " => Save and execute vim/lua file
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! functions#load_file() abort
-  if &filetype == 'vim'
+  if &filetype ==# 'vim'
     :silent! write
     :source %
-  elseif &filetype == 'lua'
+  elseif &filetype ==# 'lua'
     :silent! write
     :luafile %
   endif
