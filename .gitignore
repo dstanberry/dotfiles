@@ -9,6 +9,7 @@ lnav
 inkscape
 karabiner/automatic_backups/*
 npm
+pg
 tmux/tmux.digests
 vim/plugin/remote/session/*
 vim/remote/*
