@@ -117,6 +117,11 @@ if hash gem 2> /dev/null; then
   export GEM_SPEC_CACHE="${XDG_CACHE_HOME}/gem"
 fi
 
+# enforce XDG standards for go
+if hash go 2> /dev/null; then
+  export GOPATH="$XDG_DATA_HOME/go"
+fi
+
 # enforce XDG standards for gpg
 if hash gpg 2> /dev/null; then
   export GNUPGHOME="${XDG_DATA_HOME}/gnupg"

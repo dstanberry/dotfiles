@@ -16,12 +16,14 @@ if hash gem 2> /dev/null; then
   IFS=$OLDIFS
 fi
 
-# set go path
+# add go binaries to path if present
 if hash go 2> /dev/null; then
-  export GOPATH="${HOME}/go"
+  GO="${GOPATH}/bin"
+  export PATH=$GO:$PATH
+  unset GO
 fi
 
-# set lua path
+# add lua binaries to path if present
 if hash luarocks 2> /dev/null; then
   eval "$(luarocks path)"
 fi
@@ -40,7 +42,6 @@ unset LOCAL
 if is_darwin; then
   # homebrew may install binaries here
   BREW="/usr/local/sbin"
-
   export PATH=$BREW:$PATH
   unset BREW
 

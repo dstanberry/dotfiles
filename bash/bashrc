@@ -44,21 +44,8 @@ for file in "${CONFIG_HOME}"/bin/*; do
   fi
 done
 
-# ensure go binaries exist in PATH
-for file in "${HOME}"/go/bin/*; do
-  f=$(basename "$file")
-  if [ ! -L "${HOME}"/.local/bin/"$f" ]; then
-    ln -s "$file" "${HOME}"/.local/bin/"$file"
-  fi
-done
-
 # ensure there are no broken symlinks
 find "${HOME}"/.local/bin -type l ! -exec test -e {} \; -delete
-
-# ensure tmux configuration exists
-if [ ! -L "${HOME}"/.tmux.conf ]; then
-  ln -s "${TMUX_CONFIG_HOME}"/tmux.conf "${HOME}"/.tmux.conf
-fi
 
 # ensure that vim packages directories exist
 if [ ! -d "${VIM_CONFIG_HOME}"/remote ]; then
