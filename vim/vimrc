@@ -62,35 +62,37 @@ Plug 'cstrap/python-snippets'
 " neovim plugins: {{{
 if has('nvim')
   " syntax highlighting for portage
-  if isdirectory("/etc/portage")
+  if isdirectory('/etc/portage')
     Plug 'gentoo/gentoo-syntax'
   endif
 
-" preview/browse json files with ease
-  Plug 'gennaro-tedesco/nvim-jqx'
-
 " color highlighter
   Plug 'norcalli/nvim-colorizer.lua'
+
+  " preview/browse json files with ease
+  Plug 'gennaro-tedesco/nvim-jqx'
+
+  " parser generator tool
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  " easily identify nested parentheses
+  Plug 'p00f/nvim-ts-rainbow'
 
   " library that extends core features
   Plug 'nvim-lua/plenary.nvim'
   " framework for setting up language servers
   Plug 'neovim/nvim-lspconfig'
   " auto completion framework
-  Plug 'nvim-lua/completion-nvim'
+  Plug 'hrsh7th/nvim-compe'
   " centralize installation of lua-language-server (sumneko)
   Plug 'tjdevries/nlua.nvim'
   " extension for completion menu
   Plug 'tjdevries/complextras.nvim'
+  " autopairs plugin (can conflict with complextras)
+  Plug 'windwp/nvim-autopairs'
   " extends quickfix window functionality
   Plug 'RishabhRD/popfix'
   " better defaults for builtin-lsp actions
   Plug 'RishabhRD/nvim-lsputils'
-
-  " parser generator tool
-  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  " easily identify nested parentheses
-  Plug 'p00f/nvim-ts-rainbow'
 
   " popup API implementation (WIP)
   Plug 'nvim-lua/popup.nvim'
@@ -98,8 +100,6 @@ if has('nvim')
   Plug 'nvim-telescope/telescope.nvim'
   " pre-compiled fzy sorter
   Plug 'nvim-telescope/telescope-fzy-native.nvim'
-
-  Plug 'windwp/nvim-autopairs'
 endif
 " }}}
 

@@ -1,24 +1,36 @@
 ---------------------------------------------------------------
--- => completion.nvim
+-- => nvim-compe configuration
 ---------------------------------------------------------------
+-- verify nvim-compe is available
+local has_compe, compe = pcall(require, 'compe')
+if not has_compe then
+  return
+end
+
 -- set completion confirm key
 -- vim.g.completion_confirm_key = "<cr>"
--- confirm key is still 'enter' but handled by autopairs/init.lue
-vim.g.completion_confirm_key = ""
+-- confirm key is still '<cr>' but will be handled by autopairs/init.lue
+-- vim.g.completion_confirm_key = ""
 
--- set completion list priority
-vim.g.completion_matching_strategy_list = {'exact', 'substring', 'fuzzy'}
-
--- set trigger characters
-vim.g.completion_trigger_keyword_length = 3
-
--- set snipping parser
-vim.g.completion_enable_snippet = 'vim-vsnip'
-
-vim.g.completion_chain_complete_list = {
-  default = {
-    {complete_items = {'lsp', 'snippet'}},
-    {complete_items = {'path'}, triggered_only = {'/'}},
-    {complete_items = {'buffers'}}
+compe.setup {
+  enabled = true,
+  autocomplete = true,
+  debug = false,
+  min_length = 3,
+  preselect = 'disable',
+  throttle_time = 80,
+  source_timeout = 200,
+  incomplete_delay = 400,
+  max_abbr_width = 100,
+  max_kind_width = 100,
+  max_menu_width = 100,
+  documentation = true,
+  source = {
+    path = true,
+    buffer = true,
+    calc = true,
+    nvim_lsp = true,
+    nvim_lua = true,
+    vsnip = true
   }
 }

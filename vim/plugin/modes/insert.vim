@@ -7,8 +7,6 @@ inoremap jk <esc>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Insert | Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" completion-nvim/vim-vsnip: launch completion menu
-imap <silent> <c-space> <plug>(completion_trigger)
 " completion-nvim/vim-vsnip: navigate to next item in completion menu
 imap <expr> <tab> pumvisible() ? "<c-n>" : vsnip#jumpable(1) ? "<plug>(vsnip-jump-next)" : "<tab>"
 " completion-nvim/vim-vsnip: navigate to previous item in completion menu

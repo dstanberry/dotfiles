@@ -44,7 +44,6 @@ local on_attach_vim = function(client, bufnr)
   buf_set_keymap("n", "gl",
                  "<cmd>call functions#vim_lsp_diagnostic_set_loclist()<cr>",
                  opts)
-  require('completion').on_attach()
 end
 
 -- set enhancements

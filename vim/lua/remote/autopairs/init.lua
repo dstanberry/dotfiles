@@ -9,23 +9,22 @@ end
 
 _G.MUtils = {}
 
+vim.g.completion_confirm_key = ""
 MUtils.completion_confirm = function()
   if vim.fn.pumvisible() ~= 0 then
     if vim.fn.complete_info()["selected"] ~= -1 then
-      require'completion'.confirmCompletion()
+      vim.fn["compe#confirm"]()
       return autopairs.esc("<c-y>")
     else
-      vim.api.nvim_select_popupmenu_item(0, false, false, {})
-      require'completion'.confirmCompletion()
-      return autopairs.esc("<c-n><c-y>")
+      vim.defer_fn(function() vim.fn["compe#confirm"]("<cr>") end, 20)
+      return autopairs.esc("<c-n>")
     end
   else
     return autopairs.check_break_line_char()
   end
 end
 
-local remap = vim.api.nvim_set_keymap
-remap('i', '<cr>', 'v:lua.MUtils.completion_confirm()',
+vim.api.nvim_set_keymap('i', '<cr>', 'v:lua.MUtils.completion_confirm()',
       {expr = true, noremap = true})
 
 require('nvim-autopairs').setup({disable_filetype = {"TelescopePrompt"}})
