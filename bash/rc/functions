@@ -140,7 +140,7 @@ function luarocks() {
 }
 
 # inform neovim of repo defined git worktrees
-function nvim {
+function nvim() {
   local INPUT="${CONFIG_HOME}/git/worktrees"
   local OLDIFS=$IFS
   IFS=','
@@ -210,7 +210,9 @@ function rg() {
     --colors path:fg:blue \
     --colors path:style:bold \
     --colors match:fg:magenta \
-    --colors match:style:underline -p "$@" | less -iFMRSX
+    --colors match:style:underline \
+    --smart-case --sort \
+    --pretty "$@" | less -iFMRSX
   }
 
 # display information about a remote ssl certificate
@@ -283,7 +285,7 @@ function up() {
 }
 
 # inform (neo)vim of repo defined git worktrees
-function vim {
+function vim() {
   local INPUT="${CONFIG_HOME}/git/worktrees"
   local OLDIFS=$IFS
   IFS=','
@@ -301,4 +303,14 @@ function vim {
   fi
   IFS=$OLDIFS
   eval "$worktree command vim $*"
+}
+
+# poor man's wget runtime configuration
+function wget() {
+  command wget --hsts-file "${XDG_CACHE_HOME}/wget/wget-hsts" "$@"
+}
+
+# poor man's yarn runtime configuration
+function yarn() {
+  command yarn --use-yarnrc "${CONFIG_HOME}/yarn/config" "$@"
 }

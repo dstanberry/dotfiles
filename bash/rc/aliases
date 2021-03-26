@@ -23,5 +23,3 @@ if is_wsl; then
   alias code='sh /mnt/c/Program\ Files/Microsoft\ VS\ Code/bin/code'
   alias posh='powershell.exe -NoProfile'
 fi
-
-alias wget='wget --hsts-file "${XDG_CACHE_HOME}/wget/wget-hsts"'

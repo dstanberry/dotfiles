@@ -99,6 +99,11 @@ if is_darwin; then
   export HOMEBREW_CASK_OPTS=--no-quarantine
 fi
 
+# define configuration path for ack
+if hash ack 2> /dev/null; then
+  export ACKRC="${CONFIG_HOME}/ack/ackrc"
+fi
+
 # define configuration path for bat
 if hash bat 2> /dev/null; then
   export BAT_CONFIG_PATH="${CONFIG_HOME}/bat/bat.conf"
@@ -141,7 +146,7 @@ fi
 
 # define configuration path for npm
 if hash npm 2> /dev/null; then
-  export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
+  export NPM_CONFIG_USERCONFIG="${CONFIG_HOME}/npm/npmrc"
   npm config set cache "${XDG_CACHE_HOME}/npm"
   npm config set init-module "${XDG_CONFIG_HOME}/npm/config/npm-init.js"
   npm config set prefix "${XDG_DATA_HOME}/npm"
@@ -150,18 +155,22 @@ fi
 
 # define configuration path for postgresql
 if hash psql 2> /dev/null; then
-  export PSQLRC="$XDG_CONFIG_HOME/pg/psqlrc"
+  export PSQLRC="$CONFIG_HOME/pg/psqlrc"
   export PSQL_HISTORY="$XDG_CACHE_HOME/pg/psql_history"
-  export PGPASSFILE="$XDG_CONFIG_HOME/pg/pgpass"
-  export PGSERVICEFILE="$XDG_CONFIG_HOME/pg/pg_service.conf"
-  if [ ! -d "$XDG_CONFIG_HOME/pg" ]; then
-    mkdir "$XDG_CONFIG_HOME/pg"
+  export PGPASSFILE="$CONFIG_HOME/pg/pgpass"
+  export PGSERVICEFILE="$CONFIG_HOME/pg/pg_service.conf"
+  if [ ! -d "$CONFIG_HOME/pg" ]; then
+    mkdir "$CONFIG_HOME/pg"
   fi
   if [ ! -d "$XDG_CACHE_HOME/pg" ]; then
     mkdir "$XDG_CACHE_HOME/pg"
   fi
 fi
 
-# define configuration path for wget
-export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
+# define configuration path for rustup
+if hash rustup 2> /dev/null; then
+  export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+fi
 
+# define configuration path for wget
+export WGETRC="$CONFIG_HOME/wget/wgetrc"
