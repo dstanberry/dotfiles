@@ -20,10 +20,31 @@ if is_wsl; then
   export COLORTERM=truecolor
 fi
 
-# define configuration path for bat
-if hash bat 2> /dev/null; then
-  export BAT_CONFIG_PATH="${CONFIG_HOME}/bat/bat.conf"
-fi
+# use standard ISO 8601 timestamp
+export HISTTIMEFORMAT='%F %T '
+
+# don't put duplicate lines in the history.
+export HISTCONTROL=erasedups:ignoreboth
+
+# ignore commands that have no forensic value
+export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
+
+# define history file location
+export HISTFILE="${ZSH_CONFIG_HOME}/history"
+
+# save the history
+export SAVEHIST=$HISTSIZE
+
+# enable syntax highlighting for less
+export LESS="-iFMRX -x4"
+export LESSCOLOR=always
+export LESSCOLORIZER=/usr/bin/src-hilite-lesspipe.sh
+
+# set location for less history file
+export LESSHISTFILE="${CONFIG_HOME}/less/history"
+
+# define the default pager
+export PAGER=less
 
 # set the default editor
 if hash nvim 2> /dev/null; then
@@ -55,26 +76,6 @@ if hash fzf 2> /dev/null; then
     --color=marker:#e5c179,spinner:#4c566a,header:#5f5f5f'
 fi
 
-# use standard ISO 8601 timestamp
-export HISTTIMEFORMAT='%F %T '
-
-# don't put duplicate lines in the history.
-export HISTCONTROL=erasedups:ignoreboth
-
-# ignore commands that have no forensic value
-export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
-
-# define history file location
-export HISTFILE="${ZSH_CONFIG_HOME}/history"
-
-# enable syntax highlighting for less
-export LESS="-iFMRX -x4"
-export LESSCOLOR=always
-export LESSCOLORIZER=/usr/bin/src-hilite-lesspipe.sh
-
-# set location for less history file
-export LESSHISTFILE="${CONFIG_HOME}/less/history"
-
 # set location for vim runtime configuration
 export MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
 __viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
@@ -88,12 +89,6 @@ __viminit+="|call functions#init()"
 export VIMINIT=$__viminit
 unset __viminit
 
-# define the default pager
-export PAGER=less
-
-# save the history
-export SAVEHIST=$HISTSIZE
-
 # define mocOS specific options
 if is_darwin; then
   # ensure utf-8 is set
@@ -104,42 +99,47 @@ if is_darwin; then
   export HOMEBREW_CASK_OPTS=--no-quarantine
 fi
 
-# enforce XDG standards for rust-cargo
+# define configuration path for bat
+if hash bat 2> /dev/null; then
+  export BAT_CONFIG_PATH="${CONFIG_HOME}/bat/bat.conf"
+fi
+
+# define configuration path for rust-cargo
 if cargo gem 2> /dev/null; then
   export CARGO_HOME="$XDG_DATA_HOME/cargo"
 fi
 
-# enforce XDG standards for rubygems
+# define configuration path for rubygems
 if hash gem 2> /dev/null; then
   export GEM_HOME="${XDG_DATA_HOME}/gem"
   export GEM_SPEC_CACHE="${XDG_CACHE_HOME}/gem"
 fi
 
-# enforce XDG standards for go
+# define configuration path for go
 if hash go 2> /dev/null; then
   export GOPATH="$XDG_DATA_HOME/go"
 fi
 
-# enforce XDG standards for gpg
+# define configuration path for gpg
 if hash gpg 2> /dev/null; then
   export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 fi
 
-# enforce XDG standards for mysql
+# define configuration path for mysql
 if hash mysql 2> /dev/null; then
   export MYSQL_HISTFILE="$XDG_DATA_HOME/mysql_history"
 fi
 
-# enforce XDG standards for ncurses
+# define configuration path for ncurses
 export TERMINFO="$XDG_DATA_HOME/TERMINFO"
 export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
 
-# enforce XDG standards for node.js
+# define configuration path for node.js
 if hash node 2> /dev/null; then
   export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
 fi
 
-# enforce XDG standards for npm
+# define configuration path for npm
 if hash npm 2> /dev/null; then
   export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
   npm config set cache "${XDG_CACHE_HOME}/npm"
@@ -148,7 +148,7 @@ if hash npm 2> /dev/null; then
   npm config set tmp "${XDG_RUNTIME_DIR}/npm"
 fi
 
-# enforce XDG standards for postgresql
+# define configuration path for postgresql
 if hash psql 2> /dev/null; then
   export PSQLRC="$XDG_CONFIG_HOME/pg/psqlrc"
   export PSQL_HISTORY="$XDG_CACHE_HOME/pg/psql_history"
@@ -162,5 +162,5 @@ if hash psql 2> /dev/null; then
   fi
 fi
 
-# enforce XDG standards for wget
+# define configuration path for wget
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
