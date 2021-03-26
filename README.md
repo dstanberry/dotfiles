@@ -45,6 +45,8 @@ Have the global `.gitconfig` file include the configurations maintained here.
     path = .config/git/gitconfig
 ```
 
+Restart the shell/terminal for the changes to take effect.
+
 Luarocks:
 In order to make luarocks partially compliant, edit `/etc/luarocks/config-<version>.lua` and replace the user path with the following:
 ```lua
@@ -54,7 +56,7 @@ In order to make luarocks partially compliant, edit `/etc/luarocks/config-<versi
 --}
 ```
 
-Restart the shell/terminal for the changes to take effect.
+Tmux: Must be on version >= 3.1 as 3.1 introduced checking for the configuration file in `~/.config/tmux/tmux.conf` and in 3.2 `$XDG_CONFIG_HOME/tmux/tmux.conf` is also checked.
 
 Dependencies
 ------------
