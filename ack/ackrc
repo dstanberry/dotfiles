@@ -1,0 +1,21 @@
+###############################################################
+# ackrc configuration
+###############################################################
+# colorize the output
+--color
+--color-filename=blue
+--color-match=magenta
+--color-lineno=yellow
+
+# define directories/files to ignore
+--ignore-dir=.git/
+--ignore-dir=node_modules/
+
+# pipe output though less
+--pager=less -iFMRSX
+
+# support case-insensitive matching
+--smart-case
+
+# always sort results
+--sort-files
