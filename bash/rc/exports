@@ -30,7 +30,7 @@ export HISTCONTROL=erasedups:ignoreboth
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history:clear"
 
 # define history file location
-export HISTFILE="${BASH_CONFIG_HOME}/history"
+export HISTFILE="${XDG_CACHE_HOME}/bash/history"
 
 # save the history
 export SAVEHIST=$HISTSIZE
@@ -41,7 +41,7 @@ export LESSCOLOR=always
 export LESSCOLORIZER=/usr/bin/src-hilite-lesspipe.sh
 
 # set location for less history file
-export LESSHISTFILE="${CONFIG_HOME}/less/history"
+export LESSHISTFILE="${XDG_CACHE_HOME}/less/history"
 
 # define the default pager
 export PAGER=less

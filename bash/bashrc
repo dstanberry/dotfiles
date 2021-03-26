@@ -16,9 +16,19 @@ VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
 # include helper functions
 source "${CONFIG_HOME}/scripts/helpers.sh"
 
+# ensure bash cache dir exists
+if [ ! -d "${HOME}"/.cache/bash ]; then
+  mkdir -p "${HOME}"/.cache/bash
+fi
+
 # ensure that local binaries are available
 if [ ! -d "${HOME}"/.local/bin ]; then
   mkdir -p "${HOME}"/.local/bin
+fi
+
+# ensure less cache dir exists
+if [ ! -d "${HOME}"/.cache/less ]; then
+  mkdir -p "${HOME}"/.cache/less
 fi
 
 # ensure less wrapper exists in PATH

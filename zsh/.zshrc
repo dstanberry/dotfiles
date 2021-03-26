@@ -91,9 +91,19 @@ source "${CONFIG_HOME}/scripts/helpers.sh"
 # include custom defined functions
 fpath=(${ZSH_CONFIG_HOME}/site-functions $fpath)
 
+# ensure zsh cache dir exists
+if [ ! -d "${HOME}"/.cache/zsh ]; then
+  mkdir -p "${HOME}"/.cache/zsh
+fi
+
 # ensure that local binaries are available
 if [ ! -d "${HOME}"/.local/bin ]; then
   mkdir -p "${HOME}"/.local/bin
+fi
+
+# ensure less cache dir exists
+if [ ! -d "${HOME}"/.cache/less ]; then
+  mkdir -p "${HOME}"/.cache/less
 fi
 
 # ensure less wrapper exists in PATH
