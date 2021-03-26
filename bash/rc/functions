@@ -211,7 +211,7 @@ function rg() {
     --colors path:style:bold \
     --colors match:fg:magenta \
     --colors match:style:underline \
-    --smart-case --sort \
+    --smart-case \
     --pretty "$@" | less -iFMRSX
   }
 
