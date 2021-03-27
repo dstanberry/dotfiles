@@ -46,7 +46,7 @@ local on_attach_vim = function(client, bufnr)
                  opts)
 end
 
--- set enhancements
+-- (nvim-lsputils) set enhancements
 vim.lsp.handlers['textDocument/codeAction'] =
   require'lsputil.codeAction'.code_action_handler
 vim.lsp.handlers['textDocument/references'] =
