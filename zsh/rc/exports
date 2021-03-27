@@ -110,12 +110,13 @@ if hash bat 2> /dev/null; then
 fi
 
 # define configuration path for rust-cargo
-if cargo gem 2> /dev/null; then
+if hash cargo 2> /dev/null; then
   export CARGO_HOME="$XDG_DATA_HOME/cargo"
 fi
 
 # define configuration path for rubygems
 if hash gem 2> /dev/null; then
+  export GEMRC="${CONFIG_HOME}/gem/gemrc"
   export GEM_HOME="${XDG_DATA_HOME}/gem"
   export GEM_SPEC_CACHE="${XDG_CACHE_HOME}/gem"
 fi
