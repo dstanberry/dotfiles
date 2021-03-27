@@ -97,15 +97,9 @@ local function load_servers()
       config = vim.tbl_extend('force', config, sumneko)
       nluaconfig.setup(lspconfig, config)
     else
-      if server == 'cssls' then
-        local css = require 'remote.lsp.css'
-        config = vim.tbl_extend('force', config, css)
-      elseif server == 'efm' then
-        local efm = require 'remote.lsp.efm'
-        config = vim.tbl_extend('force', config, efm)
-      elseif server == 'html' then
-        local html = require 'remote.lsp.html'
-        config = vim.tbl_extend('force', config, html)
+      local has_config, ls = pcall(require, 'remote.lsp.' .. server)
+      if has_config then
+        config = vim.tbl_extend('force', config, ls)
       end
       lspconfig[server].setup(config)
     end
