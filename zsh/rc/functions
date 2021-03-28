@@ -54,7 +54,7 @@ function fp() {
 
 # support custom sub-commands
 function gem() {
-  local PKG=$CONFIG_HOME/scripts/packages/gem.txt
+  local PKG=$CONFIG_HOME/shared/packages/gem.txt
   if [ "$1" = "load" ]; then
     < "$PKG" xargs "gem" install
   else
@@ -122,7 +122,7 @@ function git() {
 
 # support custom sub-commands
 function go() {
-  local PKG=$CONFIG_HOME/scripts/packages/go.txt
+  local PKG=$CONFIG_HOME/shared/packages/go.txt
   if [ "$1" = "load" ]; then
     < "$PKG" xargs command "go" get
   else
@@ -142,7 +142,7 @@ function headers() {
 
 # support custom sub-commands
 function luarocks() {
-  local PKG=$CONFIG_HOME/scripts/packages/luarocks.txt
+  local PKG=$CONFIG_HOME/shared/packages/luarocks.txt
   if [ "$1" = "load" ]; then
     < "$PKG" xargs command "luarocks" install --local
   else
@@ -173,7 +173,7 @@ function nvim() {
 
 # support custom sub-commands
 function npm() {
-  local PKG=$CONFIG_HOME/scripts/packages/npm.txt
+  local PKG=$CONFIG_HOME/shared/packages/npm.txt
   if [ "$1" = "save" ]; then
     command npm list -g --depth=0  | awk '{ print $2 }' \
       | sed -r 's/^\(empty\)//' \
@@ -191,7 +191,7 @@ function npm() {
 
 # support custom sub-commands
 function pip() {
-  local PKG=$CONFIG_HOME/scripts/packages/pip.txt
+  local PKG=$CONFIG_HOME/shared/packages/pip.txt
   if [ "$1" = "save" ]; then
     if hash pipdeptree 2>/dev/null; then
       if [ is_gentoo ]; then

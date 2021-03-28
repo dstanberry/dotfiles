@@ -263,7 +263,8 @@ bindkey '^Z' fg-bg
 ###############################################################
 # enable dircolors if it is available
 if hash dircolors 2> /dev/null; then
-  (test -r "${BASH_CONFIG_HOME}"/dircolors && eval "$(dircolors -b "${BASH_CONFIG_HOME}"/dircolors)") \
+  test -r "${CONFIG_HOME}"/shared/dircolors \
+    && eval "$(dircolors -b "${CONFIG_HOME}"/shared/dircolors)" \
     || eval "$(dircolors -b)"
 fi
 
