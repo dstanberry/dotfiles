@@ -243,3 +243,7 @@ STICKY 04;37;44
 .vob 32
 .webm 32
 .wmv 32
+
+#+--- Special ---+
+.gitattributes 02;37
+.gitignore 02;37
