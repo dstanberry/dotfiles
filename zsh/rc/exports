@@ -150,7 +150,9 @@ if hash npm 2> /dev/null; then
   export NPM_CONFIG_USERCONFIG="${CONFIG_HOME}/npm/npmrc"
   npm config set cache "${XDG_CACHE_HOME}/npm"
   npm config set init-module "${XDG_CONFIG_HOME}/npm/config/npm-init.js"
-  npm config set prefix "${XDG_DATA_HOME}/npm"
+  if [[ "$EUID" -gt 0 ]]; then
+    npm config set prefix "${XDG_DATA_HOME}/npm"
+  fi
   npm config set tmp "${XDG_RUNTIME_DIR}/npm"
 fi
 
