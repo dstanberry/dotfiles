@@ -42,7 +42,7 @@ function fh() {
 # fix corrupt history file
 function fix_hist() {
   mv "${XDG_CACHE_HOME}"/zsh/history "${XDG_CACHE_HOME}"/zsh/hist_corrupt
-  strings "${XDG_CACHE_HOME}"/zsh_hist_corrupt > "${XDG_CACHE_HOME}"/zsh/history
+  strings "${XDG_CACHE_HOME}"/zsh/hist_corrupt > "${XDG_CACHE_HOME}"/zsh/history
   fc -R "${XDG_CACHE_HOME}"/zsh/history
   rm "${XDG_CACHE_HOME}"/zsh/hist_corrupt
 }
