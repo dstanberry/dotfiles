@@ -34,3 +34,6 @@ compe.setup {
     vsnip = true
   }
 }
+
+vim.api.nvim_set_keymap("i", "<c-space>", "compe#complete()",
+                        {noremap = true, expr = true, silent = true})
