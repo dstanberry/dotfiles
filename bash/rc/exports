@@ -148,12 +148,36 @@ fi
 # define configuration path for npm
 if hash npm 2> /dev/null; then
   export NPM_CONFIG_USERCONFIG="${CONFIG_HOME}/npm/npmrc"
-  npm config set cache "${XDG_CACHE_HOME}/npm"
-  npm config set init-module "${XDG_CONFIG_HOME}/npm/config/npm-init.js"
-  if [[ "$EUID" -gt 0 ]]; then
-    npm config set prefix "${XDG_DATA_HOME}/npm"
+  _cache="${XDG_CACHE_HOME}/npm"
+  _initmod="${XDG_CACHE_HOME}/npm"
+  _prefix="${XDG_CACHE_HOME}/npm"
+  _tmp="${XDG_CACHE_HOME}/npm"
+  cache=$(npm config get cache)
+  initmod=$(npm config get init-module)
+  prefix=$(npm config get prefix)
+  tmp=$(npm config get tmp)
+  if [[ "$_cache" != "$cache" ]]; then
+    npm config set cache "$_cache"
   fi
-  npm config set tmp "${XDG_RUNTIME_DIR}/npm"
+  if [[ "$_initmod" != "$initmod" ]]; then
+    npm config set init-module "$_initmod"
+  fi
+  if [[ "$EUID" -gt 0 ]]; then
+    if [[ "$_prefix" != "$prefix " ]]; then
+      npm config set prefix "$_prefix"
+    fi
+  fi
+  if [[ "$_tmp" != "$tmp" ]]; then
+    npm config set tmp "$_tmp"
+  fi
+  unset _cache
+  unset _initmod
+  unset _prefix
+  unset _tmp
+  unset cache
+  unset initmod
+  unset prefix
+  unset tmp
 fi
 
 # define configuration path for postgresql
