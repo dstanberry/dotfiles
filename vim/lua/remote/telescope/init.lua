@@ -74,6 +74,11 @@ require('telescope').load_extension('fzy_native')
 -- initialize modules table
 local M = {}
 
+-- show current buffer list
+function M.search_buffers()
+  require('telescope.builtin').buffers {shorten_path = false}
+end
+
 -- fuzzy search dotfiles from anywhere
 function M.search_dotfiles()
   require("telescope.builtin").find_files {
@@ -130,7 +135,7 @@ function M.installed_plugins()
 end
 
 -- find occurrences of word under cursor in all files
-function M.grep_files()
+function M.grep_cursor()
   require("telescope.builtin").grep_string {
     shorten_path = true,
     -- search = vim.fn.input("grep: "),
@@ -140,8 +145,8 @@ function M.grep_files()
   }
 end
 
--- grep all files in cwd
-function M.grep_all_files()
+-- grep for arbitrary pattern in cwd
+function M.grep_cwd()
   require("telescope.builtin").find_files {
     find_command = {'rg', '--no-ignore', '--files'},
     prompt_title = "Grep Pattern",
