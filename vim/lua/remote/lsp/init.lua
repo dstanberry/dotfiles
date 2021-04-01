@@ -21,7 +21,9 @@ end
 
 -- define buffer local features
 local on_attach_vim = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_keymap(...)
+    vim.api.nvim_buf_set_keymap(bufnr, ...)
+  end
   -- define keybind for document formatting if supported by server
   local opts = {noremap = true, silent = true}
   if client.resolved_capabilities.document_formatting or

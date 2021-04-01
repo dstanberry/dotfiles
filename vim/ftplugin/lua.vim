@@ -1,5 +1,5 @@
 " set maximum allowed text width
-setlocal textwidth=120
+setlocal textwidth=80
 
 " convert tab to whitespace
 setlocal expandtab
