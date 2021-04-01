@@ -1,5 +1,5 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => FZF Configuration
+" => fzf configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " define default options
 if executable('bat')
@@ -26,3 +26,10 @@ endfunction
 
 " map custom function to a command
 command! -nargs=* -bang RG call fzf#rg(<q-args>, <bang>0)
+
+" fzf: search files available in the current directory
+nnoremap <localleader>ff :Files<cr>
+" fzf: search git files available in the current directory
+nnoremap <localleader>fg :GFiles<cr>
+" fzf: search all currently open file buffers
+nnoremap <localleader>fb :Buffers<cr>

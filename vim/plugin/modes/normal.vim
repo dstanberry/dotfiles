@@ -115,18 +115,6 @@ nnoremap <silent> <leader>_ :resize -5<cr>
 nmap <leader>zz :call  functions#trim()<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Normal | Plugins
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" select text to use ad $TM_SELECTED_TEXT in the next snippet
-nmap s <plug>(vsnip-select-text)
-" cut text to use ad $TM_SELECTED_TEXT in the next snippet
-nmap S <plug>(vsnip-cut-text)
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Normal | Leader | Plugins
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " define a maplocalleader for more key combinations
@@ -134,25 +122,3 @@ let maplocalleader='\'
 
 " create/edit file within the current directory
 nnoremap <localleader>e :edit <c-r>=expand('%:p:h') . '/'<cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Normal | Local Leader | Plugins
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" fzf: search files available in the current directory
-nnoremap <localleader>ff :Files<cr>
-" fzf: search git files available in the current directory
-nnoremap <localleader>fg :GFiles<cr>
-" fzf: search all currently open file buffers
-nnoremap <localleader>fb :Buffers<cr>
-
-"vim-fugitive: execute git diff
-nnoremap <localleader>gd :GVdiff<cr>
-
-"vim-fugitive: execute git status
-nnoremap <localleader>gs :Gstatus<cr>
-
-"vim-fugitive: resolve git conflict using left hunk
-nnoremap <localleader>gh :diffget //2<cr>
-
-"vim-fugitive: resolve git conflict using right hunk
-nnoremap <localleader>gl :diffget //3<cr>
