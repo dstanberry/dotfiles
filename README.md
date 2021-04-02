@@ -69,6 +69,8 @@ Dependencies
 
 [Bat](https://github.com/sharkdp/bat) (required by delta and fzf)
 
+[Patched Font](https://www.nerdfonts.com) (optional)
+
 [Vim](https://github.com/vim/vim) can be compiled with support for Lua, Perl, Python and Ruby.
 
 [Neovim](https://github.com/neovim/neovim) supports remote plugins written in the same set of languages, but they need to be installed separately. Currently the necessary packages can be pulled in without too much effort.
@@ -84,20 +86,13 @@ Read through `scripts/packages/npm.txt`, `scripts/packages/pip.txt`, `scripts/pa
     tmp=${XDG_RUNTIME_DIR}/npm
     init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
     ```
-
-
-  Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
- 
+    Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
 - Perl
    - _currently not in use_ 
-
 - Python
    - pip (should be installed with Python) `python -m pip --version`
    - pipdeptree (required to manage package dependency graph) `pip install pipdeptree`
-
   Run `pip load` to install/update the files listed in `scripts/packages/pip.txt`
- 
 - Ruby
    - gem (should be installed with Ruby) `gem --version`
-
   Run `gem load` to install the files listed in `scripts/packages/gem.txt`
