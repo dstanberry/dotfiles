@@ -20,6 +20,11 @@ vnoremap / /\v
 " allow semi-colon to enter command mode
 vmap ; :
 
+" move selection to the beginning of the current line
+nnoremap H ^
+" move selection to the end of the current line
+nnoremap L g_
+
 " move selection vertically within buffer
 vnoremap <silent> K :call visual#move_up()<cr>
 vnoremap <silent> J :call visual#move_down()<cr>
