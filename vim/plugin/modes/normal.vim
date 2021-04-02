@@ -36,10 +36,6 @@ nnoremap / /\v
 " allow semi-colon to enter command mode
 nnoremap ; :
 
-" show directory of current file in explorer
-nnoremap <silent>
-	  \ - :silent edit <c-r>=empty(expand('%')) ? '.' : expand('%:p:h')<cr><cr>
-
 " switch to next buffer
 nnoremap <silent> <tab> :bnext<cr>
 " switch to previous buffer

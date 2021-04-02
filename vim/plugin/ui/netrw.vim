@@ -14,3 +14,7 @@ let g:netrw_banner=0
 let g:netrw_liststyle=3
 " open file in existing window
 let g:netrw_browse_split=0
+
+" show directory of current file in explorer
+" nnoremap <silent>
+" 	  \ - :silent edit <c-r>=empty(expand('%')) ? '.' : expand('%:p:h')<cr><cr>

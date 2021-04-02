@@ -30,6 +30,9 @@ Plug 'wincent/loupe'
 " file-type aware comments
 Plug 'tpope/vim-commentary'
 
+" fast and minimalist file explorer
+Plug 'justinmk/vim-dirvish'
+
 " create file and parent direcory at the same time
 Plug 'duggiefresh/vim-easydir'
 
@@ -102,7 +105,6 @@ if has('nvim')
   Plug 'nvim-telescope/telescope.nvim'
   " pre-compiled fzy sorter
   Plug 'nvim-telescope/telescope-fzy-native.nvim'
-
   " add file-type icons (requires patched font)
   Plug 'kyazdani42/nvim-web-devicons'
 endif
