@@ -102,6 +102,9 @@ if has('nvim')
   Plug 'nvim-telescope/telescope.nvim'
   " pre-compiled fzy sorter
   Plug 'nvim-telescope/telescope-fzy-native.nvim'
+
+  " add file-type icons (requires patched font)
+  Plug 'kyazdani42/nvim-web-devicons'
 endif
 " }}}
 

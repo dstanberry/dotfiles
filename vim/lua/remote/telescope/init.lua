@@ -46,7 +46,7 @@ require('telescope').setup {
     sorting_strategy = "descending",
     scroll_strategy = "cycle",
     prompt_position = "bottom",
-    color_devicons = false,
+    color_devicons = true,
     mappings = {
       i = {
         ["<C-x>"] = false,
