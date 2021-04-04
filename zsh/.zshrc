@@ -116,7 +116,7 @@ if is_wsl; then
   for file in "${CONFIG_HOME}"/wsl/*; do
     f=$(basename "$file")
     if [ ! -L "${HOME}"/.local/bin/"$f" ]; then
-      ln -s "$file" "${HOME}"/.local/bin/"$file"
+      ln -s "$file" "${HOME}"/.local/bin/"$f"
     fi
   done
 fi
@@ -125,7 +125,7 @@ fi
 for file in "${CONFIG_HOME}"/bin/*; do
   f=$(basename "$file")
   if [ ! -L "${HOME}"/.local/bin/"$f" ]; then
-    ln -s "$file" "${HOME}"/.local/bin/"$file"
+    ln -s "$file" "${HOME}"/.local/bin/"$f"
   fi
 done
 
