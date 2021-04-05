@@ -147,9 +147,10 @@ end
 
 -- grep for arbitrary pattern in cwd
 function M.grep_cwd()
-  require("telescope.builtin").find_files {
-    find_command = {'rg', '--no-ignore', '--files'},
-    prompt_title = "Grep Pattern",
+  require("telescope.builtin").grep_string {
+    shorten_path = true,
+    search = vim.fn.input("grep: "),
+    prompt_title = "Filter Results",
     preview_title = false,
     results_title = false
   }
