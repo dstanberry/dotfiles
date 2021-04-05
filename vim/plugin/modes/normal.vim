@@ -66,9 +66,6 @@ nnoremap q <nop>
 " avoid unintentional switches to Ex mode.
 nnoremap Q <nop>
 
-" discard changes to all files and close window
-nnoremap QQ ZQ
-
 " yank to end of line
 noremap Y y$
 
@@ -87,7 +84,7 @@ nnoremap <leader>w :update<cr>
 nnoremap <leader>q :quit<cr>
 
 " close the current buffer
-nnoremap <silent> <leader>d :bdelete<cr>
+nnoremap <silent> <leader>z :bdelete<cr>
 
 " switch to left window
 nmap <silent> <leader>h :wincmd h<cr>
@@ -107,9 +104,6 @@ nnoremap <silent> <leader>+ :resize +5<cr>
 " decrement window height
 nnoremap <silent> <leader>_ :resize -5<cr>
 
-" trim trailing whitespace
-nmap <leader>zz :call  functions#trim()<cr>
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -118,3 +112,9 @@ let maplocalleader='\'
 
 " create/edit file within the current directory
 nnoremap <localleader>e :edit <c-r>=expand('%:p:h') . '/'<cr>
+
+" trim trailing whitespace
+nnoremap <localleader>ff :call  functions#trim()<cr>
+
+" discard changes to all files and close window
+nnoremap <localleader>qq ZQ
