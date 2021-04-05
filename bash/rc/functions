@@ -133,7 +133,7 @@ function headers() {
 function luarocks() {
   local PKG=$CONFIG_HOME/shared/packages/luarocks.txt
   if [ "$1" = "load" ]; then
-    < "$PKG" xargs command "luarocks" install --local
+    < "$PKG" xargs "luarocks" --tree="${XDG_DATA_HOME}/luarocks" install
   else
     command luarocks "$@"
   fi
