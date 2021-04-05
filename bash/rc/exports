@@ -201,3 +201,9 @@ fi
 
 # define configuration path for wget
 export WGETRC="$CONFIG_HOME/wget/wgetrc"
+if [ ! -d "${CONFIG_HOME}/wget/" ]; then
+  mkdir -p "${CONFIG_HOME}"/wget
+fi
+if [ ! -s "${CONFIG_HOME}/wget/wgetrc" ]; then
+  echo hsts-file \= "$XDG_CACHE_HOME"/wget-hsts >> "$XDG_CONFIG_HOME/wget/wgetrc"
+fi
