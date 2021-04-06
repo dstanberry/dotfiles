@@ -9,6 +9,64 @@ endif
 
 let g:loaded_statusline = 1
 
+function! statusline#is_readonly() abort
+  if &readonly || !&modifiable
+    return '∅'
+  else
+    return ''
+  endif
+endfunction
+
+function! statusline#get_filetype() abort
+  if strlen(&ft)
+    return &ft
+  else
+    return ''
+  endif
+endfunction
+
+function! statusline#get_filepath() abort
+  return expand('%:p:h')
+endfunction
+
+function! statusline#get_relative_filepath() abort
+  let path = expand('%:h')
+  if (path == '.')
+    return ''
+  elseif (path == '')
+    return ''
+  else
+    return path . '/'
+  endif
+endfunction
+
+function! statusline#get_fileformat() abort
+  let format = ''
+  let encoding = ''
+  if strlen(&ff) && &ff !=# 'unix'
+    let format = &ff
+  endif
+  if strlen(&fenc) && &fenc !=# 'utf-8'
+    let encoding = &fenc
+  endif
+
+  if format != '' && encoding != ''
+    return ',' . join([format, encoding], ',')
+  elseif format == '' && encoding == ''
+    return ''
+  else
+    return ',' . format . encoding
+  endif
+endfunction
+
+function! statusline#show_modified() abort
+  if &modified == 1
+    return '●'
+  else
+    return ''
+  endif
+endfunction
+
 function! statusline#focus()
   " initialize statusline
   let l:statusline = ''
@@ -29,11 +87,11 @@ function! statusline#focus()
     let l:statusline .= '📋'
   endif
   " relative file path
-  let l:statusline .= '%1* %{functions#get_relative_filepath()}'
+  let l:statusline .= '%1* %{statusline#get_relative_filepath()}'
   " filename
   let l:statusline .= '%2*%t%*'
   " modified
-  let l:statusline .= '%2* %{functions#show_modified()}'
+  let l:statusline .= '%2* %{statusline#show_modified()}'
   " right-hand side
   let l:statusline .= '%='
   let l:prefix = ''
@@ -55,25 +113,25 @@ function! statusline#focus()
     let l:prefix .= '%#Custom5#'
   endif
   " read-only indicator
-  let l:readonly=functions#is_readonly()
+  let l:readonly=statusline#is_readonly()
   if l:readonly != ''
-    let l:statusline .= '%(%{functions#is_readonly()}%)'
+    let l:statusline .= '%(%{statusline#is_readonly()}%)'
   endif
   " filetype
-  let l:ft=functions#get_filetype()
+  let l:ft=statusline#get_filetype()
   if l:ft != ''
     if l:readonly != ''
       let l:statusline .= '%#SpecialText# • ' . l:prefix
     endif
-    let l:statusline .= '%(%{functions#get_filetype()}%)'
+    let l:statusline .= '%(%{statusline#get_filetype()}%)'
   endif
   " file format and encoding (if not unix || utf-8)
-  let l:ff=functions#get_fileformat()
+  let l:ff=statusline#get_fileformat()
   if l:ff != ''
     if l:ft != ''
       let l:statusline .= '%#SpecialText# • ' . l:prefix
     endif
-    let l:statusline .= '%(%{functions#get_fileformat()}%)'
+    let l:statusline .= '%(%{statusline#get_fileformat()}%)'
   endif
   if l:readonly != '' || l:ft != '' || l:ff != ''
     let l:statusline .= ' '
@@ -87,11 +145,11 @@ function! statusline#dim()
   " initialize statusline
   let l:statusline = ''
   " relative file path
-  let l:statusline .= '%3*  %{functions#get_relative_filepath()}'
+  let l:statusline .= '%3*  %{statusline#get_relative_filepath()}'
   " filename
   let l:statusline .= '%3*%t%*'
   " modified
-  let l:statusline .= '%3* %{functions#show_modified()}'
+  let l:statusline .= '%3* %{statusline#show_modified()}'
   " right-hand side
   let l:statusline .= '%='
   return l:statusline
@@ -121,7 +179,7 @@ function! statusline#set_explorer()
   " initialize statusline
   let l:statusline = ''
   " relative file path
-  let l:statusline .= '%3* %{functions#get_filepath()}'
+  let l:statusline .= '%3* %{statusline#get_filepath()}'
   " right-hand side
   let l:statusline .= '%='
 

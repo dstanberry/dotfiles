@@ -1,8 +1,9 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Ad hoc definitions for (neo)vim settings
+" => Functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 scriptencoding utf-8
 
+" entrypoint
 function! functions#init() abort
   " ensure XDG_CACHE_HOME is defined
   if empty($XDG_CACHE_HOME)
@@ -65,9 +66,7 @@ function! functions#init() abort
   endif
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Lazy Loading of expensive operations
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" lazy loading of expensive operations
 function! functions#idleboot() abort
   " make sure functions#idleboot is called only once.
   augroup DeferInit
@@ -79,6 +78,7 @@ function! functions#idleboot() abort
   autocmd! User LazyLoad
 endfunction
 
+" lazy loading of expensive operations
 function! functions#defer(evalable) abort
   if has('autocmd') && has('vim_starting')
     execute 'autocmd User LazyLoad ' . a:evalable
@@ -87,9 +87,7 @@ function! functions#defer(evalable) abort
   endif
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => String Substitution
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" string substitution
 function! functions#substitute(pattern, replacement, flags) abort
   let l:number=1
   for l:line in getline(1, '$')
@@ -98,16 +96,12 @@ function! functions#substitute(pattern, replacement, flags) abort
   endfor
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Wrapper to trim whitespace
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" trim whitespace
 function! functions#trim() abort
   call functions#substitute('\s\+$', '', '')
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Restore Cursor Position
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"  restore cursor position
 function! functions#restore_cursor_position()
   if &filetype !=# 'netrw' && &filetype !=# 'help'
     if line("'\"") <= line('$')
@@ -117,78 +111,13 @@ function! functions#restore_cursor_position()
   endif
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => File Properties and Metadata
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! functions#is_readonly() abort
-  if &readonly || !&modifiable
-    return '∅'
-  else
-    return ''
-  endif
-endfunction
 
-function! functions#get_filetype() abort
-  if strlen(&ft)
-    return &ft
-  else
-    return ''
-  endif
-endfunction
-
-function! functions#get_filepath() abort
-  return expand('%:p:h')
-endfunction
-
-function! functions#get_relative_filepath() abort
-  let path = expand('%:h')
-  if (path == '.')
-    return ''
-  elseif (path == '')
-    return ''
-  else
-    return path . '/'
-  endif
-endfunction
-
-function! functions#get_fileformat() abort
-  let format = ''
-  let encoding = ''
-  if strlen(&ff) && &ff !=# 'unix'
-    let format = &ff
-  endif
-  if strlen(&fenc) && &fenc !=# 'utf-8'
-    let encoding = &fenc
-  endif
-
-  if format != '' && encoding != ''
-    return ',' . join([format, encoding], ',')
-  elseif format == '' && encoding == ''
-    return ''
-  else
-    return ',' . format . encoding
-  endif
-endfunction
-
-function! functions#show_modified() abort
-  if &modified == 1
-    return '●'
-  else
-    return ''
-  endif
-endfunction
-
-function! functions#show_metadata() abort
-  return functions#is_readonly().functions#get_filetype().functions#get_fileformat()
-endfunction
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Color Manipulation
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" color manipulation
 let s:patterns = {}
 let s:patterns['hex']      = '\v#?(\x{2})(\x{2})(\x{2})'
 let s:patterns['shortHex'] = '\v#(\x{1})(\x{1})(\x{1})'
 
+" convert rgb to hex
 function! functions#rgb_to_hex (...)
   let [r, g, b] = ( a:0==1 ? a:1 : a:000 )
   let num = printf('%02x', float2nr(r)) . ''
@@ -197,6 +126,7 @@ function! functions#rgb_to_hex (...)
   return '#' . num
 endfunction
 
+" convert hex to rgb
 function! functions#hex_to_rgb (color)
   if type(a:color) == 2
     let color = printf('%x', a:color)
@@ -223,6 +153,7 @@ function! functions#hex_to_rgb (color)
   return [r, g, b]
 endfunction
 
+" lighten color (#rrggbb)
 function! functions#lighten(color, ...)
   let amount = a:0 ?
         \(type(a:1) < 2 ?
@@ -243,6 +174,7 @@ function! functions#lighten(color, ...)
   return hex
 endfunction
 
+" darken color (#rrggbb)
 function! functions#darken(color, ...)
   let amount = a:0 ?
         \(type(a:1) < 2 ?
@@ -266,21 +198,18 @@ function! functions#darken(color, ...)
   return hex
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Check file for disk changes
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" check file for disk changes
 function! functions#check_file(timer)
   silent! checktime
   call timer_start(1000, 'functions#check_file')
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Base64 Encoding
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" convert string to bytes
 function! functions#str_to_bytes(str)
   return map(range(len(a:str)), 'char2nr(a:str[v:val])')
 endfunction
 
+" base64 encode string
 function! functions#b64_encode(str)
   let s:b64_table = [
         \ 'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P',
@@ -312,9 +241,7 @@ function! functions#b64_encode(str)
   return join(b64, '')
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Save and execute vim/lua file
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" save and execute vim/lua file
 function! functions#load_file() abort
   if &filetype ==# 'vim'
     :silent! write
@@ -326,9 +253,7 @@ function! functions#load_file() abort
   return
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => LSP send diagnostics info to loclist
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" lsp send diagnostics info to loclist
 function! functions#vim_lsp_diagnostic_set_loclist() abort
   if has('nvim')
     lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
