@@ -78,13 +78,15 @@ Dependencies
 Read through all the txt files in `shared/packages` and remove delete any lines that contain unwanted packages before running any of the `load` commands.
 
 - Go
+  - install through package manager
   Run `go load` to install/update the files listed in `scripts/packages/go.txt`
 
 - Luarocks
+  - install through package manager
   Run `luarocks load` to install/update the files listed in `scripts/packages/luarocks.txt`
 
 - NodeJS
-   - npm (should be installed with nodejs) `npm --version`
+  - npm (should be installed with nodejs otherwise install through package manager) `npm --version`
    - If npm is installed, the following will be enforced in npm's configuration file:
     ```
     prefix=${XDG_DATA_HOME}/npm
