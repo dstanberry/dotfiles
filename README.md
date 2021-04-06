@@ -79,28 +79,28 @@ Read through all the txt files in `shared/packages` and remove delete any lines 
 
 - Go
   - install through package manager
-  Run `go load` to install/update the files listed in `scripts/packages/go.txt`
+  - Run `go load` to install/update the files listed in `scripts/packages/go.txt`
 
 - Luarocks
   - install through package manager
-  Run `luarocks load` to install/update the files listed in `scripts/packages/luarocks.txt`
+  - Run `luarocks load` to install/update the files listed in `scripts/packages/luarocks.txt`
 
 - NodeJS
   - npm (should be installed with nodejs otherwise install through package manager) `npm --version`
-   - If npm is installed, the following will be enforced in npm's configuration file:
+  - If npm is installed, the following will be enforced in npm's configuration file:
     ```
     prefix=${XDG_DATA_HOME}/npm
     cache=${XDG_CACHE_HOME}/npm
     tmp=${XDG_RUNTIME_DIR}/npm
     init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
     ```
-    Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
+  - Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
 - Perl
-   - _currently not in use_ 
+  - _currently not in use_ 
 - Python
-   - pip (should be installed with Python) `python -m pip --version`
-   - pipdeptree (required to manage package dependency graph) `pip install pipdeptree`
-  Run `pip load` to install/update the files listed in `scripts/packages/pip.txt`
+  - pip (should be installed with Python) `python -m pip --version`
+  - pipdeptree (required to manage package dependency graph) `pip install pipdeptree`
+  - Run `pip load` to install/update the files listed in `scripts/packages/pip.txt`
 - Ruby
-   - gem (should be installed with Ruby) `gem --version`
-  Run `gem load` to install the files listed in `scripts/packages/gem.txt`
+  - gem (should be installed with Ruby) `gem --version`
+  - Run `gem load` to install the files listed in `scripts/packages/gem.txt`
