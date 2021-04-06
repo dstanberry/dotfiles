@@ -24,6 +24,7 @@ function! statusline#focus()
   elseif mode() ==? 'c'
     let l:statusline .= '%#Custom5#▊'
   endif
+  let l:statusline .= ' %n'
   if &paste == 1
     let l:statusline .= '📋'
   endif
