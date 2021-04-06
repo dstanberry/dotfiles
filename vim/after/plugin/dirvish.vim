@@ -17,8 +17,8 @@ augroup DirvishConfig
   autocmd FileType dirvish
         \ silent! nnoremap <nowait><silent><buffer> -
         \ :<c-u>.call dirvish#open('edit', 0)<cr>
-  if has('nvim')
-    autocmd FileType dirvish
-          \ call dirvish#add_icon_fn({ p -> s:get_icon(p) })
-  endif
+  " if has('nvim')
+  "   autocmd FileType dirvish
+  "         \ call dirvish#add_icon_fn({ p -> s:get_icon(p) })
+  " endif
 augroup END
