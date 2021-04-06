@@ -75,7 +75,13 @@ Dependencies
 
 [Neovim](https://github.com/neovim/neovim) supports remote plugins written in the same set of languages, but they need to be installed separately. Currently the necessary packages can be pulled in without too much effort.
 
-Read through `scripts/packages/npm.txt`, `scripts/packages/pip.txt`, `scripts/packages/gem.txt` and remove delete any lines that contain unwanted packages before running any of the `load` commands.
+Read through all the txt files in `shared/packages` and remove delete any lines that contain unwanted packages before running any of the `load` commands.
+
+- Go
+  Run `go load` to install/update the files listed in `scripts/packages/go.txt`
+
+- Luarocks
+  Run `luarocks load` to install/update the files listed in `scripts/packages/luarocks.txt`
 
 - NodeJS
    - npm (should be installed with nodejs) `npm --version`
