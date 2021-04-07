@@ -75,15 +75,17 @@ function! functions#idleboot() abort
 
   " make sure deferred tasks are run exactly once.
   doautocmd User LazyLoad
-  autocmd! User LazyLoad
+  augroup Singleton
+    autocmd! User LazyLoad
+  augroup END
 endfunction
 
 " lazy loading of expensive operations
-function! functions#defer(evalable) abort
+function! functions#defer(callable) abort
   if has('autocmd') && has('vim_starting')
-    execute 'autocmd User LazyLoad ' . a:evalable
+    execute 'autocmd User LazyLoad ' . a:callable
   else
-    execute a:evalable
+    execute a:callable
   endif
 endfunction
 
