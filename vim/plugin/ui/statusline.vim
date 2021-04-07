@@ -43,22 +43,15 @@ endfunction
 function! statusline#get_fileformat() abort
   let format = ''
   let encoding = ''
-  if strlen(&ff)
-    if &ff ==# 'unix'
-      " let format = 'LF'
-      let format = ''
-    elseif &ff ==# 'dos'
-      let format = 'CRLF'
-    else
-      let format = toupper(&ff)
-    endif
+  if strlen(&ff) && &ff !=# 'unix'
+      let format = &ff
   endif
   if strlen(&fenc) && &fenc !=# 'utf-8'
-    let encoding = toupper(&fenc)
+    let encoding = &fenc
   endif
 
   if format != '' && encoding != ''
-    return join([format, encoding], ' ')
+    return join([format, encoding], ' | ')
   else
     return format . encoding
   endif
@@ -121,13 +114,13 @@ function! statusline#focus()
   let l:readonly=statusline#is_readonly()
   let l:statusline .= '%#Custom00#%{statusline#is_readonly()}'
   if l:readonly != ''
-    let l:statusline .= ' '
+    let l:statusline .= ' | '
   endif
   " file format and encoding (if not unix || utf-8)
   let l:ff=statusline#get_fileformat()
   let l:statusline .= '%#Custom0#%{statusline#get_fileformat()}'
   if l:readonly != '' || l:ff != ''
-    let l:statusline .= '  '
+    let l:statusline .= ' | '
   endif
   " filetype
   let l:ft=statusline#get_filetype()
