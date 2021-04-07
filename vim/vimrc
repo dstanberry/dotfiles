@@ -77,6 +77,9 @@ if has('nvim')
   " preview/browse json files with ease
   Plug 'gennaro-tedesco/nvim-jqx'
 
+  " add file-type icons (requires patched font)
+  Plug 'kyazdani42/nvim-web-devicons'
+
   " parser generator tool
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
   " easily identify nested parentheses
@@ -105,8 +108,6 @@ if has('nvim')
   Plug 'nvim-telescope/telescope.nvim'
   " pre-compiled fzy sorter
   Plug 'nvim-telescope/telescope-fzy-native.nvim'
-  " add file-type icons (requires patched font)
-  Plug 'kyazdani42/nvim-web-devicons'
 endif
 " }}}
 
