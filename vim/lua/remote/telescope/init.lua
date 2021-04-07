@@ -111,6 +111,15 @@ function M.search_cwd()
   }
 end
 
+-- fuzzy find within git repository
+function M.search_git_repo()
+  require('telescope.builtin').find_files {
+    previewer = false,
+    layout_strategy = "vertical",
+    cwd = require('nvim_lsp.util').root_pattern(".git")(vim.fn.expand("%:p"))
+  }
+end
+
 -- customize generic file browser
 function M.file_browser()
   require("telescope.builtin").file_browser {
@@ -164,20 +173,21 @@ function M.git_files()
       winblend = 10,
       border = true,
       previewer = false,
-      results_title = false
+      results_title = false,
+      prompt_title = "Find in Project"
     })
 end
 
 -- fuzzy find text within current buffer
 function M.current_buffer()
-  local opts = themes.get_dropdown {
-    winblend = 10,
-    border = true,
-    previewer = false,
-    shorten_path = false,
-    prompt_title = "Find in File"
-  }
-  require('telescope.builtin').current_buffer_fuzzy_find(opts)
+  require("telescope.builtin").current_buffer_fuzzy_find(
+    themes.get_dropdown {
+      winblend = 10,
+      border = true,
+      previewer = false,
+      shorten_path = false,
+      prompt_title = "Find in File"
+    })
 end
 
 -- search help files
