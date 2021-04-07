@@ -1,7 +1,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Custom Terminal Theme
+" => Terminal Theme
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" UI color definitions
+" color definitions
 let s:gui00        = '373737' " #373737
 let g:base16_gui00 = '373737' " #373737
 let s:gui01        = '404040' " #404040
@@ -35,7 +35,7 @@ let g:base16_gui0E = 'a4799d' " #a4799d
 let s:gui0F        = 'b04b57' " #b04b57
 let g:base16_gui0F = 'b04b57' " #b04b57
 
-" Terminal color definitions
+" terminal color definitions
 let s:cterm00        = '00'
 let g:base16_cterm00 = '00'
 let s:cterm03        = '08'
@@ -84,7 +84,7 @@ else
   let g:base16_cterm0F = '14'
 endif
 
-" Neovim terminal colours
+" neovim terminal colours
 if has('nvim')
   let g:terminal_color_0 =  '#373737'
   let g:terminal_color_1 =  '#b04b57'
@@ -129,13 +129,13 @@ elseif has('terminal')
         \ ]
 endif
 
-" Theme setup
+" theme setup
 hi clear
 syntax reset
 let g:colors_name = 'kdark'
 
-" Highlighting function
-" Optional variables are attributes and guisp
+" highlighting function
+" optional variables are attributes and guisp
 function! kdark#highlight(group, guifg, guibg, ctermfg, ctermbg, ...)
   let l:attr = get(a:, 1, '')
   let l:guisp = get(a:, 2, '')
@@ -166,7 +166,7 @@ endfunction
 
 let s:gui10 = substitute(functions#darken(s:gui02, 40), '#', '', 'g')
 
-" Vim editor colors
+" vim editor colors
 call <sid>hi('Normal',        s:gui05, s:gui00, s:cterm05, s:cterm00, '', '')
 call <sid>hi('Bold',          '', '', '', '', 'bold', '')
 call <sid>hi('Debug',         s:gui08, '', s:cterm08, '', '', '')
@@ -210,16 +210,14 @@ call <sid>hi('PMenu',         s:gui05, s:gui10, s:cterm05, s:cterm01, 'none', ''
 call <sid>hi('PMenuSel',      s:gui01, s:gui05, s:cterm01, s:cterm05, '', '')
 
 " vim tabline colors
-let s:tl00 = substitute(functions#darken(s:gui00, 40), '#', '', 'g')
-
-call <sid>hi('TabLine',       s:gui03, s:tl00, s:cterm03, s:cterm01, 'none', '')
-call <sid>hi('TabLineFill',   s:gui03, s:tl00, s:cterm03, s:cterm01, 'none', '')
+call <sid>hi('TabLine',       s:gui03, s:gui02, s:cterm03, s:cterm01, 'none', '')
+call <sid>hi('TabLineFill',   s:gui03, s:gui02, s:cterm03, s:cterm01, 'none', '')
 call <sid>hi('TabLineSel',    s:gui05, s:gui00, s:cterm0B, s:cterm01, 'none', '')
 
-" Neovim syntax highlighting
+" neovim syntax highlighting
 call <sid>hi('NvimInternalError', s:gui0F, s:gui00, s:cterm0F, s:cterm00, '', '')
 
-" Standard syntax highlighting
+" standard syntax highlighting
 call <sid>hi('Boolean',      s:gui09, '', s:cterm09, '', '', '')
 call <sid>hi('Character',    s:gui08, '', s:cterm08, '', '', '')
 call <sid>hi('Comment',      s:gui03, '', s:cterm03, '', 'italic', '')
@@ -248,11 +246,11 @@ call <sid>hi('Todo',         s:gui0A, s:gui01, s:cterm0A, s:cterm01, '', '')
 call <sid>hi('Type',         s:gui0A, '', s:cterm0A, '', 'none', '')
 call <sid>hi('Typedef',      s:gui0A, '', s:cterm0A, '', '', '')
 
-" C highlighting
+" c highlighting
 call <sid>hi('cOperator',   s:gui0C, '', s:cterm0C, '', '', '')
 call <sid>hi('cPreCondit',  s:gui0E, '', s:cterm0E, '', '', '')
 
-" C# highlighting
+" c# highlighting
 call <sid>hi('csClass',                 s:gui0A, '', s:cterm0A, '', '', '')
 call <sid>hi('csAttribute',             s:gui0A, '', s:cterm0A, '', '', '')
 call <sid>hi('csModifier',              s:gui0E, '', s:cterm0E, '', '', '')
@@ -261,12 +259,12 @@ call <sid>hi('csUnspecifiedStatement',  s:gui0D, '', s:cterm0D, '', '', '')
 call <sid>hi('csContextualStatement',   s:gui0E, '', s:cterm0E, '', '', '')
 call <sid>hi('csNewDecleration',        s:gui08, '', s:cterm08, '', '', '')
 
-" CSS highlighting
+" css highlighting
 call <sid>hi('cssBraces',      s:gui05, '', s:cterm05, '', '', '')
 call <sid>hi('cssClassName',   s:gui0E, '', s:cterm0E, '', '', '')
 call <sid>hi('cssColor',       s:gui0C, '', s:cterm0C, '', '', '')
 
-" Diff highlighting
+" diff highlighting
 call <sid>hi('DiffAdd',      s:gui0B, s:gui00,  s:cterm0B, s:cterm01, '', '')
 call <sid>hi('DiffChange',   s:gui09, s:gui00,  s:cterm03, s:cterm01, '', '')
 call <sid>hi('DiffDelete',   s:gui0F, s:gui00,  s:cterm08, s:cterm01, '', '')
@@ -277,7 +275,7 @@ call <sid>hi('DiffNewFile',  s:gui0B, s:gui00,  s:cterm0B, s:cterm00, '', '')
 call <sid>hi('DiffLine',     s:gui0D, s:gui00,  s:cterm0D, s:cterm00, '', '')
 call <sid>hi('DiffRemoved',  s:gui0F, s:gui00,  s:cterm08, s:cterm00, '', '')
 
-" Git highlighting
+" git highlighting
 call <sid>hi('gitcommitBlank',          s:gui05, '', s:cterm05, '', '', '')
 call <sid>hi('gitcommitOverflow',       s:gui08, '', s:cterm08, '', '', '')
 call <sid>hi('gitcommitSummary',        s:gui0B, '', s:cterm0B, '', '', '')
@@ -295,22 +293,22 @@ call <sid>hi('gitcommitUnmergedFile',   s:gui08, '', s:cterm08, '', 'bold', '')
 call <sid>hi('gitcommitDiscardedFile',  s:gui08, '', s:cterm08, '', 'bold', '')
 call <sid>hi('gitcommitSelectedFile',   s:gui0B, '', s:cterm0B, '', 'bold', '')
 
-" GitGutter highlighting
+" git gutter highlighting
 call <sid>hi('GitGutterAdd',     s:gui0B, s:gui01, s:cterm0B, s:cterm01, '', '')
 call <sid>hi('GitGutterChange',  s:gui0D, s:gui01, s:cterm0D, s:cterm01, '', '')
 call <sid>hi('GitGutterDelete',  s:gui08, s:gui01, s:cterm08, s:cterm01, '', '')
 call <sid>hi('GitGutterChangeDelete',  s:gui0E, s:gui01, s:cterm0E, s:cterm01, '', '')
 
-" HTML highlighting
+" html highlighting
 call <sid>hi('htmlBold',    s:gui0A, '', s:cterm0A, '', '', '')
 call <sid>hi('htmlItalic',  s:gui0E, '', s:cterm0E, '', '', '')
 call <sid>hi('htmlEndTag',  s:gui05, '', s:cterm05, '', '', '')
 call <sid>hi('htmlTag',     s:gui05, '', s:cterm05, '', '', '')
 
-" Java highlighting
+" java highlighting
 call <sid>hi('javaOperator',     s:gui0D, '', s:cterm0D, '', '', '')
 
-" JavaScript highlighting
+" javascript highlighting
 call <sid>hi('javaScript',        s:gui05, '', s:cterm05, '', '', '')
 call <sid>hi('javaScriptBraces',  s:gui05, '', s:cterm05, '', '', '')
 call <sid>hi('javaScriptNumber',  s:gui09, '', s:cterm09, '', '', '')
@@ -331,7 +329,7 @@ call <sid>hi('jsGlobalNodeObjects', s:gui0A, '', s:cterm0A, '', '', '')
 call <sid>hi('jsExceptions',        s:gui0A, '', s:cterm0A, '', '', '')
 call <sid>hi('jsBuiltins',          s:gui0A, '', s:cterm0A, '', '', '')
 
-" Mail highlighting
+" mail highlighting
 call <sid>hi('mailQuoted1',  s:gui0A, '', s:cterm0A, '', '', '')
 call <sid>hi('mailQuoted2',  s:gui0B, '', s:cterm0B, '', '', '')
 call <sid>hi('mailQuoted3',  s:gui0E, '', s:cterm0E, '', '', '')
@@ -341,25 +339,25 @@ call <sid>hi('mailQuoted6',  s:gui0A, '', s:cterm0A, '', '', '')
 call <sid>hi('mailURL',      s:gui0D, '', s:cterm0D, '', '', '')
 call <sid>hi('mailEmail',    s:gui0D, '', s:cterm0D, '', '', '')
 
-" Markdown highlighting
+" markdown highlighting
 call <sid>hi('markdownCode',              s:gui0B, '', s:cterm0B, '', '', '')
 call <sid>hi('markdownError',             s:gui05, s:gui00, s:cterm05, s:cterm00, '', '')
 call <sid>hi('markdownCodeBlock',         s:gui0B, '', s:cterm0B, '', '', '')
 call <sid>hi('markdownHeadingDelimiter',  s:gui0D, '', s:cterm0D, '', '', '')
 
-" PHP highlighting
+" php highlighting
 call <sid>hi('phpMemberSelector',  s:gui05, '', s:cterm05, '', '', '')
 call <sid>hi('phpComparison',      s:gui05, '', s:cterm05, '', '', '')
 call <sid>hi('phpParent',          s:gui05, '', s:cterm05, '', '', '')
 call <sid>hi('phpMethodsVar',      s:gui0C, '', s:cterm0C, '', '', '')
 
-" Python highlighting
+" python highlighting
 call <sid>hi('pythonOperator',  s:gui0E, '', s:cterm0E, '', '', '')
 call <sid>hi('pythonRepeat',    s:gui0E, '', s:cterm0E, '', '', '')
 call <sid>hi('pythonInclude',   s:gui0E, '', s:cterm0E, '', '', '')
 call <sid>hi('pythonStatement', s:gui0E, '', s:cterm0E, '', '', '')
 
-" Ruby highlighting
+" ruby highlighting
 call <sid>hi('rubyAttribute',               s:gui0D, '', s:cterm0D, '', '', '')
 call <sid>hi('rubyConstant',                s:gui0A, '', s:cterm0A, '', '', '')
 call <sid>hi('rubyInterpolationDelimiter',  s:gui0F, '', s:cterm0F, '', '', '')
@@ -367,24 +365,24 @@ call <sid>hi('rubyRegexp',                  s:gui0C, '', s:cterm0C, '', '', '')
 call <sid>hi('rubySymbol',                  s:gui0B, '', s:cterm0B, '', '', '')
 call <sid>hi('rubyStringDelimiter',         s:gui0B, '', s:cterm0B, '', '', '')
 
-" SASS highlighting
+" sass highlighting
 call <sid>hi('sassidChar',     s:gui08, '', s:cterm08, '', '', '')
 call <sid>hi('sassClassChar',  s:gui09, '', s:cterm09, '', '', '')
 call <sid>hi('sassInclude',    s:gui0E, '', s:cterm0E, '', '', '')
 call <sid>hi('sassMixing',     s:gui0E, '', s:cterm0E, '', '', '')
 call <sid>hi('sassMixinName',  s:gui0D, '', s:cterm0D, '', '', '')
 
-" Spelling highlighting
+" spelling highlighting
 call <sid>hi('SpellBad',     '', '', '', '', 'undercurl', s:gui08)
 call <sid>hi('SpellLocal',   '', '', '', '', 'undercurl', s:gui0C)
 call <sid>hi('SpellCap',     '', '', '', '', 'undercurl', s:gui0D)
 call <sid>hi('SpellRare',    '', '', '', '', 'undercurl', s:gui0E)
 
-" Startify highlight groups
+" startify highlight groups
 let s:sfy00 = substitute(functions#darken(s:gui09, 50), '#', '', 'g')
 let s:sfy01 = substitute(functions#darken(s:gui0D, 35), '#', '', 'g')
 
-" Startify highlighting
+" startify highlighting
 call <sid>hi('StartifyBracket',  s:sfy00, '', s:cterm03, '', '', '')
 call <sid>hi('StartifyFile',     s:gui0D, '', s:cterm07, '', '', '')
 call <sid>hi('StartifyFooter',   s:gui04, '', s:cterm03, '', '', '')
@@ -396,7 +394,7 @@ call <sid>hi('StartifySelect',   s:gui0C, '', s:cterm0C, '', '', '')
 call <sid>hi('StartifySlash',    s:sfy01, '', s:cterm03, '', '', '')
 call <sid>hi('StartifySpecial',  s:gui04, '', s:cterm03, '', '', '')
 
-" StatusLine highlight groups
+" statusline highlight groups
 let s:sl00 = substitute(functions#lighten(s:gui05, 5), '#', '', 'g')
 let s:sl01 = substitute(functions#darken(s:gui07, 20), '#', '', 'g')
 let s:sl02 = substitute(functions#darken(s:gui07, 30), '#', '', 'g')
@@ -412,14 +410,15 @@ call <sid>hi('User7',        s:gui00, s:gui08, s:cterm00, s:cterm0D, '', '')
 call <sid>hi('User8',        s:gui00, s:gui0C, s:cterm00, s:cterm0D, '', '')
 call <sid>hi('User9',        s:gui00, s:gui0F, s:cterm00, s:cterm0D, '', '')
 
-call <sid>hi('Custom1',        s:gui0B, s:gui02, s:cterm0D, s:cterm00, 'bold', '')
-call <sid>hi('Custom2',        s:gui08, s:gui02, s:cterm0D, s:cterm00, 'bold', '')
-call <sid>hi('Custom3',        s:gui0C, s:gui02, s:cterm0D, s:cterm00, 'bold', '')
-call <sid>hi('Custom4',        s:gui0F, s:gui02, s:cterm0D, s:cterm00, 'bold', '')
-call <sid>hi('Custom5',        s:gui0E, s:gui02, s:cterm0D, s:cterm00, 'bold', '')
-call <sid>hi('Custom6',        s:sl01, s:sl03, s:cterm0D, s:cterm00, 'bold', '')
+call <sid>hi('Custom00',       s:gui0F, s:gui02, s:cterm0D, s:cterm00, '', '')
+call <sid>hi('Custom0',        s:sl02, s:gui02, s:cterm0D, s:cterm00, '', '')
+call <sid>hi('Custom1',        s:gui0B, s:gui02, s:cterm0D, s:cterm00, '', '')
+call <sid>hi('Custom2',        s:gui08, s:gui02, s:cterm0D, s:cterm00, '', '')
+call <sid>hi('Custom3',        s:gui0C, s:gui02, s:cterm0D, s:cterm00, '', '')
+call <sid>hi('Custom4',        s:gui0F, s:gui02, s:cterm0D, s:cterm00, '', '')
+call <sid>hi('Custom5',        s:gui0E, s:gui02, s:cterm0D, s:cterm00, '', '')
 
-" LSP Diagnostic highlighting
+" lsp diagnostic highlighting
 call <sid>hi('LspDiagnosticsDefaultError', s:gui0F, '', s:cterm0F, '', '', '')
 call <sid>hi('LspDiagnosticsFloatingError', s:gui0F, '', s:cterm0F, '', '', '')
 call <sid>hi('LspDiagnosticsSignError', s:gui0F, s:gui00, s:cterm0F, '', '', '')
@@ -437,10 +436,10 @@ call <sid>hi('LspDiagnosticsUnderlineWarning', s:gui08, '', s:cterm08, '', 'unde
 call <sid>hi('LspDiagnosticsUnderlineHint', s:gui0E, '', s:cterm0E, '', 'underline', '')
 call <sid>hi('LspDiagnosticsUnderlineInfo', s:gui05, '', s:cterm05, '', 'underline', '')
 
-" StatusLine highlight groups
+" statusline highlight groups
 let s:tel00 = substitute(functions#darken(s:gui00, 25), '#', '', 'g')
 
-" Telescope window highlighting
+" telescope window highlighting
 call <sid>hi('TelescopeSelection', '', s:tel00, s:cterm00, s:cterm00, 'bold', '')
 call <sid>hi('TelescopeSelectionCaret', s:gui04, s:tel00, s:cterm00, s:cterm00, 'bold', '')
 call <sid>hi('TelescopeMultiSelection', s:gui0E, '', s:cterm0E, '', 'none', '')
@@ -452,5 +451,5 @@ call <sid>hi('TelescopePreviewBorder', s:gui04, s:gui00, s:cterm00, s:cterm00, '
 call <sid>hi('TelescopeMatching', s:gui0C, '', s:cterm0C, '', '', '')
 call <sid>hi('TelescopePromptPrefix', s:gui0F, '', s:cterm08, '', 'none', '')
 
-" Remove functions
+" remove functions
 delfunction <sid>hi

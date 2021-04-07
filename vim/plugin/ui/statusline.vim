@@ -11,7 +11,7 @@ let g:loaded_statusline = 1
 
 function! statusline#is_readonly() abort
   if &readonly || !&modifiable
-    return '∅'
+    return ' '
   else
     return ''
   endif
@@ -43,19 +43,24 @@ endfunction
 function! statusline#get_fileformat() abort
   let format = ''
   let encoding = ''
-  if strlen(&ff) && &ff !=# 'unix'
-    let format = &ff
+  if strlen(&ff)
+    if &ff ==# 'unix'
+      " let format = 'LF'
+      let format = ''
+    elseif &ff ==# 'dos'
+      let format = 'CRLF'
+    else
+      let format = toupper(&ff)
+    endif
   endif
   if strlen(&fenc) && &fenc !=# 'utf-8'
-    let encoding = &fenc
+    let encoding = toupper(&fenc)
   endif
 
   if format != '' && encoding != ''
-    return ',' . join([format, encoding], ',')
-  elseif format == '' && encoding == ''
-    return ''
+    return join([format, encoding], ' ')
   else
-    return ',' . format . encoding
+    return format . encoding
   endif
 endfunction
 
@@ -114,29 +119,23 @@ function! statusline#focus()
   endif
   " read-only indicator
   let l:readonly=statusline#is_readonly()
+  let l:statusline .= '%#Custom00#%{statusline#is_readonly()}'
   if l:readonly != ''
-    let l:statusline .= '%(%{statusline#is_readonly()}%)'
-  endif
-  " filetype
-  let l:ft=statusline#get_filetype()
-  if l:ft != ''
-    if l:readonly != ''
-      let l:statusline .= '%#SpecialText# • ' . l:prefix
-    endif
-    let l:statusline .= '%(%{statusline#get_filetype()}%)'
+    let l:statusline .= ' '
   endif
   " file format and encoding (if not unix || utf-8)
   let l:ff=statusline#get_fileformat()
-  if l:ff != ''
-    if l:ft != ''
-      let l:statusline .= '%#SpecialText# • ' . l:prefix
-    endif
-    let l:statusline .= '%(%{statusline#get_fileformat()}%)'
+  let l:statusline .= '%#Custom0#%{statusline#get_fileformat()}'
+  if l:readonly != '' || l:ff != ''
+    let l:statusline .= '  '
   endif
-  if l:readonly != '' || l:ft != '' || l:ff != ''
+  " filetype
+  let l:ft=statusline#get_filetype()
+  let l:statusline .= l:prefix . '%{statusline#get_filetype()}'
+   if l:readonly != '' || l:ff != '' || l:ft != ''
     let l:statusline .= ' '
   endif
-  " line and column numbering
+ " line and column numbering
   let l:statusline .= '%4* ℓ %l с %c '
   return l:statusline
 endfunction
