@@ -2,7 +2,8 @@
 -- => Telescope Configuration
 ---------------------------------------------------------------
 -- verify telescope is available
-if not pcall(require, 'telescope') then
+local has_lsp, lspconfig = pcall(require, 'lspconfig')
+if not has_lsp and not pcall(require, 'telescope') then
   return
 end
 
@@ -86,7 +87,7 @@ function M.search_dotfiles()
     hidden = true,
     file_ignore_patterns = {
       ".git/", ".gitattributes", ".gitignore", "%.gpg", "%.db",
-      "karabiner/assets/*"
+      "karabiner/assets/*", "lnav/*"
     },
     shorten_path = false,
     layout_strategy = 'horizontal',
@@ -102,7 +103,7 @@ function M.search_cwd()
     hidden = true,
     file_ignore_patterns = {
       ".git/", ".gitattributes", ".gitignore", "%.gpg", "%.db",
-      "karabiner/assets/*", "node_modules/*"
+      "karabiner/assets/*", "lnav/*", "node_modules/*"
     },
     shorten_path = false,
     layout_strategy = 'horizontal',
@@ -116,7 +117,7 @@ function M.search_git_repo()
   require('telescope.builtin').find_files {
     previewer = false,
     layout_strategy = "vertical",
-    cwd = require('nvim_lsp.util').root_pattern(".git")(vim.fn.expand("%:p"))
+    cwd = lspconfig.util.root_pattern(".git")(vim.fn.expand("%:p"))
   }
 end
 
