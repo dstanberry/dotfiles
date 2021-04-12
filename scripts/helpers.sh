@@ -28,3 +28,22 @@ is_gentoo() {
 is_wsl() {
   [[ $(uname -r) == *"Microsoft"* || $(uname -r) == *"microsoft"* ]]
 }
+
+# determine name of current terminal application
+get_term() {
+  windowpid="$(xdotool getwindowpid "$(xdotool getactivewindow)")"
+  term="$(perl -lpe 's/\0/ /g' "/proc/$windowpid/cmdline")"
+
+    case $term in
+      */python*|*/perl*    )
+      term="$(basename "$(readlink -f "$(echo "$term" | cut -d ' ' -f 2)")")"
+      ;;
+      *gnome-terminal-server* )
+      term="gnome-terminal"
+      ;;
+      * )
+      term=${term/% */}
+      ;;
+  esac
+  echo "$term"
+}
