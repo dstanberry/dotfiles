@@ -7,12 +7,22 @@ alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
 
 # enable color support for ls
-if is_darwin; then
-  alias ls="gls --color=auto --almost-all --group-directories-first"
-elif is_wsl; then
-  alias ls="ls --color=auto --ignore='ntuser\.*' --ignore='NTUSER\.*' --almost-all --group-directories-first"
+if hash exa 2> /dev/null; then
+  if is_darwin; then
+    alias ls="exa --all --group-directories-first"
+  elif is_wsl; then
+    alias ls="exa --ignore-glob='ntuser\.*' --ignore-glob='NTUSER\.*' --all --group-directories-first"
+  else
+    alias ls="exa --all --group-directories-first"
+  fi
 else
-  alias ls="ls --color=auto --almost-all --group-directories-first"
+  if is_darwin; then
+    alias ls="gls --color=auto --almost-all --group-directories-first"
+  elif is_wsl; then
+    alias ls="ls --color=auto --ignore='ntuser\.*' --ignore='NTUSER\.*' --almost-all --group-directories-first"
+  else
+    alias ls="ls --color=auto --almost-all --group-directories-first"
+  fi
 fi
 
 # define alias to reload bash configuration
