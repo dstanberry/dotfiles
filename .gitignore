@@ -5,6 +5,7 @@ dconf
 fontforge
 git/config
 gpick
+gtk-2.0
 gtk-3.0
 iterm2
 htop
@@ -12,6 +13,7 @@ inkscape
 less/history
 lnav
 karabiner/automatic_backups
+nitrogen
 npm
 pavucontrol.ini
 pg
