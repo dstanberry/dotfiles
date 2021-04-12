@@ -16,6 +16,7 @@ npm
 pavucontrol.ini
 pg
 pulse
+qt5ct
 tmux/tmux.digests
 user-dirs*
 vim/plugin/remote/session
