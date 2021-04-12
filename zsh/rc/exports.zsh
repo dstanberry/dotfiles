@@ -14,11 +14,8 @@ if ! test -d "${XDG_RUNTIME_DIR}"; then
   chmod 0700 "${XDG_RUNTIME_DIR}"
 fi
 
-# this is incorrect but required
-if is_wsl; then
-  # announce true color support
-  export COLORTERM=truecolor
-fi
+# announce true color support (this is incorrect but required)
+export COLORTERM=truecolor
 
 # use standard ISO 8601 timestamp
 export HISTTIMEFORMAT='%F %T '
