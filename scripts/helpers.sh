@@ -14,6 +14,30 @@ dedup_pathvar() {
   set_var "$pathvar_name" "$deduped_path"
 }
 
+# determine name of current terminal application
+get_term() {
+  activewindow="$(timeout 1s xdotool getactivewindow 2>/dev/null)"
+  RESULT=$?
+  if [ $RESULT -eq 0 ]; then
+    windowpid="$(timeout 1s xdotool getwindowpid "$activewindow" 2>/dev/null)"
+    term="$(perl -lpe 's/\0/ /g' "/proc/$windowpid/cmdline")"
+    case $term in
+      */python* | */perl*)
+        term="$(basename "$(readlink -f "$(echo "$term" | cut -d ' ' -f 2)")")"
+        ;;
+      *gnome-terminal-server*)
+        term="gnome-terminal"
+        ;;
+      *)
+        term=${term/% */}
+        ;;
+    esac
+    echo "$term"
+  else
+    echo "terminal"
+  fi
+}
+
 # determine if this is a macos distribution
 is_darwin() {
   [[ $(uname) == *"Darwin"* || $(uname) == *"darwin"* ]]
@@ -27,23 +51,4 @@ is_gentoo() {
 # determine if this is a wsl distribution
 is_wsl() {
   [[ $(uname -r) == *"Microsoft"* || $(uname -r) == *"microsoft"* ]]
-}
-
-# determine name of current terminal application
-get_term() {
-  windowpid="$(xdotool getwindowpid "$(xdotool getactivewindow)")"
-  term="$(perl -lpe 's/\0/ /g' "/proc/$windowpid/cmdline")"
-
-    case $term in
-      */python*|*/perl*    )
-      term="$(basename "$(readlink -f "$(echo "$term" | cut -d ' ' -f 2)")")"
-      ;;
-      *gnome-terminal-server* )
-      term="gnome-terminal"
-      ;;
-      * )
-      term=${term/% */}
-      ;;
-  esac
-  echo "$term"
 }
