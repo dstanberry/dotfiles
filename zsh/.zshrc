@@ -344,11 +344,7 @@ autoload -U add-zsh-hook
 function -set-tab-and-window-title() {
   emulate -L zsh
   local CMD="${1:gs/$/\\$}"
-  local term="$(get_term)"
-  local TERMNAME=""
-  if [ -n "$term" ]; then
-    local TERMNAME="―― $(get_term)"
-  fi
+  local TERMNAME="―― terminal"
   print -Pn "\e]0;$CMD $TERMNAME:q\a"
 }
 
