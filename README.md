@@ -73,7 +73,7 @@ Dependencies
 
 [Vim](https://github.com/vim/vim) can be compiled with support for Lua, Perl, Python and Ruby.
 
-[Neovim](https://github.com/neovim/neovim) supports remote plugins written in the same set of languages, but they need to be installed separately. Currently the necessary packages can be pulled in without too much effort.
+[Neovim (nightly)](https://github.com/neovim/neovim) supports remote plugins written in the same set of languages, but they need to be installed separately. Currently the necessary packages can be pulled in without too much effort.
 
 Read through all the txt files in `shared/packages` and remove delete any lines that contain unwanted packages before running any of the `load` commands.
 
