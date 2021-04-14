@@ -1,0 +1,144 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => vifm configuration
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" General settings {{{
+
+set vicmd=$EDITOR
+set syscalls
+set trash
+set trashdir=/tmp/$UID-vifm-trash
+set history=1000
+set nofollowlinks
+set sortnumbers
+set undolevels=1000
+set vimhelp
+set norunexec
+set wildmenu
+set wildstyle=popup
+set suggestoptions=normal,visual,view,otherpane,keys,marks,registers
+set ignorecase
+set smartcase
+set nohlsearch
+set incsearch
+set scrolloff=4
+set tabstop=2
+set slowfs=curlftpfs
+set vifminfo=dhistory,savedirs,chistory,state,tui,shistory,phistory,fhistory,dirstack,registers,bookmarks,bmarks
+set viewcolumns=*{name}..,6{}.
+set timefmt=%m/%d/%Y\ %l:%M\ %P
+set statusline="%10A %10u:%g %8s[%8E] %18d   %{&sort} %= %a free"
+set rulerformat="%l/%S%[ +%x%]"
+set grepprg='rg --line-number %i %a %s'
+
+colorscheme kdark
+
+source $HOME/.config/vifm/icons
+
+" }}}
+
+" Marks {{{
+
+mark d $HOME/Documents/
+mark c $HOME/.config/
+mark h $HOME/
+
+" }}}
+
+" Commands {{{
+
+" use vim to diff Files
+command diff vim -d %f %F
+
+" extract archive
+" :extract - extracts archive under cursor into current directory
+" :extract %D - extracts archive under cursor into directory of other pane
+" :extract! sub - extracts archive under cursor into sub/ inside current directory
+command! extract extract.sh %a %f %n
+command! extract! extract.sh -f %a %f %n
+
+" fzf integration
+command! FZFfind :set noquickview
+      \| :execute 'goto' fnameescape(term('fd -H | fzf --height 10 2>/dev/tty'))
+
+" toggle detailed/brief information about files
+command! togglemetadata
+      \ : if &viewcolumns == '*{name}..,6{}.'
+      \ |   set viewcolumns=*{name}.,10{size}.,12{perms},10{uname},-7{gname},18{mtime}
+      \ |   echo 'Files information: detailed'
+      \ | else
+      \ |   set viewcolumns=*{name}..,6{}.
+      \ |   echo 'Files information: brief'
+      \ | endif
+
+" }}}
+
+" Mappings {{{
+
+" switch to command mode
+nmap ; :
+
+" exit vifm and cd to the directory under cursor
+nnoremap <space>w :shell<cr>
+
+" preview in another pane
+nnoremap w :view<cr>
+vnoremap w :view<cr>gv
+
+" switch to left window
+nmap <silent> <space>h :wincmd h<cr>
+" switch to top window
+nmap <silent> <space>k :wincmd k<cr>
+" switch to right window
+nmap <silent> <space>l :wincmd l<cr>
+" switch to bottom window
+nmap <silent> <space>j :wincmd j<cr>
+
+" increment window width
+nnoremap <silent> <space>= :vertical resize +5<cr>
+" decrement window width
+nnoremap <silent> <space>- :vertical resize -5<cr>
+
+" moving cursor in another pane
+nnoremap <silent> J <tab>j<tab>
+nnoremap <silent> K <tab>k<tab>
+
+" toggle wrap in the preview
+nnoremap <silent> <space>tw :set wrap!<cr>
+
+" toggle detailed/brief information about files
+nnoremap <silent> <space>ti :togglemetadata<cr>
+
+" fzf fuzzy search
+nnoremap <space><space> :FZFfind<cr>
+
+" }}}
+
+" file associations {{{
+
+" md5
+filetype *.md5 md5sum -c %f %S
+
+" sha1
+filetype *.sha1 sha1sum -c %f %S
+
+" sha256
+filetype *.sha256 sha256sum -c %f %S
+
+" sha512
+filetype *.sha512 sha512sum -c %f %S
+
+" zip
+filetype *.zip unzip %f
+fileviewer *.zip,*.jar,*.war,*.ear zip -sf %c
+
+" tar
+filetype *.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz tar -xf %f
+fileviewer *.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz tar -tf %f
+
+" bz2
+filetype *.bz2 bzip2 -d %f
+
+" gz
+filetype *.gz gunzip %f
+
+" }}}
