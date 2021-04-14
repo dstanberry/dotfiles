@@ -134,10 +134,8 @@ function! statusline#focus()
 endfunction
 
 function! statusline#dim()
-  " initialize statusline
-  let l:statusline = ''
   " relative file path
-  let l:statusline .= '%3*  %{statusline#get_relative_filepath()}'
+  let l:statusline = '%3*  %{statusline#get_relative_filepath()}'
   " filename
   let l:statusline .= '%3*%t%*'
   " modified
@@ -148,30 +146,24 @@ function! statusline#dim()
 endfunction
 
 function! statusline#set_quickfix()
-  " initialize statusline
-  let l:statusline = ''
   " relative file path
-  let l:statusline .= '%3*  [Quickfix]'
+  let l:statusline = '%3*  [Quickfix]'
   " right-hand side
   let l:statusline .= '%='
   return l:statusline
 endfunction
 
 function! statusline#set_fzf()
-  " initialize statusline
-  let l:statusline = ''
   " relative file path
-  let l:statusline .= '%3*  fzf'
+  let l:statusline = '%3*  fzf'
   " right-hand side
   let l:statusline .= '%='
   return l:statusline
 endfunction
 
 function! statusline#set_explorer()
-  " initialize statusline
-  let l:statusline = ''
   " relative file path
-  let l:statusline .= '%3* %{statusline#get_filepath()}'
+  let l:statusline = '%3* %{statusline#get_filepath()}'
   " right-hand side
   let l:statusline .= '%='
 
