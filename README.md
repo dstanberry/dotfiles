@@ -69,7 +69,7 @@ Dependencies
 
 [Bat](https://github.com/sharkdp/bat) (required by delta and fzf)
 
-[Patched Font](https://www.nerdfonts.com) (optional)
+[Patched Font](https://www.nerdfonts.com)
 
 [Vim](https://github.com/vim/vim) can be compiled with support for Lua, Perl, Python and Ruby.
 
