@@ -26,6 +26,8 @@ augroup FileTypes
   autocmd BufRead,BufNewFile ~/.config/bash/rc.private/* set filetype=bash
   autocmd BufRead,BufNewFile ~/.config/zsh/rc/* set filetype=zsh
   autocmd BufRead,BufNewFile ~/.config/zsh/rc.private/* set filetype=zsh
+  autocmd BufRead,BufNewFile *.vifm set filetype=vim
+  autocmd BufRead,BufNewFile vifmrc set filetype=vim
 augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
