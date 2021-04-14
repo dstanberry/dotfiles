@@ -7,6 +7,15 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 # define XDG_DATA_HOME
 export XDG_DATA_HOME="$HOME/.local/share"
 
+# define UID
+if hash id 2> /dev/null; then
+  __uid="$(id -u)"
+  export UID="$__uid"
+  unset __uid
+else
+  export UID=$UID
+fi
+
 # define XDG_RUNTIME_DIR
 export XDG_RUNTIME_DIR="/tmp/${UID}-runtime-dir"
 if ! test -d "${XDG_RUNTIME_DIR}"; then
