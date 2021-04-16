@@ -19,7 +19,11 @@ endfunction
 
 function! statusline#get_filetype() abort
   if strlen(&ft)
-    return &ft
+    if has('nvim')
+      return v:lua.GetDevIcon('%:h', &ft) . ' ' . &ft
+    else
+      return &ft
+    endif
   else
     return ''
   endif
@@ -114,7 +118,7 @@ function! statusline#focus()
   let l:readonly=statusline#is_readonly()
   let l:statusline .= '%#Custom00#%{statusline#is_readonly()}'
   if l:readonly != ''
-    let l:statusline .= ' | '
+    let l:statusline .= '%#Custom0# | '
   endif
   " file format and encoding (if not unix || utf-8)
   let l:ff=statusline#get_fileformat()

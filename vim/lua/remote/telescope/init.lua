@@ -26,7 +26,7 @@ local themes = require('telescope.themes')
 -- set default options
 require('telescope').setup {
   defaults = {
-    prompt_prefix = '🔍 ',
+    prompt_prefix = ' ',
     selection_caret = '❯ ',
     winblend = 0,
     preview_cutoff = 120,
