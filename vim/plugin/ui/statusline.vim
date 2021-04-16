@@ -247,7 +247,7 @@ else
   call s:check_windows()
 endif
 
-augroup StatusLine
+augroup statusline
   autocmd!
   autocmd VimEnter * call s:check_windows()
   autocmd BufEnter,BufWinEnter * call s:check_windows()

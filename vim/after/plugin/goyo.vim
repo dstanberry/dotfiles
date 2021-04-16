@@ -23,7 +23,7 @@ function! s:goyo_leave()
   Limelight!
 endfunction
 
-augroup GOYO
+augroup goyo_setup
   autocmd! User GoyoEnter nested call <SID>goyo_enter()
   autocmd! User GoyoLeave nested call <SID>goyo_leave()
 augroup END

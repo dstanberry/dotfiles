@@ -87,7 +87,7 @@ function! tabline#set_tabline()
   return s
 endfunction
 
-augroup Tabline
+augroup tabline
   autocmd!
   autocmd VimEnter * set tabline=%!tabline#set_tabline()
 augroup END

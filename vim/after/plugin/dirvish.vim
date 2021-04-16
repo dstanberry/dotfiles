@@ -6,7 +6,7 @@ if !get(g:, 'loaded_dirvish', v:false)
   finish
 endif
 
-augroup DirvishConfig
+augroup dirvish_setup
   autocmd!
   autocmd FileType dirvish
         \ silent! nnoremap <nowait><silent><buffer> -

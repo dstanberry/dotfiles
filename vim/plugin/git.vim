@@ -84,7 +84,7 @@ endfunction
 
 command! Gtoggle call <sid>set_git_dir(expand('%:p:h'), 1)
 
-augroup GitWorkspace
+augroup git_worktree
   autocmd!
   autocmd BufEnter,BufWinEnter * call s:check_dir()
   autocmd BufLeave,BufWinLeave * call s:plug_closed()
