@@ -21,9 +21,9 @@ vnoremap / /\v
 vmap ; :
 
 " move selection to the beginning of the current line
-nnoremap H ^
+vnoremap H ^
 " move selection to the end of the current line
-nnoremap L g_
+vnoremap L g_
 
 " move selection vertically within buffer
 vnoremap <silent> K :call visual#move_up()<cr>
