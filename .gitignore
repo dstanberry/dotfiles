@@ -56,5 +56,6 @@ vim/plugin/remote/session
 vim/remote
 wget
 wireshark
+zsh/.zcompcache
 zsh/.zcompdump
 zsh/rc.private
