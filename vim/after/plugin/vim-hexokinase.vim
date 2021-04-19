@@ -1,4 +1,4 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vim-hexokinase configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:Hexokinase_highlighters = ['foregroundfull']
+let g:Hexokinase_highlighters = ['backgroundfull']
