@@ -10,7 +10,7 @@ function! functions#init() abort
     let $XDG_CACHE_HOME=$HOME.'/.cache'
   endif
 
-  " ensure XDG_CACHE_HOME is defined
+  " ensure XDG_DATA_HOME is defined
   if empty($XDG_DATA_HOME)
     let $XDG_DATA_HOME=$HOME.'/.local/share'
   endif
