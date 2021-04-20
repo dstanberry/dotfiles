@@ -84,16 +84,18 @@ function! statusline#focus()
   elseif mode() ==? 'c'
     let l:statusline .= '%#Custom5#▊'
   endif
-  let l:statusline .= ' %n'
-  if &paste == 1
-    let l:statusline .= '📋'
-  endif
+  " static icon
+  let l:statusline .= '  '
   " relative file path
   let l:statusline .= '%1* %{statusline#get_relative_filepath()}'
   " filename
   let l:statusline .= '%2*%t%*'
   " modified
   let l:statusline .= '%2* %{statusline#show_modified()}'
+  " show paste mode when active
+  if &paste == 1
+    let l:statusline .= '  '
+  endif
   " right-hand side
   let l:statusline .= '%='
   let l:prefix = ''
