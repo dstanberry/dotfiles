@@ -14,8 +14,8 @@ zstyle ':vcs_info:*' stagedstr "%F{green}●%f"
 zstyle ':vcs_info:*' unstagedstr "%F{red}●%f"
 zstyle ':vcs_info:*' use-simple true
 zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
-zstyle ':vcs_info:git*:*' formats '%F{cyan} %b%m%c%u%f '
-zstyle ':vcs_info:git*:*' actionformats '%F{cyan} %b|%a%m%c%u %f'
+zstyle ':vcs_info:git*:*' formats '%F{cyan} %b%m%c%u%f '
+zstyle ':vcs_info:git*:*' actionformats '%F{cyan} %b|%a%m%c%u %f'
 
 # show untracked status in git prompt
 function +vi-git-untracked() {
@@ -84,7 +84,8 @@ function -set-prompt() {
   fi
 
   # define the primary prompt
-  PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%b%F{blue}%B%3~%b%F{yellow}%B%(1j.*.)%(?..!)%b%f %B${SUFFIX}%b "
+  local STATE="%(1j. .)%(?.. )"
+  PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%b%F{blue}%B%3~%b%F{yellow} %B${STATE}%b%f%B${SUFFIX}%b "
 
   RPROMPT_BASE="\${vcs_info_msg_0_}%F"
 
