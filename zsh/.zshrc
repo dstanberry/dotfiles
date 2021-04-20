@@ -393,44 +393,6 @@ function -update-window-title-preexec() {
 
 add-zsh-hook preexec -update-window-title-preexec
 
-typeset -F SECONDS
-
-function -record-start-time() {
-  emulate -L zsh
-  ZSH_START_TIME=${ZSH_START_TIME:-$SECONDS}
-}
-
-add-zsh-hook preexec -record-start-time
-
-function -report-start-time() {
-  emulate -L zsh
-  if [ "$ZSH_START_TIME" ]; then
-    local DELTA=$((SECONDS - ZSH_START_TIME))
-    local DAYS=$((~~(DELTA / 86400)))
-    local HOURS=$((~~((DELTA - DAYS * 86400) / 3600)))
-    local MINUTES=$((~~((DELTA - DAYS * 86400 - HOURS * 3600) / 60)))
-    local SECS=$((DELTA - DAYS * 86400 - HOURS * 3600 - MINUTES * 60))
-    local ELAPSED=''
-    test "$DAYS" != '0' && ELAPSED="${DAYS}d"
-    test "$HOURS" != '0' && ELAPSED="${ELAPSED}${HOURS}h"
-    test "$MINUTES" != '0' && ELAPSED="${ELAPSED}${MINUTES}m"
-    if [ "$ELAPSED" = '' ]; then
-      SECS="$(print -f "%.2f" $SECS)s"
-    elif [ "$DAYS" != '0' ]; then
-      SECS=''
-    else
-      SECS="$((~~SECS))s"
-    fi
-    ELAPSED="${ELAPSED}${SECS}"
-    export RPROMPT="$RPROMPT_BASE %F{244}${ELAPSED}%f"
-    unset ZSH_START_TIME
-  else
-    export RPROMPT=""
-  fi
-}
-
-add-zsh-hook precmd -report-start-time
-
 function -auto-ls-after-cd() {
   emulate -L zsh
   # only in response to a user-initiated `cd`, not indirectly (eg. via another
@@ -449,27 +411,6 @@ function -record-command() {
 }
 
 add-zsh-hook preexec -record-command
-
-# update vcs_info (slow) after any command that probably changed it.
-function -maybe-show-vcs-info() {
-  local LAST="$__HTABLE[LAST_COMMAND]"
-
-  # in case user just hit enter, overwrite LAST_COMMAND, because preexec
-  # won't run and it will otherwise linger.
-  __HTABLE[LAST_COMMAND]="<unset>"
-
-  # check first word; via:
-  # http://tim.vanwerkhoven.org/post/2012/10/28/ZSH/Bash-string-manipulation
-  case "$LAST[(w)1]" in
-    cd | cp | git | rm | touch | mv)
-      vcs_info
-      ;;
-    *) ;;
-
-  esac
-}
-
-add-zsh-hook precmd -maybe-show-vcs-info
 
 ###############################################################
 # _Custom
