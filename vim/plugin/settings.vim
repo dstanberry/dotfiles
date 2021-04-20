@@ -79,6 +79,8 @@ set shiftwidth=4
 
 " disable contextual message based on mode
 set noshowmode
+" disable showing keystrokes below statusline
+set noshowcmd
 
 " show whitespace characters
 set list
