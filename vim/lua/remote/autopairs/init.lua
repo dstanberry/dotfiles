@@ -7,10 +7,8 @@ if not has_autopairs then
   return
 end
 
-_G.MUtils = {}
-
 vim.g.completion_confirm_key = ""
-MUtils.completion_confirm = function()
+_G.completion_confirm = function()
   if vim.fn.pumvisible() ~= 0 then
     if vim.fn.complete_info()["selected"] ~= -1 then
       vim.fn["compe#confirm"]()
@@ -24,7 +22,8 @@ MUtils.completion_confirm = function()
   end
 end
 
-vim.api.nvim_set_keymap('i', '<cr>', 'v:lua.MUtils.completion_confirm()',
+vim.api.nvim_set_keymap('i', '<cr>', 'v:lua.completion_confirm()',
       {expr = true, noremap = true})
 
+-- disable autopairs in telescope windows
 require('nvim-autopairs').setup({disable_filetype = {"TelescopePrompt"}})
