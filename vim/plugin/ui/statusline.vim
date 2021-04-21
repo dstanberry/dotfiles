@@ -20,7 +20,7 @@ endfunction
 function! statusline#get_filetype() abort
   if strlen(&ft)
     if has('nvim')
-      return v:lua.GetDevIcon('%:h', &ft) . ' ' . &ft
+      return v:lua.get_devicon('%:h', &ft) . ' ' . &ft
     else
       return &ft
     endif
@@ -79,10 +79,12 @@ function! statusline#focus()
     let l:statusline .= '%#Custom1#▊'
   elseif mode() ==? 'r'
     let l:statusline .= '%#Custom3#▊'
-  elseif mode() ==? 'v'
+  elseif mode() ==? 'v' || mode() ==? "\<c-v>"
     let l:statusline .= '%#Custom4#▊'
   elseif mode() ==? 'c'
     let l:statusline .= '%#Custom5#▊'
+  elseif mode() ==? 's' || mode() ==? "\<c-s>"
+    let l:statusline .= '%#Custom6#▊'
   endif
   " static icon
   let l:statusline .= '  '

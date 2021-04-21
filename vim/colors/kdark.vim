@@ -417,6 +417,7 @@ call <sid>hi('Custom2',        s:gui08, s:gui02, s:cterm0D, s:cterm00, '', '')
 call <sid>hi('Custom3',        s:gui0C, s:gui02, s:cterm0D, s:cterm00, '', '')
 call <sid>hi('Custom4',        s:gui0F, s:gui02, s:cterm0D, s:cterm00, '', '')
 call <sid>hi('Custom5',        s:gui0E, s:gui02, s:cterm0D, s:cterm00, '', '')
+call <sid>hi('Custom6',        s:gui09, s:gui02, s:cterm0D, s:cterm00, '', '')
 
 " lsp diagnostic highlighting
 call <sid>hi('LspDiagnosticsDefaultError', s:gui0F, '', s:cterm0F, '', '', '')
