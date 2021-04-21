@@ -8,7 +8,7 @@ if not has_devicons then
 end
 
 -- helper function to get corresponding icon for filetype
-function GetDevIcon(path, ext)
+_G.get_devicon = function(path, ext)
   local filename = vim.fn.fnamemodify(path, ':t')
   local extension = ext or vim.fn.fnamemodify(path, ':e')
   return devicons.get_icon(filename, extension, {default = true})

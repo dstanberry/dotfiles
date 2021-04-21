@@ -13,6 +13,6 @@ augroup dirvish_setup
         \ :<c-u>.call dirvish#open('edit', 0)<cr>
   " if has('nvim')
   "   autocmd FileType dirvish
-  "         \ call dirvish#add_icon_fn({ p -> v:lua.GetDevIcon(p, p[-1:] == '/' ? '_dir_' : '') })
+  "         \ call dirvish#add_icon_fn({ p -> v:lua.get_devicon(p, p[-1:] == '/' ? '_dir_' : '') })
   " endif
 augroup END
