@@ -26,6 +26,6 @@ let g:startify_skiplist = [
 " add icons to filepaths
 if has('nvim')
   function! StartifyEntryFormat() abort
-    return 'v:lua.GetDevIcon(absolute_path) . " " . entry_path'
+    return 'v:lua.get_devicon(absolute_path) . " " . entry_path'
   endfunction
 endif
