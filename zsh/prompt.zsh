@@ -1,6 +1,9 @@
 ###############################################################
 # Shell Prompt
 ###############################################################
+# load add-zsh-hook
+autoload -U add-zsh-hook
+
 # load colors function
 autoload -U colors
 colors
