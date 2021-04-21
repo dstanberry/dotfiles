@@ -62,11 +62,14 @@ Plug 'tpope/vim-surround'
 " enable focus events
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
-" LSP/VScode snippett supoport
+" LSP/VScode snippett support
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 " language snippets
+Plug 'rafamadriz/friendly-snippets'
 Plug 'cstrap/python-snippets'
+Plug 'keyring/vsc-lua'
+Plug 'J0rgeSerran0/vscode-csharp-snippets'
 " }}}
 
 " neovim plugins: {{{

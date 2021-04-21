@@ -188,7 +188,7 @@ set shortmess+=c
 " include dictionary in completion matches
 set complete+=kspell
 " use popup menu to show possible completions
-set completeopt=menuone,noinsert,noselect
+set completeopt=menuone,noselect
 
 " set grep program to use
 if executable('rg')
