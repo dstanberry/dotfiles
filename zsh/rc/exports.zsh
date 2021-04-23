@@ -82,6 +82,9 @@ if hash fzf 2> /dev/null; then
     --color=marker:#e5c179,spinner:#4c566a,header:#5f5f5f'
 fi
 
+# define how long to wait for additional characters
+export KEYTIMEOUT=2
+
 # set location for vim runtime configuration
 export MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
 __viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
