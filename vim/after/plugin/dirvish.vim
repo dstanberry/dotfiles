@@ -11,8 +11,8 @@ augroup dirvish_setup
   autocmd FileType dirvish
         \ silent! nnoremap <nowait><silent><buffer> -
         \ :<c-u>.call dirvish#open('edit', 0)<cr>
-  " if has('nvim')
-  "   autocmd FileType dirvish
-  "         \ call dirvish#add_icon_fn({ p -> v:lua.get_devicon(p, p[-1:] == '/' ? '_dir_' : '') })
-  " endif
+  if has('nvim')
+    autocmd FileType dirvish
+          \ call dirvish#add_icon_fn({ p -> v:lua.get_devicon(p, p[-1:] == '/' ? '_dir_' : '') })
+  endif
 augroup END
