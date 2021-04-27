@@ -79,13 +79,8 @@ local function get_server_configuration()
   -- enable snippet support
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = {
-      'documentation',
-      'detail',
-      'additionalTextEdits',
-    }
-  }
+  capabilities.textDocument.completion.completionItem.resolveSupport =
+    {properties = {'documentation', 'detail', 'additionalTextEdits'}}
   return {
     capabilities = capabilities,
     on_attach = on_attach_vim,
@@ -97,7 +92,8 @@ end
 local function load_servers()
   -- manually curated list of language servers
   local servers = {
-    'bashls', 'cssls', 'efm', 'html', 'jsonls', 'sumneko_ls', 'pyright', 'vimls'
+    'bashls', 'clangd', 'cmake', 'cssls', 'efm', 'html', 'jsonls', 'sumneko_ls',
+    'pyright', 'vimls'
   }
   for _, server in ipairs(servers) do
     local config = get_server_configuration()
