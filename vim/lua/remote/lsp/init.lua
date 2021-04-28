@@ -73,6 +73,14 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] =
     update_in_insert = false,
     virtual_text = {prefix = '▪', spacing = 4}
   })
+vim.fn.sign_define("LspDiagnosticsSignError",
+                   {text = ' ', texthl = "LspDiagnosticsSignError"})
+vim.fn.sign_define("LspDiagnosticsSignWarning",
+                   {text = ' ', texthl = "LspDiagnosticsSignWarning"})
+vim.fn.sign_define("LspDiagnosticsSignInformation",
+                   {text = '', texthl = "LspDiagnosticsSignInformation"})
+vim.fn.sign_define("LspDiagnosticsSignHint",
+                   {text = '', texthl = "LspDiagnosticsSignHint"})
 
 -- pack lsp configuration
 local function get_server_configuration()
