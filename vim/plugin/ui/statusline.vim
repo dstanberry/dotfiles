@@ -86,8 +86,19 @@ function! statusline#focus()
   elseif mode() ==? 's' || mode() ==? "\<c-s>"
     let l:statusline .= '%#Custom6#▊'
   endif
-  " static icon
-  let l:statusline .= '  '
+  if exists('g:loaded_fugitive')
+    let l:branch = FugitiveHead()
+    if len(l:branch) > 0
+      " show branch name
+      let l:statusline .= '  %{FugitiveHead()}'
+    else
+      " static icon
+      let l:statusline .= '  '
+    endif
+  else
+    " static icon
+    let l:statusline .= '  '
+  endif
   " relative file path
   let l:statusline .= '%1* %{statusline#get_relative_filepath()}'
   " filename

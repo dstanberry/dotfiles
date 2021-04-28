@@ -37,7 +37,7 @@ Plug 'justinmk/vim-dirvish'
 Plug 'duggiefresh/vim-easydir'
 
 " a git wrapper for vim
-Plug 'tpope/vim-fugitive', { 'on': ['Gstatus', 'Git'] }
+Plug 'tpope/vim-fugitive'
 
 " color highlighter
 Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
