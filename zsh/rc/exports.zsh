@@ -159,10 +159,12 @@ if hash npm 2> /dev/null; then
   export NPM_CONFIG_USERCONFIG="${CONFIG_HOME}/npm/npmrc"
   _cache="${XDG_CACHE_HOME}/npm"
   _initmod="${XDG_CACHE_HOME}/npm"
+  _notifier="false"
   _prefix="${XDG_CACHE_HOME}/npm"
   _tmp="${XDG_CACHE_HOME}/npm"
   cache=$(npm config get cache)
   initmod=$(npm config get init-module)
+  notifier=$(npm config get update-notifier)
   prefix=$(npm config get prefix)
   tmp=$(npm config get tmp)
   if [[ "$_cache" != "$cache" ]]; then
@@ -170,6 +172,9 @@ if hash npm 2> /dev/null; then
   fi
   if [[ "$_initmod" != "$initmod" ]]; then
     npm config set init-module "$_initmod"
+  fi
+  if [[ "$_notifier" != "$notifier" ]]; then
+    npm config set tmp "$_notifier"
   fi
   if [[ "$EUID" -gt 0 ]]; then
     if [[ "$_prefix" != "$prefix " ]]; then
@@ -183,10 +188,12 @@ if hash npm 2> /dev/null; then
   unset _initmod
   unset _prefix
   unset _tmp
+  unset _notifier
   unset cache
   unset initmod
   unset prefix
   unset tmp
+  unset notifier
 fi
 
 # define configuration path for postgresql
