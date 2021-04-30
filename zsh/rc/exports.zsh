@@ -174,7 +174,7 @@ if hash npm 2> /dev/null; then
     npm config set init-module "$_initmod"
   fi
   if [[ "$_notifier" != "$notifier" ]]; then
-    npm config set tmp "$_notifier"
+    npm config set update-notifier "$_notifier"
   fi
   if [[ "$EUID" -gt 0 ]]; then
     if [[ "$_prefix" != "$prefix " ]]; then
