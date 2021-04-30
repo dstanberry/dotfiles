@@ -17,5 +17,4 @@ function! deferred#load_dir_hash() abort
       execute 'let $' . l:var . '="' . l:dir . '"'
     endif
   endfor
-echom 'done'
 endfunction
