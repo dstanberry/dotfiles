@@ -115,6 +115,11 @@ endif
 " set the maximum number of entries shown in completion menu
 set pumheight=5
 
+" set opacity for popup menu 
+if has('nvim')
+	set pumblend=20
+endif
+
 " default behaviour when creating new panes
 set splitbelow splitright
 
