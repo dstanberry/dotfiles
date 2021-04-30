@@ -28,7 +28,7 @@ require('telescope').setup {
   defaults = {
     prompt_prefix = '  ',
     selection_caret = ' ',
-    winblend = 0,
+    winblend = 10,
     preview_cutoff = 120,
     layout_strategy = 'horizontal',
     layout_defaults = {
@@ -171,7 +171,6 @@ function M.git_files()
   require("telescope.builtin").find_files(
     themes.get_dropdown {
       cwd = vim.fn.expand("%:p:h"),
-      winblend = 10,
       border = true,
       previewer = false,
       results_title = false,
@@ -183,7 +182,6 @@ end
 function M.current_buffer()
   require("telescope.builtin").current_buffer_fuzzy_find(
     themes.get_dropdown {
-      winblend = 10,
       border = true,
       previewer = false,
       shorten_path = false,
