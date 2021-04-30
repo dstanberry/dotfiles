@@ -3,8 +3,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 function! deferred#load_dir_hash() abort
   let l:shell = trim(system('echo "${SHELL##/*/}"'))
-  let l:path = '~/.config/' . l:shell . '/rc.private/hashes'
-  let l:cmd = 'zsh -c "' .
+  let l:path = '~/.config/' . l:shell . '/rc.private/hashes.'. l:shell
+  let l:cmd = l:shell . ' -c "' .
         \ 'test -e ' . l:path . ' && ' . 'source ' . l:path . '; ' .
         \ 'hash -d"'
   let l:dirs=system(l:cmd)
@@ -17,4 +17,5 @@ function! deferred#load_dir_hash() abort
       execute 'let $' . l:var . '="' . l:dir . '"'
     endif
   endfor
+echom 'done'
 endfunction

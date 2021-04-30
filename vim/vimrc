@@ -15,7 +15,6 @@ set encoding=utf-8
 " define plugin installation directory
 call plug#begin($XDG_CONFIG_HOME . '/vim/remote')
 
-" shared plugins: {{{
 " command line fuzzy finder
 Plug 'junegunn/fzf.vim', { 'on': ['Files', 'Buffers', 'Ag', 'Rg', 'Windows'] }
 
@@ -70,9 +69,7 @@ Plug 'rafamadriz/friendly-snippets'
 Plug 'cstrap/python-snippets'
 Plug 'keyring/vsc-lua'
 Plug 'J0rgeSerran0/vscode-csharp-snippets'
-" }}}
 
-" neovim plugins: {{{
 if has('nvim')
   " syntax highlighting for portage
   if isdirectory('/etc/portage')
@@ -82,8 +79,12 @@ if has('nvim')
   " preview/browse json files with ease
   Plug 'gennaro-tedesco/nvim-jqx'
 
-  " add file-type icons (requires patched font)
+  " add devicons (requires patched font)
   Plug 'kyazdani42/nvim-web-devicons'
+
+  " fix cursorhold events
+  Plug 'antoinemadec/FixCursorHold.nvim'
+  let g:cursorhold_updatetime = 4000
 
   " parser generator tool
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
@@ -114,6 +115,5 @@ if has('nvim')
   " pre-compiled fzy sorter
   Plug 'nvim-telescope/telescope-fzy-native.nvim'
 endif
-" }}}
 
 call plug#end()
