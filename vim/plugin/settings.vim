@@ -39,6 +39,11 @@ set incsearch
 " enable search using regex expressions
 set magic
 
+" enable live text substitution and preview matches
+if has ('nvim')
+  set inccommand=split
+endif
+
 " disable redraw while executing macros
 set nolazyredraw
 
