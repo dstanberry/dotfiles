@@ -8,7 +8,6 @@ if not has_lir then
 end
 
 local actions = require 'lir.actions'
-local clipboard_actions = require 'lir.clipboard.actions'
 
 lir.setup {
   show_hidden_files = false,
@@ -16,26 +15,15 @@ lir.setup {
   mappings = {
     ['l'] = actions.edit,
     ['<cr>'] = actions.edit,
-    ['<c-s>'] = actions.split,
-    ['<c-v>'] = actions.vsplit,
-    ['<c-t>'] = actions.tabedit,
-
-    ['h'] = actions.up,
-    ['q'] = actions.quit,
 
     ['K'] = actions.mkdir,
     ['N'] = actions.newfile,
     ['R'] = actions.rename,
-    ['@'] = actions.cd,
     ['Y'] = actions.yank_path,
     ['.'] = actions.toggle_show_hidden,
     ['D'] = actions.delete,
-
-    ['C'] = clipboard_actions.copy,
-    ['X'] = clipboard_actions.cut,
-    ['P'] = clipboard_actions.paste
   }
 }
 
-vim.api.nvim_set_keymap('n', '-', "<cmd>execute 'edit ' .. expand('%:h')<cr>",
+vim.api.nvim_set_keymap("n", "-", "<cmd>execute 'edit ' .. expand('%:h')<cr>",
                         {noremap = true})
