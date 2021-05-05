@@ -5,15 +5,25 @@
 nnoremap <silent> <up> :cprevious<cr>zz
 nnoremap <silent> <down> :cnext<cr>zz
 
+" switch to next buffer
+nnoremap <silent> <right> :bnext<cr>
+" switch to previous buffer
+nnoremap <silent> <left> :bprevious<cr>
+
+" switch to next tab
+nnoremap <silent> <tab> :tabnext<cr>
+" switch to previous tab
+nnoremap <silent> <s-tab> :tabprevious<cr>
+
+" clear hlsearch if set, otherwise send default behavviour
+nnoremap <expr> <cr> {-> v:hlsearch ? ":nohl<cr>" : "<cr>"}()
+
 " bind ctl-c to escape key
 nnoremap <c-c> <esc>
 
 " navigate loclist list
 nnoremap <silent> <a-k> :lprevious<cr>zz
 nnoremap <silent> <a-j> :lnext<cr>zz
-
-" clear hlsearch if set, otherwise send default behavviour
-nnoremap <expr> <cr> {-> v:hlsearch ? ":nohl<cr>" : "<cr>"}()
 
 " find all occurences in buffer of word under cursor
 nnoremap <c-f>f /\v<c-r><c-w>
@@ -26,16 +36,6 @@ nnoremap / /\v
 
 " allow semi-colon to enter command mode
 nnoremap ; :
-
-" switch to next buffer
-nnoremap <silent> <right> :bnext<cr>
-" switch to previous buffer
-nnoremap <silent> <left> :bprevious<cr>
-
-" switch to next tab
-nnoremap <silent> <tab> :tabnext<cr>
-" switch to previous tab
-nnoremap <silent> <s-tab> :tabprevious<cr>
 
 " move to the beginning of the current line
 nnoremap H ^
@@ -95,6 +95,14 @@ nnoremap <silent> <leader>+ :resize +5<cr>
 " decrement window height
 nnoremap <silent> <leader>_ :resize -5<cr>
 
+" change text and preserve clipboard state
+nmap <leader>c "_c
+nmap <leader>C "_C
+
+" delete text and preserve clipboard state
+nmap <leader>d "_d
+nmap <leader>D "_D
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -105,7 +113,7 @@ let maplocalleader='\'
 nnoremap <localleader>e :edit <c-r>=expand('%:p:h') . '/'<cr>
 
 " trim trailing whitespace
-nnoremap <localleader>ff :call  functions#trim()<cr>
+nnoremap <localleader>ff :call functions#trim()<cr>
 
 " discard changes to all files and close window
 nnoremap <localleader>qq ZQ
