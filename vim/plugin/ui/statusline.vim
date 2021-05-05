@@ -204,8 +204,9 @@ function! s:check_windows(...) abort
       elseif l:filetype ==# 'fzf'
         " special statusline for fzf
         call setwinvar(winnum, '&statusline', '%!statusline#set_fzf()')
-      elseif l:filetype ==# 'netrw' || l:filetype ==# 'help'
-        " special statusline for netrw and help buffers
+      elseif l:filetype ==# 'netrw' || l:filetype ==# 'dirvish' ||
+            \ l:filetype ==# 'lir' || l:filetype ==# 'help'
+        " special statusline for file explorers and help buffers
         call setwinvar(winnum, '&statusline', '%!statusline#set_explorer()')
       elseif l:ftype ==# 'file'
         " dim statusline

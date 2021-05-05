@@ -30,7 +30,11 @@ Plug 'wincent/loupe'
 Plug 'tpope/vim-commentary'
 
 " fast and minimalist file explorer
-Plug 'justinmk/vim-dirvish'
+if has('nvim')
+  Plug 'justinmk/vim-dirvish', { 'on': [] }
+else
+  Plug 'justinmk/vim-dirvish'
+endif
 
 " create file and parent direcory at the same time
 Plug 'duggiefresh/vim-easydir'
@@ -79,7 +83,7 @@ if has('nvim')
   " preview/browse json files with ease
   Plug 'gennaro-tedesco/nvim-jqx'
 
-  " add devicons (requires patched font)
+  " devicons (requires patched font)
   Plug 'kyazdani42/nvim-web-devicons'
 
   " fix cursorhold events
@@ -107,6 +111,9 @@ if has('nvim')
   Plug 'RishabhRD/popfix'
   " better defaults for builtin-lsp actions
   Plug 'RishabhRD/nvim-lsputils'
+
+  " minimalist file explorer
+  Plug 'tamago324/lir.nvim'
 
   " popup API implementation (WIP)
   Plug 'nvim-lua/popup.nvim'

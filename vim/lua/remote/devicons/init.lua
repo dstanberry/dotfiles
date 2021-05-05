@@ -15,6 +15,4 @@ _G.get_devicon = function(path, ext)
 end
 
 -- define custom icons based on filetype
-devicons.setup {
-  override = require 'remote.devicons.icons'
-}
+devicons.setup {override = require 'remote.devicons.icons'}
