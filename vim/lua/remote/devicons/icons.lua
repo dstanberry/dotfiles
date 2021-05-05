@@ -17,6 +17,7 @@ return {
   ["diff-highlight"] = {icon = "", color = "#3f416a", name = "Perl"},
   ["dircolors"] = {icon = "", color = "#4d5a5e", name = "Shellscript"},
   ["gitconfig"] = {icon = "", color = "#f14c28", name = "GitConfig"},
+  ["gitcommit"] = {icon = "", color = "#f14c28", name = "GitCommit"},
   ["html"] = {icon = "", color = "#e34c26", name = "Html"},
   ["ignore"] = {icon = "", color = "#41535b", name = "GitIgnore"},
   ["markdown"] = {icon = "", color = "#519aba", name = "Markdown"},
