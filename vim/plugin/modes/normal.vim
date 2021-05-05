@@ -4,8 +4,6 @@
 " (spacefn) navigate quickfix list
 nnoremap <silent> <up> :cprevious<cr>zz
 nnoremap <silent> <down> :cnext<cr>zz
-nnoremap <silent> <left> :cpfile<cr>
-nnoremap <silent> <right> :cnfile<cr>
 
 " bind ctl-c to escape key
 nnoremap <c-c> <esc>
@@ -13,8 +11,6 @@ nnoremap <c-c> <esc>
 " navigate loclist list
 nnoremap <silent> <a-k> :lprevious<cr>zz
 nnoremap <silent> <a-j> :lnext<cr>zz
-nnoremap <silent> <a-h> :lpfile<cr>
-nnoremap <silent> <a-l> :lnfile<cr>
 
 " clear hlsearch if set, otherwise send default behavviour
 nnoremap <expr> <cr> {-> v:hlsearch ? ":nohl<cr>" : "<cr>"}()
@@ -37,14 +33,14 @@ nnoremap / /\v
 nnoremap ; :
 
 " switch to next buffer
-nnoremap <silent> <tab> :bnext<cr>
+nnoremap <silent> <right> :bnext<cr>
 " switch to previous buffer
-nnoremap <silent> <s-tab> :bprevious<cr>
+nnoremap <silent> <left> :bprevious<cr>
 
 " switch to next tab
-nnoremap <silent> ]t :tabnext<cr>
+nnoremap <silent> <tab> :tabnext<cr>
 " switch to previous tab
-nnoremap <silent> [t :tabprevious<cr>
+nnoremap <silent> <s-tab> :tabprevious<cr>
 
 " move to the beginning of the current line
 nnoremap H ^
