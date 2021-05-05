@@ -21,11 +21,6 @@ nnoremap <c-f>f /\v<c-r><c-w>
 " begin substitution in buffer for word under cursor
 nnoremap <c-f>r :%s/\<<c-r><c-w>\>//gc<left><left><left>
 
-" begin substitution in quickfix list for word under cursor
-nnoremap <c-f><space>
-	  \ :cfdo %s/\<<c-r><c-w>\>//gce \| update
-	  \ <left><left><left><left><left><left><left><left><left><left><left><left><left><left>
-
 " enable very magic mode during search operations
 nnoremap / /\v
 
