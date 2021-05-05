@@ -4,7 +4,7 @@
 return {
   ["lir_folder_icon"] = {
     icon = "",
-    color = "#7ebae4",
+    color = "#6f8fb4",
     name = "LirFolder"
   },
   [".gitignore"] = {icon = "", color = "#41535b", name = "GitIgnore"},
