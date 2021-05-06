@@ -7,9 +7,9 @@ return {
     color = "#6f8fb4",
     name = "LirFolder"
   },
+  ["_dir_"] = {icon = "", color = "#6f8fb4", name = "DirvishFolder"},
   [".gitignore"] = {icon = "", color = "#41535b", name = "GitIgnore"},
   [".tmux"] = {icon = "", color = "#4d5a5e", name = "Shellscript"},
-  ["_dir_"] = {icon = "", color = "#6f8fb4", name = "DirvishFolder"},
   ["bash"] = {icon = "", color = "#89e051", name = "Bash"},
   ["bashrc"] = {icon = "", color = "#89e051", name = "Bashrc"},
   ["config"] = {icon = "", color = "#f14c28", name = "GitConfig"},
