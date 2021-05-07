@@ -18,17 +18,29 @@ local project_root = function(fname)
   end
   return lspconfig.util.path.dirname(fname)
 end
-
 -- define buffer local features
-local on_attach_vim = function(client, bufnr)
+local on_attach_nvim = function(client, bufnr)
   local function buf_set_keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
   end
   -- define keybind for document formatting if supported by server
   local opts = {noremap = true, silent = true}
-  if client.resolved_capabilities.document_formatting or
-    client.resolved_capabilities.document_range_formatting then
+  if client.resolved_capabilities.document_formatting then
     buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
+  end
+  if client.resolved_capabilities.document_range_formatting then
+    buf_set_keymap("v", "ff", "<cmd>lua vim.lsp.buf.range_formatting()<cr>",
+                   opts)
+  end
+  -- define symbol highlighting if supported by server
+  if client.resolved_capabilities.document_highlight then
+    vim.api.nvim_exec([[
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]], false)
   end
   -- define keybinds for code actions / diagnostics
   buf_set_keymap("n", "ga", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
@@ -91,7 +103,7 @@ local function get_server_configuration()
     {properties = {'documentation', 'detail', 'additionalTextEdits'}}
   return {
     capabilities = capabilities,
-    on_attach = on_attach_vim,
+    on_attach = on_attach_nvim,
     root_dir = project_root
   }
 end
