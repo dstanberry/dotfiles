@@ -207,7 +207,7 @@ call <sid>hi('CursorLine',    '', s:gui01, '', s:cterm01, 'none', '')
 call <sid>hi('CursorLineNr',  s:gui0C, s:gui01, s:cterm0C, s:cterm01, 'bold', '')
 call <sid>hi('QuickFixLine',  s:gui01, s:gui0A, s:cterm01, s:cterm0A, 'none', '')
 call <sid>hi('PMenu',         s:gui05, s:gui10, s:cterm05, s:cterm01, 'none', '')
-call <sid>hi('PMenuSel',      s:gui01, s:gui05, s:cterm01, s:cterm05, '', '')
+call <sid>hi('PMenuSel',      s:gui01, s:gui08, s:cterm01, s:cterm08, '', '')
 
 " vim tabline colors
 call <sid>hi('TabLine',       s:gui03, s:gui02, s:cterm03, s:cterm01, 'none', '')
@@ -418,6 +418,14 @@ call <sid>hi('Custom3',        s:gui0C, s:gui02, s:cterm0D, s:cterm00, '', '')
 call <sid>hi('Custom4',        s:gui0F, s:gui02, s:cterm0D, s:cterm00, '', '')
 call <sid>hi('Custom5',        s:gui0E, s:gui02, s:cterm0D, s:cterm00, '', '')
 call <sid>hi('Custom6',        s:gui09, s:gui02, s:cterm0D, s:cterm00, '', '')
+
+" lsp document highlighting
+let s:lsp00 = substitute(functions#lighten(s:gui02, 25), '#', '', 'g')
+
+" lsp document highlighting
+call <sid>hi('LspReferenceRead', '', s:lsp00, '', s:lsp00, 'bold', '')
+call <sid>hi('LspReferenceText', '', s:lsp00, '', s:lsp00, 'bold', '')
+call <sid>hi('LspReferenceWrite', '', s:lsp00, '', s:lsp00, 'bold', '')
 
 " lsp diagnostic highlighting
 call <sid>hi('LspDiagnosticsDefaultError', s:gui0F, '', s:cterm0F, '', '', '')
