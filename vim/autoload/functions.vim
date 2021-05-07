@@ -113,7 +113,6 @@ function! functions#restore_cursor_position()
   endif
 endfunction
 
-
 " color manipulation
 let s:patterns = {}
 let s:patterns['hex']      = '\v#?(\x{2})(\x{2})(\x{2})'

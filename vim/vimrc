@@ -72,6 +72,7 @@ Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'rafamadriz/friendly-snippets'
 Plug 'cstrap/python-snippets'
 Plug 'keyring/vsc-lua'
+Plug 'honza/vim-snippets'
 Plug 'J0rgeSerran0/vscode-csharp-snippets'
 
 if has('nvim')
