@@ -242,6 +242,48 @@ function! functions#b64_encode(str)
   return join(b64, '')
 endfunction
 
+" move selected vertically within buffer
+function! s:move_selection(address, should_move)
+  if visualmode() ==? 'v' && a:should_move
+    execute "'<,'>move " . a:address
+    call feedkeys('gv=', 'n')
+  endif
+  call feedkeys('gv', 'n')
+endfunction
+
+" shift text selection up
+function! functions#move_up() abort range
+  let l:count=v:count ? -v:count : -1
+  let l:max=(a:firstline - 1) * -1
+  let l:movement=max([l:count, l:max])
+  let l:address="'<" . (l:movement - 1)
+  let l:should_move=l:movement < 0
+  call s:move_selection(l:address, l:should_move)
+endfunction
+
+" shift text selection down
+function! functions#move_down() abort range
+  let l:count=v:count ? v:count : 1
+  let l:max=line('$') - a:lastline
+  let l:movement=min([l:count, l:max])
+  let l:address="'>+" . l:movement
+  let l:should_move=l:movement > 0
+  call s:move_selection(l:address, l:should_move)
+endfunction
+
+" send selection to clipboard
+function! functions#get_selection() range
+  let reg_save = getreg('"')
+  let regtype_save = getregtype('"')
+  let cb_save = &clipboard
+  set clipboard&
+  normal! ""gvy
+  let selection = getreg('"')
+  call setreg('"', reg_save, regtype_save)
+  let &clipboard = cb_save
+  return selection
+endfunction
+
 " save and execute vim/lua file
 function! functions#load_file() abort
   if &filetype ==# 'vim'

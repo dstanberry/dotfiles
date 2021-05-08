@@ -26,8 +26,8 @@ vnoremap H ^
 vnoremap L g_
 
 " move selection vertically within buffer
-vnoremap <silent> K :call visual#move_up()<cr>
-vnoremap <silent> J :call visual#move_down()<cr>
+vnoremap <silent> K :call functions#move_up()<cr>
+vnoremap <silent> J :call functions#move_down()<cr>
 
 " exit visual mode
 vnoremap ZZ <esc>
