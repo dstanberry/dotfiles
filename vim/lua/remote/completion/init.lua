@@ -7,11 +7,6 @@ if not has_compe then
   return
 end
 
--- set completion confirm key
--- vim.g.completion_confirm_key = "<cr>"
--- confirm key is still '<cr>' but will be handled by autopairs/init.lue
--- vim.g.completion_confirm_key = ""
-
 compe.setup {
   enabled = true,
   autocomplete = true,
@@ -34,6 +29,12 @@ compe.setup {
     vsnip = true
   }
 }
+
+vim.api.nvim_set_keymap("i", "<cr>", "compe#confirm()",
+                        {noremap = true, expr = true, silent = true})
+
+vim.api.nvim_set_keymap("i", "<esc>", "compe#close()",
+                        {noremap = true, expr = true, silent = true})
 
 vim.api.nvim_set_keymap("i", "<c-space>", "compe#complete()",
                         {noremap = true, expr = true, silent = true})

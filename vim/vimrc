@@ -106,8 +106,6 @@ if has('nvim')
   Plug 'tjdevries/nlua.nvim'
   " extension for completion menu
   Plug 'tjdevries/complextras.nvim'
-  " autopairs plugin (can conflict with complextras)
-  Plug 'windwp/nvim-autopairs'
   " extends quickfix window functionality
   Plug 'RishabhRD/popfix'
   " better defaults for builtin-lsp actions
