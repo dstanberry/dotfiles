@@ -301,7 +301,7 @@ function! functions#execute_line() abort
   if &filetype ==# 'vim'
     execute getline('.')
   elseif &filetype ==# 'lua'
-    call execute(printf(':lua %s', getline('.')))
+    execute(printf(':echo luaeval("%s")', getline('.')))
   endif
   return
 endfunction
