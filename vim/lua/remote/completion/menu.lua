@@ -1,7 +1,6 @@
 ---------------------------------------------------------------
 -- => lsp completion menu item configuration
 ---------------------------------------------------------------
-local fmt = string.format
 local kind_symbols = {
   Class = 'פּ',
   Color = '',
@@ -48,7 +47,7 @@ local function set_completion_symbols(opts)
       local name = kind_order[i]
       local symbol = symbol_map[name]
       symbol = symbol and (symbol .. ' ') or ''
-      symbols[i] = fmt('%s%s', symbol, name)
+      symbols[i] = string.format('%s%s', symbol, name)
     end
   else
     for i = 1, len do
