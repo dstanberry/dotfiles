@@ -37,6 +37,9 @@ nnoremap / /\v
 " allow semi-colon to enter command mode
 nnoremap ; :
 
+" insert line break after parenthesis and comma
+nnoremap gob  :s/\((\zs\\|,\ *\zs\\|)\)/\r&/g<cr><bar>:'[,']normal ==<cr>
+
 " move to the beginning of the current line
 nnoremap H ^
 
