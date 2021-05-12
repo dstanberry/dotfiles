@@ -285,13 +285,23 @@ function! functions#get_selection() range
 endfunction
 
 " save and execute vim/lua file
-function! functions#load_file() abort
+function! functions#execute_file() abort
   if &filetype ==# 'vim'
     :silent! write
     :source %
   elseif &filetype ==# 'lua'
     :silent! write
     :luafile %
+  endif
+  return
+endfunction
+
+" save and execute vim/lua line
+function! functions#execute_line() abort
+  if &filetype ==# 'vim'
+    execute getline('.')
+  elseif &filetype ==# 'lua'
+    call execute(printf(':lua %s', getline('.')))
   endif
   return
 endfunction

@@ -69,8 +69,11 @@ noremap Y y$
 " define a mapleader for more key combinations
 let mapleader=' '
 
-" save current buffer to disk and source it
-nnoremap <silent> <leader>0 :call functions#load_file()<cr>
+" execute current line
+nnoremap <leader>x :call functions#execute_line()<cr>
+
+" save current buffer to disk and execute the file
+nnoremap <leader><leader>x :call functions#execute_file()<cr>
 
 " write current buffer to disk if changed
 nnoremap <leader>w :update<cr>
