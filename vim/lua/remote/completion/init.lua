@@ -29,25 +29,3 @@ compe.setup {
     vsnip = true
   }
 }
-
--- wrapper to ensure termcodes are sent correctly
-local function replace_terms(str)
-    return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
--- show current buffer list
-function _G.compe_confirm()
-  if vim.fn.pumvisible() == 1 then
-    return vim.fn['compe#confirm']()
-  else
-    return replace_terms("<cr>")
-  end
-end
-
-function _G.compe_close()
-  if vim.fn.pumvisible() == 1 then
-    return vim.fn['compe#close']()
-  else
-    return replace_terms("<esc>")
-  end
-end
