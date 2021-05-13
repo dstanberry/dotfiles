@@ -23,15 +23,6 @@ local on_attach_nvim = function(client, bufnr)
   local function buf_set_keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
   end
-  -- define keybind for document formatting if supported by server
-  local opts = {noremap = true, silent = true}
-  if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
-  end
-  if client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("v", "ff", "<cmd>lua vim.lsp.buf.range_formatting()<cr>",
-                   opts)
-  end
   -- define symbol highlighting if supported by server
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec([[
@@ -43,6 +34,7 @@ local on_attach_nvim = function(client, bufnr)
     ]], false)
   end
   -- define keybinds for code actions / diagnostics
+  local opts = {noremap = true, silent = true}
   buf_set_keymap("n", "ga", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
   buf_set_keymap("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
   buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
@@ -52,11 +44,27 @@ local on_attach_nvim = function(client, bufnr)
   buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
   buf_set_keymap("n", "gs", "<cmd>lua vim.lsp.buf.document_symbol()<cr>", opts)
   buf_set_keymap("n", "g/", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
+  buf_set_keymap("n", "g.",
+                 "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>", opts)
   buf_set_keymap("n", "gn", "<cmd>lua vim.lsp.diagnostic.goto_next()<cr>", opts)
   buf_set_keymap("n", "gp", "<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>", opts)
   buf_set_keymap("n", "gl",
                  "<cmd>call functions#vim_lsp_diagnostic_set_loclist()<cr>",
                  opts)
+  buf_set_keymap("n", '<localleader>wl',
+                 "<cmd>lua P(vim.lsp.buf.list_workspace_folders())<CR>", opts)
+  buf_set_keymap("n", '<localleader>wa',
+                 "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+  buf_set_keymap("n", '<localleader>wr',
+                 "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+  -- define keybind for document formatting if supported by server
+  if client.resolved_capabilities.document_formatting then
+    buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
+  end
+  if client.resolved_capabilities.document_range_formatting then
+    buf_set_keymap("v", "ff", "<cmd>lua vim.lsp.buf.range_formatting()<cr>",
+                   opts)
+  end
 end
 
 -- (nvim-lsputils) set enhancements
