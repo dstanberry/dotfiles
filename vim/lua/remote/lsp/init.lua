@@ -85,9 +85,9 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] =
     virtual_text = {prefix = '▪', spacing = 4}
   })
 vim.fn.sign_define("LspDiagnosticsSignError",
-                   {text = ' ', texthl = "LspDiagnosticsSignError"})
+                   {text = ' ', texthl = "LspDiagnosticsSignError"})
 vim.fn.sign_define("LspDiagnosticsSignWarning",
-                   {text = ' ', texthl = "LspDiagnosticsSignWarning"})
+                   {text = ' ', texthl = "LspDiagnosticsSignWarning"})
 vim.fn.sign_define("LspDiagnosticsSignInformation",
                    {text = '', texthl = "LspDiagnosticsSignInformation"})
 vim.fn.sign_define("LspDiagnosticsSignHint",
