@@ -28,7 +28,7 @@ endfunction
 command! -nargs=* -bang RG call fzf#rg(<q-args>, <bang>0)
 
 " fzf: search files available in the current directory
-nnoremap <localleader>ff :Files<cr>
+nnoremap <localleader><space> :Files<cr>
 " fzf: search git files available in the current directory
 nnoremap <localleader>fg :GFiles<cr>
 " fzf: search all currently open file buffers
