@@ -121,5 +121,8 @@ nnoremap <localleader>e :edit <c-r>=expand('%:p:h') . '/'<cr>
 " trim trailing whitespace
 nnoremap <localleader>ff :call functions#trim()<cr>
 
+" discard changes to current buffer and close it
+nnoremap <localleader>z :bdelete!<cr>
+
 " discard changes to all files and close window
 nnoremap <localleader>qq ZQ
