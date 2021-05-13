@@ -13,5 +13,5 @@ parser_config.get_parser_configs().vim = {
     url = "https://github.com/vigoux/tree-sitter-viml",
     files = {"src/parser.c", "src/scanner.c"}
   },
-  used_by = {'vimrc'}
+  used_by = {'vifmrc', 'vimrc'}
 }
