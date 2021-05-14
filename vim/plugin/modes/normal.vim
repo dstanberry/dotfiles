@@ -124,6 +124,9 @@ nnoremap <localleader>e :edit <c-r>=expand('%:p:h') . '/'<cr>
 " trim trailing whitespace
 nnoremap <localleader>ff :call functions#trim()<cr>
 
+" save as new file within the current directory
+nnoremap <localleader>s :saveas <c-r>=expand('%:p:h') . '/'<cr>
+
 " discard changes to all files and close window
 nnoremap <localleader>qq ZQ
 
