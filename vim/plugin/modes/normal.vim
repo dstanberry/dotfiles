@@ -69,29 +69,6 @@ noremap Y y$
 " define a mapleader for more key combinations
 let mapleader=' '
 
-" execute current line
-nnoremap <leader>x :call functions#execute_line()<cr>
-
-" save current buffer to disk and execute the file
-nnoremap <leader><leader>x :call functions#execute_file()<cr>
-
-" write current buffer to disk if changed
-nnoremap <leader>w :update<cr>
-" close the current window or close app if this is the last window
-nnoremap <leader>q :quit<cr>
-
-" close the current buffer
-nnoremap <silent> <leader>z :bdelete<cr>
-
-" switch to left window
-nmap <silent> <leader>h :wincmd h<cr>
-" switch to top window
-nmap <silent> <leader>k :wincmd k<cr>
-" switch to right window
-nmap <silent> <leader>l :wincmd l<cr>
-" switch to bottom window
-nmap <silent> <leader>j :wincmd j<cr>
-
 " increment window width
 nnoremap <silent> <leader>= :vertical resize +5<cr>
 " decrement window width
@@ -109,6 +86,32 @@ nmap <leader>C "_C
 nmap <leader>d "_d
 nmap <leader>D "_D
 
+" reload (re-edit) current buffer
+nnoremap e :edit<cr>
+
+" switch to left window
+nmap <silent> <leader>h :wincmd h<cr>
+" switch to top window
+nmap <silent> <leader>k :wincmd k<cr>
+" switch to right window
+nmap <silent> <leader>l :wincmd l<cr>
+" switch to bottom window
+nmap <silent> <leader>j :wincmd j<cr>
+
+" write current buffer to disk if changed
+nnoremap <leader>w :update<cr>
+" close the current window or close app if this is the last window
+nnoremap <leader>q :quit<cr>
+
+" execute current line
+nnoremap <leader>x :call functions#execute_line()<cr>
+
+" save current buffer to disk and execute the file
+nnoremap <leader><leader>x :call functions#execute_file()<cr>
+
+" close the current buffer
+nnoremap <silent> <leader>z :bdelete<cr>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -121,8 +124,8 @@ nnoremap <localleader>e :edit <c-r>=expand('%:p:h') . '/'<cr>
 " trim trailing whitespace
 nnoremap <localleader>ff :call functions#trim()<cr>
 
-" discard changes to current buffer and close it
-nnoremap <localleader>z :bdelete!<cr>
-
 " discard changes to all files and close window
 nnoremap <localleader>qq ZQ
+
+" discard changes to current buffer and close it
+nnoremap <localleader>z :bdelete!<cr>
