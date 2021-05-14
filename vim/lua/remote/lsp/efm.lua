@@ -9,6 +9,7 @@ local shellcheck = require 'remote.lsp.linters.shellcheck'
 local vint = require 'remote.lsp.linters.vint'
 
 -- formatter configuration
+local clang = require 'remote.lsp.formatters.clangformat'
 local isort = require 'remote.lsp.formatters.isort'
 local luafmt = require 'remote.lsp.formatters.luafmt'
 local prettier = require 'remote.lsp.formatters.prettier'
@@ -17,6 +18,8 @@ local yapf = require 'remote.lsp.formatters.yapf'
 
 -- supported languages
 local languages = {
+  c = {clang},
+  cpp = {clang},
   css = {prettier},
   html = {prettier},
   javascript = {eslint, prettier},
