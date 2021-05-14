@@ -270,5 +270,5 @@ augroup statusline
   autocmd BufLeave,BufWinLeave * call s:set_statusline('inactive')
   autocmd FocusGained,WinEnter * call s:set_statusline('active')
   autocmd FocusLost,WinLeave * call s:set_statusline('inactive')
-  autocmd User FzfStatusLine call <sid>set_statusline('active')
+  autocmd User statusline call <sid>set_statusline('active')
 augroup END
