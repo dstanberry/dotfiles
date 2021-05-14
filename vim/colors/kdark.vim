@@ -210,9 +210,9 @@ call <sid>hi('PMenu',         s:gui05, s:gui10, s:cterm05, s:cterm01, 'none', ''
 call <sid>hi('PMenuSel',      s:gui01, s:gui08, s:cterm01, s:cterm08, '', '')
 
 " vim tabline colors
-call <sid>hi('TabLine',       s:gui03, s:gui02, s:cterm03, s:cterm01, 'none', '')
-call <sid>hi('TabLineFill',   s:gui03, s:gui02, s:cterm03, s:cterm01, 'none', '')
-call <sid>hi('TabLineSel',    s:gui05, s:gui00, s:cterm0B, s:cterm01, 'none', '')
+call <sid>hi('TabLine',       s:gui03, s:gui00, s:cterm03, s:cterm00, 'none', '')
+call <sid>hi('TabLineFill',   s:gui03, s:gui00, s:cterm03, s:cterm00, 'none', '')
+call <sid>hi('TabLineSel',    s:gui05, s:gui00, s:cterm05, s:cterm00, 'none', '')
 
 " neovim syntax highlighting
 call <sid>hi('NvimInternalError', s:gui0F, s:gui00, s:cterm0F, s:cterm00, '', '')
