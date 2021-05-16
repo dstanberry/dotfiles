@@ -100,11 +100,8 @@ nnoremap <leader>w :update<cr>
 " close the current window or close app if this is the last window
 nnoremap <leader>q :quit<cr>
 
-" execute current line
-nnoremap <leader>x :call functions#execute_line()<cr>
-
 " save current buffer to disk and execute the file
-nnoremap <leader><leader>x :call functions#execute_file()<cr>
+nnoremap <leader>x :call functions#execute_file()<cr>
 
 " close the current buffer
 nnoremap <silent> <leader>z :bdelete<cr>
@@ -126,6 +123,9 @@ nnoremap <localleader>s :saveas <c-r>=expand('%:p:h') . '/'<cr>
 
 " discard changes to all files and close window
 nnoremap <localleader>qq ZQ
+
+" execute current line
+nnoremap <localleader>x :call functions#execute_line()<cr>
 
 " discard changes to current buffer and close it
 nnoremap <localleader>z :bdelete!<cr>
