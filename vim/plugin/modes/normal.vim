@@ -86,9 +86,6 @@ nmap <leader>C "_C
 nmap <leader>d "_d
 nmap <leader>D "_D
 
-" reload (re-edit) current buffer
-nnoremap e :edit<cr>
-
 " switch to left window
 nmap <silent> <leader>h :wincmd h<cr>
 " switch to top window
