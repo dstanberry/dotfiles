@@ -217,6 +217,9 @@ call <sid>hi('TabLineSel',    s:gui05, s:gui00, s:cterm05, s:cterm00, 'none', ''
 " neovim syntax highlighting
 call <sid>hi('NvimInternalError', s:gui0F, s:gui00, s:cterm0F, s:cterm00, '', '')
 
+" lsp highlight groups
+let s:sui00 = substitute(functions#darken(s:gui0C, 20), '#', '', 'g')
+
 " standard syntax highlighting
 call <sid>hi('Boolean',      s:gui09, '', s:cterm09, '', '', '')
 call <sid>hi('Character',    s:gui08, '', s:cterm08, '', '', '')
@@ -224,14 +227,14 @@ call <sid>hi('Comment',      s:gui03, '', s:cterm03, '', 'italic', '')
 call <sid>hi('Conditional',  s:gui0E, '', s:cterm0E, '', '', '')
 call <sid>hi('Constant',     s:gui09, '', s:cterm09, '', '', '')
 call <sid>hi('Define',       s:gui0E, '', s:cterm0E, '', 'none', '')
-call <sid>hi('Delimiter',    s:gui0F, '', s:cterm0F, '', '', '')
+call <sid>hi('Delimiter',    s:sui00, '', s:cterm05, '', '', '')
 call <sid>hi('Float',        s:gui09, '', s:cterm09, '', '', '')
-call <sid>hi('Function',     s:gui0D, '', s:cterm0D, '', '', '')
-call <sid>hi('Identifier',   s:gui08, '', s:cterm08, '', 'none', '')
+call <sid>hi('Function',     s:gui0C, '', s:cterm0C, '', '', '')
+call <sid>hi('Identifier',   s:sui00, '', s:cterm08, '', 'none', '')
 call <sid>hi('Include',      s:gui0D, '', s:cterm0D, '', '', '')
 call <sid>hi('Keyword',      s:gui0E, '', s:cterm0E, '', '', '')
 call <sid>hi('Label',        s:gui0A, '', s:cterm0A, '', '', '')
-call <sid>hi('Number',       s:gui09, '', s:cterm09, '', '', '')
+call <sid>hi('Number',       s:gui0E, '', s:cterm0E, '', '', '')
 call <sid>hi('Operator',     s:gui05, '', s:cterm05, '', 'none', '')
 call <sid>hi('PreProc',      s:gui0A, '', s:cterm0A, '', '', '')
 call <sid>hi('Repeat',       s:gui0A, '', s:cterm0A, '', '', '')
@@ -419,7 +422,7 @@ call <sid>hi('Custom4',        s:gui0F, s:gui02, s:cterm0D, s:cterm00, '', '')
 call <sid>hi('Custom5',        s:gui0E, s:gui02, s:cterm0D, s:cterm00, '', '')
 call <sid>hi('Custom6',        s:gui09, s:gui02, s:cterm0D, s:cterm00, '', '')
 
-" lsp document highlighting
+" lsp highlight groups
 let s:lsp00 = substitute(functions#lighten(s:gui02, 25), '#', '', 'g')
 
 " lsp document highlighting
