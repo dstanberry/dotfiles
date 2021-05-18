@@ -37,9 +37,6 @@ nnoremap / /\v
 " allow semi-colon to enter command mode
 nnoremap ; :
 
-" populate command mode with last command
-nnoremap ,c :<up>
-
 " insert line break after parenthesis and comma
 nnoremap gob  :s/\((\zs\\|,\ *\zs\\|)\)/\r&/g<cr><bar>:'[,']normal ==<cr>
 
@@ -113,16 +110,19 @@ nnoremap <silent> <leader>z :bdelete<cr>
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " define a maplocalleader for more key combinations
-let maplocalleader='\'
+let maplocalleader=','
+
+" populate command mode with last command
+nnoremap <localleader>c :<up>
 
 " create/edit file within the current directory
-nnoremap <localleader>e :edit <c-r>=expand('%:p:h') . '/'<cr>
+nnoremap <localleader>e :edit <c-r>=expand('%:p:h') . functions#get_separator()<cr>
 
 " trim trailing whitespace
 nnoremap <localleader>ff :call functions#trim()<cr>
 
 " save as new file within the current directory
-nnoremap <localleader>s :saveas <c-r>=expand('%:p:h') . '/'<cr>
+nnoremap <localleader>s :saveas <c-r>=expand('%:p:h') . functions#get_separator()<cr>
 
 " discard changes to all files and close window
 nnoremap <localleader>qq ZQ
