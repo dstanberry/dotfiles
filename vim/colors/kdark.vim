@@ -165,6 +165,7 @@ function <sid>hi(group, guifg, guibg, ctermfg, ctermbg, attr, guisp)
 endfunction
 
 let s:gui10 = substitute(functions#darken(s:gui02, 40), '#', '', 'g')
+let s:gui11 = substitute(functions#darken(s:gui03, 25), '#', '', 'g')
 
 " vim editor colors
 call <sid>hi('Normal',        s:gui05, s:gui00, s:cterm05, s:cterm00, '', '')
@@ -195,7 +196,7 @@ call <sid>hi('WildMenu',      s:gui08, s:gui05, s:cterm08, s:cterm05, '', '')
 call <sid>hi('Title',         s:gui0D, '', s:cterm0D, '', 'none', '')
 call <sid>hi('Conceal',       s:gui0D, s:gui00, s:cterm0D, s:cterm00, '', '')
 call <sid>hi('Cursor',        s:gui00, s:gui05, s:cterm00, s:cterm05, '', '')
-call <sid>hi('NonText',       s:gui03, '', s:cterm03, '', '', '')
+call <sid>hi('NonText',       s:gui11, '', s:cterm03, '', '', '')
 call <sid>hi('LineNr',        s:gui03, s:gui00, s:cterm03, s:cterm00, '', '')
 call <sid>hi('SignColumn',    s:gui03, s:gui00, s:cterm03, s:cterm00, '', '')
 call <sid>hi('StatusLine',    s:gui04, s:gui02, s:cterm04, s:cterm02, 'none', '')
