@@ -15,7 +15,7 @@ nnoremap <silent> <tab> :tabnext<cr>
 " switch to previous tab
 nnoremap <silent> <s-tab> :tabprevious<cr>
 
-" clear hlsearch if set, otherwise send default behavviour
+" clear hlsearch if set, otherwise send default behaviour
 nnoremap <expr> <cr> {-> v:hlsearch ? ":nohl<cr>" : "<cr>"}()
 
 " bind ctl-c to escape key
