@@ -26,7 +26,7 @@ nnoremap <silent> <a-k> :lprevious<cr>zz
 nnoremap <silent> <a-j> :lnext<cr>zz
 
 " find all occurences in buffer of word under cursor
-nnoremap <c-f>f /\v<c-r><c-w>
+nnoremap <c-f>f /\v<c-r><c-w><cr>
 
 " begin substitution in buffer for word under cursor
 nnoremap <c-f>r :%s/\<<c-r><c-w>\>//gc<left><left><left>
