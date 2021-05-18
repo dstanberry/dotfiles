@@ -312,3 +312,11 @@ function! functions#vim_lsp_diagnostic_set_loclist() abort
     lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
   end
 endfunction
+
+" return OS specific path separator
+function! functions#get_separator() abort
+  if has('win32')
+    return '\'
+  endif
+  return '/'
+endfunction
