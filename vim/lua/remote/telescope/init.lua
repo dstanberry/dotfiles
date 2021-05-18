@@ -117,6 +117,7 @@ function M.search_git_repo()
   require('telescope.builtin').find_files {
     previewer = false,
     layout_strategy = "vertical",
+    prompt_title = "Search Git",
     cwd = lspconfig.util.root_pattern(".git")(vim.fn.expand("%:p"))
   }
 end
@@ -140,6 +141,7 @@ function M.installed_plugins()
     cwd = "~/.config/vim/remote",
     previewer = false,
     layout_strategy = 'vertical',
+    prompt_title = "Installed Plugins",
     results_title = false
   }
 end
