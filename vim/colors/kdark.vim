@@ -426,9 +426,9 @@ call <sid>hi('Custom6',        s:gui09, s:gui02, s:cterm0D, s:cterm00, '', '')
 let s:lsp00 = substitute(functions#lighten(s:gui02, 25), '#', '', 'g')
 
 " lsp document highlighting
-call <sid>hi('LspReferenceRead', '', s:lsp00, '', s:lsp00, 'underline', '')
-call <sid>hi('LspReferenceText', '', s:lsp00, '', s:lsp00, 'underline', '')
-call <sid>hi('LspReferenceWrite', '', s:lsp00, '', s:lsp00, 'underline', '')
+call <sid>hi('LspReferenceRead', s:gui07, s:gui08, s:cterm07, s:cterm08, '', '')
+call <sid>hi('LspReferenceText', s:gui07, s:gui08, s:cterm07, s:cterm08, '', '')
+call <sid>hi('LspReferenceWrite', s:gui07, s:gui08, s:cterm07, s:cterm08, '', '')
 
 " lsp diagnostic highlighting
 call <sid>hi('LspDiagnosticsDefaultError', s:gui0F, '', s:cterm0F, '', '', '')
