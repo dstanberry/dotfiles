@@ -14,7 +14,9 @@ local enabled = true
 -- set default options
 treesitter_configs.setup {
   ensure_installed = {
-    'bash', 'c', 'c_sharp', 'cpp', 'css', 'jsonc', 'lua', 'python', 'vim'
+    'bash', 'c', 'c_sharp', 'comment', 'cpp', 'css', 'html', 'javascript',
+    'jsdoc', 'jsonc', 'lua', -- [[ 'markdown', ]]
+    'python', 'query', 'regex', 'ruby', 'vim', 'yaml'
   },
   highlight = {enable = enabled, use_languagetree = false, disable = {'vim'}},
   incremental_selection = {enable = enabled}
