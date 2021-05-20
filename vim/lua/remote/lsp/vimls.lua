@@ -1,22 +1,17 @@
 ---------------------------------------------------------------
 -- => vim-language-server configuration
 ---------------------------------------------------------------
+-- identify project root directory
+local util = require 'lspconfig/util'
+
+local root_files = {".config", ".git"}
+
+local project_root = function(fname)
+  return util.root_pattern(unpack(root_files))(fname) or
+           util.path.dirname(fname)
+end
+
 return {
-  cmd = {"vim-language-server", "--stdio"},
-  filetypes = {"vim"},
-  init_options = {
-    diagnostic = {enable = true},
-    indexes = {
-      count = 3,
-      gap = 100,
-      projectRootPatterns = {
-        ".git", "autoload", "nvim", "plugin", "runtime", "vim"
-      },
-      runtimepath = true
-    },
-    iskeyword = "@,48-57,_,192-255,-#",
-    runtimepath = "",
-    suggest = {fromRuntimepath = true, fromVimruntime = true},
-    vimruntime = ""
-  }
+  vimruntime = vim.fn.expand('$VIMRUNTIME'),
+  root_dir = project_root
 }
