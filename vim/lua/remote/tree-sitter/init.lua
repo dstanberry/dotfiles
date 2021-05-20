@@ -28,9 +28,9 @@ end
 -- set default options
 treesitter_configs.setup {
   ensure_installed = {
-    'bash', 'c', 'c_sharp', 'comment', 'cpp', 'css', 'html', 'javascript',
-    'jsdoc', 'jsonc', 'lua', -- [[ 'markdown', ]]
-    'python', 'query', 'regex', 'ruby', -- [[ 'vim', ]]
+    'bash', 'c', 'c_sharp', 'comment', 'cpp', 'css','go', 'html', 'java',
+    'javascript', 'jsdoc', 'jsonc', 'lua', -- [[ 'markdown', ]]
+    'php', 'python', 'toml', 'query', 'regex', 'ruby', -- [[ 'vim', ]]
     'yaml'
   },
   highlight = {enable = true, use_languagetree = false, disable = {}},
