@@ -11,13 +11,6 @@ end
 -- enable debugging
 -- vim.lsp.set_log_level("debug")
 
--- identify project root directory
-local project_root = function(fname)
-  if string.find(vim.fn.fnamemodify(fname, ":p"), ".config") then
-    return vim.fn.expand("~/.config")
-  end
-  return lspconfig.util.path.dirname(fname)
-end
 -- define buffer local features
 local on_attach_nvim = function(client, bufnr)
   local function buf_set_keymap(...)
@@ -52,11 +45,11 @@ local on_attach_nvim = function(client, bufnr)
                  "<cmd>call functions#vim_lsp_diagnostic_set_loclist()<cr>",
                  opts)
   buf_set_keymap("n", '<localleader>wl',
-                 "<cmd>lua P(vim.lsp.buf.list_workspace_folders())<CR>", opts)
+                 "<cmd>lua P(vim.lsp.buf.list_workspace_folders())<cr>", opts)
   buf_set_keymap("n", '<localleader>wa',
-                 "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", opts)
+                 "<cmd>lua vim.lsp.buf.add_workspace_folder()<cr>", opts)
   buf_set_keymap("n", '<localleader>wr',
-                 "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", opts)
+                 "<cmd>lua vim.lsp.buf.remove_workspace_folder()<cr>", opts)
   -- define keybind for document formatting if supported by server
   if client.resolved_capabilities.document_formatting then
     buf_set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.formatting()<cr>", opts)
@@ -69,31 +62,14 @@ end
 
 -- diagnostic symbols and highlight groups
 vim.fn.sign_define("LspDiagnosticsSignError",
-{text = ' ', texthl = "LspDiagnosticsSignError"})
+                   {text = ' ', texthl = "LspDiagnosticsSignError"})
 vim.fn.sign_define("LspDiagnosticsSignWarning",
-{text = ' ', texthl = "LspDiagnosticsSignWarning"})
+                   {text = ' ', texthl = "LspDiagnosticsSignWarning"})
 vim.fn.sign_define("LspDiagnosticsSignInformation",
-{text = '', texthl = "LspDiagnosticsSignInformation"})
+                   {text = '', texthl = "LspDiagnosticsSignInformation"})
 vim.fn.sign_define("LspDiagnosticsSignHint",
-{text = '', texthl = "LspDiagnosticsSignHint"})
+                   {text = '', texthl = "LspDiagnosticsSignHint"})
 
--- (nvim-lsputils) set enhancements
-vim.lsp.handlers['textDocument/codeAction'] =
-  require'lsputil.codeAction'.code_action_handler
-vim.lsp.handlers['textDocument/references'] =
-  require'lsputil.locations'.references_handler
-vim.lsp.handlers['textDocument/definition'] =
-  require'lsputil.locations'.definition_handler
-vim.lsp.handlers['textDocument/declaration'] =
-  require'lsputil.locations'.declaration_handler
-vim.lsp.handlers['textDocument/typeDefinition'] =
-  require'lsputil.locations'.typeDefinition_handler
-vim.lsp.handlers['textDocument/implementation'] =
-  require'lsputil.locations'.implementation_handler
-vim.lsp.handlers['textDocument/documentSymbol'] =
-  require'lsputil.symbols'.document_handler
-vim.lsp.handlers['workspace/symbol'] =
-  require'lsputil.symbols'.workspace_handler
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
   vim.lsp.with( -- set diagnostics options
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -110,11 +86,7 @@ local function get_server_configuration()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   capabilities.textDocument.completion.completionItem.resolveSupport =
     {properties = {'documentation', 'detail', 'additionalTextEdits'}}
-  return {
-    capabilities = capabilities,
-    on_attach = on_attach_nvim,
-    root_dir = project_root
-  }
+  return {capabilities = capabilities, on_attach = on_attach_nvim}
 end
 
 -- load defined servers
@@ -131,9 +103,9 @@ local function load_servers()
       config = vim.tbl_extend('force', config, sumneko)
       nluaconfig.setup(lspconfig, config)
     else
-      local has_config, ls = pcall(require, 'remote.lsp.' .. server)
+      local has_config, extra_config = pcall(require, 'remote.lsp.' .. server)
       if has_config then
-        config = vim.tbl_extend('force', config, ls)
+        config = vim.tbl_extend('force', config, extra_config)
       end
       lspconfig[server].setup(config)
     end

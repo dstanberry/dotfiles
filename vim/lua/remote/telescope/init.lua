@@ -23,6 +23,10 @@ local actions = require('telescope.actions')
 local sorters = require('telescope.sorters')
 local themes = require('telescope.themes')
 
+-- load additional extensions
+require('telescope').load_extension('fzy_native')
+require('telescope').load_extension('lsp_handlers')
+
 -- set default options
 require('telescope').setup {
   defaults = {
@@ -51,7 +55,6 @@ require('telescope').setup {
     mappings = {
       i = {
         ["<C-x>"] = false,
-        ["ZZ"] = actions.close,
         ["jk"] = actions.close,
         ["<esc>"] = actions.close,
         ["<C-s>"] = actions.select_horizontal,
@@ -65,12 +68,16 @@ require('telescope').setup {
     qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new
   },
   extensions = {
-    fzy_native = {override_generic_sorter = false, override_file_sorter = true}
+    fzy_native = {override_generic_sorter = false, override_file_sorter = true},
+    lsp_handlers = {
+      disable = {},
+      code_action = {
+        telescope = require('telescope.themes').get_dropdown(
+          {previewer = false, results_title = false})
+      }
+    }
   }
 }
-
--- load additional extensions
-require('telescope').load_extension('fzy_native')
 
 -- initialize modules table
 local M = {}

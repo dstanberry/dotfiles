@@ -106,10 +106,6 @@ if has('nvim')
   Plug 'tjdevries/nlua.nvim'
   " extension for completion menu
   Plug 'tjdevries/complextras.nvim'
-  " extends quickfix window functionality
-  Plug 'RishabhRD/popfix'
-  " better defaults for builtin-lsp actions
-  Plug 'RishabhRD/nvim-lsputils'
 
   " minimalist file explorer
   Plug 'tamago324/lir.nvim'
@@ -120,6 +116,8 @@ if has('nvim')
   Plug 'nvim-telescope/telescope.nvim'
   " pre-compiled fzy sorter
   Plug 'nvim-telescope/telescope-fzy-native.nvim'
+  " Telescope extension for LSP
+  Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
 endif
 
 call plug#end()
