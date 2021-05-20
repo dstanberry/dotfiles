@@ -62,8 +62,9 @@ elif is_wsl; then
 fi
 
 # add pyenv binaries to path
-PYENVPATH="$XDG_DATA_HOME/pyenv/bin"
+PYENVPATH="$PYENV_ROOT/bin"
 export PATH=$PYENVPATH:$PATH
+eval "$(pyenv init --path)"
 unset PYENVPATH
 
 # ensure no duplicate entries are present in PATH
