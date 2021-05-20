@@ -61,5 +61,10 @@ elif is_wsl; then
   unset PWSH
 fi
 
+# add pyenv binaries to path
+PYENVPATH="$XDG_DATA_HOME/pyenv/bin"
+export PATH=$PYENVPATH:$PATH
+unset PYENVPATH
+
 # ensure no duplicate entries are present in PATH
 dedup_pathvar PATH
