@@ -75,6 +75,9 @@ Plug 'keyring/vsc-lua'
 Plug 'honza/vim-snippets'
 Plug 'J0rgeSerran0/vscode-csharp-snippets'
 
+" Python unit testing
+Plug 'alfredodeza/pytest.vim'
+
 if has('nvim')
   " syntax highlighting for portage
   if isdirectory('/etc/portage')
@@ -116,6 +119,8 @@ if has('nvim')
   Plug 'nvim-telescope/telescope.nvim'
   " pre-compiled fzy sorter
   Plug 'nvim-telescope/telescope-fzy-native.nvim'
+  " pre-compiled c port of fzf
+  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
   " Telescope extension for LSP
   Plug 'gbrlsnchs/telescope-lsp-handlers.nvim'
 endif

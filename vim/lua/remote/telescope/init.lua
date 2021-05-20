@@ -23,10 +23,6 @@ local actions = require('telescope.actions')
 local sorters = require('telescope.sorters')
 local themes = require('telescope.themes')
 
--- load additional extensions
-require('telescope').load_extension('fzy_native')
-require('telescope').load_extension('lsp_handlers')
-
 -- set default options
 require('telescope').setup {
   defaults = {
@@ -36,29 +32,22 @@ require('telescope').setup {
     preview_cutoff = 120,
     layout_strategy = 'horizontal',
     layout_defaults = {
-      horizontal = {
-        width_padding = 0.1,
-        height_padding = 0.1,
-        preview_width = 0.6
-      },
-      vertical = {
-        width_padding = 0.05,
-        height_padding = 1,
-        preview_height = 0.5
-      }
+      horizontal = {mirror = false},
+      vertical = {mirror = false}
     },
     selection_strategy = "reset",
     sorting_strategy = "descending",
     scroll_strategy = "cycle",
     prompt_position = "bottom",
     color_devicons = true,
+    use_less = true,
+    set_env = {['COLORTERM'] = 'truecolor'},
     mappings = {
       i = {
-        ["<C-x>"] = false,
-        ["jk"] = actions.close,
-        ["<esc>"] = actions.close,
-        ["<C-s>"] = actions.select_horizontal,
-        ["<C-q>"] = actions.send_to_qflist
+        ["<c-s>"] = actions.select_horizontal,
+        ["<c-q>"] = actions.send_to_qflist,
+        -- ["<esc>"] = actions.close,
+        ["jk"] = actions.close
       }
     },
     borderchars = {'─', '│', '─', '│', '┌', '┐', '┘', '└'},
@@ -69,15 +58,45 @@ require('telescope').setup {
   },
   extensions = {
     fzy_native = {override_generic_sorter = false, override_file_sorter = true},
+    fzf = {
+      override_generic_sorter = false,
+      override_file_sorter = true,
+      case_mode = "smart_case"
+    },
     lsp_handlers = {
       disable = {},
       code_action = {
         telescope = require('telescope.themes').get_dropdown(
           {previewer = false, results_title = false})
+      },
+      symbol = {
+        telescope = require('telescope.themes').get_dropdown(
+          {
+            results_title = false,
+
+            layout_defaults = {
+              horizontal = {
+                width_padding = 0.1,
+                height_padding = 1,
+                preview_width = 0.6
+              },
+              vertical = {
+                width_padding = 0.05,
+                height_padding = 1,
+                preview_height = 0.5
+              }
+            }
+
+          })
       }
     }
   }
 }
+
+-- load additional extensions
+-- require('telescope').load_extension('fzy_native')
+pcall(require('telescope').load_extension('fzf'))
+pcall(require('telescope').load_extension('lsp_handlers'))
 
 -- initialize modules table
 local M = {}
@@ -131,15 +150,42 @@ end
 
 -- customize generic file browser
 function M.file_browser()
-  require("telescope.builtin").file_browser {
+  local opts
+  opts = {
     hidden = true,
     sorting_strategy = "ascending",
     scroll_strategy = "cycle",
     prompt_position = "top",
     prompt_title = "File Browser",
     preview_title = false,
-    results_title = false
+    results_title = false,
+    attach_mappings = function(prompt_bufnr, map)
+      local action_state = require('telescope.actions.state')
+      local current_picker = action_state.get_current_picker(prompt_bufnr)
+      local modify_cwd = function(new_cwd)
+        current_picker.cwd = new_cwd
+        current_picker:refresh(opts.new_finder(new_cwd), {reset_prompt = true})
+      end
+      map('i', '-', function()
+        modify_cwd(current_picker.cwd .. "/..")
+      end)
+      map('i', '~', function()
+        modify_cwd(vim.fn.expand("~"))
+      end)
+      local modify_depth = function(mod)
+        return function()
+          opts.depth = opts.depth + mod
+          local current_picker = action_state.get_current_picker(prompt_bufnr)
+          current_picker:refresh(opts.new_finder(current_picker.cwd),
+                                 {reset_prompt = true})
+        end
+      end
+      map('i', '<right>', modify_depth(1))
+      map('i', '<left>', modify_depth(-1))
+      return true
+    end
   }
+  require("telescope.builtin").file_browser(opts)
 end
 
 -- fuzzy search installed vim plugins
