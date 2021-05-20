@@ -2,11 +2,7 @@
 -- => (nvim-web-devicons) custom icon maps
 ---------------------------------------------------------------
 return {
-  ["lir_folder_icon"] = {
-    icon = "",
-    color = "#6f8fb4",
-    name = "LirFolder"
-  },
+  ["lir_folder_icon"] = {icon = "", color = "#6f8fb4", name = "LirFolder"},
   ["_dir_"] = {icon = "", color = "#6f8fb4", name = "DirvishFolder"},
   [".gitignore"] = {icon = "", color = "#41535b", name = "GitIgnore"},
   [".tmux"] = {icon = "", color = "#4d5a5e", name = "Shellscript"},
@@ -16,8 +12,8 @@ return {
   ["css"] = {icon = "", color = "#563d7c", name = "Css"},
   ["diff-highlight"] = {icon = "", color = "#3f416a", name = "Perl"},
   ["dircolors"] = {icon = "", color = "#4d5a5e", name = "Shellscript"},
-  ["gitconfig"] = {icon = "", color = "#f14c28", name = "GitConfig"},
   ["gitcommit"] = {icon = "", color = "#f14c28", name = "GitCommit"},
+  ["gitconfig"] = {icon = "", color = "#f14c28", name = "GitConfig"},
   ["html"] = {icon = "", color = "#e34c26", name = "Html"},
   ["ignore"] = {icon = "", color = "#41535b", name = "GitIgnore"},
   ["markdown"] = {icon = "", color = "#519aba", name = "Markdown"},

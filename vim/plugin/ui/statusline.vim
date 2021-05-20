@@ -20,7 +20,7 @@ endfunction
 function! statusline#get_filetype() abort
   if strlen(&ft)
     if has('nvim')
-      return v:lua.get_devicon('%:h', &ft) . ' ' . &ft
+      return luaeval('require"nvim-web-devicons".get_icon(vim.fn.expand("%:t"), vim.fn.expand("%:e"))') . ' ' . &ft
     else
       return &ft
     endif
