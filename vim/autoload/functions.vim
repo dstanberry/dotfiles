@@ -242,6 +242,19 @@ function! functions#b64_encode(str)
   return join(b64, '')
 endfunction
 
+" get the range of selected text
+function! functions#get_visual_selection()
+  let [lnum1, col1] = getpos("'<")[1:2]
+  let [lnum2, col2] = getpos("'>")[1:2]
+  if lnum1 > lnum2
+    let [lnum1, col1, lnum2, col2] = [lnum2, col2, lnum1, col1]
+  endif
+  let lines = getline(lnum1, lnum2)
+  let lines[-1] = lines[-1][: col2 - (&selection ==# 'inclusive' ? 1 : 2)]
+  let lines[0] = lines[0][col1 - 1:]
+  return join(lines, "\n")."\n"
+endfunction
+
 " move selected vertically within buffer
 function! s:move_selection(address, should_move)
   if visualmode() ==? 'v' && a:should_move
@@ -307,13 +320,13 @@ function! functions#execute_line() abort
 endfunction
 
 " lsp send diagnostics info to loclist
-function! functions#vim_lsp_diagnostic_set_loclist() abort
-  if has('nvim')
+if has('nvim')
+  function! functions#vim_lsp_diagnostic_set_loclist() abort
     lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
-  end
-endfunction
+  endfunction
+end
 
-" return OS specific path separator
+"return OS specific path separator
 function! functions#get_separator() abort
   if has('win32')
     return '\'
