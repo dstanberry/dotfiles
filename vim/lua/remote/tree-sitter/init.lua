@@ -52,26 +52,53 @@ treesitter_configs.setup {
     }
   },
   textobjects = {
+    lsp_interop = {
+      enable = true,
+      peek_definition_code = {
+        ["df"] = "@function.outer",
+        ["dF"] = "@class.outer",
+      },
+    },
+    move = {
+      enable = true,
+      set_jumps = true,
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]]"] = "@class.outer",
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]["] = "@class.outer",
+      },
+      goto_previous_start = {
+        ["[m"] = "@function.outer",
+        ["[["] = "@class.outer",
+      },
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[]"] = "@class.outer",
+      },
+    },
     select = {
       enable = true,
       keymaps = {
-        ['<localleader>fa'] = '@function.outer',
-        ['<localleader>fi'] = '@function.inner',
-        ['<localleader>ca'] = '@conditional.outer',
-        ['<localleader>ci'] = '@conditional.inner',
-        ['<localleader>aa'] = '@parameter.outer',
-        ['<localleader>ii'] = '@parameter.inner'
+        ['af'] = '@function.outer',
+        ['if'] = '@function.inner',
+        ['ac'] = '@conditional.outer',
+        ['ic'] = '@conditional.inner',
+        ['aa'] = '@parameter.outer',
+        ['ii'] = '@parameter.inner'
       }
     },
     swap = {
       enable = true,
       swap_next = {
-        ["<localleader>snp"] = "@parameter.inner",
-        ["<localleader>snf"] = "@function.outer"
+        ["<a-s><a-l>"] = "@parameter.inner",
+        ["<a-s><a-j>"] = "@function.outer"
       },
       swap_previous = {
-        ["<localleader>spp"] = "@parameter.inner",
-        ["<localleader>spf"] = "@function.outer"
+        ["<a-s><a-h>"] = "@parameter.inner",
+        ["<a-s><a-k>"] = "@function.outer"
       }
     }
   }
