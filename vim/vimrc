@@ -26,6 +26,9 @@ Plug 'junegunn/limelight.vim'
 " emphasize the current matched search pattern
 Plug 'wincent/loupe'
 
+" easy text alignment
+Plug 'godlygeek/tabular'
+
 " file-type aware comments
 Plug 'tpope/vim-commentary'
 
