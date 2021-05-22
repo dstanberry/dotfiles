@@ -30,6 +30,9 @@ local languages = {
 
 return {
   filetypes = vim.tbl_keys(languages),
-  init_options = {documentFormatting = true, codeAction = true},
+  init_options = {
+    documentFormatting = true,
+    codeAction = true
+  },
   settings = {languages = languages, log_level = 1}
 }

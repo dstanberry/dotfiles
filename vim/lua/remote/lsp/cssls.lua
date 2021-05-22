@@ -2,5 +2,8 @@
 -- => css-languageserver configuration
 ---------------------------------------------------------------
 return {
-  cmd = {"css-languageserver", "--stdio"},
+  cmd = {
+    "css-languageserver", 
+    "--stdio"
+  },
 }

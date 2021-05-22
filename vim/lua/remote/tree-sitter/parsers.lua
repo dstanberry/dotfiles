@@ -8,14 +8,13 @@ if not has_config then
 end
 
 -- add remote parsers (not available via nvim-treesitter)
-parser_config.get_parser_configs().vim =
-  {
-    install_info = {
-      url = "https://github.com/vigoux/tree-sitter-viml",
-      files = {"src/parser.c", "src/scanner.c"}
-    },
-    used_by = {'vifmrc', 'vimrc'}
-  }
+parser_config.get_parser_configs().vim = {
+  install_info = {
+    url = "https://github.com/vigoux/tree-sitter-viml",
+    files = {"src/parser.c", "src/scanner.c"}
+  },
+  used_by = {'vifmrc', 'vimrc'}
+}
 
 -- helper function to load language scheme
 local read_query = function(language, filename)

@@ -28,17 +28,19 @@ local kind_symbols = {
 }
 
 local kind_order = {
-  'Text', 'Method', 'Function', 'Constructor', 'Field', 'Variable', 'Class',
-  'Interface', 'Module', 'Property', 'Unit', 'Value', 'Enum', 'Keyword',
-  'Snippet', 'Color', 'File', 'Reference', 'Folder', 'EnumMember', 'Constant',
+  'Text', 'Method', 'Function', 'Constructor',
+  'Field', 'Variable', 'Class', 'Interface',
+  'Module', 'Property', 'Unit', 'Value', 'Enum',
+  'Keyword', 'Snippet', 'Color', 'File',
+  'Reference', 'Folder', 'EnumMember', 'Constant',
   'Struct', 'Event', 'Operator', 'TypeParameter'
 }
 
 local function set_completion_symbols(opts)
   local with_text = opts == nil or opts['with_text']
   local symbol_map = (opts and opts['symbol_map'] and
-                       vim.tbl_extend('force', kind_symbols, opts['symbol_map'])) or
-                       kind_symbols
+      vim.tbl_extend('force', kind_symbols, opts['symbol_map'])) or
+      kind_symbols
 
   local symbols = {}
   local len = 25
@@ -56,7 +58,8 @@ local function set_completion_symbols(opts)
     end
   end
 
-  require('vim.lsp.protocol').CompletionItemKind = symbols
+  require('vim.lsp.protocol').CompletionItemKind =
+    symbols
 end
 
 set_completion_symbols(kind_symbols)

@@ -2,14 +2,12 @@
 -- => Tree-Sitter Configuration
 ---------------------------------------------------------------
 -- verify tree-sitter is available
-local has_treesitter, treesitter_configs =
-  pcall(require, 'nvim-treesitter.configs')
-if not has_treesitter then
+if not pcall(require, 'nvim-treesitter') then
   return
 end
 
 -- set default options
-treesitter_configs.setup {
+require'nvim-treesitter.configs'.setup {
   ensure_installed = 'maintained',
   highlight = {
     enable = true,
@@ -24,6 +22,9 @@ treesitter_configs.setup {
       scope_incremental = 'ga',
       node_decremental = 'gp'
     }
+  },
+  rainbow = {
+    enable = false
   },
   refactor = {
     highlight_definitions = {enable = true},

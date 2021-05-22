@@ -21,9 +21,10 @@ lir.setup {
     ['R'] = actions.rename,
     ['Y'] = actions.yank_path,
     ['.'] = actions.toggle_show_hidden,
-    ['D'] = actions.delete,
+    ['D'] = actions.delete
   }
 }
 
-vim.api.nvim_set_keymap("n", "-", "<cmd>execute 'edit ' .. expand('%:h')<cr>",
+vim.api.nvim_set_keymap("n", "-",
+                        "<cmd>execute 'edit ' .. expand('%:h')<cr>",
                         {noremap = true})

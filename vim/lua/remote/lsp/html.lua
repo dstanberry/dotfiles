@@ -2,5 +2,8 @@
 -- => html-languageserver configuration
 ---------------------------------------------------------------
 return {
-  cmd = {"html-languageserver", "--stdio"},
+  cmd = {
+    "html-languageserver", 
+    "--stdio"
+  },
 }
