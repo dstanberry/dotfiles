@@ -10,19 +10,19 @@ end
 
 -- set default options
 treesitter_configs.setup {
-  ensure_installed = {
-    'bash', 'c', 'c_sharp', 'comment', 'cpp', 'css', 'go', 'html', 'java',
-    'javascript', 'jsdoc', 'jsonc', 'lua', -- [[ 'markdown', ]]
-    'php', 'python', 'toml', 'query', 'regex', 'ruby', 'vim', 'yaml'
+  ensure_installed = 'maintained',
+  highlight = {
+    enable = true,
+    use_languagetree = false,
+    disable = {}
   },
-  highlight = {enable = true, use_languagetree = false, disable = {}},
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = '<localleader>gi',
-      node_incremental = '<localleader>gn',
-      scope_incremental = '<localleader>gs',
-      node_decremental = '<localleader>gd'
+      init_selection = '<leader>v',
+      node_incremental = 'gn',
+      scope_incremental = 'ga',
+      node_decremental = 'gp'
     }
   },
   refactor = {
@@ -30,7 +30,7 @@ treesitter_configs.setup {
     highlight_current_scope = {enable = false},
     smart_rename = {
       enable = false,
-      keymaps = {smart_rename = '<localleader>g/'}
+      keymaps = {smart_rename = '<leader>g/'}
     }
   },
   textobjects = {
@@ -44,13 +44,22 @@ treesitter_configs.setup {
     move = {
       enable = true,
       set_jumps = true,
-      goto_next_start = {["]m"] = "@function.outer", ["]]"] = "@class.outer"},
-      goto_next_end = {["]M"] = "@function.outer", ["]["] = "@class.outer"},
+      goto_next_start = {
+        ["]m"] = "@function.outer",
+        ["]]"] = "@class.outer"
+      },
+      goto_next_end = {
+        ["]M"] = "@function.outer",
+        ["]["] = "@class.outer"
+      },
       goto_previous_start = {
         ["[m"] = "@function.outer",
         ["[["] = "@class.outer"
       },
-      goto_previous_end = {["[M"] = "@function.outer", ["[]"] = "@class.outer"}
+      goto_previous_end = {
+        ["[M"] = "@function.outer",
+        ["[]"] = "@class.outer"
+      }
     },
     select = {
       enable = true,
