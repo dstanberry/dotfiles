@@ -6,7 +6,8 @@ return {
     " --continuation-indent-width=2" ..
     " --no-keep-simple-function-one-line" ..
     " --no-keep-simple-control-block-one-line" ..
-    " --chop-down-kv-table" ..
-    " --column-table-limit=50",
+    -- column-table-limit currently affects function parameters
+    " --column-table-limit=50" ..
+    " --chop-down-kv-table",
   formatStdin = true
 }
