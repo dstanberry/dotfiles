@@ -8,30 +8,12 @@ if not has_treesitter then
   return
 end
 
--- helper function to load language scheme
-local read_query = function(language, filename)
-  local front = '/vim/lua/remote/tree-sitter/queries'
-  local back = '/' .. language .. '/' .. filename .. '.scm'
-  local path = os.getenv('XDG_CONFIG_HOME') .. front .. back
-  return table.concat(vim.fn.readfile(vim.fn.expand(path)), "\n")
-end
-
--- add local language schemes
-local languages = {vim = {'highlights', 'injections'}}
-
-for lang, list in pairs(languages) do
-  for _, scheme in ipairs(list) do
-    vim.treesitter.set_query(lang, scheme, read_query(lang, scheme))
-  end
-end
-
 -- set default options
 treesitter_configs.setup {
   ensure_installed = {
-    'bash', 'c', 'c_sharp', 'comment', 'cpp', 'css','go', 'html', 'java',
+    'bash', 'c', 'c_sharp', 'comment', 'cpp', 'css', 'go', 'html', 'java',
     'javascript', 'jsdoc', 'jsonc', 'lua', -- [[ 'markdown', ]]
-    'php', 'python', 'toml', 'query', 'regex', 'ruby', -- [[ 'vim', ]]
-    'yaml'
+    'php', 'python', 'toml', 'query', 'regex', 'ruby', 'vim', 'yaml'
   },
   highlight = {enable = true, use_languagetree = false, disable = {}},
   incremental_selection = {
@@ -56,28 +38,19 @@ treesitter_configs.setup {
       enable = true,
       peek_definition_code = {
         ["df"] = "@function.outer",
-        ["dF"] = "@class.outer",
-      },
+        ["dF"] = "@class.outer"
+      }
     },
     move = {
       enable = true,
       set_jumps = true,
-      goto_next_start = {
-        ["]m"] = "@function.outer",
-        ["]]"] = "@class.outer",
-      },
-      goto_next_end = {
-        ["]M"] = "@function.outer",
-        ["]["] = "@class.outer",
-      },
+      goto_next_start = {["]m"] = "@function.outer", ["]]"] = "@class.outer"},
+      goto_next_end = {["]M"] = "@function.outer", ["]["] = "@class.outer"},
       goto_previous_start = {
         ["[m"] = "@function.outer",
-        ["[["] = "@class.outer",
+        ["[["] = "@class.outer"
       },
-      goto_previous_end = {
-        ["[M"] = "@function.outer",
-        ["[]"] = "@class.outer",
-      },
+      goto_previous_end = {["[M"] = "@function.outer", ["[]"] = "@class.outer"}
     },
     select = {
       enable = true,
