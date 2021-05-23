@@ -333,3 +333,13 @@ function! functions#get_separator() abort
   endif
   return '/'
 endfunction
+
+
+" add item to list if not present in list
+function! functions#pack_unique(list, value) abort
+  let matching = filter(copy(a:list), 'v:val == a:value')
+  if empty(matching)
+    call add (a:list, a:value)
+  endif
+  return a:list
+endfunction
