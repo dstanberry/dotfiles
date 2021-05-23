@@ -11,10 +11,13 @@ else
   let g:startify_session_dir = $XDG_DATA_HOME.'/vim-session'
 endif
 
+let g:startify_bookmarks = []
+
 " set landing page
 let g:startify_lists = [
       \ { 'type': 'files', 'header': [' MRU'] },
       \ { 'type': 'sessions', 'header': [' Sessions'] },
+      \ { 'type': 'bookmarks', 'header': [' Bookmarks'] },
       \ ]
 
 " ignore the following paths/files
