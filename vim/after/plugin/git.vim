@@ -64,10 +64,7 @@ function! s:check_dir()
   if l:fname ==#'[Plugins]' || l:ftype ==# 'vim-plug'
     if exists('$GIT_DIR') | unlet $GIT_DIR | endif
     if exists('$GIT_WORK_TREE') | unlet $GIT_WORK_TREE | endif
-  elseif l:fname == '' && l:ftype == ''
-    if exists('$GIT_DIR') | unlet $GIT_DIR | endif
-    if exists('$GIT_WORK_TREE') | unlet $GIT_WORK_TREE | endif
-  else 
+  else
     return s:set_git_dir(l:path)
   endif
 endfunction
@@ -86,6 +83,7 @@ command! Gtoggle call <sid>set_git_dir(expand('%:p:h'), 1)
 
 augroup git_worktree
   autocmd!
+  autocmd VimEnter * call <sid>check_dir()
   autocmd BufEnter,BufWinEnter * call s:check_dir()
   autocmd BufLeave,BufWinLeave * call s:plug_closed()
 augroup END
