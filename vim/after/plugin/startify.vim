@@ -22,10 +22,3 @@ let g:startify_skiplist = [
       \ 'COMMIT_EDITMSG',
       \ 'startify.txt',
       \ ]
-
-" add icons to filepaths
-if has('nvim')
-  function! StartifyEntryFormat() abort
-    return 'v:lua.get_devicon(absolute_path) . " " . entry_path'
-  endfunction
-endif
