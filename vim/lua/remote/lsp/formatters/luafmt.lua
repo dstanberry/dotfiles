@@ -7,7 +7,7 @@ return {
     " --no-keep-simple-function-one-line" ..
     " --no-keep-simple-control-block-one-line" ..
     -- column-table-limit currently affects function parameters
-    " --column-table-limit=50" ..
+    -- " --column-table-limit=50" ..
     " --chop-down-kv-table",
   formatStdin = true
 }
