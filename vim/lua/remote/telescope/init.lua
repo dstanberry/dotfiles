@@ -66,28 +66,29 @@ require('telescope').setup {
     lsp_handlers = {
       disable = {},
       code_action = {
-        telescope = require('telescope.themes').get_dropdown(
-          {previewer = false, results_title = false})
+        telescope = require('telescope.themes').get_dropdown({
+          previewer = false,
+          results_title = false
+        })
       },
       symbol = {
-        telescope = require('telescope.themes').get_dropdown(
-          {
-            results_title = false,
+        telescope = require('telescope.themes').get_dropdown({
+          results_title = false,
 
-            layout_defaults = {
-              horizontal = {
-                width_padding = 0.1,
-                height_padding = 1,
-                preview_width = 0.6
-              },
-              vertical = {
-                width_padding = 0.05,
-                height_padding = 1,
-                preview_height = 0.5
-              }
+          layout_defaults = {
+            horizontal = {
+              width_padding = 0.1,
+              height_padding = 1,
+              preview_width = 0.6
+            },
+            vertical = {
+              width_padding = 0.05,
+              height_padding = 1,
+              preview_height = 0.5
             }
+          }
 
-          })
+        })
       }
     }
   }
@@ -117,7 +118,7 @@ function M.search_dotfiles()
     },
     shorten_path = false,
     layout_strategy = 'horizontal',
-    prompt_title = "~ dotfiles ~",
+    prompt_title = "\\ (N)Vim RTP /",
     preview_title = false,
     results_title = false
   }
@@ -125,7 +126,7 @@ end
 
 -- customize generic fuzzy finder
 function M.search_cwd()
-  require("telescope.builtin").find_files {
+  local opts = {
     hidden = true,
     file_ignore_patterns = {
       ".git/", ".gitattributes", ".gitignore", "%.gpg", "%.db",
@@ -133,19 +134,14 @@ function M.search_cwd()
     },
     shorten_path = false,
     layout_strategy = 'horizontal',
+    prompt_title = "\\ Project Search /",
     preview_title = false,
     results_title = false
   }
-end
-
--- fuzzy find within git repository
-function M.search_git_repo()
-  require('telescope.builtin').find_files {
-    previewer = false,
-    layout_strategy = "vertical",
-    prompt_title = "Search Git",
-    cwd = lspconfig.util.root_pattern(".git")(vim.fn.expand("%:p"))
-  }
+  local git = pcall(require("telescope.builtin").git_files, opts)
+  if not git then
+    require("telescope.builtin").find_files(opts)
+  end
 end
 
 -- customize generic file browser
@@ -156,7 +152,7 @@ function M.file_browser()
     sorting_strategy = "ascending",
     scroll_strategy = "cycle",
     prompt_position = "top",
-    prompt_title = "File Browser",
+    prompt_title = "\\ File Browser /",
     preview_title = false,
     results_title = false,
     attach_mappings = function(prompt_bufnr, map)
@@ -194,7 +190,7 @@ function M.installed_plugins()
     cwd = "~/.config/vim/remote",
     previewer = false,
     layout_strategy = 'vertical',
-    prompt_title = "Installed Plugins",
+    prompt_title = "\\ (N)Vim Plugins /",
     results_title = false
   }
 end
@@ -204,7 +200,7 @@ function M.grep_cursor()
   require("telescope.builtin").grep_string {
     shorten_path = true,
     -- search = vim.fn.input("grep: "),
-    prompt_title = "Filter Results",
+    prompt_title = "\\ Grep File /",
     preview_title = false,
     results_title = false
   }
@@ -215,22 +211,10 @@ function M.grep_cwd()
   require("telescope.builtin").grep_string {
     shorten_path = true,
     search = vim.fn.input("grep: "),
-    prompt_title = "Filter Results",
+    prompt_title = "\\ Grep Project /",
     preview_title = false,
     results_title = false
   }
-end
-
--- fuzzy search tracked files in git repository
-function M.git_files()
-  require("telescope.builtin").find_files(
-    themes.get_dropdown {
-      cwd = vim.fn.expand("%:p:h"),
-      border = true,
-      previewer = false,
-      results_title = false,
-      prompt_title = "Find in Project"
-    })
 end
 
 -- fuzzy find text within current buffer
@@ -240,7 +224,7 @@ function M.current_buffer()
       border = true,
       previewer = false,
       shorten_path = false,
-      prompt_title = "Find in File"
+      prompt_title = "\\ Find in File /"
     })
 end
 
