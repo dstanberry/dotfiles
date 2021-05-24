@@ -45,4 +45,4 @@ vnoremap <leader>p "_dp
 " => Visual | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " execute selected text
-vnoremap <localleader>x :<c-w>execute join(getline("'<","'>"),'<bar>')<cr>
+vnoremap <localleader>x :call functions#execute_selection()<cr>

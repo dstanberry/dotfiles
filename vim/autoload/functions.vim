@@ -297,24 +297,45 @@ function! functions#get_selection() range
   return selection
 endfunction
 
-" save and execute vim/lua file
+" save and execute vim/lua buffer
 function! functions#execute_file() abort
   if &filetype ==# 'vim'
     :silent! write
     :source %
   elseif &filetype ==# 'lua'
-    :silent! write
-    :luafile %
+    if has('nvim')
+      :silent! write
+      :luafile %
+    endif
   endif
   return
 endfunction
 
-" save and execute vim/lua line
-function! functions#execute_line() abort
+" execute vim/lua text selection
+function! functions#execute_selection() abort range
+  let l:selection = functions#get_visual_selection()
   if &filetype ==# 'vim'
-    execute getline('.')
+    execute l:selection
   elseif &filetype ==# 'lua'
-    execute(printf(':echo luaeval("%s")', getline('.')))
+    if has('nvim')
+      let l:cmd = printf("lua << EOF\n%s\nEOF", l:selection)
+      :redir > /tmp/scratch.vim | echo l:cmd | redir END
+      :source /tmp/scratch.vim
+      call system('rm /tmp/scratch.vim')
+    endif
+  endif
+  return
+endfunction
+
+" execute vim/lua line under cursor
+function! functions#execute_line() abort
+  let l:line = getline('.')
+  if &filetype ==# 'vim'
+    execute l:line
+  elseif &filetype ==# 'lua'
+    if has('nvim')
+      execute(printf(':echo luaeval("%s")', l:line))
+    endif
   endif
   return
 endfunction
