@@ -299,9 +299,9 @@ endif
 augroup statusline
   autocmd!
   autocmd VimEnter * call s:check_windows()
-  autocmd BufEnter,BufWinEnter * call s:check_windows()
+  autocmd BufEnter,BufWinEnter * call s:set_statusline('active')
   autocmd BufLeave,BufWinLeave * call s:set_statusline('inactive')
   autocmd FocusGained,WinEnter * call s:set_statusline('active')
   autocmd FocusLost,WinLeave * call s:set_statusline('inactive')
-  autocmd User statusline call <sid>set_statusline('active')
+  autocmd User statusline call <sid>check_windows()
 augroup END
