@@ -22,15 +22,16 @@ reloader()
 local actions = require('telescope.actions')
 local sorters = require('telescope.sorters')
 local themes = require('telescope.themes')
+local utils = require('telescope.utils')
 
 -- set default options
 require('telescope').setup {
   defaults = {
-    prompt_prefix = '  ',
-    selection_caret = ' ',
+    prompt_prefix = "  ",
+    selection_caret = " ",
     winblend = 10,
     preview_cutoff = 120,
-    layout_strategy = 'horizontal',
+    layout_strategy = "horizontal",
     layout_defaults = {
       horizontal = {mirror = false},
       vertical = {mirror = false}
@@ -41,7 +42,7 @@ require('telescope').setup {
     prompt_position = "bottom",
     color_devicons = true,
     use_less = true,
-    set_env = {['COLORTERM'] = 'truecolor'},
+    set_env = {["COLORTERM"] = "truecolor"},
     mappings = {
       i = {
         ["<c-s>"] = actions.select_horizontal,
@@ -50,7 +51,7 @@ require('telescope').setup {
         ["jk"] = actions.close
       }
     },
-    borderchars = {'─', '│', '─', '│', '┌', '┐', '┘', '└'},
+    borderchars = {"─", "│", "─", "│", "┌", "┐", "┘", "└"},
     file_sorter = sorters.get_fzy_sorter,
     file_previewer = require('telescope.previewers').vim_buffer_cat.new,
     grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
@@ -99,6 +100,15 @@ require('telescope').setup {
 pcall(require('telescope').load_extension('fzf'))
 pcall(require('telescope').load_extension('lsp_handlers'))
 
+-- list of directory/file patterns to ignore
+local ignored = {
+  "%.db", 
+  "%.gpg", 
+  ".git*", 
+  "karabiner/assets/*", 
+  "node_modules/*"
+}
+
 -- initialize modules table
 local M = {}
 
@@ -112,12 +122,9 @@ function M.search_dotfiles()
   require("telescope.builtin").find_files {
     cwd = "~/.config",
     hidden = true,
-    file_ignore_patterns = {
-      ".git/", ".gitattributes", ".gitignore", "%.gpg", "%.db",
-      "karabiner/assets/*", "lnav/*"
-    },
+    file_ignore_patterns = ignored,
     shorten_path = false,
-    layout_strategy = 'horizontal',
+    layout_strategy = "horizontal",
     prompt_title = "\\ (N)Vim RTP /",
     preview_title = false,
     results_title = false
@@ -128,18 +135,18 @@ end
 function M.search_cwd()
   local opts = {
     hidden = true,
-    file_ignore_patterns = {
-      ".git/", ".gitattributes", ".gitignore", "%.gpg", "%.db",
-      "karabiner/assets/*", "lnav/*", "node_modules/*"
-    },
+    file_ignore_patterns = ignored,
     shorten_path = false,
     layout_strategy = 'horizontal',
-    prompt_title = "\\ Project Search /",
     preview_title = false,
     results_title = false
   }
-  local git = pcall(require("telescope.builtin").git_files, opts)
-  if not git then
+  local _, ret, _ = utils.get_os_command_output({
+    "git", "rev-parse", "--is-inside-work-tree"
+  })
+  if ret == 0 then
+    require('telescope.builtin').git_files(opts)
+  else
     require("telescope.builtin").find_files(opts)
   end
 end
@@ -162,10 +169,10 @@ function M.file_browser()
         current_picker.cwd = new_cwd
         current_picker:refresh(opts.new_finder(new_cwd), {reset_prompt = true})
       end
-      map('i', '-', function()
+      map("i", "-", function()
         modify_cwd(current_picker.cwd .. "/..")
       end)
-      map('i', '~', function()
+      map("i", "~", function()
         modify_cwd(vim.fn.expand("~"))
       end)
       local modify_depth = function(mod)
@@ -176,8 +183,8 @@ function M.file_browser()
                                  {reset_prompt = true})
         end
       end
-      map('i', '<right>', modify_depth(1))
-      map('i', '<left>', modify_depth(-1))
+      map("i", "<right>", modify_depth(1))
+      map("i", "<left>", modify_depth(-1))
       return true
     end
   }
@@ -189,7 +196,7 @@ function M.installed_plugins()
   require("telescope.builtin").find_files {
     cwd = "~/.config/vim/remote",
     previewer = false,
-    layout_strategy = 'vertical',
+    layout_strategy = "vertical",
     prompt_title = "\\ (N)Vim Plugins /",
     results_title = false
   }
