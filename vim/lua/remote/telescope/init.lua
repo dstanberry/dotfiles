@@ -102,7 +102,8 @@ pcall(require('telescope').load_extension('lsp_handlers'))
 
 -- list of directory/file patterns to ignore
 local ignored = {
-  "%.db", "%.gpg", ".git*", "karabiner/assets/*", "node_modules/*"
+  "%.db", "%.gpg", ".git/", ".gitattributes", ".git-crypt/",
+  "karabiner/assets/*", "node_modules/*"
 }
 
 -- initialize modules table
