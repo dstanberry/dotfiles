@@ -102,11 +102,7 @@ pcall(require('telescope').load_extension('lsp_handlers'))
 
 -- list of directory/file patterns to ignore
 local ignored = {
-  "%.db", 
-  "%.gpg", 
-  ".git*", 
-  "karabiner/assets/*", 
-  "node_modules/*"
+  "%.db", "%.gpg", ".git*", "karabiner/assets/*", "node_modules/*"
 }
 
 -- initialize modules table
@@ -119,7 +115,7 @@ end
 
 -- fuzzy search dotfiles from anywhere
 function M.search_dotfiles()
-  require("telescope.builtin").find_files {
+  local opts = {
     cwd = "~/.config",
     hidden = true,
     file_ignore_patterns = ignored,
@@ -129,6 +125,7 @@ function M.search_dotfiles()
     preview_title = false,
     results_title = false
   }
+  require("telescope.builtin").find_files(opts)
 end
 
 -- customize generic fuzzy finder
@@ -138,6 +135,7 @@ function M.search_cwd()
     file_ignore_patterns = ignored,
     shorten_path = false,
     layout_strategy = 'horizontal',
+    prompt_title = "\\ Project Files /",
     preview_title = false,
     results_title = false
   }
