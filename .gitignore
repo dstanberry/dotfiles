@@ -52,7 +52,6 @@ tmux/tmux.digests
 Trolltech.conf
 user-dirs*
 vifm/vifminfo.json
-vim/plugin/remote/session
 vim/remote
 wget
 wireshark
