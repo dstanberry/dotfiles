@@ -453,8 +453,8 @@ call <sid>hi('LspDiagnosticsUnderlineInfo', s:gui0C, '', s:cterm0C, '', 'underli
 let s:tel00 = substitute(functions#darken(s:gui00, 25), '#', '', 'g')
 
 " telescope window highlighting
-call <sid>hi('TelescopeSelection', '', s:tel00, '', s:cterm00, 'bold', '')
-call <sid>hi('TelescopeSelectionCaret', s:gui04, s:tel00, s:cterm04, s:cterm00, 'bold', '')
+call <sid>hi('TelescopeSelection', s:gui00, s:gui08, s:cterm00, s:cterm08, 'bold', '')
+call <sid>hi('TelescopeSelectionCaret', s:gui0F, s:gui08, s:cterm00, s:cterm08, 'bold', '')
 call <sid>hi('TelescopeMultiSelection', s:gui0E, '', s:cterm0E, '', 'none', '')
 call <sid>hi('TelescopeNormal', s:gui05, s:gui00, s:cterm05, s:cterm00, '', '')
 call <sid>hi('TelescopeBorder', s:gui03, s:gui00, s:cterm03, s:cterm00, '', '')

@@ -27,7 +27,7 @@ local utils = require('telescope.utils')
 require('telescope').setup {
   defaults = {
     prompt_prefix = "  ",
-    selection_caret = " ",
+    selection_caret = " ",
     winblend = 10,
     scroll_strategy = "cycle",
     borderchars = {"─", "│", "─", "│", "┌", "┐", "┘", "└"},
@@ -38,7 +38,7 @@ require('telescope').setup {
         -- ["<esc>"] = actions.close,
         ["jk"] = actions.close
       }
-    },
+    }
   },
   extensions = {
     fzf = {
@@ -56,21 +56,7 @@ require('telescope').setup {
       },
       symbol = {
         telescope = require('telescope.themes').get_dropdown({
-          results_title = false,
-
-          layout_defaults = {
-            horizontal = {
-              width_padding = 0.1,
-              height_padding = 1,
-              preview_width = 0.6
-            },
-            vertical = {
-              width_padding = 0.05,
-              height_padding = 1,
-              preview_height = 0.5
-            }
-          }
-
+          results_title = false
         })
       }
     }
