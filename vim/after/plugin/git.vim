@@ -24,7 +24,13 @@ for str in s:saved_worktrees
   endif
 endfor
 
-function! s:set_git_dir(...)
+function! git#disable()
+  if exists('$GIT_DIR') | unlet $GIT_DIR | endif
+  if exists('$GIT_WORK_TREE') | unlet $GIT_WORK_TREE | endif
+  return
+endfunction
+
+function! s:configure(...)
   if a:0 == 2 && a:2
     if exists('$GIT_DIR') | unlet $GIT_DIR | endif
     if exists('$GIT_WORK_TREE') | unlet $GIT_WORK_TREE | endif
@@ -57,7 +63,7 @@ function! s:set_git_dir(...)
   endif
 endfunction
 
-function! s:check_dir()
+function! s:on_buf_enter()
   let l:fname = expand('%:t')
   let l:ftype = getftype(bufname(winbufnr('%'))) 
   let l:path = expand('%:p:h')
@@ -65,25 +71,27 @@ function! s:check_dir()
     if exists('$GIT_DIR') | unlet $GIT_DIR | endif
     if exists('$GIT_WORK_TREE') | unlet $GIT_WORK_TREE | endif
   else
-    return s:set_git_dir(l:path)
+    return s:configure(l:path)
   endif
 endfunction
 
-" check environment after vim-plug window closes
-function! s:plug_closed()
+function! s:on_buf_leave()
   let l:fname = expand('%:t')
   let l:ftype = getftype(bufname(winbufnr('%'))) 
   let l:path = expand('%:p:h')
   if l:fname ==#'[Plugins]' || l:ftype ==# 'vim-plug'
-    return s:set_git_dir(l:path)
+    return s:configure(l:path)
   endif
 endfunction
 
-command! Gtoggle call <sid>set_git_dir(expand('%:p:h'), 1)
+command! Gtoggle call <sid>configure(expand('%:p:h'), 1)
 
 augroup git_worktree
   autocmd!
-  autocmd VimEnter * call <sid>check_dir()
-  autocmd BufEnter,BufWinEnter * call s:check_dir()
-  autocmd BufLeave,BufWinLeave * call s:plug_closed()
+  autocmd VimEnter,BufEnter * call <sid>on_buf_enter()
+  autocmd BufLeave * call s:on_buf_leave()
+  autocmd FileType vim-plug call git#disable()
+  autocmd CmdlineLeave : if getcmdline() =~# '\v^Plug%[Install]%[Update]%[Status]%[Clean]$'
+        \|  call git#disable()
+        \| endif
 augroup END
