@@ -20,7 +20,6 @@ reloader()
 
 -- bring telescope functions into local scope
 local actions = require('telescope.actions')
-local sorters = require('telescope.sorters')
 local themes = require('telescope.themes')
 local utils = require('telescope.utils')
 
@@ -30,19 +29,8 @@ require('telescope').setup {
     prompt_prefix = "  ",
     selection_caret = " ",
     winblend = 10,
-    preview_cutoff = 120,
-    layout_strategy = "horizontal",
-    layout_defaults = {
-      horizontal = {mirror = false},
-      vertical = {mirror = false}
-    },
-    selection_strategy = "reset",
-    sorting_strategy = "descending",
     scroll_strategy = "cycle",
-    prompt_position = "bottom",
-    color_devicons = true,
-    use_less = true,
-    set_env = {["COLORTERM"] = "truecolor"},
+    borderchars = {"─", "│", "─", "│", "┌", "┐", "┘", "└"},
     mappings = {
       i = {
         ["<c-s>"] = actions.select_horizontal,
@@ -51,14 +39,8 @@ require('telescope').setup {
         ["jk"] = actions.close
       }
     },
-    borderchars = {"─", "│", "─", "│", "┌", "┐", "┘", "└"},
-    file_sorter = sorters.get_fzy_sorter,
-    file_previewer = require('telescope.previewers').vim_buffer_cat.new,
-    grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
-    qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new
   },
   extensions = {
-    fzy_native = {override_generic_sorter = false, override_file_sorter = true},
     fzf = {
       override_generic_sorter = false,
       override_file_sorter = true,
