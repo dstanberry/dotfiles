@@ -40,7 +40,7 @@ set incsearch
 set magic
 
 " enable live text substitution and preview matches
-if has ('nvim')
+if exists('+inccommand')
   set inccommand=split
 endif
 
@@ -90,7 +90,7 @@ set noshowcmd
 " show whitespace characters
 set list
 " define glyphs used to visually identify invisible characters
-set listchars=tab:│\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
+set listchars=tab:│\ ,eol:¬,trail:•,extends:»,precedes:«
 
 " define glyph used for vertical separator
 set fillchars+=vert:┃
@@ -113,7 +113,7 @@ set wildmenu
 " enable file auto-completion
 set wildmode=full
 " enable completion menu
-if has('nvim')
+if exists('+wildoptions')
   set wildoptions+=pum
 endif
 
@@ -121,7 +121,7 @@ endif
 set pumheight=5
 
 " set opacity for popup menu 
-if has('nvim')
+if exists('+pumblend')
 	set pumblend=20
 endif
 
