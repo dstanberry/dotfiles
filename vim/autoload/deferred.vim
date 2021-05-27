@@ -18,6 +18,7 @@ function! deferred#load_dir_hash() abort
       call add(g:startify_bookmarks, l:dir)
     endif
   endfor
+  let g:startify_bookmarks = sort(g:startify_bookmarks)
   if &ft ==# 'startify'
     execute 'Startify'
   endif
