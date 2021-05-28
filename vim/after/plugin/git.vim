@@ -91,7 +91,7 @@ augroup git_worktree
   autocmd VimEnter,BufEnter * call <sid>on_buf_enter()
   autocmd BufLeave * call s:on_buf_leave()
   autocmd FileType vim-plug call git#disable()
-  autocmd CmdlineLeave : if getcmdline() =~# '\v^Plug%[Install]%[Update]%[Status]%[Clean]$'
+  autocmd CmdlineLeave : if getcmdline() =~# '\v^Plug%[Clean]%[Install]%[Status]%[Update]%[Upgrade]$'
         \|  call git#disable()
         \| endif
 augroup END
