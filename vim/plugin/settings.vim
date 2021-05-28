@@ -94,10 +94,12 @@ set listchars=tab:│\ ,eol:¬,trail:•,extends:»,precedes:«
 
 " define glyph used for vertical separator
 set fillchars+=vert:┃
-" defing glyph used for line folds
+" define glyph used for line folds
 set fillchars+=fold:·
-" defing glyph used for diffs
+" define glyph used for deleted lines in diff
 set fillchars+=diff:∙
+" define character used for empty lines at the end of a buffer
+set fillchars+=eob:\ 
 
 " disable padding when joining mulitple lines
 set nojoinspaces
