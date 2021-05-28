@@ -449,6 +449,7 @@ call <sid>hi('LspDiagnosticsUnderlineWarning', s:gui0A, '', s:cterm0A, '', 'unde
 call <sid>hi('LspDiagnosticsUnderlineHint', s:gui0E, '', s:cterm0E, '', 'underline', '')
 call <sid>hi('LspDiagnosticsUnderlineInfo', s:gui0C, '', s:cterm0C, '', 'underline', '')
 
+" telescope highlight groups
 let s:tel00 = substitute(functions#darken(s:gui08, 43), '#', '', 'g')
 
 " telescope window highlighting
