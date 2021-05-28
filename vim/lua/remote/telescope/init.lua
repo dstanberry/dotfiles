@@ -90,7 +90,7 @@ function M.search_dotfiles()
     file_ignore_patterns = ignored,
     shorten_path = false,
     layout_strategy = "horizontal",
-    prompt_title = "\\ (N)Vim RTP /",
+    prompt_title = "\\ Dotfiles /",
     preview_title = false,
     results_title = false
   }
