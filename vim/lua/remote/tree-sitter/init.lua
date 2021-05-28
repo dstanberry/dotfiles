@@ -7,8 +7,8 @@ if not pcall(require, 'nvim-treesitter') then
 end
 
 -- set default options
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = 'maintained',
+require('nvim-treesitter.configs').setup {
+  ensure_installed = "maintained",
   highlight = {
     enable = true,
     use_languagetree = false,
@@ -17,10 +17,10 @@ require'nvim-treesitter.configs'.setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = '<leader>v',
-      node_incremental = 'gn',
-      scope_incremental = 'ga',
-      node_decremental = 'gp'
+      init_selection = "<leader>v",
+      node_incremental = "gn",
+      scope_incremental = "ga",
+      node_decremental = "gp"
     }
   },
   rainbow = {
@@ -31,7 +31,7 @@ require'nvim-treesitter.configs'.setup {
     highlight_current_scope = {enable = false},
     smart_rename = {
       enable = false,
-      keymaps = {smart_rename = '<leader>g/'}
+      keymaps = {smart_rename = "<leader>g/"}
     }
   },
   textobjects = {
@@ -65,12 +65,12 @@ require'nvim-treesitter.configs'.setup {
     select = {
       enable = true,
       keymaps = {
-        ['af'] = '@function.outer',
-        ['if'] = '@function.inner',
-        ['ac'] = '@conditional.outer',
-        ['ic'] = '@conditional.inner',
-        ['aa'] = '@parameter.outer',
-        ['ii'] = '@parameter.inner'
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["ac"] = "@conditional.outer",
+        ["ic"] = "@conditional.inner",
+        ["aa"] = "@parameter.outer",
+        ["ii"] = "@parameter.inner"
       }
     },
     swap = {

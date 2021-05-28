@@ -9,5 +9,5 @@ end
 
 -- define custom icons based on filetype
 devicons.setup {
-  override = require 'remote.devicons.icons'
+  override = require('remote.devicons.icons')
 }

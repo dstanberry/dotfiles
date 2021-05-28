@@ -2,10 +2,10 @@
 -- => vim-language-server configuration
 ---------------------------------------------------------------
 -- identify project root directory
-local util = require 'lspconfig/util'
+local util = require('lspconfig/util')
 
 local root_files = {
-  '.git', '.vimrc', 'init.vim', 'vimrc'
+  ".git", ".vimrc", "init.vim", "vimrc"
 }
 
 local project_root = function(fname)
@@ -14,6 +14,6 @@ local project_root = function(fname)
 end
 
 return {
-  vimruntime = vim.fn.expand('$VIMRUNTIME'),
+  vimruntime = vim.fn.expand("$VIMRUNTIME"),
   root_dir = project_root
 }

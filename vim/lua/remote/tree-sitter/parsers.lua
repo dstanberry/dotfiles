@@ -13,19 +13,19 @@ parser_config.get_parser_configs().vim = {
     url = "https://github.com/vigoux/tree-sitter-viml",
     files = {"src/parser.c", "src/scanner.c"}
   },
-  used_by = {'vifmrc', 'vimrc'}
+  used_by = {"vifmrc", "vimrc"}
 }
 
 -- helper function to load language scheme
 local read_query = function(language, filename)
-  local front = '/vim/lua/remote/tree-sitter/queries'
-  local back = '/' .. language .. '/' .. filename .. '.scm'
-  local path = os.getenv('XDG_CONFIG_HOME') .. front .. back
+  local front = "/vim/lua/remote/tree-sitter/queries"
+  local back = "/" .. language .. "/" .. filename .. ".scm"
+  local path = os.getenv("XDG_CONFIG_HOME") .. front .. back
   return table.concat(vim.fn.readfile(vim.fn.expand(path)), "\n")
 end
 
 -- add local language schemes
-local languages = {vim = {'highlights', 'injections'}}
+local languages = {vim = {"highlights", "injections"}}
 
 for lang, list in pairs(languages) do
   for _, scheme in ipairs(list) do

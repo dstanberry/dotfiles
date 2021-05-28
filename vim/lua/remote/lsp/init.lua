@@ -44,11 +44,11 @@ local on_attach_nvim = function(client, bufnr)
   buf_set_keymap("n", "gl",
                  "<cmd>call functions#vim_lsp_diagnostic_set_loclist()<cr>",
                  opts)
-  buf_set_keymap("n", '<localleader>wl',
+  buf_set_keymap("n", "<localleader>wl",
                  "<cmd>lua P(vim.lsp.buf.list_workspace_folders())<cr>", opts)
-  buf_set_keymap("n", '<localleader>wa',
+  buf_set_keymap("n", "<localleader>wa",
                  "<cmd>lua vim.lsp.buf.add_workspace_folder()<cr>", opts)
-  buf_set_keymap("n", '<localleader>wr',
+  buf_set_keymap("n", "<localleader>wr",
                  "<cmd>lua vim.lsp.buf.remove_workspace_folder()<cr>", opts)
   -- define keybind for document formatting if supported by server
   if client.resolved_capabilities.document_formatting then
@@ -62,17 +62,16 @@ end
 
 -- diagnostic symbols and highlight groups
 vim.fn.sign_define("LspDiagnosticsSignError",
-                   {text = ' ', texthl = "LspDiagnosticsSignError"})
+                   {text = " ", texthl = "LspDiagnosticsSignError"})
 vim.fn.sign_define("LspDiagnosticsSignWarning",
-                   {text = ' ', texthl = "LspDiagnosticsSignWarning"})
+                   {text = " ", texthl = "LspDiagnosticsSignWarning"})
 vim.fn.sign_define("LspDiagnosticsSignInformation",
-                   {text = '', texthl = "LspDiagnosticsSignInformation"})
+                   {text = "", texthl = "LspDiagnosticsSignInformation"})
 vim.fn.sign_define("LspDiagnosticsSignHint",
-                   {text = '', texthl = "LspDiagnosticsSignHint"})
+                   {text = "", texthl = "LspDiagnosticsSignHint"})
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
-  vim.lsp.with( -- set diagnostics options
-  vim.lsp.diagnostic.on_publish_diagnostics, {
+  vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
     underline = false,
     signs = true,
     update_in_insert = false,
@@ -84,8 +83,9 @@ local function get_server_configuration()
   -- enable snippet support
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.completion.completionItem.resolveSupport =
-    {properties = {'documentation', 'detail', 'additionalTextEdits'}}
+  capabilities.textDocument.completion.completionItem.resolveSupport = {
+    properties = {"documentation", "detail", "additionalTextEdits"}
+  }
   return {capabilities = capabilities, on_attach = on_attach_nvim}
 end
 
@@ -93,19 +93,19 @@ end
 local function load_servers()
   -- manually curated list of language servers
   local servers = {
-    'bashls', 'clangd', 'cmake', 'cssls', 'efm', 'html', 'jsonls', 'sumneko_ls',
-    'pyright', 'vimls'
+    "bashls", "clangd", "cmake", "cssls", "efm", "html", "jsonls", "sumneko_ls",
+    "pyright", "vimls"
   }
   for _, server in ipairs(servers) do
     local config = get_server_configuration()
-    if server == 'sumneko_ls' then
-      local sumneko = require 'remote.lsp.sumneko'
-      config = vim.tbl_extend('force', config, sumneko)
+    if server == "sumneko_ls" then
+      local sumneko = require('remote.lsp.sumneko')
+      config = vim.tbl_extend("force", config, sumneko)
       nluaconfig.setup(lspconfig, config)
     else
       local has_config, extra_config = pcall(require, 'remote.lsp.' .. server)
       if has_config then
-        config = vim.tbl_extend('force', config, extra_config)
+        config = vim.tbl_extend("force", config, extra_config)
       end
       lspconfig[server].setup(config)
     end
