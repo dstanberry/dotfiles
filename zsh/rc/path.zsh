@@ -62,10 +62,12 @@ elif is_wsl; then
 fi
 
 # add pyenv binaries to path
-PYENVPATH="$PYENV_ROOT/bin"
-export PATH=$PYENVPATH:$PATH
-eval "$(pyenv init --path)"
-unset PYENVPATH
+if hash pyenv 2> /dev/null; then
+  PYENVPATH="$PYENV_ROOT/bin"
+  export PATH=$PYENVPATH:$PATH
+  eval "$(pyenv init --path)"
+  unset PYENVPATH
+fi
 
 # ensure no duplicate entries are present in PATH
 dedup_pathvar PATH
