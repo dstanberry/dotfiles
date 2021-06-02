@@ -87,6 +87,9 @@ set noshowmode
 " disable showing keystrokes below statusline
 set noshowcmd
 
+" disable showing cursor position in/below statusline
+set noruler
+
 " show whitespace characters
 set list
 " define glyphs used to visually identify invisible characters
