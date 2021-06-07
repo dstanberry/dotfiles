@@ -3,12 +3,12 @@
 ---------------------------------------------------------------
 local util = require('lspconfig.util')
 
-local root_files = {".vimrc", "init.vim", "vimrc"}
+local root_dirs = {"nvim", "vim"}
 
 -- identify project root directory
 local project_root = function(fname)
   return util.find_git_ancestor(fname) or
-           util.root_pattern(unpack(root_files))(fname) or
+           util.root_pattern(unpack(root_dirs))(fname) or
            util.path.dirname(fname)
 end
 
