@@ -60,14 +60,6 @@ augroup gitcommit
 augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Attempt to populate loclist if ft supported by LSP
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-augroup nvim_lsp
-  autocmd!
-  autocmd BufWrite,BufEnter,InsertLeave * :call functions#vim_lsp_diagnostic_set_loclist()
-augroup END
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Disable smartcase when in command mode
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup auto_smartcase

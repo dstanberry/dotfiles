@@ -340,13 +340,6 @@ function! functions#execute_line() abort
   return
 endfunction
 
-" lsp send diagnostics info to loclist
-if has('nvim')
-  function! functions#vim_lsp_diagnostic_set_loclist() abort
-    lua vim.lsp.diagnostic.set_loclist({open_loclist = false})
-  endfunction
-end
-
 "return OS specific path separator
 function! functions#get_separator() abort
   if has('win32')
