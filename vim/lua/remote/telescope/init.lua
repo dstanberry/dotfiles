@@ -20,6 +20,7 @@ reloader()
 
 -- bring telescope functions into local scope
 local actions = require('telescope.actions')
+local state = require('telescope.actions.state')
 local themes = require('telescope.themes')
 local utils = require('telescope.utils')
 
@@ -139,7 +140,7 @@ function M.file_browser()
     preview_title = false,
     results_title = false,
     attach_mappings = function(prompt_bufnr, map)
-      local current_picker = actions.state.get_current_picker(prompt_bufnr)
+      local current_picker = state.get_current_picker(prompt_bufnr)
       local modify_cwd = function(new_cwd)
         current_picker.cwd = new_cwd
         current_picker:refresh(opts.new_finder(new_cwd), {reset_prompt = true})
@@ -153,7 +154,7 @@ function M.file_browser()
       local modify_depth = function(mod)
         return function()
           opts.depth = opts.depth + mod
-          local current_picker = actions.state.get_current_picker(prompt_bufnr)
+          current_picker = state.get_current_picker(prompt_bufnr)
           current_picker:refresh(opts.new_finder(current_picker.cwd),
                                  {reset_prompt = true})
         end
