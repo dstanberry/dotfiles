@@ -15,8 +15,7 @@ end
 local on_attach_nvim = function(client, bufnr)
   local function set_keymap(mode, key, f, options)
     local opts = options or {noremap = true, silent = true}
-    local rhs = string.format("<cmd>lua %s<cr>", f)
-    vim.api.nvim_buf_set_keymap(bufnr, mode, key, rhs, opts)
+    BMAP(bufnr, mode, key, f, opts)
   end
   -- define symbol highlighting when supported by server
   if client.resolved_capabilities.document_highlight then

@@ -6,9 +6,8 @@ if not pcall(require, 'compe') then
   return
 end
 
-vim.api.nvim_set_keymap("i", "<cr>", "compe#confirm('<cr>')",
-                        {noremap = true, expr = true, silent = true})
-vim.api.nvim_set_keymap("i", "<esc>", "compe#close('<esc>')",
-                        {noremap = true, expr = true, silent = true})
-vim.api.nvim_set_keymap("i", "<c-space>", "compe#complete()",
-                        {noremap = true, expr = true, silent = true})
+local opts = {noremap = true, expr = true, silent = true}
+
+vim.api.nvim_set_keymap("i", "<cr>", "compe#confirm('<cr>')", opts)
+vim.api.nvim_set_keymap("i", "<esc>", "compe#close('<esc>')", opts)
+vim.api.nvim_set_keymap("i", "<c-space>", "compe#complete()", opts)
