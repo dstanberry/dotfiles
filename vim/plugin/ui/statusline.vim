@@ -19,7 +19,7 @@ endfunction
 
 function! statusline#get_filetype() abort
   if strlen(&ft)
-    if has('nvim')
+    if has('nvim-0.5')
       return luaeval('require"nvim-web-devicons".get_icon(vim.fn.expand("%:t"), vim.fn.expand("%:e"))') . ' ' . &ft
     else
       return &ft
@@ -71,7 +71,7 @@ endfunction
 
 function! statusline#get_lsp_errors() abort
   let l:sl = ''
-  if has('nvim') && luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
+  if has('nvim-0.5') && luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
     let l:sl .=' '
     let l:sl .= luaeval('vim.lsp.diagnostic.get_count(0, "Error")')
   endif
@@ -80,7 +80,7 @@ endfunction
 
 function! statusline#get_lsp_warnings() abort
   let l:sl = ''
-  if has('nvim') && luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
+  if has('nvim-0.5') && luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
     let l:sl .=' '
     let l:sl .= luaeval('vim.lsp.diagnostic.get_count(0, "Warn")')
   endif
@@ -89,7 +89,7 @@ endfunction
 
 function! statusline#get_lsp_hints() abort
   let l:sl = ''
-  if has('nvim') && luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
+  if has('nvim-0.5') && luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
     let l:sl .=' '
     let l:sl .= luaeval('vim.lsp.diagnostic.get_count(0, "Hint")')
   endif

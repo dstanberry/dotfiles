@@ -81,7 +81,7 @@ Plug 'J0rgeSerran0/vscode-csharp-snippets'
 " Python unit testing
 Plug 'alfredodeza/pytest.vim'
 
-if has('nvim')
+if has('nvim-0.5')
   " syntax highlighting for portage
   if isdirectory('/etc/portage')
     Plug 'gentoo/gentoo-syntax'

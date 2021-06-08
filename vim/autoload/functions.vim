@@ -303,7 +303,7 @@ function! functions#execute_file() abort
     :silent! write
     :source %
   elseif &filetype ==# 'lua'
-    if has('nvim')
+    if has('nvim-0.5')
       :silent! write
       :luafile %
     endif
@@ -317,7 +317,7 @@ function! functions#execute_selection() abort range
   if &filetype ==# 'vim'
     execute l:selection
   elseif &filetype ==# 'lua'
-    if has('nvim')
+    if has('nvim-0.5')
       let l:cmd = printf("lua << EOF\n%s\nEOF", l:selection)
       :redir > /tmp/scratch.vim | echo l:cmd | redir END
       :source /tmp/scratch.vim
@@ -333,7 +333,7 @@ function! functions#execute_line() abort
   if &filetype ==# 'vim'
     execute l:line
   elseif &filetype ==# 'lua'
-    if has('nvim')
+    if has('nvim-0.5')
       execute(printf(':echo luaeval("%s")', l:line))
     endif
   endif
