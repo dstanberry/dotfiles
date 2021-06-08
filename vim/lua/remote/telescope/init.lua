@@ -84,7 +84,11 @@ local M = {}
 
 -- show current buffer list
 function M.search_buffers()
-  require('telescope.builtin').buffers {shorten_path = false}
+  require('telescope.builtin').buffers(
+    themes.get_dropdown {
+      shorten_path = false,
+      prompt_title = "\\ Buffers /"
+    })
 end
 
 -- fuzzy search dotfiles from anywhere
@@ -199,7 +203,6 @@ end
 function M.current_buffer()
   require("telescope.builtin").current_buffer_fuzzy_find(
     themes.get_dropdown {
-      border = true,
       previewer = false,
       shorten_path = false,
       prompt_title = "\\ Find in File /"
