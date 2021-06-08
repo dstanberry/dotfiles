@@ -47,10 +47,10 @@ local on_attach_nvim = function(client, bufnr)
   set_keymap("n", "<localleader>wr", "vim.lsp.buf.remove_workspace_folder()")
   -- define keybind for document formatting when supported by server
   if client.resolved_capabilities.document_formatting then
-    set_keymap("n", "ff", "<cmd>lua vim.lsp.buf.formatting()")
+    set_keymap("n", "ff", "vim.lsp.buf.formatting()")
   end
   if client.resolved_capabilities.document_range_formatting then
-    set_keymap("v", "ff", "<cmd>lua vim.lsp.buf.range_formatting()")
+    set_keymap("v", "ff", "vim.lsp.buf.range_formatting()")
   end
 end
 
