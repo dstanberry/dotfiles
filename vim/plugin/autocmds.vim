@@ -19,22 +19,6 @@ augroup defer_init
 augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Syntax Highlighting
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-augroup filetype_associations
-  autocmd BufRead,BufNewFile *.cnf set filetype=dosini
-  autocmd BufRead,BufNewFile *.conf set filetype=conf
-  autocmd BufRead,BufNewFile gitconfig set filetype=.gitconfig
-  autocmd BufRead,BufNewFile zprofile set filetype=zsh
-  autocmd BufRead,BufNewFile ~/.config/bash/rc/* set filetype=bash
-  autocmd BufRead,BufNewFile ~/.config/bash/rc.private/* set filetype=bash
-  autocmd BufRead,BufNewFile ~/.config/zsh/rc/* set filetype=zsh
-  autocmd BufRead,BufNewFile ~/.config/zsh/rc.private/* set filetype=zsh
-  autocmd BufRead,BufNewFile *.vifm set filetype=vim
-  autocmd BufRead,BufNewFile vifmrc set filetype=vim
-augroup END
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Restore Last Cursor Position
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup cursor_position
