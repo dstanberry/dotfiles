@@ -54,6 +54,11 @@ require('telescope').setup {
           results_title = false
         })
       },
+      location = {
+        telescope = require('telescope.themes').get_dropdown({
+          results_title = false
+        })
+      },
       symbol = {
         telescope = require('telescope.themes').get_dropdown({
           results_title = false
