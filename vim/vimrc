@@ -114,6 +114,15 @@ if has('nvim-0.5')
   " extension for completion menu
   Plug 'tjdevries/complextras.nvim'
 
+  " debug adapter protocol client implementation
+  Plug 'mfussenegger/nvim-dap'
+  " add virtual text support for nvim-dap
+  Plug 'theHamsta/nvim-dap-virtual-text'
+  " debug adapter for plugins
+  Plug 'jbyuki/one-small-step-for-vimkind'
+  " dap extension for python
+  Plug 'mfussenegger/nvim-dap-python'
+
   " minimalist file explorer
   Plug 'tamago324/lir.nvim'
 
