@@ -31,14 +31,18 @@ dap.adapters.nlua = function(callback, config)
   callback({type = "server", host = config.host, port = config.port})
 end
 
-dap.configurations.python = {
-  {
-    type = "python",
-    request = "launch",
-    name = "Debug Current File",
-    program = "${file}",
-    args = {"--target", "api"},
-    console = "integratedTerminal"
+-- setup dap-python if available
+local has_dpy, dpy = pcall(require, 'dap-python')
+if has_dpy then
+  dap.configurations.python = {
+    {
+      type = "python",
+      request = "launch",
+      name = "Debug Current File",
+      program = "${file}",
+      args = {"--target", "api"},
+      console = "integratedTerminal"
+    }
   }
-}
-require("dap-python").setup("python", {include_configs = true})
+  dpy.setup("python", {include_configs = true})
+end
