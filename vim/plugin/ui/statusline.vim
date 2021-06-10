@@ -72,7 +72,7 @@ endfunction
 function! statusline#get_lsp_errors() abort
   let l:sl = ''
   if has('nvim-0.5') && luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
-    let l:sl .=' '
+    let l:sl .=' '
     let l:sl .= luaeval('vim.lsp.diagnostic.get_count(0, "Error")')
   endif
   return l:sl
@@ -81,17 +81,8 @@ endfunction
 function! statusline#get_lsp_warnings() abort
   let l:sl = ''
   if has('nvim-0.5') && luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
-    let l:sl .=' '
+    let l:sl .='𥉉'
     let l:sl .= luaeval('vim.lsp.diagnostic.get_count(0, "Warn")')
-  endif
-  return l:sl
-endfunction
-
-function! statusline#get_lsp_hints() abort
-  let l:sl = ''
-  if has('nvim-0.5') && luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
-    let l:sl .=' '
-    let l:sl .= luaeval('vim.lsp.diagnostic.get_count(0, "Hint")')
   endif
   return l:sl
 endfunction
@@ -139,11 +130,9 @@ function! statusline#focus()
   " right-hand side
   let l:statusline .= '%='
   " LSP diagnostic error count
-  let l:statusline .='%#Custom4#%{statusline#get_lsp_errors()}  '
+  let l:statusline .='%1*%{statusline#get_lsp_errors()} '
   " LSP diagnostic warning count
-  let l:statusline .='%#Custom6#%{statusline#get_lsp_warnings()}  '
-  " LSP diagnostic hint count
-  let l:statusline .='%#Custom5#%{statusline#get_lsp_hints()}    '
+  let l:statusline .='%1*%{statusline#get_lsp_warnings()}   '
   let l:prefix = ''
   " colorize metadata based on mode
   if mode() ==? 'n'
