@@ -59,9 +59,9 @@ vim.fn.sign_define("LspDiagnosticsSignError",
 vim.fn.sign_define("LspDiagnosticsSignWarning",
                    {text = " ", texthl = "LspDiagnosticsSignWarning"})
 vim.fn.sign_define("LspDiagnosticsSignInformation",
-                   {text = "", texthl = "LspDiagnosticsSignInformation"})
+                   {text = " ", texthl = "LspDiagnosticsSignInformation"})
 vim.fn.sign_define("LspDiagnosticsSignHint",
-                   {text = "", texthl = "LspDiagnosticsSignHint"})
+                   {text = " ", texthl = "LspDiagnosticsSignHint"})
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] =
   vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
