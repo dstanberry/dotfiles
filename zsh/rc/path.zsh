@@ -15,6 +15,13 @@ if hash gem 2> /dev/null; then
   IFS=$OLDIFS
 fi
 
+# add cargo binaries to path if present
+if hash cargo 2> /dev/null; then
+  CARGO="${CARGO_HOME}/bin"
+  export PATH=$CARGO:$PATH
+  unset CARGO
+fi
+
 # add go binaries to path if present
 if hash go 2> /dev/null; then
   GO="${GOPATH}/bin"
