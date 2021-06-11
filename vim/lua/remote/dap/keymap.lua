@@ -2,12 +2,12 @@
 -- => DAP Mappings
 ---------------------------------------------------------------
 -- verify telescope is available
-if not pcall(require, 'dap') then
+if not pcall(require, "dap") then
   return
 end
 
 -- define keymaps
-local opts = {silent = true}
+local opts = { silent = true }
 
 MAP("n", "<localleader>db", "require('dap').toggle_breakpoint()", opts)
 MAP("n", "<localleader>dr", "require('dap').repl_open()", opts)

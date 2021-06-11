@@ -5,126 +5,126 @@ return {
   ["lir_folder_icon"] = {
     icon = "",
     color = "#6f8fb4",
-    name = "LirFolder"
+    name = "LirFolder",
   },
   ["_dir_"] = {
     icon = "",
     color = "#6f8fb4",
-    name = "DirvishFolder"
+    name = "DirvishFolder",
   },
   [".gitignore"] = {
     icon = "",
     color = "#41535b",
-    name = "GitIgnore"
+    name = "GitIgnore",
   },
   [".tmux"] = {
     icon = "",
     color = "#4d5a5e",
-    name = "Shellscript"
+    name = "Shellscript",
   },
   ["bash"] = {
     icon = "",
     color = "#89e051",
-    name = "Bash"
+    name = "Bash",
   },
   ["bashrc"] = {
     icon = "",
     color = "#89e051",
-    name = "Bashrc"
+    name = "Bashrc",
   },
   ["config"] = {
     icon = "",
     color = "#f14c28",
-    name = "GitConfig"
+    name = "GitConfig",
   },
   ["css  "] = {
     icon = "",
     color = "#563d7c",
-    name = "Css"
+    name = "Css",
   },
   ["diff-highlight"] = {
     icon = "",
     color = "#3f416a",
-    name = "Perl"
+    name = "Perl",
   },
   ["dircolors"] = {
     icon = "",
     color = "#4d5a5e",
-    name = "Shellscript"
+    name = "Shellscript",
   },
   ["gitcommit"] = {
     icon = "",
     color = "#f14c28",
-    name = "GitCommit"
+    name = "GitCommit",
   },
   ["gitconfig"] = {
     icon = "",
     color = "#f14c28",
-    name = "GitConfig"
+    name = "GitConfig",
   },
   ["html"] = {
     icon = "",
     color = "#e34c26",
-    name = "Html"
+    name = "Html",
   },
   ["ignore"] = {
     icon = "",
     color = "#41535b",
-    name = "GitIgnore"
+    name = "GitIgnore",
   },
   ["markdown"] = {
     icon = "",
     color = "#519aba",
-    name = "Markdown"
+    name = "Markdown",
   },
   ["md"] = {
     icon = "",
     color = "#519aba",
-    name = "Md"
+    name = "Md",
   },
   ["mdx"] = {
     icon = "",
     color = "#519aba",
-    name = "Mdx"
+    name = "Mdx",
   },
   ["menos"] = {
     icon = "",
     color = "#cc402f",
-    name = "Ruby"
+    name = "Ruby",
   },
   ["sh"] = {
     icon = "",
     color = "#4d5a5e",
-    name = "Sh"
+    name = "Sh",
   },
   ["svg"] = {
     icon = "",
     color = "#FFB13B",
-    name = "Svg"
+    name = "Svg",
   },
   ["tmTheme"] = {
     icon = "謹",
     color = "#e37933",
-    name = "Xml"
+    name = "Xml",
   },
   ["vimrc"] = {
     icon = "",
     color = "#019833",
-    name = "Vimrc"
+    name = "Vimrc",
   },
   ["worktrees"] = {
     icon = "",
     color = "#41535b",
-    name = "GitDir"
+    name = "GitDir",
   },
   ["zsh"] = {
     icon = "",
     color = "#89e051",
-    name = "Zsh"
+    name = "Zsh",
   },
   ["zshrc"] = {
     icon = "",
     color = "#89e051",
-    name = "Zshrc"
-  }
+    name = "Zshrc",
+  },
 }

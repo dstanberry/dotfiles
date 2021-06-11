@@ -2,7 +2,6 @@
 -- => shell program formatter
 ---------------------------------------------------------------
 return {
-  -- brew install shfmt
   formatCommand = "shfmt -i 2 -ci -sr -s -bn",
-  formatStdin = true
+  formatStdin = true,
 }

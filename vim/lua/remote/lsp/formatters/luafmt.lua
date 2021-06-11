@@ -11,5 +11,5 @@ return {
     -- column-table-limit currently affects function parameters
     -- " --column-table-limit=50" ..
     " --chop-down-kv-table",
-  formatStdin = true
+  formatStdin = true,
 }

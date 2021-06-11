@@ -2,12 +2,12 @@
 -- => nvim-compe configuration
 ---------------------------------------------------------------
 -- verify nvim-compe is available
-local has_compe, compe = pcall(require, 'compe')
+local has_compe, compe = pcall(require, "compe")
 if not has_compe then
   return
 end
 
-compe.setup {
+compe.setup({
   enabled = true,
   autocomplete = true,
   debug = false,
@@ -26,6 +26,6 @@ compe.setup {
     calc = true,
     nvim_lsp = true,
     nvim_lua = true,
-    vsnip = true
-  }
-}
+    vsnip = true,
+  },
+})

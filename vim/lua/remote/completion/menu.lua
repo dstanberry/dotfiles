@@ -2,45 +2,67 @@
 -- => lsp completion menu item configuration
 ---------------------------------------------------------------
 local kind_symbols = {
-  Class = 'פּ ',
-  Color = ' ',
-  Constant = ' ',
-  Constructor = '襁',
-  Enum = '了',
-  EnumMember = '了',
-  Event = '',
-  File = ' ',
-  Folder = ' ',
-  Function = '',
-  Interface = '﯅',
-  Keyword = ' ',
-  Method = ' ',
-  Module = ' ',
-  Operator = ' ',
-  Property = ' ',
-  Reference = ' ',
-  Snippet = ' ',
-  Struct = ' ',
-  Text = '',
-  Unit = ' ',
-  Value = ' ',
-  Variable = '勞'
+  Class = "פּ ",
+  Color = " ",
+  Constant = " ",
+  Constructor = "襁",
+  Enum = "了",
+  EnumMember = "了",
+  Event = "",
+  File = " ",
+  Folder = " ",
+  Function = "",
+  Interface = "﯅",
+  Keyword = " ",
+  Method = " ",
+  Module = " ",
+  Operator = " ",
+  Property = " ",
+  Reference = " ",
+  Snippet = " ",
+  Struct = " ",
+  Text = "",
+  Unit = " ",
+  Value = " ",
+  Variable = "勞",
 }
 
 local kind_order = {
-  "Text", "Method", "Function", "Constructor",
-  "Field", "Variable", "Class", "Interface",
-  "Module", "Property", "Unit", "Value", "Enum",
-  "Keyword", "Snippet", "Color", "File",
-  "Reference", "Folder", "EnumMember", "Constant",
-  "Struct", "Event", "Operator", "TypeParameter"
+  "Text",
+  "Method",
+  "Function",
+  "Constructor",
+  "Field",
+  "Variable",
+  "Class",
+  "Interface",
+  "Module",
+  "Property",
+  "Unit",
+  "Value",
+  "Enum",
+  "Keyword",
+  "Snippet",
+  "Color",
+  "File",
+  "Reference",
+  "Folder",
+  "EnumMember",
+  "Constant",
+  "Struct",
+  "Event",
+  "Operator",
+  "TypeParameter",
 }
 
 local function set_completion_symbols(opts)
   local with_text = opts == nil or opts["with_text"]
-  local symbol_map = (opts and opts["symbol_map"] and
-      vim.tbl_extend("force", kind_symbols, opts["symbol_map"])) or
-      kind_symbols
+  local symbol_map = (
+      opts
+      and opts["symbol_map"]
+      and vim.tbl_extend("force", kind_symbols, opts["symbol_map"])
+    )
+    or kind_symbols
 
   local symbols = {}
   local len = 25
@@ -48,7 +70,7 @@ local function set_completion_symbols(opts)
     for i = 1, len do
       local name = kind_order[i]
       local symbol = symbol_map[name]
-      symbol = symbol and (symbol .. ' ') or ''
+      symbol = symbol and (symbol .. " ") or ""
       symbols[i] = string.format("%s%s", symbol, name)
     end
   else
@@ -58,8 +80,7 @@ local function set_completion_symbols(opts)
     end
   end
 
-  require('vim.lsp.protocol').CompletionItemKind =
-    symbols
+  require("vim.lsp.protocol").CompletionItemKind = symbols
 end
 
 set_completion_symbols(kind_symbols)

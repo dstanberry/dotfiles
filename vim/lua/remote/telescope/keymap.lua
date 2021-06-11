@@ -2,7 +2,7 @@
 -- => Telescope Mappings
 ---------------------------------------------------------------
 -- verify telescope is available
-if not pcall(require, 'telescope') then
+if not pcall(require, "telescope") then
   return
 end
 

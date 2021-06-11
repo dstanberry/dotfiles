@@ -3,9 +3,11 @@
 ---------------------------------------------------------------
 return {
   cmd = {
-    "clangd", "--background-index",
-    "--suggest-missing-includes", "--clang-tidy",
-    "--header-insertion=iwyu"
+    "clangd",
+    "--background-index",
+    "--suggest-missing-includes",
+    "--clang-tidy",
+    "--header-insertion=iwyu",
   },
-  init_options = {clangdFileStatus = true}
+  init_options = { clangdFileStatus = true },
 }

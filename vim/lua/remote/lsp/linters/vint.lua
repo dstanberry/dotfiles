@@ -4,5 +4,5 @@
 return {
   lintCommand = "vint --enable-neovim -",
   lintStdin = true,
-  lintFormats = {"%f:%l:%c: %m"}
+  lintFormats = { "%f:%l:%c: %m" },
 }

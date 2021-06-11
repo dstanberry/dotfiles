@@ -3,7 +3,7 @@
 ---------------------------------------------------------------
 return {
   cmd = {
-    "css-languageserver", 
-    "--stdio"
+    "css-languageserver",
+    "--stdio",
   },
 }

@@ -10,5 +10,5 @@ return {
     " --tab-width 2" ..
     " --trailing-comma es5" ..
     " --use-tabs false",
-  formatStdin = true
+  formatStdin = true,
 }

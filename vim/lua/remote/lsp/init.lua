@@ -2,8 +2,8 @@
 -- => Language Server Protocol Configuration
 ---------------------------------------------------------------
 -- verify lspconfig and nlua-nvim are available
-local has_lsp, lspconfig = pcall(require, 'lspconfig')
-local has_nlua, nluaconfig = pcall(require, 'nlua.lsp.nvim')
+local has_lsp, lspconfig = pcall(require, "lspconfig")
+local has_nlua, nluaconfig = pcall(require, "nlua.lsp.nvim")
 if not has_lsp and not has_nlua then
   return
 end
@@ -14,18 +14,21 @@ end
 -- define buffer local features
 local on_attach_nvim = function(client, bufnr)
   local function set_keymap(mode, key, f, options)
-    local opts = options or {noremap = true, silent = true}
+    local opts = options or { noremap = true, silent = true }
     BMAP(bufnr, mode, key, f, opts)
   end
   -- define symbol highlighting when supported by server
   if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
+    vim.api.nvim_exec(
+      [[
       augroup lsp_document_highlight
         autocmd! * <buffer>
         autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
         autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
       augroup END
-    ]], false)
+    ]],
+      false
+    )
   end
   -- define keybinds for code actions / diagnostics
   set_keymap("n", "ga", "vim.lsp.buf.code_action()")
@@ -54,22 +57,32 @@ local on_attach_nvim = function(client, bufnr)
 end
 
 -- diagnostic symbols and highlight groups
-vim.fn.sign_define("LspDiagnosticsSignError",
-                   {text = " ", texthl = "LspDiagnosticsSignError"})
-vim.fn.sign_define("LspDiagnosticsSignWarning",
-                   {text = " ", texthl = "LspDiagnosticsSignWarning"})
-vim.fn.sign_define("LspDiagnosticsSignInformation",
-                   {text = " ", texthl = "LspDiagnosticsSignInformation"})
-vim.fn.sign_define("LspDiagnosticsSignHint",
-                   {text = " ", texthl = "LspDiagnosticsSignHint"})
+vim.fn.sign_define("LspDiagnosticsSignError", {
+  text = " ",
+  texthl = "LspDiagnosticsSignError",
+})
+vim.fn.sign_define("LspDiagnosticsSignWarning", {
+  text = " ",
+  texthl = "LspDiagnosticsSignWarning",
+})
+vim.fn.sign_define("LspDiagnosticsSignInformation", {
+  text = " ",
+  texthl = "LspDiagnosticsSignInformation",
+})
+vim.fn.sign_define("LspDiagnosticsSignHint", {
+  text = " ",
+  texthl = "LspDiagnosticsSignHint",
+})
 
-vim.lsp.handlers["textDocument/publishDiagnostics"] =
-  vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics,
+  {
     underline = false,
     signs = true,
     update_in_insert = false,
-    virtual_text = {prefix = '▪', spacing = 4}
-  })
+    virtual_text = { prefix = "▪", spacing = 4 },
+  }
+)
 
 -- pack lsp configuration
 local function get_server_configuration()
@@ -77,26 +90,34 @@ local function get_server_configuration()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = {"documentation", "detail", "additionalTextEdits"}
+    properties = { "documentation", "detail", "additionalTextEdits" },
   }
-  return {capabilities = capabilities, on_attach = on_attach_nvim}
+  return { capabilities = capabilities, on_attach = on_attach_nvim }
 end
 
 -- load defined servers
 local function load_servers()
   -- manually curated list of language servers
   local servers = {
-    "bashls", "clangd", "cmake", "cssls", "efm", "html", "jsonls", "sumneko_ls",
-    "pyright", "vimls"
+    "bashls",
+    "clangd",
+    "cmake",
+    "cssls",
+    "efm",
+    "html",
+    "jsonls",
+    "sumneko_ls",
+    "pyright",
+    "vimls",
   }
   for _, server in ipairs(servers) do
     local config = get_server_configuration()
     if server == "sumneko_ls" then
-      local sumneko = require('remote.lsp.sumneko')
+      local sumneko = require("remote.lsp.sumneko")
       config = vim.tbl_extend("force", config, sumneko)
       nluaconfig.setup(lspconfig, config)
     else
-      local has_config, extra_config = pcall(require, 'remote.lsp.' .. server)
+      local has_config, extra_config = pcall(require, "remote.lsp." .. server)
       if has_config then
         config = vim.tbl_extend("force", config, extra_config)
       end

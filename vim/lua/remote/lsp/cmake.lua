@@ -2,5 +2,5 @@
 -- => cmake languageserver configuration
 ---------------------------------------------------------------
 return {
-  cmd = {"cmake-language-server"}
+  cmd = { "cmake-language-server" },
 }
