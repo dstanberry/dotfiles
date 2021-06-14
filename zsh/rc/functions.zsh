@@ -7,6 +7,18 @@ function ag() {
     --color-match=35\;1\;4 "$@"
   }
 
+# support custom sub-commands
+function cargo() {
+  local PKG=$CONFIG_HOME/shared/packages/cargo.txt
+  if [ "$1" = "save" ]; then
+    command cargo install --list | grep -E '^\w+' | awk '{ print $1 }' > "$PKG"
+  elif [ "$1" = "load" ]; then
+    < "$PKG" xargs "cargo" install
+  else
+    command cargo "$@"
+  fi
+}
+
 # interactively delete file(s) by name
 function del() {
   emulate -L zsh
@@ -175,7 +187,7 @@ function nvim() {
 function npm() {
   local PKG=$CONFIG_HOME/shared/packages/npm.txt
   if [ "$1" = "save" ]; then
-    command npm list -g --depth=0  | awk '{ print $2 }' \
+    command npm list -g --depth=0 | awk '{ print $2 }' \
       | sed -r 's/^\(empty\)//' \
       | sed '/^$/d' | grep -v 'npm@' > "$PKG"
   elif [ "$1" = "load" ]; then

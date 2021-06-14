@@ -6,6 +6,18 @@ function ag() {
     --color-match=35\;1\;4 "$@"
   }
 
+# support custom sub-commands
+function cargo() {
+  local PKG=$CONFIG_HOME/shared/packages/cargo.txt
+  if [ "$1" = "save" ]; then
+    command cargo install --list | grep -E '^\w+' | awk '{ print $1 }' > "$PKG"
+  elif [ "$1" = "load" ]; then
+    < "$PKG" xargs "cargo" install
+  else
+    command cargo "$@"
+  fi
+}
+
 # interactively delete file(s) by name
 function del() {
   if [ $# -eq 0 ]; then

@@ -77,6 +77,10 @@ Dependencies
 
 Read through all the txt files in `shared/packages` and remove delete any lines that contain unwanted packages before running any of the `load` commands.
 
+- Cargo
+  - install rust through package manager or [manually](https://doc.rust-lang.org/cargo/getting-started/installation.html)
+  - Run `cargo load` to install/update the files listed in `scripts/packages/cargo.txt`
+
 - Go
   - install through package manager
   - Run `go load` to install/update the files listed in `scripts/packages/go.txt`
