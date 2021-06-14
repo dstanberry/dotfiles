@@ -1,5 +1,4 @@
-Dotfiles
---------
+# Dotfiles
 
 The schema is constructed such that it adheres to the XDG Base Directory Specification.
 
@@ -49,6 +48,7 @@ Restart the shell/terminal for the changes to take effect.
 
 Luarocks:
 In order to make luarocks partially compliant, edit `/etc/luarocks/config-<version>.lua` and replace the user path with the following:
+
 ```lua
 --rocks_trees = {
     { name = "user", root = (os_getenv("XDG_DATA_HOME") or (home .. '/.local/share')) .. "/luarocks" };
@@ -58,8 +58,7 @@ In order to make luarocks partially compliant, edit `/etc/luarocks/config-<versi
 
 Tmux: Must be on version >= 3.1 as 3.1 introduced checking for the configuration file in `~/.config/tmux/tmux.conf` and in 3.2 `$XDG_CONFIG_HOME/tmux/tmux.conf` is also checked.
 
-Dependencies
-------------
+## Dependencies
 
 [Delta](https://github.com/dandavison/delta) or [diff-highlight](https://github.com/git/git/tree/master/contrib/diff-highlight) (perl script included in repo)
 
@@ -91,20 +90,24 @@ Read through all the txt files in `shared/packages` and remove delete any lines 
 
 - NodeJS
   - npm (should be installed with nodejs otherwise install through package manager) `npm --version`
+  - Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
   - If npm is installed, the following will be enforced in npm's configuration file:
-    ```
+
+    ```sh
     prefix=${XDG_DATA_HOME}/npm
     cache=${XDG_CACHE_HOME}/npm
     tmp=${XDG_RUNTIME_DIR}/npm
     init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
     ```
-  - Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
+
 - Perl
-  - _currently not in use_ 
+  - _currently not in use_
+
 - Python
   - pip (should be installed with Python) `python -m pip --version`
   - pipdeptree (required to manage package dependency graph) `pip install pipdeptree`
   - Run `pip load` to install/update the files listed in `scripts/packages/pip.txt`
+
 - Ruby
   - gem (should be installed with Ruby) `gem --version`
   - Run `gem load` to install the files listed in `scripts/packages/gem.txt`
