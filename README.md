@@ -1,6 +1,8 @@
 Dotfiles
 --------
 
+![image](https://github.com/dstanberry/dotfiles/wiki/assets/vim.png)
+
 The schema is constructed such that it adheres to the XDG Base Directory Specification.
 
 This configuration adopts what I think is a more elegant solution; the `.config` directory is maintained as a worktree linked to a git bare repository. To setup the environment, a number of one-time tasks will need to be executed:
