@@ -43,6 +43,7 @@ autoload -Uz async && async
 
 # schedule worker to get vcs information
 -vcs_info_precmd() {
+  retval=$?
   async_flush_jobs vcs_info
   async_job vcs_info -vcs_info_worker $PWD
 }
@@ -102,14 +103,17 @@ function -set-prompt() {
   fi
   local mode=$1
   if [[ $mode == insert ]]; then
-    local SUFFIX=$(printf '%%F{green}\u276f%.0s%%f' {1..$LVL})
+    if [[ $retval -eq 0 ]]; then
+      local SUFFIX=$(printf '%%F{green}\u276f%.0s%%f' {1..$LVL})
+    else
+      local SUFFIX=$(printf '%%F{red}\u276f%.0s%%f' {1..$LVL})
+    fi
   else
     local SUFFIX=$(printf '%%F{magenta}\u276f%.0s%%f' {1..$LVL})
   fi
 
   # define the primary prompt
-  local STATE="%(1j. .)%(?.. )"
-  PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%b%F{blue}%B%3~%b%F{yellow} %B${STATE}%b%f%B${SUFFIX}%b "
+  PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%F{blue}%B%3~ %f%B${SUFFIX} "
 
   if [[ -n "$TMUXING" ]]; then
     # outside tmux, ZLE_RPROMPT_INDENT ends up eating the space after PS1, and
