@@ -7,9 +7,9 @@ if not has_lir then
   return
 end
 
-local actions = require("lir.actions")
+local actions = require "lir.actions"
 
-lir.setup({
+lir.setup {
   show_hidden_files = false,
   devicons_enable = true,
   mappings = {
@@ -23,7 +23,7 @@ lir.setup({
     ["."] = actions.toggle_show_hidden,
     ["D"] = actions.delete,
   },
-})
+}
 
 vim.api.nvim_set_keymap(
   "n",

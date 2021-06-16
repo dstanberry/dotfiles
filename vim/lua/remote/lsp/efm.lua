@@ -2,19 +2,19 @@
 -- => efm-languageserver configuration
 ---------------------------------------------------------------
 -- linter configuration
-local eslint = require("remote.lsp.linters.eslint")
-local flake = require("remote.lsp.linters.flake8")
-local markdown = require("remote.lsp.linters.markdown")
-local shellcheck = require("remote.lsp.linters.shellcheck")
-local vint = require("remote.lsp.linters.vint")
+local eslint = require "remote.lsp.linters.eslint"
+local flake = require "remote.lsp.linters.flake8"
+local markdown = require "remote.lsp.linters.markdown"
+local shellcheck = require "remote.lsp.linters.shellcheck"
+local vint = require "remote.lsp.linters.vint"
 
 -- formatter configuration
-local isort = require("remote.lsp.formatters.isort")
+local isort = require "remote.lsp.formatters.isort"
 -- local luafmt = require('remote.lsp.formatters.luafmt')
-local prettier = require("remote.lsp.formatters.prettier")
-local shfmt = require("remote.lsp.formatters.shfmt")
-local stylua = require("remote.lsp.formatters.stylua")
-local yapf = require("remote.lsp.formatters.yapf")
+local prettier = require "remote.lsp.formatters.prettier"
+local shfmt = require "remote.lsp.formatters.shfmt"
+local stylua = require "remote.lsp.formatters.stylua"
+local yapf = require "remote.lsp.formatters.yapf"
 
 -- supported languages
 local languages = {

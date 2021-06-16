@@ -113,7 +113,7 @@ local function load_servers()
   for _, server in ipairs(servers) do
     local config = get_server_configuration()
     if server == "sumneko_ls" then
-      local sumneko = require("remote.lsp.sumneko")
+      local sumneko = require "remote.lsp.sumneko"
       config = vim.tbl_extend("force", config, sumneko)
       nluaconfig.setup(lspconfig, config)
     else

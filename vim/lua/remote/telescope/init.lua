@@ -11,21 +11,21 @@ end
 local should_reload = true
 local reloader = function()
   if should_reload then
-    RELOAD("plenary")
-    RELOAD("popup")
-    RELOAD("telescope")
+    RELOAD "plenary"
+    RELOAD "popup"
+    RELOAD "telescope"
   end
 end
 reloader()
 
 -- bring telescope functions into local scope
-local actions = require("telescope.actions")
-local state = require("telescope.actions.state")
-local themes = require("telescope.themes")
-local utils = require("telescope.utils")
+local actions = require "telescope.actions"
+local state = require "telescope.actions.state"
+local themes = require "telescope.themes"
+local utils = require "telescope.utils"
 
 -- set default options
-require("telescope").setup({
+require("telescope").setup {
   defaults = {
     prompt_prefix = "  ",
     selection_caret = " ",
@@ -50,29 +50,29 @@ require("telescope").setup({
     lsp_handlers = {
       disable = {},
       code_action = {
-        telescope = require("telescope.themes").get_dropdown({
+        telescope = require("telescope.themes").get_dropdown {
           previewer = false,
           results_title = false,
-        }),
+        },
       },
       location = {
-        telescope = require("telescope.themes").get_dropdown({
+        telescope = require("telescope.themes").get_dropdown {
           results_title = false,
-        }),
+        },
       },
       symbol = {
-        telescope = require("telescope.themes").get_dropdown({
+        telescope = require("telescope.themes").get_dropdown {
           results_title = false,
-        }),
+        },
       },
     },
   },
-})
+}
 
 -- load additional extensions
 -- require('telescope').load_extension('fzy_native')
-pcall(require("telescope").load_extension("fzf"))
-pcall(require("telescope").load_extension("lsp_handlers"))
+pcall(require("telescope").load_extension "fzf")
+pcall(require("telescope").load_extension "lsp_handlers")
 
 -- list of directory/file patterns to ignore
 local ignored = {
@@ -90,10 +90,10 @@ local M = {}
 
 -- show current buffer list
 function M.search_buffers()
-  require("telescope.builtin").buffers(themes.get_dropdown({
+  require("telescope.builtin").buffers(themes.get_dropdown {
     shorten_path = false,
     prompt_title = "\\ Buffers /",
-  }))
+  })
 end
 
 -- fuzzy search dotfiles from anywhere
@@ -122,11 +122,11 @@ function M.search_cwd()
     preview_title = false,
     results_title = false,
   }
-  local _, ret, _ = utils.get_os_command_output({
+  local _, ret, _ = utils.get_os_command_output {
     "git",
     "rev-parse",
     "--is-inside-work-tree",
-  })
+  }
   if ret == 0 then
     require("telescope.builtin").git_files(opts)
   else
@@ -149,13 +149,16 @@ function M.file_browser()
       local current_picker = state.get_current_picker(prompt_bufnr)
       local modify_cwd = function(new_cwd)
         current_picker.cwd = new_cwd
-        current_picker:refresh(opts.new_finder(new_cwd), { reset_prompt = true })
+        current_picker:refresh(
+          opts.new_finder(new_cwd),
+          { reset_prompt = true }
+        )
       end
       map("i", "-", function()
         modify_cwd(current_picker.cwd .. "/..")
       end)
       map("i", "~", function()
-        modify_cwd(vim.fn.expand("~"))
+        modify_cwd(vim.fn.expand "~")
       end)
       local modify_depth = function(mod)
         return function()
@@ -176,49 +179,49 @@ end
 
 -- fuzzy search installed vim plugins
 function M.installed_plugins()
-  require("telescope.builtin").find_files({
+  require("telescope.builtin").find_files {
     cwd = "~/.config/vim/remote",
     previewer = false,
     layout_strategy = "vertical",
     prompt_title = "\\ (N)Vim Plugins /",
     results_title = false,
-  })
+  }
 end
 
 -- find occurrences of word under cursor in all files
 function M.grep_cursor()
-  require("telescope.builtin").grep_string({
+  require("telescope.builtin").grep_string {
     shorten_path = true,
     -- search = vim.fn.input("grep: "),
     prompt_title = "\\ Grep File /",
     preview_title = false,
     results_title = false,
-  })
+  }
 end
 
 -- grep for arbitrary pattern in cwd
 function M.grep_cwd()
-  require("telescope.builtin").grep_string({
+  require("telescope.builtin").grep_string {
     shorten_path = true,
-    search = vim.fn.input("grep: "),
+    search = vim.fn.input "grep: ",
     prompt_title = "\\ Grep Project /",
     preview_title = false,
     results_title = false,
-  })
+  }
 end
 
 -- fuzzy find text within current buffer
 function M.current_buffer()
-  require("telescope.builtin").current_buffer_fuzzy_find(themes.get_dropdown({
+  require("telescope.builtin").current_buffer_fuzzy_find(themes.get_dropdown {
     previewer = false,
     shorten_path = false,
     prompt_title = "\\ Find in File /",
-  }))
+  })
 end
 
 -- search help files
 function M.help_tags()
-  require("telescope.builtin").help_tags({ show_version = true })
+  require("telescope.builtin").help_tags { show_version = true }
 end
 
 -- call setmetatable whenever any of the custom modules are called
