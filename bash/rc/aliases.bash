@@ -9,11 +9,11 @@ alias grep='grep --color=auto'
 # enable color support for ls
 if hash exa 2> /dev/null; then
   if is_darwin; then
-    alias ls="exa --all --group-directories-first"
+    alias ls="exa --all --group-directories-first --group"
   elif is_wsl; then
-    alias ls="exa --ignore-glob='ntuser\.*' --ignore-glob='NTUSER\.*' --all --group-directories-first"
+    alias ls="exa --ignore-glob='ntuser\.*' --ignore-glob='NTUSER\.*' --all --group-directories-first --group"
   else
-    alias ls="exa --all --group-directories-first"
+    alias ls="exa --all --group-directories-first --group"
   fi
 else
   if is_darwin; then
