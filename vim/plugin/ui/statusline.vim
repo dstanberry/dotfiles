@@ -130,9 +130,9 @@ function! statusline#focus()
   " right-hand side
   let l:statusline .= '%='
   " LSP diagnostic error count
-  let l:statusline .='%1*%{statusline#get_lsp_errors()} '
+  let l:statusline .='%1*%{statusline#get_lsp_errors()}'
   " LSP diagnostic warning count
-  let l:statusline .='%1*%{statusline#get_lsp_warnings()}   '
+  let l:statusline .='%1* %{statusline#get_lsp_warnings()}   '
   let l:prefix = ''
   " colorize metadata based on mode
   if mode() ==? 'n'
