@@ -92,8 +92,20 @@ set noruler
 
 " show whitespace characters
 set list
-" define glyphs used to visually identify invisible characters
-set listchars=tab:│\ ,eol:¬,trail:•,extends:»,precedes:«
+" define glyph used to visually identify tabs
+set listchars+=tab:»\ 
+" define glyph used to visually identify end of line
+set listchars+=eol:¬
+" define glyph used to visually identify trailing spaces
+set listchars+=trail:•
+" define glyph used to visually identify text overflow (right)
+set listchars+=extends:›
+" define glyph used to visually identify text overflow (left)
+set listchars+=precedes:‹
+" define glyph used to visually identify non-breaking spaces
+set listchars+=nbsp:␣
+" define glyph used to visually identify concealed text
+set listchars+=conceal:┊
 
 " define glyph used for vertical separator
 set fillchars+=vert:┃
@@ -125,9 +137,9 @@ endif
 " set the maximum number of entries shown in completion menu
 set pumheight=5
 
-" set opacity for popup menu 
+" set opacity for popup menu
 if exists('+pumblend')
-	set pumblend=20
+  set pumblend=20
 endif
 
 " default behaviour when creating new panes
