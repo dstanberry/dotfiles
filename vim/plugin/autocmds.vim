@@ -25,7 +25,7 @@ augroup cursor_position
   autocmd!
   autocmd BufWinEnter * call functions#restore_cursor_position()
 augroup END
-"
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Highlight Yanked Text
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -48,6 +48,6 @@ augroup END
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 augroup auto_smartcase
   autocmd!
-  autocmd CmdLineEnter : set nosmartcase
-  autocmd CmdLineLeave : set smartcase
+  autocmd CmdLineEnter set nosmartcase
+  autocmd CmdLineLeave set smartcase
 augroup END

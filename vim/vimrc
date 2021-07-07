@@ -68,7 +68,7 @@ Plug 'tpope/vim-surround'
 " enable focus events
 Plug 'tmux-plugins/vim-tmux-focus-events'
 
-" LSP/VScode snippett support
+" LSP/VScode snippet support
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 " language snippets
