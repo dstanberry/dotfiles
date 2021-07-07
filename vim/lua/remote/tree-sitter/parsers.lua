@@ -17,9 +17,9 @@ config.vim = {
   used_by = { "vifmrc", "vimrc" },
 }
 
--- vim.cmd [[
--- augroup treesitter_highlight
---   autocmd!
---   autocmd BufRead if &ft==? 'vim' | :TSBufDisable highlight
--- augroup END
--- ]]
+vim.cmd [[
+augroup treesitter_highlight
+  autocmd!
+  autocmd BufEnter,BufRead vimrc TSBufDisable highlight
+augroup END
+]]
