@@ -22,7 +22,6 @@ reloader()
 local actions = require "telescope.actions"
 local state = require "telescope.actions.state"
 local themes = require "telescope.themes"
-local utils = require "telescope.utils"
 
 -- set default options
 require("telescope").setup {
@@ -30,8 +29,22 @@ require("telescope").setup {
     prompt_prefix = "  ",
     selection_caret = " ",
     winblend = 10,
-    scroll_strategy = "cycle",
     borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+    scroll_strategy = "cycle",
+    layout_strategy = "flex",
+    layout_config = {
+      prompt_position = "bottom",
+      horizontal = {
+        width = { padding = 0.06 },
+        height = { padding = 0.1 },
+        preview_width = 0.6,
+      },
+      vertical = {
+        width = { padding = 0.05 },
+        height = { padding = 1 },
+        preview_height = 0.5,
+      },
+    },
     mappings = {
       i = {
         ["<c-s>"] = actions.select_horizontal,
@@ -103,10 +116,7 @@ function M.search_dotfiles()
     hidden = true,
     file_ignore_patterns = ignored,
     shorten_path = false,
-    layout_strategy = "horizontal",
     prompt_title = "\\ Dotfiles /",
-    preview_title = false,
-    results_title = false,
   }
   require("telescope.builtin").find_files(opts)
 end
@@ -117,19 +127,10 @@ function M.search_cwd()
     hidden = true,
     file_ignore_patterns = ignored,
     shorten_path = false,
-    layout_strategy = "horizontal",
     prompt_title = "\\ Project Files /",
-    preview_title = false,
-    results_title = false,
   }
-  local _, ret, _ = utils.get_os_command_output {
-    "git",
-    "rev-parse",
-    "--is-inside-work-tree",
-  }
-  if ret == 0 then
-    require("telescope.builtin").git_files(opts)
-  else
+  local ok = pcall(require("telescope.builtin").git_files, opts)
+  if not ok then
     require("telescope.builtin").find_files(opts)
   end
 end
@@ -143,8 +144,6 @@ function M.file_browser()
     scroll_strategy = "cycle",
     prompt_position = "top",
     prompt_title = "\\ File Browser /",
-    preview_title = false,
-    results_title = false,
     attach_mappings = function(prompt_bufnr, map)
       local current_picker = state.get_current_picker(prompt_bufnr)
       local modify_cwd = function(new_cwd)
@@ -182,9 +181,7 @@ function M.installed_plugins()
   require("telescope.builtin").find_files {
     cwd = "~/.config/vim/remote",
     previewer = false,
-    layout_strategy = "vertical",
     prompt_title = "\\ (N)Vim Plugins /",
-    results_title = false,
   }
 end
 
@@ -194,8 +191,6 @@ function M.grep_cursor()
     shorten_path = true,
     -- search = vim.fn.input("grep: "),
     prompt_title = "\\ Grep File /",
-    preview_title = false,
-    results_title = false,
   }
 end
 
@@ -205,8 +200,6 @@ function M.grep_cwd()
     shorten_path = true,
     search = vim.fn.input "grep: ",
     prompt_title = "\\ Grep Project /",
-    preview_title = false,
-    results_title = false,
   }
 end
 
