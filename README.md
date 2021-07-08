@@ -80,19 +80,19 @@ Read through all the txt files in `shared/packages` and remove delete any lines 
 
 - Cargo
   - install rust through package manager or [manually](https://doc.rust-lang.org/cargo/getting-started/installation.html)
-  - Run `cargo load` to install/update the files listed in `scripts/packages/cargo.txt`
+  - Run `cargo load` to install/update the contents in [shared/packages/cargo.txt](https://github.com/dstanberry/dotfiles/blob/main/shared/packages/cargo.txt)
 
 - Go
   - install through package manager
-  - Run `go load` to install/update the files listed in `scripts/packages/go.txt`
+  - Run `go load` to install/update the contents in [shared/packages/go.txt](https://github.com/dstanberry/dotfiles/blob/main/shared/packages/go.txt)
 
 - Luarocks
   - install through package manager
-  - Run `luarocks load` to install/update the files listed in `scripts/packages/luarocks.txt`
+  - Run `luarocks load` to install/update the contents in [shared/packages/luarocks.txt](https://github.com/dstanberry/dotfiles/blob/main/shared/packages/luarocks.txt)
 
 - NodeJS
   - npm (should be installed with nodejs otherwise install through package manager) `npm --version`
-  - Run `npm load` to install/update the files listed in `scripts/packages/npm.txt`
+  - Run `npm load` to install/update the contents in [shared/packages/npm.txt](https://github.com/dstanberry/dotfiles/blob/main/shared/packages/npm.txt)
   - If npm is installed, the following will be enforced in npm's configuration file:
 
     ```sh
@@ -108,8 +108,8 @@ Read through all the txt files in `shared/packages` and remove delete any lines 
 - Python
   - pip (should be installed with Python) `python -m pip --version`
   - pipdeptree (required to manage package dependency graph) `pip install pipdeptree`
-  - Run `pip load` to install/update the files listed in `scripts/packages/pip.txt`
+  - Run `pip load` to install/update the contents in [shared/packages/pip.txt](https://github.com/dstanberry/dotfiles/blob/main/shared/packages/pip.txt)
 
 - Ruby
   - gem (should be installed with Ruby) `gem --version`
-  - Run `gem load` to install the files listed in `scripts/packages/gem.txt`
+  - Run `gem load` to install the contents in [shared/packages/gem.txt](https://github.com/dstanberry/dotfiles/blob/main/shared/packages/gem.txt)
