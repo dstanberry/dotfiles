@@ -46,3 +46,12 @@ if has_dpy then
   }
   dpy.setup("python", { include_configs = true })
 end
+
+-- define keymaps
+local opts = { silent = true }
+
+MAP("n", "<localleader>db", "require('dap').toggle_breakpoint()", opts)
+MAP("n", "<localleader>dr", "require('dap').repl_open()", opts)
+MAP("n", "<localleader>dh", "require('dap.ui.variables').hover()", opts)
+MAP("n", "<f5>", "require('dap').continue()", opts)
+MAP("n", "<f10>", "require('dap').step_over()", opts)
