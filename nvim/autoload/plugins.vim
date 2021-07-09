@@ -11,7 +11,7 @@ augroup end
 set encoding=utf-8
 
 " define plugin installation directory
-call plug#begin($XDG_CONFIG_HOME . '/vim/remote')
+call plug#begin($XDG_CONFIG_HOME . '/nvim/remote')
 
 " command line fuzzy finder
 Plug 'junegunn/fzf.vim', { 'on': ['Files', 'Buffers', 'Ag', 'Rg', 'Windows'] }
@@ -61,6 +61,16 @@ Plug 'tpope/vim-surround'
 
 " enable focus events
 Plug 'tmux-plugins/vim-tmux-focus-events'
+
+" LSP/VScode snippet support
+Plug 'hrsh7th/vim-vsnip', { 'on': [] }
+Plug 'hrsh7th/vim-vsnip-integ'
+" language snippets
+Plug 'rafamadriz/friendly-snippets'
+Plug 'cstrap/python-snippets'
+Plug 'keyring/vsc-lua'
+Plug 'honza/vim-snippets'
+Plug 'J0rgeSerran0/vscode-csharp-snippets'
 
 " syntax highlighting for portage
 if isdirectory('/etc/portage')

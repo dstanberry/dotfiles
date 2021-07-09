@@ -1,0 +1,168 @@
+---------------------------------------------------------------
+-- => Editor
+---------------------------------------------------------------
+-- define a colorscheme
+vim.cmd [[ colorscheme kdark ]]
+
+local cache = vim.env.XDG_CACHE_HOME
+local data = vim.env.XDG_CACHE_HOME
+
+-- update file content if it has been modified on disk
+vim.opt.autoread = true
+-- auto-indent new line
+vim.opt.autoindent = true
+-- maintain file backup across sessions
+vim.opt.backup = true
+-- define location for backup files
+vim.opt.backupdir = cache .. "/nvim/backup//,."
+-- allow <backspace> to cross line boundaries
+vim.opt.backspace = "indent,eol,start"
+-- disable the system bell
+vim.opt.belloff = "all"
+-- emphasis on wrapped lines
+vim.opt.breakindentopt = "shift:2"
+-- setup clipboard
+vim.opt.clipboard = "unnamed,unnamedplus"
+-- include dictionary in completion matches
+vim.opt.complete = vim.opt.complete + "kspell"
+-- use popup menu to show possible completions
+vim.opt.completeopt = "menuone,noselect"
+-- highlight current line
+vim.opt.cursorline = true
+-- define location for swap files
+vim.opt.directory = cache .. "/nvim/swap//,."
+-- don't expand spaces to tabs
+vim.opt.expandtab = false
+-- define glyph used for vertical separator
+vim.opt.fillchars = "vert:┃"
+-- define glyph used for line folds
+vim.opt.fillchars = vim.opt.fillchars + "fold:·"
+-- define glyph used for deleted lines in diff
+vim.opt.fillchars = vim.opt.fillchars + "diff:∙"
+-- define character used for empty lines at the end of a buffer
+vim.opt.fillchars = vim.opt.fillchars + "eob: "
+-- grep program to use
+vim.opt.grepprg = "rg --vimgrep --no-heading --smart-case"
+-- grep output format
+vim.opt.grepformat = "%f:%l:%c:%m"
+-- allow buffers with unsaved changes to be hidden
+vim.opt.hidden = true
+-- highlight all search pattern matches
+vim.opt.hlsearch = true
+-- enable case insensitive search
+vim.opt.ignorecase = true
+-- enable live text substitution and preview matches
+vim.opt.inccommand = "split"
+-- incremental highlight of matched patterns
+vim.opt.incsearch = true
+-- disable padding when joining mulitple lines
+vim.opt.joinspaces = false
+-- display the statusline
+vim.opt.laststatus = 2
+-- show whitespace characters
+vim.opt.list = true
+-- soft line wrapping
+vim.opt.linebreak = true
+-- define glyph used to visually identify tabs
+vim.opt.listchars = vim.opt.listchars + "tab:» "
+-- define glyph used to visually identify end of line
+vim.opt.listchars = vim.opt.listchars + "eol:¬"
+-- define glyph used to visually identify trailing spaces
+vim.opt.listchars = vim.opt.listchars + "trail:•"
+-- define glyph used to visually identify text overflow (right)
+vim.opt.listchars = vim.opt.listchars + "extends:›"
+-- define glyph used to visually identify text overflow (left)
+vim.opt.listchars = vim.opt.listchars + "precedes:‹"
+-- define glyph used to visually identify non-breaking spaces
+vim.opt.listchars = vim.opt.listchars + "nbsp:␣"
+-- define glyph used to visually identify concealed text
+vim.opt.listchars = vim.opt.listchars + "conceal:┊"
+-- enable search using regex expressions
+vim.opt.magic = true
+-- enable mouse events in normal mode
+vim.opt.mouse = "n"
+-- disable title modification
+vim.opt.title = false
+-- show line numbers
+vim.opt.number = true
+-- toggle paste mode (to be able to accurately paste from external apps)
+vim.opt.pastetoggle = "<F2>"
+-- extend path to include current directory
+vim.opt.path = vim.opt.path + "**"
+-- opacity for popup menu
+vim.opt.pumblend = 20
+-- the maximum number of entries shown in completion menu
+vim.opt.pumheight = 5
+-- show line numbers relative to current line
+vim.opt.relativenumber = true
+-- disable showing cursor position in/below statusline
+vim.opt.ruler = false
+-- rows: begin scrolling before reaching viewport boundary
+vim.opt.scrolloff = 3
+-- define shada options
+vim.opt.shada = {
+  "!",
+  "'100",
+  "<50",
+  "s10",
+  "h",
+  "n" .. data .. "/nvim/shada/main.shada",
+}
+-- space indent width
+vim.opt.shiftwidth = 4
+-- avoid swapfile alert messages
+vim.opt.shortmess = vim.opt.shortmess + "A"
+-- disable splash screen
+vim.opt.shortmess = vim.opt.shortmess + "I"
+-- disable showing file info
+vim.opt.shortmess = vim.opt.shortmess + "F"
+-- don't show completion menu messages
+vim.opt.shortmess = vim.opt.shortmess + "c"
+-- define line wrap character
+vim.opt.showbreak = "↳"
+-- disable showing keystrokes below statusline
+vim.opt.showcmd = false
+-- disable contextual message based on mode
+vim.opt.showmode = false
+-- show matching braces
+vim.opt.showmatch = true
+-- hide the tabline
+vim.opt.showtabline = 0
+-- columns: begin scrolling before reaching viewport boundary
+vim.opt.sidescrolloff = 3
+-- make search case sensitive if expression contains a capital letter
+vim.opt.smartcase = true
+-- indent based on code style
+vim.opt.smartindent = true
+-- tab will respect 'tabstop', 'shiftwidth', and 'softtabstop'
+vim.opt.smarttab = true
+-- prevent mixing tabs and whitespace
+vim.opt.softtabstop = 0
+-- default behaviour when creating horizontal splits
+vim.opt.splitbelow = true
+-- default behaviour when creating vertical splits
+vim.opt.splitright = true
+--reuse windows/tabs if possible
+vim.opt.switchbuf = "usetab"
+-- tab visible width
+vim.opt.tabstop = 4
+-- enable true color
+vim.opt.termguicolors = true
+-- define location for undo files
+vim.opt.undodir = cache .. "/nvim/undo//,."
+-- maintain undo history across sessions
+vim.opt.undofile = true
+-- allow crossing of line boundaries
+vim.opt.whichwrap = "b,h,l,s,<,>,[,],~"
+-- ignore compiled files and temp files
+vim.opt.wildignore = { "*.o", "*~", "*.pyc", "*pycache*" }
+-- enable enhanced command line completion
+vim.opt.wildmenu = true
+-- enable file auto-completion
+vim.opt.wildmode = "full"
+-- enable completion menu
+vim.opt.wildoptions = "pum"
+-- enable line wrapping
+vim.opt.wrap = true
+-- define right margin before wrapping text
+vim.opt.wrapmargin = 8

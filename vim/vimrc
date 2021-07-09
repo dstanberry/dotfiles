@@ -47,3 +47,6 @@ set viminfo='10,\"100,:20,%,n$XDG_DATA_HOME/vim/shada/viminfo
 
 " lood remote plugins
 source <sfile>:h/autoload/plugins.vim
+
+" lazy-load potentially expensive resources
+call functions#defer('call deferred#load_dir_hash()')

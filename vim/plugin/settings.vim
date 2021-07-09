@@ -17,28 +17,14 @@ match ErrorMsg "^\(<\|=\|>\)\{7\}\([^=].\+\)\?$"
 " enable syntax highlighting
 syntax on
 
-if has('nvim')
-  " define location for backup files
-  set backupdir=$XDG_CACHE_HOME/nvim/backup//,.
-  " define location for swap files
-  set directory=$XDG_CACHE_HOME/nvim/swap//,.
-  " define location for undo files
-  set undodir=$XDG_CACHE_HOME/nvim/undo//,.
-else
-  " define location for backup files
-  set backupdir=$XDG_CACHE_HOME/vim/backup//,.
-  " define location for swap files
-  set directory=$XDG_CACHE_HOME/vim/swap//,.
-  " define location for undo files
-  set undodir=$XDG_CACHE_HOME/vim/undo//,.
-endif
-
 " update file content if it has been modified on disk
 set autoread
 " auto-indent new line
 set autoindent
 " maintain file backup across sessions
 set backup
+" define location for backup files
+set backupdir=$XDG_CACHE_HOME/vim/backup//,.
 " allow <backspace> to cross line boundaries
 set backspace=indent,eol,start
 " disable the system bell
@@ -53,26 +39,16 @@ set complete+=kspell
 set completeopt=menuone,noselect
 " highlight current line
 set cursorline
+" define location for swap files
+set directory=$XDG_CACHE_HOME/vim/swap//,.
 " define glyph used for vertical separator
 set fillchars+=vert:┃
 " define glyph used for line folds
 set fillchars+=fold:·
 " define glyph used for deleted lines in diff
 set fillchars+=diff:∙
-" define character used for empty lines at the end of a buffer
-if has('nvim')
-  set fillchars+=eob:\ 
-endif
 " set grep program to use
-if executable('rg')
-  set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
-elseif executable('ag')
-  set grepprg=ag\ --vimgrep\ --noheading\ --smart-case
-elseif executable('ack')
-  set grepprg=ack\ --nogroup\ --nocolor\ --column\ --no-heading\ --smart-case
-else
-  set grepprg=grep\ -R\ -n\ --exclude-dir=.git,.cache,node_modules
-endif
+set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
 " set grep output format
 set grepformat=%f:%l:%c:%m
 " allow buffers with unsaved changes to be hidden
@@ -177,6 +153,8 @@ set tabstop=4
 set termguicolors t_Co=256
 " redraw buffer faster
 set ttyfast
+" define location for undo files
+set undodir=$XDG_CACHE_HOME/vim/undo//,.
 " maintain undo history across sessions
 set undofile
 " allow crossing of line boundaries
@@ -185,10 +163,6 @@ set whichwrap=b,h,l,s,<,>,[,],~
 set wildmenu
 " enable file auto-completion
 set wildmode=full
-" enable completion menu
-if has('nvim')
-  set wildoptions+=pum
-endif
 " enable line wrapping
 set wrap
 " define right margin before wrapping text
