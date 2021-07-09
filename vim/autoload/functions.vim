@@ -3,69 +3,6 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 scriptencoding utf-8
 
-" entrypoint
-function! functions#init() abort
-  " ensure XDG_CACHE_HOME is defined
-  if empty($XDG_CACHE_HOME)
-    let $XDG_CACHE_HOME=$HOME.'/.cache'
-  endif
-
-  " ensure XDG_DATA_HOME is defined
-  if empty($XDG_DATA_HOME)
-    let $XDG_DATA_HOME=$HOME.'/.local/share'
-  endif
-
-  if has('nvim')
-    " ensure backup directory exists
-    if !isdirectory($XDG_CACHE_HOME . '/nvim/backup')
-      call mkdir($XDG_CACHE_HOME . '/nvim/backup', 'p')
-    endif
-    " ensure swap directory exists
-    if !isdirectory($XDG_CACHE_HOME . '/nvim/swap')
-      call mkdir($XDG_CACHE_HOME . '/nvim/swap', 'p')
-    endif
-    " ensure undo directory exists
-    if !isdirectory($XDG_CACHE_HOME . '/nvim/undo')
-      call mkdir($XDG_CACHE_HOME . '/nvim/undo', 'p')
-    endif
-    " ensure shada directory exists
-    if !isdirectory($XDG_DATA_HOME . '/nvim/shada')
-      call mkdir($XDG_DATA_HOME . '/nvim/shada', 'p')
-    endif
-    " ensure netrw directory exists
-    if !isdirectory($XDG_DATA_HOME . '/nvim/netrw')
-      call mkdir($XDG_DATA_HOME . '/nvim/netrw', 'p')
-    endif
-
-    " set viminfo
-    set viminfo+=n$XDG_DATA_HOME/nvim/shada/main.shada
-  else
-    " ensure backup directory exists
-    if !isdirectory($XDG_CACHE_HOME . '/vim/backup')
-      call mkdir($XDG_CACHE_HOME . '/vim/backup', 'p')
-    endif
-    " ensure swap directory exists
-    if !isdirectory($XDG_CACHE_HOME . '/vim/swap')
-      call mkdir($XDG_CACHE_HOME . '/vim/swap', 'p')
-    endif
-    " ensure undo directory exists
-    if !isdirectory($XDG_CACHE_HOME . '/vim/undo')
-      call mkdir($XDG_CACHE_HOME . '/vim/undo', 'p')
-    endif
-    " ensure shada directory exists
-    if !isdirectory($XDG_DATA_HOME . '/vim/shada')
-      call mkdir($XDG_DATA_HOME . '/vim/shada', 'p')
-    endif
-    " ensure netrw directory exists
-    if !isdirectory($XDG_DATA_HOME . '/vim/netrw')
-      call mkdir($XDG_DATA_HOME . '/vim/netrw', 'p')
-    endif
-
-    " set viminfo
-    set viminfo='10,\"100,:20,%,n$XDG_DATA_HOME/vim/shada/viminfo
-  endif
-endfunction
-
 " lazy loading of expensive operations
 function! functions#idleboot() abort
   " make sure functions#idleboot is called only once.

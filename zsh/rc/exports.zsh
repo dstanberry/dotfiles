@@ -85,19 +85,6 @@ fi
 # define how long to wait for additional characters
 export KEYTIMEOUT=2
 
-# set location for vim runtime configuration
-export MYVIMRC="${VIM_CONFIG_HOME}/init.vim"
-__viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
-__viminit+="${VIM_CONFIG_HOME}/after"
-if is_darwin; then
-  # add fzf binary to rtp
-  __viminit+=",/usr/local/opt/fzf"
-fi
-__viminit+="|:source ${MYVIMRC}"
-__viminit+="|call functions#init()"
-export VIMINIT=$__viminit
-unset __viminit
-
 # define mocOS specific options
 if is_darwin; then
   # ensure utf-8 is set

@@ -10,7 +10,7 @@ BASH_CONFIG_HOME="${CONFIG_HOME}/bash"
 # base directory for tmux bash configuration files
 TMUX_CONFIG_HOME="${CONFIG_HOME}/tmux"
 
-# base directory for vim configuration files
+# base directory for (n)vim configuration files
 VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
 
 # include helper functions

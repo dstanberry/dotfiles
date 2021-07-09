@@ -327,7 +327,16 @@ function vim() {
     done < "$INPUT"
   fi
   IFS=$OLDIFS
-  eval "$worktree command vim $*"
+  local MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
+  local __viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
+  __viminit+="${VIM_CONFIG_HOME}/after"
+  if is_darwin; then
+    # add fzf binary to rtp
+    __viminit+=",/usr/local/opt/fzf"
+  fi
+  __viminit+="|:source ${MYVIMRC}"
+  local viminit="VIMINIT='$__viminit'"
+  eval "$viminit $worktree command vim $*"
 }
 
 # poor man's wget runtime configuration

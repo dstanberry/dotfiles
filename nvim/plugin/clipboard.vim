@@ -1,0 +1,1 @@
+../../vim/plugin/clipboard.vim

@@ -1,0 +1,1 @@
+../../vim/ftdetect/gpg.vim

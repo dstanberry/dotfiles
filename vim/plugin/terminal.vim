@@ -1,14 +1,13 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => (Neo)Vim Configuration
+" => Terminal Settings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" disable plugins if running vi
-if v:progname ==# 'vi'
-  set noloadplugins
-endif
-
 " enable true color within tmux
-let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
-let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+if has('termguicolors')
+  if &term =~# 'tmux-256color'
+    let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+    let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+  endif
+endif
 
 " use solid block cursor in normal mode
 let &t_EI="\<Esc>[2 q"
@@ -16,11 +15,3 @@ let &t_EI="\<Esc>[2 q"
 let &t_SI="\<Esc>[5 q"
 " use blinking underscore cursor in replace mode
 let &t_SR="\<Esc>[3 q"
-
-" define a primary leader key
-let mapleader=' '
-" define a secondary leader key
-let maplocalleader=','
-
-" lood remote plugins
-source <sfile>:h/plugin/plugins.vim
