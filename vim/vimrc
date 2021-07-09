@@ -18,7 +18,7 @@ let &t_SI="\<Esc>[5 q"
 let &t_SR="\<Esc>[3 q"
 
 " define a primary leader key
-let mapleader='\<space>'
+let mapleader=' '
 " define a secondary leader key
 let maplocalleader=','
 
