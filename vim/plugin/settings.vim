@@ -17,17 +17,6 @@ match ErrorMsg "^\(<\|=\|>\)\{7\}\([^=].\+\)\?$"
 " enable syntax highlighting
 syntax on
 
-" enable true color within tmux
-let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
-
-" use solid block cursor in normal mode
-let &t_EI="\<Esc>[2 q"
-" use blinking vertical bar in insert mode
-let &t_SI="\<Esc>[5 q"
-" use blinking underscore cursor in replace mode
-let &t_SR="\<Esc>[3 q"
-
 if has('nvim')
   " define location for backup files
   set backupdir=$XDG_CACHE_HOME/nvim/backup//,.
@@ -71,7 +60,9 @@ set fillchars+=fold:·
 " define glyph used for deleted lines in diff
 set fillchars+=diff:∙
 " define character used for empty lines at the end of a buffer
-set fillchars+=eob:\ 
+if has('nvim')
+  set fillchars+=eob:\ 
+endif
 " set grep program to use
 if executable('rg')
   set grepprg=rg\ --vimgrep\ --no-heading\ --smart-case
@@ -195,7 +186,7 @@ set wildmenu
 " enable file auto-completion
 set wildmode=full
 " enable completion menu
-if exists('+wildoptions')
+if has('nvim')
   set wildoptions+=pum
 endif
 " enable line wrapping

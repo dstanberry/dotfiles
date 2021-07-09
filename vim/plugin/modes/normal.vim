@@ -66,9 +66,6 @@ noremap Y y$
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" define a mapleader for more key combinations
-let mapleader=' '
-
 " increment window width
 nnoremap <silent> <leader>= :vertical resize +5<cr>
 " decrement window width
@@ -109,9 +106,6 @@ nnoremap <silent> <leader>z :bdelete<cr>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Local Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" define a maplocalleader for more key combinations
-let maplocalleader=','
-
 " populate command mode with last command
 nnoremap <localleader>c :<up>
 
