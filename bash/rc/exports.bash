@@ -83,7 +83,7 @@ if hash fzf 2> /dev/null; then
 fi
 
 # set location for vim runtime configuration
-export MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
+export MYVIMRC="${VIM_CONFIG_HOME}/init.vim"
 __viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
 __viminit+="${VIM_CONFIG_HOME}/after"
 if is_darwin; then
