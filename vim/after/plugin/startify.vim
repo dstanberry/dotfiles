@@ -15,7 +15,7 @@ let g:startify_bookmarks = []
 
 " set landing page
 let g:startify_lists = [
-      \ { 'type': 'files', 'header': [' MRU'] },
+      \ { 'type': 'dir', 'header': [' MRU in '. getcwd() ] },
       \ { 'type': 'sessions', 'header': [' Sessions'] },
       \ { 'type': 'bookmarks', 'header': [' Bookmarks'] },
       \ ]
