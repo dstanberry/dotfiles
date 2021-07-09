@@ -20,6 +20,6 @@ config.vim = {
 vim.cmd [[
 augroup treesitter_highlight
   autocmd!
-  autocmd BufEnter,BufRead vimrc TSBufDisable highlight
+  autocmd BufEnter,BufRead plugins.vim TSBufDisable highlight
 augroup END
 ]]
