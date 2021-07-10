@@ -57,11 +57,8 @@ local kind_order = {
 
 local function set_completion_symbols(opts)
   local with_text = opts == nil or opts["with_text"]
-  local symbol_map = (
-      opts
-      and opts["symbol_map"]
-      and vim.tbl_extend("force", kind_symbols, opts["symbol_map"])
-    ) or kind_symbols
+  local symbol_map = (opts and opts["symbol_map"] and vim.tbl_extend("force", kind_symbols, opts["symbol_map"]))
+    or kind_symbols
 
   local symbols = {}
   local len = 25

@@ -78,10 +78,10 @@ snippets.all = {
   s({ trig = "(" }, { t { "(" }, i(1), t { ")" }, i(0) }, neg, char_count_same, "%(", "%)"),
   s({ trig = "{" }, { t { "{" }, i(1), t { "}" }, i(0) }, neg, char_count_same, "%{", "%}"),
   s({ trig = "[" }, { t { "[" }, i(1), t { "]" }, i(0) }, neg, char_count_same, "%[", "%]"),
-  s({trig="<"}, { t({"<"}), i(1), t({">"}), i(0) }, neg, char_count_same, '<', '>'),
-  s({trig="'"}, { t({"'"}), i(1), t({"'"}), i(0) }, neg, even_count, '\''),
-  s({trig="\""}, { t({"\""}), i(1), t({"\""}), i(0) }, neg, even_count, '"'),
-  s({trig="{;"}, { t({"{","\t"}), i(1), t({"", "}"}), i(0) }),
+  s({ trig = "<" }, { t { "<" }, i(1), t { ">" }, i(0) }, neg, char_count_same, "<", ">"),
+  s({ trig = "'" }, { t { "'" }, i(1), t { "'" }, i(0) }, neg, even_count, "'"),
+  s({ trig = '"' }, { t { '"' }, i(1), t { '"' }, i(0) }, neg, even_count, '"'),
+  s({ trig = "{;" }, { t { "{", "\t" }, i(1), t { "", "}" }, i(0) }),
 }
 
 --stylua: ignore
@@ -103,10 +103,7 @@ snippets.lua = pack {
 -- load custom snippets
 luasnip.snippets = snippets
 
-local directory = string.format(
-  "%s/site/pack/packer/start/",
-  vim.fn.stdpath "data"
-)
+local directory = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data")
 
 -- list of installed vscode-like plugins
 local plugins = {

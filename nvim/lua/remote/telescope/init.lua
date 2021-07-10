@@ -145,10 +145,7 @@ function M.file_browser()
       local current_picker = state.get_current_picker(prompt_bufnr)
       local modify_cwd = function(new_cwd)
         current_picker.cwd = new_cwd
-        current_picker:refresh(
-          opts.new_finder(new_cwd),
-          { reset_prompt = true }
-        )
+        current_picker:refresh(opts.new_finder(new_cwd), { reset_prompt = true })
       end
       map("i", "-", function()
         modify_cwd(current_picker.cwd .. "/..")

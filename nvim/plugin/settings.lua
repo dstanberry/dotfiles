@@ -106,7 +106,7 @@ vim.opt.shada = {
   "<50",
   "s10",
   "h",
-  "n" .. data .. "/nvim/shada/main.shada",
+  string.format("n%s/nvim/shada/main.shada", data),
 }
 -- space indent width
 vim.opt.shiftwidth = 4

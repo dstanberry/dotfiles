@@ -1,6 +1,7 @@
 ---------------------------------------------------------------
 -- => Load plugin configurations
 ---------------------------------------------------------------
+-- load configuration files for remote plugins
 local plugins = {}
 
 plugins.source = function()

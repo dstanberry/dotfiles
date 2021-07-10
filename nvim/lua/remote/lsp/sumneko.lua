@@ -7,9 +7,7 @@ local root_dirs = { "nvim", "vim" }
 
 -- identify project root directory
 local project_root = function(fname)
-  return util.find_git_ancestor(fname) or util.root_pattern(unpack(root_dirs))(
-    fname
-  ) or util.path.dirname(fname)
+  return util.find_git_ancestor(fname) or util.root_pattern(unpack(root_dirs))(fname) or util.path.dirname(fname)
 end
 
 return {

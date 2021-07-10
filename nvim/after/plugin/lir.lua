@@ -25,9 +25,4 @@ lir.setup {
   },
 }
 
-vim.api.nvim_set_keymap(
-  "n",
-  "-",
-  "<cmd>execute 'edit ' .. expand('%:h')<cr>",
-  { noremap = true }
-)
+vim.api.nvim_set_keymap("n", "-", "<cmd>execute 'edit ' .. expand('%:h')<cr>", { noremap = true })
