@@ -214,10 +214,6 @@ _G.packer_plugins = {
     needs_bufread = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json"
   },
-  ["vim-matchup"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vim-matchup"
-  },
   ["vim-ps1"] = {
     loaded = false,
     needs_bufread = true,
@@ -279,15 +275,12 @@ vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
 time([[Defining lazy-load filetype autocommands]], true)
-vim.cmd [[au FileType json ++once lua require("packer.load")({'vim-json'}, { ft = "json" }, _G.packer_plugins)]]
-vim.cmd [[au FileType c ++once lua require("packer.load")({'vim-syntax-extra'}, { ft = "c" }, _G.packer_plugins)]]
 vim.cmd [[au FileType ps1 ++once lua require("packer.load")({'vim-ps1'}, { ft = "ps1" }, _G.packer_plugins)]]
+vim.cmd [[au FileType c ++once lua require("packer.load")({'vim-syntax-extra'}, { ft = "c" }, _G.packer_plugins)]]
+vim.cmd [[au FileType json ++once lua require("packer.load")({'vim-json'}, { ft = "json" }, _G.packer_plugins)]]
 time([[Defining lazy-load filetype autocommands]], false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]
-time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], true)
-vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]]
-time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], false)
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/ps1.vim]], true)
 vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/ps1.vim]]
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/ps1.vim]], false)
@@ -297,6 +290,9 @@ time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/pac
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/xml.vim]], true)
 vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/xml.vim]]
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/xml.vim]], false)
+time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], true)
+vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]]
+time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], false)
 vim.cmd("augroup END")
 if should_profile then save_profiles() end
 

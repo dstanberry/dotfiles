@@ -30,8 +30,6 @@ return require("packer").startup(function(use)
   use "tpope/vim-fugitive"
   -- color highlighter
   use { "rrethy/vim-hexokinase", run = "make hexokinase" }
-  -- highlight sets of matching keywords
-  use "andymass/vim-matchup"
   -- enable repeating actions with <.>
   use "tpope/vim-repeat"
   -- display git changes in gutter
