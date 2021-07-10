@@ -1,11 +1,6 @@
 ---------------------------------------------------------------
 -- => Neovim Configuration
 ---------------------------------------------------------------
--- disable plugins if running vi
-if vim.v.progname == "vi" then
-  vim.opt.loadplugins = false
-end
-
 -- define a primary leader key
 vim.g.mapleader = " "
 -- define a secondary leader key
