@@ -16,9 +16,9 @@ call plug#begin($XDG_CONFIG_HOME . '/vim/remote')
 " command line fuzzy finder
 Plug 'junegunn/fzf.vim', { 'on': ['Files', 'Buffers', 'Ag', 'Rg', 'Windows'] }
 " distraction-free writing
-Plug 'junegunn/goyo.vim'
+Plug 'junegunn/goyo.vim', { 'on': ['Goyo'] }
 " hyperfocus-writing
-Plug 'junegunn/limelight.vim'
+Plug 'junegunn/limelight.vim', { 'on': ['Goyo'] }
 " emphasize the current matched search pattern
 Plug 'wincent/loupe'
 " easy text alignment
@@ -31,6 +31,7 @@ Plug 'justinmk/vim-dirvish'
 Plug 'duggiefresh/vim-easydir'
 " a git wrapper for vim
 Plug 'tpope/vim-fugitive'
+" color highlighter
 Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 let g:Hexokinase_highlighters  = ['backgroundfull']
 " highlight yanked text
@@ -39,9 +40,6 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'tpope/vim-repeat'
 " display git changes in gutter
 Plug 'mhinz/vim-signify'
-" snippet support
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
 " start screen
 Plug 'mhinz/vim-startify'
 " surround sequence with tags
