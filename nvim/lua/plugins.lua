@@ -1,6 +1,15 @@
 ---------------------------------------------------------------
 -- => Plugin Manager
 ---------------------------------------------------------------
+-- compile on save
+vim.cmd [[
+  augroup package_manager
+    autocmd!
+    autocmd BufWritePost init.lua PackerCompile
+  augroup end
+]]
+
+-- plugin configuration
 return require("packer").startup(function(use)
   -- package manager for neovim
   use "wbthomason/packer.nvim"
@@ -32,6 +41,8 @@ return require("packer").startup(function(use)
   use { "rrethy/vim-hexokinase", run = "make hexokinase" }
   -- enable repeating actions with <.>
   use "tpope/vim-repeat"
+  -- debug vim plugins
+  use { "tpope/vim-scriptease", cmd = { "Messages", "Verbose", "Time" } }
   -- display git changes in gutter
   use "mhinz/vim-signify"
   -- start screen
