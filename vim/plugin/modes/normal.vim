@@ -29,7 +29,7 @@ nnoremap <silent> <a-j> :lnext<cr>zz
 nnoremap <c-f>f /\v<c-r><c-w><cr>
 
 " begin substitution in buffer for word under cursor
-nnoremap <c-f>r :%s/\<<c-r><c-w>\>//gc<left><left><left>
+nnoremap <c-f>r :%s/\<<c-r><c-w>\>/
 
 " enable very magic mode during search operations
 nnoremap / /\v

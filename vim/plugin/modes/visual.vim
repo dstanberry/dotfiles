@@ -8,7 +8,7 @@ vnoremap <c-k> <c-w>k
 vnoremap <c-l> <c-w>l
 
 " begin substitution for current selection
-vmap <c-r> :<bs><bs><bs><bs><bs>%s/<c-r>=visual#get_selection()<cr>//gc<left><left><left>
+vmap <c-r> :<bs><bs><bs><bs><bs>%s/<c-r>=functions#get_selection()<cr>/
 
 " insert line break after parenthesis and comma
 vnoremap gob  :s/\((\zs\\|,\ *\zs\\|)\)/\r&/g<cr><bar>:'[,']normal ==<cr>
