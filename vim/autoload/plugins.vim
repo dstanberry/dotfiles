@@ -38,6 +38,8 @@ let g:Hexokinase_highlighters  = ['backgroundfull']
 Plug 'machakann/vim-highlightedyank'
 " enable repeating actions with <.>
 Plug 'tpope/vim-repeat'
+" debug vim plugins
+Plug 'tpope/vim-scriptease', { 'on': [ 'Messages', 'Verbose', 'Time' ] }
 " display git changes in gutter
 Plug 'mhinz/vim-signify'
 " start screen
