@@ -27,8 +27,6 @@ return require("packer").startup(function(use)
   use "godlygeek/tabular"
   -- file-type aware comments
   use "tpope/vim-commentary"
-  -- fast and minimalist file explorer
-  use "justinmk/vim-dirvish"
   -- create file and parent direcory at the same time
   use "duggiefresh/vim-easydir"
   -- a git wrapper for vim
