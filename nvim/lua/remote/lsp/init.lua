@@ -10,6 +10,8 @@ end
 
 -- enable debugging
 -- vim.lsp.set_log_level("debug")
+-- open log file
+-- vim.cmd [[ 'e'..vim.lsp.get_log_path() ]]
 
 -- define buffer local features
 local on_attach_nvim = function(client, bufnr)
@@ -34,6 +36,7 @@ local on_attach_nvim = function(client, bufnr)
   set_keymap("n", "ga", "vim.lsp.buf.code_action()")
   set_keymap("n", "gD", "vim.lsp.buf.declaration()")
   set_keymap("n", "gd", "vim.lsp.buf.definition()")
+  set_keymap("n", "gt", "vim.lsp.buf.type_definition()")
   set_keymap("n", "gk", "vim.lsp.buf.hover()")
   set_keymap("n", "gi", "vim.lsp.buf.implementation()")
   set_keymap("n", "gh", "vim.lsp.buf.signature_help()")
