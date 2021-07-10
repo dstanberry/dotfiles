@@ -67,7 +67,7 @@ function! s:on_buf_enter()
   let l:fname = expand('%:t')
   let l:ftype = getftype(bufname(winbufnr('%'))) 
   let l:path = expand('%:p:h')
-  if l:fname ==#'[Plugins]' || l:ftype ==# 'vim-plug'
+  if l:fname ==# '[Plugins]' || l:ftype ==# 'vim-plug' || l:fname ==# '[packer]'
     if exists('$GIT_DIR') | unlet $GIT_DIR | endif
     if exists('$GIT_WORK_TREE') | unlet $GIT_WORK_TREE | endif
   else
@@ -79,7 +79,7 @@ function! s:on_buf_leave()
   let l:fname = expand('%:t')
   let l:ftype = getftype(bufname(winbufnr('%'))) 
   let l:path = expand('%:p:h')
-  if l:fname ==#'[Plugins]' || l:ftype ==# 'vim-plug'
+  if l:fname ==#'[Plugins]' || l:ftype ==# 'vim-plug' || l:fname ==# '[packer]'
     return s:configure(l:path)
   endif
 endfunction
@@ -91,6 +91,10 @@ augroup git_worktree
   autocmd VimEnter,BufEnter * call <sid>on_buf_enter()
   autocmd BufLeave * call s:on_buf_leave()
   autocmd FileType vim-plug call git#disable()
+  autocmd FileType packer call git#disable()
+  autocmd CmdlineLeave : if getcmdline() =~# '\v^Packer%[Update]%[Sync]%[Status]%[Profile]%[Load]%[Install]%[Compile]%[Clean]$'
+        \|  call git#disable()
+        \| endif
   autocmd CmdlineLeave : if getcmdline() =~# '\v^Plug%[Clean]%[Install]%[Status]%[Update]%[Upgrade]$'
         \|  call git#disable()
         \| endif

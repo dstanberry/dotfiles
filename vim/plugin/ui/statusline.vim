@@ -266,8 +266,8 @@ function! s:set_statusline(mode)
     " dim the statusline for standard text buffers
     setlocal statusline=%!statusline#dim()
     setlocal nocursorline
-  elseif l:fname ==# '[Plugins]'
-    " don't set a statusline for vim-plug
+  elseif l:fname ==# '[Plugins]' || l:fname ==# '[packer]'
+    " don't set a statusline for vim-plug and packer.nvim
     setlocal statusline=%=
   elseif a:mode ==# 'active' && l:ftype ==# 'file' || strlen(l:fname) > 0
     " focus the statusline for standard text buffers
