@@ -69,7 +69,10 @@ return require("packer").startup(function(use)
 
   -- incremental parsing system for programming tools
   use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
+  -- highlight and manipulate text objects
   use "nvim-treesitter/nvim-treesitter-textobjects"
+  -- refactor text objects
+  use "nvim-treesitter/nvim-treesitter-refactor"
   -- easily identify nested parentheses
   use "p00f/nvim-ts-rainbow"
 
