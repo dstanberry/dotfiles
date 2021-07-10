@@ -1,7 +1,8 @@
 ---------------------------------------------------------------
 -- => Plugin Manager
 ---------------------------------------------------------------
--- vim.cmd [[packadd packer.nvim]]
+-- forcibly load vim-vsnip
+vim.cmd [[packadd vim-vsnip]]
 
 return require("packer").startup(function(use)
   -- package manager for neovim
