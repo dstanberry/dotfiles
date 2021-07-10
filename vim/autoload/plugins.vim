@@ -35,8 +35,6 @@ Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 let g:Hexokinase_highlighters  = ['backgroundfull']
 " highlight yanked text
 Plug 'machakann/vim-highlightedyank'
-" highlight sets of matching keywords
-Plug 'andymass/vim-matchup'
 " enable repeating actions with <.>
 Plug 'tpope/vim-repeat'
 " display git changes in gutter
