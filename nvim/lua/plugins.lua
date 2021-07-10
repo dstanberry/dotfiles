@@ -1,9 +1,6 @@
 ---------------------------------------------------------------
 -- => Plugin Manager
 ---------------------------------------------------------------
--- forcibly load vim-vsnip
-vim.cmd [[packadd vim-vsnip]]
-
 return require("packer").startup(function(use)
   -- package manager for neovim
   use "wbthomason/packer.nvim"
@@ -94,13 +91,9 @@ return require("packer").startup(function(use)
   use "gbrlsnchs/telescope-lsp-handlers.nvim"
 
   -- auto completion framework
-  use {
-    "hrsh7th/nvim-compe",
-    requires = {
-      { "hrsh7th/vim-vsnip", opt = true },
-      { "hrsh7th/vim-vsnip-integ", opt = true },
-    },
-  }
+  use "hrsh7th/nvim-compe"
+  -- snippet engine
+  use "L3MON4D3/LuaSnip"
   -- extension for completion menu
   use "tjdevries/complextras.nvim"
   -- snippet support

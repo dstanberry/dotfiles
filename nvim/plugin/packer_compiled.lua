@@ -73,6 +73,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/FixCursorHold.nvim"
   },
+  LuaSnip = {
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/LuaSnip"
+  },
   ["complextras.nvim"] = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/complextras.nvim"
@@ -254,17 +258,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vim-tmux-focus-events"
   },
-  ["vim-vsnip"] = {
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/vim-vsnip"
-  },
-  ["vim-vsnip-integ"] = {
-    after_files = { "/home/demaro/.local/share/nvim/site/pack/packer/opt/vim-vsnip-integ/after/plugin/vsnip_integ.vim" },
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/vim-vsnip-integ"
-  },
   ["vsc-lua"] = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vsc-lua"
@@ -286,9 +279,9 @@ vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
 time([[Defining lazy-load filetype autocommands]], true)
-vim.cmd [[au FileType ps1 ++once lua require("packer.load")({'vim-ps1'}, { ft = "ps1" }, _G.packer_plugins)]]
-vim.cmd [[au FileType c ++once lua require("packer.load")({'vim-syntax-extra'}, { ft = "c" }, _G.packer_plugins)]]
 vim.cmd [[au FileType json ++once lua require("packer.load")({'vim-json'}, { ft = "json" }, _G.packer_plugins)]]
+vim.cmd [[au FileType c ++once lua require("packer.load")({'vim-syntax-extra'}, { ft = "c" }, _G.packer_plugins)]]
+vim.cmd [[au FileType ps1 ++once lua require("packer.load")({'vim-ps1'}, { ft = "ps1" }, _G.packer_plugins)]]
 time([[Defining lazy-load filetype autocommands]], false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]

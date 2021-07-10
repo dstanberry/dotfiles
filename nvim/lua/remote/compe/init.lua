@@ -7,7 +7,7 @@ if not has_compe then
   return
 end
 
-compe.setup({
+compe.setup {
   enabled = true,
   autocomplete = true,
   debug = false,
@@ -21,11 +21,12 @@ compe.setup({
   max_menu_width = 100,
   documentation = true,
   source = {
-    path = true,
     buffer = true,
     calc = true,
+    luasnip = true,
     nvim_lsp = true,
     nvim_lua = true,
-    vsnip = true,
+    path = true,
+    vsnip = false,
   },
-})
+}

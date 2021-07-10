@@ -1,1 +1,0 @@
-../../../vim/after/plugin/vim-vsnip.vim
