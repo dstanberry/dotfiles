@@ -43,10 +43,6 @@ if not vim.fn.isdirectory(netrw) then
   vim.fn.mkdir(netrw, "p")
 end
 
--- TODO: replace vim-plug with packer.nvim
--- lood remote plugins
-vim.cmd [[ runtime autoload/plugins.vim ]]
-
 -- lazy-load potentially expensive resources
 vim.cmd [[ call functions#defer('call deferred#load_dir_hash()') ]]
 
