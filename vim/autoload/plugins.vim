@@ -32,8 +32,7 @@ Plug 'duggiefresh/vim-easydir'
 " a git wrapper for vim
 Plug 'tpope/vim-fugitive'
 Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
-" relying on (n)vim to 'autoload' will likely not work
-exec 'source ' . $XDG_CONFIG_HOME . '/vim/after/plugin/vim-hexokinase.vim'
+let g:Hexokinase_highlighters  = ['backgroundfull']
 " highlight yanked text
 Plug 'machakann/vim-highlightedyank'
 " highlight sets of matching keywords
