@@ -68,7 +68,7 @@ if not pcall(require, "packer") then
 end
 
 -- source plugin manager
-require("plugins")
+require "plugins"
 
 -- source plugins in lua/
 require("startup.remote").source()

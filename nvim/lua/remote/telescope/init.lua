@@ -104,7 +104,7 @@ local M = {}
 -- show current buffer list
 function M.search_buffers()
   require("telescope.builtin").buffers(themes.get_dropdown {
-    shorten_path = false,
+    path_display = "shorten",
     prompt_title = "\\ Buffers /",
   })
 end
@@ -115,7 +115,7 @@ function M.search_dotfiles()
     cwd = "~/.config",
     hidden = true,
     file_ignore_patterns = ignored,
-    shorten_path = false,
+    path_display = "shorten",
     prompt_title = "\\ Dotfiles /",
   }
   require("telescope.builtin").find_files(opts)
@@ -126,7 +126,7 @@ function M.search_cwd()
   local opts = {
     hidden = true,
     file_ignore_patterns = ignored,
-    shorten_path = false,
+    path_display = "shorten",
     prompt_title = "\\ Project Files /",
   }
   local ok = pcall(require("telescope.builtin").git_files, opts)
@@ -179,7 +179,7 @@ end
 -- fuzzy search installed vim plugins
 function M.installed_plugins()
   require("telescope.builtin").find_files {
-    cwd = "~/.config/vim/remote",
+    cwd = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data"),
     previewer = false,
     prompt_title = "\\ (N)Vim Plugins /",
   }
@@ -188,7 +188,7 @@ end
 -- find occurrences of word under cursor in all files
 function M.grep_cursor()
   require("telescope.builtin").grep_string {
-    shorten_path = true,
+    path_display = "shorten",
     -- search = vim.fn.input("grep: "),
     prompt_title = "\\ Grep File /",
   }
@@ -197,7 +197,7 @@ end
 -- grep for arbitrary pattern in cwd
 function M.grep_cwd()
   require("telescope.builtin").grep_string {
-    shorten_path = true,
+    path_display = "shorten",
     search = vim.fn.input "grep: ",
     prompt_title = "\\ Grep Project /",
   }
@@ -207,7 +207,7 @@ end
 function M.current_buffer()
   require("telescope.builtin").current_buffer_fuzzy_find(themes.get_dropdown {
     previewer = false,
-    shorten_path = false,
+    path_display = "shorten",
     prompt_title = "\\ Find in File /",
   })
 end

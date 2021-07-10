@@ -67,7 +67,7 @@ return require("packer").startup(function(use)
   -- minimalist file explorer
   use "tamago324/lir.nvim"
 
-  -- parser generator tool
+  -- incremental parsing system for programming tools
   use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
   use "nvim-treesitter/nvim-treesitter-textobjects"
   -- easily identify nested parentheses
