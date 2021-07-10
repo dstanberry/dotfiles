@@ -13,9 +13,9 @@ return require("packer").startup(function(use)
     end,
   }
   -- distraction-free writing
-  use "junegunn/goyo.vim"
+  use { "junegunn/goyo.vim", cmd = "Goyo" }
   -- hyperfocus-writing
-  use "junegunn/limelight.vim"
+  use { "junegunn/limelight.vim", after = "goyo.vim" }
   -- emphasize the current matched search pattern
   use "wincent/loupe"
   -- preview/browse json files with ease
