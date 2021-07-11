@@ -11,7 +11,7 @@ compe.setup {
   enabled = true,
   autocomplete = true,
   debug = false,
-  min_length = 3,
+  min_length = 2,
   preselect = "disable",
   throttle_time = 80,
   source_timeout = 200,

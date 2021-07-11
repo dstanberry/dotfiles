@@ -91,13 +91,16 @@ snippets.lua = pack {
     desc = "skip formatting for this section",
     "--stylua: ignore",
   },
-  lf = {
-    desc = "local a = function(...) end",
-    "local ", i(1), " = function(", i(2), ")", newline "  ", i(0), newline "end", },
   fn = {
     desc = "function(...) end",
     "function(", i(1), ")", i(0), newline "end",
   },
+  lf = {
+    desc = "local function a(...) end",
+    "local ", "function ", i(1), "(", i(2), ")", newline "  ", i(0), newline "end", },
+  tf = {
+    desc = "local a = function(...) end",
+    "local ", i(1), " = function(", i(2), ")", newline "  ", i(0), newline "end", },
 }
 
 -- load custom snippets
