@@ -44,5 +44,5 @@ vim.cmd [[ call functions#defer('call deferred#load_dir_hash()') ]]
 -- extra lua configuration
 require "startup"
 
--- statusline
-vim.o.statusline = "%!luaeval('require(\"statusline\").focus()')"
+-- define statusline contents
+require("statusline").setup()

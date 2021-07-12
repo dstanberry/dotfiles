@@ -24,7 +24,11 @@ end
 
 -- print filename with extension
 util.filename = function()
-  return vim.fn.expand "%:t"
+  local name = vim.fn.expand "%:t"
+  if name == "" then
+    return "[No Name]"
+  end
+  return name
 end
 
 -- print filetype with icon
@@ -32,25 +36,30 @@ util.filetype = function()
   local ft = vim.bo.filetype
   if #ft > 0 then
     local fn = util.filename()
-    local icon = require("nvim-web-devicons").get_icon(fn, ft)
+    local icon = require("nvim-web-devicons").get_icon(fn, ft) or ""
     return string.format("%s %s", icon, ft)
   else
     return ""
   end
 end
 
--- print full filepath
+-- print filepath
 util.filepath = function()
-  local path = vim.fn.expand "%:~:h"
-  if path == "." or path == "" then
+  return vim.fn.expand("%:p")
+end
+
+-- print filepath relative to current directory
+util.relpath = function()
+  local basename = vim.fn.fnamemodify(vim.fn.expand "%:h", ":p:~:.")
+  if basename == "" or basename == "." then
     return ""
   else
-    return path .. "/"
+    return basename:gsub("/$", "") .. "/"
   end
 end
 
 -- print non-standard fileformat and encoding
-util.fileformat = function()
+util.metadata = function()
   local lhs = ""
   local rhs = ""
   local format = vim.bo.fileformat
@@ -68,26 +77,31 @@ util.fileformat = function()
   end
 end
 
+-- print mode identifier
+util.mode = function()
+  return "▊"
+end
+
 -- print git branch with icon
 util.git_branch = function()
-  local ret = "  "
-  if vim.fn.exists("g:loaded_fugitive") then
-    local branch = vim.fn['FugitiveHead']()
+  local result = "  "
+  if vim.fn.exists "g:loaded_fugitive" then
+    local branch = vim.fn["FugitiveHead"]()
     if #branch > 0 then
-      ret = "  " .. branch
+      result = "  " .. branch
     end
   end
-  return ret
+  return result
 end
 
 -- paste mode identifier
 util.paste = function()
-  local ret = ""
+  local result = ""
   local paste = vim.go.paste
   if paste then
-    ret = "  "
+    result = "  "
   end
-  return ret
+  return result
 end
 
 -- print lsp diagnostic count
@@ -103,6 +117,16 @@ util.get_lsp_diagnostics = function(bufnr)
     result[k] = vim.lsp.diagnostic.get_count(bufnr, level)
   end
   return result
+end
+
+-- print line numbering
+util.line_number = function()
+  return " ℓ %l"
+end
+
+-- print column numbering
+util.column_number = function()
+  return "с %c"
 end
 
 return util
