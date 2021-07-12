@@ -10,8 +10,7 @@ end
 
 -- enable debugging
 -- vim.lsp.set_log_level("debug")
--- open log file
--- vim.cmd [[ 'e'..vim.lsp.get_log_path() ]]
+-- vim.cmd('e'..vim.lsp.get_log_path())
 
 -- define buffer local features
 local on_attach_nvim = function(client, bufnr)
