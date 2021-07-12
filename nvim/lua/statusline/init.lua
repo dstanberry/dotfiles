@@ -72,7 +72,7 @@ local function active()
     }),
     add(hi.custom00, { util.get_readonly(), util.metadata() }),
     add(mode_hl, { util.filetype() }),
-    add(hi.user4, { util.line_number(), util.column_number() }),
+    add(hi.user4, { " ", util.line_number(), util.column_number() }),
   }
 end
 

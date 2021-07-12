@@ -121,7 +121,7 @@ end
 
 -- print line numbering
 util.line_number = function()
-  return " ℓ %l"
+  return "ℓ %l"
 end
 
 -- print column numbering
