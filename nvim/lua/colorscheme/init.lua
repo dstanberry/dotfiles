@@ -43,6 +43,9 @@ function M.setup(colors)
 
   c.base10 = vim.fn["functions#darken"](c.base02, 40)
   c.base11 = vim.fn["functions#darken"](c.base03, 25)
+  c.base12 = vim.fn["functions#darken"](c.base0C, 20)
+  c.base13 = vim.fn["functions#lighten"](c.base0F, 20)
+  c.base14 = vim.fn["functions#lighten"](c.base08, 30)
 
   -- vim editor colors
   hi.Normal = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
@@ -105,7 +108,7 @@ function M.setup(colors)
   hi.Conditional = { guifg = c.base0E, guibg = nil, gui = nil, guisp = nil }
   hi.Constant = { guifg = c.base09, guibg = nil, gui = nil, guisp = nil }
   hi.Define = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
-  hi.Delimiter = { guifg = c.base00, guibg = nil, gui = nil, guisp = nil }
+  hi.Delimiter = { guifg = c.base12, guibg = nil, gui = nil, guisp = nil }
   hi.Float = { guifg = c.base09, guibg = nil, gui = nil, guisp = nil }
   hi.Function = { guifg = c.base0C, guibg = nil, gui = nil, guisp = nil }
   hi.Identifier = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
@@ -188,20 +191,20 @@ function M.setup(colors)
   hi.LspDiagnosticsStatusHint = { guifg = c.base0E, guibg = c.base02, gui = "none", guisp = nil }
 
   -- treesitter highlighting
-  hi.TSAnnotation = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
+  hi.TSAnnotation = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.TSAttribute = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.TSBoolean = { guifg = c.base09, guibg = nil, gui = "none", guisp = nil }
   hi.TSCharacter = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
   hi.TSComment = { guifg = c.base03, guibg = nil, gui = "italic", guisp = nil }
-  hi.TSConstructor = { guifg = c.base0D, guibg = nil, gui = "none", guisp = nil }
-  hi.TSConditional = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
+  hi.TSConstructor = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
+  hi.TSConditional = { guifg = c.base13, guibg = nil, gui = "none", guisp = nil }
   hi.TSConstant = { guifg = c.base09, guibg = nil, gui = "none", guisp = nil }
   hi.TSConstBuiltin = { guifg = c.base09, guibg = nil, gui = "italic", guisp = nil }
   hi.TSConstMacro = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
-  hi.TSError = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
-  hi.TSException = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
+  hi.TSError = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
+  hi.TSException = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
   hi.TSField = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
-  hi.TSFloat = { guifg = c.base09, guibg = nil, gui = "none", guisp = nil }
+  hi.TSFloat = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
   hi.TSFunction = { guifg = c.base0D, guibg = nil, gui = "none", guisp = nil }
   hi.TSFuncBuiltin = { guifg = c.base0D, guibg = nil, gui = "italic", guisp = nil }
   hi.TSFuncMacro = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
@@ -210,24 +213,24 @@ function M.setup(colors)
   hi.TSKeywordFunction = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
   hi.TSKeywordOperator = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
   hi.TSLabel = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
-  hi.TSMethod = { guifg = c.base0D, guibg = nil, gui = "none", guisp = nil }
+  hi.TSMethod = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
   hi.TSNamespace = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
   hi.TSNone = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
-  hi.TSNumber = { guifg = c.base09, guibg = nil, gui = "none", guisp = nil }
+  hi.TSNumber = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
   hi.TSOperator = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
-  hi.TSParameter = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
-  hi.TSParameterReference = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
-  hi.TSProperty = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
-  hi.TSPunctDelimiter = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
-  hi.TSPunctBracket = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
-  hi.TSPunctSpecial = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
+  hi.TSParameter = { guifg = c.base14, guibg = nil, gui = "none", guisp = nil }
+  hi.TSParameterReference = { guifg = c.base14, guibg = nil, gui = "none", guisp = nil }
+  hi.TSProperty = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
+  hi.TSPunctDelimiter = { guifg = c.base12, guibg = nil, gui = "none", guisp = nil }
+  hi.TSPunctBracket = { guifg = c.base12, guibg = nil, gui = "none", guisp = nil }
+  hi.TSPunctSpecial = { guifg = c.base12, guibg = nil, gui = "none", guisp = nil }
   hi.TSRepeat = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.TSString = { guifg = c.base0B, guibg = nil, gui = "none", guisp = nil }
-  hi.TSStringRegex = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
-  hi.TSStringEscape = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
-  hi.TSSymbol = { guifg = c.base0B, guibg = nil, gui = "none", guisp = nil }
+  hi.TSStringRegex = { guifg = c.base0B, guibg = nil, gui = "none", guisp = nil }
+  hi.TSStringEscape = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
+  hi.TSSymbol = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
   hi.TSTag = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
-  hi.TSTagDelimiter = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
+  hi.TSTagDelimiter = { guifg = c.base12, guibg = nil, gui = "none", guisp = nil }
   hi.TSText = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
   hi.TSStrong = { guifg = nil, guibg = nil, gui = "bold", guisp = nil }
   hi.TSEmphasis = { guifg = c.base09, guibg = nil, gui = "italic", guisp = nil }
@@ -235,13 +238,13 @@ function M.setup(colors)
   hi.TSStrike = { guifg = c.base00, guibg = nil, gui = "strikethrough", guisp = nil }
   hi.TSTitle = { guifg = c.base0D, guibg = nil, gui = "none", guisp = nil }
   hi.TSLiteral = { guifg = c.base09, guibg = nil, gui = "none", guisp = nil }
-  hi.TSURI = { guifg = c.base09, guibg = nil, gui = "underline", guisp = nil }
+  hi.TSURI = { guifg = c.base0C, guibg = nil, gui = "underline", guisp = nil }
   hi.TSType = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.TSTypeBuiltin = { guifg = c.base0A, guibg = nil, gui = "italic", guisp = nil }
-  hi.TSVariable = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
-  hi.TSVariableBuiltin = { guifg = c.base08, guibg = nil, gui = "italic", guisp = nil }
-  hi.TSDefinition = { guifg = nil, guibg = nil, gui = "underline", guisp = c.base04 }
-  hi.TSDefinitionUsage = { guifg = nil, guibg = nil, gui = "underline", guisp = c.base04 }
+  hi.TSVariable = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
+  hi.TSVariableBuiltin = { guifg = c.base0C, guibg = nil, gui = "italic", guisp = nil }
+  hi.TSDefinition = { guifg = nil, guibg = nil, gui = "underline", guisp = c.base0E }
+  hi.TSDefinitionUsage = { guifg = nil, guibg = nil, gui = "underline", guisp = c.base0A }
   hi.TSCurrentScope = { guifg = nil, guibg = nil, gui = "bold", guisp = nil }
   hi.TreesitterContext = { guifg = nil, guibg = c.base01, gui = "italic", guisp = nil }
 
@@ -288,7 +291,7 @@ function M.setup(colors)
   c.tele00 = vim.fn["functions#darken"](c.base08, 43)
 
   -- telescope.nvim highlighting
-  hi.TelescopeSelection = { guifg = c.tele00, guibg = nil, gui = "bold", guisp = nil }
+  hi.TelescopeSelection = { guifg = nil, guibg = c.tele00, gui = "bold", guisp = nil }
   hi.TelescopeSelectionCaret = { guifg = c.base04, guibg = c.tele00, gui = "bold", guisp = nil }
   hi.TelescopeMultiSelection = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
   hi.TelescopeNormal = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
