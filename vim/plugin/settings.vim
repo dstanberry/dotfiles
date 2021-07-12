@@ -6,7 +6,7 @@ set encoding=utf-8
 scriptencoding utf-8
 
 " define a colorscheme
-colorscheme kdark
+colorscheme base16-kdark
 
 " enable file association and syntax file-based syntax support
 filetype plugin indent on

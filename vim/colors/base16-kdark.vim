@@ -56,87 +56,46 @@ let s:cterm0D        = '04'
 let g:base16_cterm0D = '04'
 let s:cterm0E        = '05'
 let g:base16_cterm0E = '05'
-if exists('base16colorspace') && base16colorspace == '256'
-  let s:cterm01        = '18'
-  let g:base16_cterm01 = '18'
-  let s:cterm02        = '19'
-  let g:base16_cterm02 = '19'
-  let s:cterm04        = '20'
-  let g:base16_cterm04 = '20'
-  let s:cterm06        = '21'
-  let g:base16_cterm06 = '21'
-  let s:cterm09        = '16'
-  let g:base16_cterm09 = '16'
-  let s:cterm0F        = '17'
-  let g:base16_cterm0F = '17'
-else
-  let s:cterm01        = '10'
-  let g:base16_cterm01 = '10'
-  let s:cterm02        = '11'
-  let g:base16_cterm02 = '11'
-  let s:cterm04        = '12'
-  let g:base16_cterm04 = '12'
-  let s:cterm06        = '13'
-  let g:base16_cterm06 = '13'
-  let s:cterm09        = '09'
-  let g:base16_cterm09 = '09'
-  let s:cterm0F        = '14'
-  let g:base16_cterm0F = '14'
-endif
+let s:cterm01        = '10'
+let g:base16_cterm01 = '10'
+let s:cterm02        = '11'
+let g:base16_cterm02 = '11'
+let s:cterm04        = '12'
+let g:base16_cterm04 = '12'
+let s:cterm06        = '13'
+let g:base16_cterm06 = '13'
+let s:cterm09        = '09'
+let g:base16_cterm09 = '09'
+let s:cterm0F        = '14'
+let g:base16_cterm0F = '14'
 
-" neovim terminal colours
-if has('nvim')
-  let g:terminal_color_0 =  '#373737'
-  let g:terminal_color_1 =  '#b04b57'
-  let g:terminal_color_2 =  '#93b379'
-  let g:terminal_color_3 =  '#e5c179'
-  let g:terminal_color_4 =  '#6d8eb5'
-  let g:terminal_color_5 =  '#a4799d'
-  let g:terminal_color_6 =  '#77b3c5'
-  let g:terminal_color_7 =  '#cfd6e4'
-  let g:terminal_color_8 =  '#5f5f5f'
-  let g:terminal_color_9 =  '#b04b57'
-  let g:terminal_color_10 = '#93b379'
-  let g:terminal_color_11 = '#e5c179'
-  let g:terminal_color_12 = '#6d8eb5'
-  let g:terminal_color_13 = '#a4799d'
-  let g:terminal_color_14 = '#77b3c5'
-  let g:terminal_color_15 = '#dfe3ec'
-  let g:terminal_color_background = g:terminal_color_0
-  let g:terminal_color_foreground = g:terminal_color_5
-  if &background ==? 'light'
-    let g:terminal_color_background = g:terminal_color_7
-    let g:terminal_color_foreground = g:terminal_color_2
-  endif
-elseif has('terminal')
-  let g:terminal_ansi_colors = [
-        \ '#373737',
-        \ '#b04b57',
-        \ '#93b379',
-        \ '#e5c179',
-        \ '#6d8eb5',
-        \ '#a4799d',
-        \ '#77b3c5',
-        \ '#cfd6e4',
-        \ '#5f5f5f',
-        \ '#b04b57',
-        \ '#93b379',
-        \ '#e5c179',
-        \ '#6d8eb5',
-        \ '#a4799d',
-        \ '#77b3c5',
-        \ '#dfe3ec',
-        \ ]
-endif
+let g:terminal_ansi_colors = [
+      \ '#373737',
+      \ '#b04b57',
+      \ '#93b379',
+      \ '#e5c179',
+      \ '#6d8eb5',
+      \ '#a4799d',
+      \ '#77b3c5',
+      \ '#cfd6e4',
+      \ '#5f5f5f',
+      \ '#b04b57',
+      \ '#93b379',
+      \ '#e5c179',
+      \ '#6d8eb5',
+      \ '#a4799d',
+      \ '#77b3c5',
+      \ '#dfe3ec',
+      \ ]
 
 " theme setup
 hi clear
 syntax reset
-let g:colors_name = 'kdark'
+let g:colors_name = 'base16-kdark'
 
 " highlighting function
 " optional variables are attributes and guisp
-function! kdark#highlight(group, guifg, guibg, ctermfg, ctermbg, ...)
+function! g:Highlight(group, guifg, guibg, ctermfg, ctermbg, ...)
   let l:attr = get(a:, 1, '')
   let l:guisp = get(a:, 2, '')
 
@@ -161,7 +120,7 @@ function! kdark#highlight(group, guifg, guibg, ctermfg, ctermbg, ...)
 endfunction
 
 function <sid>hi(group, guifg, guibg, ctermfg, ctermbg, attr, guisp)
-  call kdark#highlight(a:group, a:guifg, a:guibg, a:ctermfg, a:ctermbg, a:attr, a:guisp)
+  call g:Highlight(a:group, a:guifg, a:guibg, a:ctermfg, a:ctermbg, a:attr, a:guisp)
 endfunction
 
 let s:gui10 = substitute(functions#darken(s:gui02, 40), '#', '', 'g')
@@ -215,9 +174,6 @@ call <sid>hi('PMenuSel',      s:gui01, s:gui08, s:cterm01, s:cterm08, '', '')
 call <sid>hi('TabLine',       s:gui03, s:gui00, s:cterm03, s:cterm00, 'none', '')
 call <sid>hi('TabLineFill',   s:gui03, s:gui00, s:cterm03, s:cterm00, 'none', '')
 call <sid>hi('TabLineSel',    s:gui05, s:gui00, s:cterm05, s:cterm00, 'none', '')
-
-" neovim syntax highlighting
-call <sid>hi('NvimInternalError', s:gui0F, s:gui00, s:cterm0F, s:cterm00, '', '')
 
 " lsp highlight groups
 let s:sui00 = substitute(functions#darken(s:gui0C, 20), '#', '', 'g')
@@ -423,51 +379,6 @@ call <sid>hi('Custom3',        s:gui0C, s:gui02, s:cterm0C, s:cterm02, '', '')
 call <sid>hi('Custom4',        s:gui0F, s:gui02, s:cterm0F, s:cterm02, '', '')
 call <sid>hi('Custom5',        s:gui0E, s:gui02, s:cterm0E, s:cterm02, '', '')
 call <sid>hi('Custom6',        s:gui09, s:gui02, s:cterm09, s:cterm02, '', '')
-
-" lsp highlight groups
-let s:lsp00 = substitute(functions#lighten(s:gui02, 25), '#', '', 'g')
-
-" lsp document highlighting
-call <sid>hi('LspReferenceRead', s:gui07, s:gui08, s:cterm07, s:cterm08, '', '')
-call <sid>hi('LspReferenceText', s:gui07, s:gui08, s:cterm07, s:cterm08, '', '')
-call <sid>hi('LspReferenceWrite', s:gui07, s:gui08, s:cterm07, s:cterm08, '', '')
-
-" lsp diagnostic highlighting
-call <sid>hi('LspDiagnosticsDefaultError', s:gui0F, '', s:cterm0F, '', '', '')
-call <sid>hi('LspDiagnosticsFloatingError', s:gui0F, '', s:cterm0F, '', '', '')
-call <sid>hi('LspDiagnosticsSignError', s:gui0F, s:gui00, s:cterm0F, s:cterm00, '', '')
-call <sid>hi('LspDiagnosticsStatusError', s:gui0F, s:gui02, s:cterm0F, s:cterm00, '', '')
-call <sid>hi('LspDiagnosticsDefaultWarning', s:gui0A, '', s:cterm0A, '', '', '')
-call <sid>hi('LspDiagnosticsFloatingWarning', s:gui0A, '', s:cterm0A, '', '', '')
-call <sid>hi('LspDiagnosticsSignWarning', s:gui0A, s:gui00, s:cterm0A, s:cterm00, '', '')
-call <sid>hi('LspDiagnosticsStatusWarning', s:gui0A, s:gui02, s:cterm0A, s:cterm00, '', '')
-call <sid>hi('LspDiagnosticsDefaultHint', s:gui0E, '', s:cterm0E, '', '', '')
-call <sid>hi('LspDiagnosticsFloatingHint', s:gui0E, '', s:cterm0E, '', '', '')
-call <sid>hi('LspDiagnosticsSignHint', s:gui0E, s:gui00, s:cterm0E, s:cterm00, '', '')
-call <sid>hi('LspDiagnosticsStatusHint', s:gui0E, s:gui02, s:cterm0E, s:cterm00, '', '')
-call <sid>hi('LspDiagnosticsDefaultInformation', s:gui0C, '', s:cterm0C, '', '', '')
-call <sid>hi('LspDiagnosticsFloatingInformation', s:gui0C, '', s:cterm0C, '', '', '')
-call <sid>hi('LspDiagnosticsSignInformation', s:gui0C, s:gui00, s:cterm0C, s:cterm00, '', '')
-call <sid>hi('LspDiagnosticsStatusInformation', s:gui0C, s:gui02, s:cterm0C, s:cterm00, '', '')
-call <sid>hi('LspDiagnosticsUnderlineError', s:gui0F, '', s:cterm0F, '', 'underline', '')
-call <sid>hi('LspDiagnosticsUnderlineWarning', s:gui0A, '', s:cterm0A, '', 'underline', '')
-call <sid>hi('LspDiagnosticsUnderlineHint', s:gui0E, '', s:cterm0E, '', 'underline', '')
-call <sid>hi('LspDiagnosticsUnderlineInfo', s:gui0C, '', s:cterm0C, '', 'underline', '')
-
-" telescope highlight groups
-let s:tel00 = substitute(functions#darken(s:gui08, 43), '#', '', 'g')
-
-" telescope window highlighting
-call <sid>hi('TelescopeSelection', '', s:tel00, '', s:cterm08, 'bold', '')
-call <sid>hi('TelescopeSelectionCaret', s:gui04, s:tel00, s:cterm04, s:cterm08, 'bold', '')
-call <sid>hi('TelescopeMultiSelection', s:gui0E, '', s:cterm0E, '', 'none', '')
-call <sid>hi('TelescopeNormal', s:gui05, s:gui00, s:cterm05, s:cterm00, '', '')
-call <sid>hi('TelescopeBorder', s:gui03, s:gui00, s:cterm03, s:cterm00, '', '')
-call <sid>hi('TelescopePromptBorder', s:gui04, s:gui00, s:cterm04, s:cterm00, '', '')
-call <sid>hi('TelescopeResultsBorder', s:gui04, s:gui00, s:cterm04, s:cterm00, '', '')
-call <sid>hi('TelescopePreviewBorder', s:gui04, s:gui00, s:cterm04, s:cterm00, '', '')
-call <sid>hi('TelescopeMatching', s:gui0C, '', s:cterm0C, '', '', '')
-call <sid>hi('TelescopePromptPrefix', s:gui0F, '', s:cterm0F, '', 'none', '')
 
 " remove functions
 delfunction <sid>hi
