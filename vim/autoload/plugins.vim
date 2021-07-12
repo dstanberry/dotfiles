@@ -33,7 +33,6 @@ Plug 'duggiefresh/vim-easydir'
 Plug 'tpope/vim-fugitive'
 " color highlighter
 Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
-let g:Hexokinase_highlighters  = ['backgroundfull']
 " highlight yanked text
 Plug 'machakann/vim-highlightedyank'
 " syntax highlighting for log files
