@@ -2,11 +2,7 @@
 " => NETRW Configuration
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " define location for netrw history file
-if has('nvim')
-  let g:netrw_home=$XDG_DATA_HOME.'/nvim/netrw'
-else
-  let g:netrw_home=$XDG_DATA_HOME.'/vim/netrw'
-endif
+let g:netrw_home=$XDG_DATA_HOME.'/vim/netrw'
 
 " disable plugin
 let g:loaded_netrwPlugin=1
