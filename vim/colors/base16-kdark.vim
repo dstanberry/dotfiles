@@ -156,7 +156,6 @@ call <sid>hi('Title',         s:gui0D, '', s:cterm0D, '', 'none', '')
 call <sid>hi('Conceal',       s:gui0D, s:gui00, s:cterm0D, s:cterm00, '', '')
 call <sid>hi('Cursor',        s:gui00, s:gui05, s:cterm00, s:cterm05, '', '')
 call <sid>hi('NonText',       s:gui11, '', s:cterm03, '', '', '')
-call <sid>hi('Whitespace',    s:gui04, '', s:cterm03, '', '', '')
 call <sid>hi('LineNr',        s:gui03, s:gui00, s:cterm03, s:cterm00, '', '')
 call <sid>hi('SignColumn',    s:gui03, s:gui00, s:cterm03, s:cterm00, '', '')
 call <sid>hi('StatusLine',    s:gui04, s:gui02, s:cterm04, s:cterm02, 'none', '')
@@ -169,8 +168,7 @@ call <sid>hi('CursorLineNr',  s:gui0C, s:gui01, s:cterm0C, s:cterm01, 'bold', ''
 call <sid>hi('QuickFixLine',  s:gui01, s:gui0A, s:cterm01, s:cterm0A, 'none', '')
 call <sid>hi('PMenu',         s:gui05, s:gui10, s:cterm05, s:cterm01, 'none', '')
 call <sid>hi('PMenuSel',      s:gui01, s:gui08, s:cterm01, s:cterm08, '', '')
-
-" vim tabline colors
+call <sid>hi('Whitespace',    s:gui04, '', s:cterm03, '', '', '')
 call <sid>hi('TabLine',       s:gui03, s:gui00, s:cterm03, s:cterm00, 'none', '')
 call <sid>hi('TabLineFill',   s:gui03, s:gui00, s:cterm03, s:cterm00, 'none', '')
 call <sid>hi('TabLineSel',    s:gui05, s:gui00, s:cterm05, s:cterm00, 'none', '')
