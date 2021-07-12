@@ -39,6 +39,8 @@ return require("packer").startup(function(use)
   use "tpope/vim-fugitive"
   -- color highlighter
   use { "rrethy/vim-hexokinase", run = "make hexokinase" }
+  -- syntax highlighting for log files
+  use "mtdl9/vim-log-highlighting"
   -- enable repeating actions with <.>
   use "tpope/vim-repeat"
   -- debug vim plugins

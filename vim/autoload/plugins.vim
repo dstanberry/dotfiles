@@ -36,6 +36,8 @@ Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 let g:Hexokinase_highlighters  = ['backgroundfull']
 " highlight yanked text
 Plug 'machakann/vim-highlightedyank'
+" syntax highlighting for log files
+Plug 'mtdl9/vim-log-highlighting'
 " enable repeating actions with <.>
 Plug 'tpope/vim-repeat'
 " debug vim plugins
