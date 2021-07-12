@@ -86,16 +86,19 @@ endfunction
 
 command! Gtoggle call <sid>configure(expand('%:p:h'), 1)
 
+let s:packer = '\v^Packer%[Update]%[Sync]%[Status]%[Profile]%[Load]%[Install]%[Compile]%[Clean]$'
+let s:plug = '\v^Plug%[Clean]%[Install]%[Status]%[Update]%[Upgrade]$'
+
 augroup git_worktree
   autocmd!
   autocmd VimEnter,BufEnter * call <sid>on_buf_enter()
   autocmd BufLeave * call s:on_buf_leave()
   autocmd FileType vim-plug call git#disable()
   autocmd FileType packer call git#disable()
-  autocmd CmdlineLeave : if getcmdline() =~# '\v^Packer%[Update]%[Sync]%[Status]%[Profile]%[Load]%[Install]%[Compile]%[Clean]$'
+  autocmd CmdlineLeave : if getcmdline() =~# s:packer
         \|  call git#disable()
         \| endif
-  autocmd CmdlineLeave : if getcmdline() =~# '\v^Plug%[Clean]%[Install]%[Status]%[Update]%[Upgrade]$'
+  autocmd CmdlineLeave : if getcmdline() =~# s:plug
         \|  call git#disable()
         \| endif
 augroup END
