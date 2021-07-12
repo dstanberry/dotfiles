@@ -1,9 +1,6 @@
 ---------------------------------------------------------------
 -- => Editor
 ---------------------------------------------------------------
--- define a colorscheme
-vim.cmd [[ colorscheme kdark ]]
-
 local cache = vim.env.XDG_CACHE_HOME
 local data = vim.env.XDG_CACHE_HOME
 

@@ -46,3 +46,6 @@ require "startup"
 
 -- define statusline contents
 require("statusline").setup()
+
+-- define a colorscheme
+require("colorscheme").setup()
