@@ -71,8 +71,15 @@ return require("packer").startup(function(use)
   -- devicons (requires patched font)
   use "kyazdani42/nvim-web-devicons"
   -- minimalist file explorer
-  use "tamago324/lir.nvim"
-
+  use {
+    "tamago324/lir.nvim",
+    requires = { "kyazdani42/nvim-web-devicons" },
+  }
+  -- minimalist tabline
+  use {
+    "jose-elias-alvarez/buftabline.nvim",
+    requires = { "kyazdani42/nvim-web-devicons" },
+  }
   -- incremental parsing system for programming tools
   use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
   -- highlight and manipulate text objects
