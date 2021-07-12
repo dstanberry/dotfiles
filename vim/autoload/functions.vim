@@ -237,13 +237,11 @@ endfunction
 " save and execute vim/lua buffer
 function! functions#execute_file() abort
   if &filetype ==# 'vim'
-    :silent! write
-    :source %
+    silent! write
+    source %
   elseif &filetype ==# 'lua'
-    if has('nvim-0.5')
-      :silent! write
-      :luafile %
-    endif
+    silent! write
+    luafile %
   endif
   return
 endfunction
@@ -254,25 +252,20 @@ function! functions#execute_selection() abort range
   if &filetype ==# 'vim'
     execute l:selection
   elseif &filetype ==# 'lua'
-    if has('nvim-0.5')
-      let l:cmd = printf("lua << EOF\n%s\nEOF", l:selection)
-      :redir > /tmp/scratch.vim | echo l:cmd | redir END
-      :source /tmp/scratch.vim
-      call system('rm /tmp/scratch.vim')
-    endif
+    let l:cmd = printf("lua << EOF\n%s\nEOF", l:selection)
+    redir > /tmp/scratch.vim | echo l:cmd | redir END
+    source /tmp/scratch.vim
+    call system('rm /tmp/scratch.vim')
   endif
   return
 endfunction
 
 " execute vim/lua line under cursor
 function! functions#execute_line() abort
-  let l:line = getline('.')
   if &filetype ==# 'vim'
-    execute l:line
+    execute getline('.')
   elseif &filetype ==# 'lua'
-    if has('nvim-0.5')
-      execute(printf(':echo luaeval("%s")', l:line))
-    endif
+    call execute(printf(':lua %s', getline('.')))
   endif
   return
 endfunction
