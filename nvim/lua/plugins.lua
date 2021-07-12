@@ -84,6 +84,10 @@ return require("packer").startup(function(use)
   }
   -- incremental parsing system for programming tools
   use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
+  -- view treesitter information directly
+  use "nvim-treesitter/playground"
+  -- pairs
+  use "theHamsta/nvim-treesitter-pairs"
   -- highlight and manipulate text objects
   use "nvim-treesitter/nvim-treesitter-textobjects"
   -- refactor text objects

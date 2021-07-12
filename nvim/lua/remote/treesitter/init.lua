@@ -23,8 +23,27 @@ require("nvim-treesitter.configs").setup {
       node_decremental = "gp",
     },
   },
+  pairs = {
+    enable = true,
+    disable = {},
+    highlight_pair_events = {},
+    highlight_self = false,
+    goto_right_end = false,
+    keymaps = {
+      goto_partner = "<leader>%",
+    },
+  },
   rainbow = {
-    enable = false,
+    enable = true,
+    colors = {
+      "#73c1b9",
+      "#80d3dd",
+      "#9086a4",
+      "#bfafc4",
+      "#dec7d0",
+      "#e09696",
+      "#ffdca8",
+    },
   },
   refactor = {
     highlight_definitions = { enable = true },

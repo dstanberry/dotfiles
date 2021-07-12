@@ -148,6 +148,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-treesitter"
   },
+  ["nvim-treesitter-pairs"] = {
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-treesitter-pairs"
+  },
   ["nvim-treesitter-refactor"] = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-treesitter-refactor"
@@ -171,6 +175,10 @@ _G.packer_plugins = {
   ["packer.nvim"] = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/packer.nvim"
+  },
+  playground = {
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/playground"
   },
   ["plenary.nvim"] = {
     loaded = true,
