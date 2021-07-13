@@ -27,6 +27,7 @@ compe.setup {
     nvim_lsp = true,
     nvim_lua = true,
     path = true,
+    treesitter = true,
     vsnip = false,
   },
 }
