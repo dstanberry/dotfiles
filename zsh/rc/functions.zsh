@@ -74,64 +74,6 @@ function gem() {
   fi
 }
 
-# recognize defined worktrees and make git support custom sub-commands
-function git() {
-  local INPUT="${CONFIG_HOME}/git/worktrees"
-  local OLDIFS=$IFS
-  IFS=','
-  local worktree=""
-  if [ -f "$INPUT" ]; then
-    while read -r col1 col2; do
-      if [[ "$col1" != "GIT_DIR" ]]; then
-        gd=$(eval echo "$col1")
-        wt=$(eval echo "$col2")
-        if [ "$PWD" = "$wt" ] || [[ $PWD = ${wt}/* ]]; then
-          worktree="--git-dir=$gd --work-tree=$wt"
-        fi
-      fi
-    done < "$INPUT"
-  fi
-  IFS=$OLDIFS
-  local cmd="command git"
-  local inside_git_dir="$cmd $worktree rev-parse --is-inside-git-dir"
-  local bare_repo="$cmd $worktree rev-parse --is-bare-repository"
-  local absolute_git_dir="$cmd $worktree rev-parse --absolute-git-dir"
-  local show_working_tree="$cmd $worktree rev-parse --show-superproject-working-tree"
-  local show_toplevel="$cmd $worktree rev-parse --show-toplevel"
-  if [ $# -eq 0 ]; then
-    eval "$cmd $worktree status"
-  elif [ "$1" = root ]; then
-    shift
-    local ROOT
-    if [ "$($inside_git_dir 2> /dev/null)" = true ]; then
-      if [ "$($bare_repo)" = true ]; then
-        ROOT="$(eval "$absolute_git_dir")"
-      else
-        ROOT="$(eval "$inside_git_dir")"
-      fi
-    else
-      ROOT="$(eval "$show_working_tree" 2> /dev/null)"
-      if [ -z "$ROOT" ]; then
-        ROOT="$(eval "$show_toplevel" 2> /dev/null)"
-      fi
-    fi
-    if [ -z "$ROOT" ]; then
-      ROOT=.
-    fi
-    if [ $# -eq 0 ]; then
-      cd "$ROOT" || exit
-    else
-      (cd "$ROOT" && eval "$@")
-    fi
-  elif [[ "$*" == *"rev-parse --show-toplevel"* ]]; then
-    if [ "$(eval "$bare_repo")" = true ]; then
-      return 0
-    fi
-  else
-    eval "$cmd $worktree $*"
-  fi
-}
-
 # support custom sub-commands
 function go() {
   local PKG=$CONFIG_HOME/shared/packages/go.txt

@@ -10,10 +10,11 @@ Clone the repository:
 
 ```bash
 # If desired, replace '$HOME/Git/dotfiles' with another location that is preferred.
-working_dir=$HOME/Git/dotfiles
-git clone --bare https://github.com/dstanberry/dotfiles $working_dir
-git --git-dir=$working_dir --work-tree=$HOME/.config checkout
-# Update .config/git/worktrees to ensure the value of $working_dir is the same.
+bare=$HOME/Git/dotfiles
+worktree=$HOME/.config
+git clone --bare https://github.com/dstanberry/dotfiles $bare
+cd $bare
+git worktree add $worktree $(git branch --show-current)
 ```
 
 The glue required to make this possible is to tell the system wide configuration file where to look for the user shell profile:
