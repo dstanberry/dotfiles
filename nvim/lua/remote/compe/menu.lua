@@ -2,7 +2,7 @@
 -- => lsp completion menu item configuration
 ---------------------------------------------------------------
 local kind_symbols = {
-  Class = "פּ ",
+  Class = " ",
   Color = " ",
   Constant = " ",
   Constructor = "襁",
@@ -17,11 +17,12 @@ local kind_symbols = {
   Method = " ",
   Module = " ",
   Operator = " ",
-  Property = " ",
+  Property =  " ",
   Reference = " ",
   Snippet = " ",
   Struct = " ",
   Text = "",
+  TypeParameter = "<>",
   Unit = " ",
   Value = " ",
   Variable = "勞",
