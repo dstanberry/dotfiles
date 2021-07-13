@@ -97,6 +97,8 @@ return require("packer").startup(function(use)
 
   -- framework for setting up language servers
   use "neovim/nvim-lspconfig"
+  -- show signature hint while typing
+  use "ray-x/lsp_signature.nvim"
   -- centralize installation of lua-language-server (sumneko)
   use "tjdevries/nlua.nvim"
 

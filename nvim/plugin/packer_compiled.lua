@@ -116,6 +116,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/loupe"
   },
+  ["lsp_signature.nvim"] = {
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/lsp_signature.nvim"
+  },
   ["nlua.nvim"] = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nlua.nvim"

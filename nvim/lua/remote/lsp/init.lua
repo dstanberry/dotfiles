@@ -56,6 +56,21 @@ local on_attach_nvim = function(client, bufnr)
   if client.resolved_capabilities.document_range_formatting then
     set_keymap("v", "ff", "vim.lsp.buf.range_formatting()")
   end
+  -- configure lsp_signature.nvim
+  local has_sig, lspsignature = pcall(require, "lsp_signature")
+  if not has_sig then
+    return
+  end
+  lspsignature.on_attach {
+    bind = true,
+    doc_lines = 2,
+    floating_window = true,
+    fix_pos = false,
+    hint_enable = false,
+    handler_opts = {
+      border = "none",
+    },
+  }
 end
 
 -- diagnostic symbols and highlight groups
