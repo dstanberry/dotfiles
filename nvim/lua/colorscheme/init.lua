@@ -1,10 +1,6 @@
 ---------------------------------------------------------------
 -- => Colorscheme Configuration
 ---------------------------------------------------------------
---[[
--- taken from https://github.com/RRethy/nvim-base16
---]]
-
 -- load colorscheme utilities
 local themes = require "colorscheme.colors"
 
