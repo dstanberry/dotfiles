@@ -109,12 +109,12 @@ function M.search_buffers()
 end
 
 -- fuzzy search dotfiles from anywhere
-function M.search_dotfiles()
+function M.search_neovim()
   local opts = {
-    cwd = "~/.config",
+    cwd = "~/.config/nvim",
     hidden = true,
     file_ignore_patterns = ignored,
-    prompt_title = "\\ Dotfiles /",
+    prompt_title = "\\ Neovim /",
   }
   require("telescope.builtin").find_files(opts)
 end
@@ -126,10 +126,7 @@ function M.search_cwd()
     file_ignore_patterns = ignored,
     prompt_title = "\\ Project Files /",
   }
-  local ok = pcall(require("telescope.builtin").git_files, opts)
-  if not ok then
-    require("telescope.builtin").find_files(opts)
-  end
+  require("telescope.builtin").find_files(opts)
 end
 
 -- customize generic file browser
@@ -139,7 +136,6 @@ function M.file_browser()
     hidden = true,
     sorting_strategy = "ascending",
     scroll_strategy = "cycle",
-    prompt_position = "top",
     prompt_title = "\\ File Browser /",
     attach_mappings = function(prompt_bufnr, map)
       local current_picker = state.get_current_picker(prompt_bufnr)
