@@ -23,6 +23,14 @@ local actions = require "telescope.actions"
 local state = require "telescope.actions.state"
 local themes = require "telescope.themes"
 
+local set_prompt_to_entry_value = function(prompt_bufnr)
+  local entry = state.get_selected_entry()
+  if not entry or not type(entry) == "table" then
+    return
+  end
+  state.get_current_picker(prompt_bufnr):reset_prompt(entry.ordinal)
+end
+
 -- set default options
 require("telescope").setup {
   defaults = {
@@ -49,6 +57,7 @@ require("telescope").setup {
       i = {
         ["<c-s>"] = actions.select_horizontal,
         ["<c-q>"] = actions.send_to_qflist,
+        ["<c-y>"] = set_prompt_to_entry_value,
         -- ["<esc>"] = actions.close,
         ["jk"] = actions.close,
       },
@@ -113,6 +122,7 @@ function M.search_neovim()
   local opts = {
     cwd = "~/.config/nvim",
     hidden = true,
+    follow = true,
     file_ignore_patterns = ignored,
     prompt_title = "\\ Neovim /",
   }
