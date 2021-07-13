@@ -143,6 +143,8 @@ statusline.dim = function(win_id)
   type = vim.fn.getftype(util.filepath())
   if type == "file" then
     return inactive()
+  else
+    return simple()
   end
 end
 
