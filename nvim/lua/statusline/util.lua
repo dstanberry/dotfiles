@@ -1,6 +1,9 @@
 ---------------------------------------------------------------
 -- => Statusline Utilities
 ---------------------------------------------------------------
+-- load statusline utilities
+local Job = require "plenary.job"
+
 -- initialize modules table
 local util = {}
 
@@ -45,7 +48,7 @@ end
 
 -- print filepath
 util.filepath = function()
-  return vim.fn.expand("%:p")
+  return vim.fn.expand "%:p"
 end
 
 -- print filepath relative to current directory
@@ -83,15 +86,21 @@ util.mode = function()
 end
 
 -- print git branch with icon
-util.git_branch = function()
+util.git_branch = function(bufnr)
+  local name = vim.fn.bufname(bufnr)
   local result = "  "
-  if vim.fn.exists "g:loaded_fugitive" then
-    local branch = vim.fn["FugitiveHead"]()
-    if #branch > 0 then
-      result = "  " .. branch
-    end
+  local j = Job:new({
+    command = "git",
+    args = {"branch", "--show-current"},
+    cwd = vim.fn.fnamemodify(name, ":h"),
+  })
+  local ok, branch = pcall(function()
+    return vim.trim(j:sync()[1])
+  end)
+  if ok then
+    result = "  " .. branch
+    return result
   end
-  return result
 end
 
 -- paste mode identifier

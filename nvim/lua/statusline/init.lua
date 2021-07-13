@@ -56,13 +56,13 @@ local function diag(hl, prefix, count)
 end
 
 -- default statusline for active windows
-local function active()
+local function active(bufnr)
   local mode = vim.fn.mode()
   local mode_hl = hi.mode(mode)
-  local diagnostics = util.get_lsp_diagnostics()
+  local diagnostics = util.get_lsp_diagnostics(bufnr)
   return table.concat {
     add(mode_hl, { util.mode() }),
-    add(mode_hl, { util.git_branch() }),
+    add(mode_hl, { util.git_branch(bufnr) }),
     add(hi.user1, { util.relpath() }, true),
     add(hi.user2, { util.filename(), util.get_modified() }),
     hi.segment,
@@ -125,7 +125,7 @@ statusline.focus = function(win_id)
   end
   type = vim.fn.getftype(util.filepath())
   if type == "file" then
-    line = active()
+    line = active(bufnr)
   else
     line = simple()
   end

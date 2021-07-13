@@ -31,8 +31,6 @@ return require("packer").startup(function(use)
   use "tpope/vim-commentary"
   -- create file and parent direcory at the same time
   use "duggiefresh/vim-easydir"
-  -- a git wrapper for vim
-  use "tpope/vim-fugitive"
   -- color highlighter
   use { "rrethy/vim-hexokinase", run = "make hexokinase" }
   -- syntax highlighting for log files
@@ -67,15 +65,9 @@ return require("packer").startup(function(use)
   -- devicons (requires patched font)
   use "kyazdani42/nvim-web-devicons"
   -- minimalist file explorer
-  use {
-    "tamago324/lir.nvim",
-    requires = { "kyazdani42/nvim-web-devicons" },
-  }
+  use { "tamago324/lir.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   -- minimalist tabline
-  use {
-    "jose-elias-alvarez/buftabline.nvim",
-    requires = { "kyazdani42/nvim-web-devicons" },
-  }
+  use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   -- incremental parsing system for programming tools
   use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
   -- view treesitter information directly
@@ -97,18 +89,12 @@ return require("packer").startup(function(use)
   use "tjdevries/nlua.nvim"
 
   -- display git changes in gutter
-  use {
-    "lewis6991/gitsigns.nvim",
-    requires = {
-      "nvim-lua/plenary.nvim",
-    },
-  }
+  use { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } }
+  -- text based user interface to git
+  use { "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" }
 
   -- modular fuzzy finder
-  use {
-    "nvim-telescope/telescope.nvim",
-    requires = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } },
-  }
+  use { "nvim-telescope/telescope.nvim", requires = { { "nvim-lua/popup.nvim" }, { "nvim-lua/plenary.nvim" } } }
   -- pre-compiled fzy sorter
   use "nvim-telescope/telescope-fzy-native.nvim"
   -- pre-compiled c port of fzf

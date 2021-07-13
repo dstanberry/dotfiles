@@ -109,6 +109,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/lsp_signature.nvim"
   },
+  neogit = {
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/neogit"
+  },
   ["nlua.nvim"] = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nlua.nvim"
@@ -216,10 +220,6 @@ _G.packer_plugins = {
   ["vim-easydir"] = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vim-easydir"
-  },
-  ["vim-fugitive"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vim-fugitive"
   },
   ["vim-hexokinase"] = {
     loaded = true,

@@ -59,7 +59,7 @@ function M.setup(colors)
   hi.Debug = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
   hi.Directory = { guifg = c.base0D, guibg = nil, gui = nil, guisp = nil }
   hi.Error = { guifg = c.base08, guibg = c.base00, gui = nil, guisp = nil }
-  hi.ErrorMsg = { guifg = c.base0F, guibg = c.base00, gui = nil, guisp = nil }
+  hi.ErrorMsg = { guifg = c.base08, guibg = c.base00, gui = nil, guisp = nil }
   hi.Exception = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
   hi.FoldColumn = { guifg = c.base0C, guibg = c.base01, gui = nil, guisp = nil }
   hi.Folded = { guifg = c.base03, guibg = c.base01, gui = nil, guisp = nil }
