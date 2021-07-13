@@ -93,27 +93,6 @@ function luarocks() {
   fi
 }
 
-# inform neovim of repo defined git worktrees
-function nvim() {
-  local INPUT="${CONFIG_HOME}/git/worktrees"
-  local OLDIFS=$IFS
-  IFS=','
-  local worktree=""
-  if [ -f "$INPUT" ]; then
-    while read -r col1 col2; do
-      if [[ "$col1" != "GIT_DIR" ]]; then
-        gd=$(eval echo "$col1")
-        wt=$(eval echo "$col2")
-        if [ "$PWD" = "$wt" ] || [[ $PWD = ${wt}/* ]]; then
-          worktree="GIT_DIR=$gd GIT_WORK_TREE=$wt"
-        fi
-      fi
-    done < "$INPUT"
-  fi
-  IFS=$OLDIFS
-  eval "$worktree command nvim $*"
-}
-
 # support custom sub-commands
 function npm() {
   local PKG=$CONFIG_HOME/shared/packages/npm.txt
@@ -238,24 +217,8 @@ function up() {
   fi
 }
 
-# inform (neo)vim of repo defined git worktrees
+# define configuration path for vim
 function vim() {
-  local INPUT="${CONFIG_HOME}/git/worktrees"
-  local OLDIFS=$IFS
-  IFS=','
-  local worktree=""
-  if [ -f "$INPUT" ]; then
-    while read -r col1 col2; do
-      if [[ "$col1" != "GIT_DIR" ]]; then
-        gd=$(eval echo "$col1")
-        wt=$(eval echo "$col2")
-        if [ "$PWD" = "$wt" ] || [[ $PWD = ${wt}/* ]]; then
-          worktree="GIT_DIR=$gd GIT_WORK_TREE=$wt"
-        fi
-      fi
-    done < "$INPUT"
-  fi
-  IFS=$OLDIFS
   local MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
   local __viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
   __viminit+="${VIM_CONFIG_HOME}/after"
@@ -265,7 +228,7 @@ function vim() {
   fi
   __viminit+="|:source ${MYVIMRC}"
   local viminit="VIMINIT='$__viminit'"
-  eval "$viminit $worktree command vim $*"
+  eval "$viminit command vim $*"
 }
 
 # poor man's wget runtime configuration
