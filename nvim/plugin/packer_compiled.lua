@@ -216,6 +216,10 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/telescope.nvim"
   },
+  ["twilight.nvim"] = {
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/twilight.nvim"
+  },
   ["vim-commentary"] = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vim-commentary"
@@ -294,10 +298,19 @@ _G.packer_plugins = {
   ["vscode-csharp-snippets"] = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vscode-csharp-snippets"
+  },
+  ["zen-mode.nvim"] = {
+    config = { "\27LJ\1\2Þ\1\0\0\3\0\14\0\0174\0\0\0%\1\1\0>\0\2\0027\0\2\0003\1\4\0003\2\3\0:\2\5\0013\2\6\0:\2\a\0013\2\b\0:\2\t\0013\2\n\0:\2\v\0013\2\f\0:\2\r\1>\0\2\1G\0\1\0\nkitty\1\0\2\fenabled\2\tfont\a+4\ttmux\1\0\1\fenabled\1\rgitsigns\1\0\1\fenabled\1\rtwilight\1\0\1\fenabled\2\foptions\1\0\0\1\0\3\fenabled\2\nruler\1\fshowcmd\1\nsetup\rzen-mode\frequire\0" },
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/zen-mode.nvim"
   }
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: zen-mode.nvim
+time([[Config for zen-mode.nvim]], true)
+try_loadstring("\27LJ\1\2Þ\1\0\0\3\0\14\0\0174\0\0\0%\1\1\0>\0\2\0027\0\2\0003\1\4\0003\2\3\0:\2\5\0013\2\6\0:\2\a\0013\2\b\0:\2\t\0013\2\n\0:\2\v\0013\2\f\0:\2\r\1>\0\2\1G\0\1\0\nkitty\1\0\2\fenabled\2\tfont\a+4\ttmux\1\0\1\fenabled\1\rgitsigns\1\0\1\fenabled\1\rtwilight\1\0\1\fenabled\2\foptions\1\0\0\1\0\3\fenabled\2\nruler\1\fshowcmd\1\nsetup\rzen-mode\frequire\0", "config", "zen-mode.nvim")
+time([[Config for zen-mode.nvim]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
@@ -312,12 +325,15 @@ vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
 time([[Defining lazy-load filetype autocommands]], true)
-vim.cmd [[au FileType ps1 ++once lua require("packer.load")({'vim-ps1'}, { ft = "ps1" }, _G.packer_plugins)]]
-vim.cmd [[au FileType c ++once lua require("packer.load")({'vim-syntax-extra'}, { ft = "c" }, _G.packer_plugins)]]
 vim.cmd [[au FileType json ++once lua require("packer.load")({'vim-json'}, { ft = "json" }, _G.packer_plugins)]]
+vim.cmd [[au FileType c ++once lua require("packer.load")({'vim-syntax-extra'}, { ft = "c" }, _G.packer_plugins)]]
+vim.cmd [[au FileType ps1 ++once lua require("packer.load")({'vim-ps1'}, { ft = "ps1" }, _G.packer_plugins)]]
 time([[Defining lazy-load filetype autocommands]], false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]
+time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], true)
+vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]]
+time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], false)
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/ps1.vim]], true)
 vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/ps1.vim]]
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/ps1.vim]], false)
@@ -327,9 +343,6 @@ time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/pac
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/xml.vim]], true)
 vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/xml.vim]]
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/xml.vim]], false)
-time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], true)
-vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]]
-time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], false)
 vim.cmd("augroup END")
 if should_profile then save_profiles() end
 

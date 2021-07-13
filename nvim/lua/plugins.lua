@@ -21,10 +21,6 @@ return require("packer").startup(function(use)
       vim.g.curshold_updatime = 1000
     end,
   }
-  -- distraction-free writing
-  use { "junegunn/goyo.vim", cmd = "Goyo" }
-  -- hyperfocus-writing
-  use { "junegunn/limelight.vim", after = "goyo.vim" }
   -- emphasize the current matched search pattern
   use "wincent/loupe"
   -- preview/browse json files with ease
@@ -135,4 +131,9 @@ return require("packer").startup(function(use)
   use "jbyuki/one-small-step-for-vimkind"
   -- dap extension for python
   use "mfussenegger/nvim-dap-python"
+
+  -- distraction-free coding
+  use "folke/zen-mode.nvim"
+  -- dim inactive portions of text using treesitter
+  use "folke/twilight.nvim"
 end)
