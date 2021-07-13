@@ -28,8 +28,8 @@ endfunction
 command! -nargs=* -bang RG call fzf#rg(<q-args>, <bang>0)
 
 " fzf: search files available in the current directory
-nnoremap <localleader><localleader> :Files<cr>
-" fzf: search git files available in the current directory
-nnoremap <localleader>fg :GFiles<cr>
+nnoremap <leader><leader> :Files<cr>
+" fzf: search vim configuration files
+nnoremap <localleader><localleader> :Files $XDG_CONFIG_HOME/vim<cr>
 " fzf: search all currently open file buffers
-nnoremap <localleader>fb :Buffers<cr>
+nnoremap <leader>fb :Buffers<cr>
