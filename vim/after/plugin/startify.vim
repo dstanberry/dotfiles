@@ -8,7 +8,7 @@ let g:startify_change_to_dir = 0
 if has('nvim')
   let g:startify_session_dir = $XDG_DATA_HOME.'/nvim/session'
 else
-  let g:startify_session_dir = $XDG_DATA_HOME.'/vim-session'
+  let g:startify_session_dir = $XDG_DATA_HOME.'/vim/session'
 endif
 
 let g:startify_bookmarks = []
