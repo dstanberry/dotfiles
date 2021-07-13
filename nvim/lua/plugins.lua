@@ -39,8 +39,6 @@ return require("packer").startup(function(use)
   use "tpope/vim-repeat"
   -- debug vim plugins
   use { "tpope/vim-scriptease", cmd = { "Messages", "Verbose", "Time" } }
-  -- start screen
-  use "mhinz/vim-startify"
   -- better profiling of startup time.
   use {
     "dstein64/vim-startuptime",

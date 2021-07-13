@@ -253,10 +253,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vim-snippets"
   },
-  ["vim-startify"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vim-startify"
-  },
   ["vim-startuptime"] = {
     commands = { "StartupTime" },
     loaded = false,
