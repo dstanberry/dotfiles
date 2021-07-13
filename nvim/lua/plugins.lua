@@ -41,8 +41,6 @@ return require("packer").startup(function(use)
   use "tpope/vim-repeat"
   -- debug vim plugins
   use { "tpope/vim-scriptease", cmd = { "Messages", "Verbose", "Time" } }
-  -- display git changes in gutter
-  use "mhinz/vim-signify"
   -- start screen
   use "mhinz/vim-startify"
   -- better profiling of startup time.
@@ -97,6 +95,14 @@ return require("packer").startup(function(use)
   use "ray-x/lsp_signature.nvim"
   -- centralize installation of lua-language-server (sumneko)
   use "tjdevries/nlua.nvim"
+
+  -- display git changes in gutter
+  use {
+    "lewis6991/gitsigns.nvim",
+    requires = {
+      "nvim-lua/plenary.nvim",
+    },
+  }
 
   -- modular fuzzy finder
   use {

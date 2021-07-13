@@ -166,10 +166,10 @@ function M.setup(colors)
   hi.gitcommitSelectedFile = { guifg = c.base0B, guibg = nil, gui = "bold", guisp = nil }
 
   -- gitgutter highlighting
-  hi.GitGutterAdd = { guifg = c.base0B, guibg = c.base01, gui = nil, guisp = nil }
-  hi.GitGutterChange = { guifg = c.base0D, guibg = c.base01, gui = nil, guisp = nil }
-  hi.GitGutterDelete = { guifg = c.base0F, guibg = c.base01, gui = nil, guisp = nil }
-  hi.GitGutterChangeDelete = { guifg = c.base0E, guibg = c.base01, gui = nil, guisp = nil }
+  hi.GitGutterAdd = { guifg = c.base0B, guibg = c.base00, gui = nil, guisp = nil }
+  hi.GitGutterChange = { guifg = c.base0A, guibg = c.base00, gui = nil, guisp = nil }
+  hi.GitGutterDelete = { guifg = c.base08, guibg = c.base00, gui = nil, guisp = nil }
+  hi.GitGutterChangeDelete = { guifg = c.base09, guibg = c.base00, gui = nil, guisp = nil }
 
   -- spelling highlighting
   hi.SpellBad = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0F }
