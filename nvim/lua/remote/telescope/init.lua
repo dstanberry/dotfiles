@@ -40,6 +40,7 @@ require("telescope").setup {
     borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
     scroll_strategy = "cycle",
     layout_strategy = "flex",
+    sorting_strategy = "descending",
     layout_config = {
       prompt_position = "bottom",
       horizontal = {
