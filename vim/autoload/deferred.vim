@@ -15,11 +15,6 @@ function! deferred#load_dir_hash() abort
     let l:dir=l:pair[1]
     if !exists('$' . l:var)
       execute 'let $' . l:var . '="' . l:dir . '"'
-      call add(g:startify_bookmarks, l:dir)
     endif
   endfor
-  let g:startify_bookmarks = sort(g:startify_bookmarks)
-  if &ft ==# 'startify'
-    execute 'Startify'
-  endif
 endfunction
