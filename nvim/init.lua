@@ -41,11 +41,10 @@ end
 -- lazy-load potentially expensive resources
 vim.cmd [[ call functions#defer('call deferred#load_dir_hash()') ]]
 
--- extra lua configuration
+-- extra lua configuration (loads globals and remote plugin configurations)
 require "startup"
 
+-- define colorscheme
+require("colorscheme").setup()
 -- define statusline contents
 require("statusline").setup()
-
--- define a colorscheme
-require("colorscheme").setup()

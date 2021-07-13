@@ -62,6 +62,5 @@ end
 
 -- source plugin manager
 require "plugins"
-
 -- source plugins in lua/
-require("startup.remote").source()
+require("startup.remote").setup()

@@ -1,10 +1,11 @@
 ---------------------------------------------------------------
 -- => Load plugin configurations
 ---------------------------------------------------------------
--- load configuration files for remote plugins
-local plugins = {}
+-- initialize modules table
+local M = {}
 
-plugins.source = function()
+-- load configuration files for remote plugins
+M.setup = function()
   for _, mod in ipairs(vim.api.nvim_get_runtime_file("lua/remote/**/*.lua", true)) do
     local ok, msg = pcall(loadfile(mod))
     if not ok then
@@ -14,4 +15,4 @@ plugins.source = function()
   end
 end
 
-return plugins
+return M
