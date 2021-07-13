@@ -153,12 +153,26 @@ end
 
 -- initialize statusline
 statusline.setup = function()
-  vim.cmd [=[augroup statusline]=]
-  vim.cmd [=[  autocmd!]=]
-  vim.cmd [=[  autocmd BufWinEnter,WinEnter,FocusGained,CompleteChanged,CompleteDonePre * :lua vim.wo.statusline = string.format([[%%!luaeval('require("statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=]
-  vim.cmd [=[augroup END]=]
-
-  vim.cmd [[doautocmd BufWinEnter]]
+  local focus_events = "BufWinEnter,WinEnter,FocusGained,CompleteChanged,CompleteDonePre"
+  local dim_events = "BufWinLeave,WinLeave,FocusLost"
+  vim.cmd "augroup statusline"
+  vim.cmd "autocmd!"
+  vim.cmd(
+    string.format(
+      "autocmd %s * :lua vim.wo.statusline = [[%%!luaeval('require(\"statusline\").focus(%s)')]]",
+      focus_events,
+      vim.api.nvim_get_current_win()
+    )
+  )
+  vim.cmd(
+    string.format(
+      "autocmd %s * :lua vim.wo.statusline = [[%%!luaeval('require(\"statusline\").dim(%s)')]]",
+      dim_events,
+      vim.api.nvim_get_current_win()
+    )
+  )
+  vim.cmd "augroup END"
+  vim.cmd "doautocmd BufWinEnter"
 end
 
 return statusline
