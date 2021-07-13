@@ -109,7 +109,7 @@ end
 statusline.focus = function(win_id)
   local line = ""
   if not vim.api.nvim_win_is_valid(win_id) then
-    return
+    return simple()
   end
   local bufnr = vim.api.nvim_win_get_buf(win_id)
   local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
@@ -136,7 +136,10 @@ end
 -- statusline when window does not have focus
 statusline.dim = function(win_id)
   if not vim.api.nvim_win_is_valid(win_id) then
-    return
+    return simple()
+  end
+  if vim.fn.pumvisible() == 1 then
+    return statusline.focus(win_id)
   end
   local bufnr = vim.api.nvim_win_get_buf(win_id)
   local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
@@ -152,8 +155,7 @@ end
 statusline.setup = function()
   vim.cmd [=[augroup statusline]=]
   vim.cmd [=[  autocmd!]=]
-  vim.cmd [=[  autocmd BufWinEnter,WinEnter,FocusGained * :lua vim.wo.statusline = string.format([[%%!luaeval('require("statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=]
-  vim.cmd [=[  autocmd BufWinLeave,WinLeave,FocusLost * :lua vim.wo.statusline = string.format([[%%!luaeval('require("statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=]
+  vim.cmd [=[  autocmd BufWinEnter,WinEnter,FocusGained,CompleteChanged,CompleteDonePre * :lua vim.wo.statusline = string.format([[%%!luaeval('require("statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=]
   vim.cmd [=[augroup END]=]
 
   vim.cmd [[doautocmd BufWinEnter]]
