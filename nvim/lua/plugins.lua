@@ -15,12 +15,7 @@ return require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
 
   -- fix cursorhold events
-  use {
-    "antoinemadec/FixCursorHold.nvim",
-    run = function()
-      vim.g.curshold_updatime = 1000
-    end,
-  }
+  use { "antoinemadec/FixCursorHold.nvim" }
   -- emphasize the current matched search pattern
   use "wincent/loupe"
   -- preview/browse json files with ease
@@ -40,10 +35,7 @@ return require("packer").startup(function(use)
   -- debug vim plugins
   use { "tpope/vim-scriptease", cmd = { "Messages", "Verbose", "Time" } }
   -- better profiling of startup time.
-  use {
-    "dstein64/vim-startuptime",
-    cmd = "StartupTime",
-  }
+  use { "dstein64/vim-startuptime", cmd = "StartupTime" }
   -- surround sequence with tags
   use "tpope/vim-surround"
   -- enable focus events
