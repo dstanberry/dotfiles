@@ -2,8 +2,8 @@
 -- => Telescope Configuration
 ---------------------------------------------------------------
 -- verify telescope is available
-local has_lsp = pcall(require, "lspconfig")
-if not has_lsp and not pcall(require, "telescope") then
+local ok = pcall(require, "lspconfig")
+if not ok and not pcall(require, "telescope") then
   return
 end
 

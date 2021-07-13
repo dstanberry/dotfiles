@@ -2,8 +2,8 @@
 -- => zen-mode configuration
 ---------------------------------------------------------------
 -- verify zen-mode is available
-local has_zen, zen = pcall(require, "zen")
-if not has_zen then
+local ok, zen = pcall(require, "zen")
+if not ok then
   return
 end
 

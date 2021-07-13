@@ -2,8 +2,8 @@
 -- => nvim-web-devicons configuration
 ---------------------------------------------------------------
 -- verify nvim-web-devicons is available
-local has_devicons, devicons = pcall(require, "nvim-web-devicons")
-if not has_devicons then
+local ok, devicons = pcall(require, "nvim-web-devicons")
+if not ok then
   return
 end
 

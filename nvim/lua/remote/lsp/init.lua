@@ -2,9 +2,9 @@
 -- => Language Server Protocol Configuration
 ---------------------------------------------------------------
 -- verify lspconfig and nlua-nvim are available
-local has_lsp, lspconfig = pcall(require, "lspconfig")
+local ok, lspconfig = pcall(require, "lspconfig")
 local has_nlua, nluaconfig = pcall(require, "nlua.lsp.nvim")
-if not has_lsp and not has_nlua then
+if not ok or not has_nlua then
   return
 end
 

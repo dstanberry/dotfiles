@@ -1,8 +1,8 @@
 --------------------------------------------------------------
 -- => luasnip keymaps
 ---------------------------------------------------------------
-local has_luasnip, luasnip = pcall(require, "luasnip")
-if not has_luasnip then
+local ok, luasnip = pcall(require, "luasnip")
+if not ok then
   return
 end
 

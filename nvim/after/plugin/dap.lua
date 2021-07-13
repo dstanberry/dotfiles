@@ -2,8 +2,8 @@
 -- => Debug Adapter Protocol Configuration
 ---------------------------------------------------------------
 -- verify dap is available
-local has_dap, dap = pcall(require, "dap")
-if not has_dap then
+local ok, dap = pcall(require, "dap")
+if not ok then
   return
 end
 
@@ -32,8 +32,8 @@ dap.adapters.nlua = function(callback, config)
 end
 
 -- setup dap-python if available
-local has_dpy, dpy = pcall(require, "dap-python")
-if has_dpy then
+local has_py, py = pcall(require, "dap-python")
+if has_py then
   dap.configurations.python = {
     {
       type = "python",
@@ -44,7 +44,7 @@ if has_dpy then
       console = "integratedTerminal",
     },
   }
-  dpy.setup("python", { include_configs = true })
+  py.setup("python", { include_configs = true })
 end
 
 -- define keymaps

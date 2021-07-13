@@ -2,8 +2,8 @@
 -- => lir configuration
 ---------------------------------------------------------------
 -- verify lir is available
-local has_lir, lir = pcall(require, "lir")
-if not has_lir then
+local ok, lir = pcall(require, "lir")
+if not ok then
   return
 end
 

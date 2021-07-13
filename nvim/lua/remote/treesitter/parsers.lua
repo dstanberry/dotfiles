@@ -2,8 +2,8 @@
 -- => Tree-Sitter custam parsers
 ---------------------------------------------------------------
 -- verify tree-sitter is available
-local has_config, parsers = pcall(require, "nvim-treesitter.parsers")
-if not has_config then
+local ok, parsers = pcall(require, "nvim-treesitter.parsers")
+if not ok then
   return
 end
 
