@@ -7,9 +7,13 @@ local util = require "statusline.util"
 
 -- only show relpath in statusline for these filetypes
 local fp = {
-  "help",
   "lir",
   "netrw",
+}
+
+-- only show filepath in statusline for these filetypes
+local ff = {
+  "help",
 }
 
 -- only show filetype in statusline for these filetypes
@@ -93,6 +97,23 @@ local function explorer(bufnr)
   }
 end
 
+-- default statusline for file explorers
+local function help_active(bufnr)
+  return table.concat {
+    add(hi.user1, { " ", util.relpath(bufnr) }, true),
+    add(hi.user2, { util.filename(bufnr), util.get_modified(bufnr) }),
+    hi.segment,
+  }
+end
+
+-- default statusline for file explorers
+local function help_inactive(bufnr)
+  return table.concat {
+    add(hi.user3, { " ", util.filepath(bufnr) }, true),
+    hi.segment,
+  }
+end
+
 -- default statusline for various plugins
 local function plugin(bufnr)
   return table.concat {
@@ -115,6 +136,11 @@ statusline.focus = function(win_id)
   for _, t in ipairs(fp) do
     if type == t then
       return explorer(bufnr)
+    end
+  end
+  for _, t in ipairs(ff) do
+    if type == t then
+      return help_active(bufnr)
     end
   end
   for _, t in ipairs(ft) do
@@ -145,6 +171,22 @@ statusline.dim = function(win_id)
   local bufnr = vim.api.nvim_win_get_buf(win_id)
   local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
   local name = vim.fn.bufname(bufnr)
+  for _, t in ipairs(fp) do
+    if type == t then
+      return explorer(bufnr)
+    end
+  end
+  for _, t in ipairs(ff) do
+    if type == t then
+      return help_inactive(bufnr)
+    end
+  end
+  for _, t in ipairs(ft) do
+    local match = string.match(type, t) or ""
+    if type == t or #match > 0 then
+      return plugin(bufnr)
+    end
+  end
   type = vim.fn.getftype(util.filepath(bufnr))
   if type == "file" or #name > 0 then
     return inactive(bufnr)
