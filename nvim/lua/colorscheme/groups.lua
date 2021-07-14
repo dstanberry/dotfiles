@@ -162,11 +162,12 @@ M.apply = function(c)
 
   c.lref00 = vim.fn["functions#darken"](c.base07, 40)
   c.lref01 = vim.fn["functions#darken"](c.base08, 35)
+  c.lref02 = vim.fn["functions#darken"](c.base0A, 10)
 
   -- lsp document highlighting
   hi.LspReferenceText = { guifg = c.base10, guibg = c.base03, gui = nil, guisp = nil }
   hi.LspReferenceRead = { guifg = c.base10, guibg = c.lref00, gui = nil, guisp = nil }
-  hi.LspReferenceWrite = { guifg = c.base10, guibg = c.lref01, gui = nil, guisp = nil }
+  hi.LspReferenceWrite = { guifg = c.base10, guibg = c.base06, gui = nil, guisp = nil }
 
   -- lsp diagnostic highlighting
   hi.LspDiagnosticsDefaultError = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
@@ -236,7 +237,7 @@ M.apply = function(c)
   hi.TSVariable = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
   hi.TSVariableBuiltin = { guifg = c.base0C, guibg = nil, gui = "bold", guisp = nil }
   hi.TSDefinition = { guifg = nil, guibg = nil, gui = "underline", guisp = c.base0E }
-  hi.TSDefinitionUsage = { guifg = nil, guibg = c.base03, gui = "none", guisp = nil }
+  hi.TSDefinitionUsage = { guifg = c.base10, guibg = c.lref02, gui = "none", guisp = nil }
   hi.TSCurrentScope = { guifg = nil, guibg = nil, gui = "bold", guisp = nil }
   hi.TreesitterContext = { guifg = nil, guibg = c.base01, gui = "italic", guisp = nil }
 
@@ -265,20 +266,6 @@ M.apply = function(c)
   hi.Custom5 = { guifg = c.base0E, guibg = c.base02, gui = "none", guisp = nil }
   hi.Custom6 = { guifg = c.base09, guibg = c.base02, gui = "none", guisp = nil }
 
-  c.sify00 = vim.fn["functions#darken"](c.base0A, 50)
-  c.sify01 = vim.fn["functions#darken"](c.base0D, 35)
-
-  -- vim-startify highlighting
-  hi.StartifyBracket = { guifg = c.sify00, guibg = nil, gui = nil, guisp = nil }
-  hi.StartifyFile = { guifg = c.base0D, guibg = nil, gui = nil, guisp = nil }
-  hi.StartifyFooter = { guifg = c.base04, guibg = nil, gui = nil, guisp = nil }
-  hi.StartifyHeader = { guifg = c.base0B, guibg = nil, gui = nil, guisp = nil }
-  hi.StartifyNumber = { guifg = c.base0A, guibg = nil, gui = nil, guisp = nil }
-  hi.StartifyPath = { guifg = c.sify01, guibg = nil, gui = nil, guisp = nil }
-  hi.StartifySection = { guifg = c.base0E, guibg = nil, gui = nil, guisp = nil }
-  hi.StartifySelect = { guifg = c.base0C, guibg = nil, gui = nil, guisp = nil }
-  hi.StartifySlash = { guifg = c.sify01, guibg = nil, gui = nil, guisp = nil }
-  hi.StartifySpecial = { guifg = c.base04, guibg = nil, gui = nil, guisp = nil }
 
   c.tele00 = vim.fn["functions#darken"](c.base0F, 43)
 
@@ -291,7 +278,7 @@ M.apply = function(c)
   hi.TelescopePromptBorder = { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil }
   hi.TelescopeResultsBorder = { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil }
   hi.TelescopePreviewBorder = { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil }
-  hi.TelescopeMatching = { guifg = c.base0C, guibg = nil, gui = nil, guisp = nil }
+  hi.TelescopeMatching = { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil }
   hi.TelescopePromptPrefix = { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil }
 
   -- ensure termguicolors is set (likely redundant)
