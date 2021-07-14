@@ -31,6 +31,24 @@ nnoremap <c-f>f /\v<c-r><c-w><cr>
 " begin substitution in buffer for word under cursor
 nnoremap <c-f>r :%s/\<<c-r><c-w>\>/
 
+" switch to left window
+nnoremap <c-h> <c-w><c-h>
+" switch to bottom window
+nnoremap <c-j> <c-w><c-j>
+" switch to top window
+nnoremap <c-k> <c-w><c-k>
+" switch to right window
+nnoremap <c-l> <c-w><c-l>
+
+" decrease active split horizontal size
+nnoremap <c-,> <c-w><
+" increase active split horizontal size
+nnoremap <c-.> <c-w>>
+" increase active split vertical size
+nnoremap <a-,> <c-w>+
+" decrease active split vertical size
+nnoremap <a-.> <c-w>-
+
 " enable very magic mode during search operations
 nnoremap / /\v
 
@@ -66,14 +84,8 @@ noremap Y y$
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" increment window width
-nnoremap <silent> <leader>= :vertical resize +5<cr>
-" decrement window width
-nnoremap <silent> <leader>- :vertical resize -5<cr>
-" increment window height
-nnoremap <silent> <leader>+ :resize +5<cr>
-" decrement window height
-nnoremap <silent> <leader>_ :resize -5<cr>
+" (try to) make all windows the same size
+nnoremap <leader>= <c-w>=
 
 " change text and preserve clipboard state
 nmap <leader>c "_c
@@ -82,15 +94,6 @@ nmap <leader>C "_C
 " delete text and preserve clipboard state
 nmap <leader>d "_d
 nmap <leader>D "_D
-
-" switch to left window
-nmap <silent> <leader>h :wincmd h<cr>
-" switch to top window
-nmap <silent> <leader>k :wincmd k<cr>
-" switch to right window
-nmap <silent> <leader>l :wincmd l<cr>
-" switch to bottom window
-nmap <silent> <leader>j :wincmd j<cr>
 
 " write current buffer to disk if changed
 nnoremap <leader>w :update<cr>
