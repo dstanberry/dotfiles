@@ -45,6 +45,6 @@ vim.cmd [[ call functions#defer('call deferred#load_dir_hash()') ]]
 require "startup"
 
 -- define colorscheme
-require("colorscheme").setup()
+R("colorscheme").setup()
 -- define statusline contents
-require("statusline").setup()
+R("statusline").setup()

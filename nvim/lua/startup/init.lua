@@ -11,6 +11,7 @@ end
 if pcall(require, "plenary") then
   RELOAD = require("plenary.reload").reload_module
 
+  -- live reload lua functions
   R = function(name)
     RELOAD(name)
     return require(name)
