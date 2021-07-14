@@ -126,6 +126,7 @@ end
 local function simple()
   return hi.segment
 end
+
 -- statusline when window has focus
 statusline.focus = function(win_id)
   if not vim.api.nvim_win_is_valid(win_id) then
@@ -195,14 +196,40 @@ statusline.dim = function(win_id)
   end
 end
 
+-- TODO: investigate a better way to do this
+-- iterate all open windows and reapply statusline
+statusline.check = function()
+  for _, w in ipairs(vim.fn.range(1, vim.fn.winnr "$")) do
+    local curwin = vim.fn.winnr()
+    if w == curwin then
+      vim.fn.setwinvar(
+        w,
+        "statusline",
+        "string.format([[%%!luaeval('require(\"statusline\").focus(%s)')]], vim.api.nvim_get_current_win())"
+      )
+    else
+      vim.fn.setwinvar(
+        w,
+        "statusline",
+        "string.format([[%%!luaeval('require(\"statusline\").dim(%s)')]], vim.api.nvim_get_current_win())"
+      )
+    end
+  end
+end
+
 -- initialize statusline
 statusline.setup = function()
   vim.cmd [=[ augroup statusline ]=]
   vim.cmd [=[ autocmd! ]=]
-  vim.cmd [=[  autocmd BufWinEnter,WinEnter,FocusGained,CompleteChanged,CompleteDonePre * :lua vim.wo.statusline = string.format([[%%!luaeval('require("statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=]
-  vim.cmd [=[  autocmd BufLeave,BufWinLeave,WinLeave,FocusLost * :lua vim.wo.statusline = string.format([[%%!luaeval('require("statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=]
+  vim.cmd [=[  autocmd CompleteDonePre * :lua vim.wo.statusline = string.format([[%%!luaeval('require("statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=]
+  vim.cmd [=[  autocmd FocusGained,BufEnter,BufWinEnter,WinEnter * :lua vim.wo.statusline = string.format([[%%!luaeval('require("statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=]
+  vim.cmd [=[  autocmd FocusLost,BufLeave,BufWinLeave,WinLeave * :lua vim.wo.statusline = string.format([[%%!luaeval('require("statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=]
   vim.cmd [=[ augroup END ]=]
   vim.cmd [=[ doautocmd BufWinEnter ]=]
+
+  vim.fn.timer_start(100, function()
+    return statusline.check()
+  end)
 end
 
 return statusline
