@@ -160,10 +160,13 @@ M.apply = function(c)
   hi.SpellCap = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0D }
   hi.SpellRare = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0E }
 
+  c.lref00 = vim.fn["functions#darken"](c.base07, 40)
+  c.lref01 = vim.fn["functions#darken"](c.base08, 35)
+
   -- lsp document highlighting
-  hi.LspReferenceText = { guifg = c.base07, guibg = c.base0F, gui = nil, guisp = nil }
-  hi.LspReferenceRead = { guifg = c.base07, guibg = c.base0F, gui = nil, guisp = nil }
-  hi.LspReferenceWrite = { guifg = c.base07, guibg = c.base0F, gui = nil, guisp = nil }
+  hi.LspReferenceText = { guifg = c.base10, guibg = c.base03, gui = nil, guisp = nil }
+  hi.LspReferenceRead = { guifg = c.base10, guibg = c.lref00, gui = nil, guisp = nil }
+  hi.LspReferenceWrite = { guifg = c.base10, guibg = c.lref01, gui = nil, guisp = nil }
 
   -- lsp diagnostic highlighting
   hi.LspDiagnosticsDefaultError = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
@@ -233,7 +236,7 @@ M.apply = function(c)
   hi.TSVariable = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
   hi.TSVariableBuiltin = { guifg = c.base0C, guibg = nil, gui = "bold", guisp = nil }
   hi.TSDefinition = { guifg = nil, guibg = nil, gui = "underline", guisp = c.base0E }
-  hi.TSDefinitionUsage = { guifg = nil, guibg = nil, gui = "underline", guisp = c.base0A }
+  hi.TSDefinitionUsage = { guifg = nil, guibg = c.base03, gui = "none", guisp = nil }
   hi.TSCurrentScope = { guifg = nil, guibg = nil, gui = "bold", guisp = nil }
   hi.TreesitterContext = { guifg = nil, guibg = c.base01, gui = "italic", guisp = nil }
 
