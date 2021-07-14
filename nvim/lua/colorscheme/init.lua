@@ -37,7 +37,7 @@ function M.setup(colors)
   if type(colors) == "string" then
     colors = M.colorschemes[colors]
   end
-  -- fallback to a safe theme if there is a problem with `colors`
+  -- fallback to a safe theme if `colors` not found
   M.colors = colors or M.colorschemes["base16-kdark"]
   local c = M.colors
 
@@ -62,7 +62,7 @@ function M.setup(colors)
   hi.IncSearch = { guifg = c.base01, guibg = c.base0A, gui = "none", guisp = nil }
   hi.Italic = { guifg = nil, guibg = nil, gui = "none", guisp = nil }
   hi.Macro = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
-  hi.MatchParen = { guifg = nil, guibg = c.base0A, gui = nil, guisp = nil }
+  hi.MatchParen = { guifg = c.base08, guibg = "", gui = "bold", guisp = nil }
   hi.ModeMsg = { guifg = c.base0B, guibg = nil, gui = nil, guisp = nil }
   hi.MoreMsg = { guifg = c.base0B, guibg = nil, gui = nil, guisp = nil }
   hi.Question = { guifg = c.base0D, guibg = nil, gui = nil, guisp = nil }
@@ -79,6 +79,7 @@ function M.setup(colors)
   hi.Conceal = { guifg = c.base0D, guibg = c.base00, gui = nil, guisp = nil }
   hi.Cursor = { guifg = c.base00, guibg = c.base05, gui = nil, guisp = nil }
   hi.NonText = { guifg = c.base11, guibg = nil, gui = nil, guisp = nil }
+  hi.Whitespace = { guifg = c.base04, guibg = nil, gui = nil, guisp = nil }
   hi.LineNr = { guifg = c.base03, guibg = c.base00, gui = nil, guisp = nil }
   hi.SignColumn = { guifg = c.base03, guibg = c.base00, gui = nil, guisp = nil }
   hi.StatusLine = { guifg = c.base04, guibg = c.base02, gui = "none", guisp = nil }
@@ -301,7 +302,7 @@ function M.setup(colors)
   hi.TelescopePromptBorder = { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil }
   hi.TelescopeResultsBorder = { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil }
   hi.TelescopePreviewBorder = { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil }
-  hi.TelescopeMatching = { guifg = c.base0C, guibg = c.base00, gui = nil, guisp = nil }
+  hi.TelescopeMatching = { guifg = c.base0C, guibg = nil, gui = nil, guisp = nil }
   hi.TelescopePromptPrefix = { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil }
 
   -- ensure termguicolors is set (likely redundant)
