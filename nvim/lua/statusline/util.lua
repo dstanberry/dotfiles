@@ -8,8 +8,11 @@ local Job = require "plenary.job"
 local util = {}
 
 -- readonly indicator
-util.get_readonly = function()
-  if vim.bo.readonly or not vim.bo.modifiable then
+util.get_readonly = function(bufnr)
+  local name = vim.fn.bufname(bufnr)
+  local ro = vim.api.nvim_buf_get_option(name, "readonly")
+  local mod = vim.api.nvim_buf_get_option(name, "modifiable")
+  if ro and not mod then
     return " "
   else
     return ""
@@ -17,8 +20,10 @@ util.get_readonly = function()
 end
 
 -- modified indicator
-util.get_modified = function()
-  if vim.bo.modified then
+util.get_modified = function(bufnr)
+  local name = vim.fn.bufname(bufnr)
+  local mod = vim.api.nvim_buf_get_option(name, "modified")
+  if mod then
     return "●"
   else
     return ""
@@ -26,19 +31,21 @@ util.get_modified = function()
 end
 
 -- print filename with extension
-util.filename = function()
-  local name = vim.fn.expand "%:t"
-  if name == "" then
+util.filename = function(bufnr)
+  local name = vim.fn.bufname(bufnr)
+  local fname = vim.fn.fnamemodify(name, ":t")
+  if fname == "" then
     return "[No Name]"
   end
-  return name
+  return fname
 end
 
 -- print filetype with icon
-util.filetype = function()
-  local ft = vim.bo.filetype
+util.filetype = function(bufnr)
+  local name = vim.fn.bufname(bufnr)
+  local ft = vim.api.nvim_buf_get_option(name, "filetype")
   if #ft > 0 then
-    local fn = util.filename()
+    local fn = util.filename(bufnr)
     local icon = require("nvim-web-devicons").get_icon(fn, ft) or ""
     return string.format("%s %s", icon, ft)
   else
@@ -47,13 +54,15 @@ util.filetype = function()
 end
 
 -- print filepath
-util.filepath = function()
-  return vim.fn.expand "%:p"
+util.filepath = function(bufnr)
+  local name = vim.fn.bufname(bufnr)
+  return vim.fn.fnamemodify(name, "%:p")
 end
 
 -- print filepath relative to current directory
-util.relpath = function()
-  local basename = vim.fn.fnamemodify(vim.fn.expand "%:h", ":p:~:.")
+util.relpath = function(bufnr)
+  local name = vim.fn.bufname(bufnr)
+  local basename = vim.fn.fnamemodify(name, ":h:p:~:.")
   if basename == "" or basename == "." then
     return ""
   else
@@ -62,11 +71,12 @@ util.relpath = function()
 end
 
 -- print non-standard fileformat and encoding
-util.metadata = function()
+util.metadata = function(bufnr)
   local lhs = ""
   local rhs = ""
-  local format = vim.bo.fileformat
-  local encoding = vim.bo.fileencoding
+  local name = vim.fn.bufname(bufnr)
+  local format = vim.api.nvim_buf_get_option(name, "fileformat")
+  local encoding = vim.api.nvim_buf_get_option(name, "fileencoding")
   if #format > 0 and format ~= "unix" then
     lhs = format
   end
@@ -89,11 +99,11 @@ end
 util.git_branch = function(bufnr)
   local name = vim.fn.bufname(bufnr)
   local result = "  "
-  local j = Job:new({
+  local j = Job:new {
     command = "git",
-    args = {"branch", "--show-current"},
+    args = { "branch", "--show-current" },
     cwd = vim.fn.fnamemodify(name, ":h"),
-  })
+  }
   local ok, branch = pcall(function()
     return vim.trim(j:sync()[1])
   end)
