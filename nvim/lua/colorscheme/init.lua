@@ -227,7 +227,7 @@ function M.setup(colors)
   hi.TSPunctDelimiter = { guifg = c.base14, guibg = nil, gui = "none", guisp = nil }
   hi.TSPunctBracket = { guifg = c.base14, guibg = nil, gui = "none", guisp = nil }
   hi.TSPunctSpecial = { guifg = c.base14, guibg = nil, gui = "none", guisp = nil }
-  hi.TSRepeat = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
+  hi.TSRepeat = { guifg = c.base13, guibg = nil, gui = "none", guisp = nil }
   hi.TSString = { guifg = c.base0B, guibg = nil, gui = "none", guisp = nil }
   hi.TSStringRegex = { guifg = c.base0B, guibg = nil, gui = "none", guisp = nil }
   hi.TSStringEscape = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
@@ -245,7 +245,7 @@ function M.setup(colors)
   hi.TSType = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.TSTypeBuiltin = { guifg = c.base0A, guibg = nil, gui = "italic", guisp = nil }
   hi.TSVariable = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
-  hi.TSVariableBuiltin = { guifg = c.base0C, guibg = nil, gui = "italic", guisp = nil }
+  hi.TSVariableBuiltin = { guifg = c.base0C, guibg = nil, gui = "bold", guisp = nil }
   hi.TSDefinition = { guifg = nil, guibg = nil, gui = "underline", guisp = c.base0E }
   hi.TSDefinitionUsage = { guifg = nil, guibg = nil, gui = "underline", guisp = c.base0A }
   hi.TSCurrentScope = { guifg = nil, guibg = nil, gui = "bold", guisp = nil }
