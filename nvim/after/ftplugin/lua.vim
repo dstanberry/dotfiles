@@ -1,1 +1,1 @@
-../../vim/ftplugin/lua.vim
+../../../vim/after/ftplugin/lua.vim

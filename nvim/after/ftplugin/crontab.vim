@@ -1,1 +1,1 @@
-../../vim/ftplugin/crontab.vim
+../../../vim/after/ftplugin/crontab.vim

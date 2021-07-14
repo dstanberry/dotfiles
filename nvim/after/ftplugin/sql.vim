@@ -1,1 +1,1 @@
-../../vim/ftplugin/sql.vim
+../../../vim/after/ftplugin/sql.vim

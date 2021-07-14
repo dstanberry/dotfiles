@@ -1,1 +1,1 @@
-../../vim/ftplugin/sh.vim
+../../../vim/after/ftplugin/sh.vim
