@@ -14,7 +14,7 @@ local fp = {
 
 -- only show filetype in statusline for these filetypes
 local ft = {
-  "NeogitStatus",
+  "Neogit",
   "qf",
   "TelescopePrompt",
 }
@@ -118,7 +118,8 @@ statusline.focus = function(win_id)
     end
   end
   for _, t in ipairs(ft) do
-    if type == t then
+    local match = string.match(type, t) or ""
+    if type == t or #match > 0 then
       return plugin(bufnr)
     end
   end
