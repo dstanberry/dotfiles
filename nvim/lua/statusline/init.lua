@@ -117,7 +117,7 @@ end
 -- default statusline for various plugins
 local function plugin(bufnr)
   return table.concat {
-    add(hi.user3, { " ", string.format("[%s]", util.filetype(bufnr)) }, true),
+    add(hi.user3, { " ", string.format("[%s]", util.filename(bufnr)) }, true),
     hi.segment,
   }
 end
