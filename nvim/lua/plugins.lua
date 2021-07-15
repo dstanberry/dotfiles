@@ -73,10 +73,10 @@ return require("packer").startup(function(use)
 
   -- framework for setting up language servers
   use "neovim/nvim-lspconfig"
+  -- integrate lua LSP API
+  use "folke/lua-dev.nvim"
   -- show signature hint while typing
   use "ray-x/lsp_signature.nvim"
-  -- centralize installation of lua-language-server (sumneko)
-  use "tjdevries/nlua.nvim"
 
   -- display git changes in gutter
   use { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } }

@@ -3,8 +3,7 @@
 ---------------------------------------------------------------
 -- verify lspconfig and nlua-nvim are available
 local ok, lspconfig = pcall(require, "lspconfig")
-local has_nlua, nluaconfig = pcall(require, "nlua.lsp.nvim")
-if not ok or not has_nlua then
+if not ok then
   return
 end
 
@@ -120,23 +119,17 @@ local function load_servers()
     "efm",
     "html",
     "jsonls",
-    "sumneko_ls",
+    "sumneko_lua",
     "pyright",
     "vimls",
   }
   for _, server in ipairs(servers) do
     local config = get_server_configuration()
-    if server == "sumneko_ls" then
-      local sumneko = require "remote.lsp.sumneko"
-      config = vim.tbl_extend("force", config, sumneko)
-      nluaconfig.setup(lspconfig, config)
-    else
-      local has_config, extra_config = pcall(require, "remote.lsp." .. server)
-      if has_config then
-        config = vim.tbl_extend("force", config, extra_config)
-      end
-      lspconfig[server].setup(config)
+    local has_config, extra_config = pcall(require, "remote.lsp." .. server)
+    if has_config then
+      config = vim.tbl_extend("force", config, extra_config)
     end
+    lspconfig[server].setup(config)
   end
 end
 

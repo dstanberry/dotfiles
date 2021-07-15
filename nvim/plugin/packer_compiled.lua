@@ -109,13 +109,13 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/lsp_signature.nvim"
   },
+  ["lua-dev.nvim"] = {
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/lua-dev.nvim"
+  },
   neogit = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/neogit"
-  },
-  ["nlua.nvim"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nlua.nvim"
   },
   ["nvim-compe"] = {
     loaded = true,
