@@ -2,8 +2,8 @@
 -- => Statusline Configuration
 ---------------------------------------------------------------
 -- load statusline utilities
-local hi = require "statusline.highlight"
-local util = require "statusline.util"
+local hi = require "ui.statusline.highlight"
+local data = require "ui.statusline.data"
 
 -- only show relpath in statusline for these filetypes
 local fp = {
@@ -52,6 +52,10 @@ end
 
 -- add lsp diagnostic section to statusline
 local function diag(hl, prefix, count)
+  local clients = data.get_lsp_client_count()
+  if clients == 0 then
+    return ""
+  end
   local out = prefix .. count
   if count > 0 then
     return hl .. out
@@ -63,28 +67,28 @@ end
 local function active(bufnr)
   local mode = vim.fn.mode()
   local mode_hl = hi.mode(mode)
-  local diagnostics = util.get_lsp_diagnostics(bufnr)
+  local diagnostics = data.get_lsp_diagnostics(bufnr)
   return table.concat {
-    add(mode_hl, { util.mode() }),
-    add(mode_hl, { util.git_branch(bufnr) }),
-    add(hi.user1, { util.relpath(bufnr) }, true),
-    add(hi.user2, { util.filename(bufnr), util.get_modified(bufnr) }),
+    add(mode_hl, { data.mode() }),
+    add(mode_hl, { data.git_branch(bufnr) }),
+    add(hi.user1, { data.relpath(bufnr) }, true),
+    add(hi.user2, { data.filename(bufnr), data.get_modified(bufnr) }),
     hi.segment,
     add(hi.custom0, {
       diag(hi.lsperror, "E:", diagnostics.errors),
       diag(hi.lspwarning, "W:", diagnostics.warnings),
     }),
-    add(hi.custom00, { util.get_readonly(bufnr), util.metadata(bufnr) }),
-    add(mode_hl, { util.filetype(bufnr) }),
-    add(hi.user4, { " ", util.line_number(), util.column_number() }),
+    add(hi.custom00, { data.get_readonly(bufnr), data.metadata(bufnr) }),
+    add(mode_hl, { data.filetype(bufnr) }),
+    add(hi.user4, { " ", data.line_number(), data.column_number() }),
   }
 end
 
 -- default statusline for inactive windows
 local function inactive(bufnr)
   return table.concat {
-    add(hi.user3, { " ", util.relpath(bufnr) }, true),
-    add(hi.user3, { util.filename(bufnr), util.get_modified(bufnr) }),
+    add(hi.user3, { " ", data.relpath(bufnr) }, true),
+    add(hi.user3, { data.filename(bufnr), data.get_modified(bufnr) }),
     hi.segment,
   }
 end
@@ -92,7 +96,7 @@ end
 -- default statusline for file explorers
 local function explorer(bufnr)
   return table.concat {
-    add(hi.user3, { " ", util.relpath(bufnr) }, true),
+    add(hi.user3, { " ", data.relpath(bufnr) }, true),
     hi.segment,
   }
 end
@@ -100,8 +104,8 @@ end
 -- default statusline for file explorers
 local function help_active(bufnr)
   return table.concat {
-    add(hi.user1, { " ", util.relpath(bufnr) }, true),
-    add(hi.user2, { util.filename(bufnr), util.get_modified(bufnr) }),
+    add(hi.user1, { " ", data.relpath(bufnr) }, true),
+    add(hi.user2, { data.filename(bufnr), data.get_modified(bufnr) }),
     hi.segment,
   }
 end
@@ -109,7 +113,7 @@ end
 -- default statusline for file explorers
 local function help_inactive(bufnr)
   return table.concat {
-    add(hi.user3, { " ", util.filepath(bufnr) }, true),
+    add(hi.user3, { " ", data.filepath(bufnr) }, true),
     hi.segment,
   }
 end
@@ -117,7 +121,7 @@ end
 -- default statusline for various plugins
 local function plugin(bufnr)
   return table.concat {
-    add(hi.user3, { " ", string.format("[%s]", util.filename(bufnr)) }, true),
+    add(hi.user3, { " ", string.format("[%s]", data.filename(bufnr)) }, true),
     hi.segment,
   }
 end
@@ -150,7 +154,7 @@ statusline.focus = function(win_id)
       return plugin(bufnr)
     end
   end
-  type = vim.fn.getftype(util.filepath(bufnr))
+  type = vim.fn.getftype(data.filepath(bufnr))
   local name = vim.fn.bufname(bufnr)
   local line = ""
   if type == "file" or #name > 0 then
@@ -188,7 +192,7 @@ statusline.dim = function(win_id)
       return plugin(bufnr)
     end
   end
-  type = vim.fn.getftype(util.filepath(bufnr))
+  type = vim.fn.getftype(data.filepath(bufnr))
   if type == "file" or #name > 0 then
     return inactive(bufnr)
   else
@@ -205,13 +209,13 @@ statusline.check = function()
       vim.fn.setwinvar(
         w,
         "statusline",
-        "string.format([[%%!luaeval('require(\"statusline\").focus(%s)')]], vim.api.nvim_get_current_win())"
+        "string.format([[%%!luaeval('require(\"ui.statusline\").focus(%s)')]], vim.api.nvim_get_current_win())"
       )
     else
       vim.fn.setwinvar(
         w,
         "statusline",
-        "string.format([[%%!luaeval('require(\"statusline\").dim(%s)')]], vim.api.nvim_get_current_win())"
+        "string.format([[%%!luaeval('require(\"ui.statusline\").dim(%s)')]], vim.api.nvim_get_current_win())"
       )
     end
   end
@@ -221,9 +225,9 @@ end
 statusline.setup = function()
   vim.cmd [=[ augroup statusline ]=]
   vim.cmd [=[ autocmd! ]=]
-  vim.cmd [=[  autocmd CompleteDonePre * :lua vim.wo.statusline = string.format([[%%!luaeval('require("statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=]
-  vim.cmd [=[  autocmd FocusGained,BufEnter,BufWinEnter,WinEnter * :lua vim.wo.statusline = string.format([[%%!luaeval('require("statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=]
-  vim.cmd [=[  autocmd FocusLost,BufLeave,BufWinLeave,WinLeave * :lua vim.wo.statusline = string.format([[%%!luaeval('require("statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=]
+  vim.cmd [=[  autocmd CompleteDonePre * :lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=]
+  vim.cmd [=[  autocmd FocusGained,BufEnter,BufWinEnter,WinEnter * :lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=]
+  vim.cmd [=[  autocmd FocusLost,BufLeave,BufWinLeave,WinLeave * :lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=]
   vim.cmd [=[ augroup END ]=]
   vim.cmd [=[ doautocmd BufWinEnter ]=]
 

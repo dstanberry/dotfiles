@@ -115,3 +115,6 @@ require("nvim-treesitter.configs").setup {
     },
   },
 }
+
+-- setup custom parsers
+require("remote.treesitter.parsers")

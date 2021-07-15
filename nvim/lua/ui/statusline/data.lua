@@ -5,10 +5,10 @@
 local Job = require "plenary.job"
 
 -- initialize modules table
-local util = {}
+local M = {}
 
 -- readonly indicator
-util.get_readonly = function(bufnr)
+M.get_readonly = function(bufnr)
   local name = vim.fn.bufname(bufnr)
   local ro = vim.api.nvim_buf_get_option(name, "readonly")
   local mod = vim.api.nvim_buf_get_option(name, "modifiable")
@@ -20,7 +20,7 @@ util.get_readonly = function(bufnr)
 end
 
 -- modified indicator
-util.get_modified = function(bufnr)
+M.get_modified = function(bufnr)
   local name = vim.fn.bufname(bufnr)
   local mod = vim.api.nvim_buf_get_option(name, "modified")
   if mod then
@@ -31,7 +31,7 @@ util.get_modified = function(bufnr)
 end
 
 -- print filename with extension
-util.filename = function(bufnr)
+M.filename = function(bufnr)
   local name = vim.fn.bufname(bufnr)
   local fname = vim.fn.fnamemodify(name, ":t")
   if fname == "" then
@@ -41,11 +41,11 @@ util.filename = function(bufnr)
 end
 
 -- print filetype with icon
-util.filetype = function(bufnr)
+M.filetype = function(bufnr)
   local name = vim.fn.bufname(bufnr)
   local ft = vim.api.nvim_buf_get_option(name, "filetype")
   if #ft > 0 then
-    local fn = util.filename(bufnr)
+    local fn = M.filename(bufnr)
     local icon = require("nvim-web-devicons").get_icon(fn, ft) or ""
     return string.format("%s %s", icon, ft)
   else
@@ -54,13 +54,13 @@ util.filetype = function(bufnr)
 end
 
 -- print filepath
-util.filepath = function(bufnr)
+M.filepath = function(bufnr)
   local name = vim.fn.bufname(bufnr)
   return vim.fn.fnamemodify(name, "%:p")
 end
 
 -- print filepath relative to current directory
-util.relpath = function(bufnr)
+M.relpath = function(bufnr)
   local name = vim.fn.bufname(bufnr)
   local basename = vim.fn.fnamemodify(name, ":h:p:~:.")
   if basename == "" or basename == "." then
@@ -71,7 +71,7 @@ util.relpath = function(bufnr)
 end
 
 -- print non-standard fileformat and encoding
-util.metadata = function(bufnr)
+M.metadata = function(bufnr)
   local lhs = ""
   local rhs = ""
   local name = vim.fn.bufname(bufnr)
@@ -91,12 +91,12 @@ util.metadata = function(bufnr)
 end
 
 -- print mode identifier
-util.mode = function()
+M.mode = function()
   return "▊"
 end
 
 -- print git branch with icon
-util.git_branch = function(bufnr)
+M.git_branch = function(bufnr)
   local name = vim.fn.bufname(bufnr)
   local result = "  "
   local j = Job:new {
@@ -114,7 +114,7 @@ util.git_branch = function(bufnr)
 end
 
 -- paste mode identifier
-util.paste = function()
+M.paste = function()
   local result = ""
   local paste = vim.go.paste
   if paste then
@@ -124,7 +124,12 @@ util.paste = function()
 end
 
 -- print lsp diagnostic count
-util.get_lsp_diagnostics = function(bufnr)
+M.get_lsp_client_count = function(bufnr)
+ local clients = vim.lsp.buf_get_clients(bufnr)
+ return #clients
+end
+-- print lsp diagnostic count
+M.get_lsp_diagnostics = function(bufnr)
   local result = {}
   local levels = {
     errors = "Error",
@@ -139,13 +144,13 @@ util.get_lsp_diagnostics = function(bufnr)
 end
 
 -- print line numbering
-util.line_number = function()
+M.line_number = function()
   return "ℓ %l"
 end
 
 -- print column numbering
-util.column_number = function()
+M.column_number = function()
   return "с %c"
 end
 
-return util
+return M

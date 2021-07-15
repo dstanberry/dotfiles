@@ -34,34 +34,22 @@ BMAP = function(bufnr, mode, key, f, options, vimchunk)
   vim.api.nvim_buf_set_keymap(bufnr, mode, key, rhs, opts)
 end
 
----------------------------------------------------------------
--- => Plugins
----------------------------------------------------------------
--- install packer.nvim if necessary
-local download_packer = function()
+-- initialize modules table
+local M = {}
+
+-- install packer.nvim
+M.packer_bootstrap = function()
   if vim.fn.input "Download Packer? (y for yes)" ~= "y" then
     return
   end
-
   local directory = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data")
-
   vim.fn.mkdir(directory, "p")
-
   local out = vim.fn.system(
     string.format("git clone %s %s", "https://github.com/wbthomason/packer.nvim", directory .. "/packer.nvim")
   )
-
   print(out)
   print "Downloading packer.nvim..."
-  print "( You'll need to restart now )"
+  print "( Restart is required! )"
 end
 
-if not pcall(require, "packer") then
-  download_packer()
-  return
-end
-
--- source plugin manager
-require "plugins"
--- source plugins in lua/
-require("startup.remote").setup()
+return M

@@ -2,8 +2,8 @@
 -- => Colorscheme Configuration
 ---------------------------------------------------------------
 -- load colorscheme utilities
-local themes = require "colorscheme.colors"
-local groups = require "colorscheme.groups"
+local themes = require "ui.theme.colors"
+local groups = require "ui.theme.groups"
 
 -- initialize modules table
 local M = {}

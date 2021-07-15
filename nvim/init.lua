@@ -38,13 +38,24 @@ if not vim.fn.isdirectory(netrw) then
   vim.fn.mkdir(netrw, "p")
 end
 
--- lazy-load potentially expensive resources
+-- lazy-load any predefined resources
 vim.cmd [[ call functions#defer('call deferred#load_dir_hash()') ]]
 
--- extra lua configuration (loads globals and remote plugin configurations)
-require "startup"
+-- load helpers
+local util = require "util"
+
+-- ensure packer.nvim is available
+if not pcall(require, "packer") then
+  util.packer_bootstrap()
+  -- prevent anything else from loading
+  return
+end
 
 -- define colorscheme
-R("colorscheme").setup()
--- define statusline contents
-R("statusline").setup()
+R("ui.theme").setup()
+-- define statusline
+R("ui.statusline").setup()
+
+vim.defer_fn(function()
+  require "plugins"
+end, 0)

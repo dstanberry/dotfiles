@@ -74,24 +74,31 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/FixCursorHold.nvim"
   },
   LuaSnip = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/LuaSnip"
+    config = { "\27LJ\1\2.\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\19remote.luasnip\frequire\0" },
+    load_after = {
+      ["nvim-compe"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/LuaSnip",
+    wants = { "friendly-snippets" }
   },
   ["buftabline.nvim"] = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/buftabline.nvim"
   },
-  ["complextras.nvim"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/complextras.nvim"
-  },
   ["friendly-snippets"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/friendly-snippets"
+    load_after = {
+      ["nvim-compe"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/friendly-snippets"
   },
   ["gentoo-syntax"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/gentoo-syntax"
+    loaded = false,
+    needs_bufread = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/gentoo-syntax"
   },
   ["gitsigns.nvim"] = {
     loaded = true,
@@ -118,12 +125,18 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/neogit"
   },
   ["nvim-compe"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-compe"
+    after = { "vscode-csharp-snippets", "vim-snippets", "vsc-lua", "friendly-snippets", "LuaSnip", "python-snippets" },
+    after_files = { "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-compe/after/plugin/compe.vim" },
+    config = { "\27LJ\1\2j\0\0\2\0\4\0\n4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\0014\0\0\0%\1\3\0>\0\2\1G\0\1\0\22remote.compe.menu\24remote.compe.keymap\17remote.compe\frequire\0" },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-compe",
+    wants = { "LuaSnip" }
   },
   ["nvim-dap"] = {
     loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-dap"
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-dap",
+    wants = { "nvim-dap-virtual-text", "nvim-dap-python", "one-small-step-for-vimkind" }
   },
   ["nvim-dap-python"] = {
     loaded = true,
@@ -134,32 +147,54 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-dap-virtual-text"
   },
   ["nvim-jqx"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-jqx"
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-jqx"
   },
   ["nvim-lspconfig"] = {
+    config = { "\27LJ\1\2*\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\15remote.lsp\frequire\0" },
     loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-lspconfig"
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
+    wants = { "lsp_signature.nvim", "lua-dev" }
   },
   ["nvim-treesitter"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-treesitter"
+    after = { "nvim-treesitter-refactor", "nvim-treesitter-pairs", "playground", "nvim-ts-rainbow", "nvim-treesitter-textobjects" },
+    config = { "\27LJ\1\2W\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\30remote.treesitter.parsers\22remote.treesitter\frequire\0" },
+    loaded = false,
+    needs_bufread = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-treesitter"
   },
   ["nvim-treesitter-pairs"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-treesitter-pairs"
+    load_after = {
+      ["nvim-treesitter"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-treesitter-pairs"
   },
   ["nvim-treesitter-refactor"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-treesitter-refactor"
+    load_after = {
+      ["nvim-treesitter"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-treesitter-refactor"
   },
   ["nvim-treesitter-textobjects"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-treesitter-textobjects"
+    load_after = {
+      ["nvim-treesitter"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-treesitter-textobjects"
   },
   ["nvim-ts-rainbow"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-ts-rainbow"
+    load_after = {
+      ["nvim-treesitter"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-ts-rainbow"
   },
   ["nvim-web-devicons"] = {
     loaded = true,
@@ -174,8 +209,13 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/packer.nvim"
   },
   playground = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/playground"
+    commands = { "TSHighlightCapturesUnderCursor" },
+    load_after = {
+      ["nvim-treesitter"] = true
+    },
+    loaded = false,
+    needs_bufread = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/playground"
   },
   ["plenary.nvim"] = {
     loaded = true,
@@ -186,8 +226,12 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/popup.nvim"
   },
   ["python-snippets"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/python-snippets"
+    load_after = {
+      ["nvim-compe"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/python-snippets"
   },
   tabular = {
     loaded = true,
@@ -197,21 +241,27 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim"
   },
-  ["telescope-fzy-native.nvim"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/telescope-fzy-native.nvim"
-  },
   ["telescope-lsp-handlers.nvim"] = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/telescope-lsp-handlers.nvim"
   },
-  ["telescope.nvim"] = {
+  ["telescope-symbols.nvim"] = {
     loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/telescope.nvim"
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/telescope-symbols.nvim"
+  },
+  ["telescope.nvim"] = {
+    config = { "\27LJ\1\2T\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\28remote.telescope.keymap\21remote.telescope\frequire\0" },
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/telescope.nvim",
+    wants = { "plenary.nvim", "popup.nvim", "telescope-fzy-native.nvim", "telescope-fzf-native.nvim", "telescope-project.nvim", "telescope-symbols.nvim", "telescope-lsp-handlers.nvim" }
   },
   ["twilight.nvim"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/twilight.nvim"
+    load_after = {
+      ["zen-mode.nvim"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/twilight.nvim"
   },
   ["vim-commentary"] = {
     loaded = true,
@@ -231,8 +281,9 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json"
   },
   ["vim-log-highlighting"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vim-log-highlighting"
+    loaded = false,
+    needs_bufread = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/vim-log-highlighting"
   },
   ["vim-ps1"] = {
     loaded = false,
@@ -250,8 +301,12 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/vim-scriptease"
   },
   ["vim-snippets"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vim-snippets"
+    load_after = {
+      ["nvim-compe"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/vim-snippets"
   },
   ["vim-startuptime"] = {
     commands = { "StartupTime" },
@@ -273,42 +328,100 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vim-tmux-focus-events"
   },
   ["vsc-lua"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vsc-lua"
+    load_after = {
+      ["nvim-compe"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/vsc-lua"
   },
   ["vscode-csharp-snippets"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/vscode-csharp-snippets"
+    load_after = {
+      ["nvim-compe"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/vscode-csharp-snippets"
   },
   ["zen-mode.nvim"] = {
-    loaded = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/zen-mode.nvim"
+    after = { "twilight.nvim" },
+    commands = { "ZenMode" },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/zen-mode.nvim",
+    wants = { "twilight.nvim" }
   }
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: telescope.nvim
+time([[Config for telescope.nvim]], true)
+try_loadstring("\27LJ\1\2T\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\28remote.telescope.keymap\21remote.telescope\frequire\0", "config", "telescope.nvim")
+time([[Config for telescope.nvim]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+try_loadstring("\27LJ\1\2*\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\15remote.lsp\frequire\0", "config", "nvim-lspconfig")
+time([[Config for nvim-lspconfig]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
+if vim.fn.exists(":Verbose") == 0 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file Verbose lua require("packer.load")({'vim-scriptease'}, { cmd = "Verbose", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
-vim.cmd [[command! -nargs=* -range -bang -complete=file Messages lua require("packer.load")({'vim-scriptease'}, { cmd = "Messages", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+end
+if vim.fn.exists(":StartupTime") == 0 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file StartupTime lua require("packer.load")({'vim-startuptime'}, { cmd = "StartupTime", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+end
+if vim.fn.exists(":TSHighlightCapturesUnderCursor") == 0 then
+vim.cmd [[command! -nargs=* -range -bang -complete=file TSHighlightCapturesUnderCursor lua require("packer.load")({'playground'}, { cmd = "TSHighlightCapturesUnderCursor", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+end
+if vim.fn.exists(":Messages") == 0 then
+vim.cmd [[command! -nargs=* -range -bang -complete=file Messages lua require("packer.load")({'vim-scriptease'}, { cmd = "Messages", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+end
+if vim.fn.exists(":ZenMode") == 0 then
+vim.cmd [[command! -nargs=* -range -bang -complete=file ZenMode lua require("packer.load")({'zen-mode.nvim'}, { cmd = "ZenMode", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+end
+if vim.fn.exists(":Time") == 0 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file Time lua require("packer.load")({'vim-scriptease'}, { cmd = "Time", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+end
 time([[Defining lazy-load commands]], false)
 
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
 time([[Defining lazy-load filetype autocommands]], true)
-vim.cmd [[au FileType json ++once lua require("packer.load")({'vim-json'}, { ft = "json" }, _G.packer_plugins)]]
 vim.cmd [[au FileType c ++once lua require("packer.load")({'vim-syntax-extra'}, { ft = "c" }, _G.packer_plugins)]]
+vim.cmd [[au FileType gentoo-init-d ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-init-d" }, _G.packer_plugins)]]
+vim.cmd [[au FileType gentoo-package-keywords ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-package-keywords" }, _G.packer_plugins)]]
+vim.cmd [[au FileType gentoo-env-d ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-env-d" }, _G.packer_plugins)]]
+vim.cmd [[au FileType log ++once lua require("packer.load")({'vim-log-highlighting'}, { ft = "log" }, _G.packer_plugins)]]
+vim.cmd [[au FileType gentoo-changelog ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-changelog" }, _G.packer_plugins)]]
+vim.cmd [[au FileType gentoo-package-properties ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-package-properties" }, _G.packer_plugins)]]
+vim.cmd [[au FileType json ++once lua require("packer.load")({'vim-json', 'nvim-jqx'}, { ft = "json" }, _G.packer_plugins)]]
 vim.cmd [[au FileType ps1 ++once lua require("packer.load")({'vim-ps1'}, { ft = "ps1" }, _G.packer_plugins)]]
+vim.cmd [[au FileType gentoo-use-desc ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-use-desc" }, _G.packer_plugins)]]
+vim.cmd [[au FileType gentoo-package-use ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-package-use" }, _G.packer_plugins)]]
+vim.cmd [[au FileType gentoo-metadata ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-metadata" }, _G.packer_plugins)]]
+vim.cmd [[au FileType gentoo-package-make ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-package-make" }, _G.packer_plugins)]]
+vim.cmd [[au FileType gentoo-package-license ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-package-license" }, _G.packer_plugins)]]
+vim.cmd [[au FileType gentoo-make-conf ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-make-conf" }, _G.packer_plugins)]]
+vim.cmd [[au FileType gentoo-conf-d ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-conf-d" }, _G.packer_plugins)]]
 time([[Defining lazy-load filetype autocommands]], false)
+  -- Event lazy-loads
+time([[Defining lazy-load event autocommands]], true)
+vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'nvim-compe'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au BufRead * ++once lua require("packer.load")({'nvim-treesitter'}, { event = "BufRead *" }, _G.packer_plugins)]]
+time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], true)
 vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]]
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-json/ftdetect/json.vim]], false)
+time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-log-highlighting/ftdetect/log.vim]], true)
+vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-log-highlighting/ftdetect/log.vim]]
+time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-log-highlighting/ftdetect/log.vim]], false)
+time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/gentoo-syntax/ftdetect/gentoo.vim]], true)
+vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/gentoo-syntax/ftdetect/gentoo.vim]]
+time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/gentoo-syntax/ftdetect/gentoo.vim]], false)
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/ps1.vim]], true)
 vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/ps1.vim]]
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-ps1/ftdetect/ps1.vim]], false)
