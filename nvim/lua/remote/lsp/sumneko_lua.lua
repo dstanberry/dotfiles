@@ -1,6 +1,19 @@
 ---------------------------------------------------------------
 -- => (sumneko) lua-language-server configuration
 ---------------------------------------------------------------
+-- determine operating system
+local system_name
+if vim.fn.has "mac" == 1 then
+  system_name = "macOS"
+elseif vim.fn.has "unix" == 1 then
+  system_name = "Linux"
+elseif vim.fn.has "win32" == 1 then
+  system_name = "Windows"
+else
+  print "Unsupported system for sumneko"
+  return
+end
+
 -- ensure lua-dev is available
 local ok, luadev = pcall(require, "lua-dev")
 if not ok then
