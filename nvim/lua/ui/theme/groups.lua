@@ -86,7 +86,7 @@ M.apply = function(c)
   hi.NvimInternalError = { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil }
 
   hi.NormalFloat = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
-  hi.FloatBorder = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
+  hi.FloatBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
   hi.NormalNC = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
   hi.TermCursor = { guifg = c.base00, guibg = c.base06, gui = "none", guisp = nil }
   hi.TermCursorNC = { guifg = c.base00, guibg = c.base06, gui = nil, guisp = nil }
