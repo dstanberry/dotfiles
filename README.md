@@ -1,3 +1,4 @@
+<!-- markdownlint-disable MD013 -->
 # Dotfiles
 
 ![image](https://github.com/dstanberry/dotfiles/wiki/assets/vim.png)
