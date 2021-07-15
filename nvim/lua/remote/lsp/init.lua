@@ -42,8 +42,8 @@ local on_attach_nvim = function(client, bufnr)
   set_keymap("n", "gs", "vim.lsp.buf.document_symbol()")
   set_keymap("n", "g/", "vim.lsp.buf.rename()")
   set_keymap("n", "g.", "vim.lsp.diagnostic.show_line_diagnostics()")
-  set_keymap("n", "gn", "vim.lsp.diagnostic.goto_next()")
-  set_keymap("n", "gp", "vim.lsp.diagnostic.goto_prev()")
+  set_keymap("n", "gn", "vim.lsp.diagnostic.goto_next({ popup_opts = { border = 'single' }}))")
+  set_keymap("n", "gp", "vim.lsp.diagnostic.goto_prev({ popup_opts = { border = 'single' }}))")
   set_keymap("n", "gl", "vim.lsp.diagnostic.set_loclist()")
   set_keymap("n", "<localleader>wl", "P(vim.lsp.buf.list_workspace_folders())")
   set_keymap("n", "<localleader>wa", "vim.lsp.buf.add_workspace_folder()")
@@ -97,6 +97,13 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagn
   virtual_text = { prefix = "▪", spacing = 4 },
 })
 
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+  border = "single",
+})
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+  border = "single",
+})
 -- pack lsp configuration
 local function get_server_configuration()
   -- enable snippet support
