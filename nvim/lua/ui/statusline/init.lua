@@ -19,6 +19,7 @@ local ff = {
 -- only show filetype in statusline for these filetypes
 local ft = {
   "Neogit",
+  "packer",
   "qf",
   "TelescopePrompt",
 }

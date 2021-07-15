@@ -11,7 +11,7 @@ return require("packer").startup(function(use)
   -- emphasize the current matched search pattern
   use "wincent/loupe"
   -- preview/browse json files with ease
-  use { "gennaro-tedesco/nvim-jqx", ft = "json" }
+  use { "gennaro-tedesco/nvim-jqx", opt = true, ft = "json" }
   -- easy text alignment
   use "godlygeek/tabular"
   -- file-type aware comments
@@ -21,13 +21,13 @@ return require("packer").startup(function(use)
   -- color highlighter
   use { "rrethy/vim-hexokinase", run = "make hexokinase" }
   -- syntax highlighting for log files
-  use { "mtdl9/vim-log-highlighting", ft = "log" }
+  use { "mtdl9/vim-log-highlighting", opt = true, ft = "log" }
   -- enable repeating actions with <.>
   use "tpope/vim-repeat"
   -- debug vim plugins
-  use { "tpope/vim-scriptease", cmd = { "Messages", "Verbose", "Time" } }
+  use { "tpope/vim-scriptease", opt = true, cmd = { "Messages", "Verbose", "Time" } }
   -- better profiling of startup time.
-  use { "dstein64/vim-startuptime", cmd = "StartupTime" }
+  use { "dstein64/vim-startuptime", opt = true, cmd = "StartupTime" }
   -- surround sequence with tags
   use "tpope/vim-surround"
   -- enable focus events
@@ -37,6 +37,7 @@ return require("packer").startup(function(use)
   if vim.fn.isdirectory "/etc/portage" then
     use {
       "gentoo/gentoo-syntax",
+      opt = true,
       ft = {
         "gentoo-changelog",
         "gentoo-conf-d",
@@ -51,7 +52,6 @@ return require("packer").startup(function(use)
         "gentoo-package-use",
         "gentoo-use-desc",
       },
-      opt = true,
     }
   end
   -- better syntax highlighting for json
@@ -68,6 +68,7 @@ return require("packer").startup(function(use)
   -- minimalist tabline
   use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   -- incremental parsing system for programming tools
+
   use {
     "nvim-treesitter/nvim-treesitter",
     opt = true,
@@ -90,6 +91,17 @@ return require("packer").startup(function(use)
       require "remote.treesitter.parsers"
     end,
   }
+  -- distraction-free coding
+  use {
+    "folke/zen-mode.nvim",
+    cmd = "ZenMode",
+    opt = true,
+    wants = "twilight.nvim",
+    requires = {
+      -- dim inactive portions of text using treesitter
+      { "folke/twilight.nvim", requires = { "nvim-treesitter/nvim-treesitter" } },
+    },
+  }
 
   -- framework for setting up language servers
   use {
@@ -105,11 +117,8 @@ return require("packer").startup(function(use)
       "ray-x/lsp_signature.nvim",
     },
   }
-
-  -- display git changes in gutter
-  use { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } }
-  -- text based user interface to git
-  use { "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" }
+  -- lsp driven tree view for symbols
+  use { "simrat39/symbols-outline.nvim", cmd = "SymbolsOutline", requires = { "nvim-lua/plenary.nvim" } }
 
   -- modular fuzzy finder
   use {
@@ -188,15 +197,16 @@ return require("packer").startup(function(use)
     },
   }
 
-  -- distraction-free coding
+  -- display git changes in gutter
   use {
-    "folke/zen-mode.nvim",
-    cmd = "ZenMode",
-    opt = true,
-    wants = "twilight.nvim",
-    requires = {
-      -- dim inactive portions of text using treesitter
-      "folke/twilight.nvim",
-    },
+    "lewis6991/gitsigns.nvim",
+    event = "BufReadPre",
+    wants = "plenary.nvim",
+    requires = { "nvim-lua/plenary.nvim" },
   }
+  -- text based user interface to git
+  use { "TimUntersberger/neogit", cmd = "Neogit", requires = "nvim-lua/plenary.nvim" }
+
+  -- preview markdown directly
+  use({ "npxbr/glow.nvim", cmd = "Glow" })
 end)
