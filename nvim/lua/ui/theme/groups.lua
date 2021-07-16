@@ -275,10 +275,10 @@ M.apply = function(c)
   hi.TelescopeSelectionCaret = { guifg = c.base04, guibg = c.tele00, gui = "bold", guisp = nil }
   hi.TelescopeMultiSelection = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
   hi.TelescopeNormal = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
-  hi.TelescopeBorder = { guifg = c.base03, guibg = c.base00, gui = nil, guisp = nil }
-  hi.TelescopePromptBorder = { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil }
-  hi.TelescopeResultsBorder = { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil }
-  hi.TelescopePreviewBorder = { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil }
+  hi.TelescopeBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
+  hi.TelescopePromptBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
+  hi.TelescopeResultsBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
+  hi.TelescopePreviewBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
   hi.TelescopeMatching = { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil }
   hi.TelescopePromptPrefix = { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil }
 
