@@ -55,11 +55,11 @@ require("nvim-treesitter.configs").setup {
     navigation = {
       enable = false,
       keymaps = {
-        goto_definition = "gnd",
-        list_definitions = "gnD",
-        list_definitions_toc = "gO",
-        goto_next_usage = "<a-*>",
-        goto_previous_usage = "<a-#>",
+        goto_definition = "<leader>gd",
+        list_definitions = "<leader>gl",
+        list_definitions_toc = "<leader>gO",
+        goto_next_usage = "<leader>gr",
+        goto_previous_usage = "<leader>gR",
       },
     },
   },
