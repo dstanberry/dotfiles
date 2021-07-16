@@ -9,11 +9,16 @@ return require("packer").startup(function(use)
   -- fix cursorhold events
   use { "antoinemadec/FixCursorHold.nvim" }
   -- emphasize the current matched search pattern
-  use "wincent/loupe"
+  use {
+    "wincent/loupe",
+    config = function()
+      vim.g.LoupeClearHighlightMap = 0
+    end,
+  }
   -- preview/browse json files with ease
   use { "gennaro-tedesco/nvim-jqx", opt = true, ft = "json" }
   -- easy text alignment
-  use "godlygeek/tabular"
+  use { "godlygeek/tabular", cmd = "Tabularize" }
   -- file-type aware comments
   use "tpope/vim-commentary"
   -- create file and parent direcory at the same time
@@ -30,8 +35,6 @@ return require("packer").startup(function(use)
   use { "dstein64/vim-startuptime", opt = true, cmd = "StartupTime" }
   -- surround sequence with tags
   use "tpope/vim-surround"
-  -- enable focus events
-  use "tmux-plugins/vim-tmux-focus-events"
 
   -- syntax highlighting for portage
   if vim.fn.isdirectory "/etc/portage" then
@@ -61,8 +64,6 @@ return require("packer").startup(function(use)
   -- syntax highlighting for c, bison and flex
   use { "justinmk/vim-syntax-extra", ft = "c", opt = true }
 
-  -- devicons (requires patched font)
-  use "kyazdani42/nvim-web-devicons"
   -- minimalist file explorer
   use { "tamago324/lir.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   -- minimalist tabline
@@ -137,7 +138,11 @@ return require("packer").startup(function(use)
       "telescope-lsp-handlers.nvim",
     },
     requires = {
+      -- devicons (requires patched font)
+      "kyazdani42/nvim-web-devicons",
+      -- port of vim's popup API
       "nvim-lua/popup.nvim",
+      -- library containing functions not (yet) in core
       "nvim-lua/plenary.nvim",
       -- pick and insert symbols
       "nvim-telescope/telescope-symbols.nvim",
@@ -145,7 +150,7 @@ return require("packer").startup(function(use)
       "nvim-telescope/telescope-fzf-native.nvim",
       -- pre-compiled fzy sorter
       { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
-      -- Telescope extension for LSP
+      -- lsp extension
       "gbrlsnchs/telescope-lsp-handlers.nvim",
     },
   }
@@ -208,5 +213,5 @@ return require("packer").startup(function(use)
   use { "TimUntersberger/neogit", cmd = "Neogit", requires = "nvim-lua/plenary.nvim" }
 
   -- preview markdown directly
-  use({ "npxbr/glow.nvim", cmd = "Glow" })
+  use { "npxbr/glow.nvim", cmd = "Glow" }
 end)
