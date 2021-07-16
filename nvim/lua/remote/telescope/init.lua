@@ -73,18 +73,18 @@ require("telescope").setup {
     lsp_handlers = {
       disable = {},
       code_action = {
-        telescope = require("telescope.themes").get_dropdown {
+        telescope = require("telescope.themes").get_ivy {
           previewer = false,
           results_title = false,
         },
       },
       location = {
-        telescope = require("telescope.themes").get_dropdown {
+        telescope = require("telescope.themes").get_ivy {
           results_title = false,
         },
       },
       symbol = {
-        telescope = require("telescope.themes").get_dropdown {
+        telescope = require("telescope.themes").get_ivy {
           results_title = false,
         },
       },
