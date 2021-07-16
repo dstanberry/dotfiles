@@ -7,11 +7,11 @@ setopt AUTO_RESUME
 # allow clobbering with >
 setopt CLOBBER
 
-# enable command auto-correction
-setopt CORRECT
+# disable command auto-correction
+unsetopt CORRECT
 
-# enable argument auto-correction
-setopt CORRECT_ALL
+# disable argument auto-correction
+unsetopt CORRECT_ALL
 
 # disable start (c-s) and stop (c-q) characters
 setopt NO_FLOW_CONTROL
