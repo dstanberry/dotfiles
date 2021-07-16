@@ -68,8 +68,8 @@ return require("packer").startup(function(use)
   use { "tamago324/lir.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   -- minimalist tabline
   use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
-  -- incremental parsing system for programming tools
 
+  -- incremental parsing system for programming tools
   use {
     "nvim-treesitter/nvim-treesitter",
     opt = true,
