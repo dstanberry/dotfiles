@@ -67,7 +67,7 @@ function gem() {
 function go() {
   local PKG=$CONFIG_HOME/shared/packages/go.txt
   if [ "$1" = "load" ]; then
-    < "$PKG" xargs command "go" get
+    < "$PKG" xargs "go" get
   else
     command go "$@"
   fi
