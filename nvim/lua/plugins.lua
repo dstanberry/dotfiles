@@ -57,12 +57,6 @@ return require("packer").startup(function(use)
       },
     }
   end
-  -- better syntax highlighting for json
-  use { "elzr/vim-json", ft = "json", opt = true }
-  -- syntax highlighting for powershell scripts
-  use { "PProvost/vim-ps1", ft = "ps1", opt = true }
-  -- syntax highlighting for c, bison and flex
-  use { "justinmk/vim-syntax-extra", ft = "c", opt = true }
 
   -- minimalist file explorer
   use { "tamago324/lir.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
@@ -187,6 +181,8 @@ return require("packer").startup(function(use)
   -- debug adapter protocol client implementation
   use {
     "mfussenegger/nvim-dap",
+    opt = true,
+    keys = "<leader>db",
     wants = {
       "nvim-dap-virtual-text",
       "nvim-dap-python",
