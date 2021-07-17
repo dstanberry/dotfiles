@@ -212,7 +212,9 @@ end
 
 -- search help files
 function M.help_tags()
-  require("telescope.builtin").help_tags { show_version = true }
+  require("telescope.builtin").help_tags(themes.get_ivy {
+    prompt_title = "\\ Documentation /",
+  })
 end
 
 -- call setmetatable whenever any of the custom modules are called
