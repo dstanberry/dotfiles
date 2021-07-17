@@ -8,4 +8,10 @@ if not ok then
 end
 
 -- default options
-git.setup()
+git.setup {
+  signs = {
+    hunk = { "", "" },
+    item = { "", "" },
+    section = { "", "" },
+  },
+}
