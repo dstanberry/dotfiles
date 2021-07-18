@@ -87,6 +87,7 @@ snippets.all = {
 --stylua: ignore
 -- custom lua snippet definitions
 snippets.lua = pack {
+  ["[[;"] = { "[[", newline " ", i(0), newline "]]" },
   ignore = {
     desc = "skip formatting for this section",
     "--stylua: ignore",
@@ -122,3 +123,6 @@ for _, plugin in ipairs(plugins) do
     paths = { string.format("%s/%s", directory, plugin) },
   }
 end
+
+-- load custom keymaps
+require "remote.luasnip.keymap"
