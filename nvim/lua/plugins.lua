@@ -78,6 +78,8 @@ return require("packer").startup(function(use)
       "nvim-treesitter/nvim-treesitter-textobjects",
       -- refactor text objects
       "nvim-treesitter/nvim-treesitter-refactor",
+      -- set commentstring based on cursor position
+      "JoosepAlviste/nvim-ts-context-commentstring",
       -- easily identify nested parentheses
       "p00f/nvim-ts-rainbow",
     },

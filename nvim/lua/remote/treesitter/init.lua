@@ -9,6 +9,9 @@ end
 -- set default options
 require("nvim-treesitter.configs").setup {
   ensure_installed = "maintained",
+  context_commentstring = {
+    enable = true,
+  },
   highlight = {
     enable = true,
     use_languagetree = false,
@@ -117,4 +120,4 @@ require("nvim-treesitter.configs").setup {
 }
 
 -- setup custom parsers
-require("remote.treesitter.parsers")
+require "remote.treesitter.parsers"

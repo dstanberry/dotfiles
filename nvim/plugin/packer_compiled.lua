@@ -136,7 +136,7 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/neogit"
   },
   ["nvim-compe"] = {
-    after = { "python-snippets", "vim-snippets", "vsc-lua", "friendly-snippets", "LuaSnip", "vscode-csharp-snippets" },
+    after = { "python-snippets", "vscode-csharp-snippets", "vim-snippets", "vsc-lua", "friendly-snippets", "LuaSnip" },
     after_files = { "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-compe/after/plugin/compe.vim" },
     config = { "\27LJ\1\2j\0\0\2\0\4\0\n4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\0014\0\0\0%\1\3\0>\0\2\1G\0\1\0\22remote.compe.menu\24remote.compe.keymap\17remote.compe\frequire\0" },
     loaded = false,
@@ -180,7 +180,7 @@ _G.packer_plugins = {
     wants = { "lsp_signature.nvim", "lua-dev" }
   },
   ["nvim-treesitter"] = {
-    after = { "nvim-treesitter-refactor", "playground", "nvim-treesitter-pairs", "nvim-treesitter-textobjects", "nvim-ts-rainbow" },
+    after = { "nvim-ts-context-commentstring", "nvim-treesitter-refactor", "playground", "nvim-treesitter-pairs", "nvim-treesitter-textobjects", "nvim-ts-rainbow" },
     config = { "\27LJ\1\2W\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\30remote.treesitter.parsers\22remote.treesitter\frequire\0" },
     loaded = false,
     needs_bufread = true,
@@ -209,6 +209,14 @@ _G.packer_plugins = {
     loaded = false,
     needs_bufread = false,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-treesitter-textobjects"
+  },
+  ["nvim-ts-context-commentstring"] = {
+    load_after = {
+      ["nvim-treesitter"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-ts-context-commentstring"
   },
   ["nvim-ts-rainbow"] = {
     load_after = {
@@ -370,50 +378,50 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: telescope.nvim
-time([[Config for telescope.nvim]], true)
-try_loadstring("\27LJ\1\2T\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\28remote.telescope.keymap\21remote.telescope\frequire\0", "config", "telescope.nvim")
-time([[Config for telescope.nvim]], false)
--- Config for: loupe
-time([[Config for loupe]], true)
-try_loadstring("\27LJ\1\0028\0\0\2\0\3\0\0054\0\0\0007\0\1\0'\1\0\0:\1\2\0G\0\1\0\27LoupeClearHighlightMap\6g\bvim\0", "config", "loupe")
-time([[Config for loupe]], false)
 -- Config for: nvim-lspconfig
 time([[Config for nvim-lspconfig]], true)
 try_loadstring("\27LJ\1\2*\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\15remote.lsp\frequire\0", "config", "nvim-lspconfig")
 time([[Config for nvim-lspconfig]], false)
+-- Config for: loupe
+time([[Config for loupe]], true)
+try_loadstring("\27LJ\1\0028\0\0\2\0\3\0\0054\0\0\0007\0\1\0'\1\0\0:\1\2\0G\0\1\0\27LoupeClearHighlightMap\6g\bvim\0", "config", "loupe")
+time([[Config for loupe]], false)
+-- Config for: telescope.nvim
+time([[Config for telescope.nvim]], true)
+try_loadstring("\27LJ\1\2T\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\28remote.telescope.keymap\21remote.telescope\frequire\0", "config", "telescope.nvim")
+time([[Config for telescope.nvim]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
-if vim.fn.exists(":StartupTime") == 0 then
+if vim.fn.exists(":StartupTime") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file StartupTime lua require("packer.load")({'vim-startuptime'}, { cmd = "StartupTime", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
-if vim.fn.exists(":Neogit") == 0 then
+if vim.fn.exists(":Neogit") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file Neogit lua require("packer.load")({'neogit'}, { cmd = "Neogit", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
-if vim.fn.exists(":Tabularize") == 0 then
+if vim.fn.exists(":Tabularize") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file Tabularize lua require("packer.load")({'tabular'}, { cmd = "Tabularize", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
-if vim.fn.exists(":Time") == 0 then
+if vim.fn.exists(":Time") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file Time lua require("packer.load")({'vim-scriptease'}, { cmd = "Time", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
-if vim.fn.exists(":Verbose") == 0 then
+if vim.fn.exists(":Verbose") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file Verbose lua require("packer.load")({'vim-scriptease'}, { cmd = "Verbose", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
-if vim.fn.exists(":SymbolsOutline") == 0 then
-vim.cmd [[command! -nargs=* -range -bang -complete=file SymbolsOutline lua require("packer.load")({'symbols-outline.nvim'}, { cmd = "SymbolsOutline", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+if vim.fn.exists(":TSHighlightCapturesUnderCursor") ~= 2 then
+vim.cmd [[command! -nargs=* -range -bang -complete=file TSHighlightCapturesUnderCursor lua require("packer.load")({'playground'}, { cmd = "TSHighlightCapturesUnderCursor", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
-if vim.fn.exists(":Glow") == 0 then
-vim.cmd [[command! -nargs=* -range -bang -complete=file Glow lua require("packer.load")({'glow.nvim'}, { cmd = "Glow", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
-end
-if vim.fn.exists(":Messages") == 0 then
-vim.cmd [[command! -nargs=* -range -bang -complete=file Messages lua require("packer.load")({'vim-scriptease'}, { cmd = "Messages", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
-end
-if vim.fn.exists(":ZenMode") == 0 then
+if vim.fn.exists(":ZenMode") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file ZenMode lua require("packer.load")({'zen-mode.nvim'}, { cmd = "ZenMode", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
-if vim.fn.exists(":TSHighlightCapturesUnderCursor") == 0 then
-vim.cmd [[command! -nargs=* -range -bang -complete=file TSHighlightCapturesUnderCursor lua require("packer.load")({'playground'}, { cmd = "TSHighlightCapturesUnderCursor", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+if vim.fn.exists(":Messages") ~= 2 then
+vim.cmd [[command! -nargs=* -range -bang -complete=file Messages lua require("packer.load")({'vim-scriptease'}, { cmd = "Messages", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+end
+if vim.fn.exists(":Glow") ~= 2 then
+vim.cmd [[command! -nargs=* -range -bang -complete=file Glow lua require("packer.load")({'glow.nvim'}, { cmd = "Glow", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+end
+if vim.fn.exists(":SymbolsOutline") ~= 2 then
+vim.cmd [[command! -nargs=* -range -bang -complete=file SymbolsOutline lua require("packer.load")({'symbols-outline.nvim'}, { cmd = "SymbolsOutline", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
 time([[Defining lazy-load commands]], false)
 
