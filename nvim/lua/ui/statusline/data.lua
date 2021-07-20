@@ -62,7 +62,7 @@ end
 -- print filepath relative to current directory
 M.relpath = function(bufnr)
   local name = vim.fn.bufname(bufnr)
-  local basename = vim.fn.fnamemodify(name, ":h:p:~:.")
+  local basename = vim.fn.fnamemodify(name, ":~:.:h:p")
   if basename == "" or basename == "." then
     return ""
   else
