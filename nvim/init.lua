@@ -41,15 +41,14 @@ end
 -- lazy-load any predefined resources
 vim.cmd [[ call functions#defer('call deferred#load_dir_hash()') ]]
 
--- load helpers
-local util = require "util"
-
 -- ensure packer.nvim is available
 if not pcall(require, "packer") then
-  util.packer_bootstrap()
+  require "util.packer".bootstrap()
   -- prevent anything else from loading
   return
 end
+
+require "util"
 
 -- define colorscheme
 R("ui.theme").setup()

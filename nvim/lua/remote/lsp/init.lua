@@ -11,11 +11,13 @@ end
 -- vim.lsp.set_log_level("debug")
 -- vim.cmd('e'..vim.lsp.get_log_path())
 
+local util = require "util"
+
 -- define buffer local features
 local on_attach_nvim = function(client, bufnr)
-  local function set_keymap(mode, key, f, options)
-    local opts = options or { noremap = true, silent = true }
-    BMAP(bufnr, mode, key, f, opts)
+  local function set_keymap(mode, key, f)
+    f = string.format("<cmd>lua %s<cr>", f)
+    util.map(mode, key, f, { noremap = true, buffer = bufnr })
   end
   -- define symbol highlighting when supported by server
   if client.resolved_capabilities.document_highlight then
@@ -41,9 +43,9 @@ local on_attach_nvim = function(client, bufnr)
   set_keymap("n", "gr", "vim.lsp.buf.references()")
   set_keymap("n", "gs", "vim.lsp.buf.document_symbol()")
   set_keymap("n", "g/", "vim.lsp.buf.rename()")
-  set_keymap("n", "g.", "vim.lsp.diagnostic.show_line_diagnostics({ border = \"single\" })")
-  set_keymap("n", "gn", "vim.lsp.diagnostic.goto_next({ popup_opts = { border = \"single\" }})")
-  set_keymap("n", "gp", "vim.lsp.diagnostic.goto_prev({ popup_opts = { border = \"single\" }})")
+  set_keymap("n", "g.", 'vim.lsp.diagnostic.show_line_diagnostics({ border = "single" })')
+  set_keymap("n", "gn", 'vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})')
+  set_keymap("n", "gp", 'vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})')
   set_keymap("n", "gl", "vim.lsp.diagnostic.set_loclist()")
   set_keymap("n", "<localleader>wl", "P(vim.lsp.buf.list_workspace_folders())")
   set_keymap("n", "<localleader>wa", "vim.lsp.buf.add_workspace_folder()")

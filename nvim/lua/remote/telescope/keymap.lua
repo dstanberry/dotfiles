@@ -6,16 +6,15 @@ if not pcall(require, "telescope") then
   return
 end
 
--- define keymaps
-local mod = "R('remote.telescope')."
+local util = require "util"
 
-MAP("n", "<leader><leader>", mod .. "search_cwd()")
-MAP("n", "<localleader><localleader>", mod .. "search_neovim()")
-MAP("n", "<leader>fb", mod .. "search_buffers()")
-MAP("n", "<leader>fe", mod .. "file_browser()")
-MAP("n", "<leader>ff", mod .. "current_buffer()")
-MAP("n", "<leader>fh", mod .. "help_tags()")
-MAP("n", "<leader>fp", mod .. "installed_plugins()")
-MAP("n", "<leader>fr", mod .. "search_git_repo()")
-MAP("n", "<leader>gf", mod .. "grep_cursor()")
-MAP("n", "<leader>gg", mod .. "grep_cwd()")
+util.nnoremap("<leader><leader>", "<cmd>lua R('remote.telescope').search_cwd()<cr>")
+util.nnoremap("<localleader><localleader>", "<cmd>lua R('remote.telescope').search_neovim()<cr>")
+util.nnoremap("<leader>fb", "<cmd>lua R('remote.telescope').search_buffers()<cr>")
+util.nnoremap("<leader>fe", "<cmd>lua R('remote.telescope').file_browser()<cr>")
+util.nnoremap("<leader>ff", "<cmd>lua R('remote.telescope').current_buffer()<cr>")
+util.nnoremap("<leader>fh", "<cmd>lua R('remote.telescope').help_tags()<cr>")
+util.nnoremap("<leader>fp", "<cmd>lua R('remote.telescope').installed_plugins()<cr>")
+util.nnoremap("<leader>fr", "<cmd>lua R('remote.telescope').search_git_repo()<cr>")
+util.nnoremap("<leader>gf", "<cmd>lua R('remote.telescope').grep_cursor()<cr>")
+util.nnoremap("<leader>gg", "<cmd>lua R('remote.telescope').grep_cwd()<cr>")
