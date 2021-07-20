@@ -11,14 +11,10 @@ end
 -- vim.lsp.set_log_level("debug")
 -- vim.cmd('e'..vim.lsp.get_log_path())
 
-local util = require "util"
-
 -- define buffer local features
 local on_attach_nvim = function(client, bufnr)
-  local function set_keymap(mode, key, f)
-    f = string.format("<cmd>lua %s<cr>", f)
-    util.map(mode, key, f, { noremap = true, buffer = bufnr })
-  end
+  local nnoremap = vim.keymap.nnoremap
+  local vnoremap = vim.keymap.vnoremap
   -- define symbol highlighting when supported by server
   if client.resolved_capabilities.document_highlight then
     vim.api.nvim_exec(
@@ -33,29 +29,34 @@ local on_attach_nvim = function(client, bufnr)
     )
   end
   -- define keybinds for code actions / diagnostics
-  set_keymap("n", "ga", "vim.lsp.buf.code_action()")
-  set_keymap("n", "gD", "vim.lsp.buf.declaration()")
-  set_keymap("n", "gd", "vim.lsp.buf.definition()")
-  set_keymap("n", "gt", "vim.lsp.buf.type_definition()")
-  set_keymap("n", "gk", "vim.lsp.buf.hover()")
-  set_keymap("n", "gi", "vim.lsp.buf.implementation()")
-  set_keymap("n", "gh", "vim.lsp.buf.signature_help()")
-  set_keymap("n", "gr", "vim.lsp.buf.references()")
-  set_keymap("n", "gs", "vim.lsp.buf.document_symbol()")
-  set_keymap("n", "g/", "vim.lsp.buf.rename()")
-  set_keymap("n", "g.", 'vim.lsp.diagnostic.show_line_diagnostics({ border = "single" })')
-  set_keymap("n", "gn", 'vim.lsp.diagnostic.goto_next({ popup_opts = { border = "single" }})')
-  set_keymap("n", "gp", 'vim.lsp.diagnostic.goto_prev({ popup_opts = { border = "single" }})')
-  set_keymap("n", "gl", "vim.lsp.diagnostic.set_loclist()")
-  set_keymap("n", "<localleader>wl", "P(vim.lsp.buf.list_workspace_folders())")
-  set_keymap("n", "<localleader>wa", "vim.lsp.buf.add_workspace_folder()")
-  set_keymap("n", "<localleader>wr", "vim.lsp.buf.remove_workspace_folder()")
+  nnoremap { "ga", vim.lsp.buf.code_action, buffer = bufnr }
+  nnoremap { "gD", vim.lsp.buf.declaration, buffer = bufnr }
+  nnoremap { "gd", vim.lsp.buf.definition, buffer = bufnr }
+  nnoremap { "gt", vim.lsp.buf.type_definition, buffer = bufnr }
+  nnoremap { "gk", vim.lsp.buf.hover, buffer = bufnr }
+  nnoremap { "gi", vim.lsp.buf.implementation, buffer = bufnr }
+  nnoremap { "gh", vim.lsp.buf.signature_help, buffer = bufnr }
+  nnoremap { "gr", vim.lsp.buf.references, buffer = bufnr }
+  nnoremap { "gs", vim.lsp.buf.document_symbol, buffer = bufnr }
+  nnoremap { "g/", vim.lsp.buf.rename, buffer = bufnr }
+  --stylua: ignore
+  nnoremap { "g.", function() vim.lsp.diagnostic.show_line_diagnostics { border = "single" } end, buffer = bufnr, }
+  --stylua: ignore
+  nnoremap { "gn", function() vim.lsp.diagnostic.goto_next { popup_opts = { border = "single" } } end, buffer = bufnr, }
+  --stylua: ignore
+  nnoremap { "gp", function() vim.lsp.diagnostic.goto_prev { popup_opts = { border = "single" } } end, buffer = bufnr, }
+  --stylua: ignore
+  nnoremap { "gl", vim.lsp.diagnostic.set_loclist }
+  --stylua: ignore
+  nnoremap { "<localleader>wl", function() P(vim.lsp.buf.list_workspace_folders()) end, buffer = bufnr, }
+  nnoremap { "<localleader>wa", vim.lsp.buf.add_workspace_folder, buffer = bufnr }
+  nnoremap { "<localleader>wr", vim.lsp.buf.remove_workspace_folder, buffer = bufnr }
   -- define keybind for document formatting when supported by server
   if client.resolved_capabilities.document_formatting then
-    set_keymap("n", "ff", "vim.lsp.buf.formatting()")
+    nnoremap { "ff", vim.lsp.buf.formatting, buffer = bufnr }
   end
   if client.resolved_capabilities.document_range_formatting then
-    set_keymap("v", "ff", "vim.lsp.buf.range_formatting()")
+    vnoremap { "ff", vim.lsp.buf.range_formatting, buffer = bufnr }
   end
   -- configure lsp_signature.nvim
   local has_sig, lspsignature = pcall(require, "lsp_signature")

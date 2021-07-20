@@ -58,6 +58,9 @@ return require("packer").startup(function(use)
     }
   end
 
+  -- (temp) https://github.com/neovim/neovim/pull/13823
+  use "tjdevries/astronauta.nvim"
+
   -- minimalist file explorer
   use { "tamago324/lir.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   -- minimalist tabline
@@ -208,7 +211,7 @@ return require("packer").startup(function(use)
     requires = { "nvim-lua/plenary.nvim" },
   }
   -- text based user interface to git
-  use { "TimUntersberger/neogit", cmd = "Neogit", requires = "nvim-lua/plenary.nvim" }
+  use { "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" }
 
   -- preview markdown directly
   use { "npxbr/glow.nvim", cmd = "Glow" }

@@ -1,13 +1,13 @@
 ---------------------------------------------------------------
--- => nvim-compe mappings
+-- => nvim-compe keymaps
 ---------------------------------------------------------------
 -- verify nvim-compe is available
 if not pcall(require, "compe") then
   return
 end
 
-local opts = { noremap = true, expr = true, silent = true }
+local util = require "util"
 
-vim.api.nvim_set_keymap("i", "<cr>", "compe#confirm('<cr>')", opts)
-vim.api.nvim_set_keymap("i", "<esc>", "compe#close('<esc>')", opts)
-vim.api.nvim_set_keymap("i", "<c-x>", "compe#complete()", opts)
+util.inoremap("<cr>", "compe#confirm('<cr>')", { expr = true })
+util.inoremap("<esc>", "compe#close('<esc>')", { expr = true })
+util.inoremap("<c-x>", "compe#complete()", { expr = true })
