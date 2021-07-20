@@ -34,10 +34,9 @@ end
 -- set default options
 require("telescope").setup {
   defaults = {
-    prompt_prefix = "  ",
+    prompt_prefix = "   ",
     selection_caret = " ",
     winblend = 10,
-    borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
     scroll_strategy = "cycle",
     layout_strategy = "flex",
     sorting_strategy = "descending",
