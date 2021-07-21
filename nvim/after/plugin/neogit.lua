@@ -15,3 +15,12 @@ neogit.setup {
     section = { "", "" },
   },
 }
+
+local nnoremap = vim.keymap.nnoremap
+
+nnoremap {
+  "<leader>gs",
+  function()
+    neogit.open { kind = "split" }
+  end,
+}
