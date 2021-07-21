@@ -1,4 +1,5 @@
 <!-- markdownlint-disable MD013 -->
+
 # Dotfiles
 
 ![image](https://github.com/dstanberry/dotfiles/wiki/assets/vim.png)
@@ -20,7 +21,7 @@ git worktree add $worktree $(git branch --show-current)
 
 The glue required to make this possible is to tell the system wide configuration file where to look for the user shell profile:
 
-Bash:
+Bash (_Deprecated_):
 Depending on the distro this file may exist in `/etc/bashrc`, `/etc/bash.bashrc` or `/etc/bash/bashrc`.
 
 ```bash
@@ -74,25 +75,29 @@ Tmux: Must be on version >= 3.1 as 3.1 introduced checking for the configuration
 
 [Patched Font](https://www.nerdfonts.com)
 
-[Vim](https://github.com/vim/vim) can be compiled with support for Lua, Perl, Python and Ruby.
+[Vim](https://github.com/vim/vim) (_Deprecated_) can be compiled with support for Lua, Perl, Python and Ruby.
 
 [Neovim](https://github.com/neovim/neovim) supports remote plugins written in the same set of languages, but they need to be installed separately. Currently the necessary packages can be pulled in without too much effort.
 
 Read through all the txt files in `shared/packages` and remove delete any lines that contain unwanted packages before running any of the `load` commands.
 
 - Cargo
+
   - install rust through package manager or [manually](https://doc.rust-lang.org/cargo/getting-started/installation.html)
   - Run `cargo load` to install/update the contents in [shared/packages/cargo.txt](https://github.com/dstanberry/dotfiles/blob/main/shared/packages/cargo.txt)
 
 - Go
+
   - install through package manager
   - Run `go load` to install/update the contents in [shared/packages/go.txt](https://github.com/dstanberry/dotfiles/blob/main/shared/packages/go.txt)
 
 - Luarocks
+
   - install through package manager
   - Run `luarocks load` to install/update the contents in [shared/packages/luarocks.txt](https://github.com/dstanberry/dotfiles/blob/main/shared/packages/luarocks.txt)
 
 - NodeJS
+
   - npm (should be installed with nodejs otherwise install through package manager) `npm --version`
   - Run `npm load` to install/update the contents in [shared/packages/npm.txt](https://github.com/dstanberry/dotfiles/blob/main/shared/packages/npm.txt)
   - If npm is installed, the following will be enforced in npm's configuration file:
@@ -105,9 +110,11 @@ Read through all the txt files in `shared/packages` and remove delete any lines 
     ```
 
 - Perl
+
   - _currently not in use_
 
 - Python
+
   - pip (should be installed with Python) `python -m pip --version`
   - pipdeptree (required to manage package dependency graph) `pip install pipdeptree`
   - Run `pip load` to install/update the contents in [shared/packages/pip.txt](https://github.com/dstanberry/dotfiles/blob/main/shared/packages/pip.txt)
