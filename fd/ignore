@@ -7,6 +7,7 @@ drkonqirc
 emaildefaults
 fontconfig/
 fontforge
+gh/hosts.yml
 git/config
 gpick
 gtk-2.0
@@ -43,6 +44,7 @@ okularrc
 pavucontrol.ini
 pcmanfm
 pg
+pip
 plasmarc
 pulse
 qt5ct
@@ -52,7 +54,6 @@ tmux/tmux.digests
 Trolltech.conf
 user-dirs*
 vifm/vifminfo.json
-vim/plugin/remote/session
 vim/remote
 wget
 wireshark
