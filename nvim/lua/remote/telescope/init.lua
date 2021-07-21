@@ -34,7 +34,7 @@ end
 -- set default options
 require("telescope").setup {
   defaults = {
-    prompt_prefix = "   ",
+    prompt_prefix = "  ",
     selection_caret = " ",
     winblend = 10,
     scroll_strategy = "cycle",
@@ -136,7 +136,10 @@ function M.search_cwd()
     file_ignore_patterns = ignored,
     prompt_title = "\\ Project Files /",
   }
-  require("telescope.builtin").find_files(opts)
+  local ok = pcall(require("telescope.builtin").git_files, opts)
+  if not ok then
+    require("telescope.builtin").find_files(opts)
+  end
 end
 
 -- customize generic file browser
