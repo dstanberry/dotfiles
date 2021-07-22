@@ -128,10 +128,11 @@ local function load_servers()
     "cmake",
     "cssls",
     "efm",
+    "gopls",
     "html",
     "jsonls",
-    "sumneko_lua",
     "pyright",
+    "sumneko_lua",
     "vimls",
   }
   for _, server in ipairs(servers) do
