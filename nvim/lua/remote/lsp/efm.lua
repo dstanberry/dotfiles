@@ -9,8 +9,8 @@ local shellcheck = require "remote.lsp.linters.shellcheck"
 local vint = require "remote.lsp.linters.vint"
 
 -- formatter configuration
+local gofmt = require "remote.lsp.formatters.gofmt"
 local isort = require "remote.lsp.formatters.isort"
--- local luafmt = require('remote.lsp.formatters.luafmt')
 local prettier = require "remote.lsp.formatters.prettier"
 local shfmt = require "remote.lsp.formatters.shfmt"
 local stylua = require "remote.lsp.formatters.stylua"
@@ -19,9 +19,9 @@ local yapf = require "remote.lsp.formatters.yapf"
 -- supported languages
 local languages = {
   css = { prettier },
+  go = { gofmt },
   html = { prettier },
   javascript = { eslint, prettier },
-  -- lua = {luafmt},
   lua = { stylua },
   markdown = { markdown, prettier },
   python = { flake, isort, yapf },
