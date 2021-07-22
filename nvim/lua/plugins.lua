@@ -1,9 +1,12 @@
 ---------------------------------------------------------------
 -- => Plugin Manager
 ---------------------------------------------------------------
+-- configuration files (if necessary) will be specified here or in
+-- `after/plugin`
+
 -- plugin configuration
 return require("packer").startup(function(use)
-  -- package manager for neovim
+  -- package manager
   use "wbthomason/packer.nvim"
 
   -- fix cursorhold events
