@@ -108,9 +108,15 @@ function luarocks() {
 function npm() {
   local PKG=$CONFIG_HOME/shared/packages/npm.txt
   if [ "$1" = "save" ]; then
-    command npm list -g --depth=0 | awk '{ print $2 }' \
+    if [ "$EUID" -eq 0 ]; then
+    npm list -g --depth=0 | awk '{ print $2 }' \
       | sed -r 's/^\(empty\)//' \
       | sed '/^$/d' | grep -v 'npm@' > "$PKG"
+    else
+    sudo npm list -g --depth=0 | awk '{ print $2 }' \
+      | sed -r 's/^\(empty\)//' \
+      | sed '/^$/d' | grep -v 'npm@' > "$PKG"
+    fi
   elif [ "$1" = "load" ]; then
     if [ "$EUID" -eq 0 ]; then
       < "$PKG" xargs "npm" install -g
