@@ -206,11 +206,12 @@ M.apply = function(c)
   hi.TSKeyword = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
   hi.TSKeywordFunction = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
   hi.TSKeywordOperator = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
+  hi.TSKeywordReturn = { guifg = c.base15, guibg = nil, gui = "none", guisp = nil }
   hi.TSLabel = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.TSMethod = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
   hi.TSNamespace = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
   hi.TSNone = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
-  hi.TSNumber = { guifg = c.base15, guibg = nil, gui = "none", guisp = nil }
+  hi.TSNumber = { guifg = c.base09, guibg = nil, gui = "none", guisp = nil }
   hi.TSOperator = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
   hi.TSParameter = { guifg = c.base16, guibg = nil, gui = "none", guisp = nil }
   hi.TSParameterReference = { guifg = c.base16, guibg = nil, gui = "none", guisp = nil }
