@@ -39,15 +39,15 @@ local on_attach_nvim = function(client, bufnr)
   nnoremap { "gr", vim.lsp.buf.references, buffer = bufnr }
   nnoremap { "gs", vim.lsp.buf.document_symbol, buffer = bufnr }
   nnoremap { "g/", vim.lsp.buf.rename, buffer = bufnr }
-  --stylua: ignore
+  -- stylua: ignore
   nnoremap { "g.", function() vim.lsp.diagnostic.show_line_diagnostics { border = "single" } end, buffer = bufnr, }
-  --stylua: ignore
+  -- stylua: ignore
   nnoremap { "gn", function() vim.lsp.diagnostic.goto_next { popup_opts = { border = "single" } } end, buffer = bufnr, }
-  --stylua: ignore
+  -- stylua: ignore
   nnoremap { "gp", function() vim.lsp.diagnostic.goto_prev { popup_opts = { border = "single" } } end, buffer = bufnr, }
-  --stylua: ignore
+  -- stylua: ignore
   nnoremap { "gl", vim.lsp.diagnostic.set_loclist }
-  --stylua: ignore
+  -- stylua: ignore
   nnoremap { "<localleader>wl", function() P(vim.lsp.buf.list_workspace_folders()) end, buffer = bufnr, }
   nnoremap { "<localleader>wa", vim.lsp.buf.add_workspace_folder, buffer = bufnr }
   nnoremap { "<localleader>wr", vim.lsp.buf.remove_workspace_folder, buffer = bufnr }

@@ -68,11 +68,9 @@ local pack = function(tbl)
   return result
 end
 
--- define snippets
 local snippets = {}
 
---stylua: ignore
--- generic snippets
+-- stylua: ignore
 snippets.all = {
   -- autopairs
   s({ trig = "(" }, { t { "(" }, i(1), t { ")" }, i(0) }, neg, char_count_same, "%(", "%)"),
@@ -84,14 +82,13 @@ snippets.all = {
   s({ trig = "{;" }, { t { "{", "\t" }, i(1), t { "", "}" }, i(0) }),
 }
 
---stylua: ignore
--- custom lua snippet definitions
+-- stylua: ignore
 snippets.lua = pack {
   ["[[-"] = { "--[[", newline "\t", i(0), newline "--]]" },
   ["[[;"] = { "[[", newline "\t", i(0), newline "]]" },
-  ignore = {
-    desc = "skip formatting for this section",
-    "--stylua: ignore",
+  ig = {
+    desc = "skip stylua formatting for this section",
+    "-- stylua: ignore",
   },
   fn = {
     desc = "function(...) end",
