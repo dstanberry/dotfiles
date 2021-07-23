@@ -283,6 +283,10 @@ M.apply = function(c)
   hi.TelescopeMatching = { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil }
   hi.TelescopePromptPrefix = { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil }
 
+  -- nvim-compe highlighting
+  hi.CompeDocumentation = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
+  hi.CompeDocumentationBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
+
   -- ensure termguicolors is set (likely redundant)
   vim.opt.termguicolors = true
   -- set gui colors

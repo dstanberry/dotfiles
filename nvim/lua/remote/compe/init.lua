@@ -19,15 +19,17 @@ compe.setup {
   max_abbr_width = 100,
   max_kind_width = 100,
   max_menu_width = 100,
-  documentation = true,
+  documentation = {
+    border = "rounded",
+  },
   source = {
+    -- builtin
     buffer = true,
-    calc = true,
-    luasnip = true,
     nvim_lsp = true,
     nvim_lua = true,
     path = true,
+    -- external
+    luasnip = true,
     treesitter = true,
-    vsnip = false,
   },
 }
