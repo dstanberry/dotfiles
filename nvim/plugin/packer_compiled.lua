@@ -148,7 +148,7 @@ _G.packer_plugins = {
   },
   ["nvim-dap"] = {
     after = { "one-small-step-for-vimkind", "nvim-dap-python", "nvim-dap-virtual-text" },
-    keys = { { "", "<leader>db" } },
+    keys = { { "", "<localleader>db" } },
     loaded = false,
     needs_bufread = false,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-dap",
@@ -182,51 +182,29 @@ _G.packer_plugins = {
     wants = { "lsp_signature.nvim", "lua-dev" }
   },
   ["nvim-treesitter"] = {
-    after = { "nvim-ts-context-commentstring", "nvim-treesitter-refactor", "playground", "nvim-treesitter-pairs", "nvim-ts-rainbow", "nvim-treesitter-textobjects" },
-    config = { "\27LJ\1\2W\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\30remote.treesitter.parsers\22remote.treesitter\frequire\0" },
-    loaded = false,
-    needs_bufread = true,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-treesitter"
+    config = { "\27LJ\1\0021\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\22remote.treesitter\frequire\0" },
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-treesitter"
   },
   ["nvim-treesitter-pairs"] = {
-    load_after = {
-      ["nvim-treesitter"] = true
-    },
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-treesitter-pairs"
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-treesitter-pairs"
   },
   ["nvim-treesitter-refactor"] = {
-    load_after = {
-      ["nvim-treesitter"] = true
-    },
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-treesitter-refactor"
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-treesitter-refactor"
   },
   ["nvim-treesitter-textobjects"] = {
-    load_after = {
-      ["nvim-treesitter"] = true
-    },
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-treesitter-textobjects"
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-treesitter-textobjects"
   },
   ["nvim-ts-context-commentstring"] = {
-    load_after = {
-      ["nvim-treesitter"] = true
-    },
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-ts-context-commentstring"
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-ts-context-commentstring"
   },
   ["nvim-ts-rainbow"] = {
-    load_after = {
-      ["nvim-treesitter"] = true
-    },
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-ts-rainbow"
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-ts-rainbow"
   },
   ["nvim-web-devicons"] = {
     loaded = true,
@@ -246,9 +224,6 @@ _G.packer_plugins = {
   },
   playground = {
     commands = { "TSHighlightCapturesUnderCursor" },
-    load_after = {
-      ["nvim-treesitter"] = true
-    },
     loaded = false,
     needs_bufread = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/playground"
@@ -380,6 +355,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: telescope.nvim
+time([[Config for telescope.nvim]], true)
+try_loadstring("\27LJ\1\2T\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\28remote.telescope.keymap\21remote.telescope\frequire\0", "config", "telescope.nvim")
+time([[Config for telescope.nvim]], false)
 -- Config for: nvim-lspconfig
 time([[Config for nvim-lspconfig]], true)
 try_loadstring("\27LJ\1\2*\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\15remote.lsp\frequire\0", "config", "nvim-lspconfig")
@@ -388,10 +367,10 @@ time([[Config for nvim-lspconfig]], false)
 time([[Config for loupe]], true)
 try_loadstring("\27LJ\1\0028\0\0\2\0\3\0\0054\0\0\0007\0\1\0'\1\0\0:\1\2\0G\0\1\0\27LoupeClearHighlightMap\6g\bvim\0", "config", "loupe")
 time([[Config for loupe]], false)
--- Config for: telescope.nvim
-time([[Config for telescope.nvim]], true)
-try_loadstring("\27LJ\1\2T\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\28remote.telescope.keymap\21remote.telescope\frequire\0", "config", "telescope.nvim")
-time([[Config for telescope.nvim]], false)
+-- Config for: nvim-treesitter
+time([[Config for nvim-treesitter]], true)
+try_loadstring("\27LJ\1\0021\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\22remote.treesitter\frequire\0", "config", "nvim-treesitter")
+time([[Config for nvim-treesitter]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
@@ -426,7 +405,7 @@ time([[Defining lazy-load commands]], false)
 
 -- Keymap lazy-loads
 time([[Defining lazy-load keymaps]], true)
-vim.cmd [[noremap <silent> <leader>db <cmd>lua require("packer.load")({'nvim-dap'}, { keys = "<lt>leader>db", prefix = "" }, _G.packer_plugins)<cr>]]
+vim.cmd [[noremap <silent> <localleader>db <cmd>lua require("packer.load")({'nvim-dap'}, { keys = "<lt>localleader>db", prefix = "" }, _G.packer_plugins)<cr>]]
 time([[Defining lazy-load keymaps]], false)
 
 vim.cmd [[augroup packer_load_aucmds]]
@@ -452,7 +431,6 @@ time([[Defining lazy-load filetype autocommands]], false)
 time([[Defining lazy-load event autocommands]], true)
 vim.cmd [[au BufReadPre * ++once lua require("packer.load")({'gitsigns.nvim'}, { event = "BufReadPre *" }, _G.packer_plugins)]]
 vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'nvim-compe'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
-vim.cmd [[au BufRead * ++once lua require("packer.load")({'nvim-treesitter'}, { event = "BufRead *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]

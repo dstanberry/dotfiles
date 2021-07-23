@@ -72,8 +72,6 @@ return require("packer").startup(function(use)
   -- incremental parsing system for programming tools
   use {
     "nvim-treesitter/nvim-treesitter",
-    opt = true,
-    event = "BufRead",
     run = ":TSUpdate",
     requires = {
       -- view treesitter information directly
@@ -91,7 +89,6 @@ return require("packer").startup(function(use)
     },
     config = function()
       require "remote.treesitter"
-      require "remote.treesitter.parsers"
     end,
   }
   -- distraction-free coding
