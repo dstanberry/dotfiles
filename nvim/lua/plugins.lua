@@ -206,7 +206,6 @@ return require("packer").startup(function(use)
   -- display git changes in gutter
   use {
     "lewis6991/gitsigns.nvim",
-    event = "BufReadPre",
     wants = "plenary.nvim",
     requires = { "nvim-lua/plenary.nvim" },
   }

@@ -105,9 +105,8 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/gentoo-syntax"
   },
   ["gitsigns.nvim"] = {
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/gitsigns.nvim",
+    loaded = true,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
     wants = { "plenary.nvim" }
   },
   ["glow.nvim"] = {
@@ -432,7 +431,6 @@ vim.cmd [[au FileType gentoo-conf-d ++once lua require("packer.load")({'gentoo-s
 time([[Defining lazy-load filetype autocommands]], false)
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
-vim.cmd [[au BufReadPre * ++once lua require("packer.load")({'gitsigns.nvim'}, { event = "BufReadPre *" }, _G.packer_plugins)]]
 vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'nvim-compe'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
