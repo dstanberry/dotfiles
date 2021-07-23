@@ -87,7 +87,8 @@ snippets.all = {
 --stylua: ignore
 -- custom lua snippet definitions
 snippets.lua = pack {
-  ["[[;"] = { "[[", newline " ", i(0), newline "]]" },
+  ["[[-"] = { "--[[", newline "\t", i(0), newline "--]]" },
+  ["[[;"] = { "[[", newline "\t", i(0), newline "]]" },
   ignore = {
     desc = "skip formatting for this section",
     "--stylua: ignore",
