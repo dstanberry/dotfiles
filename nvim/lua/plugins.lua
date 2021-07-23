@@ -75,7 +75,7 @@ return require("packer").startup(function(use)
     run = ":TSUpdate",
     requires = {
       -- view treesitter information directly
-      { "nvim-treesitter/playground", cmd = "TSHighlightCapturesUnderCursor" },
+      { "nvim-treesitter/playground", cmd = { "TSHighlightCapturesUnderCursor", "TSPlaygroundToggle" } },
       -- pairs
       "theHamsta/nvim-treesitter-pairs",
       -- highlight and manipulate text objects
