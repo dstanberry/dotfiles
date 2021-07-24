@@ -2,16 +2,16 @@
 -- => Helper Functions
 ---------------------------------------------------------------
 -- print inspection of variable
-_G.P = function(...)
+P = function(...)
   print(vim.inspect(...))
 end
 
 -- enable live-reloading of lua functions
 if pcall(require, "plenary") then
-  _G.RELOAD = require("plenary.reload").reload_module
+  RELOAD = require("plenary.reload").reload_module
 
   -- live reload lua functions
-  _G.R = function(name)
+  R = function(name)
     RELOAD(name)
     return require(name)
   end
@@ -94,24 +94,6 @@ end
 
 function M.t(str)
   return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
-function M.log(msg, hl, name)
-  name = name or "Neovim"
-  hl = hl or "Todo"
-  vim.api.nvim_echo({ { name .. ": ", hl }, { msg } }, true, {})
-end
-
-function M.warn(msg, name)
-  M.log(msg, "LspDiagnosticsDefaultWarning", name)
-end
-
-function M.error(msg, name)
-  M.log(msg, "LspDiagnosticsDefaultError", name)
-end
-
-function M.info(msg, name)
-  M.log(msg, "LspDiagnosticsDefaultInformation", name)
 end
 
 return M
