@@ -64,6 +64,13 @@ return require("packer").startup(function(use)
   -- (temp) https://github.com/neovim/neovim/pull/13823
   use "tjdevries/astronauta.nvim"
 
+  -- devicons
+  use {
+    "kyazdani42/nvim-web-devicons",
+    config = function()
+      require "remote.devicons"
+    end,
+  }
   -- minimalist file explorer
   use { "tamago324/lir.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   -- minimalist tabline
