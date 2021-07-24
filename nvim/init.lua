@@ -43,12 +43,12 @@ vim.cmd [[ call functions#defer('call deferred#load_dir_hash()') ]]
 
 -- ensure packer.nvim is available
 if not pcall(require, "packer") then
-  require "util.packer".bootstrap()
+  require("util.packer").bootstrap()
   -- prevent anything else from loading
   return
 end
 
-require "util"
+require "util.globals"
 
 -- define colorscheme
 R("ui.theme").setup()

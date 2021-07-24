@@ -1,22 +1,6 @@
 ---------------------------------------------------------------
 -- => Helper Functions
 ---------------------------------------------------------------
--- print inspection of variable
-P = function(...)
-  print(vim.inspect(...))
-end
-
--- enable live-reloading of lua functions
-if pcall(require, "plenary") then
-  RELOAD = require("plenary.reload").reload_module
-
-  -- live reload lua functions
-  R = function(name)
-    RELOAD(name)
-    return require(name)
-  end
-end
-
 -- initialize modules table
 local M = {}
 

@@ -11,9 +11,9 @@ end
 local should_reload = true
 local reloader = function()
   if should_reload then
-    RELOAD "plenary"
-    RELOAD "popup"
-    RELOAD "telescope"
+    R "plenary"
+    R "popup"
+    R "telescope"
   end
 end
 reloader()
