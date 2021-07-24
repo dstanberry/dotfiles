@@ -109,6 +109,7 @@ return require("packer").startup(function(use)
     wants = { "lsp_signature.nvim", "lua-dev" },
     config = function()
       require "remote.lsp"
+      require "remote.lsp.kind"
     end,
     requires = {
       -- integrate lua LSP API
@@ -162,7 +163,6 @@ return require("packer").startup(function(use)
     config = function()
       require "remote.compe"
       require "remote.compe.keymap"
-      require "remote.compe.menu"
     end,
     wants = { "LuaSnip" },
     requires = {

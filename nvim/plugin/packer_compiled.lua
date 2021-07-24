@@ -139,7 +139,7 @@ _G.packer_plugins = {
   ["nvim-compe"] = {
     after = { "python-snippets", "vscode-csharp-snippets", "vim-snippets", "vsc-lua", "friendly-snippets", "LuaSnip" },
     after_files = { "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-compe/after/plugin/compe.vim" },
-    config = { "\27LJ\1\2j\0\0\2\0\4\0\n4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\0014\0\0\0%\1\3\0>\0\2\1G\0\1\0\22remote.compe.menu\24remote.compe.keymap\17remote.compe\frequire\0" },
+    config = { "\27LJ\1\2L\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\24remote.compe.keymap\17remote.compe\frequire\0" },
     loaded = false,
     needs_bufread = false,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-compe",
@@ -175,7 +175,7 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-jqx"
   },
   ["nvim-lspconfig"] = {
-    config = { "\27LJ\1\2*\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\15remote.lsp\frequire\0" },
+    config = { "\27LJ\1\2F\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\20remote.lsp.kind\15remote.lsp\frequire\0" },
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/nvim-lspconfig",
     wants = { "lsp_signature.nvim", "lua-dev" }
@@ -360,7 +360,7 @@ try_loadstring("\27LJ\1\2T\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0
 time([[Config for telescope.nvim]], false)
 -- Config for: nvim-lspconfig
 time([[Config for nvim-lspconfig]], true)
-try_loadstring("\27LJ\1\2*\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\15remote.lsp\frequire\0", "config", "nvim-lspconfig")
+try_loadstring("\27LJ\1\2F\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\20remote.lsp.kind\15remote.lsp\frequire\0", "config", "nvim-lspconfig")
 time([[Config for nvim-lspconfig]], false)
 -- Config for: loupe
 time([[Config for loupe]], true)
