@@ -72,7 +72,7 @@ require("telescope").setup {
     lsp_handlers = {
       disable = {},
       code_action = {
-        telescope = require("telescope.themes").get_ivy {
+        telescope = require("telescope.themes").get_cursor {
           previewer = false,
           results_title = false,
         },
