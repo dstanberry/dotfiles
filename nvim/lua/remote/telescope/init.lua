@@ -100,11 +100,11 @@ pcall(require("telescope").load_extension "lsp_handlers")
 local ignored = {
   "%.db",
   "%.gpg",
-  ".git/",
+  ".git",
   ".gitattributes",
-  ".git-crypt/",
-  "karabiner/assets/*",
-  "node_modules/*",
+  ".git-crypt",
+  "karabiner/assets",
+  "node_modules",
 }
 
 -- initialize modules table
@@ -136,7 +136,7 @@ function M.search_cwd()
     file_ignore_patterns = ignored,
     prompt_title = "\\ Project Files /",
   }
-  local ok = pcall(require("telescope.builtin").git_files, opts)
+  ok = pcall(require("telescope.builtin").git_files, opts)
   if not ok then
     require("telescope.builtin").find_files(opts)
   end
