@@ -17,16 +17,13 @@ local on_attach_nvim = function(client, bufnr)
   local vnoremap = vim.keymap.vnoremap
   -- define symbol highlighting when supported by server
   if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec(
-      [[
+    vim.cmd [[
       augroup lsp_document_highlight
         autocmd! * <buffer>
         autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
         autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
       augroup END
-    ]],
-      false
-    )
+    ]]
   end
   -- define keybinds for code actions / diagnostics
   nnoremap { "ga", vim.lsp.buf.code_action, buffer = bufnr }
