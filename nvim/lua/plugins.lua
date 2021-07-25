@@ -74,7 +74,11 @@ return require("packer").startup(function(use)
     end,
   }
   -- minimalist file explorer
-  use { "tamago324/lir.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
+  use {
+    "tamago324/lir.nvim",
+    wants = { "tamago324/lir-git-status.nvim", "tamago324/lir-mmv.nvim" },
+    requires = { "kyazdani42/nvim-web-devicons", "tamago324/lir-git-status.nvim", "tamago324/lir-mmv.nvim" },
+  }
   -- minimalist tabline
   use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
 
