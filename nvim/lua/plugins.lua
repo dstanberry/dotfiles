@@ -60,6 +60,8 @@ return require("packer").startup(function(use)
       },
     }
   end
+  -- preview markdown directly
+  use { "npxbr/glow.nvim", cmd = "Glow" }
 
   -- (temp) https://github.com/neovim/neovim/pull/13823
   use "tjdevries/astronauta.nvim"
@@ -210,6 +212,8 @@ return require("packer").startup(function(use)
     },
   }
 
+  -- better git commit experience
+  use { "rhysd/committia.vim", event = "BufReadPre", opt = true, ft = "gitcommit" }
   -- display git changes in gutter
   use {
     "lewis6991/gitsigns.nvim",
@@ -218,7 +222,4 @@ return require("packer").startup(function(use)
   }
   -- text based user interface to git
   use { "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" }
-
-  -- preview markdown directly
-  use { "npxbr/glow.nvim", cmd = "Glow" }
 end)

@@ -91,6 +91,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/buftabline.nvim"
   },
+  ["committia.vim"] = {
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/committia.vim"
+  },
   ["friendly-snippets"] = {
     load_after = {
       ["nvim-compe"] = true
@@ -137,7 +142,7 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/neogit"
   },
   ["nvim-compe"] = {
-    after = { "python-snippets", "vscode-csharp-snippets", "vim-snippets", "vsc-lua", "friendly-snippets", "LuaSnip" },
+    after = { "python-snippets", "vscode-csharp-snippets", "LuaSnip", "vim-snippets", "vsc-lua", "friendly-snippets" },
     after_files = { "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-compe/after/plugin/compe.vim" },
     config = { "\27LJ\1\2L\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\24remote.compe.keymap\17remote.compe\frequire\0" },
     loaded = false,
@@ -146,7 +151,7 @@ _G.packer_plugins = {
     wants = { "LuaSnip" }
   },
   ["nvim-dap"] = {
-    after = { "one-small-step-for-vimkind", "nvim-dap-python", "nvim-dap-virtual-text" },
+    after = { "nvim-dap-virtual-text", "one-small-step-for-vimkind", "nvim-dap-python" },
     keys = { { "", "<localleader>db" } },
     loaded = false,
     needs_bufread = false,
@@ -390,8 +395,8 @@ end
 if vim.fn.exists(":Verbose") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file Verbose lua require("packer.load")({'vim-scriptease'}, { cmd = "Verbose", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
-if vim.fn.exists(":ZenMode") ~= 2 then
-vim.cmd [[command! -nargs=* -range -bang -complete=file ZenMode lua require("packer.load")({'zen-mode.nvim'}, { cmd = "ZenMode", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+if vim.fn.exists(":Glow") ~= 2 then
+vim.cmd [[command! -nargs=* -range -bang -complete=file Glow lua require("packer.load")({'glow.nvim'}, { cmd = "Glow", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
 if vim.fn.exists(":SymbolsOutline") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file SymbolsOutline lua require("packer.load")({'symbols-outline.nvim'}, { cmd = "SymbolsOutline", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
@@ -402,8 +407,8 @@ end
 if vim.fn.exists(":Messages") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file Messages lua require("packer.load")({'vim-scriptease'}, { cmd = "Messages", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
-if vim.fn.exists(":Glow") ~= 2 then
-vim.cmd [[command! -nargs=* -range -bang -complete=file Glow lua require("packer.load")({'glow.nvim'}, { cmd = "Glow", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+if vim.fn.exists(":ZenMode") ~= 2 then
+vim.cmd [[command! -nargs=* -range -bang -complete=file ZenMode lua require("packer.load")({'zen-mode.nvim'}, { cmd = "ZenMode", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
 if vim.fn.exists(":TSHighlightCapturesUnderCursor") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file TSHighlightCapturesUnderCursor lua require("packer.load")({'playground'}, { cmd = "TSHighlightCapturesUnderCursor", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
@@ -419,6 +424,7 @@ vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
 time([[Defining lazy-load filetype autocommands]], true)
+vim.cmd [[au FileType gitcommit ++once lua require("packer.load")({'committia.vim'}, { ft = "gitcommit" }, _G.packer_plugins)]]
 vim.cmd [[au FileType gentoo-init-d ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-init-d" }, _G.packer_plugins)]]
 vim.cmd [[au FileType gentoo-package-keywords ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-package-keywords" }, _G.packer_plugins)]]
 vim.cmd [[au FileType gentoo-env-d ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-env-d" }, _G.packer_plugins)]]
@@ -437,15 +443,16 @@ time([[Defining lazy-load filetype autocommands]], false)
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
 vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'nvim-compe'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au BufReadPre * ++once lua require("packer.load")({'committia.vim'}, { event = "BufReadPre *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]
-time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/gentoo-syntax/ftdetect/gentoo.vim]], true)
-vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/gentoo-syntax/ftdetect/gentoo.vim]]
-time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/gentoo-syntax/ftdetect/gentoo.vim]], false)
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-log-highlighting/ftdetect/log.vim]], true)
 vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-log-highlighting/ftdetect/log.vim]]
 time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/vim-log-highlighting/ftdetect/log.vim]], false)
+time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/gentoo-syntax/ftdetect/gentoo.vim]], true)
+vim.cmd [[source /home/demaro/.local/share/nvim/site/pack/packer/opt/gentoo-syntax/ftdetect/gentoo.vim]]
+time([[Sourcing ftdetect script at: /home/demaro/.local/share/nvim/site/pack/packer/opt/gentoo-syntax/ftdetect/gentoo.vim]], false)
 vim.cmd("augroup END")
 if should_profile then save_profiles() end
 
