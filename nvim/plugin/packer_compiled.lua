@@ -91,11 +91,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/buftabline.nvim"
   },
-  ["committia.vim"] = {
-    loaded = false,
-    needs_bufread = false,
-    path = "/home/demaro/.local/share/nvim/site/pack/packer/opt/committia.vim"
-  },
   ["friendly-snippets"] = {
     load_after = {
       ["nvim-compe"] = true
@@ -151,7 +146,7 @@ _G.packer_plugins = {
     path = "/home/demaro/.local/share/nvim/site/pack/packer/start/neogit"
   },
   ["nvim-compe"] = {
-    after = { "python-snippets", "LuaSnip", "vim-snippets", "vsc-lua", "friendly-snippets", "vscode-csharp-snippets" },
+    after = { "vscode-csharp-snippets", "python-snippets", "LuaSnip", "vim-snippets", "vsc-lua", "friendly-snippets" },
     after_files = { "/home/demaro/.local/share/nvim/site/pack/packer/opt/nvim-compe/after/plugin/compe.vim" },
     config = { "\27LJ\1\2L\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\24remote.compe.keymap\17remote.compe\frequire\0" },
     loaded = false,
@@ -369,10 +364,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: nvim-lspconfig
-time([[Config for nvim-lspconfig]], true)
-try_loadstring("\27LJ\1\2F\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\20remote.lsp.kind\15remote.lsp\frequire\0", "config", "nvim-lspconfig")
-time([[Config for nvim-lspconfig]], false)
+-- Config for: nvim-treesitter
+time([[Config for nvim-treesitter]], true)
+try_loadstring("\27LJ\1\0021\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\22remote.treesitter\frequire\0", "config", "nvim-treesitter")
+time([[Config for nvim-treesitter]], false)
 -- Config for: nvim-web-devicons
 time([[Config for nvim-web-devicons]], true)
 try_loadstring("\27LJ\1\2/\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\20remote.devicons\frequire\0", "config", "nvim-web-devicons")
@@ -385,10 +380,10 @@ time([[Config for telescope.nvim]], false)
 time([[Config for loupe]], true)
 try_loadstring("\27LJ\1\0028\0\0\2\0\3\0\0054\0\0\0007\0\1\0'\1\0\0:\1\2\0G\0\1\0\27LoupeClearHighlightMap\6g\bvim\0", "config", "loupe")
 time([[Config for loupe]], false)
--- Config for: nvim-treesitter
-time([[Config for nvim-treesitter]], true)
-try_loadstring("\27LJ\1\0021\0\0\2\0\2\0\0044\0\0\0%\1\1\0>\0\2\1G\0\1\0\22remote.treesitter\frequire\0", "config", "nvim-treesitter")
-time([[Config for nvim-treesitter]], false)
+-- Config for: nvim-lspconfig
+time([[Config for nvim-lspconfig]], true)
+try_loadstring("\27LJ\1\2F\0\0\2\0\3\0\a4\0\0\0%\1\1\0>\0\2\0014\0\0\0%\1\2\0>\0\2\1G\0\1\0\20remote.lsp.kind\15remote.lsp\frequire\0", "config", "nvim-lspconfig")
+time([[Config for nvim-lspconfig]], false)
 
 -- Command lazy-loads
 time([[Defining lazy-load commands]], true)
@@ -398,8 +393,8 @@ end
 if vim.fn.exists(":Tabularize") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file Tabularize lua require("packer.load")({'tabular'}, { cmd = "Tabularize", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
-if vim.fn.exists(":ZenMode") ~= 2 then
-vim.cmd [[command! -nargs=* -range -bang -complete=file ZenMode lua require("packer.load")({'zen-mode.nvim'}, { cmd = "ZenMode", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+if vim.fn.exists(":Time") ~= 2 then
+vim.cmd [[command! -nargs=* -range -bang -complete=file Time lua require("packer.load")({'vim-scriptease'}, { cmd = "Time", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
 if vim.fn.exists(":Verbose") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file Verbose lua require("packer.load")({'vim-scriptease'}, { cmd = "Verbose", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
@@ -416,8 +411,8 @@ end
 if vim.fn.exists(":Glow") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file Glow lua require("packer.load")({'glow.nvim'}, { cmd = "Glow", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
-if vim.fn.exists(":Time") ~= 2 then
-vim.cmd [[command! -nargs=* -range -bang -complete=file Time lua require("packer.load")({'vim-scriptease'}, { cmd = "Time", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
+if vim.fn.exists(":ZenMode") ~= 2 then
+vim.cmd [[command! -nargs=* -range -bang -complete=file ZenMode lua require("packer.load")({'zen-mode.nvim'}, { cmd = "ZenMode", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
 end
 if vim.fn.exists(":Messages") ~= 2 then
 vim.cmd [[command! -nargs=* -range -bang -complete=file Messages lua require("packer.load")({'vim-scriptease'}, { cmd = "Messages", l1 = <line1>, l2 = <line2>, bang = <q-bang>, args = <q-args> }, _G.packer_plugins)]]
@@ -433,7 +428,6 @@ vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
 time([[Defining lazy-load filetype autocommands]], true)
-vim.cmd [[au FileType gitcommit ++once lua require("packer.load")({'committia.vim'}, { ft = "gitcommit" }, _G.packer_plugins)]]
 vim.cmd [[au FileType gentoo-init-d ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-init-d" }, _G.packer_plugins)]]
 vim.cmd [[au FileType gentoo-package-keywords ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-package-keywords" }, _G.packer_plugins)]]
 vim.cmd [[au FileType gentoo-env-d ++once lua require("packer.load")({'gentoo-syntax'}, { ft = "gentoo-env-d" }, _G.packer_plugins)]]
@@ -451,7 +445,6 @@ vim.cmd [[au FileType gentoo-conf-d ++once lua require("packer.load")({'gentoo-s
 time([[Defining lazy-load filetype autocommands]], false)
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
-vim.cmd [[au BufReadPre * ++once lua require("packer.load")({'committia.vim'}, { event = "BufReadPre *" }, _G.packer_plugins)]]
 vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'nvim-compe'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")

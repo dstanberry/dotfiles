@@ -216,8 +216,6 @@ return require("packer").startup(function(use)
     },
   }
 
-  -- better git commit experience
-  use { "rhysd/committia.vim", event = "BufReadPre", opt = true, ft = "gitcommit" }
   -- display git changes in gutter
   use {
     "lewis6991/gitsigns.nvim",
