@@ -30,14 +30,13 @@ vim.opt.cursorline = true
 vim.opt.directory = cache .. "/nvim/swap//,."
 -- don't expand spaces to tabs
 vim.opt.expandtab = false
--- define glyph used for vertical separator
-vim.opt.fillchars = "vert:┃"
--- define glyph used for line folds
-vim.opt.fillchars = vim.opt.fillchars + "fold:·"
--- define glyph used for deleted lines in diff
-vim.opt.fillchars = vim.opt.fillchars + "diff:∙"
--- define character used for empty lines at the end of a buffer
-vim.opt.fillchars = vim.opt.fillchars + "eob: "
+-- define glyphs used for vertical separators and statuslines
+vim.opt.fillchars = {
+  vert = "┃",
+  fold = "·",
+  diff = "∙",
+  eob = " ",
+}
 -- grep program to use
 vim.opt.grepprg = "rg --vimgrep --no-heading --smart-case"
 -- grep output format
@@ -60,20 +59,16 @@ vim.opt.laststatus = 2
 vim.opt.list = true
 -- soft line wrapping
 vim.opt.linebreak = true
--- define glyph used to visually identify tabs
-vim.opt.listchars = vim.opt.listchars + "tab:» "
--- define glyph used to visually identify end of line
-vim.opt.listchars = vim.opt.listchars + "eol:¬"
--- define glyph used to visually identify trailing spaces
-vim.opt.listchars = vim.opt.listchars + "trail:•"
--- define glyph used to visually identify text overflow (right)
-vim.opt.listchars = vim.opt.listchars + "extends:›"
--- define glyph used to visually identify text overflow (left)
-vim.opt.listchars = vim.opt.listchars + "precedes:‹"
--- define glyph used to visually identify non-breaking spaces
-vim.opt.listchars = vim.opt.listchars + "nbsp:␣"
--- define glyph used to visually identify concealed text
-vim.opt.listchars = vim.opt.listchars + "conceal:┊"
+-- define glyphs used to visually identify whitespace
+vim.opt.listchars = {
+  conceal = "┊",
+  eol = "¬",
+  extends = "›",
+  nbsp = "␣",
+  precedes = "‹",
+  tab = "» ",
+  trail = "•",
+}
 -- enable search using regex expressions
 vim.opt.magic = true
 -- enable mouse events in normal mode
