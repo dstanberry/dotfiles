@@ -71,8 +71,8 @@ vim.opt.listchars = {
 }
 -- enable search using regex expressions
 vim.opt.magic = true
--- enable mouse events in normal mode
-vim.opt.mouse = "n"
+-- enable mouse events in normal and visual mode
+vim.opt.mouse = "nv"
 -- disable title modification
 vim.opt.title = false
 -- show line numbers
