@@ -4,6 +4,16 @@
 -- load statusline utilities
 local Job = require "plenary.job"
 
+-- paste mode identifier
+local paste = function()
+  local result = ""
+  local paste = vim.go.paste
+  if paste then
+    result = "  "
+  end
+  return result
+end
+
 -- initialize modules table
 local M = {}
 
@@ -104,29 +114,25 @@ M.git_branch = function(bufnr)
     args = { "branch", "--show-current" },
     cwd = vim.fn.fnamemodify(name, ":h"),
   }
+  local b = ""
   local ok, branch = pcall(function()
     return vim.trim(j:sync()[1])
   end)
   if ok then
-    result = "  " .. branch
-    return result
+    result = "  "
+    b = branch
   end
-end
-
--- paste mode identifier
-M.paste = function()
-  local result = ""
-  local paste = vim.go.paste
-  if paste then
-    result = "  "
+  local p = paste()
+  if #p > 0 then
+    result = p
   end
-  return result
+  return result .. b
 end
 
 -- print lsp diagnostic count
 M.get_lsp_client_count = function(bufnr)
- local clients = vim.lsp.buf_get_clients(bufnr)
- return #clients
+  local clients = vim.lsp.buf_get_clients(bufnr)
+  return #clients
 end
 -- print lsp diagnostic count
 M.get_lsp_diagnostics = function(bufnr)
