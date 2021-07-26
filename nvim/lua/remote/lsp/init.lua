@@ -129,6 +129,7 @@ local function load_servers()
     "html",
     "jsonls",
     "pyright",
+    "rust_analyzer",
     "sumneko_lua",
     "vimls",
   }

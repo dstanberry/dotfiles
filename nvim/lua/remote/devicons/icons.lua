@@ -127,4 +127,9 @@ return {
     color = "#89e051",
     name = "Zshrc",
   },
+  ["rust"] = {
+    icon = "",
+    color = "#f3816f",
+    name = "rust",
+  },
 }
