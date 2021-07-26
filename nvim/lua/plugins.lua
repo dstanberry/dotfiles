@@ -19,7 +19,7 @@ return require("packer").startup(function(use)
     end,
   }
   -- preview/browse json files with ease
-  use { "gennaro-tedesco/nvim-jqx", opt = true, ft = "json" }
+  use { "gennaro-tedesco/nvim-jqx", ft = "json" }
   -- easy text alignment
   use { "godlygeek/tabular", cmd = "Tabularize" }
   -- file-type aware comments
@@ -29,7 +29,7 @@ return require("packer").startup(function(use)
   -- color highlighter
   use { "rrethy/vim-hexokinase", run = "make hexokinase" }
   -- syntax highlighting for log files
-  use { "mtdl9/vim-log-highlighting", opt = true, ft = "log" }
+  use { "mtdl9/vim-log-highlighting", ft = "log" }
   -- enable repeating actions with <.>
   use "tpope/vim-repeat"
   -- debug vim plugins
@@ -43,8 +43,8 @@ return require("packer").startup(function(use)
   if vim.fn.isdirectory "/etc/portage" then
     use {
       "gentoo/gentoo-syntax",
-      opt = true,
       ft = {
+        "ebuild",
         "gentoo-changelog",
         "gentoo-conf-d",
         "gentoo-env-d",
