@@ -39,6 +39,7 @@ libfm
 lnav
 nitrogen
 npm
+nvim/plugin/packer_compiled.lua
 okularpartrc
 okularrc
 pavucontrol.ini

@@ -152,21 +152,6 @@ STICKY                04;37;44
 .typelib      38;5;60
 
 #+--- Documents ---+
-*AUTHORS      38;5;11;4
-*CHANGES      38;5;11;4
-*CONTRIBUTORS 38;5;11;4
-*COPYING      38;5;11;4
-*COPYRIGHT    38;5;11;4
-*HISTORY      38;5;11;4
-*INSTALL      38;5;11;4
-*LICENSE      38;5;11;4
-*NOTICE       38;5;11;4
-*PATENTS      38;5;11;4
-*README       38;5;11;4
-*README.md    38;5;11;4
-*README.rst   38;5;11;4
-*VERSION      38;5;11;4
-
 .doc   38;5;144
 .docx  38;5;144
 .dot   38;5;144
@@ -201,6 +186,27 @@ STICKY                04;37;44
 .rst      38;5;186
 .tex      38;5;186
 .textile  38;5;186
+
+*readme.md    38;5;11;4
+*readme.rst   38;5;11;4
+
+*AUTHORS      38;5;11;4
+*CHANGES      38;5;11;4
+*CONTRIBUTORS 38;5;11;4
+*COPYING      38;5;11;4
+*COPYRIGHT    38;5;11;4
+*HISTORY      38;5;11;4
+*INSTALL      38;5;11;4
+*LICENSE      38;5;11;4
+*NOTICE       38;5;11;4
+*PATENTS      38;5;11;4
+*README       38;5;11;4
+*README.md    38;5;11;4
+*README.rst   38;5;11;4
+*VERSION      38;5;11;4
+
+*CONTRIBUTING.md 38;5;11;4
+*CONFIG.md       38;5;11;4
 
 .bib       38;5;178
 .dtd       38;5;178
