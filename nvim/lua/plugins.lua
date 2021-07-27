@@ -144,8 +144,8 @@ return require("packer").startup(function(use)
     wants = {
       "plenary.nvim",
       "popup.nvim",
-      "telescope-fzy-native.nvim",
       "telescope-fzf-native.nvim",
+      "telescope-fzy-native.nvim",
       "telescope-project.nvim",
       "telescope-symbols.nvim",
       "telescope-lsp-handlers.nvim",
@@ -160,9 +160,9 @@ return require("packer").startup(function(use)
       -- pick and insert symbols
       "nvim-telescope/telescope-symbols.nvim",
       -- pre-compiled c port of fzf
-      "nvim-telescope/telescope-fzf-native.nvim",
-      -- pre-compiled fzy sorter
       { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+      -- pre-compiled fzy sorter
+      "nvim-telescope/telescope-fzy-native.nvim",
       -- lsp extension
       "gbrlsnchs/telescope-lsp-handlers.nvim",
     },
