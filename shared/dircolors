@@ -255,7 +255,7 @@ STICKY                04;37;44
 .tmTheme              1
 .user-ca-bundle       1
 
-.git           38;5;160
+.git           38;5;166
 .gitattributes 38;5;240
 .gitignore     38;5;240
 .gitmodules    38;5;240
