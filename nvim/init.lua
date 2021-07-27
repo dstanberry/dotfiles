@@ -10,33 +10,23 @@ local cache = vim.env.XDG_CACHE_HOME
 
 -- ensure backup directory exists
 local backup = string.format("%s/nvim/backup", cache)
-if not vim.fn.isdirectory(backup) then
-  vim.fn.mkdir(backup, "p")
-end
+vim.fn.mkdir(backup, "p")
 
 -- ensure swap directory exists
 local swap = string.format("%s/nvim/swap", cache)
-if not vim.fn.isdirectory(swap) then
-  vim.fn.mkdir(swap, "p")
-end
+vim.fn.mkdir(swap, "p")
 
 -- ensure undo directory exists
 local undo = string.format("%s/nvim/undo", cache)
-if not vim.fn.isdirectory(undo) then
-  vim.fn.mkdir(undo, "p")
-end
+vim.fn.mkdir(undo, "p")
 
 -- ensure shada directory exists
 local shada = string.format("%s/nvim/shada", cache)
-if not vim.fn.isdirectory(shada) then
-  vim.fn.mkdir(shada, "p")
-end
+vim.fn.mkdir(shada, "p")
 
 -- ensure netrw directory exists
 local netrw = string.format("%s/nvim/netrw", cache)
-if not vim.fn.isdirectory(netrw) then
-  vim.fn.mkdir(netrw, "p")
-end
+vim.fn.mkdir(netrw, "p")
 
 -- lazy-load any predefined resources
 vim.cmd [[ call functions#defer('call deferred#load_dir_hash()') ]]

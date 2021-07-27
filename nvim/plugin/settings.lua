@@ -2,7 +2,7 @@
 -- => Editor
 ---------------------------------------------------------------
 local cache = vim.env.XDG_CACHE_HOME
-local data = vim.env.XDG_CACHE_HOME
+local data = vim.env.XDG_DATA_HOME
 
 -- update file content if it has been modified on disk
 vim.opt.autoread = true
