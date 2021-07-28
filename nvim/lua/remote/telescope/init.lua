@@ -7,7 +7,7 @@ if not ok and not pcall(require, "telescope") then
   return
 end
 
--- reload telescope and it's dependencies
+-- reload modules
 local should_reload = true
 local reloader = function()
   if should_reload then
@@ -18,7 +18,6 @@ local reloader = function()
 end
 reloader()
 
--- bring telescope functions into local scope
 local actions = require "telescope.actions"
 local state = require "telescope.actions.state"
 local themes = require "telescope.themes"
@@ -111,14 +110,14 @@ local ignored = {
 local M = {}
 
 -- show current buffer list
-function M.search_buffers()
+function M.buffers()
   require("telescope.builtin").buffers(themes.get_dropdown {
     prompt_title = "\\ Buffers /",
   })
 end
 
--- fuzzy search dotfiles from anywhere
-function M.search_neovim()
+-- search nvim config
+function M.find_nvim()
   local opts = {
     cwd = "~/.config/nvim",
     hidden = true,
@@ -129,8 +128,8 @@ function M.search_neovim()
   require("telescope.builtin").find_files(opts)
 end
 
--- customize generic fuzzy finder
-function M.search_cwd()
+-- search current directory
+function M.project_files()
   local opts = {
     hidden = true,
     file_ignore_patterns = ignored,
@@ -142,10 +141,9 @@ function M.search_cwd()
   end
 end
 
--- customize generic file browser
+-- file browser
 function M.file_browser()
-  local opts
-  opts = {
+  local opts; opts = {
     hidden = true,
     sorting_strategy = "ascending",
     scroll_strategy = "cycle",
@@ -179,32 +177,24 @@ function M.file_browser()
   require("telescope.builtin").file_browser(opts)
 end
 
--- fuzzy search installed vim plugins
-function M.installed_plugins()
+-- search remote plugins
+function M.find_plugins()
   require("telescope.builtin").find_files {
     cwd = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data"),
     previewer = false,
-    prompt_title = "\\ (N)Vim Plugins /",
+    prompt_title = "\\ Nvim Plugins /",
   }
 end
 
--- find occurrences of word under cursor in all files
-function M.grep_cursor()
-  require("telescope.builtin").grep_string {
-    -- search = vim.fn.input("grep: "),
-    prompt_title = "\\ Grep File /",
-  }
-end
-
--- grep for arbitrary pattern in cwd
-function M.grep_cwd()
-  require("telescope.builtin").grep_string {
+-- grep for pattern within directory
+function M.grep_string()
+  require("telescope.builtin").grep_string(themes.get_ivy {
     search = vim.fn.input "grep: ",
     prompt_title = "\\ Grep Project /",
-  }
+  })
 end
 
--- fuzzy find text within current buffer
+-- search current buffer
 function M.current_buffer()
   require("telescope.builtin").current_buffer_fuzzy_find(themes.get_dropdown {
     previewer = false,
@@ -215,11 +205,11 @@ end
 -- search help files
 function M.help_tags()
   require("telescope.builtin").help_tags(themes.get_ivy {
-    prompt_title = "\\ Documentation /",
+    prompt_title = "\\ Builtin Documentation /",
   })
 end
 
--- call setmetatable whenever any of the custom modules are called
+-- fallback to builtin method if function not defined here
 return setmetatable({}, {
   __index = function(_, k)
     reloader()
