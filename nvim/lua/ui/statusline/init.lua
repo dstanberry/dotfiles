@@ -5,19 +5,15 @@
 local hi = require "ui.statusline.highlight"
 local data = require "ui.statusline.data"
 
--- only show relpath in statusline for these filetypes
-local fp = {
+local browsers = {
   "lir",
-  "netrw",
 }
 
--- only show filepath in statusline for these filetypes
-local ff = {
+local special = {
   "help",
 }
 
--- only show filetype in statusline for these filetypes
-local ft = {
+local plugins = {
   "Neogit",
   "packer",
   "qf",
@@ -94,40 +90,58 @@ local function inactive(bufnr)
   }
 end
 
--- default statusline for file explorers
-local function explorer(bufnr)
+local function explorer_active(bufnr)
+  local mode = vim.fn.mode()
+  local mode_hl = hi.mode(mode)
+  return table.concat {
+    add(mode_hl, { data.mode() }),
+    add(hi.user1, { " ", data.relpath(bufnr) }, true),
+    hi.segment,
+  }
+end
+
+local function explorer_inactive(bufnr)
   return table.concat {
     add(hi.user3, { " ", data.relpath(bufnr) }, true),
     hi.segment,
   }
 end
 
--- default statusline for file explorers
-local function help_active(bufnr)
+local function plugin_active(bufnr)
+  local mode = vim.fn.mode()
+  local mode_hl = hi.mode(mode)
   return table.concat {
+    add(mode_hl, { data.mode() }),
+    add(mode_hl, { data.filename(bufnr) }),
+    hi.segment,
+  }
+end
+
+local function plugin_inactive(bufnr)
+  return table.concat {
+    add(hi.user3, { " ", data.filename(bufnr) }, true),
+    hi.segment,
+  }
+end
+
+local function special_active(bufnr)
+  local mode = vim.fn.mode()
+  local mode_hl = hi.mode(mode)
+  return table.concat {
+    add(mode_hl, { data.mode() }),
     add(hi.user1, { " ", data.relpath(bufnr) }, true),
     add(hi.user2, { data.filename(bufnr), data.get_modified(bufnr) }),
     hi.segment,
   }
 end
 
--- default statusline for file explorers
-local function help_inactive(bufnr)
+local function special_inactive(bufnr)
   return table.concat {
     add(hi.user3, { " ", data.filepath(bufnr) }, true),
     hi.segment,
   }
 end
 
--- default statusline for various plugins
-local function plugin(bufnr)
-  return table.concat {
-    add(hi.user3, { " ", string.format("[%s]", data.filename(bufnr)) }, true),
-    hi.segment,
-  }
-end
-
--- default statusline for exotic windows
 local function simple()
   return hi.segment
 end
@@ -139,20 +153,20 @@ statusline.focus = function(win_id)
   end
   local bufnr = vim.api.nvim_win_get_buf(win_id)
   local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
-  for _, t in ipairs(fp) do
+  for _, t in ipairs(browsers) do
     if type == t then
-      return explorer(bufnr)
+      return explorer_active(bufnr)
     end
   end
-  for _, t in ipairs(ff) do
+  for _, t in ipairs(special) do
     if type == t then
-      return help_active(bufnr)
+      return special_active(bufnr)
     end
   end
-  for _, t in ipairs(ft) do
+  for _, t in ipairs(plugins) do
     local match = string.match(type, t) or ""
     if type == t or #match > 0 then
-      return plugin(bufnr)
+      return plugin_active(bufnr)
     end
   end
   type = vim.fn.getftype(data.filepath(bufnr))
@@ -177,20 +191,20 @@ statusline.dim = function(win_id)
   local bufnr = vim.api.nvim_win_get_buf(win_id)
   local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
   local name = vim.fn.bufname(bufnr)
-  for _, t in ipairs(fp) do
+  for _, t in ipairs(browsers) do
     if type == t then
-      return explorer(bufnr)
+      return explorer_inactive(bufnr)
     end
   end
-  for _, t in ipairs(ff) do
+  for _, t in ipairs(special) do
     if type == t then
-      return help_inactive(bufnr)
+      return special_inactive(bufnr)
     end
   end
-  for _, t in ipairs(ft) do
+  for _, t in ipairs(plugins) do
     local match = string.match(type, t) or ""
     if type == t or #match > 0 then
-      return plugin(bufnr)
+      return plugin_inactive(bufnr)
     end
   end
   type = vim.fn.getftype(data.filepath(bufnr))
