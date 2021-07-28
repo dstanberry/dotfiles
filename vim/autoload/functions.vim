@@ -253,7 +253,7 @@ function! functions#execute_selection() abort range
     execute l:selection
   elseif &filetype ==# 'lua'
     let l:cmd = printf("lua << EOF\n%s\nEOF", l:selection)
-    redir > /tmp/scratch.vim | echo l:cmd | redir END
+    redir! > /tmp/scratch.vim | echo l:cmd | redir END
     source /tmp/scratch.vim
     call system('rm /tmp/scratch.vim')
   endif
