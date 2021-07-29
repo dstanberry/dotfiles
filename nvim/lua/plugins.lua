@@ -1,8 +1,10 @@
 ---------------------------------------------------------------
 -- => Plugin Manager
 ---------------------------------------------------------------
--- configuration files (if necessary) will be specified here or in
--- `after/plugin`
+--[[
+configuration files (if necessary) will be specified here or in
+`after/plugin`
+--]]
 
 -- plugin configuration
 return require("packer").startup(function(use)
@@ -227,4 +229,15 @@ return require("packer").startup(function(use)
 
   -- independent code execution
   use { "michaelb/sniprun", run = "bash ./install.sh", opt = true, cmd = "SnipRun" }
+
+  --preview register contents
+  use {
+    "tversteeg/registers.nvim",
+    config = function()
+      vim.g.registers_hide_only_whitespace = 1
+      vim.g.registers_show_empty_registers = 0
+      vim.g.registers_trim_whitespace = 1
+      vim.g.registers_window_border = "rounded"
+    end,
+  }
 end)

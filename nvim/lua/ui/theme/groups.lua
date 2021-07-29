@@ -287,6 +287,9 @@ M.apply = function(c)
   hi.CompeDocumentation = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
   hi.CompeDocumentationBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
 
+  -- registers.nvim highlighting
+  hi.RegistersWindow = { guifg = c.base05, guibg = c.base10, gui = "none", guisp = nil }
+
   -- ensure termguicolors is set (likely redundant)
   vim.opt.termguicolors = true
   -- set gui colors
