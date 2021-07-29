@@ -224,4 +224,7 @@ return require("packer").startup(function(use)
   }
   -- text based user interface to git
   use { "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" }
+
+  -- independent code execution
+  use { "michaelb/sniprun", run = "bash ./install.sh", opt = true, cmd = "SnipRun" }
 end)
