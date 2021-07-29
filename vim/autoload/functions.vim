@@ -203,21 +203,21 @@ endfunction
 
 " shift text selection up
 function! functions#move_up() abort range
-  let l:count=v:count ? -v:count : -1
-  let l:max=(a:firstline - 1) * -1
-  let l:movement=max([l:count, l:max])
-  let l:address="'<" . (l:movement - 1)
-  let l:should_move=l:movement < 0
+  let l:count = v:count ? -v:count : -1
+  let l:max = (a:firstline - 1) * -1
+  let l:movement = max([l:count, l:max])
+  let l:address = "'<" . (l:movement - 1)
+  let l:should_move = l:movement < 0
   call s:move_selection(l:address, l:should_move)
 endfunction
 
 " shift text selection down
 function! functions#move_down() abort range
-  let l:count=v:count ? v:count : 1
-  let l:max=line('$') - a:lastline
-  let l:movement=min([l:count, l:max])
-  let l:address="'>+" . l:movement
-  let l:should_move=l:movement > 0
+  let l:count = v:count ? v:count : 1
+  let l:max = line('$') - a:lastline
+  let l:movement = min([l:count, l:max])
+  let l:address = "'>+" . l:movement
+  let l:should_move = l:movement > 0
   call s:move_selection(l:address, l:should_move)
 endfunction
 
@@ -234,7 +234,7 @@ function! functions#get_selection() range
   return selection
 endfunction
 
-" save and execute vim/lua buffer
+" (vim/lua) save and execute buffer contents
 function! functions#execute_file() abort
   if &filetype ==# 'vim'
     silent! write
@@ -246,7 +246,7 @@ function! functions#execute_file() abort
   return
 endfunction
 
-" execute vim/lua text selection
+" (vim/lua) execute visual selection
 function! functions#execute_selection() abort range
   let l:selection = functions#get_visual_selection()
   if &filetype ==# 'vim'
@@ -260,7 +260,7 @@ function! functions#execute_selection() abort range
   return
 endfunction
 
-" execute vim/lua line under cursor
+" (vim/lua) execute line under cursor
 function! functions#execute_line() abort
   if &filetype ==# 'vim'
     execute getline('.')

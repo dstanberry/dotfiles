@@ -41,8 +41,5 @@ vnoremap ZZ <esc>
 " preserve clipboard content after pasting
 vnoremap <leader>p "_dp
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Visual | Local Leader
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " execute selected text
-vnoremap <localleader>x :call functions#execute_selection()<cr>
+vnoremap <leader>x :call functions#execute_selection()<cr>
