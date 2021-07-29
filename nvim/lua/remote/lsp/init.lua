@@ -11,11 +11,10 @@ end
 -- vim.lsp.set_log_level("debug")
 -- vim.cmd('e'..vim.lsp.get_log_path())
 
--- define buffer local features
 local on_attach_nvim = function(client, bufnr)
   local nnoremap = vim.keymap.nnoremap
   local vnoremap = vim.keymap.vnoremap
-  -- define symbol highlighting when supported by server
+
   if client.resolved_capabilities.document_highlight then
     vim.cmd [[
       augroup lsp_document_highlight
@@ -25,7 +24,7 @@ local on_attach_nvim = function(client, bufnr)
       augroup END
     ]]
   end
-  -- define keybinds for code actions / diagnostics
+
   nnoremap { "ga", vim.lsp.buf.code_action, buffer = bufnr }
   nnoremap { "gD", vim.lsp.buf.declaration, buffer = bufnr }
   nnoremap { "gd", vim.lsp.buf.definition, buffer = bufnr }
@@ -48,14 +47,14 @@ local on_attach_nvim = function(client, bufnr)
   nnoremap { "<localleader>wl", function() P(vim.lsp.buf.list_workspace_folders()) end, buffer = bufnr, }
   nnoremap { "<localleader>wa", vim.lsp.buf.add_workspace_folder, buffer = bufnr }
   nnoremap { "<localleader>wr", vim.lsp.buf.remove_workspace_folder, buffer = bufnr }
-  -- define keybind for document formatting when supported by server
+
   if client.resolved_capabilities.document_formatting then
     nnoremap { "ff", vim.lsp.buf.formatting, buffer = bufnr }
   end
   if client.resolved_capabilities.document_range_formatting then
     vnoremap { "ff", vim.lsp.buf.range_formatting, buffer = bufnr }
   end
-  -- configure lsp_signature.nvim
+
   local has_sig, lspsignature = pcall(require, "lsp_signature")
   if not has_sig then
     return
@@ -72,7 +71,6 @@ local on_attach_nvim = function(client, bufnr)
   }
 end
 
--- diagnostic symbols and highlight groups
 vim.fn.sign_define("LspDiagnosticsSignError", {
   text = " ",
   texthl = "LspDiagnosticsSignError",
@@ -105,9 +103,7 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
   border = "single",
 })
 
--- pack lsp configuration
 local function get_server_configuration()
-  -- enable snippet support
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
   capabilities.textDocument.completion.completionItem.resolveSupport = {
@@ -116,9 +112,7 @@ local function get_server_configuration()
   return { capabilities = capabilities, on_attach = on_attach_nvim }
 end
 
--- load defined servers
 local function load_servers()
-  -- manually curated list of language servers
   local servers = {
     "bashls",
     "clangd",
