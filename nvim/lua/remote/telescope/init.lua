@@ -99,7 +99,7 @@ pcall(require("telescope").load_extension "lsp_handlers")
 local ignored = {
   "%.db",
   "%.gpg",
-  ".git",
+  "^.git$",
   ".gitattributes",
   ".git-crypt",
   "karabiner/assets",
