@@ -7,7 +7,7 @@ if not ok then
   return
 end
 
-local util = require "util"
+local map = require "util.map"
 
 local check_back_space = function()
   local col = vim.fn.col "." - 1
@@ -21,11 +21,11 @@ end
 -- use tab to jump to next snippet placeholder
 local on_tab = function()
   if vim.fn.pumvisible() == 1 then
-    return util.t "<c-n>"
+    return map.t "<c-n>"
   elseif luasnip.expand_or_jumpable() then
-    return util.t "<plug>luasnip-expand-or-jump"
+    return map.t "<plug>luasnip-expand-or-jump"
   elseif check_back_space() then
-    return util.t "<tab>"
+    return map.t "<tab>"
   else
     return vim.fn["compe#complete"]()
   end
@@ -34,15 +34,15 @@ end
 -- use s-tab to jump to previous snippet placeholder
 local on_s_tab = function()
   if vim.fn.pumvisible() == 1 then
-    return util.t "<c-p>"
+    return map.t "<c-p>"
   elseif luasnip.jumpable(-1) then
-    return util.t "<plug>luasnip-jump-prev"
+    return map.t "<plug>luasnip-jump-prev"
   else
-    return util.t "<s-tab>"
+    return map.t "<s-tab>"
   end
 end
 
-util.imap("<tab>", on_tab, { expr = true })
-util.smap("<tab>", on_tab, { expr = true })
-util.imap("<s-tab>", on_s_tab, { expr = true })
-util.smap("<s-tab>", on_s_tab, { expr = true })
+map.imap("<tab>", on_tab, { expr = true })
+map.smap("<tab>", on_tab, { expr = true })
+map.imap("<s-tab>", on_s_tab, { expr = true })
+map.smap("<s-tab>", on_s_tab, { expr = true })

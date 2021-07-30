@@ -1,8 +1,6 @@
 ---------------------------------------------------------------
 -- => Packer Helper Functions
 ---------------------------------------------------------------
-local util = require "util"
-
 -- initialize modules table
 local M = {}
 
@@ -16,9 +14,9 @@ function M.bootstrap()
   local out = vim.fn.system(
     string.format("git clone %s %s", "https://github.com/wbthomason/packer.nvim", directory .. "/packer.nvim")
   )
-  util.info(out)
-  util.info "Downloading packer.nvim..."
-  util.info "( Restart is required! )"
+  print(out)
+  print "Downloading packer.nvim..."
+  print "( Restart is required! )"
 end
 
 return M

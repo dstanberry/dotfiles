@@ -6,8 +6,8 @@ if not pcall(require, "compe") then
   return
 end
 
-local util = require "util"
+local mamp = require "util.map"
 
-util.inoremap("<cr>", "compe#confirm('<cr>')", { expr = true })
-util.inoremap("<esc>", "compe#close('<esc>')", { expr = true })
-util.inoremap("<c-x>", "compe#complete()", { expr = true })
+mamp.inoremap("<cr>", "compe#confirm('<cr>')", { expr = true })
+mamp.inoremap("<esc>", "compe#close('<esc>')", { expr = true })
+mamp.inoremap("<c-x>", "compe#complete()", { expr = true })
