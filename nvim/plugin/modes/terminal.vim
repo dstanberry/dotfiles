@@ -1,1 +1,0 @@
-../../../vim/plugin/modes/terminal.vim
