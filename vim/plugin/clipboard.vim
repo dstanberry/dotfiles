@@ -6,17 +6,9 @@ function s:copy(lines, ...)
   let enc = functions#b64_encode(str)
   let buf = "\e]52;0;" . enc . "\x07"
 
-  if has('nvim')
-    let jid = jobstart('tmux load-buffer -')
-
-    call chansend(jid, str)
-    call chanclose(jid)
-    call chansend(v:stderr, buf)
-  else
-    execute 'silent! !echo ' . shellescape('print -l ' . str . ' | tmux load-buffer -')
-    execute 'silent! !echo ' . shellescape('printf "'. buf . '" > /dev/stderr')
-    redraw!
-  endif
+  execute 'silent! !echo ' . shellescape('print -l ' . str . ' | tmux load-buffer -')
+  execute 'silent! !echo ' . shellescape('printf "'. buf . '" > /dev/stderr')
+  redraw!
 endfunction
 
 function! s:paste(mode)
