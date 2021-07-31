@@ -179,19 +179,6 @@ function! functions#b64_encode(str)
   return join(b64, '')
 endfunction
 
-" get the range of selected text
-function! functions#get_visual_selection()
-  let [lnum1, col1] = getpos("'<")[1:2]
-  let [lnum2, col2] = getpos("'>")[1:2]
-  if lnum1 > lnum2
-    let [lnum1, col1, lnum2, col2] = [lnum2, col2, lnum1, col1]
-  endif
-  let lines = getline(lnum1, lnum2)
-  let lines[-1] = lines[-1][: col2 - (&selection ==# 'inclusive' ? 1 : 2)]
-  let lines[0] = lines[0][col1 - 1:]
-  return join(lines, "\n")."\n"
-endfunction
-
 " move selected vertically within buffer
 function! s:move_selection(address, should_move)
   if visualmode() ==? 'v' && a:should_move
@@ -221,17 +208,17 @@ function! functions#move_down() abort range
   call s:move_selection(l:address, l:should_move)
 endfunction
 
-" send selection to clipboard
+" get the range of selected text
 function! functions#get_selection() range
-  let reg_save = getreg('"')
-  let regtype_save = getregtype('"')
-  let cb_save = &clipboard
-  set clipboard&
-  normal! ""gvy
-  let selection = getreg('"')
-  call setreg('"', reg_save, regtype_save)
-  let &clipboard = cb_save
-  return selection
+  let [lnum1, col1] = getpos("'<")[1:2]
+  let [lnum2, col2] = getpos("'>")[1:2]
+  if lnum1 > lnum2
+    let [lnum1, col1, lnum2, col2] = [lnum2, col2, lnum1, col1]
+  endif
+  let lines = getline(lnum1, lnum2)
+  let lines[-1] = lines[-1][: col2 - (&selection ==# 'inclusive' ? 1 : 2)]
+  let lines[0] = lines[0][col1 - 1:]
+  return join(lines, "\n")."\n"
 endfunction
 
 " (vim/lua) save and execute buffer contents
@@ -248,7 +235,7 @@ endfunction
 
 " (vim/lua) execute visual selection
 function! functions#execute_selection() abort range
-  let l:selection = functions#get_visual_selection()
+  let l:selection = functions#get_selection()
   if &filetype ==# 'vim'
     execute l:selection
   elseif &filetype ==# 'lua'

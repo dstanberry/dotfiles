@@ -18,9 +18,6 @@ nnoremap <silent> <s-tab> :tabprevious<cr>
 " clear hlsearch if set, otherwise send default behaviour
 nnoremap <expr> <cr> {-> v:hlsearch ? ":nohl<cr>" : "<cr>"}()
 
-" bind ctl-c to escape key
-nnoremap <c-c> <esc>
-
 " navigate loclist list
 nnoremap <silent> <a-k> :lprevious<cr>zz
 nnoremap <silent> <a-j> :lnext<cr>zz
@@ -61,10 +58,6 @@ nnoremap gob  :s/\((\zs\\|,\ *\zs\\|)\)/\r&/g<cr><bar>:'[,']normal ==<cr>
 " move to the beginning of the current line
 nnoremap H ^
 
-" store relative jumps in the jumplist if they exceed a threshold.
-nnoremap <expr> k (v:count > 5 ? "m'" . v:count : '') . 'k'
-nnoremap <expr> j (v:count > 5 ? "m'" . v:count : '') . 'j'
-
 " move to the end of the current line
 nnoremap L g_
 
@@ -79,7 +72,7 @@ nnoremap q <nop>
 nnoremap Q <nop>
 
 " yank to end of line
-noremap Y y$
+nnoremap Y y$
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Normal | Leader
@@ -121,7 +114,7 @@ nnoremap <localleader>ff :call functions#trim()<cr>
 " save as new file within the current directory
 nnoremap <localleader>s :saveas <c-r>=expand('%:p:h') . functions#get_separator()<cr>
 
-" discard changes to all files and close window
+" discard all file modifications and close instance
 nnoremap <localleader>qq ZQ
 
 " execute current line
