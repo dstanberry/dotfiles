@@ -19,7 +19,7 @@ vim.opt.belloff = "all"
 -- emphasis on wrapped lines
 vim.opt.breakindentopt = "shift:2"
 -- setup clipboard
-vim.opt.clipboard = "unnamed,unnamedplus"
+vim.opt.clipboard = "unnamedplus"
 -- include dictionary in completion matches
 vim.opt.complete = vim.opt.complete + "kspell"
 -- use popup menu to show possible completions
