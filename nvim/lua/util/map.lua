@@ -14,7 +14,7 @@ local map = function(mode, key, cmd, opts, defaults)
     if opts.expr then
       cmd = ([[luaeval('require("util.map").execute(%d)')]]):format(#M.functions)
     else
-      cmd = ([[cmd>lua require("util.map").execute(%d)<cr>]]):format(#M.functions)
+      cmd = ([[<cmd>lua require("util.map").execute(%d)<cr>]]):format(#M.functions)
     end
   end
   if opts.buffer ~= nil then
@@ -56,6 +56,9 @@ end
 function M.smap(key, cmd, opts)
   return map("s", key, cmd, opts)
 end
+function M.cmap(key, cmd, opts)
+  return map("c", key, cmd, opts)
+end
 
 function M.nnoremap(key, cmd, opts)
   return map("n", key, cmd, opts, { noremap = true })
@@ -74,6 +77,9 @@ function M.onoremap(key, cmd, opts)
 end
 function M.snoremap(key, cmd, opts)
   return map("s", key, cmd, opts, { noremap = true })
+end
+function M.cnoremap(key, cmd, opts)
+  return map("c", key, cmd, opts, { noremap = true })
 end
 
 function M.t(str)

@@ -29,7 +29,8 @@ local netrw = string.format("%s/nvim/netrw", cache)
 vim.fn.mkdir(netrw, "p")
 
 -- lazy-load any predefined resources
-vim.cmd [[ call functions#defer('call deferred#load_dir_hash()') ]]
+--TODO: rewrite in lua
+-- vim.cmd [[ call functions#defer('call deferred#load_dir_hash()') ]]
 
 -- ensure packer.nvim is available
 if not pcall(require, "packer") then
@@ -38,7 +39,10 @@ if not pcall(require, "packer") then
   return
 end
 
+-- load global functions
 require "util.globals"
+-- load keymaps
+require "keymaps"
 
 -- define colorscheme
 R("ui.theme").setup()
