@@ -37,14 +37,17 @@ end
 
 -- load global functions
 require "util.globals"
+-- load autocmds
+require "core.events"
 -- load keymaps
-require "keymaps"
+require "core.keymaps"
 
 -- define colorscheme
 R("ui.theme").setup()
 -- define statusline
 R("ui.statusline").setup()
 
+-- load remote plugins
 vim.defer_fn(function()
-  require "plugins"
+  require "remote.plugins"
 end, 0)
