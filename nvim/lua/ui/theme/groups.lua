@@ -1,6 +1,8 @@
 ---------------------------------------------------------------
 -- => Builitin Highlight Groups
 ---------------------------------------------------------------
+local color = require "util.color"
+
 -- initialize modules table
 local M = {}
 
@@ -27,14 +29,14 @@ local hi = setmetatable({}, {
 
 -- apply colors
 M.apply = function(c)
-  c.base10 = vim.fn["functions#darken"](c.base02, 40)
-  c.base11 = vim.fn["functions#darken"](c.base03, 25)
-  c.base12 = vim.fn["functions#lighten"](c.base04, 15)
-  c.base13 = vim.fn["functions#lighten"](c.base08, 20)
-  c.base14 = vim.fn["functions#darken"](c.base0C, 20)
-  c.base15 = vim.fn["functions#lighten"](c.base0E, 30)
-  c.base16 = vim.fn["functions#lighten"](c.base0F, 30)
-  c.base17 = vim.fn["functions#darken"](c.base0E, 20)
+  c.base10 = color.darken(c.base02, 40)
+  c.base11 = color.darken(c.base03, 25)
+  c.base12 = color.lighten(c.base04, 15)
+  c.base13 = color.lighten(c.base08, 20)
+  c.base14 = color.darken(c.base0C, 20)
+  c.base15 = color.lighten(c.base0E, 30)
+  c.base16 = color.lighten(c.base0F, 30)
+  c.base17 = color.darken(c.base0E, 20)
 
   -- vim editor colors
   hi.Normal = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
@@ -161,9 +163,9 @@ M.apply = function(c)
   hi.SpellCap = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0D }
   hi.SpellRare = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0E }
 
-  c.lref00 = vim.fn["functions#darken"](c.base07, 40)
-  c.lref01 = vim.fn["functions#darken"](c.base08, 35)
-  c.lref02 = vim.fn["functions#darken"](c.base0A, 10)
+  c.lref00 = color.darken(c.base07, 40)
+  c.lref01 = color.darken(c.base08, 35)
+  c.lref02 = color.darken(c.base0A, 10)
 
   -- lsp document highlighting
   hi.LspReferenceText = { guifg = c.base10, guibg = c.base03, gui = nil, guisp = nil }
@@ -243,10 +245,10 @@ M.apply = function(c)
   hi.TSCurrentScope = { guifg = nil, guibg = nil, gui = "bold", guisp = nil }
   hi.TreesitterContext = { guifg = nil, guibg = c.base01, gui = "italic", guisp = nil }
 
-  c.stat00 = vim.fn["functions#lighten"](c.base05, 5)
-  c.stat01 = vim.fn["functions#darken"](c.base06, 10)
-  c.stat02 = vim.fn["functions#darken"](c.base06, 20)
-  c.stat03 = vim.fn["functions#darken"](c.base06, 55)
+  c.stat00 = color.lighten(c.base05, 5)
+  c.stat01 = color.darken(c.base06, 10)
+  c.stat02 = color.darken(c.base06, 20)
+  c.stat03 = color.darken(c.base06, 55)
 
   -- statusline highlighting
   hi.User1 = { guifg = c.stat01, guibg = c.base02, gui = "none", guisp = nil }
@@ -268,8 +270,7 @@ M.apply = function(c)
   hi.Custom5 = { guifg = c.base0E, guibg = c.base02, gui = "none", guisp = nil }
   hi.Custom6 = { guifg = c.base09, guibg = c.base02, gui = "none", guisp = nil }
 
-
-  c.tele00 = vim.fn["functions#darken"](c.base0F, 43)
+  c.tele00 = color.darken(c.base0F, 43)
 
   -- telescope.nvim highlighting
   hi.TelescopeSelection = { guifg = nil, guibg = c.tele00, gui = "bold", guisp = nil }

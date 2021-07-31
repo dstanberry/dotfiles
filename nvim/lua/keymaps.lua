@@ -102,13 +102,11 @@ nnoremap("<leader>q", "<cmd>quit<cr>", { silent = false })
 -- save current buffer to disk and execute the file
 nnoremap("<leader>x", function()
   local ft = vim.bo.filetype
-  local out = ""
   if ft == "vim" then
-    out = vim.api.nvim_exec([[silent! write | source %]], true)
+    print(vim.cmd([[silent! write | source %]]))
   elseif ft == "lua" then
-    out = vim.api.nvim_exec([[silent! write | luafile %]], true)
+    print(vim.cmd([[silent! write | luafile %]]))
   end
-  print(out)
 end, {
   silent = false,
 })
@@ -156,13 +154,11 @@ nnoremap("<localleader>qq", "ZQ")
 -- execute current line
 nnoremap("<localleader>x", function()
   local ft = vim.bo.filetype
-  local out = ""
   if ft == "vim" then
-    out = vim.api.nvim_exec([[execute getline(".")]], true)
+    print(vim.cmd([[execute getline(".")]]))
   elseif ft == "lua" then
-    out = vim.api.nvim_exec(([[lua %s]]):format(vim.fn.getline "."), true)
+    print(vim.cmd(([[lua %s]]):format(vim.fn.getline ".")))
   end
-  print(out)
 end, {
   silent = false,
 })

@@ -28,10 +28,6 @@ vim.fn.mkdir(shada, "p")
 local netrw = string.format("%s/nvim/netrw", cache)
 vim.fn.mkdir(netrw, "p")
 
--- lazy-load any predefined resources
---TODO: rewrite in lua
--- vim.cmd [[ call functions#defer('call deferred#load_dir_hash()') ]]
-
 -- ensure packer.nvim is available
 if not pcall(require, "packer") then
   require("util.packer").bootstrap()
