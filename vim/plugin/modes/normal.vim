@@ -58,8 +58,15 @@ nnoremap gob  :s/\((\zs\\|,\ *\zs\\|)\)/\r&/g<cr><bar>:'[,']normal ==<cr>
 " move to the beginning of the current line
 nnoremap H ^
 
+" keep cursor stationary when joining line(s) below
+nnoremap J mzJ`z
+
 " move to the end of the current line
 nnoremap L g_
+
+" keep screen centered when jumping between search matches
+nnoremap n nzz
+nnoremap N Nzz
 
 " insert newline without entering insert mode
 nnoremap o o<esc>
@@ -87,6 +94,11 @@ nmap <leader>C "_C
 " delete text and preserve clipboard state
 nmap <leader>d "_d
 nmap <leader>D "_D
+
+" shift current line down
+nnoremap <leader>j :m .+1<cr>==
+" shift current line up
+nnoremap <leader>k :m .-2<cr>==
 
 " write current buffer to disk if changed
 nnoremap <leader>w :update<cr>
