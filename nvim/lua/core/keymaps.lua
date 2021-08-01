@@ -72,8 +72,15 @@ nnoremap(";", ":", { silent = false })
 -- move to the beginning of the current line
 nnoremap("H", "^")
 
+-- keep cursor stationary when joining line(s) below
+nnoremap("J", "mzJ`z")
+
 -- move to the end of the current line
 nnoremap("L", "g_")
+
+-- keep screen centered when jumping between search matches
+nnoremap("n", "nzz")
+nnoremap("N", "nzz")
 
 -- insert newline without entering insert mode
 nnoremap("o", "o<esc>")
@@ -94,18 +101,23 @@ nnoremap("Y", "y$")
 -- (try to) make all windows the same size
 nnoremap("<leader>=", "<c-w>=")
 
--- write current buffer to disk if changed
-nnoremap("<leader>w", "<cmd>update<cr>", { silent = false })
+-- shift current line down
+nnoremap("<leader>j",":m .+1<cr>==")
+-- shift current line up
+nnoremap("<leader>k",":m .-2<cr>==")
+
 -- close the current window or close app if this is the last window
 nnoremap("<leader>q", "<cmd>quit<cr>", { silent = false })
+-- write current buffer to disk if changed
+nnoremap("<leader>w", "<cmd>update<cr>", { silent = false })
 
 -- save current buffer to disk and execute the file
 nnoremap("<leader>x", function()
   local ft = vim.bo.filetype
   if ft == "vim" then
-    print(vim.cmd([[silent! write | source %]]))
+    print(vim.cmd [[silent! write | source %]])
   elseif ft == "lua" then
-    print(vim.cmd([[silent! write | luafile %]]))
+    print(vim.cmd [[silent! write | luafile %]])
   end
 end, {
   silent = false,
@@ -155,7 +167,7 @@ nnoremap("<localleader>qq", "ZQ")
 nnoremap("<localleader>x", function()
   local ft = vim.bo.filetype
   if ft == "vim" then
-    print(vim.cmd([[execute getline(".")]]))
+    print(vim.cmd [[execute getline(".")]])
   elseif ft == "lua" then
     print(vim.cmd(([[lua %s]]):format(vim.fn.getline ".")))
   end
@@ -169,6 +181,17 @@ nnoremap("<localleader>z", "<cmd>bdelete!<cr>", { silent = true })
 ---------------------------------------------------------------
 -- => Insert
 ---------------------------------------------------------------
+-- shift current line down
+inoremap("<c-j>", "<esc>:m .+1<cr>==i")
+-- shift current line up
+inoremap("<c-k>", "<esc>:m .-2<cr>==i")
+
+-- define undo break point
+inoremap(",", ",<c-g>u")
+inoremap(".", ".<c-g>u")
+inoremap("!", "!<c-g>u")
+inoremap("?", "?<c-g>u")
+
 -- exit insert mode
 inoremap("jk", "<esc>")
 
@@ -199,6 +222,11 @@ vnoremap("L", "g_")
 ---------------------------------------------------------------
 -- => Visual | Leader
 ---------------------------------------------------------------
+-- shift selected text down
+vnoremap("J", ":m '>+1<cr>gv=gv")
+-- shift selected text up
+vnoremap("K", ":m '>-2<cr>gv=gv")
+
 -- execute selected text
 -- TODO: range returns previous selection, not current
 -- vnoremap("<leader>x", function()
