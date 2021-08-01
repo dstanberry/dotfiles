@@ -80,7 +80,7 @@ nnoremap("L", "g_")
 
 -- keep screen centered when jumping between search matches
 nnoremap("n", "nzz")
-nnoremap("N", "nzz")
+nnoremap("N", "Nzz")
 
 -- insert newline without entering insert mode
 nnoremap("o", "o<esc>")
