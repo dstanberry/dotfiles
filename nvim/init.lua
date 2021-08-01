@@ -37,10 +37,6 @@ end
 
 -- load global functions
 require "util.globals"
--- load autocmds
-require "core.events"
--- load keymaps
-require "core.keymaps"
 
 -- define colorscheme
 R("ui.theme").setup()
