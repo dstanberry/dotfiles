@@ -2,16 +2,6 @@
 -- => (nvim-web-devicons) custom icon maps
 ---------------------------------------------------------------
 return {
-  ["lir_folder_icon"] = {
-    icon = "",
-    color = "#6f8fb4",
-    name = "LirFolder",
-  },
-  ["_dir_"] = {
-    icon = "",
-    color = "#6f8fb4",
-    name = "DirvishFolder",
-  },
   [".gitignore"] = {
     icon = "",
     color = "#41535b",
@@ -48,7 +38,7 @@ return {
     name = "Perl",
   },
   ["dircolors"] = {
-    icon = "",
+    icon = "",
     color = "#4d5a5e",
     name = "Shellscript",
   },
