@@ -54,13 +54,9 @@ end
 M.filetype = function(bufnr)
   local name = vim.fn.bufname(bufnr)
   local ft = vim.api.nvim_buf_get_option(name, "filetype")
-  if #ft > 0 then
-    local fn = M.filename(bufnr)
-    local icon = require("nvim-web-devicons").get_icon(fn, ft) or ""
-    return string.format("%s %s", icon, ft)
-  else
-    return ""
-  end
+  local fn = M.filename(bufnr)
+  local icon = require("nvim-web-devicons").get_icon(fn, ft)
+  return string.format("%s %s", icon, ft)
 end
 
 -- print filepath

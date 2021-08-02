@@ -142,14 +142,28 @@ local function special_inactive(bufnr)
   }
 end
 
-local function simple()
+local function simple_active(bufnr)
+  local mode = vim.fn.mode()
+  local mode_hl = hi.mode(mode)
+  return table.concat {
+    add(mode_hl, { data.mode() }),
+    add(mode_hl, { data.git_branch(bufnr) }),
+    add(hi.user2, { data.filename(bufnr), data.get_modified(bufnr) }),
+    hi.segment,
+    add(hi.custom00, { data.get_readonly(bufnr), data.metadata(bufnr) }),
+    add(mode_hl, { data.filetype(bufnr) }),
+    add(hi.user4, { " ", data.line_number(), data.column_number() }),
+  }
+end
+
+local function simple_inactive()
   return hi.segment
 end
 
 -- statusline when window has focus
 statusline.focus = function(win_id)
   if not vim.api.nvim_win_is_valid(win_id) then
-    return simple()
+    return simple_inactive()
   end
   local bufnr = vim.api.nvim_win_get_buf(win_id)
   local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
@@ -175,7 +189,7 @@ statusline.focus = function(win_id)
   if type == "file" or #name > 0 then
     line = active(bufnr)
   else
-    line = simple()
+    line = simple_active(bufnr)
   end
   return line
 end
@@ -183,7 +197,7 @@ end
 -- statusline when window does not have focus
 statusline.dim = function(win_id)
   if not vim.api.nvim_win_is_valid(win_id) then
-    return simple()
+    return simple_inactive()
   end
   if vim.fn.pumvisible() == 1 then
     return statusline.focus(win_id)
@@ -211,7 +225,7 @@ statusline.dim = function(win_id)
   if type == "file" or #name > 0 then
     return inactive(bufnr)
   else
-    return simple()
+    return simple_inactive()
   end
 end
 
