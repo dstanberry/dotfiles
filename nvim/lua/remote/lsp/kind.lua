@@ -2,31 +2,31 @@
 -- => lsp completion menu item configuration
 ---------------------------------------------------------------
 local kind_symbols = {
-  Class = "פּ ",
-  Color = " ",
-  Constant = " ",
-  Constructor = "襁",
-  Enum = " ",
-  EnumMember = " ",
-  Event = " ",
-  Field = "陋 ",
-  File = " ",
-  Folder = " ",
-  Function = " ",
-  Interface = "﯅ ",
-  Keyword = " ",
-  Method = " ",
-  Module = " ",
-  Operator = " ",
-  Property =  " ",
-  Reference = " ",
-  Snippet = "賂",
-  Struct = " ",
-  Text = " ",
-  TypeParameter = "т ",
-  Unit = " ",
-  Value = " ",
-  Variable = "勞 ",
+  Class = " (class)",
+  Color = " (color)",
+  Constant = " (constant)",
+  Constructor = " (constructor)",
+  Enum = " (enum)",
+  EnumMember = " (enum member)",
+  Event = " (event)",
+  Field = " (field)",
+  File = " (file)",
+  Folder = " (folder)",
+  Function = " (function)",
+  Interface = " (interface)",
+  Keyword = " (keyword)",
+  Method = " (method)",
+  Module = "{} (module)",
+  Operator = " (operator)",
+  Property = " (property)",
+  Reference = " (reference)",
+  Snippet = " (snippet)",
+  Struct = " (struct)",
+  Text = " (text)",
+  TypeParameter = " (type parameter)",
+  Unit = " (unit)",
+  Value = " (unit)",
+  Variable = " (variable)",
 }
 
 local kind_order = {
@@ -58,28 +58,24 @@ local kind_order = {
   "TypeParameter",
 }
 
-local function set_completion_symbols(opts)
-  local with_text = opts == nil or opts["with_text"]
-  local symbol_map = (opts and opts["symbol_map"] and vim.tbl_extend("force", kind_symbols, opts["symbol_map"]))
-    or kind_symbols
-
+local function set_completion_symbols()
+  local with_text = false
   local symbols = {}
   local len = 25
   if with_text == true or with_text == nil then
     for i = 1, len do
       local name = kind_order[i]
-      local symbol = symbol_map[name]
+      local symbol = kind_symbols[name]
       symbol = symbol and (symbol .. " ") or ""
       symbols[i] = string.format("%s%s", symbol, name)
     end
   else
     for i = 1, len do
       local name = kind_order[i]
-      symbols[i] = symbol_map[name]
+      symbols[i] = kind_symbols[name]
     end
   end
-
   require("vim.lsp.protocol").CompletionItemKind = symbols
 end
 
-set_completion_symbols(kind_symbols)
+set_completion_symbols()

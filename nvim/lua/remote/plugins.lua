@@ -70,10 +70,15 @@ return require("packer").startup(function(use)
 
   -- devicons
   use {
-    "kyazdani42/nvim-web-devicons",
-    config = function()
-      require "remote.devicons"
-    end,
+    "yamatsum/nvim-nonicons",
+    requires = {
+      {
+        "kyazdani42/nvim-web-devicons",
+        config = function()
+          require "remote.devicons"
+        end,
+      },
+    },
   }
   -- minimalist file explorer
   use {
