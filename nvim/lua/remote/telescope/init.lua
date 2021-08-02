@@ -20,7 +20,6 @@ reloader()
 
 local actions = require "telescope.actions"
 local state = require "telescope.actions.state"
-local themes = require "telescope.themes"
 
 local set_prompt_to_entry_value = function(prompt_bufnr)
   local entry = state.get_selected_entry()
@@ -33,7 +32,7 @@ end
 -- set default options
 require("telescope").setup {
   defaults = {
-    prompt_prefix = "  ",
+    prompt_prefix = " ❯ ",
     selection_caret = " ",
     winblend = 10,
     scroll_strategy = "cycle",
@@ -61,6 +60,11 @@ require("telescope").setup {
         ["jk"] = actions.close,
       },
     },
+  },
+  pickers = {
+    buffers = { theme = "dropdown" },
+    grep_string = { theme = "ivy" },
+    help_tags = { theme = "ivy" },
   },
   extensions = {
     fzf = {
@@ -111,21 +115,20 @@ local M = {}
 
 -- show current buffer list
 function M.buffers()
-  require("telescope.builtin").buffers(themes.get_dropdown {
+  require("telescope.builtin").buffers {
     prompt_title = "\\ Buffers /",
-  })
+  }
 end
 
 -- search nvim config
 function M.find_nvim()
-  local opts = {
+  require("telescope.builtin").find_files {
     cwd = "~/.config/nvim",
     hidden = true,
     follow = true,
     file_ignore_patterns = ignored,
     prompt_title = "\\ Neovim /",
   }
-  require("telescope.builtin").find_files(opts)
 end
 
 -- search current directory
@@ -143,7 +146,8 @@ end
 
 -- file browser
 function M.file_browser()
-  local opts; opts = {
+  local opts
+  opts = {
     hidden = true,
     sorting_strategy = "ascending",
     scroll_strategy = "cycle",
@@ -188,25 +192,19 @@ end
 
 -- grep for pattern within directory
 function M.grep_string()
-  require("telescope.builtin").grep_string(themes.get_ivy {
+  require("telescope.builtin").grep_string {
     search = vim.fn.input "grep: ",
+    path_display = { "shorten" },
     prompt_title = "\\ Grep Project /",
-  })
+  }
 end
 
 -- search current buffer
 function M.current_buffer()
-  require("telescope.builtin").current_buffer_fuzzy_find(themes.get_dropdown {
+  require("telescope.builtin").current_buffer_fuzzy_find {
     previewer = false,
     prompt_title = "\\ Find in File /",
-  })
-end
-
--- search help files
-function M.help_tags()
-  require("telescope.builtin").help_tags(themes.get_ivy {
-    prompt_title = "\\ Builtin Documentation /",
-  })
+  }
 end
 
 -- fallback to builtin method if function not defined here
