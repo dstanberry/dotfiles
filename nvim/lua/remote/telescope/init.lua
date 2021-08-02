@@ -41,13 +41,13 @@ require("telescope").setup {
     layout_config = {
       prompt_position = "bottom",
       horizontal = {
-        width = { padding = 0.06 },
         height = { padding = 0.1 },
+        width = { padding = 0.06 },
         preview_width = 0.6,
       },
       vertical = {
-        width = { padding = 0.05 },
         height = { padding = 1 },
+        width = { padding = 0.05 },
         preview_height = 0.5,
       },
     },
@@ -63,14 +63,14 @@ require("telescope").setup {
   },
   pickers = {
     buffers = { theme = "dropdown" },
-    grep_string = { theme = "ivy" },
-    help_tags = { theme = "ivy" },
+    grep_string = { theme = "ivy", layout_config = { height = 60 } },
+    help_tags = { theme = "ivy", layout_config = { height = 60 } },
   },
   extensions = {
     fzf = {
-      override_generic_sorter = false,
-      override_file_sorter = true,
       case_mode = "smart_case",
+      override_file_sorter = true,
+      override_generic_sorter = false,
     },
     lsp_handlers = {
       disable = {},
@@ -82,11 +82,13 @@ require("telescope").setup {
       },
       location = {
         telescope = require("telescope.themes").get_ivy {
+          layout_config = { height = 50 },
           results_title = false,
         },
       },
       symbol = {
         telescope = require("telescope.themes").get_ivy {
+          layout_config = { height = 50 },
           results_title = false,
         },
       },
