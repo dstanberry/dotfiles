@@ -39,7 +39,6 @@ return {
   },
   ["dircolors"] = {
     icon = "",
-    color = "#89e051",
     color = "#4d5a5e",
     name = "Shellscript",
   },
