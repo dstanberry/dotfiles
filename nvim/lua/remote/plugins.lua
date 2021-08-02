@@ -223,6 +223,8 @@ return require("packer").startup(function(use)
     },
   }
 
+  -- diff tool
+  use { "sindrets/diffview.nvim", opt = true, cmd = "DiffviewOpen" }
   -- display git changes in gutter
   use {
     "lewis6991/gitsigns.nvim",
