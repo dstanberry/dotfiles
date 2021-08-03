@@ -40,7 +40,7 @@ ULOCAL="/usr/local/bin"
 LOCAL="${HOME}/.local/bin"
 
 # include directory in PATH
-export PATH=$LOCAL:$ULOCAL:$PATH
+export PATH=$ULOCAL:$PATH:$LOCAL
 unset ULOCAL
 unset LOCAL
 
