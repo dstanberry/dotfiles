@@ -34,7 +34,6 @@ require("telescope").setup {
   defaults = {
     prompt_prefix = " ❯ ",
     selection_caret = " ",
-    winblend = 10,
     scroll_strategy = "cycle",
     layout_strategy = "flex",
     sorting_strategy = "descending",
@@ -105,9 +104,9 @@ pcall(require("telescope").load_extension "lsp_handlers")
 local ignored = {
   "%.db",
   "%.gpg",
-  "^.git$",
-  ".gitattributes",
-  ".git-crypt",
+  "%.git",
+  "%.gitattributes",
+  "git%-crypt",
   "karabiner/assets",
   "node_modules",
 }
