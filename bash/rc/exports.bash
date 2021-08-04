@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # define XDG_CACHE_HOME
 export XDG_CACHE_HOME="$HOME/.cache"
 

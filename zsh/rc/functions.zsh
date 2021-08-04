@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # poor man's ag runtime configuration
 function ag() {
   emulate -L zsh
