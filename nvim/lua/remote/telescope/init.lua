@@ -7,15 +7,18 @@ if not ok and not pcall(require, "telescope") then
   return
 end
 
+local mod = require "util.modules"
+
 -- reload modules
 local should_reload = true
 local reloader = function()
   if should_reload then
-    R "plenary"
-    R "popup"
-    R "telescope"
+    mod.reload "plenary"
+    mod.reload "popup"
+    mod.reload "telescope"
   end
 end
+
 reloader()
 
 local actions = require "telescope.actions"
@@ -165,9 +168,9 @@ function M.file_browser()
       map("i", "~", function()
         modify_cwd(vim.fn.expand "~")
       end)
-      local modify_depth = function(mod)
+      local modify_depth = function(m)
         return function()
-          opts.depth = opts.depth + mod
+          opts.depth = opts.depth + m
           current_picker = state.get_current_picker(prompt_bufnr)
           current_picker:refresh(opts.new_finder(current_picker.cwd), {
             reset_prompt = true,

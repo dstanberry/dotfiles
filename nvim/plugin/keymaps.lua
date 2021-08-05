@@ -241,7 +241,7 @@ vnoremap("K", ":m '>-2<cr>gv=gv")
 --   end
 --   local csrow, _, cerow, _ = visual_selection_range()
 --   local lines = vim.fn.getline(csrow, cerow)
---   -- P(vim.fn.join(lines,"\n"))
+--   -- print(vim.inspect(vim.fn.join(lines,"\n")))
 --   local ft = vim.bo.filetype
 --   local out = ""
 --   if ft == "vim" then
