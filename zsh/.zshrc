@@ -422,3 +422,29 @@ if [ -d "$ZSH_CONFIG_HOME/rc.private" ]; then
     source "$RC_FILE"
   done
 fi
+
+###############################################################
+# Tmux
+###############################################################
+# check if inside tmux session
+_not_inside_tmux() { [[ -z "$TMUX" ]] }
+
+# create tmux session
+ensure_tmux_is_running() {
+  if _not_inside_tmux; then
+    tat
+  fi
+}
+
+# don't launch tmux for remote sessions
+launch=true
+if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+  launch=false
+else
+  case $(ps -o comm= -p $PPID) in
+    sshd|*/sshd) launch=false;;
+  esac
+fi
+if [[ "$launch" = true ]]; then
+  ensure_tmux_is_running
+fi
