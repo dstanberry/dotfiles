@@ -36,12 +36,12 @@ if not pcall(require, "packer") then
 end
 
 -- load global functions
-require "util.globals"
+local mod = require "util.modules"
 
 -- define colorscheme
-R("ui.theme").setup()
+mod.reload("ui.theme").setup()
 -- define statusline
-R("ui.statusline").setup()
+mod.reload("ui.statusline").setup()
 
 -- load remote plugins
 vim.defer_fn(function()

@@ -5,6 +5,7 @@
 local eslint = require "remote.lsp.linters.eslint"
 local flake = require "remote.lsp.linters.flake8"
 local markdown = require "remote.lsp.linters.markdown"
+local selene = require "remote.lsp.linters.selene"
 local shellcheck = require "remote.lsp.linters.shellcheck"
 local vint = require "remote.lsp.linters.vint"
 
@@ -22,7 +23,7 @@ local languages = {
   go = { gofmt },
   html = { prettier },
   javascript = { eslint, prettier },
-  lua = { stylua },
+  lua = { selene, stylua },
   markdown = { markdown, prettier },
   python = { flake, isort, yapf },
   sh = { shellcheck, shfmt },
