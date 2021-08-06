@@ -19,8 +19,8 @@ nnoremap <silent> <s-tab> :tabprevious<cr>
 nnoremap <expr> <cr> {-> v:hlsearch ? ":nohl<cr>" : "<cr>"}()
 
 " navigate loclist list
-nnoremap <silent> <a-k> :lprevious<cr>zz
-nnoremap <silent> <a-j> :lnext<cr>zz
+nnoremap <silent> <c-,> :lprevious<cr>zz
+nnoremap <silent> <c-.> :lnext<cr>zz
 
 " find all occurences in buffer of word under cursor
 nnoremap <c-f>f /\v<c-r><c-w><cr>
@@ -38,13 +38,13 @@ nnoremap <c-k> <c-w><c-k>
 nnoremap <c-l> <c-w><c-l>
 
 " decrease active split horizontal size
-nnoremap <c-,> <c-w><
+nnoremap <a-h> <c-w><
 " increase active split horizontal size
-nnoremap <c-.> <c-w>>
+nnoremap <a-l> <c-w>>
 " increase active split vertical size
-nnoremap <a-,> <c-w>+
+nnoremap <a-k> <c-w>+
 " decrease active split vertical size
-nnoremap <a-.> <c-w>-
+nnoremap <a-j> <c-w>-
 
 " enable very magic mode during search operations
 nnoremap / /\v

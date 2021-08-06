@@ -56,13 +56,13 @@ nnoremap("<c-k>", "<c-w><c-k>")
 nnoremap("<c-l>", "<c-w><c-l>")
 
 -- decrease active split horizontal size
-nnoremap("<c-,>", "<c-w><")
+nnoremap("<a-h>", "<c-w><")
 -- increase active split horizontal size
-nnoremap("<c-.>", "<c-w>>")
+nnoremap("<a-l>", "<c-w>>")
 -- increase active split vertical size
-nnoremap("<a-,>", "<c-w>+")
+nnoremap("<a-k>", "<c-w>+")
 -- decrease active split vertical size
-nnoremap("<a-.>", "<c-w>-")
+nnoremap("<a-j>", "<c-w>-")
 
 -- enable very magic mode during search operations
 nnoremap("/", "/\\v", { silent = false })
