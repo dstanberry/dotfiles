@@ -4,6 +4,7 @@ local cnoremap = map.cnoremap
 local inoremap = map.inoremap
 local nnoremap = map.nnoremap
 local vnoremap = map.vnoremap
+local xnoremap = map.xnoremap
 
 local vmap = map.vmap
 
@@ -102,9 +103,9 @@ nnoremap("Y", "y$")
 nnoremap("<leader>=", "<c-w>=")
 
 -- shift current line down
-nnoremap("<leader>j",":m .+1<cr>==")
+nnoremap("<leader>j", ":m .+1<cr>==")
 -- shift current line up
-nnoremap("<leader>k",":m .-2<cr>==")
+nnoremap("<leader>k", ":m .-2<cr>==")
 
 -- close the current window or close app if this is the last window
 nnoremap("<leader>q", "<cmd>quit<cr>", { silent = false })
@@ -219,40 +220,39 @@ vnoremap("H", "^")
 -- move selection to the end of the current line
 vnoremap("L", "g_")
 
+-- shift selected text down
+xnoremap("J", ":move '>+<cr>gv=gv")
+-- shift selected text up
+xnoremap("K", ":move -2<cr>gv=gv")
+
 ---------------------------------------------------------------
 -- => Visual | Leader
 ---------------------------------------------------------------
--- shift selected text down
-vnoremap("J", ":m '>+1<cr>gv=gv")
--- shift selected text up
-vnoremap("K", ":m '>-2<cr>gv=gv")
-
 -- execute selected text
--- TODO: range returns previous selection, not current
--- vnoremap("<leader>x", function()
---   local function visual_selection_range()
---     local _, csrow, cscol, _ = unpack(vim.fn.getpos "'<")
---     local _, cerow, cecol, _ = unpack(vim.fn.getpos "'>")
---     if csrow < cerow or (csrow == cerow and cscol <= cecol) then
---       return csrow - 1, cscol - 1, cerow - 1, cecol
---     else
---       return cerow - 1, cecol - 1, csrow - 1, cscol
---     end
---   end
---   local csrow, _, cerow, _ = visual_selection_range()
---   local lines = vim.fn.getline(csrow, cerow)
---   -- print(vim.inspect(vim.fn.join(lines,"\n")))
---   local ft = vim.bo.filetype
---   local out = ""
---   if ft == "vim" then
---     out = vim.api.nvim_exec(([[execute %s]]):format(lines), true)
---   elseif ft == "lua" then
---     vim.api.nvim_exec_lua(lines, {})
---   end
---   print(out)
--- end, {
---   silent = true,
--- })
+-- FIXME: range returns previous selection, not current (upstream bug?)
+xnoremap("<leader>x", function()
+  local function visual_selection_range()
+    local csrow, cscol = unpack(vim.api.nvim_buf_get_mark(0, "<"))
+    local cerow, cecol = unpack(vim.api.nvim_buf_get_mark(0, ">"))
+    if csrow < cerow or (csrow == cerow and cscol <= cecol) then
+      return csrow, cscol, cerow, cecol
+    else
+      return cerow, cecol, csrow, cscol
+    end
+  end
+  local csrow, _, cerow, _ = visual_selection_range()
+ print(csrow, cerow)
+  local lines = vim.fn.getline(csrow, cerow)
+  print(vim.inspect(lines))
+  -- local ft = vim.bo.filetype
+  -- local out = ""
+  -- if ft == "vim" then
+  -- elseif ft == "lua" then
+  -- end
+  -- print(out)
+end, {
+  silent = true,
+})
 
 ---------------------------------------------------------------
 -- => Command

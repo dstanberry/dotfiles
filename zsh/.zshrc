@@ -422,3 +422,14 @@ if [ -d "$ZSH_CONFIG_HOME/rc.private" ]; then
     source "$RC_FILE"
   done
 fi
+
+###############################################################
+# Fstab (tmpfs for WSL)
+###############################################################
+# ensure tmpfs is mounted
+if is_wsl; then
+  mount | grep -E "^[^ ]* on /tmp " >/dev/null
+  if [ "$?" != "0" ];then
+    sudo mount -t tmpfs tmpfs /tmp -o noexec,defaults,nodev,nosuid,noatime,size=256m
+  fi
+fi
