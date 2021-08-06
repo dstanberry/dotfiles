@@ -198,4 +198,21 @@ return require("packer").startup(function(use)
       vim.notify = require "notify"
     end,
   }
+
+  use {
+    "aserowy/tmux.nvim",
+    config = function()
+      require("tmux").setup {
+        copy_sync = {
+          enable = true,
+        },
+        navigation = {
+          enable_default_keybindings = true,
+        },
+        resize = {
+          enable_default_keybindings = true,
+        },
+      }
+    end,
+  }
 end)
