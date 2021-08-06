@@ -240,7 +240,7 @@ return require("packer").startup(function(use)
   -- independent code execution
   use { "michaelb/sniprun", run = "bash ./install.sh", opt = true, cmd = "SnipRun" }
 
-  --preview register contents
+  -- preview register contents
   use {
     "tversteeg/registers.nvim",
     config = function()
@@ -248,6 +248,14 @@ return require("packer").startup(function(use)
       vim.g.registers_show_empty_registers = 0
       vim.g.registers_trim_whitespace = 1
       vim.g.registers_window_border = "rounded"
+    end,
+  }
+
+  -- notification manager
+  use {
+    "rcarriga/nvim-notify",
+    config = function()
+      vim.notify = require "notify"
     end,
   }
 end)
