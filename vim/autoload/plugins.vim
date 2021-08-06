@@ -35,6 +35,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
 " highlight yanked text
 Plug 'machakann/vim-highlightedyank'
+" syntax highlighting for gitignore files
+Plug 'gisphm/vim-gitignore'
 " syntax highlighting for log files
 Plug 'mtdl9/vim-log-highlighting'
 " enable repeating actions with <.>

@@ -20,8 +20,6 @@ return require("packer").startup(function(use)
       vim.g.LoupeClearHighlightMap = 0
     end,
   }
-  -- preview/browse json files with ease
-  use { "gennaro-tedesco/nvim-jqx", ft = "json" }
   -- easy text alignment
   use { "godlygeek/tabular", cmd = "Tabularize" }
   -- file-type aware comments
@@ -30,8 +28,6 @@ return require("packer").startup(function(use)
   use "duggiefresh/vim-easydir"
   -- color highlighter
   use { "rrethy/vim-hexokinase", run = "make hexokinase" }
-  -- syntax highlighting for log files
-  use { "mtdl9/vim-log-highlighting", ft = "log" }
   -- enable repeating actions with <.>
   use "tpope/vim-repeat"
   -- debug vim plugins
@@ -62,6 +58,13 @@ return require("packer").startup(function(use)
       },
     }
   end
+  -- preview/browse json files with ease
+  use { "gennaro-tedesco/nvim-jqx", ft = "json" }
+  -- syntax highlighting for gitignore files
+  use { "gisphm/vim-gitignore", ft = "gitignore" }
+  -- syntax highlighting for log files
+  use { "mtdl9/vim-log-highlighting", ft = "log" }
+
   -- preview markdown directly
   use { "npxbr/glow.nvim", cmd = "Glow" }
 
