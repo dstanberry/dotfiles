@@ -424,27 +424,12 @@ if [ -d "$ZSH_CONFIG_HOME/rc.private" ]; then
 fi
 
 ###############################################################
-# Tmux
+# Fstab (tmpfs for WSL)
 ###############################################################
-# check if inside tmux session
-_not_inside_tmux() { [[ -z "$TMUX" ]] }
-
-# create tmux session
-ensure_tmux_is_running() {
-  if _not_inside_tmux; then
-    tat
+# ensure tmpfs is mounted
+if is_wsl; then
+  mount | grep -E "^[^ ]* on /tmp " >/dev/null
+  if [ "$?" != "0" ];then
+    sudo mount -t tmpfs tmpfs /tmp -o noexec,defaults,nodev,nosuid,noatime,size=256m
   fi
-}
-
-# don't launch tmux for remote sessions
-launch=true
-if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
-  launch=false
-else
-  case $(ps -o comm= -p $PPID) in
-    sshd|*/sshd) launch=false;;
-  esac
-fi
-if [[ "$launch" = true ]]; then
-  ensure_tmux_is_running
 fi
