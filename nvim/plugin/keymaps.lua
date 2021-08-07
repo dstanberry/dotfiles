@@ -229,9 +229,9 @@ xnoremap("K", ":move -2<cr>gv=gv")
 -- => Visual | Leader
 ---------------------------------------------------------------
 -- execute selected text
--- FIXME: range returns previous selection, not current (upstream bug?)
-xnoremap("<leader>x", function()
+vnoremap("<leader>x", function()
   local function visual_selection_range()
+    vim.cmd [[execute "normal! \<esc>"]]
     local csrow, cscol = unpack(vim.api.nvim_buf_get_mark(0, "<"))
     local cerow, cecol = unpack(vim.api.nvim_buf_get_mark(0, ">"))
     if csrow < cerow or (csrow == cerow and cscol <= cecol) then
@@ -240,16 +240,27 @@ xnoremap("<leader>x", function()
       return cerow, cecol, csrow, cscol
     end
   end
+  local function eval_chunk(str, ...)
+    local chunk = loadstring(str, "@[evalrangeX]")
+    local c = coroutine.create(chunk)
+    local res = { coroutine.resume(c, ...) }
+    if not res[1] then
+      if debug.getinfo(c, 0, "f").func ~= chunk then
+        res[2] = debug.traceback(c, res[2], 0)
+      end
+    end
+    return unpack(res)
+  end
   local csrow, _, cerow, _ = visual_selection_range()
- print(csrow, cerow)
   local lines = vim.fn.getline(csrow, cerow)
-  print(vim.inspect(lines))
-  -- local ft = vim.bo.filetype
-  -- local out = ""
-  -- if ft == "vim" then
-  -- elseif ft == "lua" then
-  -- end
-  -- print(out)
+  local ft = vim.bo.filetype
+  local out = ""
+  if ft == "vim" then
+    out = vim.api.nvim_exec(([[%s]]):format(lines), true)
+  elseif ft == "lua" then
+    out = eval_chunk(table.concat(lines, "\n"))
+  end
+  print(out)
 end, {
   silent = true,
 })
