@@ -156,7 +156,7 @@ return require("packer").startup(function(use)
     },
   }
 
-  use { "bfredl/nvim-luadev" }
+  use { "bfredl/nvim-luadev", opt = true, cmd = "Luadev" }
   use {
     "mfussenegger/nvim-dap",
     opt = true,
