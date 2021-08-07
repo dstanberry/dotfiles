@@ -253,12 +253,13 @@ vnoremap("<leader>x", function()
   end
   local csrow, _, cerow, _ = visual_selection_range()
   local lines = vim.fn.getline(csrow, cerow)
+  local str = table.concat(lines, "\n")
   local ft = vim.bo.filetype
   local out = ""
   if ft == "vim" then
-    out = vim.api.nvim_exec(([[%s]]):format(lines), true)
+    out = vim.api.nvim_exec(([[%s]]):format(str), true)
   elseif ft == "lua" then
-    out = eval_chunk(table.concat(lines, "\n"))
+    out = eval_chunk(str)
   end
   print(out)
 end, {
