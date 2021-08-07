@@ -235,6 +235,7 @@ function clear-scrollback-buffer() {
 # add keymap to clear the buffer
 zle -N clear-scrollback-buffer
 bindkey '^L' clear-scrollback-buffer
+bindkey '^Xl' clear-scrollback-buffer
 
 # enable editing the command line using via editor
 autoload -U edit-command-line
