@@ -156,6 +156,7 @@ return require("packer").startup(function(use)
     },
   }
 
+  use { "bfredl/nvim-luadev" }
   use {
     "mfussenegger/nvim-dap",
     opt = true,
@@ -200,4 +201,5 @@ return require("packer").startup(function(use)
   }
 
   use "aserowy/tmux.nvim"
+  use "sunjon/shade.nvim"
 end)
