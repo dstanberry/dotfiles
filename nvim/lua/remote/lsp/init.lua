@@ -90,38 +90,6 @@ local on_attach_nvim = function(client, bufnr)
   }
 end
 
-vim.fn.sign_define("LspDiagnosticsSignError", {
-  text = " ",
-  texthl = "LspDiagnosticsSignError",
-})
-vim.fn.sign_define("LspDiagnosticsSignWarning", {
-  text = " ",
-  texthl = "LspDiagnosticsSignWarning",
-})
-vim.fn.sign_define("LspDiagnosticsSignInformation", {
-  text = " ",
-  texthl = "LspDiagnosticsSignInformation",
-})
-vim.fn.sign_define("LspDiagnosticsSignHint", {
-  text = " ",
-  texthl = "LspDiagnosticsSignHint",
-})
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-  underline = false,
-  signs = true,
-  update_in_insert = false,
-  virtual_text = { prefix = "▪", spacing = 4 },
-})
-
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-  border = "single",
-})
-
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-  border = "single",
-})
-
 local function get_server_configuration()
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -131,29 +99,60 @@ local function get_server_configuration()
   return { capabilities = capabilities, on_attach = on_attach_nvim }
 end
 
-local function load_servers()
-  local servers = {
-    "bashls",
-    "clangd",
-    "cmake",
-    "cssls",
-    "efm",
-    "gopls",
-    "html",
-    "jsonls",
-    "pyright",
-    "rust_analyzer",
-    "sumneko_lua",
-    "vimls",
-  }
-  for _, server in ipairs(servers) do
-    local config = get_server_configuration()
-    local has_config, extra_config = pcall(require, "remote.lsp." .. server)
-    if has_config then
-      config = vim.tbl_extend("force", config, extra_config)
-    end
-    lspconfig[server].setup(config)
+local servers = {
+  "bashls",
+  "clangd",
+  "cmake",
+  "cssls",
+  "efm",
+  "gopls",
+  "html",
+  "jsonls",
+  "pyright",
+  "rust_analyzer",
+  "sumneko_lua",
+  "vimls",
+}
+for _, server in ipairs(servers) do
+  local config = get_server_configuration()
+  local has_config, extra_config = pcall(require, "remote.lsp." .. server)
+  if has_config then
+    config = vim.tbl_extend("force", config, extra_config)
   end
+  lspconfig[server].setup(config)
 end
 
-load_servers()
+-- sign highlight groups
+vim.fn.sign_define("LspDiagnosticsSignError", { text = " ", texthl = "LspDiagnosticsSignError" })
+vim.fn.sign_define("LspDiagnosticsSignHint", { text = " ", texthl = "LspDiagnosticsSignHint" })
+vim.fn.sign_define("LspDiagnosticsSignInformation", { text = " ", texthl = "LspDiagnosticsSignInformation" })
+vim.fn.sign_define("LspDiagnosticsSignWarning", { text = " ", texthl = "LspDiagnosticsSignWarning" })
+
+-- lsp handlers
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+  border = "single",
+})
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  underline = false,
+  signs = true,
+  update_in_insert = false,
+  virtual_text = { prefix = "▪", spacing = 4 },
+})
+
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+  border = "single",
+})
+
+if pcall(require, "remote.telescope") then
+  vim.lsp.handlers["callHierarchy/incomingCalls"] = require("remote.telescope").lsp_dynamic_workspace_symbols
+  vim.lsp.handlers["callHierarchy/outgoingCalls"] = require("remote.telescope").lsp_dynamic_workspace_symbols
+  vim.lsp.handlers["textDocument/codeAction"] = require("remote.telescope").lsp_code_actions
+  vim.lsp.handlers["textDocument/declaration"] = require("remote.telescope").lsp_definitions
+  vim.lsp.handlers["textDocument/definition"] = require("remote.telescope").lsp_definitions
+  vim.lsp.handlers["textDocument/documentSymbol"] = require("remote.telescope").lsp_document_symbols
+  vim.lsp.handlers["textDocument/implementation"] = require("remote.telescope").lsp_implementations
+  vim.lsp.handlers["textDocument/references"] = require("remote.telescope").lsp_references
+  vim.lsp.handlers["textDocument/typeDefinition"] = require("remote.telescope").lsp_definitions
+  vim.lsp.handlers["workspace/symbol"] = require("remote.telescope").lsp_workspace_symbols
+end
