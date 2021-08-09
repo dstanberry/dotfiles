@@ -65,8 +65,38 @@ require("telescope").setup {
   },
   pickers = {
     buffers = { theme = "dropdown" },
-    grep_string = { theme = "ivy", layout_config = { height = 60 } },
-    help_tags = { theme = "ivy", layout_config = { height = 60 } },
+    grep_string = {
+      layout_strategy = "vertical",
+      layout_config = { height = 70 },
+    },
+    help_tags = {
+      theme = "ivy",
+      layout_config = { height = 60 },
+    },
+    live_grep = {
+      layout_strategy = "vertical",
+      layout_config = { height = 70 },
+    },
+    lsp_code_actions = {
+      theme = "cursor",
+      previewer = false,
+      results_title = false,
+    },
+    lsp_definitions = {
+      theme = "ivy",
+    },
+    lsp_document_symbols = {
+      layout_strategy = "vertical",
+    },
+    lsp_dynamic_workspace_symbols = {
+      layout_strategy = "vertical",
+    },
+    lsp_references = {
+      theme = "ivy",
+    },
+    lsp_workspace_symbols = {
+      layout_strategy = "vertical",
+    },
   },
   extensions = {
     fzf = {
@@ -74,34 +104,11 @@ require("telescope").setup {
       override_file_sorter = true,
       override_generic_sorter = false,
     },
-    lsp_handlers = {
-      disable = {},
-      code_action = {
-        telescope = require("telescope.themes").get_cursor {
-          previewer = false,
-          results_title = false,
-        },
-      },
-      location = {
-        telescope = require("telescope.themes").get_ivy {
-          layout_config = { height = 50 },
-          results_title = false,
-        },
-      },
-      symbol = {
-        telescope = require("telescope.themes").get_ivy {
-          layout_config = { height = 50 },
-          results_title = false,
-        },
-      },
-    },
   },
 }
 
 -- load additional extensions
--- require('telescope').load_extension('fzy_native')
 pcall(require("telescope").load_extension "fzf")
-pcall(require("telescope").load_extension "lsp_handlers")
 
 -- list of directory/file patterns to ignore
 local ignored = {
