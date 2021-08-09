@@ -45,5 +45,5 @@ mod.reload("ui.statusline").setup()
 
 -- load remote plugins
 vim.defer_fn(function()
-  require "remote.plugins"
+  require "remote"
 end, 0)
