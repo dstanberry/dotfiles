@@ -64,9 +64,6 @@ nnoremap("<a-k>", "<c-w>+")
 -- decrease active split vertical size
 nnoremap("<a-j>", "<c-w>-")
 
--- enable very magic mode during search operations
-nnoremap("/", "/\\v", { silent = false })
-
 -- allow semi-colon to enter command mode
 nnoremap(";", ":", { silent = false })
 
@@ -208,9 +205,6 @@ vnoremap("<c-l>", "<c-w>l")
 -- maintain selection after indentation
 vmap("<", "<gv")
 vmap(">", ">gv")
-
--- enable very magic mode during search operations
-vnoremap("/", "/\\v", { silent = false })
 
 -- allow semi-colon to enter command mode
 vmap(";", ":", { silent = false })
