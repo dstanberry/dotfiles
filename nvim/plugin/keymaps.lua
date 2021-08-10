@@ -28,6 +28,9 @@ nnoremap("<s-tab>", "<cmd>tabprevious<cr>")
 -- clear hlsearch if set, otherwise send default behaviour
 nnoremap("<cr>", function()
   if vim.v.hlsearch == 1 then
+    if vim.g.LoupeLoaded == 1 then
+      vim.fn["loupe#private#clear_highlight"]()
+    end
     return map.t "<cmd>nohl<cr>"
   else
     return map.t "<cr>"
