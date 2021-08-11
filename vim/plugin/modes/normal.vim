@@ -100,11 +100,6 @@ nnoremap <leader>j :m .+1<cr>==
 " shift current line up
 nnoremap <leader>k :m .-2<cr>==
 
-" write current buffer to disk if changed
-nnoremap <leader>w :update<cr>
-" close the current window or close app if this is the last window
-nnoremap <leader>q :quit<cr>
-
 " save current buffer to disk and execute the file
 nnoremap <leader>x :call functions#execute_file()<cr>
 

@@ -107,11 +107,6 @@ nnoremap("<leader>j", ":m .+1<cr>==")
 -- shift current line up
 nnoremap("<leader>k", ":m .-2<cr>==")
 
--- close the current window or close app if this is the last window
-nnoremap("<leader>q", "<cmd>quit<cr>", { silent = false })
--- write current buffer to disk if changed
-nnoremap("<leader>w", "<cmd>update<cr>", { silent = false })
-
 -- save current buffer to disk and execute the file
 nnoremap("<leader>x", function()
   local ft = vim.bo.filetype
