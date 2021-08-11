@@ -232,19 +232,19 @@ end
 -- TODO: investigate a better way to do this
 -- iterate all open windows and reapply statusline
 statusline.check = function()
-  for _, w in ipairs(vim.fn.range(1, vim.fn.winnr "$")) do
+  for _, i in ipairs(vim.fn.range(1, vim.fn.winnr "$")) do
     local curwin = vim.fn.winnr()
-    if w == curwin then
+    if i == curwin then
       vim.fn.setwinvar(
-        w,
+        i,
         "statusline",
-        "string.format([[%%!luaeval('require(\"ui.statusline\").focus(%s)')]], vim.api.nvim_get_current_win())"
+        [[%!luaeval('require("ui.statusline").focus(vim.api.nvim_get_current_win())')]]
       )
     else
       vim.fn.setwinvar(
-        w,
+        i,
         "statusline",
-        "string.format([[%%!luaeval('require(\"ui.statusline\").dim(%s)')]], vim.api.nvim_get_current_win())"
+        [[%!luaeval('require("ui.statusline").dim(vim.api.nvim_get_current_win())')]]
       )
     end
   end
@@ -252,14 +252,22 @@ end
 
 -- initialize statusline
 statusline.setup = function()
-  vim.cmd [=[ augroup statusline ]=]
-  vim.cmd [=[ autocmd! ]=]
-  vim.cmd [=[  autocmd CompleteDonePre * :lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=]
-  vim.cmd [=[  autocmd FocusGained,BufEnter,BufWinEnter,WinEnter * :lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=]
-  vim.cmd [=[  autocmd FocusLost,BufLeave,BufWinLeave,WinLeave * :lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=]
-  vim.cmd [=[ augroup END ]=]
-  vim.cmd [=[ doautocmd BufWinEnter ]=]
-
+  local a = "FocusGained,BufEnter,BufWinEnter,WinEnter,CompleteDonePre"
+  local i = "FocusLost,BufLeave,BufWinLeave,WinLeave"
+  local win = "vim.api.nvim_get_current_win()"
+  vim.cmd(string.format(
+    [=[
+      augroup statusline
+        autocmd!
+        autocmd %s * :lua vim.wo.statusline = [[%%!luaeval('require("ui.statusline").focus(%s)')]]
+        autocmd %s * :lua vim.wo.statusline = [[%%!luaeval('require("ui.statusline").dim(%s)')]]
+      augroup END
+    ]=],
+    a,
+    win,
+    i,
+    win
+  ))
   vim.fn.timer_start(100, function()
     return statusline.check()
   end)

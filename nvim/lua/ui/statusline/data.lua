@@ -22,7 +22,9 @@ M.get_readonly = function(bufnr)
   local name = vim.fn.bufname(bufnr)
   local ro = vim.api.nvim_buf_get_option(name, "readonly")
   local mod = vim.api.nvim_buf_get_option(name, "modifiable")
-  if ro and not mod then
+  if (ro and not mod) or not mod then
+    return " "
+  elseif ro then
     return " "
   else
     return ""
@@ -130,6 +132,7 @@ M.get_lsp_client_count = function(bufnr)
   local clients = vim.lsp.buf_get_clients(bufnr)
   return #clients
 end
+
 -- print lsp diagnostic count
 M.get_lsp_diagnostics = function(bufnr)
   local result = {}

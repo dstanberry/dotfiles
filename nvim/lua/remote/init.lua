@@ -9,6 +9,7 @@ return require("packer").startup(function(use)
     "wincent/loupe",
     config = function()
       vim.g.LoupeClearHighlightMap = 0
+      vim.g.LoupeVeryMagic = 0
     end,
   }
   use "duggiefresh/vim-easydir"

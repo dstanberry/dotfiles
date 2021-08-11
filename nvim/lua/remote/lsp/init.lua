@@ -96,7 +96,11 @@ local function get_server_configuration()
   capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = { "documentation", "detail", "additionalTextEdits" },
   }
-  return { capabilities = capabilities, on_attach = on_attach_nvim }
+  return {
+    capabilities = capabilities,
+    flags = { debounce_text_changes = 150 },
+    on_attach = on_attach_nvim,
+  }
 end
 
 local servers = {
