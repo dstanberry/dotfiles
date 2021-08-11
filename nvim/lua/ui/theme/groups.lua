@@ -48,7 +48,6 @@ M.apply = function(c)
   hi.Exception = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
   hi.FoldColumn = { guifg = c.base0C, guibg = c.base01, gui = nil, guisp = nil }
   hi.Folded = { guifg = c.base03, guibg = c.base01, gui = nil, guisp = nil }
-  hi.IncSearch = { guifg = c.base01, guibg = c.base0A, gui = "none", guisp = nil }
   hi.Italic = { guifg = nil, guibg = nil, gui = "none", guisp = nil }
   hi.Macro = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
   hi.MatchParen = { guifg = c.base08, guibg = "", gui = "bold", guisp = nil }
@@ -269,6 +268,9 @@ M.apply = function(c)
   hi.Custom4 = { guifg = c.base08, guibg = c.base02, gui = "none", guisp = nil }
   hi.Custom5 = { guifg = c.base0E, guibg = c.base02, gui = "none", guisp = nil }
   hi.Custom6 = { guifg = c.base09, guibg = c.base02, gui = "none", guisp = nil }
+
+  -- loupe highlighting
+  hi.IncSearch = { guifg = c.base01, guibg = c.base0A, gui = "none", guisp = nil }
 
   c.tele00 = color.darken(c.base0F, 43)
 
