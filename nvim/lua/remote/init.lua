@@ -106,6 +106,7 @@ return require("packer").startup(function(use)
     config = function()
       require "remote.telescope"
       require "remote.telescope.keymap"
+      require "remote.telescope.handlers"
     end,
     wants = {
       "plenary.nvim",
