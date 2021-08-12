@@ -1,5 +1,3 @@
-# shellcheck disable=SC2148
-
 # add ruby gems to path if present
 if hash gem 2> /dev/null; then
   OLDIFS=$IFS
@@ -71,7 +69,7 @@ elif is_wsl; then
 fi
 
 # add pyenv binaries to path
-if hash pyenv 2> /dev/null; then
+if [ -d "${PYENV_ROOT}" ]; then
   PYENVPATH="$PYENV_ROOT/bin"
   export PATH=$PYENVPATH:$PATH
   eval "$(pyenv init --path)"

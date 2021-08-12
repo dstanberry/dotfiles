@@ -71,7 +71,7 @@ elif is_wsl; then
 fi
 
 # add pyenv binaries to path
-if hash pyenv 2> /dev/null; then
+if [ -d "${PYENV_ROOT}" ]; then
   PYENVPATH="$PYENV_ROOT/bin"
   export PATH=$PYENVPATH:$PATH
   eval "$(pyenv init --path)"
