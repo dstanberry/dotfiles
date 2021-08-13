@@ -48,6 +48,7 @@ pg/
 pip/
 plasmarc
 pulse/
+pypoetry/auth.toml
 QtProject.conf
 systemsettingsrc
 tmux/tmux.digests
