@@ -82,6 +82,11 @@ return {
     color = "#cc402f",
     name = "Ruby",
   },
+  ["python"] = {
+    icon = "",
+    color = "#3572A5",
+    name = "Python"
+  };
   ["sh"] = {
     icon = "",
     color = "#4d5a5e",
