@@ -14,12 +14,5 @@ config.vim = {
     url = "https://github.com/vigoux/tree-sitter-viml",
     files = { "src/parser.c", "src/scanner.c" },
   },
-  used_by = { "vifmrc", "vimrc" },
+  used_by = { "vifm", "vifmrc", "vimrc" },
 }
-
-vim.cmd [[
-augroup treesitter_highlight
-  autocmd!
-  autocmd BufEnter,BufRead plugins.vim TSBufDisable highlight
-augroup END
-]]

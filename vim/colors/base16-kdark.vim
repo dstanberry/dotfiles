@@ -103,7 +103,6 @@ call <sid>hi('ErrorMsg',      s:gui08, s:gui00, s:cterm0F, s:cterm00, '', '')
 call <sid>hi('Exception',     s:gui0F, '', s:cterm08, '', '', '')
 call <sid>hi('FoldColumn',    s:gui0C, s:gui01, s:cterm0C, s:cterm01, '', '')
 call <sid>hi('Folded',        s:gui03, s:gui01, s:cterm03, s:cterm01, '', '')
-call <sid>hi('IncSearch',     s:gui01, s:gui09, s:cterm01, s:cterm09, 'none', '')
 call <sid>hi('Italic',        '', '', '', '', 'none', '')
 call <sid>hi('Macro',         s:gui0F, '', s:cterm08, '', '', '')
 call <sid>hi('MatchParen',    s:gui0A, s:gui00, '', s:cterm0A,  '', '')
@@ -139,6 +138,9 @@ call <sid>hi('Whitespace',    s:gui04, '', s:cterm03, '', '', '')
 call <sid>hi('TabLine',       s:gui03, s:gui00, s:cterm03, s:cterm00, 'none', '')
 call <sid>hi('TabLineFill',   s:gui03, s:gui00, s:cterm03, s:cterm00, 'none', '')
 call <sid>hi('TabLineSel',    s:gui05, s:gui00, s:cterm05, s:cterm00, 'none', '')
+
+" loupe highlight groups
+call <sid>hi('IncSearch',     s:gui01, s:gui09, s:cterm01, s:cterm09, 'none', '')
 
 " lsp highlight groups
 let s:sui00 = substitute(functions#darken(s:gui0C, 20), '#', '', 'g')

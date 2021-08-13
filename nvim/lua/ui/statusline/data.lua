@@ -103,28 +103,36 @@ M.mode = function()
   return "▊"
 end
 
--- print git branch with icon
+-- print buffer count with icon
+M.buffer = function(bufnr)
+  local icon = "  "
+  for i, b in ipairs(vim.api.nvim_list_bufs()) do
+    if bufnr == b then
+      return icon .. i
+    end
+  end
+end
+
+-- print git branch with icon (fallback to buffer count)
 M.git_branch = function(bufnr)
   local name = vim.fn.bufname(bufnr)
-  local result = "  "
   local j = Job:new {
     command = "git",
     args = { "branch", "--show-current" },
     cwd = vim.fn.fnamemodify(name, ":h"),
   }
-  local b = ""
   local ok, branch = pcall(function()
     return vim.trim(j:sync()[1])
   end)
-  if ok then
-    result = "  "
-    b = branch
+  if not ok then
+    return M.buffer(bufnr)
   end
+  local icon = "  "
   local p = paste()
   if #p > 0 then
-    result = p
+    icon = p
   end
-  return result .. b
+  return icon .. branch
 end
 
 -- print lsp diagnostic count

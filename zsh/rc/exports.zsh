@@ -215,6 +215,3 @@ fi
 
 # define configuration path for pyenv
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
-if hash pyenv 2> /dev/null; then
-  eval "$(pyenv init -)"
-fi

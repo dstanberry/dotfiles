@@ -6,6 +6,7 @@ local nnoremap = map.nnoremap
 local vnoremap = map.vnoremap
 local xnoremap = map.xnoremap
 
+local nmap = map.nmap
 local vmap = map.vmap
 
 ---------------------------------------------------------------
@@ -102,23 +103,27 @@ nnoremap("Y", "y$")
 -- (try to) make all windows the same size
 nnoremap("<leader>=", "<c-w>=")
 
+-- change text and preserve clipboard state
+nmap("<leader>c", '"_c', { silent = false })
+nmap("<leader>C", '"_C', { silent = false })
+
+-- delete text and preserve clipboard state
+nmap("<leader>d", '"_d', { silent = false })
+nmap("<leader>D", '"_D', { silent = false })
+
 -- shift current line down
 nnoremap("<leader>j", ":m .+1<cr>==")
 -- shift current line up
 nnoremap("<leader>k", ":m .-2<cr>==")
 
--- close the current window or close app if this is the last window
-nnoremap("<leader>q", "<cmd>quit<cr>", { silent = false })
--- write current buffer to disk if changed
-nnoremap("<leader>w", "<cmd>update<cr>", { silent = false })
-
 -- save current buffer to disk and execute the file
 nnoremap("<leader>x", function()
   local ft = vim.bo.filetype
+  print(vim.cmd "write")
   if ft == "vim" then
-    print(vim.cmd [[silent! write | source %]])
+    print(vim.cmd "source %")
   elseif ft == "lua" then
-    print(vim.cmd [[silent! write | luafile %]])
+    print(vim.cmd "luafile %")
   end
 end, {
   silent = false,

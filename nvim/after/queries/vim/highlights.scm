@@ -28,16 +28,25 @@
   "endfunction"
 ] @keyword.function
 
+;; Function related
+(function_declaration name: (_) @function)
+(call_expression function: (identifier) @function)
+
 [ (bang) (spread) ] @punctuation.special
 
-[ (no_option) (inv_option) (default_option) (option_name) ] @constant.builtin
-(scope) @namespace
+[ (no_option) (inv_option) (default_option) (option_name) ] @variable.builtin
+[ (scope) "a:" ] @namespace
+
+(ternary_expression ["?" ":"] @conditional)
 
 ;; Commands and user defined commands
 
 [
   "let"
+  "unlet"
+  "call"
   "execute"
+  "normal"
   "set"
   "silent"
   "echo"
@@ -50,7 +59,8 @@
 ] @keyword
 (command_name) @function.macro
 
-(autocmd_statement (event) @constant)
+(au_event) @constant
+(normal_statement (commands) @constant)
 
 ;; Literals
 
@@ -90,6 +100,3 @@
   ".="
 ] @operator
 
-;; Function related
-
-(call_expression function: (identifier) @function)

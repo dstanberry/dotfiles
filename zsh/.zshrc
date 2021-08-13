@@ -429,8 +429,7 @@ fi
 ###############################################################
 # ensure tmpfs is mounted
 if is_wsl; then
-  mount | grep -E "^[^ ]* on /tmp " >/dev/null
-  if [ "$?" != "0" ];then
-    sudo mount -t tmpfs tmpfs /tmp -o noexec,defaults,nodev,nosuid,noatime,size=10g
+  if ! mount | grep -E "^[^ ]* on /tmp " >/dev/null; then
+    sudo mount -t tmpfs tmpfs /tmp -o defaults,nodev,nosuid,noatime,size=10g
   fi
 fi
