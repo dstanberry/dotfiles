@@ -102,6 +102,11 @@ return {
     color = "#e37933",
     name = "Xml",
   },
+  ["tmux.conf"] = {
+    icon = "",
+    color = "#56B632",
+    name = "Tmux",
+  },
   ["vimrc"] = {
     icon = "",
     color = "#019833",
