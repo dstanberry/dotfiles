@@ -25,6 +25,7 @@ local definitions = {
     { "BufRead,BufNewFile", "*.vifm", "setlocal filetype=vim" },
     { "BufRead,BufNewFile", "dircolors", "setlocal filetype=sh" },
     { "BufRead,BufNewFile", "gitconfig", "setlocal filetype=.gitconfig" },
+    { "BufRead,BufNewFile", "tmux.conf", "setlocal filetype=tmux" },
     { "BufRead,BufNewFile", "vifmrc", "setlocal filetype=vim" },
   },
   ftplugin = {
