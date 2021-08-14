@@ -103,7 +103,7 @@ return {
     name = "Xml",
   },
   ["tmux.conf"] = {
-    icon = "",
+    icon = "﬿",
     color = "#56B632",
     name = "Tmux",
   },
