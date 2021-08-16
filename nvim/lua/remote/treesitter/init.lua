@@ -1,5 +1,5 @@
 ---------------------------------------------------------------
--- => Tree-Sitter Configuration
+-- => Treesitter Configuration
 ---------------------------------------------------------------
 -- verify tree-sitter is available
 if not pcall(require, "nvim-treesitter") then
