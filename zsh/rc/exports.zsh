@@ -54,6 +54,9 @@ export LESSHISTFILE="${XDG_CACHE_HOME}/less/history"
 # define the default pager
 export PAGER=less
 
+# define the default manpager
+export MANPAGER="nvim -c 'set ft=man' -"
+
 # set the default editor
 if hash nvim 2> /dev/null; then
   export EDITOR=nvim
