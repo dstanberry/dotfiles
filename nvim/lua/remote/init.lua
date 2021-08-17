@@ -185,6 +185,7 @@ return require("packer").startup(function(use)
       vim.g.registers_window_border = "rounded"
     end,
   }
+  use "aserowy/tmux.nvim"
 
   use {
     "rcarriga/nvim-notify",
@@ -192,6 +193,4 @@ return require("packer").startup(function(use)
       vim.notify = require "notify"
     end,
   }
-
-  use "aserowy/tmux.nvim"
 end)
