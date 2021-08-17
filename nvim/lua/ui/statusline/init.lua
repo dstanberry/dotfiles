@@ -9,15 +9,19 @@ local browsers = {
   "lir",
 }
 
-local special = {
-  "help",
-}
-
 local plugins = {
   "Neogit",
   "packer",
   "qf",
   "TelescopePrompt",
+}
+
+local special = {
+  "help",
+}
+
+local uri = {
+  "man",
 }
 
 -- initialize modules table
@@ -142,6 +146,24 @@ local function special_inactive(bufnr)
   }
 end
 
+local function uri_active(bufnr)
+  local mode = vim.fn.mode()
+  local mode_hl = hi.mode(mode)
+  return table.concat {
+    add(mode_hl, { data.mode() }),
+    add(hi.user1, { " ", data.relpath(bufnr), "/" }, true),
+    add(hi.user2, { data.filename(bufnr), data.get_modified(bufnr) }),
+    hi.segment,
+  }
+end
+
+local function uri_inactive(bufnr)
+  return table.concat {
+    add(hi.user3, { " ", data.filepath(bufnr) }, true),
+    hi.segment,
+  }
+end
+
 local function simple_active(bufnr)
   local mode = vim.fn.mode()
   local mode_hl = hi.mode(mode)
@@ -172,15 +194,20 @@ statusline.focus = function(win_id)
       return explorer_active(bufnr)
     end
   end
+  for _, t in ipairs(plugins) do
+    local match = string.match(type, t) or ""
+    if type == t or #match > 0 then
+      return plugin_active(bufnr)
+    end
+  end
   for _, t in ipairs(special) do
     if type == t then
       return special_active(bufnr)
     end
   end
-  for _, t in ipairs(plugins) do
-    local match = string.match(type, t) or ""
-    if type == t or #match > 0 then
-      return plugin_active(bufnr)
+  for _, t in ipairs(uri) do
+    if type == t then
+      return uri_active(bufnr)
     end
   end
   type = vim.fn.getftype(data.filepath(bufnr))
@@ -210,15 +237,20 @@ statusline.dim = function(win_id)
       return explorer_inactive(bufnr)
     end
   end
+  for _, t in ipairs(plugins) do
+    local match = string.match(type, t) or ""
+    if type == t or #match > 0 then
+      return plugin_inactive(bufnr)
+    end
+  end
   for _, t in ipairs(special) do
     if type == t then
       return special_inactive(bufnr)
     end
   end
-  for _, t in ipairs(plugins) do
-    local match = string.match(type, t) or ""
-    if type == t or #match > 0 then
-      return plugin_inactive(bufnr)
+  for _, t in ipairs(uri) do
+    if type == t then
+      return uri_inactive(bufnr)
     end
   end
   type = vim.fn.getftype(data.filepath(bufnr))
@@ -235,17 +267,9 @@ statusline.check = function()
   for _, i in ipairs(vim.fn.range(1, vim.fn.winnr "$")) do
     local curwin = vim.fn.winnr()
     if i == curwin then
-      vim.fn.setwinvar(
-        i,
-        "statusline",
-        [[%!luaeval('require("ui.statusline").focus(vim.api.nvim_get_current_win())')]]
-      )
+      vim.fn.setwinvar(i, "statusline", [[%!luaeval('require("ui.statusline").focus(vim.api.nvim_get_current_win())')]])
     else
-      vim.fn.setwinvar(
-        i,
-        "statusline",
-        [[%!luaeval('require("ui.statusline").dim(vim.api.nvim_get_current_win())')]]
-      )
+      vim.fn.setwinvar(i, "statusline", [[%!luaeval('require("ui.statusline").dim(vim.api.nvim_get_current_win())')]])
     end
   end
 end
