@@ -154,14 +154,19 @@ return require("packer").startup(function(use)
     "mfussenegger/nvim-dap",
     opt = true,
     keys = "<localleader>db",
+    config = function()
+      require "remote.dap"
+    end,
     wants = {
       "nvim-dap-python",
+      "nvim-dap-ui",
       "nvim-dap-virtual-text",
       "one-small-step-for-vimkind",
     },
     requires = {
       "jbyuki/one-small-step-for-vimkind",
       "mfussenegger/nvim-dap-python",
+      "rcarriga/nvim-dap-ui",
       "theHamsta/nvim-dap-virtual-text",
     },
   }

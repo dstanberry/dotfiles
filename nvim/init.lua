@@ -35,7 +35,6 @@ if not pcall(require, "packer") then
   return
 end
 
--- load global functions
 local mod = require "util.modules"
 
 -- define colorscheme

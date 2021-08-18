@@ -7,8 +7,6 @@ if not ok then
   return
 end
 
-local map = require "util.map"
-
 -- enable virtual text if available
 if pcall(require, "nvim-dap-virtual-text") then
   vim.g.dap_virtual_text = true
@@ -49,9 +47,5 @@ if has_py then
   py.setup("python", { include_configs = true })
 end
 
--- define keymaps
-map.nnoremap("<localleader>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>")
-map.nnoremap("<localleader>dr", "<cmd>lua require('dap').repl_open()<cr>")
-map.nnoremap("<localleader>dh", "<cmd>lua require('dap.ui.variables').hover()<cr>")
-map.nnoremap("<f5>", "<cmd>lua require('dap').continue()<cr>")
-map.nnoremap("<f10>", "<cmd>lua require('dap').step_over()<cr>")
+require "remote.dap.ui"
+require "remote.dap.keymap"
