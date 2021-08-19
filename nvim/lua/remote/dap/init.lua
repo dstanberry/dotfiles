@@ -27,12 +27,13 @@ dap.configurations.lua = {
     port = 54321,
   },
 }
+
 dap.adapters.nlua = function(callback, config)
   callback { type = "server", host = config.host, port = config.port }
 end
 
 -- setup dap-python if available
-local has_py, py = pcall(require, "dap-python")
+local has_py, dap_python = pcall(require, "dap-python")
 if has_py then
   dap.configurations.python = {
     {
@@ -44,7 +45,9 @@ if has_py then
       console = "integratedTerminal",
     },
   }
-  py.setup("python", { include_configs = true })
+
+  dap_python.setup("python", { include_configs = true })
+  dap_python.test_runner = "pytest"
 end
 
 require "remote.dap.ui"
