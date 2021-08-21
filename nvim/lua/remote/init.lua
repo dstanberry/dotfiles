@@ -151,6 +151,13 @@ return require("packer").startup(function(use)
 
   use { "bfredl/nvim-luadev", opt = true, cmd = "Luadev" }
   use {
+    "rhysd/git-messenger.vim",
+    keys = "<leader>gm",
+    config = function()
+      vim.g.git_messenger_floating_win_opts = { border = "single" }
+    end,
+  }
+  use {
     "mfussenegger/nvim-dap",
     opt = true,
     keys = "<localleader>db",
