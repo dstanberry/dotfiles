@@ -35,11 +35,11 @@ if not pcall(require, "packer") then
   return
 end
 
-local mod = require "util.modules"
-
 -- define colorscheme
-mod.reload("ui.theme").setup()
+vim.cmd("colorscheme base16-kdark")
+
 -- define statusline
+local mod = require "util.modules"
 mod.reload("ui.statusline").setup()
 
 -- load remote plugins
