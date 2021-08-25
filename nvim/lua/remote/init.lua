@@ -92,7 +92,6 @@ return require("packer").startup(function(use)
     wants = { "lsp_signature.nvim", "lua-dev" },
     config = function()
       require "remote.lsp"
-      require "remote.lsp.kind"
     end,
     requires = {
       "folke/lua-dev.nvim",
@@ -125,12 +124,11 @@ return require("packer").startup(function(use)
   }
 
   use {
-    "hrsh7th/nvim-compe",
+    "hrsh7th/nvim-cmp",
     event = "InsertEnter",
     opt = true,
     config = function()
-      require "remote.compe"
-      require "remote.compe.keymap"
+      require "remote.cmp"
     end,
     wants = { "LuaSnip" },
     requires = {
@@ -141,6 +139,9 @@ return require("packer").startup(function(use)
           require "remote.luasnip"
         end,
       },
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-nvim-lua",
+      "saadparwaiz1/cmp_luasnip",
       "cstrap/python-snippets",
       "honza/vim-snippets",
       "J0rgeSerran0/vscode-csharp-snippets",
