@@ -96,6 +96,10 @@ local function get_server_configuration()
   capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = { "documentation", "detail", "additionalTextEdits" },
   }
+  local has_cmp, cmp = pcall(require, "cmp")
+  if has_cmp then
+    capabilities = cmp.update_capabilities(capabilities)
+  end
   return {
     capabilities = capabilities,
     flags = { debounce_text_changes = 150 },
