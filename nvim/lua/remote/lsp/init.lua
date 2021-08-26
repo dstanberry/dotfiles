@@ -75,19 +75,18 @@ local on_attach_nvim = function(client, bufnr)
   end
 
   local has_sig, lspsignature = pcall(require, "lsp_signature")
-  if not has_sig then
-    return
+  if has_sig then
+    lspsignature.on_attach {
+      bind = true,
+      doc_lines = 2,
+      floating_window = true,
+      fix_pos = false,
+      hint_enable = false,
+      handler_opts = {
+        border = "single",
+      },
+    }
   end
-  lspsignature.on_attach {
-    bind = true,
-    doc_lines = 2,
-    floating_window = true,
-    fix_pos = false,
-    hint_enable = false,
-    handler_opts = {
-      border = "none",
-    },
-  }
 end
 
 local function get_server_configuration()
@@ -132,7 +131,7 @@ end
 
 -- sign highlight groups
 vim.fn.sign_define("LspDiagnosticsSignError", { text = " ", texthl = "LspDiagnosticsSignError" })
-vim.fn.sign_define("LspDiagnosticsSignHint", { text = " ", texthl = "LspDiagnosticsSignHint" })
+vim.fn.sign_define("LspDiagnosticsSignHint", { text = " ", texthl = "LspDiagnosticsSignHint" })
 vim.fn.sign_define("LspDiagnosticsSignInformation", { text = " ", texthl = "LspDiagnosticsSignInformation" })
 vim.fn.sign_define("LspDiagnosticsSignWarning", { text = " ", texthl = "LspDiagnosticsSignWarning" })
 
