@@ -96,7 +96,7 @@ local function get_server_configuration()
   capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = { "documentation", "detail", "additionalTextEdits" },
   }
-  local has_cmp, cmp = pcall(require, "cmp")
+  local has_cmp, cmp = pcall(require, "cmp_nvim_lsp")
   if has_cmp then
     capabilities = cmp.update_capabilities(capabilities)
   end

@@ -20,21 +20,20 @@ end
 
 -- use tab to jump to next snippet placeholder
 local on_tab = function()
-  -- if vim.fn.pumvisible() == 1 then
-  --   return map.t "<c-n>"
   if luasnip.expand_or_jumpable() then
     return map.t "<plug>luasnip-expand-or-jump"
   elseif check_back_space() then
     return map.t "<tab>"
   else
-    return vim.fn["compe#complete"]()
+    local has_cmp, cmp = pcall(require, "cmp")
+    if has_cmp then
+      return cmp.mapping.complete()
+    end
   end
 end
 
 -- use s-tab to jump to previous snippet placeholder
 local on_s_tab = function()
-  -- if vim.fn.pumvisible() == 1 then
-  --   return map.t "<c-p>"
   if luasnip.jumpable(-1) then
     return map.t "<plug>luasnip-jump-prev"
   else
