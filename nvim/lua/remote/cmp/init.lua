@@ -1,7 +1,7 @@
 ---------------------------------------------------------------
 -- => nvim-cmp configuration
 ---------------------------------------------------------------
--- verify nvim-compe is available
+-- verify nvim-cmp is available
 local ok, cmp = pcall(require, "cmp")
 if not ok then
   return
@@ -35,6 +35,7 @@ cmp.setup {
     { name = "buffer" },
     { name = "nvim_lsp" },
     { name = "nvim_lua" },
+    { name = "path" },
     { name = "luasnip" },
   },
   formatting = {
