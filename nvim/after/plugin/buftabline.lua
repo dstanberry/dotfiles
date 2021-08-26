@@ -13,7 +13,7 @@ tabline.setup {
   disable_commands = true,
   icons = true,
   go_to_maps = true,
-  start_hidden = true,
+  start_hidden = false,
   flags = {
     modified = "●",
     not_modifiable = " ",
