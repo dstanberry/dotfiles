@@ -92,6 +92,7 @@ return require("packer").startup(function(use)
     wants = { "lsp_signature.nvim", "lua-dev" },
     config = function()
       require "remote.lsp"
+      require "remote.lsp.handlers"
     end,
     requires = {
       "folke/lua-dev.nvim",
@@ -105,7 +106,6 @@ return require("packer").startup(function(use)
     config = function()
       require "remote.telescope"
       require "remote.telescope.keymap"
-      require "remote.telescope.handlers"
     end,
     wants = {
       "plenary.nvim",

@@ -12,12 +12,9 @@ luasnip.config.set_config {
   updateevents = "TextChanged,TextChangedI",
 }
 
--- snippet object
-local s = luasnip.s
--- insert node
-local i = luasnip.i
--- text node
-local t = luasnip.t
+local s = luasnip.snippet
+local i = luasnip.insert_node
+local t = luasnip.text_node
 
 -- insert a newline
 local newline = function(text)
@@ -27,8 +24,8 @@ end
 -- check if matching (closing) character exists on line
 local function char_count_same(c1, c2)
   local line = vim.api.nvim_get_current_line()
-  local _, ct1 = string.gsub(line, c1, "")
-  local _, ct2 = string.gsub(line, c2, "")
+  local _, ct1 = string.gsub(line, "%" .. c1, "")
+  local _, ct2 = string.gsub(line, "%" .. c2, "")
   return ct1 == ct2
 end
 
@@ -68,42 +65,75 @@ local pack = function(tbl)
   return result
 end
 
-local snippets = {}
+local function part(func, ...)
+  local args = { ... }
+  return function()
+    return func(unpack(args))
+  end
+end
 
--- stylua: ignore
-snippets.all = {
-  -- autopairs
-  s({ trig = "(" }, { t { "(" }, i(1), t { ")" }, i(0) }, neg, char_count_same, "%(", "%)"),
-  s({ trig = "{" }, { t { "{" }, i(1), t { "}" }, i(0) }, neg, char_count_same, "%{", "%}"),
-  s({ trig = "[" }, { t { "[" }, i(1), t { "]" }, i(0) }, neg, char_count_same, "%[", "%]"),
-  s({ trig = "<" }, { t { "<" }, i(1), t { ">" }, i(0) }, neg, char_count_same, "<", ">"),
-  s({ trig = "'" }, { t { "'" }, i(1), t { "'" }, i(0) }, neg, even_count, "'"),
-  s({ trig = '"' }, { t { '"' }, i(1), t { '"' }, i(0) }, neg, even_count, '"'),
+local function autopair(pair_begin, pair_end, expand_func, ...)
+  return s(
+    { trig = pair_begin, wordTrig = false },
+    { t { pair_begin }, i(1), t { pair_end } },
+    { condition = part(expand_func, part(..., pair_begin, pair_end)) }
+  )
+end
+
+local custom = {}
+
+custom.all = {
+  autopair("(", ")", neg, char_count_same),
+  autopair("{", "}", neg, char_count_same),
+  autopair("[", "]", neg, char_count_same),
+  autopair("<", ">", neg, char_count_same),
+  autopair("'", "'", neg, even_count),
+  autopair('"', '"', neg, even_count),
+  autopair("`", "`", neg, even_count),
   s({ trig = "{;" }, { t { "{", "\t" }, i(1), t { "", "}" }, i(0) }),
 }
 
--- stylua: ignore
-snippets.lua = pack {
-  ["[[-"] = { "--[[", newline "\t", i(0), newline "--]]" },
-  ["[[;"] = { "[[", newline "\t", i(0), newline "]]" },
+custom.lua = pack {
+  ["[[-"] = { "--[[", t { "", "\t" }, i(0), newline "--]]" },
+  ["[[;"] = { "[[", t { "", "\t" }, i(0), newline "]]" },
   ig = {
     desc = "skip stylua formatting for this section",
     "-- stylua: ignore",
   },
   fn = {
     desc = "function(...) end",
-    "function(", i(1), ")", i(0), newline "end",
+    "function(",
+    i(1),
+    ")",
+    i(0),
+    t { "", "end" },
   },
   lf = {
     desc = "local function a(...) end",
-    "local ", "function ", i(1), "(", i(2), ")", newline "  ", i(0), newline "end", },
+    "local function ",
+    i(1),
+    "(",
+    i(2),
+    ")",
+    t { "", "\t" },
+    i(0),
+    t { "", "end" },
+  },
   tf = {
     desc = "local a = function(...) end",
-    "local ", i(1), " = function(", i(2), ")", newline "  ", i(0), newline "end", },
+    "local ",
+    i(1),
+    " = function(",
+    i(2),
+    ")",
+    t { "", "\t" },
+    i(0),
+    t { "", "end" },
+  },
 }
 
 -- load custom snippets
-luasnip.snippets = snippets
+luasnip.snippets = custom
 
 local directory = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data")
 
