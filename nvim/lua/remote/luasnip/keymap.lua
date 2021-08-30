@@ -41,7 +41,27 @@ local on_s_tab = function()
   end
 end
 
+local next_choice = function()
+  if luasnip.choice_active then
+    return map.t "<plug>luasnip-next-choice"
+  else
+    return map.t ""
+  end
+end
+
+local prev_choice = function()
+  if luasnip.choice_active then
+    return map.t "<plug>luasnip-prev-choice"
+  else
+    return map.t ""
+  end
+end
+
 map.imap("<tab>", on_tab, { expr = true })
 map.smap("<tab>", on_tab, { expr = true })
 map.imap("<s-tab>", on_s_tab, { expr = true })
 map.smap("<s-tab>", on_s_tab, { expr = true })
+map.imap("<c-e>", next_choice, { expr = true })
+map.smap("<c-e>", next_choice, { expr = true })
+map.imap("<c-t>", prev_choice, { expr = true })
+map.smap("<c-t>", prev_choice, { expr = true })

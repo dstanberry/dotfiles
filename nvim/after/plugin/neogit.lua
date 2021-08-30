@@ -7,7 +7,6 @@ if not ok then
   return
 end
 
--- default options
 neogit.setup {
   signs = {
     hunk = { "", "" },

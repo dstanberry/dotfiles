@@ -1,13 +1,12 @@
 ---------------------------------------------------------------
--- => tabline configuration
+-- => buftabline.nvim configuration
 ---------------------------------------------------------------
--- check if available
+-- verify buftabline is available
 local ok, tabline = pcall(require, "buftabline")
 if not ok then
   return
 end
 
--- default options
 tabline.setup {
   tab_format = " #{i} #{b}#{f} ",
   disable_commands = true,

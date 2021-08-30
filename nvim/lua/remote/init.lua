@@ -100,6 +100,7 @@ return require("packer").startup(function(use)
     },
   }
   use { "simrat39/symbols-outline.nvim", cmd = "SymbolsOutline", requires = { "nvim-lua/plenary.nvim" } }
+  use "ray-x/go.nvim"
 
   use {
     "nvim-telescope/telescope.nvim",
@@ -137,6 +138,7 @@ return require("packer").startup(function(use)
         wants = "friendly-snippets",
         config = function()
           require "remote.luasnip"
+          require "remote.luasnip.keymap"
         end,
       },
       "hrsh7th/cmp-buffer",

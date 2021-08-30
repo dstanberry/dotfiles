@@ -1,5 +1,5 @@
 ---------------------------------------------------------------
--- => gitsigns configuration
+-- => gitsigns.nvim configuration
 ---------------------------------------------------------------
 -- verify gitsigns is available
 local ok, signs = pcall(require, "gitsigns")
@@ -7,7 +7,6 @@ if not ok then
   return
 end
 
--- default options
 signs.setup {
   signs = {
     add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr" },
