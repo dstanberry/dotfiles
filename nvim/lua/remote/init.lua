@@ -142,6 +142,7 @@ return require("packer").startup(function(use)
         wants = "friendly-snippets",
         config = function()
           require "remote.luasnip"
+          require "remote.luasnip.keymap"
         end,
       },
       "hrsh7th/cmp-buffer",
