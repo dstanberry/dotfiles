@@ -168,6 +168,8 @@ return require("packer").startup(function(use)
     keys = "<localleader>db",
     config = function()
       require "remote.dap"
+      require "remote.dap.ui"
+      require "remote.dap.keymap"
     end,
     wants = {
       "nvim-dap-python",
