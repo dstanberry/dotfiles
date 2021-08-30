@@ -1,5 +1,5 @@
 ---------------------------------------------------------------
--- => zen-mode configuration
+-- => zen-mode.nvim configuration
 ---------------------------------------------------------------
 -- verify zen-mode is available
 local ok, zen = pcall(require, "zen")
@@ -7,7 +7,6 @@ if not ok then
   return
 end
 
--- zen-mode setup
 zen.setup {
   window = {
     options = {
