@@ -1,5 +1,5 @@
 ---------------------------------------------------------------
--- => Telescope Function Handlers
+-- => LSP Handlers
 ---------------------------------------------------------------
 -- verify telescope is available
 if not pcall(require, "telescope") then
