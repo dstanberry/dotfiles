@@ -1,5 +1,5 @@
 ---------------------------------------------------------------
--- => DAP UI
+-- => nvim-dap look and feel
 ------------------------------------------------------------------
 -- verify dap-ui is available
 local ok, ui = pcall(require, "dapui")
