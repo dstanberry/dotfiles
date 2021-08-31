@@ -97,19 +97,19 @@ function -set-prompt() {
     local LVL=$SHLVL
   fi
   if [[ $EUID -eq 0 ]]; then
-    local PREFIX=$(printf '%%F{red}\ue0a2%.0s%%f ')
+    local PREFIX=$(printf '%%F{red}%.0s%%f ')
   else
     local PREFIX=''
   fi
   local mode=$1
   if [[ $mode == insert ]]; then
     if [[ $retval -eq 0 ]]; then
-      local SUFFIX=$(printf '%%F{green}\u276f%.0s%%f' {1..$LVL})
+      local SUFFIX=$(printf '%%F{green}❯%.0s%%f' {1..$LVL})
     else
-      local SUFFIX=$(printf '%%F{red}\u276f%.0s%%f' {1..$LVL})
+      local SUFFIX=$(printf '%%F{red}❯%.0s%%f' {1..$LVL})
     fi
   else
-    local SUFFIX=$(printf '%%F{magenta}\u276f%.0s%%f' {1..$LVL})
+    local SUFFIX=$(printf '%%F{magenta}❯%.0s%%f' {1..$LVL})
   fi
 
   # define the primary prompt
