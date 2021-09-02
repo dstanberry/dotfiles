@@ -96,7 +96,7 @@ function -set-prompt() {
     local LVL=$SHLVL
   fi
   if [[ $EUID -eq 0 ]]; then
-    local PREFIX="%F{red}%%f "
+    local PREFIX="%F{red}%f "
   else
     local PREFIX=""
   fi
