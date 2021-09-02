@@ -43,7 +43,6 @@ autoload -Uz async && async
 
 # schedule worker to get vcs information
 -vcs_info_precmd() {
-  retval=$?
   async_flush_jobs vcs_info
   async_job vcs_info -vcs_info_worker $PWD
 }
@@ -97,19 +96,15 @@ function -set-prompt() {
     local LVL=$SHLVL
   fi
   if [[ $EUID -eq 0 ]]; then
-    local PREFIX=$(printf '%%F{red}%.0s%%f ')
+    local PREFIX="%F{red}%%f "
   else
-    local PREFIX=''
+    local PREFIX=""
   fi
   local mode=$1
   if [[ $mode == insert ]]; then
-    if [[ $retval -eq 0 ]]; then
-      local SUFFIX=$(printf '%%F{green}❯%.0s%%f' {1..$LVL})
-    else
-      local SUFFIX=$(printf '%%F{red}❯%.0s%%f' {1..$LVL})
-    fi
+    local SUFFIX="%F{green}%(?..%F{red})$(printf '❯%.0s%%f' {1..$LVL})"
   else
-    local SUFFIX=$(printf '%%F{magenta}❯%.0s%%f' {1..$LVL})
+    local SUFFIX="%F{magenta}$(printf '❯%.0s%%f' {1..$LVL})"
   fi
 
   # define the primary prompt
