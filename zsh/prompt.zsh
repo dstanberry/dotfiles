@@ -102,9 +102,9 @@ function -set-prompt() {
   fi
   local mode=$1
   if [[ $mode == insert ]]; then
-    local SUFFIX="%F{green}%(?..%F{red})$(printf '❯%.0s%%f' {1..$LVL})"
+    local SUFFIX=$(printf '%%F{green}%%(?..%%F{red})❯%.0s%%f' {1..$LVL})
   else
-    local SUFFIX="%F{magenta}$(printf '❯%.0s%%f' {1..$LVL})"
+    local SUFFIX=$(printf '%%F{magenta}❯%.0s%%f' {1..$LVL})
   fi
 
   # define the primary prompt
