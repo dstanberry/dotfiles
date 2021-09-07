@@ -66,6 +66,9 @@
 	lineNumber = true
 	patternType = perl
 
+[init]
+	defaultBranch = main
+
 [interactive]
 	diffFilter = delta --color-only
 
