@@ -36,7 +36,7 @@ if not pcall(require, "packer") then
 end
 
 -- define colorscheme
-vim.cmd("colorscheme base16-kdark")
+vim.cmd "colorscheme base16-kdark"
 
 -- define statusline
 local mod = require "util.modules"
