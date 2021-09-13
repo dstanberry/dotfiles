@@ -12,8 +12,9 @@ end
 -- vim.cmd('e'..vim.lsp.get_log_path())
 
 local on_attach_nvim = function(client, bufnr)
-  local nnoremap = vim.keymap.nnoremap
-  local vnoremap = vim.keymap.vnoremap
+  local map = require "util.map"
+  local nnoremap = map.nnoremap
+  local vnoremap = map.vnoremap
 
   if client.resolved_capabilities.document_highlight then
     vim.cmd [[
@@ -25,53 +26,43 @@ local on_attach_nvim = function(client, bufnr)
     ]]
   end
 
-  nnoremap { "ga", vim.lsp.buf.code_action, buffer = bufnr }
-  nnoremap { "gD", vim.lsp.buf.declaration, buffer = bufnr }
-  nnoremap { "gd", vim.lsp.buf.definition, buffer = bufnr }
-  nnoremap { "gt", vim.lsp.buf.type_definition, buffer = bufnr }
-  nnoremap { "gk", vim.lsp.buf.hover, buffer = bufnr }
-  nnoremap { "gi", vim.lsp.buf.implementation, buffer = bufnr }
-  nnoremap { "gh", vim.lsp.buf.signature_help, buffer = bufnr }
-  nnoremap { "gr", vim.lsp.buf.references, buffer = bufnr }
-  nnoremap { "gs", vim.lsp.buf.document_symbol, buffer = bufnr }
-  nnoremap { "g/", vim.lsp.buf.rename, buffer = bufnr }
-  nnoremap {
-    "g.",
-    function()
-      vim.lsp.diagnostic.show_line_diagnostics { border = "single" }
-    end,
+  nnoremap("ga", vim.lsp.buf.code_action, { buffer = bufnr })
+  nnoremap("gD", vim.lsp.buf.declaration, { buffer = bufnr })
+  nnoremap("gd", vim.lsp.buf.definition, { buffer = bufnr })
+  nnoremap("gt", vim.lsp.buf.type_definition, { buffer = bufnr })
+  nnoremap("gk", vim.lsp.buf.hover, { buffer = bufnr })
+  nnoremap("gi", vim.lsp.buf.implementation, { buffer = bufnr })
+  nnoremap("gh", vim.lsp.buf.signature_help, { buffer = bufnr })
+  nnoremap("gr", vim.lsp.buf.references, { buffer = bufnr })
+  nnoremap("gs", vim.lsp.buf.document_symbol, { buffer = bufnr })
+  nnoremap("g/", vim.lsp.buf.rename, { buffer = bufnr })
+  nnoremap("g.", function()
+    vim.lsp.diagnostic.show_line_diagnostics { border = "single" }
+  end, { buffer = bufnr })
+  nnoremap("gn", function()
+    vim.lsp.diagnostic.goto_next { popup_opts = { border = "single" } }
+  end, {
     buffer = bufnr,
-  }
-  nnoremap {
-    "gn",
-    function()
-      vim.lsp.diagnostic.goto_next { popup_opts = { border = "single" } }
-    end,
+  })
+  nnoremap("gp", function()
+    vim.lsp.diagnostic.goto_prev { popup_opts = { border = "single" } }
+  end, {
     buffer = bufnr,
-  }
-  nnoremap {
-    "gp",
-    function()
-      vim.lsp.diagnostic.goto_prev { popup_opts = { border = "single" } }
-    end,
+  })
+  nnoremap("gl", vim.lsp.diagnostic.set_loclist)
+  nnoremap("<localleader>wl", function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, {
     buffer = bufnr,
-  }
-  nnoremap { "gl", vim.lsp.diagnostic.set_loclist }
-  nnoremap {
-    "<localleader>wl",
-    function()
-      print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end,
-    buffer = bufnr,
-  }
-  nnoremap { "<localleader>wa", vim.lsp.buf.add_workspace_folder, buffer = bufnr }
-  nnoremap { "<localleader>wr", vim.lsp.buf.remove_workspace_folder, buffer = bufnr }
+  })
+  nnoremap("<localleader>wa", vim.lsp.buf.add_workspace_folder, { buffer = bufnr })
+  nnoremap("<localleader>wr", vim.lsp.buf.remove_workspace_folder, { buffer = bufnr })
 
   if client.resolved_capabilities.document_formatting then
-    nnoremap { "ff", vim.lsp.buf.formatting, buffer = bufnr }
+    nnoremap("ff", vim.lsp.buf.formatting, { buffer = bufnr })
   end
   if client.resolved_capabilities.document_range_formatting then
-    vnoremap { "ff", vim.lsp.buf.range_formatting, buffer = bufnr }
+    vnoremap("ff", vim.lsp.buf.range_formatting, { buffer = bufnr })
   end
 
   local has_sig, lspsignature = pcall(require, "lsp_signature")

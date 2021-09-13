@@ -15,11 +15,8 @@ neogit.setup {
   },
 }
 
-local nnoremap = vim.keymap.nnoremap
+local nnoremap = require("util.map").nnoremap
 
-nnoremap {
-  "<leader>gs",
-  function()
-    neogit.open { kind = "split" }
-  end,
-}
+nnoremap("<leader>gs", function()
+  neogit.open { kind = "split" }
+end)

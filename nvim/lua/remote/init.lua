@@ -47,8 +47,6 @@ return require("packer").startup(function(use)
 
   use { "npxbr/glow.nvim", cmd = "Glow" }
 
-  use "tjdevries/astronauta.nvim"
-
   use {
     "yamatsum/nvim-nonicons",
     requires = {
