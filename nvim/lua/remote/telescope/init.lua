@@ -7,21 +7,19 @@ if not ok and not pcall(require, "telescope") then
   return
 end
 
-local mod = require "util.modules"
-
--- reload modules
-local should_reload = true
+local should_reload = false
 local reloader = function()
   if should_reload then
+    local mod = require "util.modules"
     mod.reload "plenary"
     mod.reload "popup"
     mod.reload "telescope"
   end
 end
 
-reloader()
-
+local telescope = require "telescope"
 local actions = require "telescope.actions"
+local builtin = require "telescope.builtin"
 local state = require "telescope.actions.state"
 
 local set_prompt_to_entry_value = function(prompt_bufnr)
@@ -33,7 +31,7 @@ local set_prompt_to_entry_value = function(prompt_bufnr)
 end
 
 -- set default options
-require("telescope").setup {
+telescope.setup {
   defaults = {
     prompt_prefix = " ❯ ",
     selection_caret = " ",
@@ -56,9 +54,7 @@ require("telescope").setup {
     mappings = {
       i = {
         ["<c-s>"] = actions.select_horizontal,
-        ["<c-q>"] = actions.send_to_qflist,
         ["<c-y>"] = set_prompt_to_entry_value,
-        -- ["<esc>"] = actions.close,
         ["jk"] = actions.close,
       },
     },
@@ -108,7 +104,7 @@ require("telescope").setup {
 }
 
 -- load additional extensions
-pcall(require("telescope").load_extension "fzf")
+pcall(telescope.load_extension "fzf")
 
 -- list of directory/file patterns to ignore
 local ignored = {
@@ -126,14 +122,14 @@ local M = {}
 
 -- show current buffer list
 function M.buffers()
-  require("telescope.builtin").buffers {
+  builtin.buffers {
     prompt_title = "\\ Buffers /",
   }
 end
 
 -- search nvim config
 function M.find_nvim()
-  require("telescope.builtin").find_files {
+  builtin.find_files {
     cwd = "~/.config/nvim",
     hidden = true,
     follow = true,
@@ -149,9 +145,9 @@ function M.project_files()
     file_ignore_patterns = ignored,
     prompt_title = "\\ Project Files /",
   }
-  ok = pcall(require("telescope.builtin").git_files, opts)
+  ok = pcall(builtin.git_files, opts)
   if not ok then
-    require("telescope.builtin").find_files(opts)
+    builtin.find_files(opts)
   end
 end
 
@@ -189,12 +185,12 @@ function M.file_browser()
       return true
     end,
   }
-  require("telescope.builtin").file_browser(opts)
+  builtin.file_browser(opts)
 end
 
 -- search remote plugins
 function M.find_plugins()
-  require("telescope.builtin").find_files {
+  builtin.find_files {
     cwd = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data"),
     previewer = false,
     prompt_title = "\\ Nvim Plugins /",
@@ -203,7 +199,7 @@ end
 
 -- grep for pattern within directory
 function M.grep_string()
-  require("telescope.builtin").grep_string {
+  builtin.grep_string {
     search = vim.fn.input "grep: ",
     path_display = { "shorten" },
     prompt_title = "\\ Grep Project /",
@@ -212,7 +208,7 @@ end
 
 -- search current buffer
 function M.current_buffer()
-  require("telescope.builtin").current_buffer_fuzzy_find {
+  builtin.current_buffer_fuzzy_find {
     previewer = false,
     prompt_title = "\\ Find in File /",
   }
@@ -225,7 +221,7 @@ return setmetatable({}, {
     if M[k] then
       return M[k]
     else
-      return require("telescope.builtin")[k]
+      return builtin[k]
     end
   end,
 })

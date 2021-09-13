@@ -424,6 +424,11 @@ if [ -d "$ZSH_CONFIG_HOME/rc.private" ]; then
   done
 fi
 
+# kitty shell integration
+if test -e "$HOME/Git/kitty/shell-integration/kitty.zsh"; then
+  source "$HOME/Git/kitty/shell-integration/kitty.zsh";
+fi
+
 ###############################################################
 # Fstab (tmpfs for WSL)
 ###############################################################
