@@ -8,7 +8,7 @@ if hash gem 2> /dev/null; then
     fi
     ud=$(gem env | grep 'USER INSTALLATION DIRECTORY' | awk -F':' '{ print $2 }')
     p="${ud##*/.gem/}"
-    if [ -d "$i/$p/bin" ];then
+    if [ -d "$i/$p/bin" ]; then
       export PATH="$i/$p/bin":$PATH
     fi
   done
