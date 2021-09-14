@@ -80,42 +80,52 @@ local on_attach_nvim = function(client, bufnr)
   end
 end
 
-local function get_server_configuration()
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = { "documentation", "detail", "additionalTextEdits" },
-  }
-  local has_cmp, cmp = pcall(require, "cmp_nvim_lsp")
-  if has_cmp then
-    capabilities = cmp.update_capabilities(capabilities)
-  end
-  return {
-    capabilities = capabilities,
-    flags = { debounce_text_changes = 150 },
-    on_attach = on_attach_nvim,
-  }
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = { "documentation", "detail", "additionalTextEdits" },
+}
+local has_cmp, cmp = pcall(require, "cmp_nvim_lsp")
+if has_cmp then
+  capabilities = cmp.update_capabilities(capabilities)
 end
 
 local servers = {
-  "bashls",
-  "clangd",
-  "cmake",
-  "cssls",
-  "efm",
-  "gopls",
-  "html",
-  "jsonls",
-  "pyright",
-  "rust_analyzer",
-  "sumneko_lua",
-  "vimls",
+  bashls = {},
+  clangd = {
+    cmd = { "clangd", "--background-index", "--suggest-missing-includes", "--clang-tidy", "--header-insertion=iwyu" },
+    init_options = { clangdFileStatus = true },
+  },
+  cmake = {
+    cmd = { "cmake-language-server" },
+  },
+  cssls = {
+    cmd = { "css-languageserver", "--stdio" },
+  },
+  efm = require("remote.lsp.efm").config,
+  gopls = {},
+  html = {
+    cmd = { "html-languageserver", "--stdio" },
+  },
+  jsonls = {},
+  pyright = {},
+  rust_analyzer = {
+    settings = {
+      ["rust-analyzer"] = {
+        assist = { importGranularity = "module", importPrefix = "by_self" },
+        cargo = { loadOutDirsFromCheck = true },
+        procMacro = { enable = true },
+      },
+    },
+  },
+  sumneko_lua = require("remote.lsp.sumneko").config,
+  vimls = require("remote.lsp.vimls").config,
 }
-for _, server in ipairs(servers) do
-  local config = get_server_configuration()
-  local has_config, extra_config = pcall(require, "remote.lsp." .. server)
-  if has_config then
-    config = vim.tbl_extend("force", config, extra_config)
-  end
-  lspconfig[server].setup(config)
+
+for server, config in pairs(servers) do
+  lspconfig[server].setup(vim.tbl_deep_extend("force", {
+    capabilities = capabilities,
+    flags = { debounce_text_changes = 150 },
+    on_attach = on_attach_nvim,
+  }, config))
 end
