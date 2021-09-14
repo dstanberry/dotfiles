@@ -4,7 +4,7 @@
 if vim.lsp.setup then
   vim.lsp.setup {
     floating_preview = {
-      border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+      border = "single",
     },
     diagnostics = {
       signs = { error = " ", warning = " ", hint = " ", information = " " },
@@ -69,13 +69,14 @@ else
   end
 end
 
-if pcall(require, "telescope") then
-  vim.lsp.handlers["textDocument/codeAction"] = require("remote.telescope").lsp_code_actions
-  vim.lsp.handlers["textDocument/declaration"] = require("remote.telescope").lsp_definitions
-  vim.lsp.handlers["textDocument/definition"] = require("remote.telescope").lsp_definitions
-  vim.lsp.handlers["textDocument/documentSymbol"] = require("remote.telescope").lsp_document_symbols
-  vim.lsp.handlers["textDocument/implementation"] = require("remote.telescope").lsp_implementations
-  vim.lsp.handlers["textDocument/references"] = require("remote.telescope").lsp_references
-  vim.lsp.handlers["textDocument/typeDefinition"] = require("remote.telescope").lsp_definitions
-  vim.lsp.handlers["workspace/symbol"] = require("remote.telescope").lsp_workspace_symbols
+local has_tele, telescope = pcall(require, "remote.telescope")
+if has_tele then
+  vim.lsp.handlers["textDocument/codeAction"] = telescope.lsp_code_actions
+  vim.lsp.handlers["textDocument/declaration"] = telescope.lsp_definitions
+  vim.lsp.handlers["textDocument/definition"] = telescope.lsp_definitions
+  vim.lsp.handlers["textDocument/documentSymbol"] = telescope.lsp_document_symbols
+  vim.lsp.handlers["textDocument/implementation"] = telescope.lsp_implementations
+  vim.lsp.handlers["textDocument/references"] = telescope.lsp_references
+  vim.lsp.handlers["textDocument/typeDefinition"] = telescope.lsp_definitions
+  vim.lsp.handlers["workspace/symbol"] = telescope.lsp_workspace_symbols
 end
