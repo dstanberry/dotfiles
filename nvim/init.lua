@@ -58,7 +58,11 @@ vim.cmd "colorscheme base16-kdark"
 local mod = require "util.modules"
 mod.reload("ui.statusline").setup()
 
+-- load global scope functions
+require "util.globals"
+
 -- load remote plugins
 vim.defer_fn(function()
   require "remote"
 end, 0)
+
