@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => Statusline Configuration
----------------------------------------------------------------
 -- load statusline utilities
 local hi = require "ui.statusline.highlight"
 local data = require "ui.statusline.data"
@@ -24,8 +21,7 @@ local uri = {
   "man",
 }
 
--- initialize modules table
-local statusline = {}
+local M = {}
 
 -- add section to statusline
 local function add(highlight, items, conjoin)
@@ -183,7 +179,7 @@ local function simple_inactive()
 end
 
 -- statusline when window has focus
-statusline.focus = function(win_id)
+M.focus = function(win_id)
   if not vim.api.nvim_win_is_valid(win_id) then
     return simple_inactive()
   end
@@ -222,12 +218,12 @@ statusline.focus = function(win_id)
 end
 
 -- statusline when window does not have focus
-statusline.dim = function(win_id)
+M.dim = function(win_id)
   if not vim.api.nvim_win_is_valid(win_id) then
     return simple_inactive()
   end
   if vim.fn.pumvisible() == 1 then
-    return statusline.focus(win_id)
+    return M.focus(win_id)
   end
   local bufnr = vim.api.nvim_win_get_buf(win_id)
   local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
@@ -263,7 +259,7 @@ end
 
 -- TODO: investigate a better way to do this
 -- iterate all open windows and reapply statusline
-statusline.check = function()
+M.check_windows = function()
   for _, i in ipairs(vim.fn.range(1, vim.fn.winnr "$")) do
     local curwin = vim.fn.winnr()
     if i == curwin then
@@ -274,8 +270,7 @@ statusline.check = function()
   end
 end
 
--- initialize statusline
-statusline.setup = function()
+M.setup = function()
   local a = "FocusGained,BufEnter,BufWinEnter,WinEnter,CompleteDonePre"
   local i = "FocusLost,BufLeave,BufWinLeave,WinLeave"
   local win = "vim.api.nvim_get_current_win()"
@@ -293,8 +288,8 @@ statusline.setup = function()
     win
   ))
   vim.fn.timer_start(100, function()
-    return statusline.check()
+    return M.check_windows()
   end)
 end
 
-return statusline
+return M

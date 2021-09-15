@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => Telescope Configuration
----------------------------------------------------------------
 -- verify telescope is available
 local ok = pcall(require, "lspconfig")
 if not ok and not pcall(require, "telescope") then
@@ -117,7 +114,6 @@ local ignored = {
   "node_modules",
 }
 
--- initialize modules table
 local M = {}
 
 -- show current buffer list

@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => go.nvim configuration
----------------------------------------------------------------
 -- verify go is available
 local ok, go = pcall(require, "go")
 if not ok then

@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => Package/Module Functions
----------------------------------------------------------------
 local M = {}
 
 -- force reload local/remote module configuration

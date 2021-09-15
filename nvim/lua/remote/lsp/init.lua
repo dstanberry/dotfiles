@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => Language Server Protocol Configuration
----------------------------------------------------------------
 -- verify lspconfig and nlua-nvim are available
 local ok, lspconfig = pcall(require, "lspconfig")
 if not ok then

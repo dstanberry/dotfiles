@@ -1,10 +1,5 @@
----------------------------------------------------------------
--- => Packer Helper Functions
----------------------------------------------------------------
--- initialize modules table
 local M = {}
 
--- install packer.nvim
 function M.bootstrap()
   if vim.fn.input "Download Packer? (y for yes)" ~= "y" then
     return

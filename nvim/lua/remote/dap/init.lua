@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => nvim-dap configuration
----------------------------------------------------------------
 -- verify dap is available
 local ok, dap = pcall(require, "dap")
 if not ok then

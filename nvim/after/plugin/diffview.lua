@@ -1,6 +1,3 @@
----------------------------------------------------------------
----- => diffview.nvim configuration
------------------------------------------------------------------
 -- verify diffview is available
 local ok, diffview = pcall(require, "diffview")
 if not ok then

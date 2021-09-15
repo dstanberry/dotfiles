@@ -63,6 +63,5 @@ require "util.globals"
 
 -- load remote plugins
 vim.defer_fn(function()
-  require "remote"
+  require("remote").setup()
 end, 0)
-

@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => nvim-cmp configuration
----------------------------------------------------------------
 -- verify nvim-cmp is available
 local ok, cmp = pcall(require, "cmp")
 if not ok then

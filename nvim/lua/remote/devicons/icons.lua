@@ -1,7 +1,4 @@
----------------------------------------------------------------
--- => (nvim-web-devicons) custom icon maps
----------------------------------------------------------------
-return {
+local custom_icons = {
   [".gitignore"] = {
     icon = "",
     color = "#41535b",
@@ -133,3 +130,5 @@ return {
     name = "rust",
   },
 }
+
+return custom_icons
