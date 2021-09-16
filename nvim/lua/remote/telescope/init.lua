@@ -75,21 +75,11 @@ telescope.setup {
       previewer = false,
       results_title = false,
     },
-    lsp_definitions = {
-      theme = "ivy",
-    },
-    lsp_document_symbols = {
-      layout_strategy = "vertical",
-    },
-    lsp_dynamic_workspace_symbols = {
-      layout_strategy = "vertical",
-    },
-    lsp_references = {
-      theme = "ivy",
-    },
-    lsp_workspace_symbols = {
-      layout_strategy = "vertical",
-    },
+    lsp_definitions = { theme = "ivy" },
+    lsp_document_symbols = { layout_strategy = "vertical" },
+    lsp_dynamic_workspace_symbols = { layout_strategy = "vertical" },
+    lsp_references = { theme = "ivy" },
+    lsp_workspace_symbols = { layout_strategy = "vertical" },
   },
   extensions = {
     fzf = {
