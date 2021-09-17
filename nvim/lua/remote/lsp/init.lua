@@ -14,15 +14,15 @@ local on_attach_nvim = function(client, bufnr)
   local vnoremap = map.vnoremap
 
   if client.resolved_capabilities.document_highlight then
-    local pre = "autocmd! * <buffer>"
-    local augroup = require "util"
-    local groups = {
-      ["lsp_document_highlight"] = {
-        { "CursorHold", "<buffer>", "lua vim.lsp.buf.document_highlight()" },
-        { "CursorMoved", "<buffer>", "lua vim.lsp.buf.clear_references()" },
+    require("util").define_augroup {
+      name = "lsp_document_highlight",
+      buf = true,
+      clear = true,
+      autocmds = {
+        { event = "CursorHold", pattern = "<buffer>", command = "lua vim.lsp.buf.document_highlight()" },
+        { event = "CursorMoved", pattern = "<buffer>", command = "lua vim.lsp.buf.clear_references()" },
       },
     }
-    augroup.create_augroup(groups, pre)
   end
 
   local show_line_diagnostics = function()

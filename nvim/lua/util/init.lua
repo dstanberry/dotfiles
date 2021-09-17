@@ -8,15 +8,31 @@ function M.reload(name)
   return require(name)
 end
 
-function M.create_augroup(groups, clear)
-  local start = clear or "autocmd!"
-  for group_name, autocmd in pairs(groups) do
-    vim.api.nvim_command("augroup " .. group_name)
-    vim.api.nvim_command(start)
-    for _, def in ipairs(autocmd) do
-      local command = table.concat(vim.tbl_flatten { "autocmd", def }, " ")
-      vim.api.nvim_command(command)
-    end
+function M.define_autocmd(spec)
+  local event = spec.event
+  if type(event) == "table" then
+    event = table.concat(event, ",")
+  end
+  local pattern = spec.pattern or "*"
+  local once = spec.once and "++once" or ""
+  local nested = spec.nested and "++nested" or ""
+  local action = spec.command or ""
+  -- local callback = cmd.callback
+  -- if callback ~= nil then
+  --   action = lua_call(callback)
+  -- end
+  local command = table.concat(vim.tbl_flatten { "autocmd", event, pattern, once, nested, action }, " ")
+  vim.api.nvim_command(command)
+end
+
+function M.define_augroup(group)
+  local clear_suffix = group.buf and " * <buffer>" or ""
+  vim.api.nvim_command("augroup " .. group.name)
+  if group.clear then
+    vim.api.nvim_command("autocmd!" .. clear_suffix)
+  end
+  for _, autocmd in ipairs(group.autocmds) do
+    M.define_autocmd(autocmd)
     vim.api.nvim_command "augroup END"
   end
 end
