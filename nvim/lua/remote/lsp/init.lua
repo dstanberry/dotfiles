@@ -24,15 +24,15 @@ local on_attach_nvim = function(client, bufnr)
   end
 
   local show_line_diagnostics = function()
-    vim.lsp.diagnostic.show_line_diagnostics { border = "single" }
+    vim.diagnostic.show_line_diagnostics { border = "single" }
   end
 
   local goto_next = function()
-    vim.lsp.diagnostic.goto_next { popup_opts = { border = "single" } }
+    vim.diagnostic.goto_next { popup_opts = { border = "single" } }
   end
 
   local goto_prev = function()
-    vim.lsp.diagnostic.goto_prev { popup_opts = { border = "single" } }
+    vim.diagnostic.goto_prev { popup_opts = { border = "single" } }
   end
 
   local list_workspace_folders = function()
@@ -52,7 +52,6 @@ local on_attach_nvim = function(client, bufnr)
   nnoremap("g.", show_line_diagnostics, { buffer = bufnr })
   nnoremap("gn", goto_next, { buffer = bufnr, })
   nnoremap("gp", goto_prev, { buffer = bufnr, })
-  nnoremap("gl", vim.lsp.diagnostic.set_loclist)
   nnoremap("<localleader>wl", list_workspace_folders, { buffer = bufnr, })
   nnoremap("<localleader>wa", vim.lsp.buf.add_workspace_folder, { buffer = bufnr })
   nnoremap("<localleader>wr", vim.lsp.buf.remove_workspace_folder, { buffer = bufnr })
