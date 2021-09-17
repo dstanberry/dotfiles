@@ -40,7 +40,7 @@ local on_attach_nvim = function(client, bufnr)
   end
 
   nnoremap("ga", vim.lsp.buf.code_action, { buffer = bufnr })
-  nnoremap("gD", vim.lsp.buf.declaration, { buffer = bufnr })
+  -- nnoremap("gD", vim.lsp.buf.declaration, { buffer = bufnr })
   nnoremap("gd", vim.lsp.buf.definition, { buffer = bufnr })
   nnoremap("gt", vim.lsp.buf.type_definition, { buffer = bufnr })
   nnoremap("gk", vim.lsp.buf.hover, { buffer = bufnr })
