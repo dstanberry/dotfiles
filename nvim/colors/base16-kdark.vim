@@ -1,5 +1,5 @@
 lua << EOF
 package.loaded["base16-kdark"] = nil
 
-require("util.modules").reload("ui.theme").setup()
+require("util").reload("ui.theme").setup()
 EOF

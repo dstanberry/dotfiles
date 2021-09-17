@@ -48,8 +48,7 @@ vim.fn.mkdir(shada, "p")
 vim.cmd "colorscheme base16-kdark"
 
 -- define statusline
-local mod = require "util.modules"
-mod.reload("ui.statusline").setup()
+require("util").reload("ui.statusline").setup()
 
 -- load global scope functions
 require "util.globals"
@@ -58,4 +57,3 @@ require "util.globals"
 vim.defer_fn(function()
   require "remote"
 end, 0)
-

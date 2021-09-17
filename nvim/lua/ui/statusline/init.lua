@@ -274,22 +274,22 @@ M.check_windows = function()
 end
 
 M.setup = function()
-  local augroup = require "util.builtin"
-  local groups = {
-    statusline = {
+  require("util").define_augroup {
+    name = "statusline",
+    clear = true,
+    autocmds = {
       {
-        "FocusGained,BufEnter,BufWinEnter,WinEnter,CompleteDonePre",
-        "*",
-        string.format("lua vim.wo.statusline = [[%s]]", on_focus),
+        event = { "FocusGained", "BufEnter", "BufWinEnter", "WinEnter", "CompleteDonePre" },
+        pattern = "*",
+        command = string.format("lua vim.wo.statusline = [[%s]]", on_focus),
       },
       {
-        "FocusLost,BufLeave,BufWinLeave,WinLeave",
-        "*",
-        string.format("lua vim.wo.statusline = [[%s]]", on_dim),
+        event = { "FocusLost", "BufLeave", "BufWinLeave", "WinLeave" },
+        pattern = "*",
+        command = string.format("lua vim.wo.statusline = [[%s]]", on_dim),
       },
     },
   }
-  augroup.create_augroup(groups)
   vim.fn.timer_start(100, function()
     return M.check_windows()
   end)
