@@ -274,7 +274,7 @@ M.check_windows = function()
 end
 
 M.setup = function()
-  local augroup = require "util.builtin"
+  local util = require "util"
   local groups = {
     statusline = {
       {
@@ -289,7 +289,7 @@ M.setup = function()
       },
     },
   }
-  augroup.create_augroup(groups)
+  util.create_augroup(groups)
   vim.fn.timer_start(100, function()
     return M.check_windows()
   end)

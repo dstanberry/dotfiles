@@ -7,10 +7,10 @@ end
 local should_reload = false
 local reloader = function()
   if should_reload then
-    local mod = require "util.modules"
-    mod.reload "plenary"
-    mod.reload "popup"
-    mod.reload "telescope"
+    local util = require "util"
+    util.reload "plenary"
+    util.reload "popup"
+    util.reload "telescope"
   end
 end
 

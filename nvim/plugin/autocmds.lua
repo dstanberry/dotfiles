@@ -1,4 +1,4 @@
-local augroup = require "util.builtin"
+local util = require "util"
 
 local groups = {
   command = {
@@ -36,4 +36,4 @@ local groups = {
   },
 }
 
-augroup.create_augroup(groups)
+util.create_augroup(groups)

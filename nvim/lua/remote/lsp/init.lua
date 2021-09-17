@@ -15,7 +15,7 @@ local on_attach_nvim = function(client, bufnr)
 
   if client.resolved_capabilities.document_highlight then
     local pre = "autocmd! * <buffer>"
-    local augroup = require "util.builtin"
+    local augroup = require "util"
     local groups = {
       ["lsp_document_highlight"] = {
         { "CursorHold", "<buffer>", "lua vim.lsp.buf.document_highlight()" },
