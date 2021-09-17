@@ -1,11 +1,7 @@
----------------------------------------------------------------
--- => Colorscheme Configuration
----------------------------------------------------------------
 -- load colorscheme utilities
 local themes = require "ui.theme.colors"
 local groups = require "ui.theme.groups"
 
--- initialize modules table
 local M = {}
 
 -- assign all available color palettes

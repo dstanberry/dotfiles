@@ -1,22 +1,27 @@
----------------------------------------------------------------
--- => Packer Helper Functions
----------------------------------------------------------------
--- initialize modules table
 local M = {}
 
--- install packer.nvim
 function M.bootstrap()
-  if vim.fn.input "Download Packer? (y for yes)" ~= "y" then
-    return
+  local path = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data")
+  if vim.fn.empty(vim.fn.glob(path)) > 0 then
+    vim.fn.mkdir(path, "p")
+    print "Installing packer.nvim..."
+    local out = vim.fn.system(
+      string.format("git clone %s %s", "https://github.com/wbthomason/packer.nvim", path .. "/packer.nvim")
+    )
+    print(out)
+  vim.cmd "packadd packer.nvim"
   end
-  local directory = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data")
-  vim.fn.mkdir(directory, "p")
-  local out = vim.fn.system(
-    string.format("git clone %s %s", "https://github.com/wbthomason/packer.nvim", directory .. "/packer.nvim")
-  )
-  print(out)
-  print "Downloading packer.nvim..."
-  print "( Restart is required! )"
+end
+
+function M.setup(config, fn)
+  M.bootstrap()
+  local packer = require "packer"
+  packer.init(config)
+  return packer.startup {
+    function(use)
+      fn(use)
+    end,
+  }
 end
 
 return M

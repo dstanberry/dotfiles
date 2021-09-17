@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => tmux.nvim configuration
----------------------------------------------------------------
 -- verify tmux is available
 local ok, tmux = pcall(require, "tmux")
 if not ok then

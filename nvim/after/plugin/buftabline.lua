@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => buftabline.nvim configuration
----------------------------------------------------------------
 -- verify buftabline is available
 local ok, tabline = pcall(require, "buftabline")
 if not ok then

@@ -1,7 +1,18 @@
----------------------------------------------------------------
--- => Plugin Manager
----------------------------------------------------------------
-return require("packer").startup(function(use)
+local packer = require "util.packer"
+
+local config = {
+  profile = {
+    enable = false,
+    threshold = 0,
+  },
+  display = {
+    open_fn = function()
+      return require("packer.util").float { border = "single" }
+    end,
+  },
+}
+
+local function plugins(use)
   use "wbthomason/packer.nvim"
 
   use { "antoinemadec/FixCursorHold.nvim" }
@@ -210,4 +221,6 @@ return require("packer").startup(function(use)
       vim.notify = require "notify"
     end,
   }
-end)
+end
+
+return packer.setup(config, plugins)

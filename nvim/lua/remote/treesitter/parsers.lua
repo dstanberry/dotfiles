@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => Treesitter Parser Customization
----------------------------------------------------------------
 -- verify tree-sitter is available
 local ok, parsers = pcall(require, "nvim-treesitter.parsers")
 if not ok then

@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => neogit configuration
----------------------------------------------------------------
 -- verify neogit is available
 local ok, neogit = pcall(require, "neogit")
 if not ok then

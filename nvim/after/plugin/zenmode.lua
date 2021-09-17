@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => zen-mode.nvim configuration
----------------------------------------------------------------
 -- verify zen-mode is available
 local ok, zen = pcall(require, "zen")
 if not ok then

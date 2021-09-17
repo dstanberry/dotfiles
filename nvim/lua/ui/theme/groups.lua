@@ -1,9 +1,5 @@
----------------------------------------------------------------
--- => Builitin Highlight Groups
----------------------------------------------------------------
 local color = require "util.color"
 
--- initialize modules table
 local M = {}
 
 -- helper function to set highight group

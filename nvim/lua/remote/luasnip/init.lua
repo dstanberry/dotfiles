@@ -1,7 +1,4 @@
----------------------------------------------------------------
--- => luasnip mappings
----------------------------------------------------------------
--- ensure luasnip is available
+-- verify luasnip is available
 local ok, luasnip = pcall(require, "luasnip")
 if not ok then
   return

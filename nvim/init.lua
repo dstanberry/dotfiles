@@ -44,13 +44,6 @@ vim.fn.mkdir(undo, "p")
 -- ensure shada directory exists
 vim.fn.mkdir(shada, "p")
 
--- ensure packer.nvim is available
-if not pcall(require, "packer") then
-  require("util.packer").bootstrap()
-  -- prevent anything else from loading
-  return
-end
-
 -- define colorscheme
 vim.cmd "colorscheme base16-kdark"
 
@@ -58,7 +51,11 @@ vim.cmd "colorscheme base16-kdark"
 local mod = require "util.modules"
 mod.reload("ui.statusline").setup()
 
+-- load global scope functions
+require "util.globals"
+
 -- load remote plugins
 vim.defer_fn(function()
   require "remote"
 end, 0)
+

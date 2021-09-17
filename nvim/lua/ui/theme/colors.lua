@@ -1,9 +1,5 @@
----------------------------------------------------------------
--- => Colorscheme Themes
----------------------------------------------------------------
--- initialize modules table
-local themes = {}
+local M = {}
 
-themes['base16-kdark'] = require('ui.theme.colors.base16-kdark')
+M['base16-kdark'] = require('ui.theme.colors.base16-kdark')
 
-return themes
+return M

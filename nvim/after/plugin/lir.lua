@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => lir.nvim configuration
----------------------------------------------------------------
 -- verify lir is available
 local ok, lir = pcall(require, "lir")
 if not ok then

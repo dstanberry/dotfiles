@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => Statusline Utilities
----------------------------------------------------------------
 -- load statusline utilities
 local Job = require "plenary.job"
 
@@ -14,7 +11,6 @@ local paste = function()
   return result
 end
 
--- initialize modules table
 local M = {}
 
 -- readonly indicator

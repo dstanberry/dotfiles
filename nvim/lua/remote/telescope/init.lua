@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => Telescope Configuration
----------------------------------------------------------------
 -- verify telescope is available
 local ok = pcall(require, "lspconfig")
 if not ok and not pcall(require, "telescope") then
@@ -78,21 +75,11 @@ telescope.setup {
       previewer = false,
       results_title = false,
     },
-    lsp_definitions = {
-      theme = "ivy",
-    },
-    lsp_document_symbols = {
-      layout_strategy = "vertical",
-    },
-    lsp_dynamic_workspace_symbols = {
-      layout_strategy = "vertical",
-    },
-    lsp_references = {
-      theme = "ivy",
-    },
-    lsp_workspace_symbols = {
-      layout_strategy = "vertical",
-    },
+    lsp_definitions = { theme = "ivy" },
+    lsp_document_symbols = { layout_strategy = "vertical" },
+    lsp_dynamic_workspace_symbols = { layout_strategy = "vertical" },
+    lsp_references = { theme = "ivy" },
+    lsp_workspace_symbols = { layout_strategy = "vertical" },
   },
   extensions = {
     fzf = {
@@ -117,13 +104,12 @@ local ignored = {
   "node_modules",
 }
 
--- initialize modules table
 local M = {}
 
 -- show current buffer list
 function M.buffers()
   builtin.buffers {
-    prompt_title = "\\ Buffers /",
+    prompt_title = [[\ Buffers /]],
   }
 end
 
@@ -134,7 +120,7 @@ function M.find_nvim()
     hidden = true,
     follow = true,
     file_ignore_patterns = ignored,
-    prompt_title = "\\ Neovim /",
+    prompt_title = [[\ Neovim /]],
   }
 end
 
@@ -143,7 +129,7 @@ function M.project_files()
   local opts = {
     hidden = true,
     file_ignore_patterns = ignored,
-    prompt_title = "\\ Project Files /",
+    prompt_title = [[\ Project Files /]],
   }
   ok = pcall(builtin.git_files, opts)
   if not ok then
@@ -158,32 +144,10 @@ function M.file_browser()
     hidden = true,
     sorting_strategy = "ascending",
     scroll_strategy = "cycle",
-    prompt_title = "\\ File Browser /",
-    attach_mappings = function(prompt_bufnr, map)
-      local current_picker = state.get_current_picker(prompt_bufnr)
-      local modify_cwd = function(new_cwd)
-        current_picker.cwd = new_cwd
-        current_picker:refresh(opts.new_finder(new_cwd), { reset_prompt = true })
-      end
-      map("i", "-", function()
-        modify_cwd(current_picker.cwd .. "/..")
-      end)
-      map("i", "~", function()
-        modify_cwd(vim.fn.expand "~")
-      end)
-      local modify_depth = function(m)
-        return function()
-          opts.depth = opts.depth + m
-          current_picker = state.get_current_picker(prompt_bufnr)
-          current_picker:refresh(opts.new_finder(current_picker.cwd), {
-            reset_prompt = true,
-          })
-        end
-      end
-      map("i", "<right>", modify_depth(1))
-      map("i", "<left>", modify_depth(-1))
-      return true
-    end,
+    prompt_title = [[\ File Browser /]],
+    layout_config = {
+      prompt_position = "top",
+    },
   }
   builtin.file_browser(opts)
 end
@@ -193,7 +157,7 @@ function M.find_plugins()
   builtin.find_files {
     cwd = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data"),
     previewer = false,
-    prompt_title = "\\ Nvim Plugins /",
+    prompt_title = [[\ Nvim Plugins /]],
   }
 end
 
@@ -202,7 +166,7 @@ function M.grep_string()
   builtin.grep_string {
     search = vim.fn.input "grep: ",
     path_display = { "shorten" },
-    prompt_title = "\\ Grep Project /",
+    prompt_title = [[\ Grep Project /]],
   }
 end
 
@@ -210,7 +174,7 @@ end
 function M.current_buffer()
   builtin.current_buffer_fuzzy_find {
     previewer = false,
-    prompt_title = "\\ Find in File /",
+    prompt_title = [[\ Find in File /]],
   }
 end
 

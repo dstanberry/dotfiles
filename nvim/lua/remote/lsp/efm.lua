@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => efm-languageserver configuration
----------------------------------------------------------------
 local l = {
   eslint = {
     lintCommand = "eslint -f unix --stdin --stdin-filename ${INPUT}",

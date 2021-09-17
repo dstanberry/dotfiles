@@ -1,6 +1,3 @@
----------------------------------------------------------------
--- => gitsigns.nvim configuration
----------------------------------------------------------------
 -- verify gitsigns is available
 local ok, signs = pcall(require, "gitsigns")
 if not ok then
