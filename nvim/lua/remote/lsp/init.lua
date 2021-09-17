@@ -14,13 +14,15 @@ local on_attach_nvim = function(client, bufnr)
   local vnoremap = map.vnoremap
 
   if client.resolved_capabilities.document_highlight then
-    vim.cmd [[
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]]
+    local pre = "autocmd! * <buffer>"
+    local augroup = require "util.builtin"
+    local groups = {
+      ["lsp_document_highlight"] = {
+        { "CursorHold", "<buffer>", "lua vim.lsp.buf.document_highlight()" },
+        { "CursorMoved", "<buffer>", "lua vim.lsp.buf.clear_references()" },
+      },
+    }
+    augroup.create_augroup(groups, pre)
   end
 
   local show_line_diagnostics = function()
@@ -40,7 +42,7 @@ local on_attach_nvim = function(client, bufnr)
   end
 
   nnoremap("ga", vim.lsp.buf.code_action, { buffer = bufnr })
-  nnoremap("gD", vim.lsp.buf.declaration, { buffer = bufnr })
+  -- nnoremap("gD", vim.lsp.buf.declaration, { buffer = bufnr })
   nnoremap("gd", vim.lsp.buf.definition, { buffer = bufnr })
   nnoremap("gt", vim.lsp.buf.type_definition, { buffer = bufnr })
   nnoremap("gk", vim.lsp.buf.hover, { buffer = bufnr })
@@ -50,9 +52,9 @@ local on_attach_nvim = function(client, bufnr)
   nnoremap("gs", vim.lsp.buf.document_symbol, { buffer = bufnr })
   nnoremap("g/", vim.lsp.buf.rename, { buffer = bufnr })
   nnoremap("g.", show_line_diagnostics, { buffer = bufnr })
-  nnoremap("gn", goto_next, { buffer = bufnr, })
-  nnoremap("gp", goto_prev, { buffer = bufnr, })
-  nnoremap("<localleader>wl", list_workspace_folders, { buffer = bufnr, })
+  nnoremap("gn", goto_next, { buffer = bufnr })
+  nnoremap("gp", goto_prev, { buffer = bufnr })
+  nnoremap("<localleader>wl", list_workspace_folders, { buffer = bufnr })
   nnoremap("<localleader>wa", vim.lsp.buf.add_workspace_folder, { buffer = bufnr })
   nnoremap("<localleader>wr", vim.lsp.buf.remove_workspace_folder, { buffer = bufnr })
 
