@@ -1,11 +1,19 @@
 local M = {}
 
+M.callbacks = {}
+
 function M.reload(name)
   local ok, r = pcall(require, "plenary.reload")
   if ok then
     r.reload_module(name)
   end
   return require(name)
+end
+
+local function call(cb)
+  local key = tostring(cb)
+  M.callbacks[key] = cb
+  return ([[lua require("util").callbacks["%s"]()]]):format(key)
 end
 
 function M.define_autocmd(spec)
@@ -17,10 +25,9 @@ function M.define_autocmd(spec)
   local once = spec.once and "++once" or ""
   local nested = spec.nested and "++nested" or ""
   local action = spec.command or ""
-  -- local callback = cmd.callback
-  -- if callback ~= nil then
-  --   action = lua_call(callback)
-  -- end
+  if spec.callback ~= nil then
+    action = call(spec.callback)
+  end
   local command = table.concat(vim.tbl_flatten { "autocmd", event, pattern, once, nested, action }, " ")
   vim.api.nvim_command(command)
 end
