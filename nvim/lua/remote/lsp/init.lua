@@ -19,8 +19,8 @@ local on_attach_nvim = function(client, bufnr)
       buf = true,
       clear = true,
       autocmds = {
-        { event = "CursorHold", pattern = "<buffer>", command = "lua vim.lsp.buf.document_highlight()" },
-        { event = "CursorMoved", pattern = "<buffer>", command = "lua vim.lsp.buf.clear_references()" },
+        { event = "CursorHold", pattern = "<buffer>", callback = vim.lsp.buf.document_highlight },
+        { event = "CursorMoved", pattern = "<buffer>", callback = vim.lsp.buf.clear_references },
       },
     }
   end

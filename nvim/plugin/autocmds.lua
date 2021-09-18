@@ -19,7 +19,13 @@ util.define_augroup {
     { event = { "BufRead", "BufNewFile" }, pattern = "gitconfig", command = "setlocal filetype=.gitconfig" },
     { event = { "BufRead", "BufNewFile" }, pattern = "tmux.conf", command = "setlocal filetype=tmux" },
     { event = { "BufRead", "BufNewFile" }, pattern = "vifmrc", command = "setlocal filetype=vim" },
-    { event = "BufEnter", pattern = "COMMIT_EDITMSG", command = "call setpos('.',[0, 1, 1, 0])" },
+    {
+      event = "BufEnter",
+      pattern = "COMMIT_EDITMSG",
+      callback = function()
+        vim.fn.setpos(".", { 0, 1, 1, 0 })
+      end,
+    },
   },
 }
 
@@ -56,7 +62,7 @@ util.define_augroup {
     {
       event = "TextYankPost",
       pattern = "*",
-      command = [[silent! lua vim.highlight.on_yank({higroup="IncSearch", timeout=200})]],
+      callback = vim.highlight.on_yank,
     },
   },
 }
