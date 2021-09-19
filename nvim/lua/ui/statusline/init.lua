@@ -257,22 +257,6 @@ M.dim = function(win_id)
   end
 end
 
-local on_focus = [[%!luaeval('require("ui.statusline").focus(vim.api.nvim_get_current_win())')]]
-local on_dim = [[%!luaeval('require("ui.statusline").dim(vim.api.nvim_get_current_win())')]]
-
--- TODO: investigate a better way to do this
--- iterate all open windows and reapply statusline
-M.check_windows = function()
-  for _, i in ipairs(vim.fn.range(1, vim.fn.winnr "$")) do
-    local curwin = vim.fn.winnr()
-    if i == curwin then
-      vim.fn.setwinvar(i, "statusline", on_focus)
-    else
-      vim.fn.setwinvar(i, "statusline", on_dim)
-    end
-  end
-end
-
 M.setup = function()
   require("util").define_augroup {
     name = "statusline",
@@ -282,21 +266,18 @@ M.setup = function()
         event = { "FocusGained", "BufEnter", "BufWinEnter", "WinEnter", "CompleteDonePre" },
         pattern = "*",
         callback = function()
-          vim.wo.statusline = M.focus(vim.api.nvim_get_current_win())
+          vim.wo.statusline = [[%!luaeval('require("ui.statusline").focus(vim.api.nvim_get_current_win())')]]
         end,
       },
       {
         event = { "FocusLost", "BufLeave", "BufWinLeave", "WinLeave" },
         pattern = "*",
         callback = function()
-          vim.wo.statusline = M.dim(vim.api.nvim_get_current_win())
+          vim.wo.statusline = [[%!luaeval('require("ui.statusline").dim(vim.api.nvim_get_current_win())')]]
         end,
       },
     },
   }
-  vim.fn.timer_start(100, function()
-    return M.check_windows()
-  end)
 end
 
 return M
