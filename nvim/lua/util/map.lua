@@ -1,16 +1,15 @@
 local M = {}
 
-M.functions = {}
+function M.t(str)
+  return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
 
 local map = function(mode, key, cmd, opts, defaults)
   opts = vim.tbl_deep_extend("force", { silent = true }, defaults or {}, opts or {})
-
   if type(cmd) == "function" then
-    table.insert(M.functions, cmd)
-    if opts.expr then
-      cmd = ([[luaeval('require("util.map").execute(%d)')]]):format(#M.functions)
-    else
-      cmd = ([[<cmd>lua require("util.map").execute(%d)<cr>]]):format(#M.functions)
+    cmd = require("util").delegate(cmd, opts.expr)
+    if not opts.expr then
+      cmd = string.format("<cmd>%s<cr>", cmd)
     end
   end
   if opts.buffer ~= nil then
@@ -20,14 +19,6 @@ local map = function(mode, key, cmd, opts, defaults)
   else
     return vim.api.nvim_set_keymap(mode, key, cmd, opts)
   end
-end
-
-function M.execute(id)
-  local func = M.functions[id]
-  if not func then
-    error("Function doest not exist: " .. id)
-  end
-  return func()
 end
 
 function M.map(mode, key, cmd, opt, defaults)
@@ -76,10 +67,6 @@ function M.snoremap(key, cmd, opts)
 end
 function M.cnoremap(key, cmd, opts)
   return map("c", key, cmd, opts, { noremap = true })
-end
-
-function M.t(str)
-  return vim.api.nvim_replace_termcodes(str, true, true, true)
 end
 
 return M
