@@ -168,18 +168,18 @@ M.apply = function(c)
   hi.LspReferenceWrite = { guifg = c.base10, guibg = c.base06, gui = nil, guisp = nil }
 
   -- lsp diagnostic highlighting
-  hi.LspDiagnosticsDefaultError = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
-  hi.LspDiagnosticsDefaultWarning = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
-  hi.LspDiagnosticsDefaultInformation = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
-  hi.LspDiagnosticsDefaultHint = { guifg = c.base0E, guibj = nil, gui = "none", guisp = nil }
-  hi.LspDiagnosticsUnderlineError = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base08 }
-  hi.LspDiagnosticsUnderlineWarning = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0A }
-  hi.LspDiagnosticsUnderlineInformation = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0C }
-  hi.LspDiagnosticsUnderlineHint = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0E }
-  hi.LspDiagnosticsStatusError = { guifg = c.base08, guibg = c.base02, gui = "none", guisp = nil }
-  hi.LspDiagnosticsStatusWarning = { guifg = c.base0A, guibg = c.base02, gui = "none", guisp = nil }
-  hi.LspDiagnosticsStatusInformation = { guifg = c.base0C, guibg = c.base02, gui = "none", guisp = nil }
-  hi.LspDiagnosticsStatusHint = { guifg = c.base0E, guibg = c.base02, gui = "none", guisp = nil }
+  hi.DiagnosticError = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
+  hi.DiagnosticWarn = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
+  hi.DiagnosticInfo = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
+  hi.DiagnosticHint = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
+  hi.DiagnosticStatusError = { guifg = c.base08, guibg = c.base02, gui = "none", guisp = nil }
+  hi.DiagnosticStatusWarn = { guifg = c.base0A, guibg = c.base02, gui = "none", guisp = nil }
+  hi.DiagnosticStatusInfo = { guifg = c.base0C, guibg = c.base02, gui = "none", guisp = nil }
+  hi.DiagnosticStatusHint = { guifg = c.base0E, guibg = c.base02, gui = "none", guisp = nil }
+  hi.DiagnosticUnderlineError = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base08 }
+  hi.DiagnosticUnderlineWarn = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0A }
+  hi.DiagnosticUnderlineInfo = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0C }
+  hi.DiagnosticUnderlineHint = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0E }
 
   -- treesitter highlighting
   hi.TSAnnotation = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
