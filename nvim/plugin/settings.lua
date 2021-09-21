@@ -18,7 +18,7 @@ vim.opt.breakindentopt = "shift:2"
 -- setup clipboard
 vim.opt.clipboard = "unnamedplus"
 -- include dictionary in completion matches
-vim.opt.complete = vim.opt.complete + "kspell"
+vim.opt.complete:append "kspell"
 -- use popup menu to show possible completions
 vim.opt.completeopt = "menuone,noselect"
 -- highlight current line
@@ -27,6 +27,24 @@ vim.opt.cursorline = true
 vim.opt.directory = cache .. "/nvim/swap//,."
 -- don't expand spaces to tabs
 vim.opt.expandtab = false
+-- don't format paragraphs
+vim.opt.formatoptions:remove "a"
+-- don't wrap text
+vim.opt.formatoptions:remove "t"
+-- wrap comments and insert comment leader
+vim.opt.formatoptions:append "c"
+-- allow `gq` to format comments
+vim.opt.formatoptions:append "q"
+-- don't insert comments using o/O
+vim.opt.formatoptions:remove "o"
+-- insert comment leader on <enter>
+vim.opt.formatoptions:append "r"
+-- indent past formatlistpat
+vim.opt.formatoptions:append "n"
+-- remove comment leader when joining lines
+vim.opt.formatoptions:append "j"
+-- don't format based on second line of paragraph
+vim.opt.formatoptions:remove "2"
 -- define glyphs used for vertical separators and statuslines
 vim.opt.fillchars = {
   vert = "┃",
@@ -70,14 +88,12 @@ vim.opt.listchars = {
 vim.opt.magic = true
 -- enable mouse events in normal and visual mode
 vim.opt.mouse = "nv"
--- disable title modification
-vim.opt.title = false
 -- show line numbers
 vim.opt.number = true
 -- toggle paste mode (to be able to accurately paste from external apps)
 vim.opt.pastetoggle = "<F2>"
 -- extend path to include current directory
-vim.opt.path = vim.opt.path + "**"
+vim.opt.path:append "**"
 -- opacity for popup menu
 vim.opt.pumblend = 20
 -- the maximum number of entries shown in completion menu
@@ -100,13 +116,13 @@ vim.opt.shada = {
 -- space indent width
 vim.opt.shiftwidth = 4
 -- avoid swapfile alert messages
-vim.opt.shortmess = vim.opt.shortmess + "A"
+vim.opt.shortmess:append "A"
 -- disable splash screen
-vim.opt.shortmess = vim.opt.shortmess + "I"
+vim.opt.shortmess:append "I"
 -- disable showing file info
-vim.opt.shortmess = vim.opt.shortmess + "F"
+vim.opt.shortmess:append "F"
 -- don't show completion menu messages
-vim.opt.shortmess = vim.opt.shortmess + "c"
+vim.opt.shortmess:append "c"
 -- define line wrap character
 vim.opt.showbreak = "↳"
 -- disable showing keystrokes below statusline
@@ -137,6 +153,8 @@ vim.opt.switchbuf = "usetab"
 vim.opt.tabstop = 4
 -- enable true color
 vim.opt.termguicolors = true
+-- disable title modification
+vim.opt.title = false
 -- define location for undo files
 vim.opt.undodir = cache .. "/nvim/undo//,."
 -- maintain undo history across sessions
