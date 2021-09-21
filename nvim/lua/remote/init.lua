@@ -98,13 +98,14 @@ local function plugins(use)
 
   use {
     "neovim/nvim-lspconfig",
-    wants = { "lsp_signature.nvim", "lua-dev" },
+    wants = { "jose-elias-alvarez/null-ls.nvim", "lsp_signature.nvim", "lua-dev" },
     config = function()
       require "remote.lsp"
       require "remote.lsp.handlers"
     end,
     requires = {
       "folke/lua-dev.nvim",
+      "jose-elias-alvarez/null-ls.nvim",
       "ray-x/lsp_signature.nvim",
     },
   }
