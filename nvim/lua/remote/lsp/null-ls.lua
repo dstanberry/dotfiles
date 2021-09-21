@@ -40,12 +40,7 @@ M.config = null_ls.config {
     null_ls.builtins.formatting.shfmt.with {
       args = { "-i", "2", "-ci", "-sr", "-s", "-bn" },
     },
-    null_ls.builtins.formatting.stylua.with {
-      extra_args = {
-        "--config-path",
-        vim.fn.expand(("%s/nvim/stylua.toml"):format(vim.fn.XDG_CONFIG_HOME)),
-      },
-    },
+    null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.vint,
     null_ls.builtins.formatting.yapf,
   },
