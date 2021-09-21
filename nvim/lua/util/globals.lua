@@ -1,9 +1,7 @@
--- selene: allow(global usage)
 _G.dump = function(...)
   print(vim.inspect(...))
 end
 
--- selene: allow(global_usage)
 _G.profile = function(cmd, times)
   times = times or 100
   local args = {}

@@ -92,23 +92,25 @@ end
 
 local servers = {
   bashls = {},
-  clangd = {
-    cmd = { "clangd", "--background-index", "--suggest-missing-includes", "--clang-tidy", "--header-insertion=iwyu" },
-    init_options = { clangdFileStatus = true },
-  },
-  cmake = {
-    cmd = { "cmake-language-server" },
-  },
-  cssls = {
-    cmd = { "css-languageserver", "--stdio" },
-  },
-  efm = require("remote.lsp.efm").config,
   gopls = {},
-  html = {
-    cmd = { "html-languageserver", "--stdio" },
-  },
   jsonls = {},
   pyright = {},
+  cmake = { cmd = { "cmake-language-server" } },
+  cssls = { cmd = { "css-languageserver", "--stdio" } },
+  html = { cmd = { "html-languageserver", "--stdio" } },
+  sumneko_lua = require("remote.lsp.sumneko").config,
+  vimls = require("remote.lsp.vimls").config,
+  ["null-ls"] = require("remote.lsp.null-ls").config or {},
+  clangd = {
+    cmd = {
+      "clangd",
+      "--background-index",
+      "--suggest-missing-includes",
+      "--clang-tidy",
+      "--header-insertion=iwyu",
+    },
+    init_options = { clangdFileStatus = true },
+  },
   rust_analyzer = {
     settings = {
       ["rust-analyzer"] = {
@@ -118,8 +120,6 @@ local servers = {
       },
     },
   },
-  sumneko_lua = require("remote.lsp.sumneko").config,
-  vimls = require("remote.lsp.vimls").config,
 }
 
 for server, config in pairs(servers) do
