@@ -1,17 +1,17 @@
 local util = require "util"
 
 util.define_augroup {
-  name = "command",
+  name = "cmdline",
   clear = true,
   autocmds = {
     {
-      event = "CmdLineEnter ",
+      event = "CmdLineEnter",
       callback = function()
         vim.opt.smartcase = false
       end,
     },
     {
-      event = "CmdLineLeave ",
+      event = "CmdLineLeave",
       callback = function()
         vim.opt.smartcase = true
       end,
@@ -25,14 +25,14 @@ util.define_augroup {
   autocmds = {
     {
       event = { "BufRead", "BufNewFile" },
-      pattern = "*.asc,*.gpg,*.pgp",
+      pattern = { "*.asc", "*.gpg", "*.pgp" },
       callback = function()
         vim.bo.filetype = "text"
       end,
     },
     {
       event = { "BufRead", "BufNewFile" },
-      pattern = "*.vifm,vifmrc",
+      pattern = { "*.vifm", "vifmrc" },
       callback = function()
         vim.bo.filetype = "vim"
       end,
@@ -52,13 +52,6 @@ util.define_augroup {
       end,
     },
     {
-      event = { "BufRead", "BufNewFile" },
-      pattern = "tmux.conf",
-      callback = function()
-        vim.bo.filetype = "tmux"
-      end,
-    },
-    {
       event = "BufEnter",
       pattern = "COMMIT_EDITMSG",
       callback = function()
@@ -75,7 +68,13 @@ util.define_augroup {
   autocmds = {
     {
       event = "Filetype",
-      pattern = "asc, gpg, pgp",
+      callback = function()
+        vim.bo.formatoptions = "cjlnqr"
+      end,
+    },
+    {
+      event = "Filetype",
+      pattern = { "asc", "gpg", "pgp" },
       callback = function()
         vim.bo.backup = false
         vim.bo.swapfile = false
@@ -83,7 +82,7 @@ util.define_augroup {
     },
     {
       event = "FileType",
-      pattern = "bash, json, lua, python, sh, zsh",
+      pattern = { "bash", "json", "lua", "python", "sh", "zsh" },
       callback = function()
         vim.bo.expandtab = true
         vim.bo.shiftwidth = 2
@@ -124,34 +123,11 @@ util.define_augroup {
 }
 
 util.define_augroup {
-  name = "formatopts",
-  clear = true,
-  autocmds = {
-    {
-      event = "Filetype",
-      pattern = "*",
-      callback = function()
-        vim.opt.formatoptions:append "c"
-        vim.opt.formatoptions:append "j"
-        vim.opt.formatoptions:append "n"
-        vim.opt.formatoptions:append "q"
-        vim.opt.formatoptions:append "r"
-        vim.opt.formatoptions:remove "2"
-        vim.opt.formatoptions:remove "a"
-        vim.opt.formatoptions:remove "o"
-        vim.opt.formatoptions:remove "t"
-      end,
-    },
-  },
-}
-
-util.define_augroup {
   name = "yank_highlight",
   clear = true,
   autocmds = {
     {
       event = "TextYankPost",
-      pattern = "*",
       callback = vim.highlight.on_yank,
     },
   },

@@ -33,6 +33,9 @@ function M.define_autocmd(spec)
     event = table.concat(event, ",")
   end
   local pattern = spec.pattern or "*"
+  if type(pattern) == "table" then
+    pattern = table.concat(pattern, ",")
+  end
   local once = spec.once and "++once" or ""
   local nested = spec.nested and "++nested" or ""
   local action = spec.command or ""
