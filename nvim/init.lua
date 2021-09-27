@@ -23,11 +23,31 @@ vim.g.markdown_fenced_languages = {
   "zsh=sh",
 }
 
--- disable netrw
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_netrwSettings = 1
-vim.g.loaded_netrwFileHandlers = 1
+-- disable the following builtin plugins
+local builtins = {
+  "netrw",
+  "netrwPlugin",
+  "netrwSettings",
+  "netrwFileHandlers",
+  "gzip",
+  "zip",
+  "zipPlugin",
+  "tar",
+  "tarPlugin",
+  "getscript",
+  "getscriptPlugin",
+  "vimball",
+  "vimballPlugin",
+  "2html_plugin",
+  "logipat",
+  "rrhelper",
+  "spellfile_plugin",
+  "matchit",
+}
+
+for _, v in ipairs(builtins) do
+  vim.g["loaded_" .. v] = 1
+end
 
 local cache = vim.env.XDG_CACHE_HOME
 local backup = string.format("%s/nvim/backup", cache)

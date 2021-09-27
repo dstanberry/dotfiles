@@ -4,8 +4,18 @@ util.define_augroup {
   name = "command",
   clear = true,
   autocmds = {
-    { event = "CmdLineEnter ", command = "set nosmartcase" },
-    { event = "CmdLineLeave ", command = "set smartcase" },
+    {
+      event = "CmdLineEnter ",
+      callback = function()
+        vim.opt.smartcase = false
+      end,
+    },
+    {
+      event = "CmdLineLeave ",
+      callback = function()
+        vim.opt.smartcase = true
+      end,
+    },
   },
 }
 
@@ -13,17 +23,47 @@ util.define_augroup {
   name = "ftdetect",
   clear = true,
   autocmds = {
-    { event = { "BufRead", "BufNewFile" }, pattern = "*.asc,*.gpg,*.pgp", command = "setlocal filetype=text" },
-    { event = { "BufRead", "BufNewFile" }, pattern = "*.vifm", command = "setlocal filetype=vim" },
-    { event = { "BufRead", "BufNewFile" }, pattern = "dircolors", command = "setlocal filetype=sh" },
-    { event = { "BufRead", "BufNewFile" }, pattern = "gitconfig", command = "setlocal filetype=.gitconfig" },
-    { event = { "BufRead", "BufNewFile" }, pattern = "tmux.conf", command = "setlocal filetype=tmux" },
-    { event = { "BufRead", "BufNewFile" }, pattern = "vifmrc", command = "setlocal filetype=vim" },
+    {
+      event = { "BufRead", "BufNewFile" },
+      pattern = "*.asc,*.gpg,*.pgp",
+      callback = function()
+        vim.bo.filetype = "text"
+      end,
+    },
+    {
+      event = { "BufRead", "BufNewFile" },
+      pattern = "*.vifm,vifmrc",
+      callback = function()
+        vim.bo.filetype = "vim"
+      end,
+    },
+    {
+      event = { "BufRead", "BufNewFile" },
+      pattern = "dircolors",
+      callback = function()
+        vim.bo.filetype = "sh"
+      end,
+    },
+    {
+      event = { "BufRead", "BufNewFile" },
+      pattern = "gitconfig",
+      callback = function()
+        vim.bo.filetype = "gitconfig"
+      end,
+    },
+    {
+      event = { "BufRead", "BufNewFile" },
+      pattern = "tmux.conf",
+      callback = function()
+        vim.bo.filetype = "tmux"
+      end,
+    },
     {
       event = "BufEnter",
       pattern = "COMMIT_EDITMSG",
       callback = function()
         vim.fn.setpos(".", { 0, 1, 1, 0 })
+        vim.cmd "startinsert"
       end,
     },
   },
@@ -33,25 +73,75 @@ util.define_augroup {
   name = "ftplugin",
   clear = true,
   autocmds = {
-    { event = "Filetype", pattern = "asc", command = "setlocal nobackup noswapfile" },
-    { event = "FileType", pattern = "bash", command = "setlocal expandtab shiftwidth=2" },
-    { event = "FileType", pattern = "COMMIT_EDITMSG", command = "setlocal nobackup noswapfile noundofile" },
-    { event = "FileType", pattern = "gitcommit", command = "setlocal nofoldenable spell" },
-    { event = "FileType", pattern = "gitcommit", command = "startinsert" },
-    { event = "Filetype", pattern = "gpg", command = "setlocal nobackup noswapfile" },
-    { event = "FileType", pattern = "json", command = "setlocal expandtab shiftwidth=2" },
-    { event = "FileType", pattern = "lua", command = "setlocal expandtab shiftwidth=2" },
-    { event = "Filetype", pattern = "pgp", command = "setlocal nobackup noswapfile" },
-    { event = "FileType", pattern = "python", command = "setlocal expandtab shiftwidth=2" },
-    { event = "FileType", pattern = "python", command = "setlocal expandtab shiftwidth=2" },
-    { event = "FileType", pattern = "sh", command = "setlocal expandtab shiftwidth=2" },
+    {
+      event = "Filetype",
+      pattern = "asc, gpg, pgp",
+      callback = function()
+        vim.bo.backup = false
+        vim.bo.swapfile = false
+      end,
+    },
+    {
+      event = "FileType",
+      pattern = "bash, json, lua, python, sh, zsh",
+      callback = function()
+        vim.bo.expandtab = true
+        vim.bo.shiftwidth = 2
+      end,
+    },
+    {
+      event = "FileType",
+      pattern = "COMMIT_EDITMSG",
+      callback = function()
+        vim.bo.backup = false
+        vim.bo.spell = true
+        vim.bo.swapfile = false
+        vim.bo.undofile = false
+        vim.wo.foldenable = false
+      end,
+    },
     {
       event = "FileType",
       pattern = "sql",
-      command = "setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2 shiftwidth=2 norelativenumber",
+      callback = function()
+        vim.bo.expandtab = true
+        vim.bo.relativenumber = false
+        vim.bo.shiftwidth = 2
+        vim.bo.softtabstop = 2
+        vim.bo.tabstop = 2
+      end,
     },
-    { event = "FileType", pattern = "vim", command = "setlocal expandtab shiftwidth=2 foldmethod=marker" },
-    { event = "FileType", pattern = "zsh", command = "setlocal expandtab shiftwidth=2" },
+    {
+      event = "FileType",
+      pattern = "vim",
+      callback = function()
+        vim.bo.expandtab = true
+        vim.bo.shiftwidth = 2
+        vim.wo.foldmethod = "marker"
+      end,
+    },
+  },
+}
+
+util.define_augroup {
+  name = "formatopts",
+  clear = true,
+  autocmds = {
+    {
+      event = "Filetype",
+      pattern = "*",
+      callback = function()
+        vim.opt.formatoptions:append "c"
+        vim.opt.formatoptions:append "j"
+        vim.opt.formatoptions:append "n"
+        vim.opt.formatoptions:append "q"
+        vim.opt.formatoptions:append "r"
+        vim.opt.formatoptions:remove "2"
+        vim.opt.formatoptions:remove "a"
+        vim.opt.formatoptions:remove "o"
+        vim.opt.formatoptions:remove "t"
+      end,
+    },
   },
 }
 
