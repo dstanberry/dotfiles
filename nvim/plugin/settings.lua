@@ -27,24 +27,24 @@ vim.opt.cursorline = true
 vim.opt.directory = cache .. "/nvim/swap//,."
 -- don't expand spaces to tabs
 vim.opt.expandtab = false
--- don't format paragraphs
-vim.opt.formatoptions:remove "a"
--- don't wrap text
-vim.opt.formatoptions:remove "t"
 -- wrap comments and insert comment leader
 vim.opt.formatoptions:append "c"
--- allow `gq` to format comments
-vim.opt.formatoptions:append "q"
--- don't insert comments using o/O
-vim.opt.formatoptions:remove "o"
--- insert comment leader on <enter>
-vim.opt.formatoptions:append "r"
--- indent past formatlistpat
-vim.opt.formatoptions:append "n"
 -- remove comment leader when joining lines
 vim.opt.formatoptions:append "j"
+-- indent past formatlistpat
+vim.opt.formatoptions:append "n"
+-- allow `gq` to format comments
+vim.opt.formatoptions:append "q"
+-- insert comment leader on <enter>
+vim.opt.formatoptions:append "r"
 -- don't format based on second line of paragraph
 vim.opt.formatoptions:remove "2"
+-- don't format paragraphs
+vim.opt.formatoptions:remove "a"
+-- don't insert comments using o/O
+vim.opt.formatoptions:remove "o"
+-- don't wrap text
+vim.opt.formatoptions:remove "t"
 -- define glyphs used for vertical separators and statuslines
 vim.opt.fillchars = {
   vert = "┃",
