@@ -206,7 +206,7 @@ local function plugins(use)
     wants = "plenary.nvim",
     requires = { "nvim-lua/plenary.nvim" },
   }
-  use { "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" }
+  use { "TimUntersberger/neogit", cmd = "Neogit", keys = "<leader>gs", requires = "nvim-lua/plenary.nvim" }
 
   use { "michaelb/sniprun", run = "bash ./install.sh", opt = true, cmd = "SnipRun" }
 
