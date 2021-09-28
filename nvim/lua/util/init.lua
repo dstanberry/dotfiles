@@ -49,9 +49,7 @@ end
 function M.define_augroup(group)
   local clear_suffix = group.buf and " * <buffer>" or ""
   vim.api.nvim_command("augroup " .. group.name)
-  if group.clear then
-    vim.api.nvim_command("autocmd!" .. clear_suffix)
-  end
+  vim.api.nvim_command("autocmd!" .. clear_suffix)
   for _, autocmd in ipairs(group.autocmds) do
     M.define_autocmd(autocmd)
     vim.api.nvim_command "augroup END"
