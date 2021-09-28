@@ -33,6 +33,9 @@ function M.define_autocmd(spec)
     event = table.concat(event, ",")
   end
   local pattern = spec.pattern or "*"
+  if type(pattern) == "table" then
+    pattern = table.concat(pattern, ",")
+  end
   local once = spec.once and "++once" or ""
   local nested = spec.nested and "++nested" or ""
   local action = spec.command or ""
@@ -46,12 +49,34 @@ end
 function M.define_augroup(group)
   local clear_suffix = group.buf and " * <buffer>" or ""
   vim.api.nvim_command("augroup " .. group.name)
-  if group.clear then
-    vim.api.nvim_command("autocmd!" .. clear_suffix)
-  end
+  vim.api.nvim_command("autocmd!" .. clear_suffix)
   for _, autocmd in ipairs(group.autocmds) do
     M.define_autocmd(autocmd)
     vim.api.nvim_command "augroup END"
+  end
+end
+
+function M.load_dirhash(shell)
+  if shell == nil then
+    shell = "nil"
+  end
+  if shell ~= "bash" and shell ~= "zsh" then
+    error("cannot load hashes for unsupported shell: " .. shell)
+    return
+  end
+  local path = vim.fn.expand(("%s/%s/rc.private/hashes.%s"):format(vim.env.XDG_CONFIG_HOME, shell, shell))
+  local cmd = ([[%s -c "source %s; hash -d"]]):format(shell, path)
+  local dirs = vim.fn.system(cmd)
+  local lines = vim.split(dirs, "\n")
+  for _, line in pairs(lines) do
+    local pair = vim.split(line, "=")
+    if #pair == 2 then
+      local var = pair[1]
+      local dir = pair[2]
+      if vim.env[var] == nil then
+        vim.env[var] = dir
+      end
+    end
   end
 end
 
