@@ -58,4 +58,28 @@ function M.define_augroup(group)
   end
 end
 
+function M.load_dirhash(shell)
+  if shell == nil then
+    shell = "nil"
+  end
+  if shell ~= "bash" and shell ~= "zsh" then
+    error("cannot load hashes for unsupported shell: " .. shell)
+    return
+  end
+  local path = vim.fn.expand(("%s/%s/rc.private/hashes.%s"):format(vim.env.XDG_CONFIG_HOME, shell, shell))
+  local cmd = ([[%s -c "source %s; hash -d"]]):format(shell, path)
+  local dirs = vim.fn.system(cmd)
+  local lines = vim.split(dirs, "\n")
+  for _, line in pairs(lines) do
+    local pair = vim.split(line, "=")
+    if #pair == 2 then
+      local var = pair[1]
+      local dir = pair[2]
+      if vim.env[var] == nil then
+        vim.env[var] = dir
+      end
+    end
+  end
+end
+
 return M
