@@ -8,7 +8,12 @@
 	co = checkout
 	st = status
 	cp = cherry-pick
-	no-edit = commit --amend --no-edit
+
+	abbrev = !sh -c 'git rev-parse --short ${1-`echo HEAD`}' -
+	ack = grep --break --heading
+	amend = commit --amend -v
+	both = diff --ignore-submodules=dirty HEAD
+	bundle = commit --amend --no-edit
 	reword = commit --amend --only -v --
 	staged = diff --cached --ignore-submodules=dirty
 
