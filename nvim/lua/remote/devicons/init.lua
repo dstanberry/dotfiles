@@ -4,8 +4,9 @@ if not ok then
   return
 end
 
--- define custom icons based on filetype
 devicons.setup {
   override = require "remote.devicons.icons",
   default = true,
 }
+
+devicons.set_default_icon('', '#6d8086')
