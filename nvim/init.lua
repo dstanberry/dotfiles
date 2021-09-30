@@ -76,7 +76,5 @@ require "util.globals"
 -- load remote plugins
 vim.defer_fn(function()
   require "remote"
-
-  local shell = (vim.env.SHELL):sub(6,-1)
-  require("util").load_dirhash(shell)
+  require("util").load_dirhash(vim.env.SHELL)
 end, 0)
