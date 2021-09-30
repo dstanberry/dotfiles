@@ -56,9 +56,18 @@ function M.define_augroup(group)
   end
 end
 
-function M.load_dirhash(shell)
-  if shell == nil then
-    shell = "nil"
+function M.load_dirhash(s)
+  if s == nil then
+    error "cannot load hashes without specifying shell"
+    return
+  end
+  local shell
+  if s:find "bash" then
+    shell = "bash"
+  elseif s:find "zsh" then
+    shell = "zsh"
+  else
+    shell = s
   end
   if shell ~= "bash" and shell ~= "zsh" then
     error("cannot load hashes for unsupported shell: " .. shell)
