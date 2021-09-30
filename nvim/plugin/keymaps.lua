@@ -1,3 +1,4 @@
+local util = require "util"
 local map = require "util.map"
 
 local cnoremap = map.cnoremap
@@ -41,10 +42,10 @@ end, {
 })
 
 -- find all occurences in buffer of word under cursor
-nnoremap("<c-f>f", "/\\v<c-r><c-w><cr>", { silent = false })
+nnoremap("<c-w><c-f>", [[/\v<c-r><c-w><cr>]], { silent = false })
 
 -- begin substitution in buffer for word under cursor
-nnoremap("<c-f>r", ":%s/\\<<c-r><c-w>\\>/", { silent = false })
+nnoremap("<c-w><c-r>", [[:%s/\<<c-r><c-w>\>/]], { silent = false })
 
 -- switch to left window
 nnoremap("<c-h>", "<c-w><c-h>")
@@ -231,18 +232,17 @@ xnoremap("K", ":move -2<cr>gv=gv")
 ---------------------------------------------------------------
 -- => Visual | Leader
 ---------------------------------------------------------------
+-- begin substitution in buffer for visual selection
+vnoremap("<c-w><c-r>", function()
+  local selection = util.get_visual_selection()
+  return map.t((":<c-u>%%s/%s/"):format(selection))
+end, {
+  silent = false,
+  expr = true,
+})
+
 -- execute selected text
 vnoremap("<leader>x", function()
-  local function visual_selection_range()
-    vim.cmd [[execute "normal! \<esc>"]]
-    local csrow, cscol = unpack(vim.api.nvim_buf_get_mark(0, "<"))
-    local cerow, cecol = unpack(vim.api.nvim_buf_get_mark(0, ">"))
-    if csrow < cerow or (csrow == cerow and cscol <= cecol) then
-      return csrow, cscol, cerow, cecol
-    else
-      return cerow, cecol, csrow, cscol
-    end
-  end
   local function eval_chunk(str, ...)
     local chunk = loadstring(str, "@[evalrangeX]")
     local c = coroutine.create(chunk)
@@ -254,15 +254,13 @@ vnoremap("<leader>x", function()
     end
     return unpack(res)
   end
-  local csrow, _, cerow, _ = visual_selection_range()
-  local lines = vim.fn.getline(csrow, cerow)
-  local str = table.concat(lines, "\n")
+  local selection = util.get_visual_selection(clear)
   local ft = vim.bo.filetype
   local out = ""
   if ft == "vim" then
-    out = vim.api.nvim_exec(([[%s]]):format(str), true)
+    out = vim.api.nvim_exec(([[%s]]):format(selection), true)
   elseif ft == "lua" then
-    out = eval_chunk(str)
+    out = eval_chunk(selection)
   end
   print(out)
 end, {
