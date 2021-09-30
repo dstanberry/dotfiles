@@ -12,9 +12,9 @@ local vmap = map.vmap
 ---------------------------------------------------------------
 -- => Normal
 ---------------------------------------------------------------
--- (spacefn) navigate quickfix list
-nnoremap("<up>", "<cmd>cprevious<cr>zz")
-nnoremap("<down>", "<cmd>cnext<cr>zz")
+-- (spacefn) scroll current buffer
+nnoremap("<up>", "<c-y>")
+nnoremap("<down>", "<c-e>")
 
 -- switch to next buffer
 nnoremap("<right>", "<cmd>bnext<cr>")
@@ -39,10 +39,6 @@ nnoremap("<cr>", function()
 end, {
   expr = true,
 })
-
--- navigate loclist list
-nnoremap("<a-k>", "<cmd>lprevious<cr>zz")
-nnoremap("<a-j>", "<cmd>lnext<cr>zz")
 
 -- find all occurences in buffer of word under cursor
 nnoremap("<c-f>f", "/\\v<c-r><c-w><cr>", { silent = false })
@@ -187,6 +183,11 @@ nnoremap("<localleader>z", "<cmd>bdelete!<cr>", { silent = true })
 ---------------------------------------------------------------
 -- => Insert
 ---------------------------------------------------------------
+-- insert newline above current line
+inoremap("<c-enter>", "<c-o>O")
+-- insert newline below current line
+inoremap("<s-enter>", "<c-o>o")
+
 -- shift current line down
 inoremap("<c-j>", "<esc>:m .+1<cr>==i")
 -- shift current line up
