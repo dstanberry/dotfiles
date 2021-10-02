@@ -110,6 +110,7 @@ fi
 # define configuration path for rust-cargo
 if hash cargo 2> /dev/null; then
   export CARGO_HOME="$XDG_DATA_HOME/cargo"
+  export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 fi
 
 # define configuration path for rubygems
@@ -195,11 +196,6 @@ if hash psql 2> /dev/null; then
   if [ ! -d "$XDG_CACHE_HOME/pg" ]; then
     mkdir "$XDG_CACHE_HOME/pg"
   fi
-fi
-
-# define configuration path for rustup
-if hash rustup 2> /dev/null; then
-  export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 fi
 
 # define configuration path for wget
