@@ -41,6 +41,14 @@ end, {
   expr = true,
 })
 
+-- navigate quickfix list
+nnoremap("<c-up>", "<cmd>cprevious<cr>zz")
+nnoremap("<c-down>", "<cmd>cnext<cr>zz")
+
+-- navigate location list
+nnoremap("<a-up>", "<cmd>lprevious<cr>zz")
+nnoremap("<a-down>", "<cmd>lnext<cr>zz")
+
 -- find all occurences in buffer of word under cursor
 nnoremap("<c-w><c-f>", [[/\v<c-r><c-w><cr>]], { silent = false })
 
