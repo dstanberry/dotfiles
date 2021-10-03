@@ -135,6 +135,8 @@ vim.opt.switchbuf = "usetab"
 vim.opt.tabstop = 4
 -- enable true color
 vim.opt.termguicolors = true
+-- set duration to wait for keymap sequence
+vim.opt.timeoutlen = 250
 -- disable title modification
 vim.opt.title = false
 -- define location for undo files
