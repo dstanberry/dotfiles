@@ -267,12 +267,19 @@ M.apply = function(c)
   hi.Custom5 = { guifg = c.base0E, guibg = c.base02, gui = "none", guisp = nil }
   hi.Custom6 = { guifg = c.base09, guibg = c.base02, gui = "none", guisp = nil }
 
+  -- gitsigns highlighting
+  hi.GitSignsCurrentLineBlame = { guifg = c.base03, guibg = nil, gui = "italic", guisp = nil }
+
   -- loupe highlighting
   hi.IncSearch = { guifg = c.base01, guibg = c.base0A, gui = "none", guisp = nil }
 
+  -- nvim-cmp highlighting
+  hi.CompeDocumentation = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
+  hi.CompeDocumentationBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
+
   c.tele00 = color.darken(c.base0F, 43)
 
-  -- telescope.nvim highlighting
+  -- telescope highlighting
   hi.TelescopeSelection = { guifg = nil, guibg = c.tele00, gui = "bold", guisp = nil }
   hi.TelescopeSelectionCaret = { guifg = c.base04, guibg = c.tele00, gui = "bold", guisp = nil }
   hi.TelescopeMultiSelection = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
@@ -283,13 +290,6 @@ M.apply = function(c)
   hi.TelescopePreviewBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
   hi.TelescopeMatching = { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil }
   hi.TelescopePromptPrefix = { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil }
-
-  -- nvim-compe highlighting
-  hi.CompeDocumentation = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
-  hi.CompeDocumentationBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
-
-  -- registers.nvim highlighting
-  hi.RegistersWindow = { guifg = c.base05, guibg = c.base10, gui = "none", guisp = nil }
 
   -- ensure termguicolors is set (likely redundant)
   vim.opt.termguicolors = true

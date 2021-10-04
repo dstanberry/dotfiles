@@ -17,7 +17,7 @@ signs.setup {
     noremap = true,
     buffer = true,
     ["n ]j"] = { expr = true, [[&diff ? ']c' : '<cmd>lua require("gitsigns").next_hunk()<cr>']] },
-    ["n ]k"] = { expr = true,[["&diff ? '[c' : '<cmd>lua require("gitsigns").prev_hunk()<cr>']] },
+    ["n ]k"] = { expr = true, [["&diff ? '[c' : '<cmd>lua require("gitsigns").prev_hunk()<cr>']] },
     ["n <leader>hs"] = [[<cmd>lua require("gitsigns").stage_hunk()<cr>]],
     ["v <leader>hs"] = [[<cmd>lua require("gitsigns").stage_hunk({vim.fn.line("."), vim.fn.line("v")})<cr>]],
     ["n <leader>hu"] = [[<cmd>lua require("gitsigns").undo_stage_hunk()<cr>',
@@ -26,6 +26,13 @@ signs.setup {
     ["n <leader>hR"] = [[<cmd>lua require("gitsigns").reset_buffer()<cr>]],
     ["n <leader>hp"] = [[<cmd>lua require("gitsigns").preview_hunk()<cr>]],
     ["n <leader>hb"] = [[<cmd>lua require("gitsigns").blame_line(true)<cr>]],
+    ["n <leader>gb"] = [[<cmd>lua require("gitsigns").toggle_current_line_blame()<cr>]],
   },
   update_debounce = 1000,
+  current_line_blame = false,
+  current_line_blame_opts = {
+    virt_text = true,
+    virt_text_pos = "eol",
+    delay = 1000,
+  },
 }
