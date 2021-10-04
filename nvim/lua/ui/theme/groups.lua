@@ -25,6 +25,7 @@ local hi = setmetatable({}, {
 
 -- apply colors
 M.apply = function(c)
+  c.baseXX = color.darken(c.base00, 20)
   c.base10 = color.darken(c.base02, 40)
   c.base11 = color.darken(c.base03, 25)
   c.base12 = color.lighten(c.base04, 15)
@@ -82,8 +83,9 @@ M.apply = function(c)
 
   hi.NvimInternalError = { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil }
 
-  hi.NormalFloat = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
-  hi.FloatBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
+  hi.NormalFloat = { guifg = c.base05, guibg = c.baseXX, gui = nil, guisp = nil }
+  hi.FloatBorder = { guifg = c.base07, guibg = c.baseXX, gui = nil, guisp = nil }
+
   hi.NormalNC = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
   hi.TermCursor = { guifg = c.base00, guibg = c.base06, gui = "none", guisp = nil }
   hi.TermCursorNC = { guifg = c.base00, guibg = c.base06, gui = nil, guisp = nil }
