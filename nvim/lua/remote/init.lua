@@ -66,15 +66,10 @@ local function plugins(use)
   }
 
   use {
-    "yamatsum/nvim-nonicons",
-    requires = {
-      {
-        "kyazdani42/nvim-web-devicons",
-        config = function()
-          require "remote.devicons"
-        end,
-      },
-    },
+    "kyazdani42/nvim-web-devicons",
+    config = function()
+      require "remote.devicons"
+    end,
   }
   use {
     "tamago324/lir.nvim",
