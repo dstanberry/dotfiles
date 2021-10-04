@@ -82,8 +82,8 @@ function M.load_dirhash(s)
     if #pair == 2 then
       local var = pair[1]
       local dir = pair[2]
-      if vim.env[var] == nil then
-        vim.env[var] = dir
+      if vim.env["hash_" .. var] == nil then
+        vim.env["hash_" .. var] = dir
       end
     end
   end

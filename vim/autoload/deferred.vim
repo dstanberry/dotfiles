@@ -14,7 +14,7 @@ function! deferred#load_dir_hash() abort
     let l:var=l:pair[0]
     let l:dir=l:pair[1]
     if !exists('$' . l:var)
-      execute 'let $' . l:var . '="' . l:dir . '"'
+      execute 'let $hash_' . l:var . '="' . l:dir . '"'
     endif
   endfor
 endfunction

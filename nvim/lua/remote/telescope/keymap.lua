@@ -31,8 +31,8 @@ map.nnoremap("<leader>fl", function()
   util.reload("remote.telescope").live_grep()
 end)
 map.nnoremap("<leader>fn", function()
-  -- vim.env.n is a hash defined in shell
-  util.reload("remote.telescope").find_files { cwd = vim.env.n }
+  -- vim.env.hash_n is a hash defined in shell
+  util.reload("remote.telescope").find_files { cwd = vim.env.hash_n }
 end)
 map.nnoremap("<leader>fp", function()
   util.reload("remote.telescope").find_plugins()
