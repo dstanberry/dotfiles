@@ -178,17 +178,6 @@ local function plugins(use)
 
   use { "bfredl/nvim-luadev", cmd = "Luadev", opt = true }
   use {
-    "APZelos/blamer.nvim",
-    cmd = "BlamerToggle",
-    keys = "<leader>gb",
-    opt = true,
-    config = function()
-      require("util.map").nnoremap("<leader>gb", "<cmd>BlamerToggle<cr>")
-      vim.g.blamer_enabled = 0
-      vim.g.blamer_show_in_insert_modes = 0
-    end,
-  }
-  use {
     "rhysd/git-messenger.vim",
     keys = "<leader>gm",
     config = function()
