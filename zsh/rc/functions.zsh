@@ -124,9 +124,7 @@ function notes() {
   COMMAND_HELP=(help h)
   local date="$(date +'%Y-%m-%d')"
   local human_date="$(date +'%A, %B %d, %Y (%Y-%m-%d)')"
-  if is_wsl && [[ -d "/mnt/c/Documents/_notes" ]]; then
-    local base_path="/mnt/c/Documents/_notes"
-  elif [[ -d "$HOME/Documents/_notes" ]]; then
+  if [[ -d "$HOME/Documents/_notes" ]]; then
     local base_path="$HOME/Documents/_notes"
   else
     local base_path="${XDG_DATA_HOME:-$HOME/.local/share}/notes"
