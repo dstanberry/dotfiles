@@ -315,7 +315,6 @@ end, {
   silent = false,
   expr = true,
 })
-
 -- populate command line with file name of current buffer
 cnoremap("%T", function()
   return map.t(vim.fn.expand "%:t")
@@ -323,7 +322,6 @@ end, {
   silent = false,
   expr = true,
 })
-
 -- populate command line with path to parent dir of current buffer
 cnoremap("%P", function()
   return map.t(vim.fn.expand "%:p")

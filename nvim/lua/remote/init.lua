@@ -205,15 +205,6 @@ local function plugins(use)
 
   use { "michaelb/sniprun", run = "bash ./install.sh", opt = true, cmd = "SnipRun" }
 
-  use {
-    "tversteeg/registers.nvim",
-    config = function()
-      vim.g.registers_hide_only_whitespace = 1
-      vim.g.registers_show_empty_registers = 0
-      vim.g.registers_trim_whitespace = 1
-      vim.g.registers_window_border = "rounded"
-    end,
-  }
   use "aserowy/tmux.nvim"
 
   use {
