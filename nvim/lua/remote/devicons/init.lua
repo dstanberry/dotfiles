@@ -9,4 +9,4 @@ devicons.setup {
   default = true,
 }
 
-devicons.set_default_icon('', '#6d8086')
+devicons.set_default_icon('', '#6d8086')
