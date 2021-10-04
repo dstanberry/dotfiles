@@ -27,10 +27,10 @@ local function plugins(use)
   use "tpope/vim-commentary"
   use "tpope/vim-repeat"
   use "tpope/vim-surround"
-  use { "dstein64/vim-startuptime", opt = true, cmd = "StartupTime" }
+  use { "dstein64/vim-startuptime", cmd = "StartupTime", opt = true }
   use { "godlygeek/tabular", cmd = "Tabularize" }
   use { "rrethy/vim-hexokinase", run = "make hexokinase" }
-  use { "tpope/vim-scriptease", opt = true, cmd = { "Messages", "Verbose", "Time" } }
+  use { "tpope/vim-scriptease", cmd = { "Messages", "Verbose", "Time" }, opt = true }
 
   if vim.fn.isdirectory "/etc/portage" then
     use {
@@ -56,7 +56,14 @@ local function plugins(use)
   use { "gisphm/vim-gitignore", ft = "gitignore" }
   use { "mtdl9/vim-log-highlighting", ft = "log" }
 
-  use { "npxbr/glow.nvim", cmd = "Glow" }
+  use {
+    "npxbr/glow.nvim",
+    cmd = "Glow",
+    opt = true,
+    config = function()
+      vim.g.glow_binary_path = ("%s/go/bin"):format(vim.env.XDG_DATA_HOME)
+    end,
+  }
 
   use {
     "yamatsum/nvim-nonicons",
@@ -169,7 +176,7 @@ local function plugins(use)
     },
   }
 
-  use { "bfredl/nvim-luadev", opt = true, cmd = "Luadev" }
+  use { "bfredl/nvim-luadev", cmd = "Luadev", opt = true }
   use {
     "rhysd/git-messenger.vim",
     keys = "<leader>gm",
@@ -200,7 +207,7 @@ local function plugins(use)
     },
   }
 
-  use { "sindrets/diffview.nvim", opt = true, cmd = "DiffviewOpen" }
+  use { "sindrets/diffview.nvim", cmd = "DiffviewOpen", opt = true }
   use {
     "lewis6991/gitsigns.nvim",
     wants = "plenary.nvim",
@@ -208,7 +215,7 @@ local function plugins(use)
   }
   use { "TimUntersberger/neogit", cmd = "Neogit", keys = "<leader>gs", requires = "nvim-lua/plenary.nvim" }
 
-  use { "michaelb/sniprun", run = "bash ./install.sh", opt = true, cmd = "SnipRun" }
+  use { "michaelb/sniprun", run = "bash ./install.sh", cmd = "SnipRun", opt = true }
 
   use "aserowy/tmux.nvim"
 
