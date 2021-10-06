@@ -1,5 +1,13 @@
 local M = {}
 
+function M.reload(name)
+  local ok, r = pcall(require, "plenary.reload")
+  if ok then
+    r.reload_module(name)
+  end
+  return require(name)
+end
+
 M.callbacks = {}
 
 function M.delegate(cb, expr)
@@ -17,14 +25,6 @@ function M.execute(id)
     error("Function doest not exist: " .. id)
   end
   return func()
-end
-
-function M.reload(name)
-  local ok, r = pcall(require, "plenary.reload")
-  if ok then
-    r.reload_module(name)
-  end
-  return require(name)
 end
 
 function M.define_autocmd(spec)
