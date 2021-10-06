@@ -142,6 +142,10 @@ fi
 export TERMINFO="$XDG_DATA_HOME/TERMINFO"
 export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
 
+
+# define configuration path for tree-sitter
+export TREE_SITTER_DIR="$XDG_DATA_HOME/tree-sitter"
+
 # define configuration path for node.js
 if hash node 2> /dev/null; then
   export NODE_REPL_HISTORY="$XDG_DATA_HOME/node_repl_history"
