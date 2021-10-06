@@ -1,3 +1,5 @@
+_G.reload = require("util").reload
+
 _G.dump = function(...)
   print(vim.inspect(...))
 end
