@@ -1,11 +1,9 @@
-local hl = {}
+local M = {}
 
---
 local function sanitize(mode)
   return "%#" .. mode .. "#"
 end
 
--- get corresponding highlight group for mode
 local modes = setmetatable({
   n = "Custom2",
   no = "Custom2",
@@ -35,43 +33,37 @@ local modes = setmetatable({
   end,
 })
 
-hl.mode = function(m)
+M.mode = function(m)
   return sanitize(modes[m])
 end
 
--- highlight group for current window
-hl.statusline = sanitize "StatusLine"
--- highlight group for non-current window
-hl.statuslinenc = sanitize "StatusLine"
+M.segment = "%="
 
--- separation point between sections
-hl.segment = "%="
+M.statusline = sanitize "StatusLine"
+M.statuslinenc = sanitize "StatusLine"
 
--- highlight groups
-hl.user1 = "%1*"
-hl.user2 = "%2*"
-hl.user3 = "%3*"
-hl.user4 = "%4*"
-hl.user5 = "%5*"
-hl.user6 = "%6*"
-hl.user7 = "%7*"
-hl.user8 = "%8*"
-hl.user9 = "%9*"
+M.user1 = "%1*"
+M.user2 = "%2*"
+M.user3 = "%3*"
+M.user4 = "%4*"
+M.user5 = "%5*"
+M.user6 = "%6*"
+M.user7 = "%7*"
+M.user8 = "%8*"
+M.user9 = "%9*"
 
--- custom highlight groups
-hl.custom00 = sanitize "Custom00"
-hl.custom0 = sanitize "Custom0"
-hl.custom1 = sanitize "Custom1"
-hl.custom2 = sanitize "Custom2"
-hl.custom3 = sanitize "Custom3"
-hl.custom4 = sanitize "Custom4"
-hl.custom5 = sanitize "Custom5"
-hl.custom6 = sanitize "Custom6"
+M.custom00 = sanitize "Custom00"
+M.custom0 = sanitize "Custom0"
+M.custom1 = sanitize "Custom1"
+M.custom2 = sanitize "Custom2"
+M.custom3 = sanitize "Custom3"
+M.custom4 = sanitize "Custom4"
+M.custom5 = sanitize "Custom5"
+M.custom6 = sanitize "Custom6"
 
--- highlight group for lsp diagnostic
-hl.lsperror = sanitize "LspDiagnosticsStatusError"
-hl.lspwarning = sanitize "LspDiagnosticsStatusWarning"
-hl.lspinfo = sanitize "LspDiagnosticsStatusInformation"
-hl.lsphint = sanitize "LspDiagnosticsStatusHint"
+M.lsp_error = sanitize "DiagnosticStatusError"
+M.lsp_warn = sanitize "DiagnosticStatusWarn"
+M.lsp_info = sanitize "DiagnosticStatusInfo"
+M.lsp_hint = sanitize "DiagnosticStatusHint"
 
-return hl
+return M

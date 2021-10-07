@@ -1,4 +1,3 @@
--- load statusline utilities
 local Job = require "plenary.job"
 
 -- paste mode identifier
@@ -129,27 +128,6 @@ M.git_branch = function(bufnr)
     icon = p
   end
   return icon .. branch
-end
-
--- print lsp diagnostic count
-M.get_lsp_client_count = function(bufnr)
-  local clients = vim.lsp.buf_get_clients(bufnr)
-  return #clients
-end
-
--- print lsp diagnostic count
-M.get_lsp_diagnostics = function(bufnr)
-  local result = {}
-  local levels = {
-    errors = "Error",
-    warnings = "Warning",
-    info = "Information",
-    hints = "Hint",
-  }
-  for k, level in pairs(levels) do
-    result[k] = vim.lsp.diagnostic.get_count(bufnr, level)
-  end
-  return result
 end
 
 -- print line numbering
