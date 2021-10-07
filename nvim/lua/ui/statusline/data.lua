@@ -65,11 +65,16 @@ end
 -- print filepath relative to current directory
 M.relpath = function(bufnr)
   local name = vim.fn.bufname(bufnr)
-  local basename = vim.fn.fnamemodify(name, ":~:.:h:p")
-  if basename == "" or basename == "." then
+  local path = vim.fn.fnamemodify(name, ":~:.:h:p")
+  if path == "" or path == "." then
     return ""
   else
-    return basename:gsub("/$", "") .. "/"
+    local maxlen = math.min(35, math.floor(0.6 * vim.fn.winwidth(0)))
+    path = path:gsub("/$", "") .. "/"
+    if (#path + #M.filename(bufnr)) > maxlen then
+      path = vim.fn.pathshorten(path)
+    end
+    return path
   end
 end
 
