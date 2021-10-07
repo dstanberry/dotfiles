@@ -65,21 +65,18 @@ local function plugins(use)
     end,
   }
 
-  use {
-    "yamatsum/nvim-nonicons",
-    requires = {
-      {
-        "kyazdani42/nvim-web-devicons",
-        config = function()
-          require "remote.devicons"
-        end,
-      },
-    },
-  }
+  use { "yamatsum/nvim-nonicons", requires = { "kyazdani42/nvim-web-devicons" } }
   use {
     "tamago324/lir.nvim",
-    wants = { "tamago324/lir-git-status.nvim", "tamago324/lir-mmv.nvim" },
-    requires = { "kyazdani42/nvim-web-devicons", "tamago324/lir-git-status.nvim", "tamago324/lir-mmv.nvim" },
+    wants = {
+      "tamago324/lir-git-status.nvim",
+      "tamago324/lir-mmv.nvim",
+    },
+    requires = {
+      "kyazdani42/nvim-web-devicons",
+      "tamago324/lir-git-status.nvim",
+      "tamago324/lir-mmv.nvim",
+    },
   }
   use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
 
@@ -121,7 +118,11 @@ local function plugins(use)
       "ray-x/lsp_signature.nvim",
     },
   }
-  use { "simrat39/symbols-outline.nvim", cmd = "SymbolsOutline", requires = { "nvim-lua/plenary.nvim" } }
+  use {
+    "simrat39/symbols-outline.nvim",
+    cmd = "SymbolsOutline",
+    requires = { "nvim-lua/plenary.nvim" },
+  }
   use "ray-x/go.nvim"
 
   use {
