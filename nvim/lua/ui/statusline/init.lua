@@ -215,9 +215,6 @@ M.dim = function(win_id)
   if not vim.api.nvim_win_is_valid(win_id) then
     return simple_inactive()
   end
-  if vim.fn.pumvisible() == 1 then
-    return M.focus(win_id)
-  end
   local bufnr = vim.api.nvim_win_get_buf(win_id)
   local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
   local name = vim.fn.bufname(bufnr)
@@ -256,14 +253,14 @@ M.setup = function()
     clear = true,
     autocmds = {
       {
-        event = { "FocusGained", "BufEnter", "BufWinEnter", "WinEnter", "CompleteDonePre" },
+        event = { "FocusGained", "BufEnter", "BufWinEnter" },
         pattern = "*",
         callback = function()
           vim.wo.statusline = [[%!luaeval('require("ui.statusline").focus(vim.api.nvim_get_current_win())')]]
         end,
       },
       {
-        event = { "FocusLost", "BufLeave", "BufWinLeave", "WinLeave" },
+        event = { "FocusLost", "BufLeave", "WinLeave" },
         pattern = "*",
         callback = function()
           vim.wo.statusline = [[%!luaeval('require("ui.statusline").dim(vim.api.nvim_get_current_win())')]]
