@@ -1,4 +1,4 @@
-if is_wsl; then
+if is_wsl && [[ "$EUID" -gt 0 ]] ; then
   # define the host IP address
   export HOST_IP="$(ip route | awk '/^default/{print $3}')"
 
