@@ -2,15 +2,16 @@ if is_wsl && [[ "$EUID" -gt 0 ]] ; then
   # define the host IP address
   export HOST_IP="$(ip route | awk '/^default/{print $3}')"
 
-  # define X server location
-  # WARNING: enabling this when there is no X server present
-  # can cause apps to hang for a considerable perid of time
-  # export DISPLAY="${HOST_IP}:0"
+  # define display server location
+  export DISPLAY=:0
+
+  # define default display server
+  export GDK_BACKEND=wayland
 
   # https://gitlab.freedesktop.org/xorg/xserver/-/issues/1032
   # https://bugs.gentoo.org/721702
   # inform libglvnd of the opengl vendor
-  export __GLX_VENDOR_LIBRARY_NAME=mesa
+  # export __GLX_VENDOR_LIBRARY_NAME=mesa
 
   # define pulseaudio server location
   export PULSE_SERVER=/mnt/wslg/PulseServer
