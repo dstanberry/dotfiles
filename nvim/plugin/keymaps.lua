@@ -285,7 +285,12 @@ cnoremap("<c-e>", "<End>")
 
 -- navigate completion menu using up/down keys
 cnoremap("<up>", function()
-  if vim.fn.pumvisible() ~= 0 then
+  local ok, cmp = pcall(require, "cmp")
+  local visible = false
+  if ok then
+    visible = cmp.visible()
+  end
+  if vim.fn.pumvisible() == 1 or visible then
     return map.t "<c-p>"
   else
     return map.t "<up>"
@@ -295,7 +300,12 @@ end, {
   expr = true,
 })
 cnoremap("<down>", function()
-  if vim.fn.pumvisible() ~= 0 then
+  local ok, cmp = pcall(require, "cmp")
+  local visible = false
+  if ok then
+    visible = cmp.visible()
+  end
+  if vim.fn.pumvisible() == 1 or visible then
     return map.t "<c-n>"
   else
     return map.t "<down>"
