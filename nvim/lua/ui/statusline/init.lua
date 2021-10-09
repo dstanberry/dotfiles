@@ -255,16 +255,12 @@ M.setup = function()
       {
         event = { "FocusGained", "BufEnter", "BufWinEnter" },
         pattern = "*",
-        callback = function()
-          vim.wo.statusline = [[%!luaeval('require("ui.statusline").focus(vim.api.nvim_get_current_win())')]]
-        end,
+        command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=],
       },
       {
         event = { "FocusLost", "BufLeave", "WinLeave" },
         pattern = "*",
-        callback = function()
-          vim.wo.statusline = [[%!luaeval('require("ui.statusline").dim(vim.api.nvim_get_current_win())')]]
-        end,
+        command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=],
       },
     },
   }
