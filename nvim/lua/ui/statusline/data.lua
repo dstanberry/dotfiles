@@ -14,9 +14,8 @@ local M = {}
 
 -- readonly indicator
 M.get_readonly = function(bufnr)
-  local name = vim.fn.bufname(bufnr)
-  local ro = vim.api.nvim_buf_get_option(name, "readonly")
-  local mod = vim.api.nvim_buf_get_option(name, "modifiable")
+  local ro = vim.api.nvim_buf_get_option(bufnr, "readonly")
+  local mod = vim.api.nvim_buf_get_option(bufnr, "modifiable")
   if (ro and not mod) or not mod then
     return " "
   elseif ro then
@@ -28,8 +27,7 @@ end
 
 -- modified indicator
 M.get_modified = function(bufnr)
-  local name = vim.fn.bufname(bufnr)
-  local mod = vim.api.nvim_buf_get_option(name, "modified")
+  local mod = vim.api.nvim_buf_get_option(bufnr, "modified")
   if mod then
     return "●"
   else
@@ -49,8 +47,7 @@ end
 
 -- print filetype with icon
 M.filetype = function(bufnr)
-  local name = vim.fn.bufname(bufnr)
-  local ft = vim.api.nvim_buf_get_option(name, "filetype")
+  local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
   local fn = M.filename(bufnr)
   local icon = require("nvim-web-devicons").get_icon(fn, ft)
   return string.format("%s %s", icon, ft)
@@ -82,9 +79,8 @@ end
 M.metadata = function(bufnr)
   local lhs = ""
   local rhs = ""
-  local name = vim.fn.bufname(bufnr)
-  local format = vim.api.nvim_buf_get_option(name, "fileformat")
-  local encoding = vim.api.nvim_buf_get_option(name, "fileencoding")
+  local format = vim.api.nvim_buf_get_option(bufnr, "fileformat")
+  local encoding = vim.api.nvim_buf_get_option(bufnr, "fileencoding")
   if #format > 0 and format ~= "unix" then
     lhs = format
   end
