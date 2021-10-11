@@ -1,69 +1,22 @@
-if vim.lsp.setup then
-  vim.lsp.setup {
-    floating_preview = {
-      border = "single",
-    },
-    diagnostics = {
-      signs = { error = " ", warning = " ", hint = " ", information = " " },
-      display = {
-        underline = false,
-        update_in_insert = false,
-        severity_sort = true,
-        signs = true,
-        virtual_text = { prefix = "▪", spacing = 4 },
-      },
-    },
-    completion = {
-      kind = {
-        Class = " ",
-        Color = " ",
-        Constant = " ",
-        Constructor = " ",
-        Enum = " ",
-        EnumMember = " ",
-        Event = " ",
-        Field = " ",
-        File = " ",
-        Folder = " ",
-        Function = " ",
-        Interface = " ",
-        Keyword = " ",
-        Method = " ",
-        Module = "{} ",
-        Operator = " ",
-        Property = " ",
-        Reference = " ",
-        Snippet = " ",
-        Struct = " ",
-        Text = " ",
-        TypeParameter = " ",
-        Unit = " ",
-        Value = " ",
-        Variable = " ",
-      },
-    },
-  }
-else
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = "single",
-  })
-  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-    border = "single",
-  })
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+  border = "single",
+})
+vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+  border = "single",
+})
 
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-    underline = false,
-    update_in_insert = false,
-    severity_sort = true,
-    signs = true,
-    virtual_text = { prefix = "▪", spacing = 4 },
-  })
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  underline = false,
+  update_in_insert = false,
+  severity_sort = true,
+  signs = true,
+  virtual_text = { prefix = "▪", spacing = 4 },
+})
 
-  local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
-  for type, icon in pairs(signs) do
-    local hl = "DiagnosticSign" .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl })
-  end
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+for type, icon in pairs(signs) do
+  local hl = "DiagnosticSign" .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl })
 end
 
 local has_tele, telescope = pcall(require, "remote.telescope")
