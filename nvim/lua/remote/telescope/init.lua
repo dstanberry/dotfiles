@@ -27,7 +27,6 @@ local set_prompt_to_entry_value = function(prompt_bufnr)
   state.get_current_picker(prompt_bufnr):reset_prompt(entry.ordinal)
 end
 
--- set default options
 telescope.setup {
   defaults = {
     prompt_prefix = " ❯ ",
@@ -64,7 +63,10 @@ telescope.setup {
     },
     help_tags = {
       theme = "ivy",
-      layout_config = { height = 60 },
+      layout_config = {
+        height = 60,
+        prompt_position = "top",
+      },
     },
     live_grep = {
       layout_strategy = "vertical",
@@ -90,10 +92,8 @@ telescope.setup {
   },
 }
 
--- load additional extensions
 pcall(telescope.load_extension "fzf")
 
--- list of directory/file patterns to ignore
 local ignored = {
   "%.db",
   "%.gpg",
@@ -106,14 +106,12 @@ local ignored = {
 
 local M = {}
 
--- show current buffer list
 function M.buffers()
   builtin.buffers {
     prompt_title = [[\ Buffers /]],
   }
 end
 
--- search nvim config
 function M.find_nvim()
   builtin.find_files {
     cwd = "~/.config/nvim",
@@ -124,7 +122,6 @@ function M.find_nvim()
   }
 end
 
--- search current directory
 function M.project_files()
   local opts = {
     hidden = true,
@@ -137,7 +134,6 @@ function M.project_files()
   end
 end
 
--- file browser
 function M.file_browser()
   local opts
   opts = {
@@ -152,7 +148,6 @@ function M.file_browser()
   builtin.file_browser(opts)
 end
 
--- search remote plugins
 function M.find_plugins()
   builtin.find_files {
     cwd = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data"),
@@ -161,7 +156,6 @@ function M.find_plugins()
   }
 end
 
--- grep for pattern within directory
 function M.grep_string()
   builtin.grep_string {
     search = vim.fn.input "grep: ",
@@ -170,7 +164,6 @@ function M.grep_string()
   }
 end
 
--- search current buffer
 function M.current_buffer()
   builtin.current_buffer_fuzzy_find {
     previewer = false,
@@ -178,7 +171,6 @@ function M.current_buffer()
   }
 end
 
--- fallback to builtin method if function not defined here
 return setmetatable({}, {
   __index = function(_, k)
     reloader()
