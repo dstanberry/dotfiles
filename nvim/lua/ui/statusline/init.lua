@@ -81,7 +81,7 @@ local function explorer(state, bufnr)
     local mode = vim.fn.mode()
     local mode_hl = hi.mode(mode)
     return table.concat {
-      add(mode_hl, { data.mode() }, true),
+      add(mode_hl, { data.mode() }),
       add(hi.user1, { " ", data.relpath(bufnr) }, true),
       hi.segment,
     }
@@ -98,7 +98,7 @@ local function plugin(state, bufnr)
     local mode = vim.fn.mode()
     local mode_hl = hi.mode(mode)
     return table.concat {
-      add(mode_hl, { data.mode() }, true),
+      add(mode_hl, { data.mode() }),
       add(mode_hl, { data.filename(bufnr) }),
       hi.segment,
     }
@@ -115,7 +115,7 @@ local function basic(state, bufnr)
     local mode = vim.fn.mode()
     local mode_hl = hi.mode(mode)
     return table.concat {
-      add(mode_hl, { data.mode() }, true),
+      add(mode_hl, { data.mode() }),
       add(hi.user1, { " ", data.relpath(bufnr) }, true),
       add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
@@ -133,7 +133,7 @@ local function uri(state, bufnr)
     local mode = vim.fn.mode()
     local mode_hl = hi.mode(mode)
     return table.concat {
-      add(mode_hl, { data.mode() }, true),
+      add(mode_hl, { data.mode() }),
       add(hi.user1, { " ", data.relpath(bufnr), "/" }, true),
       add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
@@ -151,7 +151,7 @@ local function simple(state, bufnr)
     local mode = vim.fn.mode()
     local mode_hl = hi.mode(mode)
     return table.concat {
-      add(mode_hl, { data.mode() }, true),
+      add(mode_hl, { data.mode() }),
       add(mode_hl, { data.git_branch(bufnr) }),
       add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
