@@ -93,6 +93,7 @@ telescope.setup {
 }
 
 pcall(telescope.load_extension "fzf")
+pcall(telescope.load_extension "notify")
 
 local ignored = {
   "%.db",
@@ -106,11 +107,16 @@ local ignored = {
 
 local M = {}
 
-function M.buffers()
-  builtin.buffers {
-    prompt_title = [[\ Buffers /]],
-  }
-end
+local meta = setmetatable({}, {
+  __index = function(_, k)
+    reloader()
+    if M[k] then
+      return M[k]
+    else
+      return builtin[k]
+    end
+  end,
+})
 
 function M.find_nvim()
   builtin.find_files {
@@ -139,7 +145,6 @@ function M.file_browser()
   opts = {
     hidden = true,
     sorting_strategy = "ascending",
-    scroll_strategy = "cycle",
     prompt_title = [[\ File Browser /]],
     layout_config = {
       prompt_position = "top",
@@ -171,13 +176,4 @@ function M.current_buffer()
   }
 end
 
-return setmetatable({}, {
-  __index = function(_, k)
-    reloader()
-    if M[k] then
-      return M[k]
-    else
-      return builtin[k]
-    end
-  end,
-})
+return meta
