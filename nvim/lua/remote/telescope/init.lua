@@ -118,12 +118,6 @@ local meta = setmetatable({}, {
   end,
 })
 
-function M.buffers()
-  builtin.buffers {
-    prompt_title = [[\ Buffers /]],
-  }
-end
-
 function M.find_nvim()
   builtin.find_files {
     cwd = "~/.config/nvim",
@@ -151,7 +145,6 @@ function M.file_browser()
   opts = {
     hidden = true,
     sorting_strategy = "ascending",
-    scroll_strategy = "cycle",
     prompt_title = [[\ File Browser /]],
     layout_config = {
       prompt_position = "top",
