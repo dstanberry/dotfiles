@@ -77,10 +77,22 @@ telescope.setup {
       previewer = false,
       results_title = false,
     },
-    lsp_definitions = { theme = "ivy" },
+    lsp_definitions = {
+      theme = "ivy",
+      layout_config = {
+        height = 60,
+        prompt_position = "top",
+      },
+    },
     lsp_document_symbols = { layout_strategy = "vertical" },
     lsp_dynamic_workspace_symbols = { layout_strategy = "vertical" },
-    lsp_references = { theme = "ivy" },
+    lsp_references = {
+      theme = "ivy",
+      layout_config = {
+        height = 60,
+        prompt_position = "top",
+      },
+    },
     lsp_workspace_symbols = { layout_strategy = "vertical" },
   },
   extensions = {
@@ -157,7 +169,7 @@ function M.find_plugins()
   builtin.find_files {
     cwd = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data"),
     previewer = false,
-    prompt_title = [[\ Nvim Plugins /]],
+    prompt_title = [[\ Remote Plugins /]],
   }
 end
 

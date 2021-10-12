@@ -6,6 +6,23 @@ end
 
 local M = {}
 
+local prettier_args = {
+  "--arrow-parens",
+  "always",
+  "--end-of-line",
+  "lf",
+  "--print-width",
+  "80",
+  "--single-quote",
+  "false",
+  "--tab-width",
+  "2",
+  "--trailing-comma",
+  "es5",
+  "--use-tabs",
+  "false",
+}
+
 M.config = null_ls.config {
   debug = false,
   debounce = 150,
@@ -18,28 +35,9 @@ M.config = null_ls.config {
     null_ls.builtins.formatting.eslint_d,
     null_ls.builtins.formatting.flake8,
     null_ls.builtins.formatting.isort,
-    null_ls.builtins.formatting.prettierd.with {
-      extra_args = {
-        "--arrow-parens",
-        "always",
-        "--end-of-line",
-        "lf",
-        "--print-width",
-        "80",
-        "--single-quote",
-        "false",
-        "--tab-width",
-        "2",
-        "--trailing-comma",
-        "es5",
-        "--use-tabs",
-        "false",
-      },
-    },
+    null_ls.builtins.formatting.prettierd.with { extra_args = prettier_args },
     null_ls.builtins.formatting.shellcheck,
-    null_ls.builtins.formatting.shfmt.with {
-      args = { "-i", "2", "-ci", "-sr", "-s", "-bn" },
-    },
+    null_ls.builtins.formatting.shfmt.with { args = { "-i", "2", "-ci", "-sr", "-s", "-bn" } },
     null_ls.builtins.formatting.stylua,
     null_ls.builtins.formatting.vint,
     null_ls.builtins.formatting.yapf,
