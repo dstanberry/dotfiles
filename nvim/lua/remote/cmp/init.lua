@@ -10,10 +10,9 @@ cmp.setup {
   },
   snippet = {
     expand = function(args)
-      local has_luasnip, luasnip = pcall(require, "luasnip")
-      if has_luasnip then
-        luasnip.lsp_expand(args.body)
-      end
+      pcall(function()
+        require("luasnip").lsp_expand(args.body)
+      end)
     end,
   },
   mapping = {
@@ -29,11 +28,11 @@ cmp.setup {
     },
   },
   sources = {
-    { name = "buffer" },
-    { name = "nvim_lsp" },
-    { name = "nvim_lua" },
-    { name = "path" },
-    { name = "luasnip" },
+    { name = "buffer", priority = 1, keyword_length = 5, max_item_count = 5 },
+    { name = "nvim_lsp", priority = 10 },
+    { name = "nvim_lua", priority = 10 },
+    { name = "path", priority = 5 },
+    { name = "luasnip", priority = 15 },
   },
   formatting = {
     format = function(_, vim_item)
