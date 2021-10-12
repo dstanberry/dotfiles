@@ -106,6 +106,17 @@ local ignored = {
 
 local M = {}
 
+local meta = setmetatable({}, {
+  __index = function(_, k)
+    reloader()
+    if M[k] then
+      return M[k]
+    else
+      return builtin[k]
+    end
+  end,
+})
+
 function M.buffers()
   builtin.buffers {
     prompt_title = [[\ Buffers /]],
@@ -171,13 +182,4 @@ function M.current_buffer()
   }
 end
 
-return setmetatable({}, {
-  __index = function(_, k)
-    reloader()
-    if M[k] then
-      return M[k]
-    else
-      return builtin[k]
-    end
-  end,
-})
+return meta
