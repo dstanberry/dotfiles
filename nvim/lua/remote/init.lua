@@ -13,9 +13,13 @@ local config = {
 }
 
 local function plugins(use)
-  use "wbthomason/packer.nvim"
+  -- package manager
+  use { "wbthomason/packer.nvim" }
 
+  -- hacks (until merged/fixed in upstream)
   use { "antoinemadec/FixCursorHold.nvim" }
+
+  -- written in vimscript
   use {
     "wincent/loupe",
     config = function()
@@ -23,15 +27,16 @@ local function plugins(use)
       vim.g.LoupeVeryMagic = 0
     end,
   }
-  use "duggiefresh/vim-easydir"
-  use "tpope/vim-commentary"
-  use "tpope/vim-repeat"
-  use "tpope/vim-surround"
+  use { "duggiefresh/vim-easydir" }
+  use { "tpope/vim-commentary" }
+  use { "tpope/vim-repeat" }
+  use { "tpope/vim-surround" }
+
   use { "dstein64/vim-startuptime", cmd = "StartupTime", opt = true }
   use { "godlygeek/tabular", cmd = "Tabularize" }
   use { "rrethy/vim-hexokinase", run = "make hexokinase" }
   use { "tpope/vim-scriptease", cmd = { "Messages", "Verbose", "Time" }, opt = true }
-
+  -- syntax highlighting
   if vim.fn.isdirectory "/etc/portage" then
     use {
       "gentoo/gentoo-syntax",
@@ -52,10 +57,11 @@ local function plugins(use)
       },
     }
   end
-  use { "gennaro-tedesco/nvim-jqx", ft = "json" }
   use { "gisphm/vim-gitignore", ft = "gitignore" }
   use { "mtdl9/vim-log-highlighting", ft = "log" }
 
+  -- filetype specific extensions
+  use { "gennaro-tedesco/nvim-jqx", ft = "json" }
   use {
     "npxbr/glow.nvim",
     cmd = "Glow",
@@ -65,21 +71,23 @@ local function plugins(use)
     end,
   }
 
+  -- iconography
   use { "yamatsum/nvim-nonicons", requires = { "kyazdani42/nvim-web-devicons" } }
+
+  -- builtins
   use {
-    "tamago324/lir.nvim",
-    wants = {
-      "tamago324/lir-git-status.nvim",
-      "tamago324/lir-mmv.nvim",
-    },
+    "neovim/nvim-lspconfig",
+    wants = { "jose-elias-alvarez/null-ls.nvim", "lsp_signature.nvim", "lua-dev" },
+    config = function()
+      require "remote.lsp"
+      require "remote.lsp.handlers"
+    end,
     requires = {
-      "kyazdani42/nvim-web-devicons",
-      "tamago324/lir-git-status.nvim",
-      "tamago324/lir-mmv.nvim",
+      "folke/lua-dev.nvim",
+      "jose-elias-alvarez/null-ls.nvim",
+      "ray-x/lsp_signature.nvim",
     },
   }
-  use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
-
   use {
     "nvim-treesitter/nvim-treesitter",
     run = ":TSUpdate",
@@ -95,36 +103,39 @@ local function plugins(use)
       require "remote.treesitter"
     end,
   }
+
+  -- tree-sitter/lsp language support
+  use {
+    "ray-x/go.nvim",
+    ft = { "go", "gomod" },
+    config = function()
+      require "remote.lsp.go"
+    end,
+  }
+  use { "simrat39/symbols-outline.nvim", cmd = "SymbolsOutline", requires = { "nvim-lua/plenary.nvim" } }
+
+  -- interface
   use {
     "folke/zen-mode.nvim",
     cmd = "ZenMode",
     opt = true,
     wants = "twilight.nvim",
-    requires = {
-      { "folke/twilight.nvim", requires = { "nvim-treesitter/nvim-treesitter" } },
-    },
+    requires = { { "folke/twilight.nvim", requires = { "nvim-treesitter/nvim-treesitter" } } },
   }
-
+  use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   use {
-    "neovim/nvim-lspconfig",
-    wants = { "jose-elias-alvarez/null-ls.nvim", "lsp_signature.nvim", "lua-dev" },
+    "rcarriga/nvim-notify",
     config = function()
-      require "remote.lsp"
-      require "remote.lsp.handlers"
+      vim.notify = require "notify"
     end,
-    requires = {
-      "folke/lua-dev.nvim",
-      "jose-elias-alvarez/null-ls.nvim",
-      "ray-x/lsp_signature.nvim",
-    },
   }
-  use {
-    "simrat39/symbols-outline.nvim",
-    cmd = "SymbolsOutline",
-    requires = { "nvim-lua/plenary.nvim" },
-  }
-  use "ray-x/go.nvim"
 
+  -- path and file navigation
+  use {
+    "tamago324/lir.nvim",
+    wants = { "tamago324/lir-git-status.nvim", "tamago324/lir-mmv.nvim" },
+    requires = { "kyazdani42/nvim-web-devicons", "tamago324/lir-git-status.nvim", "tamago324/lir-mmv.nvim" },
+  }
   use {
     "nvim-telescope/telescope.nvim",
     config = function()
@@ -147,6 +158,7 @@ local function plugins(use)
     },
   }
 
+  -- text completion
   use {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
@@ -177,14 +189,8 @@ local function plugins(use)
     },
   }
 
+  -- debug and evaluate code chunks
   use { "bfredl/nvim-luadev", cmd = "Luadev", opt = true }
-  use {
-    "rhysd/git-messenger.vim",
-    keys = "<leader>gm",
-    config = function()
-      vim.g.git_messenger_floating_win_opts = { border = "single" }
-    end,
-  }
   use {
     "mfussenegger/nvim-dap",
     opt = true,
@@ -207,25 +213,15 @@ local function plugins(use)
       "theHamsta/nvim-dap-virtual-text",
     },
   }
-
-  use { "sindrets/diffview.nvim", cmd = "DiffviewOpen", opt = true }
-  use {
-    "lewis6991/gitsigns.nvim",
-    wants = "plenary.nvim",
-    requires = { "nvim-lua/plenary.nvim" },
-  }
-  use { "TimUntersberger/neogit", cmd = "Neogit", keys = "<leader>gs", requires = "nvim-lua/plenary.nvim" }
-
   use { "michaelb/sniprun", run = "bash ./install.sh", cmd = "SnipRun", opt = true }
 
-  use "aserowy/tmux.nvim"
+  -- git integrations
+  use { "lewis6991/gitsigns.nvim", wants = "plenary.nvim", requires = { "nvim-lua/plenary.nvim" } }
+  use { "sindrets/diffview.nvim", cmd = "DiffviewOpen", opt = true }
+  use { "TimUntersberger/neogit", cmd = "Neogit", keys = "<leader>gs", requires = "nvim-lua/plenary.nvim" }
 
-  use {
-    "rcarriga/nvim-notify",
-    config = function()
-      vim.notify = require "notify"
-    end,
-  }
+  -- workflow integrations
+  use { "aserowy/tmux.nvim" }
 end
 
 return packer.setup(config, plugins)
