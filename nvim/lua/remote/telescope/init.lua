@@ -93,6 +93,7 @@ telescope.setup {
 }
 
 pcall(telescope.load_extension "fzf")
+pcall(telescope.load_extension "notify")
 
 local ignored = {
   "%.db",
