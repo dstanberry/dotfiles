@@ -274,8 +274,12 @@ M.apply = function(c)
   hi.IncSearch = { guifg = c.base01, guibg = c.base0A, gui = "none", guisp = nil }
 
   -- nvim-cmp highlighting
-  hi.CompeDocumentation = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
-  hi.CompeDocumentationBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
+  hi.CmpItemAbbrDefault = { guifg = c.base04, guibg = nil, gui = "none", guisp = nil }
+  hi.CmpItemAbbrDeprecatedDefault = { guifg = c.base04, guibg = nil, gui = "none", guisp = nil }
+  hi.CmpItemAbbrMatchDefault = { guifg = c.base06, guibg = nil, gui = "bold", guisp = nil }
+  hi.CmpItemAbbrMatchFuzzyDefault = { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil }
+  hi.CmpItemItemDefault = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
+  hi.CmpItemItemMenuDefault = { guifg = c.base10, guibg = nil, gui = "none", guisp = nil }
 
   c.tele00 = color.darken(c.base0F, 43)
 
@@ -283,7 +287,7 @@ M.apply = function(c)
   hi.TelescopeSelection = { guifg = nil, guibg = c.tele00, gui = "bold", guisp = nil }
   hi.TelescopeSelectionCaret = { guifg = c.base04, guibg = c.tele00, gui = "bold", guisp = nil }
   hi.TelescopeMultiSelection = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
-  hi.TelescopeNormal = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
+  hi.TelescopeNormal = { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil }
   hi.TelescopeBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
   hi.TelescopePromptBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
   hi.TelescopeResultsBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
