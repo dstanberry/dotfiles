@@ -5,7 +5,7 @@ if not ok then
 end
 
 devicons.setup {
-  -- override = require "remote.devicons.icons",
+  override = require "remote.devicons.icons",
   default = true,
 }
 
