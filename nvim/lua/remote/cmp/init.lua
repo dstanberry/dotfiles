@@ -5,9 +5,7 @@ if not ok then
 end
 
 cmp.setup {
-  documentation = {
-    border = "rounded",
-  },
+  documentation = false,
   snippet = {
     expand = function(args)
       pcall(function()
@@ -39,24 +37,24 @@ cmp.setup {
       vim_item.kind = ({
         Class = "פּ (class)",
         Color = " (color)",
-        Constant = " (constant)",
+        Constant = " (constant)",
         Constructor = " (constructor)",
-        Enum = "了 (enum)",
+        Enum = "  (enum)",
         EnumMember = "  (enum member)",
         Event = " (event)",
         Field = "陋 (field)",
         File = " (file)",
         Folder = " (folder)",
         Function = " (function)",
-        Interface = "﯅ (interface)",
+        Interface = " (interface)",
         Keyword = " (keyword)",
-        Method = " (method)",
+        Method = " (method)",
         Module = " (module)",
-        Operator = " (operator)",
+        Operator = " (operator)",
         Property = "襁 (property)",
         Reference = " (reference)",
-        Snippet = "賂 (snippet)",
-        Struct = " (struct)",
+        Snippet = " (snippet)",
+        Struct = "פּ (struct)",
         Text = " (text)",
         TypeParameter = "т (type parameter)",
         Unit = " (unit)",
