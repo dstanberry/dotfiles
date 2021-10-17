@@ -49,6 +49,8 @@ telescope.setup {
     },
     mappings = {
       i = {
+        ["<c-d>"] = actions.preview_scrolling_down,
+        ["<c-f>"] = actions.preview_scrolling_up,
         ["<c-s>"] = actions.select_horizontal,
         ["<c-y>"] = set_prompt_to_entry_value,
         ["jk"] = actions.close,
@@ -105,6 +107,7 @@ telescope.setup {
 }
 
 pcall(telescope.load_extension "fzf")
+pcall(telescope.load_extension "gh")
 pcall(telescope.load_extension "notify")
 
 local ignored = {
