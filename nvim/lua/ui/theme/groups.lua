@@ -119,11 +119,17 @@ M.apply = function(c)
   hi.Type = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.Typedef = { guifg = c.base0A, guibg = nil, gui = nil, guisp = nil }
 
+
+  c.diff00 = "#132e1f"
+  c.diff01 = "#361f21"
+  c.diff02 = "#403c32"
+  c.diff03 = "#6B6458"
+
   -- diff highlighting
-  hi.DiffAdd = { guifg = c.base0B, guibg = c.base00, gui = nil, guisp = nil }
-  hi.DiffChange = { guifg = c.base0A, guibg = c.base00, gui = nil, guisp = nil }
-  hi.DiffDelete = { guifg = c.base08, guibg = c.base00, gui = nil, guisp = nil }
-  hi.DiffText = { guifg = c.base0D, guibg = c.base00, gui = nil, guisp = nil }
+  hi.DiffAdd = { guifg = "none", guibg = c.diff00, gui = "none", guisp = nil }
+  hi.DiffChange = { guifg = "none", guibg = c.diff02, gui = "none", guisp = nil }
+  hi.DiffDelete = { guifg = "none", guibg = c.diff01, gui = "none", guisp = nil }
+  hi.DiffText = { guifg = "none", guibg = c.diff03, gui = "none", guisp = nil }
   hi.DiffAdded = { guifg = c.base0B, guibg = c.base00, gui = nil, guisp = nil }
   hi.DiffFile = { guifg = c.base0F, guibg = c.base00, gui = nil, guisp = nil }
   hi.DiffNewFile = { guifg = c.base0B, guibg = c.base00, gui = nil, guisp = nil }

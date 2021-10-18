@@ -6,10 +6,11 @@ local views = {
   basic = { "help" },
   browsers = { "lir" },
   plugins = {
-    "Neogit",
+    "Diffview",
+    "neogit",
     "packer",
     "qf",
-    "TelescopePrompt",
+    "Telescope",
   },
   uri = { "man" },
 }

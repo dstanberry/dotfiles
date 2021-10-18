@@ -5,10 +5,16 @@ if not ok then
 end
 
 neogit.setup {
+  commit_popup = {
+    kind = "split",
+  },
   signs = {
     hunk = { "", "" },
     item = { "", "" },
     section = { "", "" },
+  },
+  integrations = {
+    diffview = true,
   },
 }
 
@@ -16,4 +22,8 @@ local nnoremap = require("util.map").nnoremap
 
 nnoremap("<leader>gs", function()
   neogit.open { kind = "split" }
+end)
+
+nnoremap("<leader>gc", function()
+  neogit.open { "commit" }
 end)

@@ -223,9 +223,8 @@ local function plugins(use)
 
   -- git integrations
   use { "lewis6991/gitsigns.nvim", wants = "plenary.nvim", requires = { "nvim-lua/plenary.nvim" } }
-  use { "rhysd/committia.vim", event = "BufReadPre", opt = true, ft = "gitcommit" }
-  use { "sindrets/diffview.nvim", cmd = "DiffviewOpen", opt = true }
-  use { "TimUntersberger/neogit", cmd = "Neogit", keys = "<leader>gs", requires = "nvim-lua/plenary.nvim" }
+  use { "sindrets/diffview.nvim" }
+  use { "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" }
 
   -- workflow integrations
   use { "aserowy/tmux.nvim" }

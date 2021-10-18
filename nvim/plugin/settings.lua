@@ -31,7 +31,7 @@ vim.opt.expandtab = false
 vim.opt.fillchars = {
   vert = "┃",
   fold = "·",
-  diff = "∙",
+  diff = "/",
   eob = " ",
 }
 -- grep program to use
