@@ -13,11 +13,11 @@ local M = {}
 
 M.readonly = function(bufnr)
   local ro = vim.api.nvim_buf_get_option(bufnr, "readonly")
-  local mod = vim.api.nvim_buf_get_option(bufnr, "modifiable")
-  if (ro and not mod) or not mod then
-    return " "
+  local modifiable = vim.api.nvim_buf_get_option(bufnr, "modifiable")
+  if not modifiable then
+    return " "
   elseif ro then
-    return " "
+    return " "
   else
     return ""
   end
