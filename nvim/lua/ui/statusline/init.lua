@@ -1,19 +1,7 @@
 local hi = require "ui.statusline.highlight"
 local data = require "ui.statusline.data"
 local lsp = require "ui.statusline.lsp"
-
-local views = {
-  basic = { "help" },
-  browsers = { "lir" },
-  plugins = {
-    "Diffview",
-    "neogit",
-    "packer",
-    "qf",
-    "Telescope",
-  },
-  uri = { "man" },
-}
+local views = require "ui.statusline.views"
 
 local function contains(haystack, value)
   local found = false
@@ -174,10 +162,11 @@ M.focus = function(win_id)
   local state = "active"
   local bufnr = vim.api.nvim_win_get_buf(win_id)
   local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
+  local name = vim.fn.bufname(bufnr)
   if contains(views.browsers, type) then
     return explorer(state, bufnr)
   end
-  if contains(views.plugins, type) then
+  if contains(views.plugins, type) or contains(views.filenames, name) then
     return plugin(state, bufnr)
   end
   if contains(views.basic, type) then
@@ -187,7 +176,6 @@ M.focus = function(win_id)
     return uri(state, bufnr)
   end
   type = vim.fn.getftype(data.filepath(bufnr))
-  local name = vim.fn.bufname(bufnr)
   if type == "file" or #name > 0 then
     return default(state, bufnr)
   else
@@ -206,7 +194,7 @@ M.dim = function(win_id)
   if contains(views.browsers, type) then
     return explorer(state, bufnr)
   end
-  if contains(views.plugins, type) then
+  if contains(views.plugins, type) or contains(views.filenames, name) then
     return plugin(state, bufnr)
   end
   if contains(views.basic, type) then
