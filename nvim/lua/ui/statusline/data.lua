@@ -4,7 +4,7 @@ local paste = function()
   local result = ""
   local paste = vim.go.paste
   if paste then
-    result = "  "
+    result = " "
   end
   return result
 end
