@@ -12,8 +12,8 @@ tabline.setup {
   start_hidden = false,
   flags = {
     modified = "●",
-    not_modifiable = " ",
-    readonly = "",
+    not_modifiable = "",
+    readonly = "",
   },
   show_tabpages = false,
 }
