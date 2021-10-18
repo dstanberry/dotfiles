@@ -33,6 +33,8 @@ vim.opt.fillchars = {
   fold = "·",
   diff = "/",
   eob = " ",
+  foldclose = "",
+  foldopen = "",
 }
 -- grep program to use
 vim.opt.grepprg = "rg --vimgrep --no-heading --smart-case"
@@ -106,7 +108,7 @@ vim.opt.shortmess:append "F"
 -- don't show completion menu messages
 vim.opt.shortmess:append "c"
 -- define line wrap character
-vim.opt.showbreak = "↳"
+vim.opt.showbreak = "⤷"
 -- disable showing keystrokes below statusline
 vim.opt.showcmd = false
 -- disable contextual message based on mode
