@@ -22,15 +22,15 @@ local function plugins(use)
   -- written in vimscript
   use {
     "wincent/loupe",
+    event = "BufRead",
     config = function()
       vim.g.LoupeClearHighlightMap = 0
       vim.g.LoupeVeryMagic = 0
     end,
   }
   use { "duggiefresh/vim-easydir" }
-  use { "tpope/vim-commentary" }
   use { "tpope/vim-repeat" }
-  use { "tpope/vim-surround" }
+  use { "tpope/vim-surround", event = "BufRead" }
 
   use { "dstein64/vim-startuptime", cmd = "StartupTime", opt = true }
   use { "godlygeek/tabular", cmd = "Tabularize" }
@@ -82,7 +82,6 @@ local function plugins(use)
   -- builtins
   use {
     "neovim/nvim-lspconfig",
-    wants = { "jose-elias-alvarez/null-ls.nvim", "lsp_signature.nvim", "lua-dev" },
     config = function()
       require "remote.lsp"
       require "remote.lsp.handlers"
@@ -138,7 +137,6 @@ local function plugins(use)
   -- path and file navigation
   use {
     "tamago324/lir.nvim",
-    wants = { "tamago324/lir-git-status.nvim", "tamago324/lir-mmv.nvim" },
     requires = { "kyazdani42/nvim-web-devicons", "tamago324/lir-git-status.nvim", "tamago324/lir-mmv.nvim" },
   }
   use {
@@ -147,13 +145,6 @@ local function plugins(use)
       require "remote.telescope"
       require "remote.telescope.keymap"
     end,
-    wants = {
-      "plenary.nvim",
-      "popup.nvim",
-      "telescope-fzf-native.nvim",
-      "telescope-project.nvim",
-      "telescope-symbols.nvim",
-    },
     requires = {
       "kyazdani42/nvim-web-devicons",
       "nvim-lua/plenary.nvim",
@@ -164,7 +155,7 @@ local function plugins(use)
     },
   }
 
-  -- text completion
+  -- text manipulation
   use {
     "hrsh7th/nvim-cmp",
     event = "InsertEnter",
@@ -172,7 +163,6 @@ local function plugins(use)
     config = function()
       require "remote.cmp"
     end,
-    wants = { "LuaSnip" },
     requires = {
       {
         "L3MON4D3/LuaSnip",
@@ -227,7 +217,7 @@ local function plugins(use)
   use { "michaelb/sniprun", run = "bash ./install.sh", cmd = "SnipRun", opt = true }
 
   -- git integrations
-  use { "lewis6991/gitsigns.nvim", wants = "plenary.nvim", requires = { "nvim-lua/plenary.nvim" } }
+  use { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } }
   use { "sindrets/diffview.nvim" }
   use { "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" }
 
