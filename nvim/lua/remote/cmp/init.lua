@@ -4,6 +4,8 @@ if not ok then
   return
 end
 
+local util = require "util"
+
 cmp.setup {
   documentation = false,
   snippet = {
@@ -14,8 +16,8 @@ cmp.setup {
     end,
   },
   mapping = {
-    ["<c-p>"] = cmp.mapping.select_prev_item(),
-    ["<c-n>"] = cmp.mapping.select_next_item(),
+    ["<up>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
+    ["<down>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
     ["<c-d>"] = cmp.mapping.scroll_docs(-4),
     ["<c-f>"] = cmp.mapping.scroll_docs(4),
     ["<c-space>"] = cmp.mapping.complete(),
@@ -24,11 +26,14 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Insert,
       select = true,
     },
+    ["<right>"] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    },
   },
   sources = {
     { name = "buffer", priority = 1, keyword_length = 5, max_item_count = 5 },
     { name = "nvim_lsp", priority = 10 },
-    { name = "nvim_lua", priority = 10 },
     { name = "path", priority = 5 },
     { name = "luasnip", priority = 15 },
   },
@@ -39,8 +44,8 @@ cmp.setup {
         Color = " (color)",
         Constant = " (constant)",
         Constructor = " (constructor)",
-        Enum = "  (enum)",
-        EnumMember = "  (enum member)",
+        Enum = " (enum)",
+        EnumMember = " (enum member)",
         Event = " (event)",
         Field = "陋 (field)",
         File = " (file)",
@@ -63,5 +68,30 @@ cmp.setup {
       })[vim_item.kind]
       return vim_item
     end,
+  },
+  experimental = {
+    ghost_text = true,
+  },
+}
+
+util.define_augroup {
+  name = "cmp_lua",
+  clear = true,
+  autocmds = {
+    {
+      event = "FileType",
+      pattern = "lua",
+      callback = function()
+        require("cmp").setup.buffer {
+          sources = {
+            { name = "buffer", priority = 1, keyword_length = 5, max_item_count = 5 },
+            { name = "luasnip", priority = 15 },
+            { name = "nvim_lsp", priority = 10 },
+            { name = "nvim_lua", priority = 10 },
+            { name = "path", priority = 5 },
+          },
+        }
+      end,
+    },
   },
 }
