@@ -8,6 +8,10 @@ diffview.setup {
   diff_binaries = false,
   use_icons = true,
   enhanced_diff_hl = true,
+  icons = {
+    folder_closed = " ",
+    folder_open = " ",
+  },
   signs = {
     fold_closed = "",
     fold_open = "",
