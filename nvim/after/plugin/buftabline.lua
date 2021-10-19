@@ -15,5 +15,9 @@ tabline.setup {
     not_modifiable = "",
     readonly = "",
   },
+  hlgroups = {
+    current = "TabLineSel",
+    normal = "TabLine",
+  },
   show_tabpages = false,
 }

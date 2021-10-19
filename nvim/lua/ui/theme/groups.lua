@@ -77,9 +77,9 @@ M.apply = function(c)
   hi.QuickFixLine = { guifg = c.base01, guibg = c.base0A, gui = "none", guisp = nil }
   hi.PMenu = { guifg = c.base05, guibg = c.base10, gui = "none", guisp = nil }
   hi.PMenuSel = { guifg = c.base01, guibg = c.base0F, gui = nil, guisp = nil }
-  hi.TabLine = { guifg = c.base03, guibg = c.base00, gui = "none", guisp = nil }
-  hi.TabLineFill = { guifg = c.base03, guibg = c.base00, gui = "none", guisp = nil }
-  hi.TabLineSel = { guifg = c.base05, guibg = c.base00, gui = "none", guisp = nil }
+  hi.TabLine = { guifg = c.base03, guibg = c.base10, gui = "none", guisp = nil }
+  hi.TabLineFill = { guifg = c.base03, guibg = c.baseXX, gui = "none", guisp = nil }
+  hi.TabLineSel = { guifg = c.base05, guibg = c.base00, gui = "bold", guisp = nil }
 
   hi.NvimInternalError = { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil }
 
