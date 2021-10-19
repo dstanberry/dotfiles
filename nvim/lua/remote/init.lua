@@ -194,6 +194,11 @@ local function plugins(use)
       "rafamadriz/friendly-snippets",
     },
   }
+  use {
+    "numToStr/Comment.nvim",
+    event = { "BufRead", "BufNewFile" },
+    opt = true,
+  }
 
   -- debug and evaluate code chunks
   use { "bfredl/nvim-luadev", cmd = "Luadev", opt = true }
