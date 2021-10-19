@@ -14,10 +14,10 @@ comment.setup {
   },
   toggler = {
     line = "gcc",
-    block = "gac",
+    block = "gbc",
   },
   opleader = {
     line = "gc",
-    block = "ga",
+    block = "gb",
   },
 }
