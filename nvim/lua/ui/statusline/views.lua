@@ -13,6 +13,7 @@ local views = {
     "Neogit",
     "packer",
     "qf",
+    "startuptime",
     "Telescope",
   },
   uri = {
