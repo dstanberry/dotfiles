@@ -180,12 +180,7 @@ function -set-cursor() {
 
 # block cursor
 function -set-block-cursor() {
-  -set-cursor '\e[2 q'
-}
-
-# beam cursor
-function -set-beam-cursor() {
-  -set-cursor '\e[5 q'
+  -set-cursor '\e[0 q\e[2 q\e]12;Gray\a'
 }
 
 # set the cursor shape depending on current vi mode
