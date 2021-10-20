@@ -13,8 +13,7 @@ vim.cmd [[
 ]]
 
 local set_cursor_hl = function()
-  -- vim.fn.matchdelete(id)
-  vim.cmd "silent! call matchdelete(99991)"
+  vim.cmd(string.format("silent! call matchdelete(%s)", id))
   vim.fn.matchadd("WTCursorFg", [[\%#.]], 100, id)
   local ts_hl = ts_info.get_treesitter_hl()
   local b_hl = ts_info.get_syntax_hl()
@@ -30,8 +29,7 @@ local set_cursor_hl = function()
 end
 
 local reset_cursor_hl = function()
-  -- vim.fn.matchdelete(id)
-  vim.cmd "silent! call matchdelete(99991)"
+  vim.cmd(string.format("silent! call matchdelete(%s)", id))
   local hid = vim.fn.hlID "Normal"
   local gid = vim.fn.synIDtrans(hid)
   local attr = vim.fn.synIDattr(gid, "fg#")
