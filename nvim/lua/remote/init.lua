@@ -101,7 +101,7 @@ local function plugins(use)
       "nvim-treesitter/nvim-treesitter-textobjects",
       "p00f/nvim-ts-rainbow",
       "theHamsta/nvim-treesitter-pairs",
-      { "nvim-treesitter/playground", cmd = { "TSHighlightCapturesUnderCursor", "TSPlaygroundToggle" } },
+      "nvim-treesitter/playground",
     },
     config = function()
       require "remote.treesitter"
