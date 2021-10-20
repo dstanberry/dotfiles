@@ -26,10 +26,6 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Insert,
       select = true,
     },
-    ["<right>"] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
-    },
   },
   sources = {
     { name = "buffer", priority = 1, keyword_length = 5, max_item_count = 5 },
