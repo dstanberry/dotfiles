@@ -30,7 +30,7 @@ require("nvim-treesitter.configs").setup {
     highlight_self = false,
     goto_right_end = false,
     keymaps = {
-      goto_partner = "<leader>%",
+      goto_partner = "<localleader>%",
     },
   },
   playground = {
@@ -68,7 +68,9 @@ require("nvim-treesitter.configs").setup {
     highlight_current_scope = { enable = false },
     smart_rename = {
       enable = true,
-      keymaps = { smart_rename = "g " },
+      keymaps = {
+        smart_rename = "g<space>",
+      },
     },
     navigation = {
       enable = false,
