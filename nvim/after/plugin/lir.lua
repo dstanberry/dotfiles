@@ -6,6 +6,7 @@ end
 
 local actions = require "lir.actions"
 local has_mmv, mmv_actions = pcall(require "lir.mmv.actions")
+local map = require "util.map"
 
 lir.setup {
   show_hidden_files = false,
@@ -29,4 +30,9 @@ require("lir.git_status").setup {
   show_ignored = false,
 }
 
-vim.api.nvim_set_keymap("n", "-", "<cmd>execute 'edit ' .. expand('%:h')<cr>", { noremap = true })
+map.nnoremap("-", function()
+  local path = vim.fn.expand "%:h"
+  return map.t(("<cmd>edit %s<cr>"):format(path))
+end, {
+  expr = true,
+})
