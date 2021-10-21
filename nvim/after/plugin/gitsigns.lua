@@ -4,6 +4,8 @@ if not ok then
   return
 end
 
+local map = require "util.map"
+
 signs.setup {
   signs = {
     add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr" },
@@ -13,21 +15,6 @@ signs.setup {
     changedelete = { hl = "GitSignsDelete", text = "▍", numhl = "GitSignsChangeNr" },
   },
   numhl = false,
-  keymaps = {
-    noremap = true,
-    buffer = true,
-    ["n ]j"] = { expr = true, [[&diff ? ']c' : '<cmd>lua require("gitsigns").next_hunk()<cr>']] },
-    ["n ]k"] = { expr = true, [["&diff ? '[c' : '<cmd>lua require("gitsigns").prev_hunk()<cr>']] },
-    ["n <leader>hs"] = [[<cmd>lua require("gitsigns").stage_hunk()<cr>]],
-    ["v <leader>hs"] = [[<cmd>lua require("gitsigns").stage_hunk({vim.fn.line("."), vim.fn.line("v")})<cr>]],
-    ["n <leader>hu"] = [[<cmd>lua require("gitsigns").undo_stage_hunk()<cr>',
-    ["n <leader>hr"] = [[<cmd>lua require("gitsigns").reset_hunk()<cr>',
-    ["v <leader>hr"] = [[<cmd>lua require("gitsigns").reset_hunk({vim.fn.line("."), vim.fn.line("v")})<cr>]],
-    ["n <leader>hR"] = [[<cmd>lua require("gitsigns").reset_buffer()<cr>]],
-    ["n <leader>hp"] = [[<cmd>lua require("gitsigns").preview_hunk()<cr>]],
-    ["n <leader>hb"] = [[<cmd>lua require("gitsigns").blame_line(true)<cr>]],
-    ["n <leader>gb"] = [[<cmd>lua require("gitsigns").toggle_current_line_blame()<cr>]],
-  },
   update_debounce = 1000,
   current_line_blame = false,
   current_line_blame_opts = {
@@ -36,3 +23,14 @@ signs.setup {
     delay = 1000,
   },
 }
+
+map.nnoremap("]j", signs.next_hunk)
+map.nnoremap("]k", signs.prev_hunk)
+map.nnoremap("<leader>hs", signs.stage_hunk)
+map.nnoremap("<leader>hu", signs.undo_stage_hunk)
+map.nnoremap("<leader>hr", signs.reset_hunk)
+map.nnoremap("<leader>hp", signs.preview_hunk)
+map.nnoremap("<leader>hb", signs.toggle_current_line_blame)
+map.nnoremap("<leader>gb", function()
+  signs.blame_line(true)
+end)

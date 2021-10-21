@@ -4,6 +4,8 @@ if not ok then
   return
 end
 
+local map = require("util.map")
+
 neogit.setup {
   disable_commit_confirmation = true,
   disable_context_highlighting = false,
@@ -21,12 +23,10 @@ neogit.setup {
   },
 }
 
-local nnoremap = require("util.map").nnoremap
-
-nnoremap("<leader>gs", function()
+map.nnoremap("<leader>gs", function()
   neogit.open { kind = "split" }
 end)
 
-nnoremap("<leader>gc", function()
+map.nnoremap("<leader>gc", function()
   neogit.open { "commit" }
 end)
