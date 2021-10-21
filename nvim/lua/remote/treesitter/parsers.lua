@@ -5,6 +5,4 @@ if not ok then
 end
 
 local config = parsers.get_parser_configs()
-config.vim = {
-  used_by = { "vifm", "vifmrc", "vimrc" },
-}
+config.vim.used_by = { "vifm", "vifmrc", "vimrc" }
