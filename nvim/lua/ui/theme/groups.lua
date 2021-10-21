@@ -4,8 +4,11 @@ local M = {}
 
 local hi = setmetatable({}, {
   __newindex = function(_, hlgroup, args)
-    local guifg, guibg, gui, guisp = args.guifg, args.guibg, args.gui, args.guisp
+    local clear, guifg, guibg, gui, guisp = args.clear, args.guifg, args.guibg, args.gui, args.guisp
     local cmd = { "hi", hlgroup }
+    if clear then
+      cmd = { "hi!", hlgroup }
+    end
     if guifg then
       table.insert(cmd, "guifg=" .. guifg)
     end
@@ -21,6 +24,10 @@ local hi = setmetatable({}, {
     vim.cmd(table.concat(cmd, " "))
   end,
 })
+
+M.new = function(group, args)
+  hi[group] = args
+end
 
 M.apply = function(c)
   c.baseXX = color.darken(c.base00, 20)
