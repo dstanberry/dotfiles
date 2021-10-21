@@ -2,15 +2,17 @@
 if not (vim.env.WT_SESSION or pcall(require, "nvim-treesitter-playground")) then
   return
 end
-local util = require "util"
-local ts_info = require "nvim-treesitter-playground.hl-info"
-local id = 99991
 
-vim.cmd [[
-  hi! WTCursorFg gui=none
-  hi! WTCursorBg gui=none
-  set guicursor+=n-v-c-sm:block-WTCursorBg
-]]
+local ts_info = require "nvim-treesitter-playground.hl-info"
+local util = require "util"
+local groups = require "ui.theme.groups"
+
+groups.new("WTCursorFg", { clear = true, gui = "none" })
+groups.new("WTCursorBg", { clear = true, gui = "none" })
+
+vim.opt.guicursor:append "n-v-c-sm:block-WTCursorBg"
+
+local id = 99991
 
 local set_cursor_hl = function()
   vim.cmd(string.format("silent! call matchdelete(%s)", id))
@@ -24,8 +26,8 @@ local set_cursor_hl = function()
   local hid = vim.fn.hlID(hl)
   local gid = vim.fn.synIDtrans(hid)
   local attr = vim.fn.synIDattr(gid, "fg#")
-  vim.cmd(string.format("hi WTCursorBg guibg=%s", attr))
-  vim.cmd "hi! WTCursorFg gui=reverse"
+  groups.new("WTCursorBg", { clear = true, guibg = attr })
+  groups.new("WTCursorFg", { clear = true, gui = "reverse" })
 end
 
 local reset_cursor_hl = function()
@@ -33,7 +35,7 @@ local reset_cursor_hl = function()
   local hid = vim.fn.hlID "Normal"
   local gid = vim.fn.synIDtrans(hid)
   local attr = vim.fn.synIDattr(gid, "fg#")
-  vim.cmd(string.format("hi WTCursorBg guibg=%s", attr))
+  groups.new("WTCursorBg", { guibg = attr })
 end
 
 util.define_augroup {
