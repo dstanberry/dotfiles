@@ -1,4 +1,4 @@
--- verify terminal instance if windows terminal
+-- verify terminal instance is windows terminal
 if not (vim.env.WT_SESSION or pcall(require, "nvim-treesitter-playground")) then
   return
 end
