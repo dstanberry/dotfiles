@@ -31,6 +31,9 @@ local set_cursor_hl = function()
   local hid = vim.fn.hlID(hl)
   local gid = vim.fn.synIDtrans(hid)
   local attr = vim.fn.synIDattr(gid, "fg#")
+  if attr == "" then
+    attr = "white"
+  end
   groups.new("WTCursorBg", { clear = true, guibg = attr })
   groups.new("WTCursorFg", { clear = true, gui = "reverse" })
 end
@@ -45,6 +48,9 @@ local reset_cursor_hl = function()
   local hid = vim.fn.hlID "Normal"
   local gid = vim.fn.synIDtrans(hid)
   local attr = vim.fn.synIDattr(gid, "fg#")
+  if attr == "" then
+    attr = "white"
+  end
   groups.new("WTCursorBg", { guibg = attr })
 end
 
