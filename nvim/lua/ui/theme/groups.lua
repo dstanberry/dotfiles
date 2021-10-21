@@ -2,7 +2,6 @@ local color = require "util.color"
 
 local M = {}
 
--- helper function to set highight group
 local hi = setmetatable({}, {
   __newindex = function(_, hlgroup, args)
     local guifg, guibg, gui, guisp = args.guifg, args.guibg, args.gui, args.guisp
@@ -23,7 +22,6 @@ local hi = setmetatable({}, {
   end,
 })
 
--- apply colors
 M.apply = function(c)
   c.baseXX = color.darken(c.base00, 20)
   c.base10 = color.darken(c.base02, 40)
@@ -119,7 +117,7 @@ M.apply = function(c)
   hi.Type = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.Typedef = { guifg = c.base0A, guibg = nil, gui = nil, guisp = nil }
 
-
+  -- TODO: replace hard-coded hex colors with base16 variations
   c.diff00 = "#132e1f"
   c.diff01 = "#361f21"
   c.diff02 = "#403c32"
