@@ -10,8 +10,8 @@ local i = luasnip.insert_node
 local sn = luasnip.snippet_node
 local t = luasnip.text_node
 local types = require "luasnip.util.types"
+local p = require("luasnip.extras").partial
 
--- set default options
 luasnip.config.setup {
   history = true,
   enable_autosnippets = true,
@@ -22,7 +22,7 @@ luasnip.config.setup {
   ext_opts = {
     [types.choiceNode] = {
       active = {
-        virt_text = { { "choiceNode", "Comment" } },
+        virt_text = { { "●", "Comment" } },
       },
     },
   },
@@ -52,7 +52,7 @@ local function autopair(pair_begin, pair_end, ...)
     end
   end
   return s(
-    { trig = pair_begin, wordTrig = false },
+    { trig = pair_begin, wordTrig = false, hidden = true },
     { t { pair_begin }, i(1), t { pair_end } },
     { condition = part(negate, part(..., pair_begin, pair_end)) }
   )
@@ -67,22 +67,25 @@ luasnip.snippets = {
     autopair("'", "'", even_count),
     autopair('"', '"', even_count),
     autopair("`", "`", even_count),
-    s({ trig = "{;", wordTrig = false }, { t { "{", "\t" }, i(1), t { "", "}" }, i(0) }),
+    s({ trig = "{;", wordTrig = false, hidden = true }, { t { "{", "\t" }, i(1), t { "", "}" }, i(0) }),
+    s({ trig = "mdy", name = "Current date", dscr = "Insert the current date" }, {
+      p(os.date, "%m-%d-%Y"),
+    }),
   },
   lua = {
-    s({ trig = "[[-", wordTrig = false }, {
+    s({ trig = "[[-", wordTrig = false, hidden = true }, {
       t "--[[",
       t { "", "\t" },
       i(0),
       t { "", "--]]" },
     }),
-    s({ trig = "[[;", wordTrig = false }, {
+    s({ trig = "[[;", wordTrig = false, hidden = true }, {
       t "[[",
       t { "", "\t" },
       i(0),
       t { "", "]]" },
     }),
-    s({ trig = "ig", wordTrig = true }, {
+    s({ trig = "ig", wordTrig = true, hidden = true }, {
       t "-- stylua: ignore",
     }),
     s({ trig = "fn", wordTrig = true }, {
@@ -119,7 +122,7 @@ luasnip.snippets = {
       i(0),
       t { "", "end" },
     }),
-    s({ trig = "for", wordTrig = true }, {
+    s("for", {
       t "for ",
       c(1, {
         sn(nil, { i(1, "k"), t ", ", i(2, "v"), t " in ", c(3, { t "pairs", t "ipairs" }), t "(", i(4), t ")" }),
