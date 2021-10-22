@@ -56,6 +56,7 @@ telescope.setup {
         ["<c-d>"] = actions.preview_scrolling_down,
         ["<c-f>"] = actions.preview_scrolling_up,
         ["<c-s>"] = actions.select_horizontal,
+        ["<c-v>"] = actions.select_vertical,
         ["<c-y>"] = set_prompt_to_entry_value,
         ["jk"] = actions.close,
       },
