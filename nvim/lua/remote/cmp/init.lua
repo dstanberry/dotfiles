@@ -14,8 +14,6 @@ cmp.setup {
     end,
   },
   mapping = {
-    ["<up>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Select },
-    ["<down>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Select },
     ["<c-d>"] = cmp.mapping.scroll_docs(-4),
     ["<c-f>"] = cmp.mapping.scroll_docs(4),
     ["<c-space>"] = cmp.mapping.complete(),
