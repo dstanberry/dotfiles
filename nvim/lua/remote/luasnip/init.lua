@@ -22,7 +22,7 @@ luasnip.config.setup {
   ext_opts = {
     [types.choiceNode] = {
       active = {
-        virt_text = { { "●", "Comment" } },
+        virt_text = { { "﬘ ", "Comment" } },
       },
     },
   },
@@ -67,7 +67,12 @@ luasnip.snippets = {
     autopair("'", "'", even_count),
     autopair('"', '"', even_count),
     autopair("`", "`", even_count),
-    s({ trig = "{;", wordTrig = false, hidden = true }, { t { "{", "\t" }, i(1), t { "", "}" }, i(0) }),
+    s({ trig = "{;", wordTrig = false, hidden = true }, {
+      t { "{", "\t" },
+      i(1),
+      t { "", "}" },
+      i(0),
+    }),
     s({ trig = "mdy", name = "Current date", dscr = "Insert the current date" }, {
       p(os.date, "%m-%d-%Y"),
     }),
@@ -88,28 +93,28 @@ luasnip.snippets = {
     s({ trig = "ig", wordTrig = true, hidden = true }, {
       t "-- stylua: ignore",
     }),
-    s({ trig = "fn", wordTrig = true }, {
+    s({ trig = "fn", wordTrig = true, dscr = "function(param) .. end" }, {
       t "function(",
-      i(1),
-      t ")",
+      i(1, "_"),
+      t { ")", "\t" },
       i(0),
       t { "", "end" },
     }),
-    s({ trig = "lf", wordTrig = true }, {
+    s({ trig = "lf", wordTrig = true, dscr = "local function f(param) .. end" }, {
       t "local function ",
-      i(1),
+      i(1, "f"),
       t "(",
-      i(2),
+      i(2, "_"),
       t ")",
       t { "", "\t" },
       i(0),
       t { "", "end" },
     }),
-    s({ trig = "tf", wordTrig = true }, {
+    s({ trig = "tf", wordTrig = true, dscr = "local f = function(param) .. end" }, {
       t "local ",
-      i(1),
+      i(1, "f"),
       t " = function(",
-      i(2),
+      i(2, "_"),
       t ")",
       t { "", "\t" },
       i(0),
@@ -121,6 +126,14 @@ luasnip.snippets = {
       t { " then", "\t" },
       i(0),
       t { "", "end" },
+    }),
+    s({ trig = "lt", wordTrig = true, dscr = "local var = { .. }" }, {
+      t "local ",
+      i(1, "var"),
+      t " = {",
+      t { "", "\t" },
+      i(0),
+      t { "", "}" },
     }),
     s("for", {
       t "for ",
