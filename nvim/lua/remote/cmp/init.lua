@@ -5,7 +5,7 @@ if not ok then
 end
 
 cmp.setup {
-  documentation = false,
+  documentation = true,
   snippet = {
     expand = function(args)
       pcall(function()
