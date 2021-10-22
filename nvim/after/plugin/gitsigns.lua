@@ -4,17 +4,17 @@ if not ok then
   return
 end
 
-local c = require "ui.theme".colors
+local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 local map = require "util.map"
 
 signs.setup {
   signs = {
-    add = { hl = "GitSignsAdd", text = "│", numhl = "GitSignsAddNr" },
-    change = { hl = "GitSignsChange", text = "│", numhl = "GitSignsChangeNr" },
-    delete = { hl = "GitSignsDelete", text = "▸", numhl = "GitSignsDeleteNr" },
-    topdelete = { hl = "GitSignsDelete", text = "▾", numhl = "GitSignsDeleteNr" },
-    changedelete = { hl = "GitSignsDelete", text = "▍", numhl = "GitSignsChangeNr" },
+    add = { hl = "GitSignsAdd", text = "│" },
+    change = { hl = "GitSignsChange", text = "│" },
+    delete = { hl = "GitSignsDelete", text = "▸" },
+    topdelete = { hl = "GitSignsDelete", text = "▾" },
+    changedelete = { hl = "GitSignsDelete", text = "▍" },
   },
   numhl = false,
   update_debounce = 1000,
