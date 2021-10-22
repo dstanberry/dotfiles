@@ -4,8 +4,6 @@ if not ok then
   return
 end
 
-local util = require "util"
-
 cmp.setup {
   documentation = false,
   snippet = {
@@ -22,16 +20,14 @@ cmp.setup {
     ["<c-f>"] = cmp.mapping.scroll_docs(4),
     ["<c-space>"] = cmp.mapping.complete(),
     ["<esc>"] = cmp.mapping.close(),
-    ["<cr>"] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
-    },
+    ["<cr>"] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Insert, select = true },
   },
   sources = {
-    { name = "buffer", priority = 1, keyword_length = 5, max_item_count = 5 },
-    { name = "nvim_lsp", priority = 10 },
-    { name = "path", priority = 5 },
-    { name = "luasnip", priority = 15 },
+    { name = "nvim_lua" },
+    { name = "nvim_lsp" },
+    { name = "luasnip" },
+    { name = "path" },
+    { name = "buffer", keyword_length = 5, max_item_count = 5 },
   },
   formatting = {
     format = function(_, vim_item)
@@ -46,7 +42,7 @@ cmp.setup {
         Field = "陋 (field)",
         File = " (file)",
         Folder = " (folder)",
-        Function = " (function)",
+        Function = " (function)",
         Interface = " (interface)",
         Keyword = " (keyword)",
         Method = " (method)",
@@ -67,27 +63,5 @@ cmp.setup {
   },
   experimental = {
     ghost_text = true,
-  },
-}
-
-util.define_augroup {
-  name = "cmp_lua",
-  clear = true,
-  autocmds = {
-    {
-      event = "FileType",
-      pattern = "lua",
-      callback = function()
-        require("cmp").setup.buffer {
-          sources = {
-            { name = "buffer", priority = 1, keyword_length = 5, max_item_count = 5 },
-            { name = "luasnip", priority = 15 },
-            { name = "nvim_lsp", priority = 10 },
-            { name = "nvim_lua", priority = 10 },
-            { name = "path", priority = 5 },
-          },
-        }
-      end,
-    },
   },
 }
