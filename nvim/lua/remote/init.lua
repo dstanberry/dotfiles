@@ -24,6 +24,11 @@ local function plugins(use)
     "wincent/loupe",
     event = "BufRead",
     config = function()
+      local c = require("ui.theme").colors
+      local groups = require "ui.theme.groups"
+
+      groups.new("IncSearch", { guifg = c.base01, guibg = c.base0A, gui = "none", guisp = nil })
+
       vim.g.LoupeClearHighlightMap = 0
       vim.g.LoupeVeryMagic = 0
     end,

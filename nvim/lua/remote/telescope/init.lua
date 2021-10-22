@@ -19,6 +19,10 @@ local actions = require "telescope.actions"
 local builtin = require "telescope.builtin"
 local state = require "telescope.actions.state"
 
+local c = require("ui.theme").colors
+local color = require "util.color"
+local groups = require "ui.theme.groups"
+
 local set_prompt_to_entry_value = function(prompt_bufnr)
   local entry = state.get_selected_entry()
   if not entry or not type(entry) == "table" then
@@ -109,6 +113,19 @@ telescope.setup {
 pcall(telescope.load_extension "fzf")
 pcall(telescope.load_extension "gh")
 pcall(telescope.load_extension "notify")
+
+c.tele00 = color.darken(c.base0F, 43)
+
+groups.new("TelescopeSelection", { guifg = nil, guibg = c.tele00, gui = "bold", guisp = nil })
+groups.new("TelescopeSelectionCaret", { guifg = c.base04, guibg = c.tele00, gui = "bold", guisp = nil })
+groups.new("TelescopeMultiSelection", { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil })
+groups.new("TelescopeNormal", { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil })
+groups.new("TelescopeBorder", { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil })
+groups.new("TelescopePromptBorder", { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil })
+groups.new("TelescopeResultsBorder", { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil })
+groups.new("TelescopePreviewBorder", { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil })
+groups.new("TelescopeMatching", { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil })
+groups.new("TelescopePromptPrefix", { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil })
 
 local ignored = {
   "%.db",

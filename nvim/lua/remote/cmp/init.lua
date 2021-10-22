@@ -4,6 +4,9 @@ if not ok then
   return
 end
 
+local c = require("ui.theme").colors
+local groups = require "ui.theme.groups"
+
 cmp.setup {
   documentation = true,
   snippet = {
@@ -63,3 +66,10 @@ cmp.setup {
     ghost_text = true,
   },
 }
+
+groups.new("CmpItemAbbrDefault", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemAbbrDeprecatedDefault", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemAbbrMatchDefault", { guifg = c.base06, guibg = nil, gui = "bold", guisp = nil })
+groups.new("CmpItemAbbrMatchFuzzyDefault", { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil })
+groups.new("CmpItemItemDefault", { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemItemMenuDefault", { guifg = c.base10, guibg = nil, gui = "none", guisp = nil })

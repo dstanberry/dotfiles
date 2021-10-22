@@ -4,6 +4,8 @@ if not ok then
   return
 end
 
+local c = require "ui.theme".colors
+local groups = require "ui.theme.groups"
 local map = require "util.map"
 
 signs.setup {
@@ -34,3 +36,9 @@ map.nnoremap("<leader>hb", signs.toggle_current_line_blame)
 map.nnoremap("<leader>gb", function()
   signs.blame_line(true)
 end)
+
+groups.new("GitSignsAdd", { guifg = c.base0B, guibg = c.base00, gui = nil, guisp = nil })
+groups.new("GitSignsChange", { guifg = c.base0A, guibg = c.base00, gui = nil, guisp = nil })
+groups.new("GitSignsDelete", { guifg = c.base08, guibg = c.base00, gui = nil, guisp = nil })
+groups.new("GitSignsChangeDelete", { guifg = c.base09, guibg = c.base00, gui = nil, guisp = nil })
+groups.new("GitSignsCurrentLineBlame", { guifg = c.base03, guibg = nil, gui = "italic", guisp = nil })

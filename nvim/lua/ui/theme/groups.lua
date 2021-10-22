@@ -124,12 +124,6 @@ M.apply = function(c)
   hi.Type = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.Typedef = { guifg = c.base0A, guibg = nil, gui = nil, guisp = nil }
 
-  -- TODO: replace hard-coded hex colors with base16 variations
-  c.diff00 = "#132e1f"
-  c.diff01 = "#361f21"
-  c.diff02 = "#403c32"
-  c.diff03 = "#6B6458"
-
   -- diff highlighting
   hi.DiffAdd = { guifg = "none", guibg = c.diff00, gui = "none", guisp = nil }
   hi.DiffChange = { guifg = "none", guibg = c.diff02, gui = "none", guisp = nil }
@@ -158,12 +152,6 @@ M.apply = function(c)
   hi.gitcommitUnmergedFile = { guifg = c.base0F, guibg = nil, gui = "bold", guisp = nil }
   hi.gitcommitDiscardedFile = { guifg = c.base0F, guibg = nil, gui = "bold", guisp = nil }
   hi.gitcommitSelectedFile = { guifg = c.base0B, guibg = nil, gui = "bold", guisp = nil }
-
-  -- gitgutter highlighting
-  hi.GitGutterAdd = { guifg = c.base0B, guibg = c.base00, gui = nil, guisp = nil }
-  hi.GitGutterChange = { guifg = c.base0A, guibg = c.base00, gui = nil, guisp = nil }
-  hi.GitGutterDelete = { guifg = c.base08, guibg = c.base00, gui = nil, guisp = nil }
-  hi.GitGutterChangeDelete = { guifg = c.base09, guibg = c.base00, gui = nil, guisp = nil }
 
   -- spelling highlighting
   hi.SpellBad = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0F }
@@ -277,34 +265,6 @@ M.apply = function(c)
   hi.Custom4 = { guifg = c.base08, guibg = c.base02, gui = "none", guisp = nil }
   hi.Custom5 = { guifg = c.base0E, guibg = c.base02, gui = "none", guisp = nil }
   hi.Custom6 = { guifg = c.base09, guibg = c.base02, gui = "none", guisp = nil }
-
-  -- gitsigns highlighting
-  hi.GitSignsCurrentLineBlame = { guifg = c.base03, guibg = nil, gui = "italic", guisp = nil }
-
-  -- loupe highlighting
-  hi.IncSearch = { guifg = c.base01, guibg = c.base0A, gui = "none", guisp = nil }
-
-  -- nvim-cmp highlighting
-  hi.CmpItemAbbrDefault = { guifg = c.base04, guibg = nil, gui = "none", guisp = nil }
-  hi.CmpItemAbbrDeprecatedDefault = { guifg = c.base04, guibg = nil, gui = "none", guisp = nil }
-  hi.CmpItemAbbrMatchDefault = { guifg = c.base06, guibg = nil, gui = "bold", guisp = nil }
-  hi.CmpItemAbbrMatchFuzzyDefault = { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil }
-  hi.CmpItemItemDefault = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
-  hi.CmpItemItemMenuDefault = { guifg = c.base10, guibg = nil, gui = "none", guisp = nil }
-
-  c.tele00 = color.darken(c.base0F, 43)
-
-  -- telescope highlighting
-  hi.TelescopeSelection = { guifg = nil, guibg = c.tele00, gui = "bold", guisp = nil }
-  hi.TelescopeSelectionCaret = { guifg = c.base04, guibg = c.tele00, gui = "bold", guisp = nil }
-  hi.TelescopeMultiSelection = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
-  hi.TelescopeNormal = { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil }
-  hi.TelescopeBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
-  hi.TelescopePromptBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
-  hi.TelescopeResultsBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
-  hi.TelescopePreviewBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
-  hi.TelescopeMatching = { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil }
-  hi.TelescopePromptPrefix = { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil }
 
   -- ensure termguicolors is set (likely redundant)
   vim.opt.termguicolors = true
