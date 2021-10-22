@@ -79,7 +79,7 @@ vim.opt.pastetoggle = "<F2>"
 -- extend path to include current directory
 vim.opt.path:append "**"
 -- opacity for popup menu
-vim.opt.pumblend = 20
+vim.opt.pumblend = 0
 -- the maximum number of entries shown in completion menu
 vim.opt.pumheight = 5
 -- show line numbers relative to current line
