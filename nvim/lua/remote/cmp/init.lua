@@ -5,6 +5,7 @@ if not ok then
 end
 
 local c = require("ui.theme").colors
+local color = require "util.color"
 local groups = require "ui.theme.groups"
 
 cmp.setup {
@@ -67,9 +68,11 @@ cmp.setup {
   },
 }
 
+c.comp00 = color.lighten(c.base0D, 15)
+
 groups.new("CmpItemAbbrDefault", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
 groups.new("CmpItemAbbrDeprecatedDefault", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
-groups.new("CmpItemAbbrMatchDefault", { guifg = c.base06, guibg = nil, gui = "bold", guisp = nil })
+groups.new("CmpItemAbbrMatchDefault", { guifg = c.comp00, guibg = nil, gui = "bold", guisp = nil })
 groups.new("CmpItemAbbrMatchFuzzyDefault", { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil })
 groups.new("CmpItemItemDefault", { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil })
 groups.new("CmpItemItemMenuDefault", { guifg = c.base10, guibg = nil, gui = "none", guisp = nil })
