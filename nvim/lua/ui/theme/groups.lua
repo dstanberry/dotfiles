@@ -285,8 +285,6 @@ M.apply = function(c)
   vim.g.terminal_color_13 = c.base0E
   vim.g.terminal_color_14 = c.base0C
   vim.g.terminal_color_15 = c.base07
-  -- set colorscheme name
-  vim.g.colors_name = "base16-kdark"
 end
 
 return M
