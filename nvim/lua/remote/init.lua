@@ -163,32 +163,34 @@ local function plugins(use)
 
   -- text manipulation
   use {
-    "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
-    opt = true,
-    config = function()
-      require "remote.cmp"
-    end,
-    requires = {
-      {
-        "L3MON4D3/LuaSnip",
-        wants = "friendly-snippets",
-        config = function()
-          require "remote.luasnip"
-          require "remote.luasnip.keymap"
-        end,
+    {
+      "hrsh7th/nvim-cmp",
+      event = "InsertEnter",
+      opt = true,
+      config = function()
+        require "remote.cmp"
+      end,
+      requires = {
+        {
+          "L3MON4D3/LuaSnip",
+          wants = "friendly-snippets",
+          config = function()
+            require "remote.luasnip"
+            require "remote.luasnip.keymap"
+          end,
+        },
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-nvim-lua",
+        "hrsh7th/cmp-path",
+        "saadparwaiz1/cmp_luasnip",
       },
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-nvim-lua",
-      "hrsh7th/cmp-path",
-      "saadparwaiz1/cmp_luasnip",
-      "cstrap/python-snippets",
-      "honza/vim-snippets",
-      "J0rgeSerran0/vscode-csharp-snippets",
-      "keyring/vsc-lua",
-      "rafamadriz/friendly-snippets",
     },
+    { "cstrap/python-snippets", opt = true },
+    { "honza/vim-snippets", opt = true },
+    { "J0rgeSerran0/vscode-csharp-snippets", opt = true },
+    { "keyring/vsc-lua", opt = true },
+    { "rafamadriz/friendly-snippets", opt = true },
   }
   use { "numToStr/Comment.nvim" }
 
