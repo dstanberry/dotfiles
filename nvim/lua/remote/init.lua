@@ -18,6 +18,7 @@ local function plugins(use)
 
   -- hacks (until merged/fixed in upstream)
   use { "antoinemadec/FixCursorHold.nvim" }
+  use { "nathom/filetype.nvim" }
 
   -- written in vimscript
   use {

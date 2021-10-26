@@ -1,12 +1,9 @@
 ---------------------------------------------------------------
 -- => Neovim Configuration
 ---------------------------------------------------------------
--- define a primary leader key
 vim.g.mapleader = " "
--- define a secondary leader key
 vim.g.maplocalleader = ","
 
--- use proper syntax highlighting in code blocks
 vim.g.markdown_fenced_languages = {
   "bash=sh",
   "console=sh",
@@ -23,31 +20,25 @@ vim.g.markdown_fenced_languages = {
   "zsh=sh",
 }
 
--- disable the following builtin plugins
-local builtins = {
-  "netrw",
-  "netrwPlugin",
-  "netrwSettings",
-  "netrwFileHandlers",
-  "gzip",
-  "zip",
-  "zipPlugin",
-  "tar",
-  "tarPlugin",
-  "getscript",
-  "getscriptPlugin",
-  "vimball",
-  "vimballPlugin",
-  "2html_plugin",
-  "logipat",
-  "rrhelper",
-  "spellfile_plugin",
-  "matchit",
-}
-
-for _, v in ipairs(builtins) do
-  vim.g["loaded_" .. v] = 1
-end
+vim.g.did_load_filetype = 1
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrwSettings = 1
+vim.g.loaded_netrwFileHandlers = 1
+vim.g.loaded_gzip = 1
+vim.g.loaded_zip = 1
+vim.g.loaded_zipPlugin = 1
+vim.g.loaded_tar = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_getscript = 1
+vim.g.loaded_getscriptPlugin = 1
+vim.g.loaded_vimball = 1
+vim.g.loaded_vimballPlugin = 1
+vim.g.loaded_2html_plugin = 1
+vim.g.loaded_logipat = 1
+vim.g.loaded_rrhelper = 1
+vim.g.loaded_spellfile_plugin = 1
+vim.g.loaded_matchit = 1
 
 local cache = vim.env.XDG_CACHE_HOME
 local backup = string.format("%s/nvim/backup", cache)
@@ -55,25 +46,17 @@ local swap = string.format("%s/nvim/swap", cache)
 local undo = string.format("%s/nvim/undo", cache)
 local shada = string.format("%s/nvim/shada", cache)
 
--- ensure backup directory exists
 vim.fn.mkdir(backup, "p")
--- ensure swap directory exists
 vim.fn.mkdir(swap, "p")
--- ensure undo directory exists
 vim.fn.mkdir(undo, "p")
--- ensure shada directory exists
 vim.fn.mkdir(shada, "p")
 
--- define colorscheme
 vim.cmd "colorscheme base16-kdark"
 
--- define statusline
 require("util").reload("ui.statusline").setup()
 
--- load global scope functions
 require "util.globals"
 
--- load remote plugins
 vim.defer_fn(function()
   require "remote"
   require("util").load_dirhash(vim.env.SHELL)
