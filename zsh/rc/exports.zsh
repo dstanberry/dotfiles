@@ -74,7 +74,13 @@ if hash fzf 2> /dev/null; then
 
   # define default options for fzf
   if hash bat 2> /dev/null; then
-    __fzf_preview_opts="--ansi --preview-window 'right:60%' "
+    __fzf_preview_opts="
+--cycle
+--layout=reverse
+--border
+--ansi
+--preview-window 'right:60%'
+--height=40%"
     export FZF_DEFAULT_OPTS=$__fzf_preview_opts
     unset __fzf_preview_opts
   fi
