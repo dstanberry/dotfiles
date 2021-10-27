@@ -1,5 +1,3 @@
-_G.reload = require("util").reload
-
 _G.dump = function(...)
   print(vim.inspect(...))
 end
@@ -20,3 +18,5 @@ _G.profile = function(cmd, times)
   end
   print(((vim.loop.hrtime() - start) / 1000000 / times) .. "ms")
 end
+
+_G.reload = require("util").reload
