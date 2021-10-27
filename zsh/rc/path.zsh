@@ -22,6 +22,11 @@ if hash cargo 2> /dev/null; then
   unset CARGO
 fi
 
+# forgit integration
+if test -e "$HOME/Git/forgit"; then
+  export PATH="$PATH:$HOME/Git/forgit/bin"
+fi
+
 # add go binaries to path if present
 if hash go 2> /dev/null; then
   GO="${GOPATH}/bin"

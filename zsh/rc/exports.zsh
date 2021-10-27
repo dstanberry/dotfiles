@@ -224,3 +224,8 @@ fi
 
 # define configuration path for pyenv
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
+
+# forgit integration
+if test -e "$HOME/Git/forgit"; then
+  export FORGIT_NO_ALIASES="true"
+fi

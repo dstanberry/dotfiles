@@ -432,6 +432,11 @@ if test -e "$HOME/Git/kitty/shell-integration/kitty.zsh"; then
   source "$HOME/Git/kitty/shell-integration/kitty.zsh";
 fi
 
+# forgit integration
+if test -e "$HOME/Git/forgit"; then
+  source "$HOME/Git/forgit/forgit.plugin.zsh";
+fi
+
 ###############################################################
 # Fstab (tmpfs for WSL)
 ###############################################################
