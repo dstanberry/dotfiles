@@ -45,6 +45,12 @@ function fd() {
   command fd -H "$@"
 }
 
+# fuzzy search for files in the current directory and open in (n)vim
+function fe() {
+  IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
+  [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
+}
+
 # find in history
 function fh() {
   print -z "$( ([ -n "$ZSH_NAME" ] && fc -l 1) || history \
