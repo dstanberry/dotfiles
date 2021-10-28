@@ -18,11 +18,13 @@ cmp.setup {
     end,
   },
   mapping = {
-    ["<c-d>"] = cmp.mapping.scroll_docs(-4),
-    ["<c-f>"] = cmp.mapping.scroll_docs(4),
-    ["<c-space>"] = cmp.mapping.complete(),
-    ["<esc>"] = cmp.mapping.close(),
-    ["<cr>"] = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Insert, select = true },
+    -- ["<down>"] = cmp.mapping(cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert }, { "i", "c" }),
+    -- ["<up>"] = cmp.mapping(cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert }, { "i", "c" }),
+    ["<c-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
+    ["<c-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
+    ["<c-space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+    ["<esc>"] = cmp.mapping { i = cmp.mapping.abort(), c = cmp.mapping.close() },
+    ["<cr>"] = cmp.mapping.confirm { select = true },
   },
   sources = {
     { name = "nvim_lua" },
@@ -67,6 +69,22 @@ cmp.setup {
     ghost_text = true,
   },
 }
+
+--[[ cmp.setup.cmdline('/', {
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp_document_symbol' }
+  }, {
+    { name = 'buffer' }
+  })
+}) --]]
+
+--[[ cmp.setup.cmdline(":", {
+  sources = cmp.config.sources({
+    { name = "path" },
+  }, {
+    { name = "cmdline" },
+  }),
+}) --]]
 
 c.comp00 = color.lighten(c.base0D, 15)
 
