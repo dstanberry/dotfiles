@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # trim duplicate occurences from a string
 get_var() {
   eval 'printf "%s\n" "${'"$1"'}"'

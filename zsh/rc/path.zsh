@@ -1,3 +1,5 @@
+# shellcheck disable=SC2148
+
 # add ruby gems to path if present
 if hash gem 2> /dev/null; then
   OLDIFS=$IFS
