@@ -30,9 +30,11 @@ end)
 map.nnoremap("<leader>fk", function()
   util.reload("remote.telescope").help_tags()
 end)
-map.nnoremap("<leader>fn", function()
-  util.reload("remote.telescope").find_files { cwd = vim.env.hash_n }
-end)
+if vim.env.hash_n then
+  map.nnoremap("<leader>fn", function()
+    util.reload("remote.telescope").find_files { cwd = vim.env.hash_n }
+  end)
+end
 map.nnoremap("<leader>fp", function()
   util.reload("remote.telescope").find_plugins()
 end)
