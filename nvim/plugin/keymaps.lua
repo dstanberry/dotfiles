@@ -174,6 +174,9 @@ end, {
 -- discard all file modifications and close instance
 nnoremap("<localleader>qq", "ZQ")
 
+-- open a scratch buffer with custom provided filetype
+nnoremap("<localleader>ws", require("util.buffer").create_scratch_buffer)
+
 -- execute current line
 nnoremap("<localleader>x", function()
   local ft = vim.bo.filetype
