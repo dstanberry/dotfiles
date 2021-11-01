@@ -4,7 +4,7 @@ if [[ $# -eq 0 ]]; then
   path=$PWD
 elif [[ $# -eq 1 ]]; then
   if [ "$1" == "fzf" ]; then
-    path=$(find "$HOME" "$HOME/Git" "$HOME/Projects" -mindepth 1 -maxdepth 1 | fzf --reverse)
+    path=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" -mindepth 1 -maxdepth 1 | fzf --reverse)
     if [ "$path" == "" ]; then
       exit 0
     fi
