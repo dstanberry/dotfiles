@@ -38,6 +38,18 @@ export XDG_CONFIG_HOME="${HOME}/.config"
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh/"
 ```
 
+_Note on bash/zsh:_
+
+Machine specific settings can be defined within {bash,zsh}/rc.private/ if desired. The directory will be created automatically if it does not exist.
+In particular during startup vim and neovim will check if the current shell has a file called `hashes.zsh` or `hashes.bash` (depending on the running shell) and will define each path as an environment variable within the editor.
+
+```zsh
+# (example content of hashes.zsh)
+hash -d proj=/home/<user>/Projects/foo/bar
+...
+
+```
+
 Git (Optional):
 Have the global `.gitconfig` file include the configurations maintained here.
 
