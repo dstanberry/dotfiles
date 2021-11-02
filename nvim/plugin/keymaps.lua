@@ -198,7 +198,7 @@ nnoremap("<localleader>z", "<cmd>bdelete!<cr>", { silent = true })
 -- insert newline above current line
 inoremap("<c-enter>", "<c-o>O")
 -- insert newline below current line
-inoremap("<s-enter>", "<c-o>o")
+inoremap("<a-enter>", "<c-o>o")
 
 -- shift current line down
 inoremap("<c-j>", "<esc>:m .+1<cr>==i")
