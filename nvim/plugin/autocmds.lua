@@ -32,6 +32,13 @@ util.define_augroup {
     },
     {
       event = { "BufRead", "BufNewFile" },
+      pattern = "*.scm",
+      callback = function()
+        vim.bo.filetype = "query"
+      end,
+    },
+    {
+      event = { "BufRead", "BufNewFile" },
       pattern = { "*.vifm", "vifmrc" },
       callback = function()
         vim.bo.filetype = "vim"
@@ -56,7 +63,7 @@ util.define_augroup {
       pattern = "COMMIT_EDITMSG",
       callback = function()
         vim.fn.setpos(".", { 0, 1, 1, 0 })
-        vim.cmd "startinsert"
+        vim.cmd [[startinsert]]
       end,
     },
   },

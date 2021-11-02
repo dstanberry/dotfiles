@@ -30,6 +30,6 @@ zen.setup {
     },
   },
   on_close = function()
-    vim.cmd "doautocmd BufWinEnter"
+    vim.cmd [[doautocmd BufWinEnter]]
   end,
 }
