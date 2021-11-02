@@ -1,13 +1,13 @@
--- verify tree-sitter is available
+-- verify nvim-treesitter is available
 if not pcall(require, "nvim-treesitter") then
   return
 end
 
--- set default options
 require("nvim-treesitter.configs").setup {
   ensure_installed = "maintained",
   context_commentstring = {
     enable = true,
+    enable_autocmd = false,
   },
   highlight = {
     enable = true,
