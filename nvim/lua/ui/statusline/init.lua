@@ -1,5 +1,7 @@
-local hi = require "ui.statusline.highlight"
+local util = require "util"
+
 local data = require "ui.statusline.data"
+local hi = require "ui.statusline.highlight"
 local lsp = require "ui.statusline.lsp"
 local views = require "ui.statusline.views"
 
@@ -212,7 +214,7 @@ M.dim = function(win_id)
 end
 
 M.setup = function()
-  require("util").define_augroup {
+  util.define_augroup {
     name = "statusline",
     clear = true,
     autocmds = {
