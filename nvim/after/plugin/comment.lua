@@ -12,12 +12,18 @@ comment.setup {
     extra = true,
     extended = true,
   },
-  toggler = {
-    line = "gcc",
-    block = "gbc",
-  },
   opleader = {
     line = "gc",
     block = "gb",
   },
+  toggler = {
+    line = "gcc",
+    block = "gbc",
+  },
+  pre_hook = function(ctx)
+    local cutils = require "Comment.utils"
+    local ts = require "ts_context_commentstring.internal"
+    local type = ctx.ctype == cutils.ctype.line and "__default" or "__multiline"
+    return pcall(ts.calculate_commentstring { key = type })
+  end,
 }
