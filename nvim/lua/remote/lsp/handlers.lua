@@ -1,27 +1,23 @@
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-  border = "single",
-})
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-  border = "single",
-})
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-  border = "single",
-})
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-  border = "single",
-})
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-  underline = false,
-  update_in_insert = false,
+vim.diagnostic.config {
   severity_sort = true,
   signs = true,
-  virtual_text = { prefix = "▪", spacing = 4 },
-})
+  underline = true,
+  update_in_insert = false,
+  float = {
+    border = "single",
+    show_header = true,
+    source = "always",
+  },
+  virtual_text = {
+    prefix = "▪",
+    source = "if_many",
+    spacing = 4,
+  },
+}
 
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 for type, icon in pairs(signs) do
-  local hl = "DiagnosticSign" .. type
+  local hl = string.format("DiagnosticSign%s", type)
   vim.fn.sign_define(hl, { text = icon, texthl = hl })
 end
 

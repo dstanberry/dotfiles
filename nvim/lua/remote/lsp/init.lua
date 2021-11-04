@@ -1,4 +1,4 @@
--- verify lspconfig and nlua-nvim are available
+-- verify lspconfig is available
 local ok, lspconfig = pcall(require, "lspconfig")
 if not ok then
   return
@@ -25,18 +25,6 @@ local on_attach_nvim = function(client, bufnr)
     }
   end
 
-  local show_line_diagnostics = function()
-    vim.diagnostic.show_line_diagnostics { border = "single" }
-  end
-
-  local goto_next = function()
-    vim.diagnostic.goto_next { popup_opts = { border = "single" } }
-  end
-
-  local goto_prev = function()
-    vim.diagnostic.goto_prev { popup_opts = { border = "single" } }
-  end
-
   local list_workspace_folders = function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end
@@ -51,9 +39,8 @@ local on_attach_nvim = function(client, bufnr)
   nnoremap("gr", vim.lsp.buf.references, { buffer = bufnr })
   nnoremap("gs", vim.lsp.buf.document_symbol, { buffer = bufnr })
   nnoremap("g/", vim.lsp.buf.rename, { buffer = bufnr })
-  nnoremap("g.", show_line_diagnostics, { buffer = bufnr })
-  nnoremap("gn", goto_next, { buffer = bufnr })
-  nnoremap("gp", goto_prev, { buffer = bufnr })
+  nnoremap("gn", vim.diagnostic.goto_next, { buffer = bufnr })
+  nnoremap("gp", vim.diagnostic.goto_prev, { buffer = bufnr })
   nnoremap("<localleader>wl", list_workspace_folders, { buffer = bufnr })
   nnoremap("<localleader>wa", vim.lsp.buf.add_workspace_folder, { buffer = bufnr })
   nnoremap("<localleader>wr", vim.lsp.buf.remove_workspace_folder, { buffer = bufnr })
