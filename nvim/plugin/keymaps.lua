@@ -174,7 +174,7 @@ end, {
 nnoremap("<localleader>qq", "ZQ")
 
 -- open a scratch buffer with custom provided filetype
-nnoremap("<localleader>ws", require("util.buffer").create_scratch_buffer)
+nnoremap("<localleader>ws", require("util").buffer.create_scratch_buffer)
 
 -- execute current line
 nnoremap("<localleader>x", function()
@@ -244,7 +244,7 @@ xnoremap("K", ":move -2<cr>gv=gv")
 ---------------------------------------------------------------
 -- begin substitution in buffer for visual selection
 vnoremap("<c-w><c-r>", function()
-  local selection = util.get_visual_selection()
+  local selection = util.buffer.get_visual_selection()
   return util.map.t((":<c-u>%%s/%s/"):format(selection))
 end, {
   silent = false,
@@ -264,7 +264,7 @@ vnoremap("<leader>x", function()
     end
     return unpack(res)
   end
-  local selection = util.get_visual_selection(true)
+  local selection = util.buffer.get_visual_selection(true)
   local ft = vim.bo.filetype
   local out = ""
   if ft == "vim" then
