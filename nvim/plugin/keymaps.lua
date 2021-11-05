@@ -265,7 +265,7 @@ vnoremap("<leader>x", function()
     end
     return unpack(res)
   end
-  local selection = util.get_visual_selection(clear)
+  local selection = util.get_visual_selection(true)
   local ft = vim.bo.filetype
   local out = ""
   if ft == "vim" then
