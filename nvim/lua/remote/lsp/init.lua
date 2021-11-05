@@ -9,12 +9,12 @@ end
 -- vim.cmd('e'..vim.lsp.get_log_path())
 
 local on_attach_nvim = function(client, bufnr)
-  local map = require "util.map"
-  local nnoremap = map.nnoremap
-  local vnoremap = map.vnoremap
+  local util = require "util"
+  local nnoremap = util.map.nnoremap
+  local vnoremap = util.map.vnoremap
 
   if client.resolved_capabilities.document_highlight then
-    require("util").define_augroup {
+    util.define_augroup {
       name = "lsp_document_highlight",
       buf = true,
       clear = true,

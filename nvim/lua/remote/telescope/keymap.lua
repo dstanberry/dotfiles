@@ -4,7 +4,7 @@ if not pcall(require, "telescope") then
 end
 
 local util = require "util"
-local map = require "util.map"
+local map = util.map
 
 map.nnoremap("<localleader><localleader>", function()
   util.reload("remote.telescope").find_nvim()

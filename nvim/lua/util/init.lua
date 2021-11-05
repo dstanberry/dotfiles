@@ -1,5 +1,10 @@
 local M = {}
 
+M.color = require "util.color"
+M.buffer = require "util.buffer"
+M.map = require "util.map"
+M.packer = require "util.packer"
+
 function M.reload(name)
   local ok, r = pcall(require, "plenary.reload")
   if ok then

@@ -1,6 +1,8 @@
 ---------------------------------------------------------------
 -- => Neovim Configuration
 ---------------------------------------------------------------
+local util = require "util"
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
@@ -53,11 +55,11 @@ vim.fn.mkdir(shada, "p")
 
 vim.cmd [[colorscheme base16-kdark]]
 
-require("util").reload("ui.statusline").setup()
+util.reload("ui.statusline").setup()
 
 require "util.globals"
 
 vim.defer_fn(function()
   require "remote"
-  require("util").load_dirhash(vim.env.SHELL)
+  util.load_dirhash(vim.env.SHELL)
 end, 0)

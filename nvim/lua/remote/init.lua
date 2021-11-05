@@ -1,4 +1,4 @@
-local packer = require "util.packer"
+local util = require "util"
 
 local config = {
   profile = {
@@ -226,4 +226,4 @@ local function plugins(use)
   use { "aserowy/tmux.nvim" }
 end
 
-return packer.setup(config, plugins)
+return util.packer.setup(config, plugins)

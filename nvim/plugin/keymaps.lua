@@ -1,14 +1,13 @@
 local util = require "util"
-local map = require "util.map"
 
-local cnoremap = map.cnoremap
-local inoremap = map.inoremap
-local nnoremap = map.nnoremap
-local vnoremap = map.vnoremap
-local xnoremap = map.xnoremap
+local cnoremap = util.map.cnoremap
+local inoremap = util.map.inoremap
+local nnoremap = util.map.nnoremap
+local vnoremap = util.map.vnoremap
+local xnoremap = util.map.xnoremap
 
-local nmap = map.nmap
-local vmap = map.vmap
+local nmap = util.map.nmap
+local vmap = util.map.vmap
 
 ---------------------------------------------------------------
 -- => Normal
@@ -33,9 +32,9 @@ nnoremap("<cr>", function()
     if vim.g.LoupeLoaded == 1 then
       vim.fn["loupe#private#clear_highlight"]()
     end
-    return map.t "<cmd>nohl<cr>"
+    return util.map.t "<cmd>nohl<cr>"
   else
-    return map.t "<cr>"
+    return util.map.t "<cr>"
   end
 end, {
   expr = true,
@@ -146,7 +145,7 @@ nnoremap("<localleader>c", ":<up>", { silent = false })
 -- create/edit file within the current directory
 nnoremap("<localleader>e", function()
   local path = vim.fn.expand "%:p:h"
-  return map.t((":edit %s/"):format(path))
+  return util.map.t((":edit %s/"):format(path))
 end, {
   silent = false,
   expr = true,
@@ -165,7 +164,7 @@ end, {
 -- save as new file within the current directory
 nnoremap("<localleader>s", function()
   local path = vim.fn.expand "%:p:h"
-  return map.t((":saveas %s/"):format(path))
+  return util.map.t((":saveas %s/"):format(path))
 end, {
   silent = false,
   expr = true,
@@ -246,7 +245,7 @@ xnoremap("K", ":move -2<cr>gv=gv")
 -- begin substitution in buffer for visual selection
 vnoremap("<c-w><c-r>", function()
   local selection = util.get_visual_selection()
-  return map.t((":<c-u>%%s/%s/"):format(selection))
+  return util.map.t((":<c-u>%%s/%s/"):format(selection))
 end, {
   silent = false,
   expr = true,
@@ -294,9 +293,9 @@ cnoremap("<up>", function()
     visible = cmp.visible()
   end
   if vim.fn.pumvisible() == 1 or visible then
-    return map.t "<c-p>"
+    return util.map.t "<c-p>"
   else
-    return map.t "<up>"
+    return util.map.t "<up>"
   end
 end, {
   silent = false,
@@ -309,9 +308,9 @@ cnoremap("<down>", function()
     visible = cmp.visible()
   end
   if vim.fn.pumvisible() == 1 or visible then
-    return map.t "<c-n>"
+    return util.map.t "<c-n>"
   else
-    return map.t "<down>"
+    return util.map.t "<down>"
   end
 end, {
   silent = false,
@@ -323,21 +322,21 @@ cnoremap("jk", "<c-c>")
 
 -- populate command line with path to file of current buffer
 cnoremap("%H", function()
-  return map.t(vim.fn.expand "%:p:h" .. "/")
+  return util.map.t(vim.fn.expand "%:p:h" .. "/")
 end, {
   silent = false,
   expr = true,
 })
 -- populate command line with file name of current buffer
 cnoremap("%T", function()
-  return map.t(vim.fn.expand "%:t")
+  return util.map.t(vim.fn.expand "%:t")
 end, {
   silent = false,
   expr = true,
 })
 -- populate command line with path to parent dir of current buffer
 cnoremap("%P", function()
-  return map.t(vim.fn.expand "%:p")
+  return util.map.t(vim.fn.expand "%:p")
 end, {
   silent = false,
   expr = true,
