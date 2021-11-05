@@ -46,7 +46,7 @@ function M.get_marked_region(mark1, mark2, options)
   return region, start, finish
 end
 
-function M.get_visual_selection(clear)
+function M.get_visual_selection()
   local bufnr = 0
   local visual_modes = {
     v = true,
@@ -54,9 +54,6 @@ function M.get_visual_selection(clear)
   }
   if visual_modes[vim.api.nvim_get_mode().mode] == nil then
     return
-  end
-  if clear then
-    vim.cmd [[execute "normal! \<esc>"]]
   end
   local options = {}
   options.adjust = function(pos1, pos2)
