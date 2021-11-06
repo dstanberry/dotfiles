@@ -85,4 +85,13 @@ function M.get_visual_selection()
   return table.concat(lines)
 end
 
+function M.get_syntax_hl_group()
+  local win_id = vim.api.nvim_get_current_win()
+  local cursor = vim.api.nvim_win_get_cursor(win_id)
+  local stack = vim.fn.synstack(cursor[1], cursor[2])
+  dump(vim.tbl_map(function(entry)
+    return vim.fn.synIDattr(entry, "name")
+  end, stack))
+end
+
 return M
