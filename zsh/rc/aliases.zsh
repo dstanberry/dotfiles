@@ -30,6 +30,15 @@ else
   fi
 fi
 
+# create directory if it does not already exist
+alias mkdir="mkdir -p"
+
+# show mount output in table format
+alias mount='mount | column -t'
+
+# list all active tcp/udp ports
+alias ports='sudo netstat -tulanp'
+
 # define alias to reload zsh configuration
 alias reload='source "${ZSH_CONFIG_HOME}/.zshrc"'
 
