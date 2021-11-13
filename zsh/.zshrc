@@ -438,11 +438,11 @@ if test -e "$HOME/Git/forgit"; then
 fi
 
 ###############################################################
-# Fstab (tmpfs for WSL)
+# fstab (tmpfs for WSL)
 ###############################################################
 # ensure tmpfs is mounted
-if is_wsl; then
-  if ! mount | grep -E "^[^ ]* on /tmp " >/dev/null; then
-    sudo mount -t tmpfs tmpfs /tmp -o defaults,nodev,nosuid,noatime,size=10g
-  fi
-fi
+# if is_wsl; then
+#   if ! mount | grep -E "^[^ ]* on /tmp " >/dev/null; then
+#     sudo mount -t tmpfs tmpfs /tmp -o defaults,nodev,nosuid,noatime,size=10g
+#   fi
+# fi
