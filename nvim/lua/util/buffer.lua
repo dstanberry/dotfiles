@@ -94,4 +94,11 @@ function M.get_syntax_hl_group()
   end, stack))
 end
 
+function M.sudo_write()
+  if vim.bo.readonly then
+    vim.cmd [[ silent write !env SUDO_EDITOR=tee VISUAL=tee sudo -e "%" >/dev/null ]]
+    vim.bo.modified = vim.v.shell_error > 0 or false
+  end
+end
+
 return M
