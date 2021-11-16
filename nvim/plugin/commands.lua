@@ -9,4 +9,3 @@ util.define_command {
   name = "S",
   callback = util.buffer.create_scratch_buffer,
 }
-
