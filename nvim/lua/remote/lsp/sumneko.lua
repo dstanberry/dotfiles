@@ -14,7 +14,7 @@ else
   return
 end
 
-local sumneko_root_path = string.format("%s/lspconfig/sumneko_lua/lua-language-server", vim.fn.stdpath "cache")
+local sumneko_root_path = string.format("%s/lspconfig/sumneko_lua/lua-language-server", vim.fn.stdpath "data")
 local sumneko_binary = string.format("%s/bin/%s/lua-language-server", sumneko_root_path, system_name)
 
 local M = {}
