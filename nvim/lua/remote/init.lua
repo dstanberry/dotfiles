@@ -203,16 +203,20 @@ local function plugins(use)
       require "remote.dap.keymap"
     end,
     wants = {
-      "nvim-dap-python",
       "nvim-dap-ui",
       "nvim-dap-virtual-text",
       "one-small-step-for-vimkind",
     },
     requires = {
       "jbyuki/one-small-step-for-vimkind",
-      "mfussenegger/nvim-dap-python",
       "rcarriga/nvim-dap-ui",
       "theHamsta/nvim-dap-virtual-text",
+      {
+        "Pocco81/DAPInstall.nvim",
+        config = function()
+          require "remote.dap.debuggers"
+        end,
+      },
     },
   }
   use { "michaelb/sniprun", run = "bash ./install.sh", cmd = "SnipRun", opt = true }

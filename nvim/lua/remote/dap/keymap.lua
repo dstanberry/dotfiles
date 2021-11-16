@@ -1,18 +1,32 @@
+local ok, dap = pcall(require, "dap")
+if not ok then
+  return
+end
+
 local map = require "util.map"
 
--- define keymaps
 map.nnoremap("<localleader>db", function()
-  require("dap").toggle_breakpoint()
+  dap.toggle_breakpoint()
 end)
 map.nnoremap("<localleader>dr", function()
-  require("dap").repl_open()
+  dap.repl_open()
 end)
 map.nnoremap("<localleader>dh", function()
-  require("dap.ui.variables").hover()
+  require("dap.ui.widgets").hover()
 end)
+map.nnoremap("<localleader>dq", function()
+  dap.stop()
+end)
+
 map.nnoremap("<f5>", function()
-  require("dap").continue()
+  dap.continue()
+end)
+map.nnoremap("<f6>", function()
+  dap.step_into()
+end)
+map.nnoremap("<f7>", function()
+  dap.step_out()
 end)
 map.nnoremap("<f10>", function()
-  require("dap").step_over()
+  dap.step_over()
 end)
