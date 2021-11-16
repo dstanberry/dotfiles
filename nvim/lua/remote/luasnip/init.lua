@@ -4,13 +4,9 @@ if not ok then
   return
 end
 
-local s = luasnip.snippet
-local c = luasnip.choice_node
-local i = luasnip.insert_node
-local sn = luasnip.snippet_node
-local t = luasnip.text_node
+local M = {}
+
 local types = require "luasnip.util.types"
-local p = require("luasnip.extras").partial
 
 luasnip.config.setup {
   history = true,
@@ -28,136 +24,18 @@ luasnip.config.setup {
   },
 }
 
-local function char_count_same(c1, c2)
-  local line = vim.api.nvim_get_current_line()
-  local _, ct1 = string.gsub(line, "%" .. c1, "")
-  local _, ct2 = string.gsub(line, "%" .. c2, "")
-  return ct1 == ct2
-end
+local snippets = {
+  "_default",
+  "lua",
+}
 
-local function even_count(char)
-  local line = vim.api.nvim_get_current_line()
-  local _, ct = string.gsub(line, char, "")
-  return ct % 2 == 0
-end
-
-local function autopair(pair_begin, pair_end, ...)
-  local function negate(fn, ...)
-    return not fn(...)
-  end
-  local function part(func, ...)
-    local args = { ... }
-    return function()
-      return func(unpack(args))
+for _, snippet in ipairs(snippets) do
+  local config = require(("remote.luasnip.snippets.%s"):format(snippet)).config
+  if type(config) == "table" then
+    for k, v in pairs(config) do
+      luasnip.snippets[k] = v
     end
   end
-  return s(
-    { trig = pair_begin, wordTrig = false, hidden = true },
-    { t { pair_begin }, i(1), t { pair_end } },
-    { condition = part(negate, part(..., pair_begin, pair_end)) }
-  )
 end
 
-luasnip.snippets = {
-  all = {
-    autopair("(", ")", char_count_same),
-    autopair("{", "}", char_count_same),
-    autopair("[", "]", char_count_same),
-    autopair("<", ">", char_count_same),
-    autopair("'", "'", even_count),
-    autopair('"', '"', even_count),
-    autopair("`", "`", even_count),
-    s({ trig = "{;", wordTrig = false, hidden = true }, {
-      t { "{", "\t" },
-      i(1),
-      t { "", "}" },
-      i(0),
-    }),
-    s({ trig = "mdy", name = "Current date", dscr = "Insert the current date" }, {
-      p(os.date, "%m-%d-%Y"),
-    }),
-  },
-  lua = {
-    s({ trig = "[[-", wordTrig = false, hidden = true }, {
-      t "--[[",
-      t { "", "\t" },
-      i(0),
-      t { "", "--]]" },
-    }),
-    s({ trig = "[[;", wordTrig = false, hidden = true }, {
-      t "[[",
-      t { "", "\t" },
-      i(0),
-      t { "", "]]" },
-    }),
-    s({ trig = "ig", wordTrig = true, hidden = true }, {
-      t "-- stylua: ignore",
-    }),
-    s({ trig = "fn", wordTrig = true, dscr = "function(param) .. end" }, {
-      t "function(",
-      i(1, "_"),
-      t { ")", "\t" },
-      i(0),
-      t { "", "end" },
-    }),
-    s({ trig = "lf", wordTrig = true, dscr = "local function f(param) .. end" }, {
-      t "local function ",
-      i(1, "f"),
-      t "(",
-      i(2, "_"),
-      t ")",
-      t { "", "\t" },
-      i(0),
-      t { "", "end" },
-    }),
-    s({ trig = "tf", wordTrig = true, dscr = "local f = function(param) .. end" }, {
-      t "local ",
-      i(1, "f"),
-      t " = function(",
-      i(2, "_"),
-      t ")",
-      t { "", "\t" },
-      i(0),
-      t { "", "end" },
-    }),
-    s({ trig = "if", wordTrig = true }, {
-      t "if ",
-      i(1),
-      t { " then", "\t" },
-      i(0),
-      t { "", "end" },
-    }),
-    s({ trig = "lt", wordTrig = true, dscr = "local var = { .. }" }, {
-      t "local ",
-      i(1, "var"),
-      t " = {",
-      t { "", "\t" },
-      i(0),
-      t { "", "}" },
-    }),
-    s("for", {
-      t "for ",
-      c(1, {
-        sn(nil, { i(1, "k"), t ", ", i(2, "v"), t " in ", c(3, { t "pairs", t "ipairs" }), t "(", i(4), t ")" }),
-        sn(nil, { i(1, "i"), t " = ", i(2), t ", ", i(3) }),
-      }),
-      t { " do", "\t" },
-      i(0),
-      t { "", "end" },
-    }),
-  },
-}
-
-local plugins = {
-  "python-snippets",
-  "vsc-lua",
-  "vim-snippets",
-  "vscode-csharp-snippets",
-}
-
-local directory = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data")
-for _, plugin in ipairs(plugins) do
-  require("luasnip/loaders/from_vscode").lazy_load {
-    paths = { string.format("%s/%s", directory, plugin) },
-  }
-end
+return M
