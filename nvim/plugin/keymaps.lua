@@ -278,9 +278,9 @@ end, {
 -- => Command
 ---------------------------------------------------------------
 -- move to the beginning of the command
-cnoremap("<c-a>", "<Home>")
+cnoremap("<c-a>", "<home>", { silent = false })
 -- move to the end of the command
-cnoremap("<c-e>", "<End>")
+cnoremap("<c-e>", "<end>", { silent = false })
 
 -- navigate completion menu using up/down keys
 cnoremap("<up>", function()
