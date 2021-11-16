@@ -18,7 +18,7 @@ luasnip.config.setup {
   ext_opts = {
     [types.choiceNode] = {
       active = {
-        virt_text = { { "﬘ ", "Comment" } },
+        virt_text = { { "﬘ ", "Constant" } },
       },
     },
   },
