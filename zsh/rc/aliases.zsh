@@ -36,6 +36,9 @@ alias mkdir="mkdir -p"
 # show mount output in table format
 alias mount='mount | column -t'
 
+# print row-wise PATH
+alias path='echo -e ${PATH//:/\\n}'
+
 # list all active tcp/udp ports
 alias ports='sudo netstat -tulanp'
 
