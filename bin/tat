@@ -4,7 +4,17 @@ if [[ $# -eq 0 ]]; then
   path=$PWD
 elif [[ $# -eq 1 ]]; then
   if [ "$1" == "fzf" ]; then
-    path=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" -mindepth 1 -maxdepth 1 | fzf --reverse)
+    projects_dir=""
+    for f in "$HOME"/Projects/*; do
+      if [ -z "$projects_dir" ]; then
+        projects_dir="$f"
+      else
+        projects_dir="$projects_dir $f"
+      fi
+    done
+    # shellcheck disable=SC2207
+    projects_dir=($(echo "$projects_dir" | cut -d " " --output-delimiter=" " -f 1-))
+    path=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" "${projects_dir[@]}" -mindepth 1 -maxdepth 1 | fzf --reverse)
     if [ "$path" == "" ]; then
       exit 0
     fi
