@@ -1,3 +1,16 @@
+-- highlight html chunk within this file
+vim.treesitter.set_query("lua", "injections", [[
+(
+	(table
+		(field
+			(identifier) @_html_identifier_1
+			(string) @html))
+
+	(#eq? @_html_identifier_1 "html")
+	(#offset! @html 0 2 0 -2)
+)
+]])
+
 -- verify luasnip is available
 local ok, luasnip = pcall(require, "luasnip")
 if not ok then
