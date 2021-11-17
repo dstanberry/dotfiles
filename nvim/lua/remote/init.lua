@@ -95,6 +95,7 @@ local function plugins(use)
     requires = {
       "folke/lua-dev.nvim",
       "jose-elias-alvarez/null-ls.nvim",
+      "nvim-lua/lsp_extensions.nvim",
       "ray-x/lsp_signature.nvim",
     },
   }

@@ -1,7 +1,7 @@
 -- verify lua-dev is available
 local ok, luadev = pcall(require, "lua-dev")
 if not ok then
-  return {}
+  return
 end
 
 local system_name

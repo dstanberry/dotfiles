@@ -49,9 +49,11 @@ M.file_icon = function(fn, ft)
 end
 
 M.filetype = function(bufnr)
-  local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
   local fn = M.filename(bufnr)
-  local icon = M.file_icon(fn, ft)
+  local ext = vim.fn.fnamemodify(fn, ":e")
+  local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+  local type = #ext > 0 and ext or ft
+  local icon = M.file_icon(fn, type)
   return string.format("%s %s", icon, ft)
 end
 

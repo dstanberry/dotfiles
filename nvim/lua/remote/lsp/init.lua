@@ -85,7 +85,8 @@ local servers = {
   cmake = { cmd = { "cmake-language-server" } },
   cssls = { cmd = { "css-languageserver", "--stdio" } },
   html = { cmd = { "html-languageserver", "--stdio" } },
-  sumneko_lua = require("remote.lsp.sumneko").config,
+  rust_analyzer = require("remote.lsp.rust-analyzer").config or {},
+  sumneko_lua = require("remote.lsp.sumneko").config or {},
   vimls = require("remote.lsp.vimls").config,
   ["null-ls"] = require("remote.lsp.null-ls").config or {},
   clangd = {
@@ -97,15 +98,6 @@ local servers = {
       "--header-insertion=iwyu",
     },
     init_options = { clangdFileStatus = true },
-  },
-  rust_analyzer = {
-    settings = {
-      ["rust-analyzer"] = {
-        assist = { importGranularity = "module", importPrefix = "by_self" },
-        cargo = { loadOutDirsFromCheck = true },
-        procMacro = { enable = true },
-      },
-    },
   },
 }
 
