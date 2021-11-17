@@ -6,6 +6,8 @@ end
 
 local util = require "remote.luasnip.util"
 
+local l = require("luasnip.extras").lambda
+
 local s = luasnip.snippet
 local c = luasnip.choice_node
 local i = luasnip.insert_node
@@ -104,6 +106,14 @@ M.config = {
       util.same(1),
       t { " then", "\treturn" },
       t { "", "end" },
+    }),
+    s({ trig = "req", dscr = "Require Module" }, {
+      t { "local " },
+      l(l._1:match "([^.()]+)[()]*$", 1),
+      t { " = require('" },
+      i(1),
+      t { "')" },
+      i(0),
     }),
   },
 }

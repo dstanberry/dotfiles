@@ -7,8 +7,11 @@ end
 local M = {}
 
 local s = luasnip.snippet
+local c = luasnip.choice_node
+local d = luasnip.dynamic_node
 local f = luasnip.function_node
 local i = luasnip.insert_node
+local sn = luasnip.snippet_node
 local t = luasnip.text_node
 
 M.autopair = function(pair_begin, pair_end, ...)
@@ -39,6 +42,22 @@ M.even_count = function(char)
   local line = vim.api.nvim_get_current_line()
   local _, ct = string.gsub(line, char, "")
   return ct % 2 == 0
+end
+
+M.recursive_case = function()
+  return sn(nil, {
+    c(1, {
+      t "",
+      sn(nil, { t { "", "\t\tbreak;", "\tdefault:", "\t\t" }, i(1, "// code") }),
+      sn(nil, {
+        t { "", "\t\tbreak;", "\tcase " },
+        i(1, "value"),
+        t { ":", "\t\t" },
+        i(2, "// code"),
+        d(3, M.recursive_case, {}),
+      }),
+    }),
+  })
 end
 
 M.same = function(index)

@@ -11,7 +11,7 @@ local types = require "luasnip.util.types"
 luasnip.config.setup {
   history = true,
   enable_autosnippets = true,
-  updateevents = "InsertLeave",
+  updateevents = "TextChanged,TextChangedI",
   region_check_events = "CursorHold",
   delete_check_events = "TextChanged",
   store_selection_keys = "<tab>",
@@ -26,7 +26,11 @@ luasnip.config.setup {
 
 local snippets = {
   "_default",
+  "c",
+  "html",
+  "javascript",
   "lua",
+  "python",
 }
 
 for _, snippet in ipairs(snippets) do
