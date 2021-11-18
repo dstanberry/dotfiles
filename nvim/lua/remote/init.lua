@@ -96,7 +96,6 @@ local function plugins(use)
       "folke/lua-dev.nvim",
       "jose-elias-alvarez/null-ls.nvim",
       "nvim-lua/lsp_extensions.nvim",
-      "ray-x/lsp_signature.nvim",
     },
   }
   use {
@@ -188,28 +187,16 @@ local function plugins(use)
   use { "bfredl/nvim-luadev", cmd = "Luadev", opt = true }
   use {
     "mfussenegger/nvim-dap",
-    opt = true,
-    keys = "<localleader>db",
+    -- opt = true,
+    -- keys = "<c-s-b>",
     config = function()
       require "remote.dap"
-      require "remote.dap.ui"
       require "remote.dap.keymap"
     end,
-    wants = {
-      "nvim-dap-ui",
-      "nvim-dap-virtual-text",
-      "one-small-step-for-vimkind",
-    },
     requires = {
       "jbyuki/one-small-step-for-vimkind",
       "rcarriga/nvim-dap-ui",
       "theHamsta/nvim-dap-virtual-text",
-      {
-        "Pocco81/DAPInstall.nvim",
-        config = function()
-          require "remote.dap.debuggers"
-        end,
-      },
     },
   }
   use { "michaelb/sniprun", run = "bash ./install.sh", cmd = "SnipRun", opt = true }
