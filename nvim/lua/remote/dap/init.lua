@@ -16,6 +16,8 @@ local M = setmetatable({}, {
 })
 
 M.setup = function()
+  dap.defaults.fallback.terminal_win_cmd = "belowright 15new"
+
   vim.fn.sign_define("DapBreakpoint", {
     text = "",
     texthl = "DiagnosticSignError",
@@ -25,7 +27,7 @@ M.setup = function()
   vim.fn.sign_define("DapStopped", {
     text = "",
     texthl = "DiagnosticSignWarn",
-    linehl = "DiagnosticSignWarn",
+    linehl = "IncSearch",
     numhl = "",
   })
 
