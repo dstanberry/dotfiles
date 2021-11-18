@@ -14,11 +14,17 @@ elif [[ $# -eq 1 ]]; then
     done
     # shellcheck disable=SC2207
     projects_dir=($(echo "$projects_dir" | cut -d " " --output-delimiter=" " -f 1-))
-    path=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" "${projects_dir[@]}" -mindepth 1 -maxdepth 1 | fzf --reverse)
+    path=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" "${projects_dir[@]}" \
+      -mindepth 1 -maxdepth 1 \
+      | fzf --height=100% --reverse --header='Create/Open Session')
     if [ "$path" == "" ]; then
       exit 0
     fi
   elif [ "$1" == "switch" ]; then
+    if not_in_tmux; then
+      echo "command only available within tmux"
+      exit 1
+    fi
     tmux list-sessions -F '#S' \
       | awk 'BEGIN {ORS=" "} {print $1, NR, "\"switch-client -t", $1 "\""}' \
       | xargs tmux display-menu -T "Switch session"
