@@ -1,8 +1,5 @@
--- verify luasnip is available
-local ok, luasnip = pcall(require, "luasnip")
-if not ok then
-  return
-end
+local luasnip = require "remote.luasnip"
+local util = require "remote.luasnip.util"
 
 local s = luasnip.snippet
 local c = luasnip.choice_node
@@ -10,8 +7,6 @@ local d = luasnip.dynamic_node
 local i = luasnip.insert_node
 local sn = luasnip.snippet_node
 local t = luasnip.text_node
-
-local util = require "remote.luasnip.util"
 
 local function get_defguard()
   local filename = vim.fn.expand "%:t"

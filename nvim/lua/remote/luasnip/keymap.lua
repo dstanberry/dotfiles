@@ -1,9 +1,4 @@
--- verify luasnip is available
-local ok, luasnip = pcall(require, "luasnip")
-if not ok then
-  return
-end
-
+local luasnip = require "remote.luasnip"
 local map = require "util.map"
 
 local on_tab = function()

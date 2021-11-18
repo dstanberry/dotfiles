@@ -1,13 +1,7 @@
--- verify luasnip is available
-local ok, luasnip = pcall(require, "luasnip")
-if not ok then
-  return
-end
-
+local luasnip = require "remote.luasnip"
 local util = require "remote.luasnip.util"
 
-local p = require("luasnip.extras").partial
-
+local p = luasnip.extras.partial
 local s = luasnip.snippet
 local d = luasnip.dynamic_node
 local i = luasnip.insert_node

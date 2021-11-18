@@ -1,3 +1,11 @@
+local luasnip = require "remote.luasnip"
+
+local s = luasnip.snippet
+local c = luasnip.choice_node
+local i = luasnip.insert_node
+local sn = luasnip.snippet_node
+local t = luasnip.text_node
+
 -- highlight html chunk within this file
 vim.treesitter.set_query("lua", "injections", [[
 (
@@ -10,18 +18,6 @@ vim.treesitter.set_query("lua", "injections", [[
 	(#offset! @html 0 2 0 -2)
 )
 ]])
-
--- verify luasnip is available
-local ok, luasnip = pcall(require, "luasnip")
-if not ok then
-  return
-end
-
-local s = luasnip.snippet
-local c = luasnip.choice_node
-local i = luasnip.insert_node
-local sn = luasnip.snippet_node
-local t = luasnip.text_node
 
 local html_snippets = {
   html = [[<!DOCTYPE html>

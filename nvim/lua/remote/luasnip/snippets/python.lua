@@ -1,8 +1,4 @@
--- verify luasnip is available
-local ok, luasnip = pcall(require, "luasnip")
-if not ok then
-  return
-end
+local luasnip = require "remote.luasnip"
 
 local s = luasnip.snippet
 local c = luasnip.choice_node

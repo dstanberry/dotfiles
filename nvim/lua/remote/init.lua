@@ -168,7 +168,7 @@ local function plugins(use)
       {
         "L3MON4D3/LuaSnip",
         config = function()
-          require "remote.luasnip"
+          require "remote.luasnip".setup()
           require "remote.luasnip.keymap"
         end,
       },

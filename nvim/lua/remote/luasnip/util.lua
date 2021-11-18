@@ -1,10 +1,5 @@
--- verify luasnip is available
-local ok, luasnip = pcall(require, "luasnip")
-if not ok then
-  return
-end
-
-local M = {}
+local luasnip = pcall(require, "remote.luasnip")
+local luasnip = require "remote.luasnip"
 
 local s = luasnip.snippet
 local c = luasnip.choice_node
@@ -13,6 +8,8 @@ local f = luasnip.function_node
 local i = luasnip.insert_node
 local sn = luasnip.snippet_node
 local t = luasnip.text_node
+
+local M = {}
 
 M.autopair = function(pair_begin, pair_end, ...)
   local function negate(fn, ...)
