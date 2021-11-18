@@ -168,7 +168,7 @@ local function plugins(use)
       {
         "L3MON4D3/LuaSnip",
         config = function()
-          require "remote.luasnip".setup()
+          require("remote.luasnip").setup()
           require "remote.luasnip.keymap"
         end,
       },
@@ -187,14 +187,13 @@ local function plugins(use)
   use { "bfredl/nvim-luadev", cmd = "Luadev", opt = true }
   use {
     "mfussenegger/nvim-dap",
-    -- opt = true,
-    -- keys = "<c-s-b>",
     config = function()
-      require "remote.dap"
+      require "remote.dap".setup()
       require "remote.dap.keymap"
     end,
     requires = {
       "jbyuki/one-small-step-for-vimkind",
+      "mfussenegger/nvim-dap-python",
       "rcarriga/nvim-dap-ui",
       "theHamsta/nvim-dap-virtual-text",
     },
