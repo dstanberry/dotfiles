@@ -18,14 +18,14 @@ local M = setmetatable({}, {
 M.setup = function()
   vim.fn.sign_define("DapBreakpoint", {
     text = "",
-    texthl = "DiagnosticsError",
+    texthl = "DiagnosticSignError",
     linehl = "",
     numhl = "",
   })
   vim.fn.sign_define("DapStopped", {
     text = "",
-    texthl = "DiagnosticsWarn",
-    linehl = "DiagnosticsWarn",
+    texthl = "DiagnosticSignWarn",
+    linehl = "DiagnosticSignWarn",
     numhl = "",
   })
 
@@ -46,8 +46,8 @@ M.setup = function()
       },
       sidebar = {
         elements = {
+          { id = "scopes", size = 0.25 },
           { id = "breakpoints", size = 0.25 },
-          { id = "stacks", size = 0.25 },
           { id = "stacks", size = 0.25 },
           { id = "watches", size = 0.25 },
         },
