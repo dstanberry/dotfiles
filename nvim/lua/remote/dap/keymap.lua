@@ -1,23 +1,16 @@
-local ok, dap = pcall(require, "dap")
-if not ok then
-  return
-end
-
+local dap = require "remote.dap"
 local map = require "util.map"
 
-map.nnoremap("<localleader>db", function()
+map.nnoremap("<c-s-b>", function()
   dap.toggle_breakpoint()
 end)
-map.nnoremap("<localleader>dr", function()
-  dap.repl_open()
+map.nnoremap("<c-s-h>", function()
+  dap.widgets.hover()
 end)
-map.nnoremap("<localleader>dh", function()
-  require("dap.ui.widgets").hover()
+map.nnoremap("<f3>", function()
+  dap.disconnect()
+  dap.close()
 end)
-map.nnoremap("<localleader>dq", function()
-  dap.stop()
-end)
-
 map.nnoremap("<f5>", function()
   dap.continue()
 end)
@@ -29,4 +22,7 @@ map.nnoremap("<f7>", function()
 end)
 map.nnoremap("<f10>", function()
   dap.step_over()
+end)
+map.nnoremap("<f12>", function()
+  dap.repl.toggle { height = 15 }
 end)
