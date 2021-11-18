@@ -84,18 +84,19 @@ local function explorer(state, bufnr)
   end
 end
 
-local function plugin(state, bufnr)
+local function plugin(state, bufnr, t)
+  local term = t or false
   if state == "active" then
     local mode = vim.fn.mode()
     local mode_hl = hi.mode(mode)
     return table.concat {
       add(mode_hl, { data.mode() }),
-      add(mode_hl, { data.filename(bufnr) }),
+      add(mode_hl, { term and "term://" or "", data.filename(bufnr) }, true),
       hi.segment,
     }
   else
     return table.concat {
-      add(hi.user3, { " ", data.filename(bufnr) }, true),
+      add(hi.user3, { " ", term and "term://" or "", data.filename(bufnr) }, true),
       hi.segment,
     }
   end
@@ -171,6 +172,9 @@ M.focus = function(win_id)
   if contains(views.plugins, type) or contains(views.filenames, name) then
     return plugin(state, bufnr)
   end
+  if contains(views.terminal, name) then
+    return plugin(state, bufnr, true)
+  end
   if contains(views.basic, type) then
     return basic(state, bufnr)
   end
@@ -198,6 +202,9 @@ M.dim = function(win_id)
   end
   if contains(views.plugins, type) or contains(views.filenames, name) then
     return plugin(state, bufnr)
+  end
+  if contains(views.terminal, name) then
+    return plugin(state, bufnr, true)
   end
   if contains(views.basic, type) then
     return basic(state, bufnr)

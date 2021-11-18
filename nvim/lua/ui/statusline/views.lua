@@ -9,12 +9,20 @@ local views = {
     "diffview:///",
   },
   plugins = {
+    "dap-repl",
+    "dapui_breakpoints",
+    "dapui_scopes",
+    "dapui_stacks",
+    "dapui_watches",
     "Diffview",
     "Neogit",
     "packer",
     "qf",
     "startuptime",
     "Telescope",
+  },
+  terminal = {
+    "term://",
   },
   uri = {
     "man",
