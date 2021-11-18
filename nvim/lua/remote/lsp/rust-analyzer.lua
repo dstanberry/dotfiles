@@ -38,7 +38,7 @@ util.define_augroup {
   clear = true,
   autocmds = {
     {
-      event = { "CursorHold", "CursorHoldI", "CursorMoved" },
+      event = { "CursorHold", "CursorHoldI" },
       pattern = "*.rs",
       callback = M.show_inlay_hints,
     },
