@@ -1,40 +1,38 @@
--- verify telescope is available
-if not pcall(require, "telescope") then
-  return
-end
-
-local util = require "util"
-local map = util.map
+local telescope = require "remote.telescope"
+local map = require("util").map
 
 map.nnoremap("<localleader><localleader>", function()
-  util.reload("remote.telescope").find_nvim()
+  telescope.find_nvim()
 end)
 map.nnoremap("<leader><leader>", function()
-  util.reload("remote.telescope").project_files()
+  telescope.project_files()
 end)
 map.nnoremap("<leader>fb", function()
-  util.reload("remote.telescope").buffers()
+  telescope.buffers()
 end)
 map.nnoremap("<leader>fe", function()
-  util.reload("remote.telescope").file_browser()
+  telescope.file_browser()
 end)
 map.nnoremap("<leader>ff", function()
-  util.reload("remote.telescope").current_buffer()
+  telescope.current_buffer()
 end)
 map.nnoremap("<leader>fg", function()
-  util.reload("remote.telescope").grep_string()
+  telescope.live_grep()
 end)
 map.nnoremap("<leader>fgg", function()
-  util.reload("remote.telescope").live_grep()
+  telescope.rg.live_grep_with_shortcuts()
 end)
 map.nnoremap("<leader>fk", function()
-  util.reload("remote.telescope").help_tags()
+  telescope.help_tags()
 end)
 if vim.env.hash_n then
   map.nnoremap("<leader>fn", function()
-    util.reload("remote.telescope").find_files { cwd = vim.env.hash_n }
+    telescope.find_files { cwd = vim.env.hash_n }
   end)
 end
 map.nnoremap("<leader>fp", function()
-  util.reload("remote.telescope").find_plugins()
+  telescope.find_plugins()
+end)
+map.nnoremap("<leader>ws", function()
+  telescope.lsp.workspace_symbols()
 end)

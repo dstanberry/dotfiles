@@ -17,6 +17,7 @@ end
 local telescope = require "telescope"
 local actions = require "telescope.actions"
 local builtin = require "telescope.builtin"
+local layout = require "telescope.actions.layout"
 local state = require "telescope.actions.state"
 
 local c = require("ui.theme").colors
@@ -53,6 +54,7 @@ telescope.setup {
     },
     mappings = {
       i = {
+        ["<c-h>"] = layout.toggle_preview,
         ["<c-d>"] = actions.preview_scrolling_down,
         ["<c-f>"] = actions.preview_scrolling_up,
         ["<c-s>"] = actions.select_horizontal,
@@ -62,6 +64,7 @@ telescope.setup {
         ["jk"] = actions.close,
       },
       n = {
+        ["<c-h>"] = layout.toggle_preview,
         ["q"] = actions.close,
       },
     },
@@ -145,10 +148,18 @@ local ignored = {
 local M = {}
 
 local meta = setmetatable({}, {
-  __index = function(_, k)
+  __index = function(t, k)
     reloader()
     if M[k] then
       return M[k]
+    elseif k == "rg" then
+      local val = require("remote.telescope.custom.rg")
+      rawset(t, k, val)
+      return val
+    elseif k == "lsp" then
+      local val = require("remote.telescope.custom.lsp")
+      rawset(t, k, val)
+      return val
     else
       return builtin[k]
     end
