@@ -93,7 +93,7 @@ Tmux: Must be on version >= 3.1 as 3.1 introduced checking for the configuration
 
 Read through all the txt files in `shared/packages` and remove delete any lines that contain unwanted packages before running any of the `load` commands.
 
-- Cargo
+- Rust
 
   - install rust through package manager or [manually](https://doc.rust-lang.org/cargo/getting-started/installation.html)
   - Run `cargo load` to install/update the contents in [shared/packages/cargo.txt](https://github.com/dstanberry/dotfiles/blob/main/shared/packages/cargo.txt)
