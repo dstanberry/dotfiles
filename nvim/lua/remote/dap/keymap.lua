@@ -8,8 +8,10 @@ map.nnoremap("<c-s-h>", function()
   dap.widgets.hover()
 end)
 map.nnoremap("<f3>", function()
-  dap.disconnect()
+  dap.disconnect { terminateDebuggee = true }
   dap.close()
+  -- (hack) because event listener does not always fire
+  require("dapui").close()
 end)
 map.nnoremap("<f5>", function()
   dap.continue()

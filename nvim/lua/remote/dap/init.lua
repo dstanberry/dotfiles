@@ -35,10 +35,10 @@ M.setup = function()
     vim.g.dap_virtual_text = true
   end
 
-  local dap_ui
-  ok, dap_ui = pcall(require, "dapui")
+  local dapui
+  ok, dapui = pcall(require, "dapui")
   if ok then
-    dap_ui.setup {
+    dapui.setup {
       mappings = {
         expand = { "<cr>" },
         open = "o",
@@ -73,13 +73,13 @@ M.setup = function()
     }
 
     dap.listeners.after.event_initialized["dapui_config"] = function()
-      dap_ui.open()
+      dapui.open()
     end
     dap.listeners.before.event_terminated["dapui_config"] = function()
-      dap_ui.close()
+      dapui.close()
     end
     dap.listeners.before.event_exited["dapui_config"] = function()
-      dap_ui.close()
+      dapui.close()
     end
   end
 
