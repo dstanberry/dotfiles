@@ -19,6 +19,7 @@ local actions = require "telescope.actions"
 local builtin = require "telescope.builtin"
 local layout = require "telescope.actions.layout"
 local state = require "telescope.actions.state"
+local themes = require "telescope.themes"
 
 local c = require("ui.theme").colors
 local color = require "util.color"
@@ -115,12 +116,20 @@ telescope.setup {
       override_file_sorter = true,
       override_generic_sorter = false,
     },
+    ["ui-select"] = {
+      themes.get_cursor {
+        previewer = false,
+        results_title = false,
+        layout_config = { width = 40 },
+      },
+    },
   },
 }
 
 pcall(telescope.load_extension "fzf")
 pcall(telescope.load_extension "gh")
 pcall(telescope.load_extension "notify")
+pcall(telescope.load_extension "ui-select")
 
 c.tele00 = color.darken(c.base0F, 43)
 
@@ -153,11 +162,11 @@ local meta = setmetatable({}, {
     if M[k] then
       return M[k]
     elseif k == "rg" then
-      local val = require("remote.telescope.custom.rg")
+      local val = require "remote.telescope.custom.rg"
       rawset(t, k, val)
       return val
     elseif k == "lsp" then
-      local val = require("remote.telescope.custom.lsp")
+      local val = require "remote.telescope.custom.lsp"
       rawset(t, k, val)
       return val
     else
@@ -221,6 +230,15 @@ function M.current_buffer()
   builtin.current_buffer_fuzzy_find {
     previewer = false,
     prompt_title = [[\ Find in File /]],
+  }
+end
+
+function M.grep_last_search()
+  local register = vim.fn.getreg("/"):gsub("\\<", ""):gsub("\\>", ""):gsub("\\C", "")
+  builtin.grep_string {
+    path_display = { "shorten" },
+    word_match = "-w",
+    search = register,
   }
 end
 

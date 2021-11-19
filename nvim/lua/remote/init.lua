@@ -152,6 +152,7 @@ local function plugins(use)
       "nvim-lua/popup.nvim",
       "nvim-telescope/telescope-github.nvim",
       "nvim-telescope/telescope-symbols.nvim",
+      "nvim-telescope/telescope-ui-select.nvim",
       { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
     },
   }
@@ -188,7 +189,7 @@ local function plugins(use)
   use {
     "mfussenegger/nvim-dap",
     config = function()
-      require "remote.dap".setup()
+      require("remote.dap").setup()
       require "remote.dap.keymap"
     end,
     requires = {
