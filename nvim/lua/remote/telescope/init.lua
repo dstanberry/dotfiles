@@ -111,11 +111,11 @@ telescope.setup {
     lsp_workspace_symbols = { layout_strategy = "vertical" },
   },
   extensions = {
-    fzf = {
+    fzf = vim.fn.has "win32" == 0 and {
       case_mode = "smart_case",
       override_file_sorter = true,
       override_generic_sorter = false,
-    },
+    } or {},
     ["ui-select"] = {
       themes.get_cursor {
         previewer = false,
@@ -126,7 +126,9 @@ telescope.setup {
   },
 }
 
-pcall(telescope.load_extension "fzf")
+if vim.fn.has "win32" == 0 then
+  pcall(telescope.load_extension "fzf")
+end
 pcall(telescope.load_extension "gh")
 pcall(telescope.load_extension "notify")
 pcall(telescope.load_extension "ui-select")
@@ -145,13 +147,15 @@ groups.new("TelescopeMatching", { guifg = c.base09, guibg = nil, gui = "bold", g
 groups.new("TelescopePromptPrefix", { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil })
 
 local ignored = {
+  "%.DAT",
   "%.db",
-  "%.gpg",
   "%.git",
   "%.gitattributes",
+  "%.gpg",
   "git%-crypt",
   "karabiner/assets",
   "node_modules",
+  "ntuser",
 }
 
 local M = {}
@@ -177,9 +181,9 @@ local meta = setmetatable({}, {
 
 function M.find_nvim()
   builtin.find_files {
-    cwd = "~/.config/nvim",
-    hidden = true,
-    follow = true,
+    cwd = vim.fn.stdpath "config",
+    hidden = (vim.fn.has "win32" == 0) and true or false,
+    follow = (vim.fn.has "win32" == 0) and true or false,
     file_ignore_patterns = ignored,
     prompt_title = [[\ Neovim /]],
   }
@@ -187,7 +191,8 @@ end
 
 function M.project_files()
   local opts = {
-    hidden = true,
+    hidden = (vim.fn.has "win32" == 0) and true or false,
+    follow = (vim.fn.has "win32" == 0) and true or false,
     file_ignore_patterns = ignored,
     prompt_title = [[\ Project Files /]],
   }
@@ -200,7 +205,8 @@ end
 function M.file_browser()
   local opts
   opts = {
-    hidden = true,
+    hidden = (vim.fn.has "win32" == 0) and true or false,
+    follow = (vim.fn.has "win32" == 0) and true or false,
     sorting_strategy = "ascending",
     prompt_title = [[\ File Browser /]],
     layout_config = {
@@ -218,18 +224,18 @@ function M.find_plugins()
   }
 end
 
+function M.current_buffer()
+  builtin.current_buffer_fuzzy_find {
+    previewer = false,
+    prompt_title = [[\ Find in File /]],
+  }
+end
+
 function M.grep_string()
   builtin.grep_string {
     search = vim.fn.input "grep: ",
     path_display = { "shorten" },
     prompt_title = [[\ Grep Project /]],
-  }
-end
-
-function M.current_buffer()
-  builtin.current_buffer_fuzzy_find {
-    previewer = false,
-    prompt_title = [[\ Find in File /]],
   }
 end
 

@@ -1,18 +1,17 @@
 local dap = require "remote.dap"
 
 local path = string.format("%s/dap", vim.fn.stdpath "data")
-local basedir = ("%s/%s"):format(path, "codelldb")
+local basedir = vim.fn.expand(("%s/%s"):format(path, "codelldb"))
 
 local bootstrap = function()
   if vim.fn.empty(vim.fn.glob(basedir)) > 0 then
-    vim.fn.mkdir(path, "p")
+    vim.fn.mkdir(basedir, "p")
     print "Installing codelldb..."
     local out = vim.fn.system(string.format(
-      [[mkdir -p %s && cd %s
+      [[cd %s
       curl -fLO  https://github.com/vadimcn/vscode-lldb/releases/latest/download/codelldb-x86_64-linux.vsix
       unzip codelldb-x86_64-linux.vsix
-      rm -vf codelldb-x86_64-linux.vsix
-      ]],
+      rm -vf codelldb-x86_64-linux.vsix]],
       basedir
     ))
     print(out)
@@ -26,7 +25,7 @@ M.setup = function()
   dap.adapters.codelldb = function(on_adapter)
     local stdout = vim.loop.new_pipe(false)
     local stderr = vim.loop.new_pipe(false)
-    local cmd = ("%s/%s"):format(basedir, "extension/adapter/codelldb")
+    local cmd = vim.fn.expand(("%s/%s"):format(basedir, "extension/adapter/codelldb"))
     local handle, pid_or_err
     local opts = {
       stdio = { nil, stdout, stderr },
@@ -75,7 +74,7 @@ M.setup = function()
       type = "codelldb",
       request = "launch",
       program = function()
-        return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/target/debug/", "file")
+        return vim.fn.input("Path to executable: ", vim.fn.expand(vim.fn.getcwd() .. "/target/debug/"), "file")
       end,
       cwd = "${workspaceFolder}",
       args = {},
@@ -84,5 +83,5 @@ M.setup = function()
   dap.configurations.cpp = dap.configurations.c
   dap.configurations.rust = dap.configurations.c
 end
-
+M.setup()
 return M

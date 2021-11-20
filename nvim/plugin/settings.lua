@@ -1,5 +1,5 @@
-local cache = vim.env.XDG_CACHE_HOME
-local data = vim.env.XDG_DATA_HOME
+local cache = vim.fn.stdpath "cache"
+local data = vim.fn.stdpath "data"
 
 -- update file content if it has been modified on disk
 vim.opt.autoread = true
@@ -8,7 +8,7 @@ vim.opt.autoindent = true
 -- maintain file backup across sessions
 vim.opt.backup = true
 -- define location for backup files
-vim.opt.backupdir = cache .. "/nvim/backup//,."
+vim.opt.backupdir = cache .. "/backup//,."
 -- allow <backspace> to cross line boundaries
 vim.opt.backspace = "indent,eol,start"
 -- disable the system bell
@@ -24,7 +24,7 @@ vim.opt.completeopt = "menuone,noselect"
 -- highlight current line
 vim.opt.cursorline = true
 -- define location for swap files
-vim.opt.directory = cache .. "/nvim/swap//,."
+vim.opt.directory = cache .. "/swap//,."
 -- don't expand spaces to tabs
 vim.opt.expandtab = false
 -- define glyphs used for vertical separators and statuslines
@@ -95,7 +95,7 @@ vim.opt.shada = {
   "<50",
   "s10",
   "h",
-  string.format("n%s/nvim/shada/main.shada", data),
+  string.format("n%s/shada/main.shada", data),
 }
 -- space indent width
 vim.opt.shiftwidth = 4
@@ -142,7 +142,7 @@ vim.opt.timeoutlen = 250
 -- disable title modification
 vim.opt.title = false
 -- define location for undo files
-vim.opt.undodir = cache .. "/nvim/undo//,."
+vim.opt.undodir = cache .. "/undo//,."
 -- maintain undo history across sessions
 vim.opt.undofile = true
 -- allow crossing of line boundaries

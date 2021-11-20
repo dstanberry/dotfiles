@@ -13,7 +13,7 @@ local bootstrap = function()
       tar -xzvf netcoredbg-linux-amd64.tar.gz
       rm -vf netcoredbg-linux-amd64.tar.gz
       ]],
-      path
+      vim.fn.expand(path)
     ))
     print(out)
   end
@@ -26,7 +26,7 @@ M.setup = function()
   dap.adapters.netcoredbg = {
     type = "executable",
     args = { "--interpreter=vscode" },
-    command = ("%s/%s"):format(basedir, "netcoredbg"),
+    command = vim.fn.expand(("%s/%s"):format(basedir, "netcoredbg")),
   }
   dap.configurations.cs = {
     {
@@ -34,7 +34,7 @@ M.setup = function()
       name = "launch - netcoredbg",
       request = "launch",
       program = function()
-        return vim.fn.input("Path to dll", vim.fn.getcwd() .. "/bin/Debug/", "file")
+        return vim.fn.input("Path to dll", vim.fn.expand(vim.fn.getcwd() .. "/bin/Debug/"), "file")
       end,
       stopAtEntry = true,
     },

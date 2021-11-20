@@ -13,7 +13,7 @@ local bootstrap = function()
       npm install
       npm run build
       ]],
-      path
+      vim.fn.expand(path)
     ))
     print(out)
   end

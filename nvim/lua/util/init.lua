@@ -27,7 +27,7 @@ end
 function M.execute(id)
   local func = M.callbacks[id]
   if not func then
-    error("Function doest not exist: " .. id)
+    print("Function doest not exist: " .. id)
   end
   return func()
 end
@@ -81,7 +81,7 @@ end
 
 function M.load_dirhash(s)
   if s == nil then
-    error "cannot load hashes without specifying shell"
+    print "cannot load hashes without specifying shell"
     return
   end
   local shell
@@ -93,10 +93,11 @@ function M.load_dirhash(s)
     shell = s
   end
   if shell ~= "bash" and shell ~= "zsh" then
-    error("cannot load hashes for unsupported shell: " .. shell)
+    print("cannot load hashes for unsupported shell: " .. shell)
     return
   end
-  local path = vim.fn.expand(("%s/%s/rc.private/hashes.%s"):format(vim.env.XDG_CONFIG_HOME, shell, shell))
+  local config_home = vim.fn.stdpath "config"
+  local path = vim.fn.expand(("%s/%s/rc.private/hashes.%s"):format(config_home, shell, shell))
   local cmd = ([[%s -c "source %s; hash -d"]]):format(shell, path)
   local dirs = vim.fn.system(cmd)
   local lines = vim.split(dirs, "\n")

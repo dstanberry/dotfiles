@@ -42,11 +42,11 @@ vim.g.loaded_rrhelper = 1
 vim.g.loaded_spellfile_plugin = 1
 vim.g.loaded_matchit = 1
 
-local cache = vim.env.XDG_CACHE_HOME
-local backup = string.format("%s/nvim/backup", cache)
-local swap = string.format("%s/nvim/swap", cache)
-local undo = string.format("%s/nvim/undo", cache)
-local shada = string.format("%s/nvim/shada", cache)
+local cache = vim.fn.stdpath "cache"
+local backup = string.format("%s/backup", cache)
+local swap = string.format("%s/swap", cache)
+local undo = string.format("%s/undo", cache)
+local shada = string.format("%s/shada", cache)
 
 vim.fn.mkdir(backup, "p")
 vim.fn.mkdir(swap, "p")

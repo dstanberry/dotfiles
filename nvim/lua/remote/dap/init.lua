@@ -85,7 +85,12 @@ M.setup = function()
 
   local snippets = vim.api.nvim_get_runtime_file("lua/remote/dap/debuggers/*.lua", true)
   for _, file in ipairs(snippets) do
-    local fname = (file):match "^.+/(.+)$"
+    local fname
+    if vim.fn.has "win32" == 1 then
+      fname = (file):match "^.+\\(.+)$"
+    else
+      fname = (file):match "^.+/(.+)$"
+    end
     local mod = fname:sub(1, -5)
     require(("remote.dap.debuggers.%s"):format(mod)).setup()
   end
