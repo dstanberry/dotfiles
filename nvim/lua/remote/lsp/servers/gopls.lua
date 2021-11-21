@@ -15,3 +15,11 @@ go.setup {
   lsp_on_attach = false,
   gopls_cmd = nil,
 }
+
+local M = {}
+
+M.config = {
+
+}
+
+return M

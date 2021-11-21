@@ -1,7 +1,7 @@
 -- verify lspconfig is available
 local ok, util = pcall(require, "lspconfig.util")
 if not ok then
-  return {}
+  return
 end
 
 local project_root = function(fname)

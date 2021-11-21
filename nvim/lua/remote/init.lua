@@ -94,9 +94,11 @@ local function plugins(use)
       require "remote.lsp.handlers"
     end,
     requires = {
+      "b0o/schemastore.nvim",
       "folke/lua-dev.nvim",
       "jose-elias-alvarez/null-ls.nvim",
       "nvim-lua/lsp_extensions.nvim",
+      "ray-x/go.nvim",
     },
   }
   use {
@@ -115,14 +117,6 @@ local function plugins(use)
     end,
   }
 
-  -- tree-sitter/lsp language support
-  use {
-    "ray-x/go.nvim",
-    ft = { "go", "gomod" },
-    config = function()
-      require "remote.lsp.go"
-    end,
-  }
   use { "simrat39/symbols-outline.nvim", cmd = "SymbolsOutline", requires = { "nvim-lua/plenary.nvim" } }
 
   -- interface

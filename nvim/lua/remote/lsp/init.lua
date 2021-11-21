@@ -79,27 +79,25 @@ end
 
 local servers = {
   bashls = {},
-  gopls = {},
   jsonls = {},
   pyright = {},
   cmake = { cmd = { "cmake-language-server" } },
   cssls = { cmd = { "css-languageserver", "--stdio" } },
   html = { cmd = { "html-languageserver", "--stdio" } },
-  rust_analyzer = require("remote.lsp.rust-analyzer").config or {},
-  sumneko_lua = require("remote.lsp.sumneko").config or {},
-  vimls = require("remote.lsp.vimls").config,
-  ["null-ls"] = require("remote.lsp.null-ls").config or {},
-  clangd = {
-    cmd = {
-      "clangd",
-      "--background-index",
-      "--suggest-missing-includes",
-      "--clang-tidy",
-      "--header-insertion=iwyu",
-    },
-    init_options = { clangdFileStatus = true },
-  },
 }
+
+local configurations = vim.api.nvim_get_runtime_file("lua/remote/lsp/servers/*.lua", true)
+for _, file in ipairs(configurations) do
+  local fname
+  if vim.fn.has "win32" == 1 then
+    fname = (file):match "^.+\\(.+)$"
+  else
+    fname = (file):match "^.+/(.+)$"
+  end
+  local mod = fname:sub(1, -5)
+  local config = require(("remote.lsp.servers.%s"):format(mod)).config or {}
+  servers = vim.tbl_deep_extend("force", servers, { [mod] = config })
+end
 
 for server, config in pairs(servers) do
   lspconfig[server].setup(vim.tbl_deep_extend("force", {
