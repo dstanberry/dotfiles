@@ -83,8 +83,8 @@ M.setup = function()
     end
   end
 
-  local snippets = vim.api.nvim_get_runtime_file("lua/remote/dap/debuggers/*.lua", true)
-  for _, file in ipairs(snippets) do
+  local debuggers = vim.api.nvim_get_runtime_file("lua/remote/dap/debuggers/*.lua", true)
+  for _, file in ipairs(debuggers) do
     local fname
     if vim.fn.has "win32" == 1 then
       fname = (file):match "^.+\\(.+)$"
