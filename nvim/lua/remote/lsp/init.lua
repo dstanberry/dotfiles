@@ -79,7 +79,6 @@ end
 
 local servers = {
   bashls = {},
-  jsonls = {},
   pyright = {},
   cmake = { cmd = { "cmake-language-server" } },
   cssls = { cmd = { "css-languageserver", "--stdio" } },
