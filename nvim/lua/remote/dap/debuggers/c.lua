@@ -3,25 +3,48 @@ local dap = require "remote.dap"
 local path = string.format("%s/dap", vim.fn.stdpath "data")
 local basedir = vim.fn.expand(("%s/%s"):format(path, "codelldb"))
 
-local bootstrap = function()
+local install = function(force)
+  if force then
+    vim.fn.delete(basedir, "rf")
+  end
   if vim.fn.empty(vim.fn.glob(basedir)) > 0 then
-    vim.fn.mkdir(basedir, "p")
     print "Installing codelldb..."
-    local out = vim.fn.system(string.format(
-      [[cd %s
+    vim.fn.mkdir(basedir, "p")
+    local install_cmd = [[
       curl -fLO  https://github.com/vadimcn/vscode-lldb/releases/latest/download/codelldb-x86_64-linux.vsix
       unzip codelldb-x86_64-linux.vsix
-      rm -vf codelldb-x86_64-linux.vsix]],
-      basedir
-    ))
-    print(out)
+      rm -vf codelldb-x86_64-linux.vsix
+      ]]
+    if vim.fn.has "win32" then
+      local win_cmd = ""
+      for cmd in install_cmd:gmatch "([^\n]*)\n?" do
+        cmd = cmd:gsub("^%s*", "")
+        if #cmd > 0 then
+          if #win_cmd == 0 then
+            win_cmd = cmd
+          else
+            win_cmd = ("%s && %s"):format(win_cmd, cmd)
+          end
+        end
+      end
+      install_cmd = win_cmd
+    end
+    dap.spawn_term(install_cmd, {
+      ["cwd"] = basedir,
+      ["on_exit"] = function(_, code)
+        if code ~= 0 then
+          error "Failed to install codelldb"
+        end
+        print "Installed codelldb"
+      end,
+    })
   end
 end
 
 local M = {}
 
 M.setup = function()
-  bootstrap()
+  install()
   dap.adapters.codelldb = function(on_adapter)
     local stdout = vim.loop.new_pipe(false)
     local stderr = vim.loop.new_pipe(false)
@@ -83,5 +106,5 @@ M.setup = function()
   dap.configurations.cpp = dap.configurations.c
   dap.configurations.rust = dap.configurations.c
 end
-M.setup()
+
 return M

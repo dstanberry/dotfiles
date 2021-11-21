@@ -3,26 +3,48 @@ local dap = require "remote.dap"
 local path = string.format("%s/dap", vim.fn.stdpath "data")
 local basedir = ("%s/%s"):format(path, "netcoredbg")
 
-local bootstrap = function()
+local install = function(force)
+  if force then
+    vim.fn.delete(basedir, "rf")
+  end
   if vim.fn.empty(vim.fn.glob(basedir)) > 0 then
-    vim.fn.mkdir(path, "p")
     print "Installing netcoredbg..."
-    local out = vim.fn.system(string.format(
-      [[cd %s
+    vim.fn.mkdir(path, "p")
+    local install_cmd = [[
       curl -fLO https://github.com/Samsung/netcoredbg/releases/latest/download/netcoredbg-linux-amd64.tar.gz
       tar -xzvf netcoredbg-linux-amd64.tar.gz
       rm -vf netcoredbg-linux-amd64.tar.gz
-      ]],
-      vim.fn.expand(path)
-    ))
-    print(out)
+      ]]
+    if vim.fn.has "win32" then
+      local win_cmd = ""
+      for cmd in install_cmd:gmatch "([^\n]*)\n?" do
+        cmd = cmd:gsub("^%s*", "")
+        if #cmd > 0 then
+          if #win_cmd == 0 then
+            win_cmd = cmd
+          else
+            win_cmd = ("%s && %s"):format(win_cmd, cmd)
+          end
+        end
+      end
+      install_cmd = win_cmd
+    end
+    dap.spawn_term(install_cmd, {
+      ["cwd"] = path,
+      ["on_exit"] = function(_, code)
+        if code ~= 0 then
+          error "Failed to install netcoredbg"
+        end
+        print "Installed netcoredbg"
+      end,
+    })
   end
 end
 
 local M = {}
 
 M.setup = function()
-  bootstrap()
+  install()
   dap.adapters.netcoredbg = {
     type = "executable",
     args = { "--interpreter=vscode" },

@@ -15,6 +15,16 @@ local M = setmetatable({}, {
   end,
 })
 
+M.spawn_term = function(task, opts)
+  vim.cmd "new"
+  if vim.fn.has "win32" == 1 then
+    vim.fn.termopen(task, opts)
+  else
+    vim.fn.termopen("set -e\n" .. task, opts)
+  end
+  vim.cmd "startinsert"
+end
+
 M.setup = function()
   dap.defaults.fallback.terminal_win_cmd = "belowright 15new"
 
