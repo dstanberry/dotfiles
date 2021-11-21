@@ -113,4 +113,14 @@ function M.load_dirhash(s)
   end
 end
 
+M.spawn_term = function(task, opts)
+  vim.cmd "new"
+  if vim.fn.has "win32" == 1 then
+    vim.fn.termopen(task, opts)
+  else
+    vim.fn.termopen("set -e\n" .. task, opts)
+  end
+  vim.cmd "startinsert"
+end
+
 return M

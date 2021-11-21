@@ -1,4 +1,5 @@
 local dap = require "remote.dap"
+local util = require "util"
 
 local path = vim.fn.expand(string.format("%s/dap", vim.fn.stdpath "data"))
 local basedir = vim.fn.expand(("%s/%s"):format(path, "vscode-node-debug2"))
@@ -30,7 +31,7 @@ local install = function(force)
       end
       install_cmd = win_cmd
     end
-    dap.spawn_term(install_cmd, {
+    util.spawn_term(install_cmd, {
       ["cwd"] = path,
       ["on_exit"] = function(_, code)
         if code ~= 0 then
