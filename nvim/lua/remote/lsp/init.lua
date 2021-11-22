@@ -79,10 +79,10 @@ end
 
 local servers = {
   bashls = {},
+  cmake = {},
+  cssls = {},
+  html = {},
   pyright = {},
-  cmake = { cmd = { "cmake-language-server" } },
-  cssls = { cmd = { "css-languageserver", "--stdio" } },
-  html = { cmd = { "html-languageserver", "--stdio" } },
 }
 
 local configurations = vim.api.nvim_get_runtime_file("lua/remote/lsp/servers/*.lua", true)
