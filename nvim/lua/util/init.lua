@@ -4,6 +4,7 @@ M.color = require "util.color"
 M.buffer = require "util.buffer"
 M.map = require "util.map"
 M.packer = require "util.packer"
+M.terminal = require "util.terminal"
 
 function M.reload(name)
   local ok, r = pcall(require, "plenary.reload")
@@ -111,16 +112,6 @@ function M.load_dirhash(s)
       end
     end
   end
-end
-
-M.spawn_term = function(task, opts)
-  vim.cmd "new"
-  if vim.fn.has "win32" == 1 then
-    vim.fn.termopen(task, opts)
-  else
-    vim.fn.termopen("set -e\n" .. task, opts)
-  end
-  vim.cmd "startinsert"
 end
 
 return M
