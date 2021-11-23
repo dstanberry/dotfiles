@@ -44,8 +44,8 @@ end
 
 local M = {}
 
-M.setup = function()
-  install()
+M.setup = function(force)
+  install(force)
   dap.adapters.netcoredbg = {
     type = "executable",
     args = { "--interpreter=vscode" },

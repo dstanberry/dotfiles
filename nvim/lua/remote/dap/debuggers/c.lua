@@ -44,8 +44,8 @@ end
 
 local M = {}
 
-M.setup = function()
-  install()
+M.setup = function(force)
+  install(force)
   dap.adapters.codelldb = function(on_adapter)
     local stdout = vim.loop.new_pipe(false)
     local stderr = vim.loop.new_pipe(false)
