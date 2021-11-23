@@ -130,6 +130,20 @@ util.define_augroup {
 }
 
 util.define_augroup {
+  name = "terminal_ui",
+  clear = true,
+  autocmds = {
+    {
+      event = "TermOpen",
+      callback = function()
+        vim.wo.relativenumber = false
+        vim.wo.number = false
+      end
+    },
+  },
+}
+
+util.define_augroup {
   name = "yank_highlight",
   clear = true,
   autocmds = {
