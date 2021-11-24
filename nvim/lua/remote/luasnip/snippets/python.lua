@@ -20,11 +20,7 @@ local function generic_pdoc(ilevel, args)
   local a = vim.tbl_map(function(item)
     local trimed = vim.trim(item)
     return trimed
-  end, vim.split(
-    args[1][1],
-    ",",
-    true
-  ))
+  end, vim.split(args[1][1], ",", true))
 
   if args[1][1] == "" then
     a = {}
@@ -79,15 +75,9 @@ M.config = {
         local a = vim.tbl_map(function(item)
           local trimed = vim.trim(item)
           return "\t\tself." .. trimed .. " = " .. trimed
-        end, vim.split(
-          args[1][1],
-          ",",
-          true
-        ))
+        end, vim.split(args[1][1], ",", true))
         return a
-      end, {
-        3,
-      }),
+      end, { 3 }),
       i(0),
     }),
     s({ trig = "fn" }, {

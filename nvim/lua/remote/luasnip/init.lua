@@ -13,6 +13,11 @@ local M = setmetatable({}, {
       rawset(t, k, val)
       return val
     end
+    if k == "extras_fmt" then
+      local val = require "luasnip.extras.fmt"
+      rawset(t, k, val)
+      return val
+    end
     return luasnip[k]
   end,
 })
@@ -43,6 +48,7 @@ M.setup = function()
       fname = (file):match "^.+/(.+)$"
     end
     local mod = fname:sub(1, -5)
+    reload(("remote.luasnip.snippets.%s"):format(mod))
     local config = require(("remote.luasnip.snippets.%s"):format(mod)).config
     if type(config) == "table" then
       for k, v in pairs(config) do

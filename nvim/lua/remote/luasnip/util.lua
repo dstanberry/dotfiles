@@ -1,4 +1,3 @@
-local luasnip = pcall(require, "remote.luasnip")
 local luasnip = require "remote.luasnip"
 
 local s = luasnip.snippet
@@ -61,6 +60,26 @@ M.same = function(index)
   return f(function(args)
     return args[1]
   end, { index })
+end
+
+M.get_last_word = function(index, delim)
+  return f(function(args)
+    local text = args[1][1] or ""
+    local split = vim.split(text, delim, { plain = true })
+    return split[#split]
+  end, { index })
+end
+
+M.get_word_choice = function(args, _, _, delim)
+  local text = args[1][1] or ""
+  local split = vim.split(text, delim, { plain = true })
+  local options = {}
+  for len = 0, #split - 1 do
+    table.insert(options, t(table.concat(vim.list_slice(split, #split - len, #split), "_")))
+  end
+  return sn(nil, {
+    c(1, options),
+  })
 end
 
 return M

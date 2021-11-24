@@ -1,10 +1,11 @@
 local luasnip = require "remote.luasnip"
 local util = require "remote.luasnip.util"
 
+local d = luasnip.dynamic_node
+local fmt = luasnip.extras_fmt.fmt
+local i = luasnip.insert_node
 local p = luasnip.extras.partial
 local s = luasnip.snippet
-local d = luasnip.dynamic_node
-local i = luasnip.insert_node
 local sn = luasnip.snippet_node
 local t = luasnip.text_node
 
@@ -32,12 +33,17 @@ M.config = {
     util.autopair("'", "'", util.even_count),
     util.autopair('"', '"', util.even_count),
     util.autopair("`", "`", util.even_count),
-    s({ trig = "{;", wordTrig = false, hidden = true }, {
-      t { "{", "\t" },
-      i(1),
-      t { "", "}" },
-      i(0),
-    }),
+    s(
+      { trig = "{;", wordTrig = false, hidden = true },
+      fmt(
+        [[
+          {{
+            {}
+          }}
+        ]],
+        i(1)
+      )
+    ),
     s({ trig = "date" }, {
       p(os.date, "%m-%d-%Y"),
     }),

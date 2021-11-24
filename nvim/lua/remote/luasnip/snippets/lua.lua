@@ -1,10 +1,13 @@
 local luasnip = require "remote.luasnip"
 local util = require "remote.luasnip.util"
 
-local l = luasnip.extras.lambda
-local s = luasnip.snippet
 local c = luasnip.choice_node
+local d = luasnip.dynamic_node
+local fmt = luasnip.extras_fmt.fmt
+local fmta = luasnip.extras_fmt.fmta
 local i = luasnip.insert_node
+-- local l = luasnip.extras.lambda
+local s = luasnip.snippet
 local sn = luasnip.snippet_node
 local t = luasnip.text_node
 
@@ -12,103 +15,168 @@ local M = {}
 
 M.config = {
   lua = {
-    s({ trig = "[[-", wordTrig = false, hidden = true }, {
-      t "--[[",
-      t { "", "\t" },
-      i(0),
-      t { "", "--]]" },
-    }),
-    s({ trig = "[[;", wordTrig = false, hidden = true }, {
-      t "[[",
-      t { "", "\t" },
-      i(0),
-      t { "", "]]" },
-    }),
+    s(
+      { trig = "[[-", wordTrig = false, hidden = true },
+      fmt(
+        [=[
+          --[[
+            {}
+          --]]
+        ]=],
+        i(1)
+      )
+    ),
+    s(
+      { trig = "[[;", wordTrig = false, hidden = true },
+      fmt(
+        [=[
+          [[
+            {}
+          ]]
+        ]=],
+        i(1)
+      )
+    ),
     s({ trig = "ig", wordTrig = true, hidden = true }, {
       t "-- stylua: ignore",
     }),
-    s({ trig = "fn", wordTrig = true, dscr = "function(param) .. end" }, {
-      t "function(",
-      i(1, "_"),
-      t { ")", "\t" },
-      i(0),
-      t { "", "end" },
-    }),
-    s({ trig = "lf", wordTrig = true, dscr = "local function f(param) .. end" }, {
-      t "local function ",
-      i(1, "f"),
-      t "(",
-      i(2, "_"),
-      t ")",
-      t { "", "\t" },
-      i(0),
-      t { "", "end" },
-    }),
-    s({ trig = "tf", wordTrig = true, dscr = "local f = function(param) .. end" }, {
-      t "local ",
-      i(1, "f"),
-      t " = function(",
-      i(2, "_"),
-      t ")",
-      t { "", "\t" },
-      i(0),
-      t { "", "end" },
-    }),
-    s({ trig = "if", wordTrig = true }, {
-      t "if ",
-      i(1),
-      t { " then", "\t" },
-      i(0),
-      t { "", "end" },
-    }),
-    s({ trig = "lt", wordTrig = true, dscr = "local var = { .. }" }, {
-      t "local ",
-      i(1, "var"),
-      t " = {",
-      t { "", "\t" },
-      i(0),
-      t { "", "}" },
-    }),
-    s("for", {
-      t "for ",
-      c(1, {
-        sn(nil, {
-          i(1, "k"),
-          t ", ",
-          i(2, "v"),
-          t " in ",
-          c(3, { t "pairs", t "ipairs" }),
-          t "(",
-          i(4),
-          t ")",
-        }),
-        sn(nil, { i(1, "i"), t " = ", i(2), t ", ", i(3) }),
-      }),
-      t { " do", "\t" },
-      i(0),
-      t { "", "end" },
-    }),
-    s({ trig = "ok", wordTrig = true }, {
-      t "local ",
-      i(1, "ok"),
-      t ", ",
-      i(2, "mod"),
-      t [[ = pcall(require, "]],
-      util.same(2),
-      t [[")]],
-      t { "", "if not " },
-      util.same(1),
-      t { " then", "\treturn" },
-      t { "", "end" },
-    }),
-    s({ trig = "req", dscr = "Require Module" }, {
-      t { "local " },
-      l(l._1:match "([^.()]+)[()]*$", 1),
-      t { " = require('" },
-      i(1),
-      t { "')" },
-      i(0),
-    }),
+    s(
+      { trig = "fn", dscr = "function(param) .. end" },
+      fmt(
+        [[
+          function({1})
+            {}
+          end
+        ]],
+        {
+          i(1),
+          i(2),
+        }
+      )
+    ),
+    s(
+      { trig = "lf", dscr = "local function f(param) .. end" },
+      fmt(
+        [[
+          local function {1}({2})
+            {}
+          end
+        ]],
+        {
+          i(1, "func"),
+          i(2),
+          i(3),
+        }
+      )
+    ),
+    s(
+      { trig = "tf", dscr = "local f = function(param) .. end" },
+      fmt(
+        [[
+          local {1} = function({2})
+            {}
+          end
+        ]],
+        {
+          i(1, "var"),
+          i(2),
+          i(3),
+        }
+      )
+    ),
+    s(
+      { trig = "if" },
+      fmt(
+        [[
+          if {1} then
+            {}
+          end
+        ]],
+        {
+          i(1, "expr"),
+          i(2),
+        }
+      )
+    ),
+    s(
+      { trig = "lt", dscr = "local var = { .. }" },
+      fmta(
+        [[
+          local <1> = {
+            <>
+          }
+        ]],
+        {
+          i(1, "var"),
+          i(2),
+        }
+      )
+    ),
+    s(
+      "for",
+      fmt(
+        [[
+          for {} do
+            {}
+          end
+        ]],
+        {
+          c(1, {
+            sn(
+              nil,
+              fmt([[{}, {} in {}()]], {
+                i(1, "k"),
+                i(2, "v"),
+                c(3, { t "pairs", t "ipairs" }),
+              })
+            ),
+            sn(
+              nil,
+              fmt([[{} = {}, {}]], {
+                i(1, "i"),
+                i(2, "v"),
+                i(3, "bound"),
+              })
+            ),
+            sn(
+              nil,
+              fmt([[{} = {}, {}, {}]], {
+                i(1, "i"),
+                i(2, "v"),
+                i(3, "bound"),
+                i(4, "direction"),
+              })
+            ),
+          }),
+          i(2),
+        }
+      )
+    ),
+    s(
+      "ok",
+      fmt(
+        [[
+          local {}, {} = pcall(require,"{}")
+          if not {} then
+            return
+          end
+        ]],
+        {
+          i(1, "ok"),
+          -- util.get_last_word(2, "."),
+          d(3, util.get_word_choice, { 2 }, "."),
+          i(2, "mod"),
+          util.same(1),
+        }
+      )
+    ),
+    s(
+      "req",
+      fmt([[local {} = require("{}")]], {
+        d(2, util.get_word_choice, { 1 }, "."),
+        i(1, "mod"),
+      })
+    ),
   },
 }
 
