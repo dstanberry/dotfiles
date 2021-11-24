@@ -70,8 +70,14 @@ M.get_last_word = function(index, delim)
   end, { index })
 end
 
-M.get_word_choice = function(args, _, _, delim)
+M.get_word_choice = function(args, _, _, delim, ext)
   local text = args[1][1] or ""
+  if ext then
+    local stripped = text:match "(.+)%..+$"
+    if stripped then
+      text = stripped
+    end
+  end
   local split = vim.split(text, delim, { plain = true })
   local options = {}
   for len = 0, #split - 1 do
