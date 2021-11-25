@@ -5,6 +5,9 @@ if not ok then
 end
 
 local types = require "luasnip.util.types"
+local groups = require "ui.theme.groups"
+
+groups.new("LuasnipChoiceNodePassive", { guifg = nil, guibg = nil, gui = "bold", guisp = nil })
 
 local M = setmetatable({}, {
   __index = function(t, k)
@@ -34,6 +37,11 @@ M.setup = function()
       [types.choiceNode] = {
         active = {
           virt_text = { { "﬘ ", "Constant" } },
+        },
+      },
+      [types.insertNode] = {
+        passive = {
+          hl_group = "Bold",
         },
       },
     },
