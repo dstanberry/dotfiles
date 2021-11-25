@@ -1,7 +1,7 @@
 vim.diagnostic.config {
   severity_sort = true,
   signs = true,
-  underline = true,
+  underline = false,
   update_in_insert = false,
   float = {
     border = "single",
@@ -11,7 +11,7 @@ vim.diagnostic.config {
   virtual_text = {
     prefix = "▪",
     source = "if_many",
-    spacing = 4,
+    spacing = 8,
   },
 }
 
