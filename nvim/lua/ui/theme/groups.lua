@@ -60,7 +60,7 @@ M.apply = function(c)
   hi.Substitute = { guifg = c.base01, guibg = c.base0A, gui = "none", guisp = nil }
   hi.SpecialKey = { guifg = c.base03, guibg = nil, gui = nil, guisp = nil }
   hi.TooLong = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
-  hi.Underlined = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
+  hi.Underlined = { guifg = c.base0F, guibg = nil, gui = "underline", guisp = nil }
   hi.Visual = { guifg = c.base00, guibg = c.base0A, gui = nil, guisp = nil }
   hi.VisualNOS = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
   hi.WarningMsg = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
