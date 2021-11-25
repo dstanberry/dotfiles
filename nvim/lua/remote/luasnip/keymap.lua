@@ -1,18 +1,18 @@
 local luasnip = require "remote.luasnip"
 local map = require "util.map"
 
-local on_tab = function()
+local expand_or_jump = function()
   if luasnip.expand_or_jumpable() then
     return map.t "<plug>luasnip-expand-or-jump"
   end
-  return map.t "<tab>"
+  return map.t "<c-right>"
 end
 
-local on_s_tab = function()
+local jump_prev = function()
   if luasnip.jumpable(-1) then
     return map.t "<plug>luasnip-jump-prev"
   end
-  return map.t "<s-tab>"
+  return map.t "<c-left>"
 end
 
 local function next_choice()
@@ -23,10 +23,10 @@ local function prev_choice()
   return luasnip.change_choice(-1)
 end
 
-map.imap("<tab>", on_tab, { expr = true })
-map.smap("<tab>", on_tab, { expr = true })
-map.imap("<s-tab>", on_s_tab, { expr = true })
-map.smap("<s-tab>", on_s_tab, { expr = true })
+map.imap("<c-right>", expand_or_jump, { expr = true })
+map.smap("<c-right>", expand_or_jump, { expr = true })
+map.imap("<c-left>", jump_prev, { expr = true })
+map.smap("<c-left>", jump_prev, { expr = true })
 map.imap("<c-d>", next_choice)
 map.smap("<c-d>", next_choice)
 map.imap("<c-f>", prev_choice)
