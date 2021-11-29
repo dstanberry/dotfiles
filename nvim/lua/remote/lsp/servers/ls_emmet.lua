@@ -1,5 +1,5 @@
 -- verify lspconfig is available
-local ok, configs = pcall(require, "lspconfig/configs")
+local ok, configs = pcall(require, "lspconfig.configs")
 if not ok then
   return
 end
