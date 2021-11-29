@@ -6,7 +6,7 @@ end
 
 -- enable debugging
 -- vim.lsp.set_log_level("debug")
--- vim.cmd('e'..vim.lsp.get_log_path())
+-- vim.cmd('e '..vim.lsp.get_log_path())
 
 local on_attach_nvim = function(client, bufnr)
   local util = require "util"
