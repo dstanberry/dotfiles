@@ -85,6 +85,8 @@ cmp.setup.cmdline(":", {
 })
 
 c.comp00 = color.lighten(c.base0D, 15)
+c.comp01 = color.lighten(c.base0D, 21)
+c.comp02 = color.lighten(c.base0E, 9)
 
 groups.new("CmpItemAbbrDefault", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
 groups.new("CmpItemAbbrDeprecatedDefault", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
@@ -92,3 +94,10 @@ groups.new("CmpItemAbbrMatchDefault", { guifg = c.comp00, guibg = nil, gui = "bo
 groups.new("CmpItemAbbrMatchFuzzyDefault", { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil })
 groups.new("CmpItemItemDefault", { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil })
 groups.new("CmpItemItemMenuDefault", { guifg = c.base10, guibg = nil, gui = "none", guisp = nil })
+
+groups.new("CmpItemKindFunction", { guifg = c.comp02, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindMethod", { guifg = c.comp02, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindSnippet", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindVariable", { guifg = c.comp01, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindKeyword", { guifg = c.comp01, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindText", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
