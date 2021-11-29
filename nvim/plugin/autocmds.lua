@@ -89,7 +89,7 @@ util.define_augroup {
     },
     {
       event = "FileType",
-      pattern = { "bash", "json", "lua", "python", "sh", "zsh" },
+      pattern = { "bash", "javascript", "json", "lua", "python", "sh", "zsh" },
       callback = function()
         vim.bo.expandtab = true
         vim.bo.shiftwidth = 2
@@ -138,7 +138,7 @@ util.define_augroup {
       callback = function()
         vim.wo.relativenumber = false
         vim.wo.number = false
-      end
+      end,
     },
   },
 }
