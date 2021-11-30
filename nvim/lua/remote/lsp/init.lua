@@ -13,14 +13,43 @@ local on_attach_nvim = function(client, bufnr)
   local nnoremap = util.map.nnoremap
   local vnoremap = util.map.vnoremap
 
+  if client.resolved_capabilities.code_lens then
+    util.define_augroup {
+      name = "lsp_document_codelens",
+      buf = true,
+      clear = true,
+      autocmds = {
+        {
+          event = "BufEnter",
+          once = true,
+          pattern = "<buffer>",
+          callback = require("vim.lsp.codelens").refresh,
+        },
+        {
+          event = { "BufWritePost", "CursorHold" },
+          pattern = "<buffer>",
+          callback = require("vim.lsp.codelens").refresh,
+        },
+      },
+    }
+  end
+
   if client.resolved_capabilities.document_highlight then
     util.define_augroup {
       name = "lsp_document_highlight",
       buf = true,
       clear = true,
       autocmds = {
-        { event = "CursorHold", pattern = "<buffer>", callback = vim.lsp.buf.document_highlight },
-        { event = "CursorMoved", pattern = "<buffer>", callback = vim.lsp.buf.clear_references },
+        {
+          event = "CursorHold",
+          pattern = "<buffer>",
+          callback = vim.lsp.buf.document_highlight,
+        },
+        {
+          event = "CursorMoved",
+          pattern = "<buffer>",
+          callback = vim.lsp.buf.clear_references,
+        },
       },
     }
   end
@@ -83,6 +112,7 @@ local servers = {
   cssls = {},
   html = {},
   pyright = {},
+  tsserver = {},
 }
 
 local configurations = vim.api.nvim_get_runtime_file("lua/remote/lsp/servers/*.lua", true)
