@@ -1,6 +1,8 @@
 ---------------------------------------------------------------
 -- => Neovim Configuration
 ---------------------------------------------------------------
+pcall(require, "impatient")
+
 local util = require "util"
 
 vim.g.mapleader = " "
@@ -60,6 +62,7 @@ util.reload("ui.statusline").setup()
 require "util.globals"
 
 vim.defer_fn(function()
-  require "remote"
+  pcall(require, "remote")
+  pcall(require, "remote.packer_compiled")
   util.load_dirhash(vim.env.SHELL)
 end, 0)

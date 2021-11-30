@@ -1,6 +1,7 @@
 local util = require "util"
 
 local config = {
+  compile_path = vim.fn.stdpath "config" .. "/lua/remote/packer_compiled.lua",
   profile = {
     enable = false,
     threshold = 0,
@@ -15,6 +16,9 @@ local config = {
 local function plugins(use)
   -- package manager
   use { "wbthomason/packer.nvim" }
+
+  -- startup optimization
+  use { "lewis6991/impatient.nvim" }
 
   -- hacks (until merged/fixed in upstream)
   use { "antoinemadec/FixCursorHold.nvim" }
