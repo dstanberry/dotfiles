@@ -1,6 +1,7 @@
 @fsouza/prettierd@0.18.0
 bash-language-server@2.0.0
 eslint_d@11.0.0
+ls_emmet@1.0.6
 markdownlint-cli@0.29.0
 markdownlint@0.24.0
 neovim@4.10.0
