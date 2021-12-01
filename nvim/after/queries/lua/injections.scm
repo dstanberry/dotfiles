@@ -1,29 +1,23 @@
 (
 	(function_call
-		(field_expression
-			(identifier) @_vimscript_identifier_1
-			(property_identifier) @_vimscript_identifier_2)
+		(field_expression) @_vimcmd_identifier
 		(arguments
 			(string) @vim)
-	)
+  )
 
-	(#eq? @_vimscript_identifier_1 "vim")
-	(#eq? @_vimscript_identifier_2 "cmd")
+	(#any-of? @_vimcmd_identifier "vim.cmd" "vim.api.nvim_command" "vim.api.nvim_exec")
 	(#match? @vim "^[\"']")
 	(#offset! @vim 0 1 0 -1)
 )
 
 (
 	(function_call
-		(field_expression
-			(identifier) @_vimscript_identifier_1
-			(property_identifier) @_vimscript_identifier_2)
+		(field_expression) @_vimcmd_identifier
 		(arguments
 			(string) @vim)
 	)
 
-	(#eq? @_vimscript_identifier_1 "vim")
-	(#eq? @_vimscript_identifier_2 "cmd")
+	(#any-of? @_vimcmd_identifier "vim.cmd" "vim.api.nvim_command" "vim.api.nvim_exec")
 	; (#match? @vim "^\\[\\[")
 	(#offset! @vim 0 2 0 -2)
 )
