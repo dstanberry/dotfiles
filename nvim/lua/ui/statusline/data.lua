@@ -9,6 +9,10 @@ local paste = function()
   return result
 end
 
+local path_separator = function()
+  return vim.fn.has("win32") == 1 and [[\]] or "/"
+end
+
 local M = {}
 
 M.readonly = function(bufnr)
@@ -69,7 +73,7 @@ M.relpath = function(bufnr)
     return ""
   else
     local maxlen = math.min(40, math.floor(0.6 * vim.fn.winwidth(0)))
-    path = path:gsub("/$", "") .. "/"
+    path = path:gsub("/$", "") .. path_separator()
     if (#path + #M.filename(bufnr)) > maxlen then
       path = vim.fn.pathshorten(path)
     end
