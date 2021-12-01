@@ -74,7 +74,7 @@ M.apply = function(c)
   hi.SignColumn = { guifg = c.base03, guibg = c.base00, gui = nil, guisp = nil }
   hi.StatusLine = { guifg = c.base04, guibg = c.base02, gui = "none", guisp = nil }
   hi.StatusLineNC = { guifg = c.base03, guibg = c.base02, gui = "none", guisp = nil }
-  hi.VertSplit = { guifg = c.base07, guibg = "none", gui = "none", guisp = nil }
+  hi.VertSplit = { clear = true, guifg = c.base07, guibg = "none", gui = "none", guisp = nil }
   hi.ColorColumn = { guifg = nil, guibg = c.base01, gui = "none", guisp = nil }
   hi.CursorColumn = { guifg = nil, guibg = c.base01, gui = "none", guisp = nil }
   hi.CursorLine = { guifg = nil, guibg = c.base01, gui = "none", guisp = nil }
@@ -162,6 +162,12 @@ M.apply = function(c)
   c.lref00 = color.darken(c.base07, 40)
   c.lref01 = color.darken(c.base08, 35)
   c.lref02 = color.darken(c.base0A, 10)
+  c.lref03 = color.lighten(c.base03, 20)
+
+  -- lsp codelens highlighting
+  hi.LspCodeLens = { clear = true, guifg = c.lref03, guibg = nil, gui = "none", guisp = nil }
+  hi.LspCodeLensText = { clear = true, guifg = c.lref03, guibg = nil, gui = "none", guisp = nil }
+  hi.LspCodeLensSeparator = { clear = true, guifg = c.lref03, guibg = nil, gui = "none", guisp = nil }
 
   -- lsp document highlighting
   hi.LspReferenceText = { guifg = c.base10, guibg = c.base03, gui = nil, guisp = nil }

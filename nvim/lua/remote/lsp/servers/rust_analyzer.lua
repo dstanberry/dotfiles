@@ -25,7 +25,7 @@ M.show_inlay_hints = function()
     "rust-analyzer/inlayHints",
     inlay_hints.get_params(),
     inlay_hints.get_callback {
-      highlight = "Comment",
+      highlight = "LspCodeLensText",
       prefix = "  ",
       only_current_line = false,
       enabled = { "TypeHint", "ChainingHint", "ParameterHint" },
