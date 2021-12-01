@@ -18,8 +18,6 @@ go.setup {
 
 local M = {}
 
-M.config = {
-
-}
+M.config = { vim.cmd [[colorscheme base16-kdark]] }
 
 return M
