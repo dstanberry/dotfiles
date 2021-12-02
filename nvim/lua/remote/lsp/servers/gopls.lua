@@ -19,12 +19,12 @@ go.setup {
 local M = {}
 
 M.config = {
-  vim.cmd [[
-    highlight! default link LspCodeLens NONE
-    highlight! default link LspCodeLensText NONE
-    highlight! default link LspCodeLensTextSign NONE
-    highlight! default link LspCodeLensTextSeparator NONE
-  ]],
+  -- vim.cmd [[
+  --   highlight! default link LspCodeLens NONE
+  --   highlight! default link LspCodeLensText NONE
+  --   highlight! default link LspCodeLensTextSign NONE
+  --   highlight! default link LspCodeLensTextSeparator NONE
+  -- ]],
 }
 
 return M
