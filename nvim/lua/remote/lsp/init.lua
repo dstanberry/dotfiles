@@ -123,8 +123,6 @@ local servers = {
   cmake = {},
   cssls = {},
   html = {},
-  pyright = {},
-  tsserver = {},
 }
 
 local configurations = vim.api.nvim_get_runtime_file("lua/remote/lsp/servers/*.lua", true)
