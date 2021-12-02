@@ -57,7 +57,7 @@ function M.get_visual_selection()
   end
   local options = {}
   options.adjust = function(pos1, pos2)
-    if vim.fn.visualmode() == "V" then
+    if vim.fn.mode() == "V" then
       pos1[3] = 1
       pos2[3] = 2 ^ 31 - 1
     end
