@@ -1,13 +1,13 @@
 local M = {}
 
 M.spawn_term = function(task, opts)
-  vim.cmd "new"
+  vim.cmd [[5new]]
   if vim.fn.has "win32" == 1 then
     vim.fn.termopen(task, opts)
   else
     vim.fn.termopen("set -e\n" .. task, opts)
   end
-  vim.cmd "startinsert"
+  vim.cmd [[startinsert]]
 end
 
 M.transform_win_cmd = function(install_cmd)
@@ -36,11 +36,14 @@ M.install_package = function(name, basedir, path, script, force)
       script = M.transform_win_cmd(script)
     end
     M.spawn_term(script, {
-      ["cwd"] = path,
+      cwd = path,
       ["on_exit"] = function(_, code)
         if code ~= 0 then
           error("Failed to install " .. name)
         end
+        local win = vim.api.nvim_get_current_win()
+        local bufnr = vim.api.nvim_win_get_buf(win)
+        vim.api.nvim_buf_delete(bufnr, { force = true })
         print("Installed " .. name)
       end,
     })
