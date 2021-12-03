@@ -144,6 +144,23 @@ util.define_augroup {
 }
 
 util.define_augroup {
+  name = "fold_behaviour",
+  clear = true,
+  autocmds = {
+    {
+      event = "BufEnter",
+      callback = function()
+        vim.wo.foldenable = false
+        vim.wo.foldlevel = 99
+        vim.wo.foldtext = "v:lua.fold_text()"
+        vim.wo.foldmethod = "expr"
+        vim.wo.foldexpr = "v:lua.fold_expr(v:lnum)"
+      end,
+    },
+  },
+}
+
+util.define_augroup {
   name = "yank_highlight",
   clear = true,
   autocmds = {
