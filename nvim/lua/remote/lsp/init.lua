@@ -93,20 +93,6 @@ local on_attach_nvim = function(client, bufnr)
   if client.resolved_capabilities.document_range_formatting then
     vnoremap("ff", vim.lsp.buf.range_formatting, { buffer = bufnr })
   end
-
-  local has_sig, lspsignature = pcall(require, "lsp_signature")
-  if has_sig then
-    lspsignature.on_attach {
-      bind = true,
-      doc_lines = 2,
-      floating_window = true,
-      fix_pos = false,
-      hint_enable = false,
-      handler_opts = {
-        border = "single",
-      },
-    }
-  end
 end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
