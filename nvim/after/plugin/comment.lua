@@ -20,10 +20,6 @@ comment.setup {
     line = "gcc",
     block = "gbc",
   },
-  pre_hook = function(ctx)
-    local cutils = require "Comment.utils"
-    local ts = require "ts_context_commentstring.internal"
-    local type = ctx.ctype == cutils.ctype.line and "__default" or "__multiline"
-    return pcall(ts.calculate_commentstring { key = type })
-  end,
+  pre_hook = nil,
+  post_hook = nil,
 }
