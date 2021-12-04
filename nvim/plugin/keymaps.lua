@@ -120,6 +120,23 @@ nnoremap("<leader>j", ":m .+1<cr>==")
 -- shift current line up
 nnoremap("<leader>k", ":m .-2<cr>==")
 
+-- prepare to call |reload()| on the current lua file
+nnoremap("<leader>r", function()
+  local ft = vim.bo.filetype
+  if ft == "lua" then
+    local file = (vim.fn.expand "%:p")
+    local mod = util.get_module_name(file)
+    local shift = ""
+    if #mod == 0 then
+      shift = "<left><left>"
+    end
+    return util.map.t(([[:lua reload("%s")%s]]):format(mod, shift))
+  end
+end, {
+  silent = false,
+  expr = true,
+})
+
 -- save current buffer to disk and execute the file
 nnoremap("<leader>x", function()
   local ft = vim.bo.filetype
@@ -139,7 +156,7 @@ nnoremap("<leader>z", "<cmd>bdelete<cr>")
 ---------------------------------------------------------------
 -- => Normal | Local Leader
 ---------------------------------------------------------------
--- populate command mode with last command
+-- prepare to run most recent ex-command
 nnoremap("<localleader>c", ":<up>", { silent = false })
 
 -- create/edit file within the current directory
