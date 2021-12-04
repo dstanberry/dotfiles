@@ -1,11 +1,5 @@
 local M = {}
 
-M.color = require "util.color"
-M.buffer = require "util.buffer"
-M.map = require "util.map"
-M.packer = require "util.packer"
-M.terminal = require "util.terminal"
-
 function M.reload(name)
   local ok, r = pcall(require, "plenary.reload")
   if ok then
@@ -130,4 +124,16 @@ function M.load_dirhash(s)
   end
 end
 
-return M
+return setmetatable({}, {
+  __index = function(t, k)
+    if M[k] then
+      return M[k]
+    else
+      local ok, val = pcall(require, string.format("util.%s", k))
+      if ok then
+        rawset(t, k, val)
+        return val
+      end
+    end
+  end,
+})
