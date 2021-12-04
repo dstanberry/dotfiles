@@ -91,6 +91,9 @@ function M.get_module_name(file)
 end
 
 function M.load_dirhash(s)
+  if vim.fn.has("win32") then
+    return
+  end
   if s == nil then
     print "cannot load hashes without specifying shell"
     return
