@@ -80,6 +80,22 @@ function M.define_augroup(group)
   end
 end
 
+function M.get_module_name(file)
+  local mod
+  if vim.fn.has "win32" == 1 then
+    mod = (file):match "lua\\(.+)%.lua$"
+    if mod ~= nil then
+      mod = (mod):gsub("\\", ".")
+    end
+  else
+    mod = (file):match "lua/(.+)%.lua$"
+    if mod ~= nil then
+      mod = (mod):gsub("/", ".")
+    end
+  end
+  return mod or ""
+end
+
 function M.load_dirhash(s)
   if s == nil then
     print "cannot load hashes without specifying shell"

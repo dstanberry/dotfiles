@@ -4,12 +4,13 @@ if not ok then
   return
 end
 
+local util = require "util"
+
 -- enable debugging
 -- vim.lsp.set_log_level("debug")
 -- vim.cmd('e '..vim.lsp.get_log_path())
 
 local on_attach_nvim = function(client, bufnr)
-  local util = require "util"
   local nnoremap = util.map.nnoremap
   local vnoremap = util.map.vnoremap
 
@@ -127,15 +128,10 @@ local servers = {
 
 local configurations = vim.api.nvim_get_runtime_file("lua/remote/lsp/servers/*.lua", true)
 for _, file in ipairs(configurations) do
-  local fname
-  if vim.fn.has "win32" == 1 then
-    fname = (file):match "^.+\\(.+)$"
-  else
-    fname = (file):match "^.+/(.+)$"
-  end
-  local mod = fname:sub(1, -5)
-  local config = require(("remote.lsp.servers.%s"):format(mod)).config or {}
-  servers = vim.tbl_deep_extend("force", servers, { [mod] = config })
+  local mod = util.get_module_name(file)
+  local config = require(mod).config or {}
+  local key = (mod):match "[^%.]*$"
+  servers = vim.tbl_deep_extend("force", servers, { [key] = config })
 end
 
 for server, config in pairs(servers) do
