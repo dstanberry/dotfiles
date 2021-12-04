@@ -4,7 +4,8 @@ vim.diagnostic.config {
   underline = false,
   update_in_insert = false,
   float = {
-    border = "single",
+    border = "rounded",
+    focusable = false,
     show_header = true,
     source = "always",
   },
