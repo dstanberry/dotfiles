@@ -202,6 +202,7 @@ local function plugins(use)
 
   -- git integrations
   use { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } }
+  use { "ruifm/gitlinker.nvim", requires = "nvim-lua/plenary.nvim" }
   use { "sindrets/diffview.nvim" }
   use { "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" }
 
