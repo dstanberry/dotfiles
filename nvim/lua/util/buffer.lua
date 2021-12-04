@@ -10,7 +10,6 @@ function M.create_scratch_buffer()
   if ft then
     vim.bo.filetype = ft
   end
-  return
 end
 
 function M.create_md_note()
