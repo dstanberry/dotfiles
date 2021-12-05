@@ -58,6 +58,10 @@ _G.fold_expr = function(lnum)
   return ">" .. next
 end
 
+_G.has = function(feature)
+  return vim.fn.has(feature) > 0
+end
+
 _G.profile = function(cmd, times)
   times = times or 100
   local args = {}

@@ -50,7 +50,7 @@ M.setup = function()
   local snippets = vim.api.nvim_get_runtime_file("lua/remote/luasnip/snippets/*.lua", true)
   for _, file in ipairs(snippets) do
     local fname
-    if vim.fn.has "win32" == 1 then
+    if has("win32") then
       fname = (file):match "^.+\\(.+)$"
     else
       fname = (file):match "^.+/(.+)$"

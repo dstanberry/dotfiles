@@ -111,7 +111,7 @@ telescope.setup {
     lsp_workspace_symbols = { layout_strategy = "vertical" },
   },
   extensions = {
-    fzf = vim.fn.has "win32" == 0 and {
+    fzf = has("win32") and {
       case_mode = "smart_case",
       override_file_sorter = true,
       override_generic_sorter = false,
@@ -126,7 +126,7 @@ telescope.setup {
   },
 }
 
-if vim.fn.has "win32" == 0 then
+if has("win32") then
   pcall(telescope.load_extension "fzf")
 end
 pcall(telescope.load_extension "gh")
@@ -182,8 +182,8 @@ local meta = setmetatable({}, {
 function M.find_nvim()
   builtin.find_files {
     cwd = vim.fn.stdpath "config",
-    hidden = (vim.fn.has "win32" == 0) and true or false,
-    follow = (vim.fn.has "win32" == 0) and true or false,
+    hidden = has("win32") and true or false,
+    follow = has("win32") and true or false,
     file_ignore_patterns = ignored,
     prompt_title = [[\ Neovim /]],
   }
@@ -191,8 +191,8 @@ end
 
 function M.project_files()
   local opts = {
-    hidden = (vim.fn.has "win32" == 0) and true or false,
-    follow = (vim.fn.has "win32" == 0) and true or false,
+    hidden = has("win32") and true or false,
+    follow = has("win32") and true or false,
     file_ignore_patterns = ignored,
     prompt_title = [[\ Project Files /]],
   }
@@ -205,8 +205,8 @@ end
 function M.file_browser()
   local opts
   opts = {
-    hidden = (vim.fn.has "win32" == 0) and true or false,
-    follow = (vim.fn.has "win32" == 0) and true or false,
+    hidden = has("win32") and true or false,
+    follow = has("win32") and true or false,
     sorting_strategy = "ascending",
     prompt_title = [[\ File Browser /]],
     layout_config = {

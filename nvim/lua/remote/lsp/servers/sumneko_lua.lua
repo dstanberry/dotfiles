@@ -8,13 +8,13 @@ local util = require "util"
 
 local fname
 local system_name
-if vim.fn.has "mac" == 1 then
+if has("mac") then
   system_name = "macOS"
   fname = "lua-language-server"
-elseif vim.fn.has "unix" == 1 then
+elseif has("unix") then
   system_name = "Linux"
   fname = "lua-language-server"
-elseif vim.fn.has "win32" == 1 then
+elseif has("win32") then
   system_name = "Windows"
   fname = "lua-language-server.exe"
 else
@@ -52,7 +52,7 @@ M.config = luadev.setup {
         },
         diagnostics = {
           enable = true,
-          globals = { "dump", "profile", "reload" },
+          globals = { "dump", "has", "profile", "reload" },
         },
       },
     },

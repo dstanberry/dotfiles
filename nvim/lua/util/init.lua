@@ -82,7 +82,7 @@ end
 
 function M.get_module_name(file)
   local mod
-  if vim.fn.has "win32" == 1 then
+  if has("win32") then
     mod = (file):match "lua\\(.+)%.lua$"
     if mod ~= nil then
       mod = (mod):gsub("\\", ".")
@@ -97,7 +97,7 @@ function M.get_module_name(file)
 end
 
 function M.load_dirhash(s)
-  if vim.fn.has "win32" then
+  if has("win32") then
     return
   end
   if s == nil then

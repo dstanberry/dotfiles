@@ -10,7 +10,7 @@ local paste = function()
 end
 
 local path_separator = function()
-  return vim.fn.has("win32") == 1 and [[\]] or "/"
+  return has("win32") and [[\]] or "/"
 end
 
 local M = {}
