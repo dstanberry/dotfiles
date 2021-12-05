@@ -30,7 +30,7 @@ vim.ui.input = function(opts, on_confirm)
   local title = opts.prompt
   lines = { title, string.rep(ui.border_line, 30), unpack(lines) }
 
-  local popup_bufnr, _ = ui.popup_create {
+  local bufnr, _ = ui.create_floating_window {
     width = 30,
     lines = lines,
     height = 3,
@@ -47,8 +47,8 @@ vim.ui.input = function(opts, on_confirm)
       on_confirm(input)
     end,
   }
-  vim.api.nvim_buf_add_highlight(popup_bufnr, -1, "Title", 0, 0, #title)
-  vim.api.nvim_buf_add_highlight(popup_bufnr, -1, "FloatBorder", 1, 0, -1)
+  vim.api.nvim_buf_add_highlight(bufnr, -1, "Title", 0, 0, #title)
+  vim.api.nvim_buf_add_highlight(bufnr, -1, "FloatBorder", 1, 0, -1)
 end
 
 vim.ui.select = function(items, opts, on_choice)
@@ -67,7 +67,7 @@ vim.ui.select = function(items, opts, on_choice)
   local width = ui.calculate_width(choices)
   choices = { title, string.rep(ui.border_line, width), unpack(choices) }
 
-  local popup_bufnr, _ = ui.popup_create {
+  local bufnr, _ = ui.create_floating_window {
     lines = choices,
     enter = true,
     set_cursor = true,
@@ -75,8 +75,8 @@ vim.ui.select = function(items, opts, on_choice)
       confirm(items, on_choice)
     end,
   }
-  vim.api.nvim_buf_add_highlight(popup_bufnr, -1, "Title", 0, 0, #title)
-  vim.api.nvim_buf_add_highlight(popup_bufnr, -1, "FloatBorder", 1, 0, -1)
+  vim.api.nvim_buf_add_highlight(bufnr, -1, "Title", 0, 0, #title)
+  vim.api.nvim_buf_add_highlight(bufnr, -1, "FloatBorder", 1, 0, -1)
 
   for k, _ in ipairs(choices) do
     if k > 2 then

@@ -18,50 +18,42 @@ M.calculate_width = function(lines)
   return max_length <= max_width and max_length or max_width
 end
 
-local set_cursor = function()
-  local current_line = vim.fn.line "."
-  local max_lines = vim.api.nvim_buf_line_count(0)
-  if current_line < 3 and max_lines >= 3 then
-    vim.api.nvim_win_set_cursor(0, { 3, 1 })
-  end
-end
-
-M.popup_create = function(opts)
+M.create_floating_window = function(opts)
   local lines, syntax = opts.lines or {}, opts.syntax
   opts.border = opts.border or "rounded"
-  local popup_bufnr, winnr = vim.lsp.util.open_floating_preview(lines, syntax, opts)
+  local bufnr, winnr = vim.lsp.util.open_floating_preview(lines, syntax, opts)
   -- vim.api.nvim_win_set_option(winnr, "winhl", "Normal:Normal")
   if opts.enter then
     vim.api.nvim_set_current_win(winnr)
     inoremap("jk", function()
       vim.cmd [[stopinsert]]
       vim.api.nvim_win_close(0, true)
-    end, { buffer = popup_bufnr })
+    end, { buffer = bufnr })
     nnoremap("<esc>", function()
       vim.api.nvim_win_close(0, true)
-    end, { buffer = popup_bufnr })
+    end, { buffer = bufnr })
     nnoremap("q", function()
       vim.api.nvim_win_close(0, true)
-    end, { buffer = popup_bufnr })
+    end, { buffer = bufnr })
   end
   if opts.on_confirm then
     inoremap("<cr>", function()
       opts.on_confirm()
       vim.cmd [[stopinsert]]
-    end, { buffer = popup_bufnr })
+    end, { buffer = bufnr })
     nnoremap("<cr>", function()
       opts.on_confirm()
-    end, { buffer = popup_bufnr })
+    end, { buffer = bufnr })
   end
   if opts.input then
-    vim.cmd "startinsert"
-    vim.api.nvim_buf_set_option(popup_bufnr, "modifiable", true)
+    vim.cmd [[startinsert]]
+    vim.api.nvim_buf_set_option(bufnr, "modifiable", true)
   end
   if opts.prompt and opts.prompt.enable then
-    vim.api.nvim_buf_set_option(popup_bufnr, "buftype", "prompt")
-    vim.fn.prompt_setprompt(popup_bufnr, opts.prompt.prefix)
-    vim.api.nvim_buf_add_highlight(popup_bufnr, -1, opts.prompt.highlight, #lines, 0, #opts.prompt.prefix)
-    vim.api.nvim_buf_set_option(popup_bufnr, "ft", "UIPrompt")
+    vim.api.nvim_buf_set_option(bufnr, "buftype", "prompt")
+    vim.fn.prompt_setprompt(bufnr, opts.prompt.prefix)
+    vim.api.nvim_buf_add_highlight(bufnr, -1, opts.prompt.highlight, #lines, 0, #opts.prompt.prefix)
+    vim.api.nvim_buf_set_option(bufnr, "ft", "UIPrompt")
   end
   if opts.set_cursor then
     vim.api.nvim_win_set_cursor(winnr, { 3, 1 })
@@ -72,13 +64,17 @@ M.popup_create = function(opts)
         {
           event = "CursorMoved",
           callback = function()
-            set_cursor()
+            local current_line = vim.fn.line "."
+            local max_lines = vim.api.nvim_buf_line_count(0)
+            if current_line < 3 and max_lines >= 3 then
+              vim.api.nvim_win_set_cursor(0, { 3, 1 })
+            end
           end,
         },
       },
     }
   end
-  return popup_bufnr, winnr
+  return bufnr, winnr
 end
 
 return M
