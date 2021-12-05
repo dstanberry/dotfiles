@@ -56,7 +56,7 @@ local on_attach_nvim = function(client, bufnr)
   end
 
   util.define_augroup {
-    name = "lsp_hover",
+    name = "lsp_signature",
     buf = true,
     clear = true,
     autocmds = {
