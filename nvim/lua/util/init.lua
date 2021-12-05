@@ -1,4 +1,20 @@
-local M = {}
+_G.__UtilCallbackStore = _G.__UtilCallbackStore or {}
+
+local M = {
+  _callbackStore = _G.__UtilCallbackStore,
+}
+
+function M._create(key, callback)
+  M._callbackStore[key] = callback
+end
+
+function M._execute(id)
+  local func = M._callbackStore[id]
+  if not (func and type(func) == "function") then
+    print("Function doest not exist: " .. id)
+  end
+  return func()
+end
 
 function M.reload(name)
   local ok, r = pcall(require, "plenary.reload")
@@ -8,23 +24,13 @@ function M.reload(name)
   return require(name)
 end
 
-M.callbacks = {}
-
 function M.delegate(cb, expr)
   local key = tostring(cb)
-  M.callbacks[key] = cb
+  M._create(key, cb)
   if expr then
-    return ([[luaeval('require("util").execute("%s")')]]):format(key)
+    return ([[luaeval('require("util")._execute("%s")')]]):format(key)
   end
-  return ([[lua require("util").execute("%s")]]):format(key)
-end
-
-function M.execute(id)
-  local func = M.callbacks[id]
-  if not func then
-    print("Function doest not exist: " .. id)
-  end
-  return func()
+  return ([[lua require("util")._execute("%s")]]):format(key)
 end
 
 function M.define_command(spec)
@@ -91,7 +97,7 @@ function M.get_module_name(file)
 end
 
 function M.load_dirhash(s)
-  if vim.fn.has("win32") then
+  if vim.fn.has "win32" then
     return
   end
   if s == nil then
