@@ -116,8 +116,7 @@ function M.load_dirhash(s)
     print("cannot load hashes for unsupported shell: " .. shell)
     return
   end
-  local config_home = vim.fn.stdpath "config"
-  local path = vim.fn.expand(("%s/%s/rc.private/hashes.%s"):format(config_home, shell, shell))
+  local path = vim.fn.expand(("%s/%s/rc.private/hashes.%s"):format(vim.env.XDG_CONFIG_HOME, shell, shell))
   local cmd = ([[%s -c "source %s; hash -d"]]):format(shell, path)
   local dirs = vim.fn.system(cmd)
   local lines = vim.split(dirs, "\n")
