@@ -7,5 +7,5 @@ util.define_command {
 
 util.define_command {
   name = "S",
-  callback = util.buffer.create_scratch_buffer,
+  callback = util.buffer.create_scratch,
 }

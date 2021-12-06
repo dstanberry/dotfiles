@@ -1,6 +1,6 @@
 local M = {}
 
-function M.create_scratch_buffer()
+function M.create_scratch()
   local ft = vim.fn.input "scratch buffer filetype: "
   vim.cmd "20new [Scratch]"
   vim.bo.bufhidden = "wipe"
@@ -12,7 +12,7 @@ function M.create_scratch_buffer()
   end
 end
 
-function M.create_md_note()
+function M.create_note()
   local dir = vim.env.hash_n or vim.env.HOME
   local fname = ("%s/%s.md"):format(dir, os.date "%m_%d_%y")
   vim.cmd(("edit %s"):format(fname))
