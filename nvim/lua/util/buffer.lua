@@ -13,7 +13,7 @@ function M.create_scratch()
 end
 
 function M.create_note()
-  local dir = vim.env.hash_n or vim.env.HOME
+  local dir = vim.env.hash_notes or vim.env.HOME
   local fname = ("%s/%s.md"):format(dir, os.date "%m_%d_%y")
   vim.cmd(("edit %s"):format(fname))
   local bufnr = vim.fn.bufnr(vim.fn.expand(("%s"):format(fname), true))

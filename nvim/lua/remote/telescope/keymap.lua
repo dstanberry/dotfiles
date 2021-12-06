@@ -28,9 +28,9 @@ end)
 map.nnoremap("<leader>fk", function()
   telescope.help_tags()
 end)
-if vim.env.hash_n then
+if vim.env.hash_notes then
   map.nnoremap("<leader>fn", function()
-    telescope.find_files { cwd = vim.env.hash_n }
+    telescope.find_files { cwd = vim.env.hash_notes }
   end)
 end
 map.nnoremap("<leader>fp", function()
