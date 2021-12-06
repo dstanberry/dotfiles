@@ -4,7 +4,7 @@ if not ok and not pcall(require, "telescope") then
   return
 end
 
-local should_reload = false
+local should_reload = true
 local reloader = function()
   if should_reload then
     local util = require "util"
@@ -41,7 +41,7 @@ telescope.setup {
     layout_strategy = "flex",
     sorting_strategy = "descending",
     layout_config = {
-      prompt_position = "bottom",
+      -- prompt_position = "bottom",
       horizontal = {
         height = { padding = 0.1 },
         width = { padding = 0.06 },
@@ -71,10 +71,12 @@ telescope.setup {
     },
   },
   pickers = {
-    buffers = { theme = "dropdown" },
+    buffers = { theme = "ivy" },
     grep_string = {
-      layout_strategy = "vertical",
-      layout_config = { height = 70 },
+      layout_config = {
+        height = 60,
+        prompt_position = "top",
+      },
     },
     help_tags = {
       theme = "ivy",
@@ -111,7 +113,7 @@ telescope.setup {
     lsp_workspace_symbols = { layout_strategy = "vertical" },
   },
   extensions = {
-    fzf = has("win32") and {
+    fzf = has "win32" and {
       case_mode = "smart_case",
       override_file_sorter = true,
       override_generic_sorter = false,
@@ -126,7 +128,7 @@ telescope.setup {
   },
 }
 
-if has("win32") then
+if has "win32" then
   pcall(telescope.load_extension "fzf")
 end
 pcall(telescope.load_extension "gh")
@@ -182,8 +184,8 @@ local meta = setmetatable({}, {
 function M.find_nvim()
   builtin.find_files {
     cwd = vim.fn.stdpath "config",
-    hidden = has("win32") and true or false,
-    follow = has("win32") and true or false,
+    hidden = has "win32" and true or false,
+    follow = has "win32" and true or false,
     file_ignore_patterns = ignored,
     prompt_title = [[\ Neovim /]],
   }
@@ -191,8 +193,8 @@ end
 
 function M.project_files()
   local opts = {
-    hidden = has("win32") and true or false,
-    follow = has("win32") and true or false,
+    hidden = has "win32" and true or false,
+    follow = has "win32" and true or false,
     file_ignore_patterns = ignored,
     prompt_title = [[\ Project Files /]],
   }
@@ -205,8 +207,8 @@ end
 function M.file_browser()
   local opts
   opts = {
-    hidden = has("win32") and true or false,
-    follow = has("win32") and true or false,
+    hidden = has "win32" and true or false,
+    follow = has "win32" and true or false,
     sorting_strategy = "ascending",
     prompt_title = [[\ File Browser /]],
     layout_config = {
