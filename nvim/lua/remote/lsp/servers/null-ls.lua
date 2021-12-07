@@ -17,9 +17,12 @@ local sources = {
   null_ls.builtins.formatting.eslint_d,
   null_ls.builtins.formatting.isort,
   null_ls.builtins.formatting.prettier.with {
-    extra_args = function(params)
-      return params.ft == "markdown" and { "$FILENAME", "--print-width", "80", "--prose-wrap", "always" }
-        or { "$FILENAME" }
+    args = function(params)
+      local arguments = { "$FILENAME" }
+      if params.ft == "markdown" then
+        arguments = { "$FILENAME", "--print-width", "80", "--prose-wrap", "always" }
+      end
+      return arguments
     end,
   },
   null_ls.builtins.formatting.shfmt.with { args = { "-i", "2", "-ci", "-sr", "-s", "-bn" } },
