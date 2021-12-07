@@ -165,16 +165,13 @@ local M = {}
 local meta = setmetatable({}, {
   __index = function(t, k)
     reloader()
+    local use_custom, custom = pcall(require, ("remote.telescope.custom.%s"):format(k))
+
     if M[k] then
       return M[k]
-    elseif k == "rg" then
-      local val = require "remote.telescope.custom.rg"
-      rawset(t, k, val)
-      return val
-    elseif k == "lsp" then
-      local val = require "remote.telescope.custom.lsp"
-      rawset(t, k, val)
-      return val
+    elseif use_custom then
+      rawset(t, k, custom)
+      return custom
     else
       return builtin[k]
     end
