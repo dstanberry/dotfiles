@@ -18,7 +18,7 @@ M.calculate_width = function(lines)
   return max_length <= max_width and max_length or max_width
 end
 
-M.create_floating_window = function(opts)
+M.popup_window = function(opts)
   local lines, syntax = opts.lines or {}, opts.syntax
   opts.border = opts.border or "rounded"
   local bufnr, winnr = vim.lsp.util.open_floating_preview(lines, syntax, opts)

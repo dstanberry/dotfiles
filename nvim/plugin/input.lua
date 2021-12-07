@@ -3,8 +3,10 @@ if not vim.ui then
   return
 end
 
-local ui = require "util.window"
-local nnoremap = require("util.map").nnoremap
+local util = require "util"
+
+local window = util.window
+local nnoremap = util.map.nnoremap
 
 local options = {
   prefix = " ❯ ",
@@ -28,9 +30,9 @@ vim.ui.input = function(opts, on_confirm)
 
   local lines = {}
   local title = opts.prompt
-  lines = { title, string.rep(ui.border_line, 30), unpack(lines) }
+  lines = { title, string.rep(window.border_line, 30), unpack(lines) }
 
-  local bufnr, _ = ui.create_floating_window {
+  local bufnr, _ = window.popup_window {
     width = 30,
     lines = lines,
     height = 3,
@@ -64,10 +66,10 @@ vim.ui.select = function(items, opts, on_choice)
   end
 
   local title = table.remove(choices, 1)
-  local width = ui.calculate_width(choices)
-  choices = { title, string.rep(ui.border_line, width), unpack(choices) }
+  local width = window.calculate_width(choices)
+  choices = { title, string.rep(window.border_line, width), unpack(choices) }
 
-  local bufnr, _ = ui.create_floating_window {
+  local bufnr, _ = window.popup_window {
     lines = choices,
     enter = true,
     set_cursor = true,
