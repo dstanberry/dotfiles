@@ -46,8 +46,10 @@ M.popup_window = function(opts)
     end, { buffer = bufnr })
   end
   if opts.input then
-    vim.cmd [[startinsert]]
-    vim.api.nvim_buf_set_option(bufnr, "modifiable", true)
+    vim.schedule(function()
+      vim.api.nvim_buf_set_option(bufnr, "modifiable", true)
+      vim.cmd [[startinsert]]
+    end)
   end
   if opts.prompt and opts.prompt.enable then
     vim.api.nvim_buf_set_option(bufnr, "buftype", "prompt")

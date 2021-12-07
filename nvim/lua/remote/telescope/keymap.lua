@@ -29,7 +29,7 @@ map.nnoremap("<leader>fk", function()
   telescope.help_tags()
 end)
 if vim.env.hash_notes then
-  map.nnoremap("<leader>mc", function()
+  map.nnoremap("<leader>mm", function()
     require("custom.markdown").create_note()
   end)
   map.nnoremap("<leader>mn", function()
