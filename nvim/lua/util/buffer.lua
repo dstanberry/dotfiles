@@ -12,20 +12,6 @@ function M.create_scratch()
   end
 end
 
-function M.create_note()
-  local dir = vim.env.hash_notes or vim.env.HOME
-  local fname = ("%s/%s.md"):format(dir, os.date "%m_%d_%y")
-  vim.cmd(("edit %s"):format(fname))
-  local bufnr = vim.fn.bufnr(vim.fn.expand(("%s"):format(fname), true))
-  for _, win_id in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-    local open_bufnr = vim.api.nvim_win_get_buf(win_id)
-    if open_bufnr == bufnr then
-      return vim.api.nvim_set_current_win(win_id)
-    end
-  end
-  vim.api.nvim_win_set_buf(0, bufnr)
-end
-
 function M.get_marked_region(mark1, mark2, options)
   local bufnr = 0
   local adjust = options.adjust or function(pos1, pos2)

@@ -32,6 +32,9 @@ if vim.env.hash_notes then
   map.nnoremap("<leader>fn", function()
     telescope.find_files { cwd = vim.env.hash_notes }
   end)
+  map.nnoremap("<leader>ft", function()
+    require("custom.markdown").create_template()
+  end)
 end
 map.nnoremap("<leader>fp", function()
   telescope.find_plugins()
