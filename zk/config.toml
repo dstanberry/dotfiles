@@ -1,30 +1,22 @@
 [note]
-
 language = "en"
-default-title = "quick thought"
-filename = "{{date now 'timestamp'}}"
+default-title = "scratchpad"
+filename = "{{date now}}-{{slug title}}"
 extension = "md"
 template = "default.md"
 id-charset = "alphanum"
-id-length = 8
+id-length = 6
 id-case = "lower"
 
 [extra]
 author = "Demaro Stanberry"
 
-[group.meetings]
-paths = ["_inbox"]
-[group.meetings.note]
-filename = "{{title}}"
+[group.journal]
+paths = ["vault/inbox", "vault/journal"]
+[group.journal.note]
+filename = "{{date now 'timestamp'}}-{{slug title}}"
 extension = "md"
-template = "meeting.md"
-
-[group.wiki]
-paths = ["literature"]
-[group.wiki.note]
-filename = "{{title}}"
-extension = "md"
-template = "wiki.md"
+template = "journal.md"
 
 [format.markdown]
 hashtags = true
@@ -35,10 +27,15 @@ link-drop-extension = true
 
 [tool]
 editor = "nvim"
-pager = "less -FIRX"
-fzf-preview = "zk list --quiet --format full --limit 1 {-1}"
+pager = "less -iFMRSX"
+fzf-preview = "bat -p --color always {-1}"
 
 [lsp]
 [lsp.diagnostics]
 wiki-title = "hint"
 dead-link = "error"
+
+[lsp.completion]
+note-label = "{{title-or-path}}"
+note-filter-text = "{{title}} {{path}}"
+note-detail = "{{filename-stem}}"

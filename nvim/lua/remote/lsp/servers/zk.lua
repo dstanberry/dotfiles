@@ -15,7 +15,7 @@ M.setup = function(force)
     git clone https://github.com/mickael-menu/zk.git
     cd zk
     make
-    mkdir -vp %s/vault/{_inbox,literature,permanent}
+    mkdir -vp %s/vault/{inbox,journal,literature,permanent}
   ]],
     zk_notebook
   )

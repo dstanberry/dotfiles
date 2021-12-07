@@ -6,7 +6,7 @@ end
 
 devicons.setup {
   override = require "remote.devicons.icons",
-  default = true,
+  default = false,
 }
 
 devicons.set_default_icon('', '#6d8086')

@@ -9,35 +9,35 @@ local templates = {
   {
     ordinal = 1,
     label = "Daily team standup",
-    directory = "vault/_inbox",
+    directory = "vault/inbox",
     ask_for_title = false,
     prefix_date = true,
   },
   {
     ordinal = 2,
     label = "One-on-one",
-    directory = "vault/_inbox",
+    directory = "vault/inbox",
     ask_for_title = false,
     prefix_date = true,
   },
   {
     ordinal = 3,
     label = "Iteration retrospective meeting",
-    directory = "vault/_inbox",
+    directory = "vault/inbox",
     ask_for_title = false,
     prefix_date = true,
   },
   {
     ordinal = 4,
     label = "Backlog refinement meeting",
-    directory = "vault/_inbox",
+    directory = "vault/inbox",
     ask_for_title = false,
     prefix_date = true,
   },
   {
     ordinal = 5,
     label = "Feature replenishment meeting",
-    directory = "vault/_inbox",
+    directory = "vault/inbox",
     ask_for_title = false,
     prefix_date = true,
   },
@@ -57,14 +57,14 @@ local templates = {
   },
   {
     ordinal = 8,
-    label = "Other",
-    directory = "vault/_inbox",
+    label = "Fleeting Note",
+    directory = "vault/journal",
     ask_for_title = true,
     prefix_date = false,
   },
 }
 
-M.create_template = function()
+M.create_template_reference = function()
   local ok, pickers = pcall(require, "telescope.pickers")
   if not ok then
     return
@@ -130,7 +130,7 @@ end
 
 M.create_note = function()
   vim.cmd(string.format("cd %s", zk_notebook))
-  local cmd = ([[%s new --no-input "vault/_inbox" --print-path]]):format(executable)
+  local cmd = ([[%s new --no-input "vault/journal" --print-path]]):format(executable)
   local file = vim.fn.system(cmd)
   file = file:gsub("^%s*(.-)%s*$", "%1")
   if vim.fn.filereadable(file) then
