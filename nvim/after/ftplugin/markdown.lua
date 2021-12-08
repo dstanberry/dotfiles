@@ -20,8 +20,6 @@ util.define_augroup {
         markdown.highlight_blocks()
         vim.wo.conceallevel = 2
         vim.wo.concealcursor = "c"
-        vim.wo.number = false
-        vim.wo.relativenumber = false
         vim.bo.iskeyword = vim.bo.iskeyword .. ",-"
         vim.bo.iskeyword = vim.bo.iskeyword .. ",@-@"
         vim.wo.wrap = true
