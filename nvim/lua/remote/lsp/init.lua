@@ -55,18 +55,21 @@ local on_attach_nvim = function(client, bufnr)
     }
   end
 
-  util.define_augroup {
-    name = "lsp_signature",
-    buf = true,
-    clear = true,
-    autocmds = {
-      {
-        event = "CursorHoldI",
-        pattern = "<buffer>",
-        callback = vim.lsp.buf.signature_help,
+  if client.resolved_capabilities.signature_help then
+    util.define_augroup {
+      name = "lsp_signature",
+      buf = true,
+      clear = true,
+      autocmds = {
+        {
+          event = "CursorHoldI",
+          pattern = "<buffer>",
+          callback = vim.lsp.buf.signature_help,
+        },
       },
-    },
-  }
+    }
+  end
+
   local list_workspace_folders = function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end
