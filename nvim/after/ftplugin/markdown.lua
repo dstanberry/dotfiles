@@ -1,4 +1,8 @@
 local util = require "util"
+local inoremap = util.map.inoremap
+local nnoremap = util.map.nnoremap
+local vnoremap = util.map.vnoremap
+
 local markdown = require "custom.markdown"
 
 local color = require "util.color"
@@ -26,6 +30,24 @@ util.define_augroup {
         vim.wo.breakindent = true
         vim.wo.breakindentopt = "min:5,list:-1"
         vim.bo.formatlistpat = [=[^\s*\d\+\.\s\+\|^\s*[-*+>]\s\+\|^\[^\ze[^\]]\+\]:]=]
+        inoremap("<c-w>c", function()
+          markdown.insert_checkbox()
+        end, { buffer = vim.api.nvim_get_current_buf() })
+        inoremap("<c-w>l", function()
+          markdown.insert_link()
+        end, { buffer = vim.api.nvim_get_current_buf() })
+        nnoremap("<localleader>mb", function()
+          markdown.toggle_bullet()
+        end, { buffer = vim.api.nvim_get_current_buf() })
+        nnoremap("<localleader>mc", function()
+          markdown.toggle_checkbox()
+        end, { buffer = vim.api.nvim_get_current_buf() })
+        vnoremap("<localleader>mb", function()
+          markdown.toggle_bullet()
+        end, { buffer = vim.api.nvim_get_current_buf() })
+        vnoremap("<localleader>mc", function()
+          markdown.toggle_checkbox()
+        end, { buffer = vim.api.nvim_get_current_buf() })
       end,
     },
   },
