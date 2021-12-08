@@ -170,15 +170,15 @@ M.highlight_blocks = function()
   if not vim.api.nvim_buf_is_loaded(bufnr) then
     return
   end
-  pcall(vim.api.nvim_command, "sign unplace * file=" .. vim.fn.expand "%")
+  pcall(vim.cmd, ("sign unplace * file=%s"):format(vim.fn.expand "%"))
   local continue = false
   for lnum = 1, #vim.fn.getline(1, "$"), 1 do
     local line = vim.fn.getline(lnum)
     if (not continue and string.match(line, "^%s*```.*$")) or (not string.match(line, "^%s*```.*$") and continue) then
       continue = true
-      vim.api.nvim_command("sign place " .. lnum .. " line=" .. lnum .. " name=codeblock file=" .. vim.fn.expand "%")
+      vim.cmd(("sign place %s line=%s name=codeblock file=%s"):format(lnum, lnum, vim.fn.expand "%"))
     elseif string.match(line, "^%s*```%s*") and continue then
-      vim.api.nvim_command("sign place " .. lnum .. " line=" .. lnum .. " name=codeblock file=" .. vim.fn.expand "%")
+      vim.cmd(("sign place %s line=%s name=codeblock file=%s"):format(lnum, lnum, vim.fn.expand "%"))
       continue = false
     end
   end
