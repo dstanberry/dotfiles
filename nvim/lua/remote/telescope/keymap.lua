@@ -28,17 +28,20 @@ end)
 map.nnoremap("<leader>fk", function()
   telescope.help_tags()
 end)
+
 if vim.env.hash_notes then
+  local md = require "custom.markdown"
   map.nnoremap("<leader>mm", function()
-    require("custom.markdown").create_note()
+    md.create_note()
   end)
-  map.nnoremap("<leader>mn", function()
+  map.nnoremap("<localleader>mm", function()
     telescope.find_files { cwd = vim.env.hash_notes }
   end)
   map.nnoremap("<leader>mr", function()
-    require("custom.markdown").create_template_reference()
+    md.create_template_reference()
   end)
 end
+
 map.nnoremap("<leader>fp", function()
   telescope.find_plugins()
 end)
