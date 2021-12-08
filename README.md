@@ -71,6 +71,7 @@ Luarocks: In order to make luarocks partially compliant, edit
 `/etc/luarocks/config-<version>.lua` and replace the user path with the
 following:
 
+<!-- markdownlint-disable MD013 -->
 ```lua
 --rocks_trees = {
     { name = "user", root = (os_getenv("XDG_DATA_HOME") or (home .. '/.local/share')) .. "/luarocks" };
