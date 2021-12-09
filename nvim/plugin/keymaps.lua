@@ -178,13 +178,24 @@ end, {
   silent = false,
 })
 
--- save as new file within the current directory
+-- save as new file within the current directory (with the option to delete the original)
 nnoremap("<localleader>s", function()
+  local file = vim.fn.expand "%"
   local path = vim.fn.expand "%:p:h"
-  return util.map.t((":saveas %s/"):format(path))
+  local sep = has "win32" and [[\]] or "/"
+  local updated = vim.fn.input("Save as: ", path .. sep)
+  if #updated > 0 and updated ~= file then
+    vim.cmd(("saveas %s"):format(updated))
+    local move = vim.fn.input "Delete original file? (y/n): "
+    if move == "y" or move == "yes" then
+      vim.cmd(([[
+        silent !rm %s
+        bdelete %s
+      ]]):format(file, file))
+    end
+  end
 end, {
   silent = false,
-  expr = true,
 })
 
 -- discard all file modifications and close instance
