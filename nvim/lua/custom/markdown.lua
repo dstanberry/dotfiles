@@ -6,12 +6,11 @@ end
 
 local telescope = require "remote.telescope"
 local pickers = telescope.pickers
-
 local zk = require "remote.lsp.servers.zk"
 
 local M = {}
 
-local executable = zk.get_executable_path()
+local zk_exec = zk.get_executable_path()
 local zk_notebook = zk.get_notebook_path()
 
 local types = {
@@ -96,14 +95,56 @@ local templates = {
   },
 }
 
-local prepare_window = function()
-  vim.cmd(string.format(
-    [[
-      tabnew
-      tcd %s
-    ]],
-    zk_notebook
-  ))
+local _file_exists = function(fname)
+  local f = io.open(fname, "r")
+  if f ~= nil then
+    io.close(f)
+    return true
+  else
+    return false
+  end
+end
+
+local _parse_template = function(line, title)
+  local lut = {
+    title = title,
+    tags = "",
+    content = "",
+    date = os.date "%Y-%m-%d",
+    ["date now"] = os.date "%Y-%m-%d",
+    ["date now 'short'"] = os.date "%m/%d/%Y",
+    ["date now 'time'"] = os.date "%H:%M",
+    ["date now 'timestamp'"] = os.date "%Y%m%d%H%M",
+    ["extra.author"] = "Demaro Stanberry",
+  }
+  for k, v in pairs(lut) do
+    line = line:gsub(string.format("{{%s}}", k), v)
+  end
+
+  return line
+end
+
+local create_note_from_template = function(title, box)
+  local file = vim.fn.expand(string.format("%s/%s", zk_notebook, box))
+  local i = vim.fn.match(file, "inbox") > 0
+  local j = vim.fn.match(file, "journal") > 0
+  local t = (i or j) and "journal.md" or "default.md"
+  local template = vim.fn.expand(string.format("%s/../zk/templates/%s", vim.fn.stdpath "config", t))
+  local date = (i or j) and os.date "%Y%m%d%H%M" or os.date "%Y-%m-%d"
+  file = vim.fn.expand(string.format("%s/%s-%s.md", file, date, title))
+  local lines = {}
+  if _file_exists(template) then
+    for line in io.lines(template) do
+      lines[#lines + 1] = line
+    end
+  end
+  local ofile = io.open(file, "a")
+  for _, line in pairs(lines) do
+    local parsed = _parse_template(line, title)
+    ofile:write(string.format("%s\n", parsed))
+  end
+  ofile:close()
+  return file
 end
 
 local get_lines = function()
@@ -130,15 +171,20 @@ M.create_template_reference = function()
       else
         title = selection.value.label
       end
-      prepare_window()
-      local cmd = string.format(
-        '%s new --no-input --title "%s" "%s" --print-path',
-        executable,
-        title,
-        selection.value.directory
-      )
-      local file = vim.fn.system(cmd)
-      file = file:gsub("^%s*(.-)%s*$", "%1")
+      local file
+      if zk_exec then
+        local cmd = string.format(
+          '%s new --no-input --title "%s" "%s/%s" --print-path',
+          zk_exec,
+          title,
+          zk_notebook,
+          selection.value.directory
+        )
+        file = vim.fn.system(cmd)
+        file = file:gsub("^%s*(.-)%s*$", "%1")
+      else
+        file = create_note_from_template(title, selection.value.directory)
+      end
       if vim.fn.filereadable(file) then
         local segments = vim.split(file, "/")
         local filename = segments[#segments]
@@ -154,12 +200,23 @@ end
 M.create_note = function()
   pickers.create_dropdown(types, {
     callback = function(selection)
-      prepare_window()
-      local cmd = ([[%s new --no-input "%s" --print-path]]):format(executable, selection.value.directory)
-      local file = vim.fn.system(cmd)
-      file = file:gsub("^%s*(.-)%s*$", "%1")
+      local file
+      if zk_exec then
+        local cmd = ([[%s new --no-input "%s/%s" --print-path]]):format(zk_exec, zk_notebook, selection.value.directory)
+        file = vim.fn.system(cmd)
+        file = file:gsub("^%s*(.-)%s*$", "%1")
+      else
+        file = create_note_from_template("scratchpad", selection.value.directory)
+      end
       if vim.fn.filereadable(file) then
-        vim.cmd(string.format("edit %s", file))
+        vim.cmd(string.format(
+          [[
+            tabnew %s
+            tcd %s
+          ]],
+          file,
+          zk_notebook
+        ))
       end
     end,
   })

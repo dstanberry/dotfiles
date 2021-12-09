@@ -16,14 +16,6 @@ function M._execute(id)
   return func()
 end
 
-function M.reload(name)
-  local ok, r = pcall(require, "plenary.reload")
-  if ok then
-    r.reload_module(name)
-  end
-  return require(name)
-end
-
 function M.delegate(cb, expr)
   local key = tostring(cb)
   M._create(key, cb)
@@ -82,7 +74,7 @@ end
 
 function M.get_module_name(file)
   local mod
-  if has("win32") then
+  if has "win32" then
     mod = (file):match "lua\\(.+)%.lua$"
     if mod ~= nil then
       mod = (mod):gsub("\\", ".")
@@ -97,7 +89,7 @@ function M.get_module_name(file)
 end
 
 function M.load_dirhash(s)
-  if has("win32") then
+  if has "win32" then
     return
   end
   if s == nil then
@@ -130,6 +122,14 @@ function M.load_dirhash(s)
       end
     end
   end
+end
+
+function M.reload(name)
+  local ok, r = pcall(require, "plenary.reload")
+  if ok then
+    r.reload_module(name)
+  end
+  return require(name)
 end
 
 return setmetatable({}, {

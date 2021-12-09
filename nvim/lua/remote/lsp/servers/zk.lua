@@ -7,16 +7,16 @@ local basedir = ("%s/%s"):format(path, "zk")
 local executable = ("%s/zk"):format(basedir)
 
 local zk_notebook = vim.env.hash_notes and ("%s/zettelkasten"):format(vim.env.hash_notes)
-  or ("%s/Documents/_notes"):format(vim.env.HOME)
+  or ("%s/Documents/_notes/zettelkasten"):format(vim.env.HOME)
 
 M.setup = function(force)
   local install_cmd = string.format(
     [[
-    git clone https://github.com/mickael-menu/zk.git
-    cd zk
-    make
-    mkdir -vp %s/vault/{inbox,journal,literature,permanent}
-  ]],
+      git clone https://github.com/mickael-menu/zk.git
+      cd zk
+      make
+      mkdir -vp %s/vault/{inbox,journal,literature,permanent}
+    ]],
     zk_notebook
   )
   util.terminal.install_package("zk", basedir, path, install_cmd, force)
@@ -27,6 +27,9 @@ M.config = {
 }
 
 M.get_executable_path = function()
+  if vim.fn.empty(vim.fn.glob(basedir)) > 0 then
+    return nil
+  end
   return executable
 end
 

@@ -113,24 +113,24 @@ M.buffer = function(bufnr)
 end
 
 M.git_branch = function(bufnr)
-  local name = vim.fn.bufname(bufnr)
-  local j = Job:new {
-    command = "git",
-    args = { "branch", "--show-current" },
-    cwd = vim.fn.fnamemodify(name, ":h"),
-  }
-  local ok, branch = pcall(function()
-    return vim.trim(j:sync()[1])
-  end)
-  if not ok then
+  -- local name = vim.fn.bufname(bufnr)
+  -- local j = Job:new {
+  --   command = "git",
+  --   args = { "branch", "--show-current" },
+  --   cwd = vim.fn.fnamemodify(name, ":h"),
+  -- }
+  -- local ok, branch = pcall(function()
+  --   return vim.trim(j:sync()[1])
+  -- end)
+  -- if not ok then
     return M.buffer(bufnr)
-  end
-  local icon = " "
-  local p = paste()
-  if #p > 0 then
-    icon = p
-  end
-  return icon .. branch
+  -- end
+  -- local icon = " "
+  -- local p = paste()
+  -- if #p > 0 then
+  --   icon = p
+  -- end
+  -- return icon .. branch
 end
 
 M.line_number = function()
