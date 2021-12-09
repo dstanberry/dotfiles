@@ -1,5 +1,4 @@
-{{title}}
-===
+# {{title}}
 
 **author:** *{{extra.author}}*
 
@@ -11,7 +10,6 @@
 
 ---
 
-References
----
+## References
 
 {{content}}
