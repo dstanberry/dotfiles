@@ -23,7 +23,7 @@ M.create_dropdown = function(content, opts)
       entry_maker = opts.entry_maker or default_entry_maker,
     },
     sorter = conf.generic_sorter(dropdown_opts),
-    attach_mappings = function(bufnr)
+    attach_mappings = function(bufnr, _)
       actions.select_default:replace(function()
         actions.close(bufnr)
         local selection = action_state.get_selected_entry()

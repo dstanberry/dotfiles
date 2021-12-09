@@ -30,6 +30,12 @@ util.define_augroup {
         vim.wo.breakindent = true
         vim.wo.breakindentopt = "min:5,list:-1"
         vim.bo.formatlistpat = [=[^\s*\d\+\.\s\+\|^\s*[-*+>]\s\+\|^\[^\ze[^\]]\+\]:]=]
+        nnoremap("<leader>mm", function()
+          markdown.create_note()
+        end)
+        nnoremap("<leader>mr", function()
+          markdown.create_template_reference()
+        end)
         inoremap("<c-w>c", function()
           markdown.insert_checkbox()
         end, { buffer = vim.api.nvim_get_current_buf() })
