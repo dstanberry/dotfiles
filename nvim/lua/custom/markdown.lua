@@ -183,6 +183,7 @@ M.create_template_reference = function()
         file = vim.fn.system(cmd)
         file = file:gsub("^%s*(.-)%s*$", "%1")
       else
+        title = string.gsub(title, "%s", "-"):lower()
         file = create_note_from_template(title, selection.value.directory)
       end
       if vim.fn.filereadable(file) then
@@ -217,6 +218,8 @@ M.create_note = function()
           file,
           zk_notebook
         ))
+      else
+        vim.notify("File not found: " .. file, 2)
       end
     end,
   })
