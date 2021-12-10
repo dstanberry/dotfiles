@@ -95,17 +95,7 @@ local templates = {
   },
 }
 
-local _file_exists = function(fname)
-  local f = io.open(fname, "r")
-  if f ~= nil then
-    io.close(f)
-    return true
-  else
-    return false
-  end
-end
-
-local _parse_template = function(line, title)
+local _transform_line = function(line, title)
   local lut = {
     title = title,
     tags = "",
@@ -120,7 +110,6 @@ local _parse_template = function(line, title)
   for k, v in pairs(lut) do
     line = line:gsub(string.format("{{%s}}", k), v)
   end
-
   return line
 end
 
@@ -133,14 +122,14 @@ local create_note_from_template = function(title, box)
   local date = (i or j) and os.date "%Y%m%d%H%M" or os.date "%Y-%m-%d"
   file = vim.fn.expand(string.format("%s/%s-%s.md", file, date, title))
   local lines = {}
-  if _file_exists(template) then
+  if vim.fn.filereadable(template) then
     for line in io.lines(template) do
       lines[#lines + 1] = line
     end
   end
   local ofile = io.open(file, "a")
   for _, line in pairs(lines) do
-    local parsed = _parse_template(line, title)
+    local parsed = _transform_line(line, title)
     ofile:write(string.format("%s\n", parsed))
   end
   ofile:close()
