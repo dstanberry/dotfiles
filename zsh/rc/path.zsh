@@ -62,7 +62,7 @@ if is_darwin; then
   FZF="/usr/local/opt/fzf/bin"
   export PATH=$FZF:$PATH
   unset FZF
-  # define wsl specific paths
+# define wsl specific paths
 elif is_wsl; then
   # dirty hack to expose native specific Windows utils
   WIN="/mnt/c/Windows"
@@ -73,6 +73,23 @@ elif is_wsl; then
   unset WIN
   unset SYS32
   unset PWSH
+
+  # qmk hacks
+  ARM="$XDG_DATA_HOME/gnu-arm-none-eabi/bin"
+  QMK="$HOME/Git/qmk_distro_wsl/src/usr/bin"
+  WBEM="/mnt/c/Windows/System32/Wbem"
+  if test -e "$ARM"; then
+    export PATH=$ARM:$PATH
+  fi
+  if test -e "$QMK"; then
+    export PATH=$QMK:$PATH
+  fi
+  if test -e "$WBEM"; then
+    export PATH=$WBEM:$PATH
+  fi
+  unset ARM
+  unset QMK
+  unset WBEM
 fi
 
 # add pyenv binaries to path
