@@ -20,44 +20,9 @@ util.define_augroup {
 }
 
 util.define_augroup {
-  name = "ftdetect",
+  name = "ftplugin",
   clear = true,
   autocmds = {
-    {
-      event = { "BufRead", "BufNewFile" },
-      pattern = { "*.asc", "*.gpg", "*.pgp" },
-      callback = function()
-        vim.bo.filetype = "text"
-      end,
-    },
-    {
-      event = { "BufRead", "BufNewFile" },
-      pattern = "*.scm",
-      callback = function()
-        vim.bo.filetype = "query"
-      end,
-    },
-    {
-      event = { "BufRead", "BufNewFile" },
-      pattern = { "*.vifm", "vifmrc" },
-      callback = function()
-        vim.bo.filetype = "vim"
-      end,
-    },
-    {
-      event = { "BufRead", "BufNewFile" },
-      pattern = "dircolors",
-      callback = function()
-        vim.bo.filetype = "sh"
-      end,
-    },
-    {
-      event = { "BufRead", "BufNewFile" },
-      pattern = "gitconfig",
-      callback = function()
-        vim.bo.filetype = "gitconfig"
-      end,
-    },
     {
       event = "BufEnter",
       pattern = "COMMIT_EDITMSG",
@@ -66,13 +31,6 @@ util.define_augroup {
         vim.cmd [[startinsert]]
       end,
     },
-  },
-}
-
-util.define_augroup {
-  name = "ftplugin",
-  clear = true,
-  autocmds = {
     {
       event = "Filetype",
       callback = function()
