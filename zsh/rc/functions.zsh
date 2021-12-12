@@ -239,6 +239,22 @@ function npm() {
   fi
 }
 
+# set npm default configuration options
+_npm_config() {
+  local _cache="${XDG_CACHE_HOME}/npm"
+  local _initmod="${XDG_CACHE_HOME}/npm"
+  local _notifier="false"
+  local _prefix="${XDG_CACHE_HOME}/npm"
+  local _tmp="${XDG_CACHE_HOME}/npm"
+  npm config set cache "$_cache"
+  npm config set init-module "$_initmod"
+  npm config set update-notifier "$_notifier"
+  npm config set tmp "$_tmp"
+  if [[ "$EUID" -gt 0 ]]; then
+      npm config set prefix "$_prefix"
+  fi
+}
+
 # support custom sub-commands
 function pip() {
   local PKG=$CONFIG_HOME/shared/packages/pip.txt
@@ -299,6 +315,12 @@ function ssl() {
 # print a pruned version of a tree
 function subtree() {
   tree -a --prune -P "$@"
+}
+
+# shell profiler
+function profile() {
+  shell=${1-$SHELL}
+  for i in $(seq 1 10); do time $shell -i -c exit; done
 }
 
 # try to run tmux with session management

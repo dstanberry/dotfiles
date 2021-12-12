@@ -43,6 +43,9 @@ export HISTFILE="${XDG_CACHE_HOME}/zsh/history"
 # save the history
 export SAVEHIST=$HISTSIZE
 
+# define how long to wait for additional characters
+export KEYTIMEOUT=2
+
 # enable syntax highlighting for less
 export LESS="-iFMRX -x4"
 export LESSCOLOR=always
@@ -92,9 +95,6 @@ if hash fzf 2> /dev/null; then
     --color=info:#4c566a,prompt:#6f8fb4,pointer:#b04b57
     --color=marker:#e5c179,spinner:#4c566a,header:#5f5f5f'
 fi
-
-# define how long to wait for additional characters
-export KEYTIMEOUT=2
 
 # define mocOS specific options
 if is_darwin; then
@@ -161,43 +161,6 @@ fi
 # define configuration path for npm
 if hash npm 2> /dev/null; then
   export NPM_CONFIG_USERCONFIG="${CONFIG_HOME}/npm/npmrc"
-  _cache="${XDG_CACHE_HOME}/npm"
-  _initmod="${XDG_CACHE_HOME}/npm"
-  _notifier="false"
-  _prefix="${XDG_CACHE_HOME}/npm"
-  _tmp="${XDG_CACHE_HOME}/npm"
-  cache=$(npm config get cache)
-  initmod=$(npm config get init-module)
-  notifier=$(npm config get update-notifier)
-  prefix=$(npm config get prefix)
-  tmp=$(npm config get tmp)
-  if [[ "$_cache" != "$cache" ]]; then
-    npm config set cache "$_cache"
-  fi
-  if [[ "$_initmod" != "$initmod" ]]; then
-    npm config set init-module "$_initmod"
-  fi
-  if [[ "$_notifier" != "$notifier" ]]; then
-    npm config set update-notifier "$_notifier"
-  fi
-  if [[ "$EUID" -gt 0 ]]; then
-    if [[ "$_prefix" != "$prefix " ]]; then
-      npm config set prefix "$_prefix"
-    fi
-  fi
-  if [[ "$_tmp" != "$tmp" ]]; then
-    npm config set tmp "$_tmp"
-  fi
-  unset _cache
-  unset _initmod
-  unset _prefix
-  unset _tmp
-  unset _notifier
-  unset cache
-  unset initmod
-  unset prefix
-  unset tmp
-  unset notifier
 fi
 
 # define configuration path for postgresql
@@ -225,8 +188,3 @@ fi
 
 # define configuration path for pyenv
 export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
-
-# forgit integration
-if test -e "$HOME/Git/forgit"; then
-  export FORGIT_NO_ALIASES="true"
-fi

@@ -264,13 +264,19 @@ zle -N fg-bg
 bindkey '^Z' fg-bg
 
 ###############################################################
+# evalcache
+###############################################################
+test -s "${ZSH_CONFIG_HOME}/plugins/evalcache.zsh" \
+  && source "${ZSH_CONFIG_HOME}/plugins/evalcache.zsh"
+
+###############################################################
 # Color
 ###############################################################
 # enable dircolors if it is available
 if hash dircolors 2> /dev/null; then
   test -r "${CONFIG_HOME}"/shared/dircolors \
-    && eval "$(dircolors -b "${CONFIG_HOME}"/shared/dircolors)" \
-    || eval "$(dircolors -b)"
+    && _evalcache dircolors -b "${CONFIG_HOME}"/shared/dircolors \
+    || _evalcache dircolors -b
 fi
 
 ###############################################################
@@ -430,11 +436,6 @@ fi
 # kitty shell integration
 if test -e "$HOME/Git/kitty/shell-integration/kitty.zsh"; then
   source "$HOME/Git/kitty/shell-integration/kitty.zsh";
-fi
-
-# forgit integration
-if test -e "$HOME/Git/forgit"; then
-  source "$HOME/Git/forgit/forgit.plugin.zsh";
 fi
 
 ###############################################################

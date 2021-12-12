@@ -1,45 +1,6 @@
 # shellcheck disable=SC2148
 
-# add ruby gems to path if present
-if hash gem 2> /dev/null; then
-  OLDIFS=$IFS
-  IFS=:
-  for i in $(gem environment gempath); do
-    if [ -d "$i/bin" ]; then
-      export PATH="$i/bin":$PATH
-    fi
-    ud=$(gem env | grep 'USER INSTALLATION DIRECTORY' | awk -F':' '{ print $2 }')
-    p="${ud##*/.gem/}"
-    if [ -d "$i/$p/bin" ]; then
-      export PATH="$i/$p/bin":$PATH
-    fi
-  done
-  IFS=$OLDIFS
-fi
-
-# add cargo binaries to path if present
-if hash cargo 2> /dev/null; then
-  CARGO="${CARGO_HOME}/bin"
-  export PATH=$CARGO:$PATH
-  unset CARGO
-fi
-
-# forgit integration
-if test -e "$HOME/Git/forgit"; then
-  export PATH="$PATH:$HOME/Git/forgit/bin"
-fi
-
-# add go binaries to path if present
-if hash go 2> /dev/null; then
-  GO="${GOPATH}/bin"
-  export PATH=$GO:$PATH
-  unset GO
-fi
-
-# add lua binaries to path if present
-if hash luarocks 2> /dev/null; then
-  eval "$(luarocks path)"
-fi
+NEWPATH=$PATH
 
 # base directory for system-wide available scripts
 ULOCAL="/usr/local/bin"
@@ -47,20 +8,63 @@ ULOCAL="/usr/local/bin"
 LOCAL="${HOME}/.local/bin"
 
 # include directory in PATH
-export PATH=$ULOCAL:$PATH:$LOCAL
+NEWPATH=$ULOCAL:$NEWPATH:$LOCAL
 unset ULOCAL
 unset LOCAL
+
+# set default gem configuration options
+function _gem_config() {
+  OLDIFS=$IFS
+  IFS=:
+  P=""
+  for i in $(gem environment gempath); do
+    if [ -d "$i/bin" ]; then
+      P="$i/bin":$PATH
+    fi
+    ud=$(gem env | grep 'USER INSTALLATION DIRECTORY' | awk -F':' '{ print $2 }')
+    p="${ud##*/.gem/}"
+    if [ -d "$i/$p/bin" ]; then
+      P="$i/$p/bin":$PATH
+    fi
+  done
+  IFS=$OLDIFS
+  echo "export PATH=$P"
+}
+
+# add ruby gems to path if present
+if hash gem 2> /dev/null; then
+  _evalcache _gem_config
+fi
+
+# add cargo binaries to path if present
+if hash cargo 2> /dev/null; then
+  CARGO="${CARGO_HOME}/bin"
+  NEWPATH=$CARGO:$NEWPATH
+  unset CARGO
+fi
+
+# add go binaries to path if present
+if hash go 2> /dev/null; then
+  GO="${GOPATH}/bin"
+  NEWPATH=$GO:$NEWPATH
+  unset GO
+fi
+
+# add lua binaries to path if present
+if hash luarocks 2> /dev/null; then
+  _evalcache luarocks path
+fi
 
 # define macOS specific paths
 if is_darwin; then
   # homebrew may install binaries here
   BREW="/usr/local/sbin"
-  export PATH=$BREW:$PATH
+  NEWPATH=$BREW:$NEWPATH
   unset BREW
 
   # include fzf
   FZF="/usr/local/opt/fzf/bin"
-  export PATH=$FZF:$PATH
+  NEWPATH=$FZF:$NEWPATH
   unset FZF
 # define wsl specific paths
 elif is_wsl; then
@@ -69,7 +73,7 @@ elif is_wsl; then
   SYS32="/mnt/c/Windows/System32"
   PWSH="/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
 
-  export PATH=$WIN:$SYS32:$PWSH:$PATH
+  NEWPATH=$WIN:$SYS32:$PWSH:$NEWPATH
   unset WIN
   unset SYS32
   unset PWSH
@@ -79,13 +83,13 @@ elif is_wsl; then
   QMK="$HOME/Git/qmk_distro_wsl/src/usr/bin"
   WBEM="/mnt/c/Windows/System32/Wbem"
   if test -e "$ARM"; then
-    export PATH=$ARM:$PATH
+    NEWPATH=$ARM:$NEWPATH
   fi
   if test -e "$QMK"; then
-    export PATH=$QMK:$PATH
+    NEWPATH=$QMK:$NEWPATH
   fi
   if test -e "$WBEM"; then
-    export PATH=$WBEM:$PATH
+    NEWPATH=$WBEM:$NEWPATH
   fi
   unset ARM
   unset QMK
@@ -95,11 +99,14 @@ fi
 # add pyenv binaries to path
 if [ -d "${PYENV_ROOT}" ]; then
   PYENVPATH="$PYENV_ROOT/bin"
-  export PATH=$PYENVPATH:$PATH
+  NEWPATH=$PYENVPATH:$NEWPATH
+  _evalcache $PYENVPATH/pyenv init --path
+  _evalcache $PYENVPATH/pyenv init -
   unset PYENVPATH
-  eval "$(pyenv init --path)"
-  eval "$(pyenv init -)"
 fi
+
+export PATH=$NEWPATH
+unset NEWPATH
 
 # ensure no duplicate entries are present in PATH
 dedup_pathvar PATH

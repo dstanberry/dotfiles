@@ -60,4 +60,5 @@ wget/
 wireshark/
 zsh/.zcompcache
 zsh/.zcompdump
+zsh/.zsh-evalcache/
 zsh/rc.private/
