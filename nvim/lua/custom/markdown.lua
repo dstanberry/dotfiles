@@ -163,10 +163,10 @@ M.create_template_reference = function()
       local file
       if zk_exec then
         local cmd = string.format(
-          '%s new --no-input --title "%s" "%s/%s" --print-path',
+          '%s new --working-dir "%s" --no-input --title "%s" "%s" --print-path',
           zk_exec,
-          title,
           zk_notebook,
+          title,
           selection.value.directory
         )
         file = vim.fn.system(cmd)
@@ -192,7 +192,11 @@ M.create_note = function()
     callback = function(selection)
       local file
       if zk_exec then
-        local cmd = ([[%s new --no-input "%s/%s" --print-path]]):format(zk_exec, zk_notebook, selection.value.directory)
+        local cmd = ([[%s new --working-dir "%s" --no-input "%s" --print-path]]):format(
+          zk_exec,
+          zk_notebook,
+          selection.value.directory
+        )
         file = vim.fn.system(cmd)
         file = file:gsub("^%s*(.-)%s*$", "%1")
       else
