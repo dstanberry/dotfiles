@@ -4,6 +4,8 @@ if not ok then
   return
 end
 
+local c = require("ui.theme").colors
+local groups = require "ui.theme.groups"
 local map = require("util.map")
 
 neogit.setup {
@@ -30,3 +32,5 @@ end)
 map.nnoremap("<leader>gc", function()
   neogit.open { "commit" }
 end)
+
+groups.new("NeogitObjectId", { guifg = c.base0A, guibg = nil, gui = nil, guisp = nil })
