@@ -217,7 +217,7 @@ end
 
 function M.find_plugins()
   builtin.find_files {
-    cwd = string.format("%s/site/pack/packer/start/", vim.fn.stdpath "data"),
+    cwd = string.format("%s/site/pack/packer/", vim.fn.stdpath "data"),
     previewer = false,
     prompt_title = [[\ Remote Plugins /]],
   }
