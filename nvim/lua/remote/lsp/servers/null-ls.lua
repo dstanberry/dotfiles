@@ -30,12 +30,15 @@ local sources = {
   null_ls.builtins.formatting.yapf,
 }
 
-M.config = null_ls.config {
-  debug = false,
-  debounce = 150,
-  diagnostics_format = "(#{s}) #{m}",
-  save_after_format = false,
-  sources = sources,
-}
+M.setup = function(on_attached)
+  null_ls.setup {
+    debug = false,
+    debounce = 150,
+    diagnostics_format = "(#{s}) #{m}",
+    save_after_format = false,
+    sources = sources,
+    on_attach = on_attached,
+  }
+end
 
 return M

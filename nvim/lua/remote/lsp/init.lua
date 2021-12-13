@@ -118,9 +118,13 @@ local servers = {
 local configurations = vim.api.nvim_get_runtime_file("lua/remote/lsp/servers/*.lua", true)
 for _, file in ipairs(configurations) do
   local mod = util.get_module_name(file)
-  local config = require(mod).config or {}
-  local key = (mod):match "[^%.]*$"
-  servers = vim.tbl_deep_extend("force", servers, { [key] = config })
+  if vim.fn.match(mod, "null-ls") > 0 then
+    require(mod).setup(on_attach_nvim)
+  else
+    local config = require(mod).config or {}
+    local key = (mod):match "[^%.]*$"
+    servers = vim.tbl_deep_extend("force", servers, { [key] = config })
+  end
 end
 
 for server, config in pairs(servers) do
