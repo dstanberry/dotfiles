@@ -1,12 +1,12 @@
 local M = {}
 
-M.spawn_term = function(task, opts)
-  vim.cmd [[5new]]
-  if has("win32") then
-    vim.fn.termopen(task, opts)
-  else
-    vim.fn.termopen("set -e\n" .. task, opts)
-  end
+local launch_term = function(task, opts)
+  vim.cmd [[belowright 5new]]
+  vim.bo.bufhidden = "wipe"
+  vim.bo.buflisted = false
+  vim.bo.buftype = "nofile"
+  vim.bo.swapfile = false
+  vim.fn.termopen(task, opts)
   vim.cmd [[startinsert]]
 end
 
@@ -32,18 +32,17 @@ M.install_package = function(name, basedir, path, script, force)
   if vim.fn.empty(vim.fn.glob(basedir)) > 0 then
     print("Installing " .. name)
     vim.fn.mkdir(basedir, "p")
-    if has("win32") then
+    if has "win32" then
       script = M.transform_win_cmd(script)
     end
-    M.spawn_term(script, {
+    launch_term(script, {
       cwd = path,
       ["on_exit"] = function(_, code)
         if code ~= 0 then
           error("Failed to install " .. name)
         end
-        local win = vim.api.nvim_get_current_win()
-        local bufnr = vim.api.nvim_win_get_buf(win)
-        vim.api.nvim_buf_delete(bufnr, { force = true })
+        local winid = vim.api.nvim_get_current_win()
+        vim.api.nvim_win_close(winid, true)
         print("Installed " .. name)
       end,
     })
