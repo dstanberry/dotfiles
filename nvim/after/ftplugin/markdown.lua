@@ -59,8 +59,7 @@ util.define_augroup {
   },
 }
 
-c.lang00 = color.darken(c.base00, 15)
-groups.new("CodeBlock", { guifg = nil, guibg = c.lang00, gui = "none", guisp = nil })
+groups.new("CodeBlock", { guifg = nil, guibg = c.baseXX, gui = "none", guisp = nil })
 
 vim.fn.sign_define("codeblock", {
   linehl = "CodeBlock",
