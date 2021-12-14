@@ -51,7 +51,6 @@ will define each path as an environment variable within the editor.
 # (example content of hashes.zsh)
 hash -d proj=/home/<user>/Projects/foo/bar
 ...
-
 ```
 
 Git (Optional): Have the global `.gitconfig` file include the configurations
