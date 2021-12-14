@@ -218,7 +218,7 @@ M.create_note = function()
   })
 end
 
-M.highlight_blocks = function()
+M.highlight_fenced_code_blocks = function()
   local bufnr = vim.api.nvim_get_current_buf()
   if not vim.api.nvim_buf_is_loaded(bufnr) then
     return

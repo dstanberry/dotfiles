@@ -21,7 +21,7 @@ util.define_augroup {
       event = { "BufEnter", "TextChanged", "TextChangedI" },
       pattern = { "*.md", "*.mdx" },
       callback = function()
-        markdown.highlight_blocks()
+        markdown.highlight_fenced_code_blocks()
         vim.wo.conceallevel = 2
         vim.wo.concealcursor = "c"
         vim.bo.iskeyword = vim.bo.iskeyword .. ",-"
