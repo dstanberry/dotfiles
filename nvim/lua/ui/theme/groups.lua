@@ -189,63 +189,73 @@ M.apply = function(c)
   hi.DiagnosticUnderlineHint = { guifg = nil, guibg = nil, gui = "undercurl", guisp = c.base0E }
 
   -- treesitter highlighting
+  hi.TreesitterContext = { guifg = nil, guibg = c.base01, gui = "italic", guisp = nil }
   hi.TSAnnotation = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.TSAttribute = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.TSBoolean = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.TSCharacter = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
   hi.TSComment = { guifg = c.base03, guibg = nil, gui = "italic", guisp = nil }
-  hi.TSConstructor = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
   hi.TSConditional = { guifg = c.base13, guibg = nil, gui = "none", guisp = nil }
   hi.TSConstant = { guifg = c.base09, guibg = nil, gui = "none", guisp = nil }
   hi.TSConstBuiltin = { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil }
   hi.TSConstMacro = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
+  hi.TSConstructor = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
+  hi.TSCurrentScope = { guifg = nil, guibg = nil, gui = "bold", guisp = nil }
+  hi.TSDanger = { guifg = c.base08, guibg = c.base00, gui = "bold", guisp = nil }
+  hi.TSDefinition = { guifg = nil, guibg = nil, gui = "underline", guisp = c.base0E }
+  hi.TSDefinitionUsage = { guifg = c.base10, guibg = c.lref02, gui = "none", guisp = nil }
+  hi.TSEmphasis = { guifg = c.base0A, guibg = nil, gui = "italic", guisp = nil }
+  hi.TSEnvironment = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
+  hi.TSEnvironmentType = { guifg = c.base0A, guibg = nil, gui = nil, guisp = nil }
   hi.TSError = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
   hi.TSException = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
   hi.TSField = { guifg = c.base12, guibg = nil, gui = "none", guisp = nil }
   hi.TSFloat = { guifg = c.base15, guibg = nil, gui = "none", guisp = nil }
-  hi.TSFunction = { guifg = c.base0D, guibg = nil, gui = "none", guisp = nil }
   hi.TSFuncBuiltin = { guifg = c.base0D, guibg = nil, gui = "bold", guisp = nil }
   hi.TSFuncMacro = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
+  hi.TSFunction = { guifg = c.base0D, guibg = nil, gui = "none", guisp = nil }
   hi.TSInclude = { guifg = c.base0D, guibg = nil, gui = "none", guisp = nil }
   hi.TSKeyword = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
   hi.TSKeywordFunction = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
   hi.TSKeywordOperator = { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil }
   hi.TSKeywordReturn = { guifg = c.base15, guibg = nil, gui = "none", guisp = nil }
   hi.TSLabel = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
+  hi.TSLiteral = { guifg = c.base09, guibg = nil, gui = "none", guisp = nil }
+  hi.TSMath = { guifg = c.base03, guibg = c.baseXX, gui = nil, guisp = nil }
   hi.TSMethod = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
   hi.TSNamespace = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
   hi.TSNone = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
+  hi.TSNote = { guifg = c.base0A, guibg = c.base00, gui = "bold", guisp = nil }
   hi.TSNumber = { guifg = c.base09, guibg = nil, gui = "none", guisp = nil }
   hi.TSOperator = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
   hi.TSParameter = { guifg = c.base16, guibg = nil, gui = "none", guisp = nil }
   hi.TSParameterReference = { guifg = c.base16, guibg = nil, gui = "none", guisp = nil }
   hi.TSProperty = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
-  hi.TSPunctDelimiter = { guifg = c.base14, guibg = nil, gui = "none", guisp = nil }
   hi.TSPunctBracket = { guifg = c.base14, guibg = nil, gui = "none", guisp = nil }
+  hi.TSPunctDelimiter = { guifg = c.base14, guibg = nil, gui = "none", guisp = nil }
   hi.TSPunctSpecial = { guifg = c.base14, guibg = nil, gui = "none", guisp = nil }
+  hi.TSQueryLinterError = { guifg = c.base09, guibg = c.base00, gui = nil, guisp = nil }
   hi.TSRepeat = { guifg = c.base13, guibg = nil, gui = "none", guisp = nil }
+  hi.TSStrike = { guifg = c.base04, guibg = nil, gui = "strikethrough", guisp = nil }
   hi.TSString = { guifg = c.base0B, guibg = nil, gui = "none", guisp = nil }
-  hi.TSStringRegex = { guifg = c.base0B, guibg = nil, gui = "none", guisp = nil }
   hi.TSStringEscape = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
+  hi.TSStringRegex = { guifg = c.base0B, guibg = nil, gui = "none", guisp = nil }
+  hi.TSStrong = { guifg = nil, guibg = nil, gui = "bold", guisp = nil }
+  hi.TSStructure = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
   hi.TSSymbol = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
   hi.TSTag = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
+  hi.TSTagAttribute = { guifg = c.base09, guibg = nil, gui = "none", guisp = nil }
   hi.TSTagDelimiter = { guifg = c.base14, guibg = nil, gui = "none", guisp = nil }
   hi.TSText = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
-  hi.TSStrong = { guifg = nil, guibg = nil, gui = "bold", guisp = nil }
-  hi.TSEmphasis = { guifg = c.base0A, guibg = nil, gui = "italic", guisp = nil }
-  hi.TSUnderline = { guifg = c.base00, guibg = nil, gui = "underline", guisp = nil }
-  hi.TSStrike = { guifg = c.base00, guibg = nil, gui = "strikethrough", guisp = nil }
+  hi.TSTextReference = { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil }
   hi.TSTitle = { guifg = c.base0D, guibg = nil, gui = "none", guisp = nil }
-  hi.TSLiteral = { guifg = c.base09, guibg = nil, gui = "none", guisp = nil }
-  hi.TSURI = { guifg = c.base0C, guibg = nil, gui = "underline", guisp = nil }
   hi.TSType = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.TSTypeBuiltin = { guifg = c.base0A, guibg = nil, gui = "italic", guisp = nil }
+  hi.TSUnderline = { guifg = c.base00, guibg = nil, gui = "underline", guisp = nil }
+  hi.TSURI = { guifg = c.base0C, guibg = nil, gui = "underline", guisp = nil }
   hi.TSVariable = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
   hi.TSVariableBuiltin = { guifg = c.base0C, guibg = nil, gui = "bold", guisp = nil }
-  hi.TSDefinition = { guifg = nil, guibg = nil, gui = "underline", guisp = c.base0E }
-  hi.TSDefinitionUsage = { guifg = c.base10, guibg = c.lref02, gui = "none", guisp = nil }
-  hi.TSCurrentScope = { guifg = nil, guibg = nil, gui = "bold", guisp = nil }
-  hi.TreesitterContext = { guifg = nil, guibg = c.base01, gui = "italic", guisp = nil }
+  hi.TSWarning = { guifg = c.base09, guibg = c.base00, gui = "bold", guisp = nil }
 
   c.stat00 = color.lighten(c.base05, 5)
   c.stat01 = color.darken(c.base06, 10)
