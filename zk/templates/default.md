@@ -1,12 +1,12 @@
 # {{title}}
 
-**author:** *{{extra.author}}*
+**author**: *{{extra.author}}*
 
-**created:** *{{date now}}*
+**created**: *{{date now}}*
 
-**id:** *{{date now 'timestamp'}}*
+**id**: *{{date now 'timestamp'}}*
 
-**tags:** *[{{tags}}]*
+**tags**: *[{{tags}}]*
 
 ---
 

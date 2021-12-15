@@ -1,8 +1,8 @@
 # {{title}}
 
-**created:** *{{date now 'short'}} {{date now 'time'}}*
+**created**: *{{date now 'short'}} {{date now 'time'}}*
 
-**tags:** *[fleeting]*
+**tags**: *[fleeting]*
 
 ---
 
