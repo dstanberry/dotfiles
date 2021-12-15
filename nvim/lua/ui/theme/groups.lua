@@ -31,6 +31,7 @@ end
 
 M.apply = function(c)
   c.baseXX = color.darken(c.base00, 20)
+  c.baseYY = color.lighten(c.base03, 70)
   c.base10 = color.darken(c.base02, 40)
   c.base11 = color.darken(c.base03, 25)
   c.base12 = color.lighten(c.base04, 15)
@@ -221,7 +222,7 @@ M.apply = function(c)
   hi.TSKeywordReturn = { guifg = c.base15, guibg = nil, gui = "none", guisp = nil }
   hi.TSLabel = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.TSLiteral = { guifg = c.base09, guibg = nil, gui = "none", guisp = nil }
-  hi.TSMath = { guifg = c.base03, guibg = c.baseXX, gui = nil, guisp = nil }
+  hi.TSMath = { guifg = c.baseYY, guibg = c.baseXX, gui = nil, guisp = nil }
   hi.TSMethod = { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil }
   hi.TSNamespace = { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil }
   hi.TSNone = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
@@ -248,7 +249,7 @@ M.apply = function(c)
   hi.TSTagDelimiter = { guifg = c.base14, guibg = nil, gui = "none", guisp = nil }
   hi.TSText = { guifg = c.base05, guibg = nil, gui = "none", guisp = nil }
   hi.TSTextReference = { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil }
-  hi.TSTitle = { guifg = c.base0D, guibg = nil, gui = "none", guisp = nil }
+  hi.TSTitle = { guifg = c.base0D, guibg = nil, gui = "bold", guisp = nil }
   hi.TSType = { guifg = c.base0A, guibg = nil, gui = "none", guisp = nil }
   hi.TSTypeBuiltin = { guifg = c.base0A, guibg = nil, gui = "italic", guisp = nil }
   hi.TSUnderline = { guifg = c.base00, guibg = nil, gui = "underline", guisp = nil }
