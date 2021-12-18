@@ -82,7 +82,7 @@ ZSH_CONFIG_HOME="${CONFIG_HOME}/zsh"
 # base directory for tmux bash configuration files
 TMUX_CONFIG_HOME="${CONFIG_HOME}/tmux"
 
-# base directory for (n)vim configuration files
+# base directory for vim configuration files
 VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
 
 # include helper functions
