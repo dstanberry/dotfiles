@@ -5,7 +5,6 @@ local vnoremap = util.map.vnoremap
 
 local markdown = require "custom.markdown"
 
-local color = require "util.color"
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 
@@ -22,14 +21,21 @@ util.define_augroup {
       pattern = { "*.md", "*.mdx" },
       callback = function()
         markdown.highlight_fenced_code_blocks()
-        vim.wo.conceallevel = 2
-        vim.wo.concealcursor = "c"
+      end,
+    },
+    {
+      event = "FileType",
+      pattern = "markdown",
+      callback = function()
+        vim.bo.formatlistpat = [=[^\s*\d\+\.\s\+\|^\s*[-*+>]\s\+\|^\[^\ze[^\]]\+\]:]=]
         vim.bo.iskeyword = vim.bo.iskeyword .. ",-"
         vim.bo.iskeyword = vim.bo.iskeyword .. ",@-@"
-        vim.wo.wrap = true
         vim.wo.breakindent = true
         vim.wo.breakindentopt = "min:5,list:-1"
-        vim.bo.formatlistpat = [=[^\s*\d\+\.\s\+\|^\s*[-*+>]\s\+\|^\[^\ze[^\]]\+\]:]=]
+        vim.wo.concealcursor = "c"
+        vim.wo.conceallevel = 2
+        vim.wo.spell = true
+        vim.wo.wrap = true
         nnoremap("<leader>mm", function()
           markdown.create_note()
         end)
@@ -54,7 +60,7 @@ util.define_augroup {
         vnoremap("<c-a>c", function()
           markdown.toggle_checkbox()
         end, { buffer = vim.api.nvim_get_current_buf() })
-      end,
+      end
     },
   },
 }

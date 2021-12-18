@@ -62,6 +62,7 @@ util.define_augroup {
         vim.bo.swapfile = false
         vim.bo.undofile = false
         vim.wo.foldenable = false
+        vim.wo.spell = true
       end,
     },
     {
