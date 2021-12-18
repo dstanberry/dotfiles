@@ -77,7 +77,7 @@ local function plugins(use)
     cmd = "Glow",
     opt = true,
     config = function()
-      local data = vim.fn.stdpath "data"
+      local data = vim.env.XDG_DATA_HOME
       vim.g.glow_binary_path = ("%s/go/bin"):format(data)
     end,
   }
