@@ -28,6 +28,9 @@ fi
 # announce true color support (this is incorrect but required)
 export COLORTERM=truecolor
 
+# define default name of primary upstream git branch
+export REVIEW_BASE=main
+
 # use standard ISO 8601 timestamp
 export HISTTIMEFORMAT='%F %T '
 
