@@ -5,23 +5,28 @@
 	st = status
 	cp = cherry-pick
 
-	abbrev = !sh -c 'git rev-parse --short ${1-`echo HEAD`}' -
+	abbr = !sh -c 'git rev-parse --short ${1-`echo HEAD`}' -
 	ack = grep --break --heading
 	amend = commit --amend -v
-	both = diff --ignore-submodules=dirty HEAD
+	count = !git --no-pager log --oneline | wc -l
+	dupes = !git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40
 	no-edit = commit --amend --no-edit
 	reword = commit --amend --only -v --
 	staged = diff --cached --ignore-submodules=dirty
 
-	count = !git --no-pager log --oneline | wc -l
-	dupes = !"git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40"
+	files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
+	state = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
+
+	fixup = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup
+	irebase = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git rebase -i
 
 	graph = !git --paginate log --graph --pretty=format:'%C(auto)%h%Creset%C(auto)%d%Creset %s %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
 	min-graph = !git --paginate log --graph --all --simplify-by-decoration --pretty=format:'%C(auto)%h%Creset%C(auto)%d%Creset %s %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
 
-	message = !git --paginate log -1 --pretty=format:%B
-	msg = message
-	oneline = !git --paginate log --pretty=format:'%C(auto)%h%Creset %s%C(auto)%d%Creset %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
+	prev = !git --paginate log -1 --pretty=format:%B
+	hist = !git --paginate log --pretty=format:'%C(auto)%h%Creset %s%C(auto)%d%Creset %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
+
+	review = !nvim -p +\"tabdo DiffviewOpen $REVIEW_BASE\"
 
 	rollback = !sh -c 'git reset --merge HEAD~${1-1}' -
 
