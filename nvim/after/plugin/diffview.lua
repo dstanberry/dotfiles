@@ -7,6 +7,16 @@ end
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 
+c.diff00 = "#132e1f"
+c.diff01 = "#361f21"
+c.diff02 = "#403c32"
+c.diff03 = "#6B6458"
+
+groups.new("DiffAdd", { guifg = "none", guibg = c.diff00, gui = "none", guisp = nil })
+groups.new("DiffChange", { guifg = "none", guibg = c.diff02, gui = "none", guisp = nil })
+groups.new("DiffDelete", { guifg = "none", guibg = c.diff01, gui = "none", guisp = nil })
+groups.new("DiffText", { guifg = "none", guibg = c.diff03, gui = "none", guisp = nil })
+
 diffview.setup {
   diff_binaries = false,
   use_icons = true,
@@ -39,12 +49,4 @@ diffview.setup {
   },
 }
 
-c.diff00 = "#132e1f"
-c.diff01 = "#361f21"
-c.diff02 = "#403c32"
-c.diff03 = "#6B6458"
-
-groups.new("DiffAdd", { guifg = "none", guibg = c.diff00, gui = "none", guisp = nil })
-groups.new("DiffChange", { guifg = "none", guibg = c.diff02, gui = "none", guisp = nil })
-groups.new("DiffDelete", { guifg = "none", guibg = c.diff01, gui = "none", guisp = nil })
-groups.new("DiffText", { guifg = "none", guibg = c.diff03, gui = "none", guisp = nil })
+diffview.init()
