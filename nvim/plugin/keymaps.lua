@@ -198,8 +198,11 @@ end, {
   silent = false,
 })
 
--- discard all file modifications and close instance
+-- discard all file modifications to current window
 nnoremap("<localleader>qq", "ZQ")
+
+-- discard all file modifications and close instance
+nnoremap("<localleader>qa", "<cmd>qa!<cr>")
 
 -- execute current line
 nnoremap("<localleader>x", function()
