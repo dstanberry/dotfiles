@@ -3,7 +3,7 @@ local inoremap = util.map.inoremap
 local nnoremap = util.map.nnoremap
 local vnoremap = util.map.vnoremap
 
-local markdown = require "custom.markdown"
+local markdown = require "dev.markdown"
 
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
