@@ -151,7 +151,11 @@ end, {
 })
 
 -- close the current buffer
-nnoremap("<leader>z", "<cmd>bdelete<cr>")
+nnoremap("<leader>z", function()
+  util.buffer.delete_buffer(false)
+end, {
+  silent = false,
+})
 
 ---------------------------------------------------------------
 -- => Normal | Local Leader
@@ -217,7 +221,11 @@ end, {
 })
 
 -- discard changes to current buffer and close it
-nnoremap("<localleader>z", "<cmd>bdelete!<cr>", { silent = true })
+nnoremap("<localleader>z", function()
+  util.buffer.delete_buffer(true)
+end, {
+  silent = false,
+})
 
 ---------------------------------------------------------------
 -- => Insert

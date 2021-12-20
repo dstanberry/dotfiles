@@ -12,6 +12,30 @@ function M.create_scratch()
   end
 end
 
+function M.delete_buffer(force)
+  local buflisted = vim.fn.getbufinfo { buflisted = 1 }
+  if #buflisted < 2 then
+    vim.cmd "enew"
+    return
+  end
+  local winnr = vim.fn.winnr()
+  local bufnr = vim.fn.bufnr()
+  for _, winid in ipairs(vim.fn.getbufinfo(bufnr)[1].windows) do
+    vim.cmd(string.format("%d wincmd w", vim.fn.win_id2win(winid)))
+    if bufnr == buflisted[#buflisted].bufnr then
+      vim.cmd "bp"
+    else
+      vim.cmd "bn"
+    end
+  end
+  vim.cmd(string.format("%d wincmd w", winnr))
+  if force or vim.fn.getbufvar(bufnr, "&buftype") == "terminal" then
+    vim.cmd "bd! #"
+  else
+    vim.cmd "silent! confirm bd #"
+  end
+end
+
 function M.get_marked_region(mark1, mark2, options)
   local bufnr = 0
   local adjust = options.adjust or function(pos1, pos2)
