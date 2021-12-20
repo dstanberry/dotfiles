@@ -26,7 +26,7 @@
 	prev = !git --paginate log -1 --pretty=format:%B
 	hist = !git --paginate log --pretty=format:'%C(auto)%h%Creset %s%C(auto)%d%Creset %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
 
-	review = !nvim -p +\"tabdo DiffviewOpen $GIT_REVIEW_BASE\"
+	review = !nvim +\"tabdo DiffviewOpen $GIT_REVIEW_BASE\"
 
 	rollback = !sh -c 'git reset --merge HEAD~${1-1}' -
 
@@ -44,6 +44,9 @@
 
 [color "status"]
 	untracked = blue
+
+[core]
+	editor = nvim
 
 [delta]
 	colorMoved = default
@@ -82,9 +85,13 @@
 	decorate = short
 
 [merge]
-	conflictStyle = diff3
-	log = 1000
-	tool = nvimdiff
+	tool = nvim
+
+[mergetool]
+	prompt = true
+
+[mergetool "nvim"]
+	cmd = nvim +\"tabdo DiffviewOpen\"
 
 [pager]
 	diff = delta
@@ -97,3 +104,6 @@
 
 [pull]
 	rebase = false
+
+[rebase]
+	autosquash = true
