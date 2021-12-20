@@ -14,8 +14,8 @@
 	reword = commit --amend --only -v --
 	staged = diff --cached --ignore-submodules=dirty
 
-	files = !git diff --name-only $(git merge-base HEAD \"$REVIEW_BASE\")
-	state = !git diff --stat $(git merge-base HEAD \"$REVIEW_BASE\")
+	files = !git diff --name-only $(git merge-base HEAD \"$GIT_REVIEW_BASE\")
+	state = !git diff --stat $(git merge-base HEAD \"$GIT_REVIEW_BASE\")
 
 	fixup = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup
 	irebase = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git rebase -i
@@ -26,7 +26,7 @@
 	prev = !git --paginate log -1 --pretty=format:%B
 	hist = !git --paginate log --pretty=format:'%C(auto)%h%Creset %s%C(auto)%d%Creset %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
 
-	review = !nvim -p +\"tabdo DiffviewOpen $REVIEW_BASE\"
+	review = !nvim -p +\"tabdo DiffviewOpen $GIT_REVIEW_BASE\"
 
 	rollback = !sh -c 'git reset --merge HEAD~${1-1}' -
 

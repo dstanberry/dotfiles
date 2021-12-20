@@ -29,7 +29,7 @@ fi
 export COLORTERM=truecolor
 
 # define default name of primary upstream git branch
-export REVIEW_BASE=main
+export GIT_REVIEW_BASE=main
 
 # use standard ISO 8601 timestamp
 export HISTTIMEFORMAT='%F %T '
