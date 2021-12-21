@@ -63,6 +63,8 @@ require "util.globals"
 
 vim.defer_fn(function()
   util.load_dirhash(vim.env.SHELL)
-  pcall(require, "remote")
-  pcall(require, "remote.packer_compiled")
+  if vim.fn.filereadable(vim.fn.expand("~/.hushremote")) == 0 then
+    pcall(require, "remote")
+    pcall(require, "remote.packer_compiled")
+  end
 end, 0)
