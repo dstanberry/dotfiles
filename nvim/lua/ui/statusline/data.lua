@@ -1,4 +1,4 @@
-local Job = require "plenary.job"
+local has_plenary, Job = pcall(require, "plenary.job")
 
 local paste = function()
   local result = ""
@@ -114,18 +114,26 @@ end
 
 M.git_branch = function(bufnr)
   local name = vim.fn.bufname(bufnr)
-  local j = Job:new {
-    command = "git",
-    args = { "branch", "--show-current" },
-    cwd = vim.fn.fnamemodify(name, ":h"),
-  }
-  local ok, branch = pcall(function()
-    return vim.trim(j:sync()[1])
-  end)
-  if not ok then
-    return M.buffer(bufnr)
-  end
   local icon = " "
+  local ok, branch
+  if has_plenary then
+    local j = Job:new {
+      command = "git",
+      args = { "branch", "--show-current" },
+      cwd = vim.fn.fnamemodify(name, ":h"),
+    }
+    ok, branch = pcall(function()
+      return vim.trim(j:sync()[1])
+    end)
+    if not ok then
+      return M.buffer(bufnr)
+    end
+  else
+    branch = vim.trim(vim.fn.system("git branch --show-current"))
+    if not branch or #branch == 0 then
+      return M.buffer(bufnr)
+    end
+  end
   local p = paste()
   if #p > 0 then
     icon = p
