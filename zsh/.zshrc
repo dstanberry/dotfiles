@@ -232,10 +232,11 @@ function clear-scrollback-buffer() {
   zle .reset-prompt && zle -R
 }
 
-# add keymap to clear the buffer
 zle -N clear-scrollback-buffer
+
+# add keymap to clear the buffer
 bindkey '^L' clear-scrollback-buffer
-bindkey '^Xl' clear-scrollback-buffer
+bindkey '^G' clear-scrollback-buffer
 
 # enable editing the command line using via editor
 autoload -U edit-command-line
