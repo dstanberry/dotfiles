@@ -47,10 +47,18 @@ util.define_augroup {
     },
     {
       event = "FileType",
-      pattern = { "bash", "javascript", "json", "lua", "python", "sh", "zsh" },
+      pattern = { "bash", "lua", "sh", "zsh" },
       callback = function()
         vim.bo.expandtab = true
         vim.bo.shiftwidth = 2
+      end,
+    },
+    {
+      event = "FileType",
+      pattern = { "go", "python" },
+      callback = function()
+        vim.bo.expandtab = true
+        vim.bo.shiftwidth = 4
       end,
     },
     {
