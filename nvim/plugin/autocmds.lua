@@ -55,14 +55,6 @@ util.define_augroup {
     },
     {
       event = "FileType",
-      pattern = { "go", "python" },
-      callback = function()
-        vim.bo.expandtab = true
-        vim.bo.shiftwidth = 4
-      end,
-    },
-    {
-      event = "FileType",
       pattern = "COMMIT_EDITMSG",
       callback = function()
         vim.bo.backup = false
