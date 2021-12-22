@@ -3,6 +3,25 @@ if not pcall(require, "nvim-treesitter") then
   return
 end
 
+local c = require("ui.theme").colors
+local groups = require "ui.theme.groups"
+
+c.tree00 = "#73c1b9"
+c.tree01 = "#80d3dd"
+c.tree02 = "#9086a4"
+c.tree03 = "#bfafc4"
+c.tree04 = "#dec7d0"
+c.tree05 = "#e09696"
+c.tree06 = "#ffdca8"
+
+groups.new("TSRainbow1", { guifg = c.tree00, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow2", { guifg = c.tree01, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow3", { guifg = c.tree02, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow4", { guifg = c.tree03, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow5", { guifg = c.tree04, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow6", { guifg = c.tree05, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow7", { guifg = c.tree06, guibg = "none", gui = "none", guisp = nil })
+
 require("nvim-treesitter.configs").setup {
   ensure_installed = "maintained",
   context_commentstring = {
@@ -59,13 +78,13 @@ require("nvim-treesitter.configs").setup {
   rainbow = {
     enable = true,
     colors = {
-      "#73c1b9",
-      "#80d3dd",
-      "#9086a4",
-      "#bfafc4",
-      "#dec7d0",
-      "#e09696",
-      "#ffdca8",
+      c.tree00,
+      c.tree01,
+      c.tree02,
+      c.tree03,
+      c.tree04,
+      c.tree05,
+      c.tree06,
     },
   },
   refactor = {
