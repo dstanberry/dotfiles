@@ -70,7 +70,7 @@ M.apply = function(c)
   hi.Conceal = { guifg = c.base0D, guibg = c.base00, gui = nil, guisp = nil }
   hi.Cursor = { guifg = c.base00, guibg = c.base05, gui = nil, guisp = nil }
   hi.NonText = { guifg = c.base11, guibg = nil, gui = nil, guisp = nil }
-  hi.Whitespace = { guifg = c.base17, guibg = nil, gui = nil, guisp = nil }
+  hi.Whitespace = { guifg = c.base11, guibg = nil, gui = nil, guisp = nil }
   hi.LineNr = { guifg = c.base03, guibg = nil, gui = nil, guisp = nil }
   hi.SignColumn = { guifg = c.base03, guibg = c.base00, gui = nil, guisp = nil }
   hi.StatusLine = { guifg = c.base04, guibg = c.base02, gui = "none", guisp = nil }
