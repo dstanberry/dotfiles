@@ -1,14 +1,12 @@
 # shellcheck disable=SC2148
 
-NEWPATH=$PATH
-
 # base directory for system-wide available scripts
 ULOCAL="/usr/local/bin"
 # base directory for user local binaries
 LOCAL="${HOME}/.local/bin"
 
 # include directory in PATH
-NEWPATH=$ULOCAL:$NEWPATH:$LOCAL
+PATH=$ULOCAL:$PATH:$LOCAL
 unset ULOCAL
 unset LOCAL
 
@@ -39,14 +37,14 @@ fi
 # add cargo binaries to path if present
 if hash cargo 2> /dev/null; then
   CARGO="${CARGO_HOME}/bin"
-  NEWPATH=$CARGO:$NEWPATH
+  PATH=$CARGO:$PATH
   unset CARGO
 fi
 
 # add go binaries to path if present
 if hash go 2> /dev/null; then
   GO="${GOPATH}/bin"
-  NEWPATH=$GO:$NEWPATH
+  PATH=$GO:$PATH
   unset GO
 fi
 
@@ -59,12 +57,12 @@ fi
 if is_darwin; then
   # homebrew may install binaries here
   BREW="/usr/local/sbin"
-  NEWPATH=$BREW:$NEWPATH
+  PATH=$BREW:$PATH
   unset BREW
 
   # include fzf
   FZF="/usr/local/opt/fzf/bin"
-  NEWPATH=$FZF:$NEWPATH
+  PATH=$FZF:$PATH
   unset FZF
 # define wsl specific paths
 elif is_wsl; then
@@ -73,7 +71,7 @@ elif is_wsl; then
   SYS32="/mnt/c/Windows/System32"
   PWSH="/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
 
-  NEWPATH=$WIN:$SYS32:$PWSH:$NEWPATH
+  PATH=$WIN:$SYS32:$PWSH:$PATH
   unset WIN
   unset SYS32
   unset PWSH
@@ -83,13 +81,13 @@ elif is_wsl; then
   QMK="$HOME/Git/qmk_distro_wsl/src/usr/bin"
   WBEM="/mnt/c/Windows/System32/Wbem"
   if test -e "$ARM"; then
-    NEWPATH=$ARM:$NEWPATH
+    PATH=$ARM:$PATH
   fi
   if test -e "$QMK"; then
-    NEWPATH=$QMK:$NEWPATH
+    PATH=$QMK:$PATH
   fi
   if test -e "$WBEM"; then
-    NEWPATH=$WBEM:$NEWPATH
+    PATH=$WBEM:$PATH
   fi
   unset ARM
   unset QMK
@@ -98,15 +96,16 @@ fi
 
 # add pyenv binaries to path
 if [ -d "${PYENV_ROOT}" ]; then
-  PYENVPATH="$PYENV_ROOT/bin"
-  NEWPATH=$PYENVPATH:$NEWPATH
-  _evalcache $PYENVPATH/pyenv init --path
-  _evalcache $PYENVPATH/pyenv init -
-  unset PYENVPATH
+  PBIN="$PYENV_ROOT/bin"
+  PSHIMS="$PYENV_ROOT/shims"
+  PATH=$PSHIMS:$PBIN:$PATH
+  # _evalcache $PBIN/pyenv init --path
+  _evalcache $PBIN/pyenv init -
+  unset PBIN
+  unset PSHIMS
 fi
 
-export PATH=$NEWPATH
-unset NEWPATH
+export PATH=$PATH
 
 # ensure no duplicate entries are present in PATH
 dedup_pathvar PATH
