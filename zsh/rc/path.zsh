@@ -1,12 +1,14 @@
 # shellcheck disable=SC2148
 
+NEWPATH=$PATH
+
 # base directory for system-wide available scripts
 ULOCAL="/usr/local/bin"
 # base directory for user local binaries
 LOCAL="${HOME}/.local/bin"
 
 # include directory in PATH
-PATH=$ULOCAL:$PATH:$LOCAL
+NEWPATH=$ULOCAL:$NEWPATH:$LOCAL
 unset ULOCAL
 unset LOCAL
 
@@ -37,14 +39,14 @@ fi
 # add cargo binaries to path if present
 if hash cargo 2> /dev/null; then
   CARGO="${CARGO_HOME}/bin"
-  PATH=$CARGO:$PATH
+  NEWPATH=$CARGO:$NEWPATH
   unset CARGO
 fi
 
 # add go binaries to path if present
 if hash go 2> /dev/null; then
   GO="${GOPATH}/bin"
-  PATH=$GO:$PATH
+  NEWPATH=$GO:$NEWPATH
   unset GO
 fi
 
@@ -57,12 +59,12 @@ fi
 if is_darwin; then
   # homebrew may install binaries here
   BREW="/usr/local/sbin"
-  PATH=$BREW:$PATH
+  NEWPATH=$BREW:$NEWPATH
   unset BREW
 
   # include fzf
   FZF="/usr/local/opt/fzf/bin"
-  PATH=$FZF:$PATH
+  NEWPATH=$FZF:$NEWPATH
   unset FZF
 # define wsl specific paths
 elif is_wsl; then
@@ -71,7 +73,7 @@ elif is_wsl; then
   SYS32="/mnt/c/Windows/System32"
   PWSH="/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
 
-  PATH=$WIN:$SYS32:$PWSH:$PATH
+  NEWPATH=$WIN:$SYS32:$PWSH:$NEWPATH
   unset WIN
   unset SYS32
   unset PWSH
@@ -81,13 +83,13 @@ elif is_wsl; then
   QMK="$HOME/Git/qmk_distro_wsl/src/usr/bin"
   WBEM="/mnt/c/Windows/System32/Wbem"
   if test -e "$ARM"; then
-    PATH=$ARM:$PATH
+    NEWPATH=$ARM:$NEWPATH
   fi
   if test -e "$QMK"; then
-    PATH=$QMK:$PATH
+    NEWPATH=$QMK:$NEWPATH
   fi
   if test -e "$WBEM"; then
-    PATH=$WBEM:$PATH
+    NEWPATH=$WBEM:$NEWPATH
   fi
   unset ARM
   unset QMK
@@ -98,14 +100,15 @@ fi
 if [ -d "${PYENV_ROOT}" ]; then
   PBIN="$PYENV_ROOT/bin"
   PSHIMS="$PYENV_ROOT/shims"
-  PATH=$PSHIMS:$PBIN:$PATH
+  NEWPATH=$PSHIMS:$PBIN:$NEWPATH
   # _evalcache $PBIN/pyenv init --path
   _evalcache $PBIN/pyenv init -
   unset PBIN
   unset PSHIMS
 fi
 
-export PATH=$PATH
+export PATH=$NEWPATH
+unset NEWPATH
 
 # ensure no duplicate entries are present in PATH
 dedup_pathvar PATH
