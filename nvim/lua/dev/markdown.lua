@@ -4,6 +4,8 @@ if not ok then
   return
 end
 
+local util = require "util"
+local nnoremap = util.map.nnoremap
 local telescope = require "remote.telescope"
 local pickers = telescope.pickers
 local zk = require "remote.lsp.servers.zk"
@@ -286,5 +288,12 @@ M.toggle_checkbox = function()
     vim.api.nvim_buf_set_lines(0, line_start - 1, line_end, true, newlines)
   end
 end
+
+nnoremap("<leader>mm", function()
+  M.create_note()
+end)
+nnoremap("<leader>mr", function()
+  M.create_template_reference()
+end)
 
 return M
