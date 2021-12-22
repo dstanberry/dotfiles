@@ -132,6 +132,7 @@ local function plugins(use)
     requires = { { "folke/twilight.nvim", requires = { "nvim-treesitter/nvim-treesitter" } } },
   }
   use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
+  use { "lukas-reineke/indent-blankline.nvim" }
   use { "rcarriga/nvim-notify" }
 
   -- path and file navigation
