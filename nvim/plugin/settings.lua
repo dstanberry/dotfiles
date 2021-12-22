@@ -65,6 +65,7 @@ vim.opt.listchars = {
   extends = "›",
   nbsp = "␣",
   precedes = "‹",
+  -- space = "⋅",
   tab = "» ",
   trail = "•",
 }
