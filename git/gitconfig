@@ -1,4 +1,6 @@
 [alias]
+	aliases = config --get-regexp ^alias
+
 	br = branch
 	ci = commit -v
 	co = checkout
@@ -27,8 +29,8 @@
 	hist = !git --paginate log --pretty=format:'%C(auto)%h%Creset %s%C(auto)%d%Creset %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
 
 	review = !nvim +\"tabdo DiffviewOpen $GIT_REVIEW_BASE -uno\"
-
 	rollback = !sh -c 'git reset --merge HEAD~${1-1}' -
+	standup = "!git log --since yesterday  --author `git config user.email` --pretty=oneline"
 
 [color]
 	ui = auto
