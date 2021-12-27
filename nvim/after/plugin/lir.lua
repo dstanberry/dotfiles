@@ -5,29 +5,32 @@ if not ok then
 end
 
 local actions = require "lir.actions"
+local git_status = require("lir.git_status")
 local has_mmv, mmv_actions = pcall(require "lir.mmv.actions")
 local map = require "util.map"
 
 lir.setup {
-  show_hidden_files = false,
   devicons_enable = true,
+  hide_cursor = true,
+  show_hidden_files = false,
   mappings = {
-    ["l"] = actions.edit,
-    ["<cr>"] = actions.edit,
-
-    ["K"] = actions.mkdir,
-    ["N"] = actions.newfile,
-    ["R"] = actions.rename,
-    ["Y"] = actions.yank_path,
     ["."] = actions.toggle_show_hidden,
-    ["D"] = actions.delete,
-
-    ["M"] = (has_mmv and mmv_actions.mmv) or nil,
+    [".."] = actions.up,
+    ["<c-t>"] = actions.tabedit,
+    ["<c-v>"] = actions.vsplit,
+    ["<c-x>"] = actions.split,
+    ["<cr>"] = actions.edit,
+    ["dd"] = actions.delete,
+    ["M"] = actions.mkdir,
+    ["N"] = actions.newfile,
+    ["R"] = has_mmv and mmv_actions.mmv or nil,
+    ["r"] = actions.rename,
+    ["Y"] = actions.yank_path,
   },
 }
 
-require("lir.git_status").setup {
-  show_ignored = false,
+git_status.setup {
+  show_ignored = true,
 }
 
 map.nnoremap("-", function()
