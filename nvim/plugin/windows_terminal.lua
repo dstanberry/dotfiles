@@ -15,6 +15,11 @@ vim.opt.guicursor:append "n-v-c-sm:block-WTCursorBg"
 local id = 99991
 
 local set_cursor_hl = function()
+  if vim.bo.filetype == "lir" then
+    groups.new("WTCursorBg", { clear = true, guibg = "none" })
+    groups.new("WTCursorFg", { clear = true, gui = "none" })
+    return
+  end
   local matches = vim.fn.getmatches()
   for _, h in pairs(matches) do
     if h.id == id then
@@ -39,6 +44,9 @@ local set_cursor_hl = function()
 end
 
 local reset_cursor_hl = function()
+  if vim.bo.filetype == "lir" then
+    return
+  end
   local matches = vim.fn.getmatches()
   for _, h in pairs(matches) do
     if h.id == id then
