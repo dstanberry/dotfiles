@@ -63,8 +63,8 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git
 () {
   zstyle ':vcs_info:*' check-for-changes true
-  zstyle ':vcs_info:*' stagedstr "%F{green}●%f"
-  zstyle ':vcs_info:*' unstagedstr "%F{red}●%f"
+  zstyle ':vcs_info:*' stagedstr "%F{green}▪%f"
+  zstyle ':vcs_info:*' unstagedstr "%F{red}▪%f"
   zstyle ':vcs_info:*' use-simple true
   zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
   zstyle ':vcs_info:git*:*' formats '%F{cyan} %b%m%c%u%f '
@@ -75,7 +75,7 @@ zstyle ':vcs_info:*' enable git
     emulate -L zsh
     if [ $(git rev-parse --is-inside-work-tree 2> /dev/null) = true ] && \
       git status --porcelain | grep '??' &> /dev/null ; then
-      hook_com[unstaged]+="%F{blue}●%f"
+      hook_com[unstaged]+="%F{blue}▪%f"
     fi
   }
 }
