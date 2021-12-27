@@ -197,11 +197,15 @@ setopt PUSHD_SILENT
 # enable vi style keybinds
 bindkey -v
 
-# use emacs style keybind to go to the beginning/end of a line
+# go to the beginning of a line
 bindkey "^A" beginning-of-line
-bindkey "^E" end-of-line
+bindkey -M vicmd H vi-beginning-of-line
 
-# use emacs style keybind to copy the current line
+# go to the end of a line
+bindkey "^E" end-of-line
+bindkey -M vicmd L vi-end-of-line
+
+# copy the current line
 bindkey -M viins "^Y" yank
 
 # use "cbt" capability ("back_tab", as per `man terminfo`), if we have it:
