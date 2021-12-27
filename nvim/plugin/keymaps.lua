@@ -235,10 +235,18 @@ inoremap("<c-enter>", "<c-o>O")
 -- insert newline below current line
 inoremap("<a-enter>", "<c-o>o")
 
+-- go to the beginning of the current line
+inoremap("<c-a>", "<c-o>^")
+-- go to the end of the current line
+inoremap("<c-e>", "<c-o>$")
+
 -- shift current line down
 inoremap("<c-j>", "<esc>:m .+1<cr>==i")
 -- shift current line up
 inoremap("<c-k>", "<esc>:m .-2<cr>==i")
+
+-- forward delete the next word
+inoremap("<a-w>", "<c-o>cW")
 
 -- define undo break point
 inoremap(",", ",<c-g>u")
