@@ -3,8 +3,17 @@ local util = require "util"
 
 local path = string.format("%s/dap", vim.fn.stdpath "data")
 local basedir = vim.fn.expand(("%s/%s"):format(path, "codelldb"))
+local bin = vim.fn.expand(("%s/%s"):format(basedir, "extension/adapter/codelldb"))
+local lib = vim.fn.expand(("%s/%s"):format(basedir, "extension/lldb/lib/liblldb.so"))
 
 local M = {}
+
+M.get_executable_path = function()
+  return {
+    code = bin,
+    library = lib,
+  }
+end
 
 M.setup = function(force)
   local install_cmd = [[
@@ -16,7 +25,7 @@ M.setup = function(force)
   dap.adapters.codelldb = function(on_adapter)
     local stdout = vim.loop.new_pipe(false)
     local stderr = vim.loop.new_pipe(false)
-    local cmd = vim.fn.expand(("%s/%s"):format(basedir, "extension/adapter/codelldb"))
+    local cmd = bin
     local handle, pid_or_err
     local opts = {
       stdio = { nil, stdout, stderr },
