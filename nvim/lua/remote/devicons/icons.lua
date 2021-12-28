@@ -1,20 +1,20 @@
 local custom_icons = {
-  ["markdown"] = {
+  markdown = {
     icon = "",
     color = "#519aba",
     name = "Markdown",
   },
-  ["md"] = {
+  md = {
     icon = "",
     color = "#519aba",
     name = "Md",
   },
-  ["mdx"] = {
+  mdx = {
     icon = "",
     color = "#519aba",
     name = "Mdx",
   },
-  ["svg"] = {
+  svg = {
     icon = "",
     color = "#FFB13B",
     name = "Svg",

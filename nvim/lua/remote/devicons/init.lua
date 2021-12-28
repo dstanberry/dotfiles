@@ -4,9 +4,16 @@ if not ok then
   return
 end
 
+local custom = require "remote.devicons.icons"
+
 devicons.setup {
-  override = require "remote.devicons.icons",
   default = false,
+  -- this currently won't work because `loaded` cannot be reset
+  override = custom,
 }
 
-devicons.set_default_icon('', '#6d8086')
+devicons.set_default_icon("", "#6d8086")
+
+for key, value in pairs(custom) do
+  devicons.set_icon { [key] = value }
+end
