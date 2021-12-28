@@ -5,15 +5,16 @@ if not ok then
 end
 
 go.setup {
-  verbose = false,
   dap_debug = true,
-  dap_debug_keymap = false,
   dap_debug_gui = true,
+  dap_debug_keymap = false,
   dap_debug_vt = true,
+  gopls_cmd = nil,
   lsp_cfg = false,
+  lsp_codelens = true,
   lsp_gofumpt = false,
   lsp_on_attach = false,
-  gopls_cmd = nil,
+  verbose = false,
 }
 
 local M = {}
