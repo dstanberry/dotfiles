@@ -63,9 +63,9 @@ vim.opt.listchars = {
   conceal = "┊",
   eol = "¬",
   extends = "›",
+  lead = "·",
   nbsp = "␣",
   precedes = "‹",
-  -- space = "⋅",
   tab = "» ",
   trail = "•",
 }
