@@ -103,6 +103,7 @@ local function plugins(use)
       "jose-elias-alvarez/null-ls.nvim",
       "nvim-lua/lsp_extensions.nvim",
       "ray-x/go.nvim",
+      "simrat39/rust-tools.nvim",
     },
   }
   use {

@@ -118,11 +118,21 @@ local servers = {
 local configurations = vim.api.nvim_get_runtime_file("lua/remote/lsp/servers/*.lua", true)
 for _, file in ipairs(configurations) do
   local mod = util.get_module_name(file)
+  local config
   if vim.fn.match(mod, "null-ls") > 0 then
     require(mod).setup(on_attach_nvim)
+  elseif vim.fn.match(mod, "rust_analyzer") > 0 then
+    config = require(mod).config or {}
+  elseif vim.fn.match(mod, "rust_tools") > 0 then
+    local cfg = {
+      on_attach = on_attach_nvim,
+      capabilities = capabilities,
+      flags = { debounce_text_changes = 150 },
+    }
+    require(mod).setup(vim.tbl_deep_extend("force", cfg, config or {}))
   else
-    local config = require(mod).config or {}
     local key = (mod):match "[^%.]*$"
+    config = require(mod).config or {}
     servers = vim.tbl_deep_extend("force", servers, { [key] = config })
   end
 end

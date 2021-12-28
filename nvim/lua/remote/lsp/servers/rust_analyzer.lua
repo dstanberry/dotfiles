@@ -4,17 +4,19 @@ if not ok then
   return
 end
 
-local util = require "util"
-
 local M = {}
 
 M.config = {
   settings = {
     ["rust-analyzer"] = {
       assist = { importGranularity = "module", importPrefix = "by_self" },
-      cargo = { loadOutDirsFromCheck = true },
-      procMacro = { enable = true },
+      cargo = { loadOutDirsFromCheck = true, allFeatures = true },
+      checkOnSave = { command = "clippy" },
+      experimental = { procAttrMacros = true },
+      hoverActions = { references = true },
       inlayHints = { enable = true },
+      lens = { methodReferences = true, references = true },
+      procMacro = { enable = true },
     },
   },
 }
@@ -33,16 +35,16 @@ M.show_inlay_hints = function()
   )
 end
 
-util.define_augroup {
-  name = "rust_show_line_hints",
-  clear = true,
-  autocmds = {
-    {
-      event = { "CursorHold", "CursorHoldI" },
-      pattern = "*.rs",
-      callback = M.show_inlay_hints,
-    },
-  },
-}
+-- require("util").define_augroup {
+--   name = "rust_show_line_hints",
+--   clear = true,
+--   autocmds = {
+--     {
+--       event = { "CursorHold", "CursorHoldI" },
+--       pattern = "*.rs",
+--       callback = M.show_inlay_hints,
+--     },
+--   },
+-- }
 
 return M
