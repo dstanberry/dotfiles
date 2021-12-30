@@ -79,24 +79,20 @@ if hash fzf 2> /dev/null; then
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
   # define default options for fzf
-  if hash bat 2> /dev/null; then
-    __fzf_preview_opts="
-      --cycle
-      --layout=reverse
-      --border
-      --ansi
-      --preview-window 'right:60%'
-      --height=40%"
-    export FZF_DEFAULT_OPTS=$__fzf_preview_opts
-    unset __fzf_preview_opts
-  fi
-
-  export FZF_DEFAULT_OPTS=$FZF_DEFAULT_OPTS'
+  export FZF_DEFAULT_OPTS='
+    --ansi
+    --border
+    --cycle
+    --header-first
+    --height=40%
+    --layout=reverse
+    --preview-window border-left
+    --scroll-off=3
     --color=dark
     --color=fg:#bebebe,bg:-1,hl:#93b379
     --color=fg+:#dfe3ec,bg+:-1,hl+:#93b379
-    --color=info:#4c566a,prompt:#6f8fb4,pointer:#b04b57
-    --color=marker:#e5c179,spinner:#4c566a,header:#5f5f5f'
+    --color=info:#5f5f5f,prompt:#6f8fb4,pointer:#b04b57
+    --color=marker:#e5c179,spinner:#4c566a,header:#4c566a'
 fi
 
 # define mocOS specific options
