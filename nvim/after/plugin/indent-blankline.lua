@@ -16,6 +16,7 @@ indent_blankline.setup {
     "go",
     "html",
     "json",
+    "ps1",
     "python",
     "rust",
   },
