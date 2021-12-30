@@ -108,7 +108,7 @@ function -set-prompt() {
   fi
 
   # define the primary prompt
-  PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%F{blue}%B%3~ %b%f%B${SUFFIX}%b "
+  PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%F{blue}%B%1~ %b%f%B${SUFFIX}%b "
 
   if [[ -n "$TMUXING" ]]; then
     # outside tmux, ZLE_RPROMPT_INDENT ends up eating the space after PS1, and
