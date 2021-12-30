@@ -112,7 +112,7 @@ telescope.setup {
     lsp_workspace_symbols = { layout_strategy = "vertical" },
   },
   extensions = {
-    fzf = has "win32" and {
+    fzf = not has "win32" and {
       case_mode = "smart_case",
       override_file_sorter = true,
       override_generic_sorter = false,
@@ -127,7 +127,7 @@ telescope.setup {
   },
 }
 
-if has "win32" then
+if not has "win32" then
   pcall(telescope.load_extension "fzf")
 end
 pcall(telescope.load_extension "gh")
