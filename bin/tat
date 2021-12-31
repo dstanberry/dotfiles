@@ -14,9 +14,9 @@ elif [[ $# -eq 1 ]]; then
     done
     # shellcheck disable=SC2207
     projects_dir=($(echo "$projects_dir" | cut -d " " --output-delimiter=" " -f 1-))
-    path=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" "${projects_dir[@]}" \
-      -mindepth 1 -maxdepth 1 \
-      | fzf --height=100% --reverse --header='Create/Open Session')
+    path=$(fd --follow --type d . "$HOME" "$HOME/Git" "$HOME/Projects" "${projects_dir[@]}" \
+      --min-depth 1 --max-depth 1 \
+      | fzf --reverse --header='Create/Open Session')
     if [ "$path" == "" ]; then
       exit 0
     fi
