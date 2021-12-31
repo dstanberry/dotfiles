@@ -75,7 +75,7 @@ if hash fzf 2> /dev/null; then
   export FZF_COMPLETION_TRIGGER='?'
 
   # set fd as the default source for fzf
-  export FZF_DEFAULT_COMMAND='fd -H --follow --type f --color=always -E .git'
+  export FZF_DEFAULT_COMMAND='fd --hidden --follow --type f --color=always -E .git'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
   # define default options for fzf
