@@ -24,7 +24,21 @@ vim.g.markdown_fenced_languages = {
   "zsh=sh",
 }
 
-vim.g.did_load_filetype = 1
+vim.g.do_filetype_lua = 1
+vim.g.did_load_filetype = 0
+
+vim.filetype.add {
+  extension = {
+    scm = "query",
+    vifm = "vim",
+    vifmrc = "vim",
+  },
+  filename = {
+    [".*config/git/config"] = "gitconfig",
+    ["tmux.conf"] = "tmux",
+  },
+}
+
 vim.g.loaded_2html_plugin = 1
 vim.g.loaded_getscript = 1
 vim.g.loaded_getscriptPlugin = 1
@@ -63,7 +77,7 @@ require "util.globals"
 
 vim.defer_fn(function()
   util.load_dirhash(vim.env.SHELL)
-  if vim.fn.filereadable(vim.fn.expand("~/.hushremote")) == 0 then
+  if vim.fn.filereadable(vim.fn.expand "~/.hushremote") == 0 then
     pcall(require, "remote")
     pcall(require, "remote.packer_compiled")
   end
