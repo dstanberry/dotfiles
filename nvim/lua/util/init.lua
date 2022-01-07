@@ -25,24 +25,6 @@ function M.delegate(cb, expr)
   return ([[lua require("util")._execute("%s")]]):format(key)
 end
 
-function M.define_command(spec)
-  local name = spec.name
-  local force = spec.force and "!" or ""
-  local bang = spec.bang and "-bang" or ""
-  local complete = spec.complete and "-complete" or ""
-  local nargs = spec.nargs and "-nargs" or ""
-  local range = spec.range and "-range" or ""
-  local action = spec.command or ""
-  if spec.callback ~= nil and type(spec.callback) == "function" then
-    action = M.delegate(spec.callback)
-  end
-  local command = table.concat(
-    vim.tbl_flatten { ("command%s"):format(force), bang, complete, nargs, range, name, action },
-    " "
-  )
-  vim.cmd(command)
-end
-
 function M.define_autocmd(spec)
   local event = spec.event
   if type(event) == "table" then

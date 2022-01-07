@@ -1,11 +1,4 @@
 local util = require "util"
 
-util.define_command {
-  name = "S",
-  callback = util.buffer.create_scratch,
-}
-
-util.define_command {
-  name = "W",
-  callback = util.buffer.sudo_write,
-}
+vim.api.nvim_add_user_command("S", util.buffer.create_scratch, {})
+vim.api.nvim_add_user_command("W", util.buffer.sudo_write, {})
