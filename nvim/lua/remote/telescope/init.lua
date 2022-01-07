@@ -180,8 +180,8 @@ local meta = setmetatable({}, {
 function M.find_nvim()
   builtin.find_files {
     cwd = vim.fn.stdpath "config",
-    hidden = has "win32" and true or false,
-    follow = has "win32" and true or false,
+    hidden = has "win32" and false or true,
+    follow = has "win32" and false or true,
     file_ignore_patterns = ignored,
     prompt_title = [[\ Neovim /]],
   }
@@ -189,8 +189,8 @@ end
 
 function M.project_files()
   local opts = {
-    hidden = has "win32" and true or false,
-    follow = has "win32" and true or false,
+    hidden = has "win32" and false or true,
+    follow = has "win32" and false or true,
     file_ignore_patterns = ignored,
     prompt_title = [[\ Project Files /]],
   }
@@ -203,8 +203,8 @@ end
 function M.file_browser()
   local opts
   opts = {
-    hidden = has "win32" and true or false,
-    follow = has "win32" and true or false,
+    hidden = has "win32" and false or true,
+    follow = has "win32" and false or true,
     sorting_strategy = "ascending",
     prompt_title = [[\ File Browser /]],
     layout_config = {
