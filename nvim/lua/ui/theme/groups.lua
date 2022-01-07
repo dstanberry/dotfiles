@@ -50,7 +50,7 @@ M.apply = function(c)
   hi.ErrorMsg = { guifg = c.base08, guibg = c.base00, gui = nil, guisp = nil }
   hi.Exception = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
   hi.FoldColumn = { guifg = c.base0C, guibg = c.base01, gui = nil, guisp = nil }
-  hi.Folded = { guifg = c.base03, guibg = "none", gui = nil, guisp = nil }
+  hi.Folded = { guifg = c.baseYY, guibg = c.base02, gui = nil, guisp = nil }
   hi.Italic = { guifg = nil, guibg = nil, gui = "none", guisp = nil }
   hi.Macro = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
   hi.MatchParen = { guifg = c.base08, guibg = "", gui = "bold", guisp = nil }

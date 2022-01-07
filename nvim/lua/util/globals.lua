@@ -25,11 +25,13 @@ end
 _G.fold_text = function()
   local indent = vim.fn.indent(vim.v.foldstart - 1)
   local indent_level = vim.fn["repeat"](" ", indent)
-  local line_count = string.format("[%sℓ]", (vim.v.foldend - vim.v.foldstart + 1))
+  local line_count = string.format("%s lines", (vim.v.foldend - vim.v.foldstart + 1))
   local header = vim.api.nvim_buf_get_lines(0, vim.v.foldstart - 1, vim.v.foldstart, true)[1]:gsub(" *", "", 1)
-  local level_front = vim.fn["repeat"]("» ", vim.v.foldlevel)
-  local level_back = vim.fn["repeat"](" «", vim.v.foldlevel)
-  return string.format("%s%s ··· %s%s%s ", indent_level, header, level_front, line_count, level_back)
+  local width = vim.fn.winwidth(0) - vim.wo.foldcolumn - (vim.wo.number and 8 or 0)
+  local lhs = string.format("%s%s", indent_level, header)
+  local rhs = string.format("%s  · %s", vim.v.foldlevel, line_count)
+  local separator = vim.fn["repeat"](" ", width - vim.fn.strwidth(lhs) - vim.fn.strwidth(rhs))
+  return string.format("%s %s%s ", lhs, separator, rhs)
 end
 
 _G.fold_expr = function(lnum)
