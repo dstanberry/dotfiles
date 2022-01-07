@@ -6,7 +6,6 @@ end
 
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
-local map = require("util.map")
 
 neogit.setup {
   disable_commit_confirmation = true,
@@ -25,11 +24,11 @@ neogit.setup {
   },
 }
 
-map.nnoremap("<leader>gs", function()
+vim.keymap.set("n", "<leader>gs", function()
   neogit.open { kind = "split" }
 end)
 
-map.nnoremap("<leader>gc", function()
+vim.keymap.set("n", "<leader>gc", function()
   neogit.open { "commit" }
 end)
 

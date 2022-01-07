@@ -5,9 +5,8 @@ if not ok then
 end
 
 local actions = require "lir.actions"
-local git_status = require("lir.git_status")
+local git_status = require "lir.git_status"
 local has_mmv, mmv_actions = pcall(require "lir.mmv.actions")
-local map = require "util.map"
 
 lir.setup {
   devicons_enable = true,
@@ -33,9 +32,7 @@ git_status.setup {
   show_ignored = true,
 }
 
-map.nnoremap("-", function()
+vim.keymap.set("n", "-", function()
   local path = vim.fn.expand "%:h"
-  return map.t(("<cmd>edit %s<cr>"):format(path))
-end, {
-  expr = true,
-})
+  return ("<cmd>edit %s<cr>"):format(path)
+end, { expr = true, replace_keycodes = true })

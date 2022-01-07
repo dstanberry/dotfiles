@@ -1,33 +1,40 @@
-local luasnip = require "remote.luasnip"
-local map = require "util.map"
+-- TODO: investigate why this isn't working
+--[[ local luasnip = require "remote.luasnip"
 
-local expand_or_jump = function()
+vim.keymap.set({ "i", "s" }, "<tab>", function()
   if luasnip.expand_or_jumpable() then
-    return map.t "<plug>luasnip-expand-or-jump"
+    luasnip.expand_or_jump()
+  else
+    return "<tab>"
   end
-  return map.t "<tab>"
-end
+end, { expr = true })
 
-local jump_prev = function()
+vim.keymap.set({ "i", "s" }, "<s-tab>", function()
   if luasnip.jumpable(-1) then
-    return map.t "<plug>luasnip-jump-prev"
+    luasnip.jump(-1)
+  else
+    return "<s-tab>"
   end
-  return map.t "<s-tab>"
-end
+end, { expr = true })
 
-local function next_choice()
-  return luasnip.change_choice(1)
-end
+vim.keymap.set({ "i", "s" }, "<c-d>", function()
+  luasnip.change_choice(1)
+end, { expr = true })
 
-local function prev_choice()
-  return luasnip.change_choice(-1)
-end
+vim.keymap.set({ "i", "s" }, "<c-f>", function()
+  luasnip.change_choice(-1)
+end, { expr = true }) ]]
 
-map.imap("<tab>", expand_or_jump, { expr = true })
-map.smap("<tab>", expand_or_jump, { expr = true })
-map.imap("<s-tab>", jump_prev, { expr = true })
-map.smap("<s-tab>", jump_prev, { expr = true })
-map.imap("<c-d>", next_choice)
-map.smap("<c-d>", next_choice)
-map.imap("<c-f>", prev_choice)
-map.smap("<c-f>", prev_choice)
+vim.cmd [[
+  imap <silent><expr> <tab> luasnip#expand_or_jumpable() ? '<plug>luasnip-expand-or-jump' : ''
+  inoremap <silent> <s-tab> <cmd>lua require('luasnip').jump(-1)<cr>
+
+  snoremap <silent> <tab> <cmd>lua require('luasnip').jump(1)<cr>
+  snoremap <silent> <s-tab> <cmd>lua require('luasnip').jump(-1)<cr>
+
+  imap <silent><expr> <c-d> luasnip#choice_active() ? '<plug>luasnip-next-choice' : '<c-d>'
+  imap <silent><expr> <c-f> luasnip#choice_active() ? '<plug>luasnip-prev-choice' : '<c-f>'
+
+  smap <silent><expr> <c-d> luasnip#choice_active() ? '<plug>luasnip-next-choice' : '<c-d>'
+  smap <silent><expr> <c-f> luasnip#choice_active() ? '<plug>luasnip-prev-choice' : '<c-f>'
+]]

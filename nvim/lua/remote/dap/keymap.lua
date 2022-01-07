@@ -1,30 +1,20 @@
 local dap = require "remote.dap"
-local map = require "util.map"
 
-map.nnoremap("<c-s-b>", function()
-  dap.toggle_breakpoint()
-end)
-map.nnoremap("<c-s-h>", function()
-  dap.widgets.hover()
-end)
-map.nnoremap("<f3>", function()
+vim.keymap.set("n", "<c-s-b>", dap.toggle_breakpoint)
+vim.keymap.set("n", "<c-s-h>", dap.widgets.hover)
+
+vim.keymap.set("n", "<f3>", function()
   dap.disconnect { terminateDebuggee = true }
   dap.close()
   -- (hack) because event listener does not always fire
   require("dapui").close()
 end)
-map.nnoremap("<f5>", function()
-  dap.continue()
-end)
-map.nnoremap("<f6>", function()
-  dap.step_into()
-end)
-map.nnoremap("<f7>", function()
-  dap.step_out()
-end)
-map.nnoremap("<f10>", function()
-  dap.step_over()
-end)
-map.nnoremap("<f12>", function()
+
+vim.keymap.set("n", "<f5>", dap.continue)
+vim.keymap.set("n", "<f6>", dap.step_into)
+vim.keymap.set("n", "<f7>", dap.step_out)
+vim.keymap.set("n", "<f10>", dap.step_over)
+
+vim.keymap.set("n", "<f12>", function()
   dap.repl.toggle { height = 15 }
 end)

@@ -11,9 +11,6 @@ local util = require "util"
 -- vim.cmd('e '..vim.lsp.get_log_path())
 
 local on_attach_nvim = function(client, bufnr)
-  local nnoremap = util.map.nnoremap
-  local vnoremap = util.map.vnoremap
-
   if client.resolved_capabilities.code_lens then
     util.define_augroup {
       name = "lsp_document_codelens",
@@ -74,27 +71,27 @@ local on_attach_nvim = function(client, bufnr)
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end
 
-  nnoremap("ga", vim.lsp.buf.code_action, { buffer = bufnr })
-  -- nnoremap("gD", vim.lsp.buf.declaration, { buffer = bufnr })
-  nnoremap("gd", vim.lsp.buf.definition, { buffer = bufnr })
-  nnoremap("gt", vim.lsp.buf.type_definition, { buffer = bufnr })
-  nnoremap("gk", vim.lsp.buf.hover, { buffer = bufnr })
-  nnoremap("gi", vim.lsp.buf.implementation, { buffer = bufnr })
-  nnoremap("gh", vim.lsp.buf.signature_help, { buffer = bufnr })
-  nnoremap("gr", vim.lsp.buf.references, { buffer = bufnr })
-  nnoremap("gs", vim.lsp.buf.document_symbol, { buffer = bufnr })
-  nnoremap("g/", vim.lsp.buf.rename, { buffer = bufnr })
-  nnoremap("gn", vim.diagnostic.goto_next, { buffer = bufnr })
-  nnoremap("gp", vim.diagnostic.goto_prev, { buffer = bufnr })
-  nnoremap("<localleader>wl", list_workspace_folders, { buffer = bufnr })
-  nnoremap("<localleader>wa", vim.lsp.buf.add_workspace_folder, { buffer = bufnr })
-  nnoremap("<localleader>wr", vim.lsp.buf.remove_workspace_folder, { buffer = bufnr })
+  vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr })
+  -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr })
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
+  vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr })
+  vim.keymap.set("n", "gk", vim.lsp.buf.hover, { buffer = bufnr })
+  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
+  vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr })
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr })
+  vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr })
+  vim.keymap.set("n", "g/", vim.lsp.buf.rename, { buffer = bufnr })
+  vim.keymap.set("n", "gn", vim.diagnostic.goto_next, { buffer = bufnr })
+  vim.keymap.set("n", "gp", vim.diagnostic.goto_prev, { buffer = bufnr })
+  vim.keymap.set("n", "<localleader>wl", list_workspace_folders, { buffer = bufnr })
+  vim.keymap.set("n", "<localleader>wa", vim.lsp.buf.add_workspace_folder, { buffer = bufnr })
+  vim.keymap.set("n", "<localleader>wr", vim.lsp.buf.remove_workspace_folder, { buffer = bufnr })
 
   if client.resolved_capabilities.document_formatting then
-    nnoremap("ff", vim.lsp.buf.formatting, { buffer = bufnr })
+    vim.keymap.set("n", "ff", vim.lsp.buf.formatting, { buffer = bufnr })
   end
   if client.resolved_capabilities.document_range_formatting then
-    vnoremap("ff", vim.lsp.buf.range_formatting, { buffer = bufnr })
+    vim.keymap.set("v", "ff", vim.lsp.buf.range_formatting, { buffer = bufnr })
   end
 end
 

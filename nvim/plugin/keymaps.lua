@@ -1,127 +1,116 @@
 local util = require "util"
 
-local cnoremap = util.map.cnoremap
-local inoremap = util.map.inoremap
-local nnoremap = util.map.nnoremap
-local vnoremap = util.map.vnoremap
-local xnoremap = util.map.xnoremap
-
-local nmap = util.map.nmap
-local vmap = util.map.vmap
-
 ---------------------------------------------------------------
 -- => Normal
 ---------------------------------------------------------------
 -- (spacefn) scroll current buffer
-nnoremap("<up>", "<c-y>")
-nnoremap("<down>", "<c-e>")
+vim.keymap.set("n", "<up>", "<c-y>")
+vim.keymap.set("n", "<down>", "<c-e>")
 
 -- switch to next buffer
-nnoremap("<right>", "<cmd>bnext<cr>")
+vim.keymap.set("n", "<right>", "<cmd>bnext<cr>")
 -- switch to previous buffer
-nnoremap("<left>", "<cmd>bprevious<cr>")
+vim.keymap.set("n", "<left>", "<cmd>bprevious<cr>")
 
 -- switch to next tab
-nnoremap("<tab>", "<cmd>tabnext<cr>")
+vim.keymap.set("n", "<tab>", "<cmd>tabnext<cr>")
 -- switch to previous tab
-nnoremap("<s-tab>", "<cmd>tabprevious<cr>")
+vim.keymap.set("n", "<s-tab>", "<cmd>tabprevious<cr>")
 
 -- clear hlsearch if set, otherwise send default behaviour
-nnoremap("<cr>", function()
+vim.keymap.set("n", "<cr>", function()
   if vim.v.hlsearch == 1 then
     if vim.g.LoupeLoaded == 1 then
       vim.fn["loupe#private#clear_highlight"]()
     end
-    return util.map.t "<cmd>nohl<cr>"
+    return "<cmd>nohl<cr>"
   else
-    return util.map.t "<cr>"
+    return "<cr>"
   end
-end, {
-  expr = true,
-})
+end, { expr = true, replace_keycodes = true })
 
 -- navigate quickfix list
-nnoremap("<c-up>", "<cmd>cprevious<cr>zz")
-nnoremap("<c-down>", "<cmd>cnext<cr>zz")
+vim.keymap.set("n", "<c-up>", "<cmd>cprevious<cr>zz")
+vim.keymap.set("n", "<c-down>", "<cmd>cnext<cr>zz")
 
 -- navigate location list
-nnoremap("<a-up>", "<cmd>lprevious<cr>zz")
-nnoremap("<a-down>", "<cmd>lnext<cr>zz")
+vim.keymap.set("n", "<a-up>", "<cmd>lprevious<cr>zz")
+vim.keymap.set("n", "<a-down>", "<cmd>lnext<cr>zz")
 
 -- find all occurences in buffer of word under cursor
-nnoremap("<c-w><c-f>", [[/\v<c-r><c-w><cr>]], { silent = false })
+vim.keymap.set("n", "<c-w><c-f>", [[/\v<c-r><c-w><cr>]], { silent = false })
 
 -- begin substitution in buffer for word under cursor
-nnoremap("<c-w><c-r>", [[:%s/\<<c-r><c-w>\>/]], { silent = false })
+vim.keymap.set("n", "<c-w><c-r>", [[:%s/\<<c-r><c-w>\>/]], { silent = false })
 
 -- switch to left window
-nnoremap("<c-h>", "<c-w><c-h>")
+vim.keymap.set("n", "<c-h>", "<c-w><c-h>")
 -- switch to bottom window
-nnoremap("<c-j>", "<c-w><c-j>")
+vim.keymap.set("n", "<c-j>", "<c-w><c-j>")
 -- switch to top window
-nnoremap("<c-k>", "<c-w><c-k>")
+vim.keymap.set("n", "<c-k>", "<c-w><c-k>")
 -- switch to right window
-nnoremap("<c-l>", "<c-w><c-l>")
+vim.keymap.set("n", "<c-l>", "<c-w><c-l>")
 
 -- decrease active split horizontal size
-nnoremap("<a-h>", "<c-w><")
+vim.keymap.set("n", "<a-h>", "<c-w><")
 -- increase active split horizontal size
-nnoremap("<a-l>", "<c-w>>")
+vim.keymap.set("n", "<a-l>", "<c-w>>")
 -- increase active split vertical size
-nnoremap("<a-k>", "<c-w>+")
+vim.keymap.set("n", "<a-k>", "<c-w>+")
 -- decrease active split vertical size
-nnoremap("<a-j>", "<c-w>-")
+vim.keymap.set("n", "<a-j>", "<c-w>-")
 
 -- allow semi-colon to enter command mode
-nnoremap(";", ":", { silent = false })
+vim.keymap.set("n", ";", ":", { silent = false })
 
 -- move to the beginning of the current line
-nnoremap("H", "^")
+vim.keymap.set("n", "H", "^")
 
 -- keep cursor stationary when joining line(s) below
-nnoremap("J", "mzJ`z")
+vim.keymap.set("n", "J", "mzJ`z")
 
 -- move to the end of the current line
-nnoremap("L", "g_")
+vim.keymap.set("n", "L", "g_")
 
 -- keep screen centered when jumping between search matches
-nnoremap("n", "nzz")
-nnoremap("N", "Nzz")
+vim.keymap.set("n", "n", "nzz")
+vim.keymap.set("n", "N", "Nzz")
 
 -- insert newline without entering insert mode
-nnoremap("o", "o<esc>")
-nnoremap("O", "O<esc>")
+vim.keymap.set("n", "o", "o<esc>")
+vim.keymap.set("n", "O", "O<esc>")
 
 -- disable recording to a register
-nnoremap("q", "<nop>")
+vim.keymap.set("n", "q", "<nop>")
 
 -- avoid unintentional switches to Ex mode.
-nnoremap("Q", "<nop>")
+vim.keymap.set("n", "Q", "<nop>")
 
 -- yank to end of line
-nnoremap("Y", "y$")
+vim.keymap.set("n", "Y", "y$")
 
 ---------------------------------------------------------------
 -- => Normal | Leader
 ---------------------------------------------------------------
 -- (try to) make all windows the same size
-nnoremap("<leader>=", "<c-w>=")
+vim.keymap.set("n", "<leader>=", "<c-w>=")
 
 -- change text and preserve clipboard state
-nmap("<leader>c", '"_c', { silent = false })
-nmap("<leader>C", '"_C', { silent = false })
+vim.keymap.set("n", "<leader>c", '"_c', { silent = false })
+vim.keymap.set("n", "<leader>C", '"_C', { silent = false })
 
 -- delete text and preserve clipboard state
-nmap("<leader>d", '"_d', { silent = false })
-nmap("<leader>D", '"_D', { silent = false })
+vim.keymap.set("n", "<leader>d", '"_d', { silent = false })
+vim.keymap.set("n", "<leader>D", '"_D', { silent = false })
 
 -- shift current line down
-nnoremap("<leader>j", ":m .+1<cr>==")
+vim.keymap.set("n", "<leader>j", ":m .+1<cr>==")
 -- shift current line up
-nnoremap("<leader>k", ":m .-2<cr>==")
+vim.keymap.set("n", "<leader>k", ":m .-2<cr>==")
 
 -- prepare to call |reload()| on the current lua file
-nnoremap("<leader>r", function()
+vim.keymap.set("n", "<leader>r", function()
   local ft = vim.bo.filetype
   if ft == "lua" then
     local file = (vim.fn.expand "%:p")
@@ -130,15 +119,12 @@ nnoremap("<leader>r", function()
     if #mod == 0 then
       shift = "<left><left>"
     end
-    return util.map.t(([[:lua reload("%s")%s]]):format(mod, shift))
+    return ([[:lua reload("%s")%s]]):format(mod, shift)
   end
-end, {
-  silent = false,
-  expr = true,
-})
+end, { silent = false, expr = true, replace_keycodes = true })
 
 -- save current buffer to disk and execute the file
-nnoremap("<leader>x", function()
+vim.keymap.set("n", "<leader>x", function()
   local ft = vim.bo.filetype
   print(vim.cmd "write")
   if ft == "vim" then
@@ -146,44 +132,35 @@ nnoremap("<leader>x", function()
   elseif ft == "lua" then
     print(vim.cmd "luafile %")
   end
-end, {
-  silent = false,
-})
+end, { silent = false })
 
 -- close the current buffer
-nnoremap("<leader>z", function()
+vim.keymap.set("n", "<leader>z", function()
   util.buffer.delete_buffer(false)
-end, {
-  silent = false,
-})
+end, { silent = false })
 
 ---------------------------------------------------------------
 -- => Normal | Local Leader
 ---------------------------------------------------------------
 -- prepare to run most recent ex-command
-nnoremap("<localleader>c", ":<up>", { silent = false })
+vim.keymap.set("n", "<localleader>c", ":<up>", { silent = false })
 
 -- create/edit file within the current directory
-nnoremap("<localleader>e", function()
+vim.keymap.set("n", "<localleader>e", function()
   local path = vim.fn.expand "%:p:h"
-  return util.map.t((":edit %s/"):format(path))
-end, {
-  silent = false,
-  expr = true,
-})
+  return (":edit %s/"):format(path)
+end, { silent = false, expr = true, replace_keycodes = true })
 
 -- trim trailing whitespace
-nnoremap("<localleader>ff", function()
+vim.keymap.set("n", "<localleader>ff", function()
   for ln, str in ipairs(vim.fn.getline(1, "$")) do
     local sub = str:match "(.*%S)" or str
     vim.fn.setline(ln, sub)
   end
-end, {
-  silent = false,
-})
+end, { silent = false })
 
 -- save as new file within the current directory (with the option to delete the original)
-nnoremap("<localleader>s", function()
+vim.keymap.set("n", "<localleader>s", function()
   local file = vim.fn.expand "%"
   local path = vim.fn.expand "%:p:h"
   local sep = has "win32" and [[\]] or "/"
@@ -198,105 +175,96 @@ nnoremap("<localleader>s", function()
       ]]):format(file, file))
     end
   end
-end, {
-  silent = false,
-})
+end, { silent = false })
 
 -- discard all file modifications to current window
-nnoremap("<localleader>qq", "ZQ")
+vim.keymap.set("n", "<localleader>qq", "ZQ")
 
 -- discard all file modifications and close instance
-nnoremap("<localleader>qa", "<cmd>qa!<cr>")
+vim.keymap.set("n", "<localleader>qa", "<cmd>qa!<cr>")
 
 -- execute current line
-nnoremap("<localleader>x", function()
+vim.keymap.set("n", "<localleader>x", function()
   local ft = vim.bo.filetype
   if ft == "vim" then
     print(vim.cmd [[execute getline(".")]])
   elseif ft == "lua" then
     print(vim.cmd(([[lua %s]]):format(vim.fn.getline ".")))
   end
-end, {
-  silent = false,
-})
+end, { silent = false })
 
 -- discard changes to current buffer and close it
-nnoremap("<localleader>z", function()
+vim.keymap.set("n", "<localleader>z", function()
   util.buffer.delete_buffer(true)
-end, {
-  silent = false,
-})
+end, { silent = false })
 
 ---------------------------------------------------------------
 -- => Insert
 ---------------------------------------------------------------
 -- insert newline above current line
-inoremap("<c-enter>", "<c-o>O")
+vim.keymap.set("i", "<c-enter>", "<c-o>O")
 -- insert newline below current line
-inoremap("<a-enter>", "<c-o>o")
+vim.keymap.set("i", "<a-enter>", "<c-o>o")
 
 -- go to the beginning of the current line
-inoremap("<c-a>", "<c-o>^")
+vim.keymap.set("i", "<c-a>", "<c-o>^")
 -- go to the end of the current line
-inoremap("<c-e>", "<c-o>$")
+vim.keymap.set("i", "<c-e>", "<c-o>$")
 
 -- shift current line down
-inoremap("<c-j>", "<esc>:m .+1<cr>==i")
+vim.keymap.set("i", "<c-j>", "<esc>:m .+1<cr>==i")
 -- shift current line up
-inoremap("<c-k>", "<esc>:m .-2<cr>==i")
+vim.keymap.set("i", "<c-k>", "<esc>:m .-2<cr>==i")
 
 -- forward delete the next word
-inoremap("<a-w>", "<c-o>cW")
+vim.keymap.set("i", "<a-w>", "<c-o>cW")
 
 -- define undo break point
-inoremap(",", ",<c-g>u")
-inoremap(".", ".<c-g>u")
-inoremap("!", "!<c-g>u")
-inoremap("?", "?<c-g>u")
+vim.keymap.set("i", ",", ",<c-g>u")
+vim.keymap.set("i", ".", ".<c-g>u")
+vim.keymap.set("i", "!", "!<c-g>u")
+vim.keymap.set("i", "?", "?<c-g>u")
 
 -- exit insert mode
-inoremap("jk", "<esc>")
+vim.keymap.set("i", "jk", "<esc>")
 
 ---------------------------------------------------------------
 -- => Visual
 ---------------------------------------------------------------
 -- move between windows.
-vnoremap("<c-h>", "<c-w>h")
-vnoremap("<c-j>", "<c-w>j")
-vnoremap("<c-k>", "<c-w>k")
-vnoremap("<c-l>", "<c-w>l")
+vim.keymap.set("v", "<c-h>", "<c-w>h")
+vim.keymap.set("v", "<c-j>", "<c-w>j")
+vim.keymap.set("v", "<c-k>", "<c-w>k")
+vim.keymap.set("v", "<c-l>", "<c-w>l")
 
 -- maintain selection after indentation
-vmap("<", "<gv")
-vmap(">", ">gv")
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")
 
 -- allow semi-colon to enter command mode
-vmap(";", ":", { silent = false })
+vim.keymap.set("v", ";", ":", { silent = false })
 
 -- move selection to the beginning of the current line
-vnoremap("H", "^")
+vim.keymap.set("v", "H", "^")
 -- move selection to the end of the current line
-vnoremap("L", "g_")
+vim.keymap.set("v", "L", "g_")
 
 -- shift selected text down
-xnoremap("J", ":move '>+<cr>gv=gv")
+vim.keymap.set("x", "J", ":move '>+<cr>gv=gv")
 -- shift selected text up
-xnoremap("K", ":move -2<cr>gv=gv")
+vim.keymap.set("x", "K", ":move -2<cr>gv=gv")
 
 ---------------------------------------------------------------
 -- => Visual | Leader
 ---------------------------------------------------------------
 -- begin substitution in buffer for visual selection
-vnoremap("<c-w><c-r>", function()
+vim.keymap.set("v", "<c-w><c-r>", function()
   local selection = util.buffer.get_visual_selection()
-  return util.map.t((":<c-u>%%s/%s/"):format(selection))
-end, {
-  silent = false,
-  expr = true,
-})
+  return (":<c-u>%%s/%s/"):format(selection)
+end, { silent = false, expr = true, replace_keycodes = true })
 
 -- execute selected text
-vnoremap("<leader>x", function()
+vim.keymap.set("v", "<leader>x", function()
   local function eval_chunk(str, ...)
     local chunk = loadstring(str, "@[evalrangeX]")
     local c = coroutine.create(chunk)
@@ -317,71 +285,58 @@ vnoremap("<leader>x", function()
     out = eval_chunk(selection)
   end
   print(out)
-end, {
-  silent = true,
-})
+end, { silent = true })
 
 ---------------------------------------------------------------
 -- => Command
 ---------------------------------------------------------------
 -- move to the beginning of the command
-cnoremap("<c-a>", "<home>", { silent = false })
+vim.keymap.set("c", "<c-a>", "<home>", { silent = false })
 -- move to the end of the command
-cnoremap("<c-e>", "<end>", { silent = false })
+vim.keymap.set("c", "<c-e>", "<end>", { silent = false })
 
--- navigate completion menu using up/down keys
-cnoremap("<up>", function()
+-- navigate completion menu using up key
+vim.keymap.set("c", "<up>", function()
   local ok, cmp = pcall(require, "cmp")
   local visible = false
   if ok then
     visible = cmp.visible()
   end
   if vim.fn.pumvisible() == 1 or visible then
-    return util.map.t "<c-p>"
+    return "<c-p>"
   else
-    return util.map.t "<up>"
+    return "<up>"
   end
-end, {
-  silent = false,
-  expr = true,
-})
-cnoremap("<down>", function()
+end, { silent = false, expr = true, replace_keycodes = true })
+
+-- navigate completion menu using down key
+vim.keymap.set("c", "<down>", function()
   local ok, cmp = pcall(require, "cmp")
   local visible = false
   if ok then
     visible = cmp.visible()
   end
   if vim.fn.pumvisible() == 1 or visible then
-    return util.map.t "<c-n>"
+    return "<c-n>"
   else
-    return util.map.t "<down>"
+    return "<down>"
   end
-end, {
-  silent = false,
-  expr = true,
-})
+end, { silent = false, expr = true, replace_keycodes = true })
 
 -- exit command mode
-cnoremap("jk", "<c-c>")
+vim.keymap.set("c", "jk", "<c-c>")
 
 -- populate command line with path to file of current buffer
-cnoremap("%H", function()
-  return util.map.t(vim.fn.expand "%:p:h" .. "/")
-end, {
-  silent = false,
-  expr = true,
-})
+vim.keymap.set("c", "%H", function()
+  return vim.fn.expand "%:p:h" .. "/"
+end, { silent = false, expr = true, replace_keycodes = true })
+
 -- populate command line with file name of current buffer
-cnoremap("%T", function()
-  return util.map.t(vim.fn.expand "%:t")
-end, {
-  silent = false,
-  expr = true,
-})
+vim.keymap.set("c", "%T", function()
+  return vim.fn.expand "%:t"
+end, { silent = false, expr = true, replace_keycodes = true })
+
 -- populate command line with path to parent dir of current buffer
-cnoremap("%P", function()
-  return util.map.t(vim.fn.expand "%:p")
-end, {
-  silent = false,
-  expr = true,
-})
+vim.keymap.set("c", "%P", function()
+  return vim.fn.expand "%:p"
+end, { silent = false, expr = true, replace_keycodes = true })

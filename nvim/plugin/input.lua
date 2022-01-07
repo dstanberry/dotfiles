@@ -6,7 +6,6 @@ end
 local util = require "util"
 
 local window = util.window
-local nnoremap = util.map.nnoremap
 
 local options = {
   prefix = " ❯ ",
@@ -82,13 +81,9 @@ vim.ui.select = function(items, opts, on_choice)
 
   for k, _ in ipairs(choices) do
     if k > 2 then
-      nnoremap {
-        string.format("%d", k - 2),
-        function()
-          confirm(items, on_choice, k - 2)
-        end,
-        buffer = true,
-      }
+      vim.keymap.set("n", string.format("%d", k - 2), function()
+        confirm(items, on_choice, k - 2)
+      end, { buffer = true })
     end
   end
 end

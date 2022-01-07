@@ -6,7 +6,6 @@ end
 
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
-local map = require "util.map"
 
 signs.setup {
   signs = {
@@ -26,14 +25,14 @@ signs.setup {
   },
 }
 
-map.nnoremap("]j", signs.next_hunk)
-map.nnoremap("]k", signs.prev_hunk)
-map.nnoremap("<leader>hs", signs.stage_hunk)
-map.nnoremap("<leader>hu", signs.undo_stage_hunk)
-map.nnoremap("<leader>hr", signs.reset_hunk)
-map.nnoremap("<leader>hp", signs.preview_hunk)
-map.nnoremap("<leader>hb", signs.toggle_current_line_blame)
-map.nnoremap("<leader>gb", function()
+vim.keymap.set("n", "]j", signs.next_hunk)
+vim.keymap.set("n", "]k", signs.prev_hunk)
+vim.keymap.set("n", "<leader>hs", signs.stage_hunk)
+vim.keymap.set("n", "<leader>hu", signs.undo_stage_hunk)
+vim.keymap.set("n", "<leader>hr", signs.reset_hunk)
+vim.keymap.set("n", "<leader>hp", signs.preview_hunk)
+vim.keymap.set("n", "<leader>hb", signs.toggle_current_line_blame)
+vim.keymap.set("n", "<leader>gb", function()
   signs.blame_line(true)
 end)
 

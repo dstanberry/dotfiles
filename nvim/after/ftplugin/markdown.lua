@@ -1,7 +1,4 @@
 local util = require "util"
-local inoremap = util.map.inoremap
-local nnoremap = util.map.nnoremap
-local vnoremap = util.map.vnoremap
 
 local markdown = require "ft.markdown"
 
@@ -18,24 +15,10 @@ vim.wo.conceallevel = 2
 -- vim.wo.spell = true
 vim.wo.wrap = true
 
-inoremap("<c-w>c", function()
-  markdown.insert_checkbox()
-end, { buffer = vim.api.nvim_get_current_buf() })
-inoremap("<c-w>p", function()
-  markdown.insert_link()
-end, { buffer = vim.api.nvim_get_current_buf() })
-nnoremap("<c-a>b", function()
-  markdown.toggle_bullet()
-end, { buffer = vim.api.nvim_get_current_buf() })
-nnoremap("<c-a>c", function()
-  markdown.toggle_checkbox()
-end, { buffer = vim.api.nvim_get_current_buf() })
-vnoremap("<c-a>b", function()
-  markdown.toggle_bullet()
-end, { buffer = vim.api.nvim_get_current_buf() })
-vnoremap("<c-a>c", function()
-  markdown.toggle_checkbox()
-end, { buffer = vim.api.nvim_get_current_buf() })
+vim.keymap.set("i", "<c-w>c", markdown.insert_checkbox, { buffer = vim.api.nvim_get_current_buf() })
+vim.keymap.set("i", "<c-w>p", markdown.insert_link, { buffer = vim.api.nvim_get_current_buf() })
+vim.keymap.set({ "n", "v" }, "<c-a>b", markdown.toggle_bullet, { buffer = vim.api.nvim_get_current_buf() })
+vim.keymap.set({ "n", "v" }, "<c-a>c", markdown.toggle_checkbox, { buffer = vim.api.nvim_get_current_buf() })
 
 util.define_augroup {
   name = "filetype_markdown",

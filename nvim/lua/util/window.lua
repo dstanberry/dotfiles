@@ -1,8 +1,5 @@
 local util = require "util"
 
-local nnoremap = util.map.nnoremap
-local inoremap = util.map.inoremap
-
 local M = {}
 
 M.separator = "─"
@@ -25,23 +22,23 @@ M.popup_window = function(opts)
   vim.api.nvim_win_set_option(winnr, "winhl", "Normal:Normal")
   if opts.enter then
     vim.api.nvim_set_current_win(winnr)
-    inoremap("jk", function()
+    vim.keymap.set("i", "jk", function()
       vim.cmd [[stopinsert]]
       vim.api.nvim_win_close(0, true)
     end, { buffer = bufnr })
-    nnoremap("<esc>", function()
+    vim.keymap.set("n", "<esc>", function()
       vim.api.nvim_win_close(0, true)
     end, { buffer = bufnr })
-    nnoremap("q", function()
+    vim.keymap.set("n", "q", function()
       vim.api.nvim_win_close(0, true)
     end, { buffer = bufnr })
   end
   if opts.on_confirm then
-    inoremap("<cr>", function()
+    vim.keymap.set("i", "<cr>", function()
       opts.on_confirm()
       vim.cmd [[stopinsert]]
     end, { buffer = bufnr })
-    nnoremap("<cr>", function()
+    vim.keymap.set("n", "<cr>", function()
       opts.on_confirm()
     end, { buffer = bufnr })
   end
