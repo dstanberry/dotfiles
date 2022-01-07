@@ -112,6 +112,9 @@ telescope.setup {
     lsp_workspace_symbols = { layout_strategy = "vertical" },
   },
   extensions = {
+    file_browser = {
+      theme = "ivy",
+    },
     fzf = not has "win32" and {
       case_mode = "smart_case",
       override_file_sorter = true,
@@ -207,11 +210,11 @@ function M.file_browser()
     follow = has "win32" and false or true,
     sorting_strategy = "ascending",
     prompt_title = [[\ File Browser /]],
-    layout_config = {
-      prompt_position = "top",
-    },
+    -- layout_config = {
+    --   prompt_position = "top",
+    -- },
   }
-  builtin.file_browser(opts)
+  telescope.extensions.file_browser.file_browser(opts)
 end
 
 function M.find_plugins()

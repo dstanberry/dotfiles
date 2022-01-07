@@ -150,6 +150,7 @@ local function plugins(use)
       "kyazdani42/nvim-web-devicons",
       "nvim-lua/plenary.nvim",
       "nvim-lua/popup.nvim",
+      "nvim-telescope/telescope-file-browser.nvim",
       "nvim-telescope/telescope-github.nvim",
       "nvim-telescope/telescope-symbols.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
