@@ -68,12 +68,14 @@ cmp.setup {
   },
 }
 
-cmp.setup.cmdline('/', {
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp_document_symbol' }
-  }, {
-    { name = 'buffer' }
-  })
+cmp.setup.cmdline("/", {
+  completion = {
+    autocomplete = false,
+  },
+  sources = {
+    { name = "nvim_lsp_document_symbol" },
+    { name = "buffer" },
+  },
 })
 
 cmp.setup.cmdline(":", {
