@@ -32,7 +32,7 @@ M.setup = function()
     updateevents = "TextChanged,TextChangedI",
     region_check_events = "CursorHold",
     delete_check_events = "TextChanged",
-    store_selection_keys = "<tab>",
+    store_selection_keys = "<c-s>",
     ext_opts = {
       [types.choiceNode] = {
         active = {
@@ -50,7 +50,7 @@ M.setup = function()
   local snippets = vim.api.nvim_get_runtime_file("lua/remote/luasnip/snippets/*.lua", true)
   for _, file in ipairs(snippets) do
     local fname
-    if has("win32") then
+    if has "win32" then
       fname = (file):match "^.+\\(.+)$"
     else
       fname = (file):match "^.+/(.+)$"
