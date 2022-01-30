@@ -1,3 +1,4 @@
+cargo-update
 selene
 stylua
 tree-sitter-cli
