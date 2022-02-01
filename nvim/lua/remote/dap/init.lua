@@ -18,7 +18,7 @@ local M = setmetatable({}, {
 })
 
 M.setup = function()
-  dap.defaults.fallback.terminal_win_cmd = "belowright 15new"
+  dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
 
   vim.fn.sign_define("DapBreakpoint", {
     text = "",
@@ -33,7 +33,16 @@ M.setup = function()
     numhl = "",
   })
 
-  if pcall(require, "nvim-dap-virtual-text") then
+  local dapvt
+  ok, dapvt = pcall(require, "nvim-dap-virtual-text")
+  if ok then
+    dapvt.setup {
+      enabled = true,
+      enabled_commands = true,
+      commented = false,
+      show_stop_reason = true,
+      virt_text_pos = "eol",
+    }
     vim.g.dap_virtual_text = true
   end
 
@@ -60,7 +69,7 @@ M.setup = function()
       },
       tray = {
         elements = { "repl" },
-        size = 10,
+        size = 15,
         position = "bottom",
       },
       floating = {
@@ -90,6 +99,18 @@ M.setup = function()
     local mod = util.get_module_name(file)
     require(mod).setup()
   end
+
+  util.define_augroup {
+    name = "dap-repl",
+    clear = true,
+    autocmds = {
+      {
+        event = "FileType",
+        pattern = "dap-repl",
+        callback = require("dap.ext.autocompl").attach,
+      },
+    },
+  }
 end
 
 return M
