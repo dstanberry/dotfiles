@@ -99,6 +99,11 @@ util.define_augroup {
         vim.wo.number = false
       end,
     },
+    {
+      event = "TermClose",
+      pattern = "*",
+      command = "execute 'bdelete! ' . expand('<abuf>')",
+    },
   },
 }
 
