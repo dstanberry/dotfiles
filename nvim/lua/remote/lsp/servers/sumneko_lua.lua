@@ -7,15 +7,11 @@ end
 local util = require "util"
 
 local fname
-local system_name
 if has("mac") then
-  system_name = "macOS"
   fname = "lua-language-server"
 elseif has("unix") then
-  system_name = "Linux"
   fname = "lua-language-server"
 elseif has("win32") then
-  system_name = "Windows"
   fname = "lua-language-server.exe"
 else
   print "Unsupported system for sumneko"
@@ -24,7 +20,7 @@ end
 
 local basedir = string.format("%s/lspconfig", vim.fn.stdpath "data")
 local root_path = string.format("%s/lua-language-server", basedir)
-local executable = string.format("%s/bin/%s/%s", root_path, system_name, fname)
+local executable = string.format("%s/bin/%s", root_path, fname)
 
 local M = {}
 
@@ -43,7 +39,7 @@ end
 
 M.config = luadev.setup {
   lspconfig = {
-    cmd = { executable, "-E", string.format("%s/main.lua", root_path) },
+    cmd = { executable, "-E", string.format("%s/bin/main.lua", root_path) },
     settings = {
       Lua = {
         completion = {
