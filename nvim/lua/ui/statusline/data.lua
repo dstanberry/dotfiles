@@ -1,5 +1,7 @@
 local has_plenary, Job = pcall(require, "plenary.job")
 
+local GIT_ENABLED = true
+
 local paste = function()
   local result = ""
   local paste = vim.go.paste
@@ -107,7 +109,7 @@ M.buffer = function(bufnr)
   local icon = " "
   for i, b in ipairs(vim.api.nvim_list_bufs()) do
     if bufnr == b then
-      return icon .. i
+      return icon, i
     end
   end
 end
@@ -116,23 +118,28 @@ M.git_branch = function(bufnr)
   local name = vim.fn.bufname(bufnr)
   local icon = " "
   local ok, branch
-  if has_plenary then
-    local j = Job:new {
-      command = "git",
-      args = { "branch", "--show-current" },
-      cwd = vim.fn.fnamemodify(name, ":h"),
-    }
-    ok, branch = pcall(function()
-      return vim.trim(j:sync()[1])
-    end)
-    if not ok then
-      return M.buffer(bufnr)
+  if GIT_ENABLED then
+    if has_plenary then
+      local j = Job:new {
+        command = "git",
+        args = { "branch", "--show-current" },
+        cwd = vim.fn.fnamemodify(name, ":h"),
+      }
+      ok, branch = pcall(function()
+        return vim.trim(j:sync()[1])
+      end)
+      if not ok then
+        icon, branch = M.buffer(bufnr)
+      end
+    else
+      branch = vim.trim(vim.fn.system("git branch --show-current"))
+      if not branch or #branch == 0 then
+        icon, branch = M.buffer(bufnr)
+      end
     end
-  else
-    branch = vim.trim(vim.fn.system("git branch --show-current"))
-    if not branch or #branch == 0 then
-      return M.buffer(bufnr)
-    end
+  end
+  if not (ok or branch) then
+    icon, branch = M.buffer(bufnr)
   end
   local p = paste()
   if #p > 0 then
