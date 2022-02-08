@@ -4,10 +4,10 @@ if not ok then
   return
 end
 
-local config = parsers.get_parser_configs()
-config.vim.used_by = { "vifm", "vifmrc", "vimrc" }
+-- local config = parsers.get_parser_configs()
+-- config.vim.used_by = { "vifm", "vifmrc", "vimrc" }
 
-local ft_to_lang = require("nvim-treesitter.parsers").ft_to_lang
+local ft_to_lang = parsers.ft_to_lang
 require("nvim-treesitter.parsers").ft_to_lang = function(ft)
   if ft == "zsh" then
     return "bash"
