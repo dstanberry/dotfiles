@@ -173,7 +173,7 @@ M.apply = function(c)
   -- lsp document highlighting
   hi.LspReferenceText = { guifg = c.base10, guibg = c.base03, gui = nil, guisp = nil }
   hi.LspReferenceRead = { guifg = c.base10, guibg = c.lref00, gui = nil, guisp = nil }
-  hi.LspReferenceWrite = { guifg = c.base10, guibg = c.base06, gui = nil, guisp = nil }
+  hi.LspReferenceWrite = { guifg = c.base10, guibg = c.base09, gui = nil, guisp = nil }
 
   -- lsp diagnostic highlighting
   hi.DiagnosticError = { guifg = c.base08, guibg = nil, gui = "none", guisp = nil }
@@ -204,7 +204,7 @@ M.apply = function(c)
   hi.TSCurrentScope = { guifg = nil, guibg = nil, gui = "bold", guisp = nil }
   hi.TSDanger = { guifg = c.base08, guibg = c.base00, gui = "bold", guisp = nil }
   hi.TSDefinition = { guifg = nil, guibg = nil, gui = "underline", guisp = c.base0E }
-  hi.TSDefinitionUsage = { guifg = c.base10, guibg = c.lref02, gui = "none", guisp = nil }
+  hi.TSDefinitionUsage = { guifg = nil, guibg = c.base02, gui = "none", guisp = nil }
   hi.TSEmphasis = { guifg = c.base0A, guibg = nil, gui = "italic", guisp = nil }
   hi.TSEnvironment = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
   hi.TSEnvironmentType = { guifg = c.base0A, guibg = nil, gui = nil, guisp = nil }
