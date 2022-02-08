@@ -34,7 +34,8 @@ vim.filetype.add {
     vifmrc = "vim",
   },
   filename = {
-    [".*config/git/config"] = "gitconfig",
+    ["*/git/config"] = "gitconfig",
+    ["gitconfig"] = "gitconfig",
     ["tmux.conf"] = "tmux",
   },
 }
