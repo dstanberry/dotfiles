@@ -60,8 +60,8 @@
 	hunk-header-decoration-style = black box ul
 	line-numbers-left-style = "#5f5f5f"
 	line-numbers-right-style = "#5f5f5f"
-	line-numbers-minus-style = "#F75149" "#22151A"
-	line-numbers-plus-style = "#3FB950" "#111F1C"
+	line-numbers-minus-style = "#F75149" ; "#22151A"
+	line-numbers-plus-style = "#3FB950" ; "#111F1C"
 	line-numbers-zero-style = 243
 	plus-style = syntax "#132E1F"
 	minus-style = syntax "#36191C"
