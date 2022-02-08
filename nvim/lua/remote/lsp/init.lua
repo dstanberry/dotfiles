@@ -6,7 +6,6 @@ end
 
 local util = require "util"
 
--- enable debugging
 -- vim.lsp.set_log_level("debug")
 -- vim.cmd('e '..vim.lsp.get_log_path())
 
@@ -68,7 +67,7 @@ local on_attach_nvim = function(client, bufnr)
   end
 
   local list_workspace_folders = function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+    dump(vim.lsp.buf.list_workspace_folders())
   end
 
   vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr })
@@ -81,6 +80,7 @@ local on_attach_nvim = function(client, bufnr)
   vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr })
   vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr })
   vim.keymap.set("n", "g/", vim.lsp.buf.rename, { buffer = bufnr })
+  vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr })
   vim.keymap.set("n", "gn", vim.diagnostic.goto_next, { buffer = bufnr })
   vim.keymap.set("n", "gp", vim.diagnostic.goto_prev, { buffer = bufnr })
   vim.keymap.set("n", "<localleader>wl", list_workspace_folders, { buffer = bufnr })
