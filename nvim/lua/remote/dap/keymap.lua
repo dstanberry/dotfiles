@@ -1,15 +1,15 @@
 local dap = require "remote.dap"
 local dapui = require "dapui"
 
+vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint)
+vim.keymap.set("n", "<leader>dh", dap.widgets.hover)
+
 vim.keymap.set("n", "<leader>dB", function()
   dap.set_breakpoint(vim.fn.input "Breakpoint condition: ")
 end)
 vim.keymap.set("n", "<leader>dE", function()
   dapui.eval(vim.fn.input "Evaluate expression: ")
 end)
-
-vim.keymap.set("n", "<c-s-b>", dap.toggle_breakpoint)
-vim.keymap.set("n", "<c-s-h>", dap.widgets.hover)
 
 vim.keymap.set("n", "<f1>", dapui.eval)
 vim.keymap.set("n", "<f2>", dap.step_into)
