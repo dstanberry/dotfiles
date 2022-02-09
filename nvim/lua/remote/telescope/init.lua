@@ -139,16 +139,16 @@ pcall(telescope.load_extension "ui-select")
 
 c.tele00 = color.darken(c.base0F, 43)
 
-groups.new("TelescopeSelection", { guifg = nil, guibg = c.tele00, gui = "bold", guisp = nil })
-groups.new("TelescopeSelectionCaret", { guifg = c.base04, guibg = c.tele00, gui = "bold", guisp = nil })
+groups.new("TelescopeBorder", { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil })
+groups.new("TelescopeMatching", { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil })
 groups.new("TelescopeMultiSelection", { guifg = c.base0E, guibg = nil, gui = "none", guisp = nil })
 groups.new("TelescopeNormal", { guifg = c.base04, guibg = c.base00, gui = nil, guisp = nil })
-groups.new("TelescopeBorder", { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil })
-groups.new("TelescopePromptBorder", { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil })
-groups.new("TelescopeResultsBorder", { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil })
 groups.new("TelescopePreviewBorder", { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil })
-groups.new("TelescopeMatching", { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil })
+groups.new("TelescopePromptBorder", { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil })
 groups.new("TelescopePromptPrefix", { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil })
+groups.new("TelescopeResultsBorder", { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil })
+groups.new("TelescopeSelection", { guifg = nil, guibg = c.tele00, gui = "bold", guisp = nil })
+groups.new("TelescopeSelectionCaret", { guifg = c.base04, guibg = c.tele00, gui = "bold", guisp = nil })
 
 local ignored = {
   "%.DAT",
@@ -183,18 +183,18 @@ local meta = setmetatable({}, {
 function M.find_nvim()
   builtin.find_files {
     cwd = vim.fn.stdpath "config",
-    hidden = has "win32" and false or true,
-    follow = has "win32" and false or true,
     file_ignore_patterns = ignored,
-    prompt_title = [[\ Neovim /]],
+    follow = has "win32" and false or true,
+    hidden = has "win32" and false or true,
+    prompt_title = [[\ Neovim RC Files /]],
   }
 end
 
 function M.project_files()
   local opts = {
-    hidden = has "win32" and false or true,
-    follow = has "win32" and false or true,
     file_ignore_patterns = ignored,
+    follow = has "win32" and false or true,
+    hidden = has "win32" and false or true,
     prompt_title = [[\ Project Files /]],
   }
   ok = pcall(builtin.git_files, opts)
@@ -206,13 +206,10 @@ end
 function M.file_browser()
   local opts
   opts = {
-    hidden = has "win32" and false or true,
     follow = has "win32" and false or true,
-    sorting_strategy = "ascending",
+    hidden = has "win32" and false or true,
     prompt_title = [[\ File Browser /]],
-    -- layout_config = {
-    --   prompt_position = "top",
-    -- },
+    sorting_strategy = "ascending",
   }
   telescope.extensions.file_browser.file_browser(opts)
 end
@@ -220,7 +217,7 @@ end
 function M.find_plugins()
   builtin.find_files {
     cwd = string.format("%s/site/pack/packer/", vim.fn.stdpath "data"),
-    previewer = false,
+    layout_strategy = "vertical",
     prompt_title = [[\ Remote Plugins /]],
   }
 end
@@ -229,14 +226,15 @@ function M.current_buffer()
   builtin.current_buffer_fuzzy_find {
     previewer = false,
     prompt_title = [[\ Find in File /]],
+    sorting_strategy = "ascending",
   }
 end
 
 function M.grep_string()
   builtin.grep_string {
-    search = vim.fn.input "grep: ",
     path_display = { "shorten" },
     prompt_title = [[\ Grep Project /]],
+    search = vim.fn.input "grep: ",
   }
 end
 
@@ -244,8 +242,8 @@ function M.grep_last_search()
   local register = vim.fn.getreg("/"):gsub("\\<", ""):gsub("\\>", ""):gsub("\\C", "")
   builtin.grep_string {
     path_display = { "shorten" },
-    word_match = "-w",
     search = register,
+    word_match = "-w",
   }
 end
 

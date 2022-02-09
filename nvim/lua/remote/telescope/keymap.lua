@@ -19,7 +19,7 @@ vim.keymap.set("n", "<localleader>mm", function()
   local zk_notebook = zk.get_notebook_path()
   local opts
   opts = {
-    prompt_title = [[\ Notes /]],
+    prompt_title = [[\ Zettelkasten Notes /]],
     cwd = zk_notebook,
     attach_mappings = function(bufnr, map)
       actions.select_default:replace(function()
