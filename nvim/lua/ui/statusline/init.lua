@@ -47,7 +47,7 @@ local function default(state, bufnr)
       add(hi.user1, { data.relpath(bufnr) }, true),
       add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
-      add(hi.user3, { lsp.get_messages(bufnr) }, true),
+      -- add(hi.user3, { lsp.get_messages(bufnr) }, true),
       add(hi.custom0, {
         collapse_diag(hi.lsp_error, " ", diagnostics.error),
         collapse_diag(hi.lsp_warn, " ", diagnostics.warn),

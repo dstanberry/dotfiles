@@ -131,6 +131,7 @@ local function plugins(use)
     wants = "twilight.nvim",
     requires = { { "folke/twilight.nvim", requires = { "nvim-treesitter/nvim-treesitter" } } },
   }
+  use { "j-hui/fidget.nvim" }
   use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   use { "lukas-reineke/indent-blankline.nvim" }
   use { "rcarriga/nvim-notify" }
