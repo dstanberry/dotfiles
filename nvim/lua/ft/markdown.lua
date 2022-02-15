@@ -12,6 +12,7 @@ local M = {}
 
 local zk_exec = zk.get_executable_path()
 local zk_notebook = zk.get_notebook_path()
+local zk_template = zk.get_templates_path()
 
 local types = {
   {
@@ -118,7 +119,7 @@ local create_note_from_template = function(title, box)
   local i = vim.fn.match(file, "inbox") > 0
   local j = vim.fn.match(file, "journal") > 0
   local t = (i or j) and "journal.md" or "default.md"
-  local template = vim.fn.expand(string.format("%s/../zk/templates/%s", vim.fn.stdpath "config", t))
+  local template = vim.fn.expand(string.format("%s/%s", zk_template, t))
   local date = (i or j) and os.date "%Y%m%d%H%M" or os.date "%Y-%m-%d"
   file = vim.fn.expand(string.format("%s/%s-%s.md", file, date, title))
   local lines = {}
@@ -286,8 +287,5 @@ M.toggle_checkbox = function()
     vim.api.nvim_buf_set_lines(0, line_start - 1, line_end, true, newlines)
   end
 end
-
-vim.keymap.set("n", "<leader>mm", M.create_note)
-vim.keymap.set("n", "<leader>mr", M.create_template_reference)
 
 return M

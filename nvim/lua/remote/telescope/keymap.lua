@@ -2,6 +2,8 @@ local telescope = require "remote.telescope"
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 
+local markdown = require("ft.markdown")
+
 vim.keymap.set("n", "<localleader><localleader>", telescope.find_nvim)
 vim.keymap.set("n", "<leader><leader>", telescope.project_files)
 vim.keymap.set("n", "<leader>f/", telescope.grep_last_search)
@@ -14,6 +16,8 @@ vim.keymap.set("n", "<leader>fk", telescope.help_tags)
 vim.keymap.set("n", "<leader>fp", telescope.find_plugins)
 vim.keymap.set("n", "<leader>ws", telescope.lsp.workspace_symbols)
 
+vim.keymap.set("n", "<leader>mm", markdown.create_note)
+vim.keymap.set("n", "<leader>mr", markdown.create_template_reference)
 vim.keymap.set("n", "<localleader>mm", function()
   local zk = require "remote.lsp.servers.zk"
   local zk_notebook = zk.get_notebook_path()
