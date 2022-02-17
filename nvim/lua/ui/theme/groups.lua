@@ -40,6 +40,7 @@ M.apply = function(c)
   c.base15 = color.lighten(c.base0E, 30)
   c.base16 = color.lighten(c.base0F, 30)
   c.base17 = color.darken(c.base0E, 20)
+  c.base18 = color.lighten(c.base0C, 20)
 
   -- vim editor colors
   hi.Normal = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
@@ -59,7 +60,8 @@ M.apply = function(c)
   hi.Question = { guifg = c.base0D, guibg = nil, gui = nil, guisp = nil }
   hi.Search = { guifg = c.base0E, guibg = c.base00, gui = "underline", guisp = nil }
   hi.Substitute = { guifg = c.base01, guibg = c.base0A, gui = "none", guisp = nil }
-  hi.SpecialKey = { guifg = c.base03, guibg = nil, gui = nil, guisp = nil }
+  hi.SpecialKey = { guifg = c.base18, guibg = nil, gui = nil, guisp = nil }
+  hi.SpecialKeyWin = { guifg = c.base03, guibg = nil, gui = nil, guisp = nil }
   hi.TooLong = { guifg = c.base0F, guibg = nil, gui = nil, guisp = nil }
   hi.Underlined = { guifg = c.base0F, guibg = nil, gui = "underline", guisp = nil }
   hi.Visual = { guifg = c.base00, guibg = c.base0A, gui = nil, guisp = nil }
@@ -282,6 +284,8 @@ M.apply = function(c)
   hi.Custom4 = { guifg = c.base08, guibg = c.base02, gui = "none", guisp = nil }
   hi.Custom5 = { guifg = c.base0E, guibg = c.base02, gui = "none", guisp = nil }
   hi.Custom6 = { guifg = c.base09, guibg = c.base02, gui = "none", guisp = nil }
+
+  vim.wo.winhighlight = "SpecialKey:SpecialKeyWin"
 
   -- ensure termguicolors is set (likely redundant)
   vim.opt.termguicolors = true
