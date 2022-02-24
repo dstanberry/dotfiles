@@ -230,9 +230,9 @@ M.highlight_fenced_code_blocks = function()
     local line = vim.fn.getline(lnum)
     if (not continue and string.match(line, "^%s*```.*$")) or (not string.match(line, "^%s*```.*$") and continue) then
       continue = true
-      vim.cmd(("sign place %s line=%s name=codeblock file=%s"):format(lnum, lnum, vim.fn.expand "%"))
+      vim.cmd(("sign place %s line=%s name=codeblock file=%s"):format(lnum, lnum, vim.fn.expand "%:p"))
     elseif string.match(line, "^%s*```%s*") and continue then
-      vim.cmd(("sign place %s line=%s name=codeblock file=%s"):format(lnum, lnum, vim.fn.expand "%"))
+      vim.cmd(("sign place %s line=%s name=codeblock file=%s"):format(lnum, lnum, vim.fn.expand "%:p"))
       continue = false
     end
   end
