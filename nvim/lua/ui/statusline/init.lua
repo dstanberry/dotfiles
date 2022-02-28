@@ -1,5 +1,3 @@
-local util = require "util"
-
 local data = require "ui.statusline.data"
 local hi = require "ui.statusline.highlight"
 local lsp = require "ui.statusline.lsp"
@@ -221,21 +219,20 @@ M.dim = function(win_id)
 end
 
 M.setup = function()
-  util.define_augroup {
-    name = "statusline",
-    clear = true,
-    autocmds = {
-      {
-        event = { "FocusGained", "BufEnter", "BufWinEnter" },
-        pattern = "*",
-        command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=],
-      },
-      {
-        event = { "FocusLost", "BufLeave", "WinLeave" },
-        pattern = "*",
-        command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=],
-      },
-    },
+  vim.api.nvim_create_augroup { name = "statusline", clear = true }
+
+  vim.api.nvim_create_autocmd {
+    group = "statusline",
+    event = { "FocusGained", "BufEnter", "BufWinEnter" },
+    pattern = "*",
+    command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=],
+  }
+
+  vim.api.nvim_create_autocmd {
+    group = "statusline",
+    event = { "FocusLost", "BufLeave", "WinLeave" },
+    pattern = "*",
+    command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=],
   }
 end
 

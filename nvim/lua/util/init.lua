@@ -25,35 +25,6 @@ function M.delegate(cb, expr)
   return ([[lua require("util")._execute("%s")]]):format(key)
 end
 
-function M.define_autocmd(spec)
-  local event = spec.event
-  if type(event) == "table" then
-    event = table.concat(event, ",")
-  end
-  local pattern = spec.pattern or "*"
-  if type(pattern) == "table" then
-    pattern = table.concat(pattern, ",")
-  end
-  local once = spec.once and "++once" or ""
-  local nested = spec.nested and "++nested" or ""
-  local action = spec.command or ""
-  if spec.callback ~= nil and type(spec.callback) == "function" then
-    action = M.delegate(spec.callback)
-  end
-  local command = table.concat(vim.tbl_flatten { "autocmd", event, pattern, once, nested, action }, " ")
-  vim.cmd(command)
-end
-
-function M.define_augroup(group)
-  local clear_suffix = group.buf and " * <buffer>" or ""
-  vim.cmd("augroup " .. group.name)
-  vim.cmd("autocmd!" .. clear_suffix)
-  for _, autocmd in ipairs(group.autocmds) do
-    M.define_autocmd(autocmd)
-    vim.cmd "augroup END"
-  end
-end
-
 function M.get_module_name(file)
   local mod
   if has "win32" then

@@ -5,7 +5,6 @@ end
 
 local groups = require "ui.theme.groups"
 local ts_info = require "nvim-treesitter-playground.hl-info"
-local util = require "util"
 
 groups.new("WTCursorBg", { clear = true, gui = "none" })
 groups.new("WTCursorFg", { clear = true, gui = "none" })
@@ -62,29 +61,30 @@ local reset_cursor_hl = function()
   groups.new("WTCursorBg", { guibg = attr })
 end
 
-util.define_augroup {
-  name = "wt_reverse_cursor",
-  clear = true,
-  autocmds = {
-    {
-      event = "FocusGained",
-      callback = function()
-        if vim.fn.mode(1) ~= "i" then
-          set_cursor_hl()
-        end
-      end,
-    },
-    {
-      event = { "CmdLineEnter", "FocusLost", "InsertEnter" },
-      callback = function()
-        reset_cursor_hl()
-      end,
-    },
-    {
-      event = { "CursorMoved", "InsertLeave" },
-      callback = function()
-        set_cursor_hl()
-      end,
-    },
-  },
+vim.api.nvim_create_augroup { name = "wt_reverse_cursor", clear = true }
+
+vim.api.nvim_create_autocmd {
+  group = "wt_reverse_cursor",
+  event = "FocusGained",
+  callback = function()
+    if vim.fn.mode(1) ~= "i" then
+      set_cursor_hl()
+    end
+  end,
+}
+
+vim.api.nvim_create_autocmd {
+  group = "wt_reverse_cursor",
+  event = { "CmdLineEnter", "FocusLost", "InsertEnter" },
+  callback = function()
+    reset_cursor_hl()
+  end,
+}
+
+vim.api.nvim_create_autocmd {
+  group = "wt_reverse_cursor",
+  event = { "CursorMoved", "InsertLeave" },
+  callback = function()
+    set_cursor_hl()
+  end,
 }

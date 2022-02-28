@@ -1,5 +1,3 @@
-local util = require "util"
-
 local markdown = require "ft.markdown"
 
 local c = require("ui.theme").colors
@@ -20,22 +18,22 @@ vim.keymap.set("i", "<c-w>p", markdown.insert_link, { buffer = vim.api.nvim_get_
 vim.keymap.set({ "n", "v" }, "<c-a>b", markdown.toggle_bullet, { buffer = vim.api.nvim_get_current_buf() })
 vim.keymap.set({ "n", "v" }, "<c-a>c", markdown.toggle_checkbox, { buffer = vim.api.nvim_get_current_buf() })
 
-util.define_augroup {
-  name = "filetype_markdown",
-  autocmds = {
-    {
-      event = "BufEnter",
-      pattern = { "*.md", "*.mdx" },
-      command = "syntax sync fromstart",
-    },
-    {
-      event = { "BufEnter", "TextChanged", "TextChangedI" },
-      pattern = { "*.md", "*.mdx" },
-      callback = function()
-        markdown.highlight_fenced_code_blocks()
-      end,
-    },
-  },
+vim.api.nvim_create_augroup { name = "filetype_markdown", clear = true }
+
+vim.api.nvim_create_autocmd {
+  group = "filetype_markdown",
+  event = "BufEnter",
+  pattern = { "*.md", "*.mdx" },
+  command = "syntax sync fromstart",
+}
+
+vim.api.nvim_create_autocmd {
+  group = "filetype_markdown",
+  event = { "BufEnter", "TextChanged", "TextChangedI" },
+  pattern = { "*.md", "*.mdx" },
+  callback = function()
+    markdown.highlight_fenced_code_blocks()
+  end,
 }
 
 groups.new("CodeBlock", { guifg = nil, guibg = c.baseXX, gui = "none", guisp = nil })

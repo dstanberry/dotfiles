@@ -1,5 +1,3 @@
-local util = require "util"
-
 local M = {}
 
 M.separator = "─"
@@ -56,21 +54,17 @@ M.popup_window = function(opts)
   end
   if opts.set_cursor then
     vim.api.nvim_win_set_cursor(winnr, { 3, 1 })
-    util.define_augroup {
-      name = "update_cursor",
-      clear = true,
-      autocmds = {
-        {
-          event = "CursorMoved",
-          callback = function()
-            local current_line = vim.fn.line "."
-            local max_lines = vim.api.nvim_buf_line_count(0)
-            if current_line < 3 and max_lines >= 3 then
-              vim.api.nvim_win_set_cursor(0, { 3, 1 })
-            end
-          end,
-        },
-      },
+    vim.api.nvim_create_augroup { name = "update_cursor", clear = true }
+    vim.api.nvim_create_autocmd {
+      group = "update_cursor",
+      event = "CursorMoved",
+      callback = function()
+        local current_line = vim.fn.line "."
+        local max_lines = vim.api.nvim_buf_line_count(0)
+        if current_line < 3 and max_lines >= 3 then
+          vim.api.nvim_win_set_cursor(0, { 3, 1 })
+        end
+      end,
     }
   end
   return bufnr, winnr

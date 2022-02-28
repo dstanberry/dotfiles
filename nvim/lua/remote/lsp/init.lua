@@ -11,58 +11,50 @@ local util = require "util"
 
 local on_attach_nvim = function(client, bufnr)
   if client.resolved_capabilities.code_lens then
-    util.define_augroup {
-      name = "lsp_document_codelens",
-      buf = true,
-      clear = true,
-      autocmds = {
-        {
-          event = "BufEnter",
-          once = true,
-          pattern = "<buffer>",
-          callback = require("vim.lsp.codelens").refresh,
-        },
-        {
-          event = { "BufWritePost", "CursorHold" },
-          pattern = "<buffer>",
-          callback = require("vim.lsp.codelens").refresh,
-        },
-      },
+    vim.api.nvim_create_augroup { name = "lsp_document_codelens", clear = true }
+
+    vim.api.nvim_create_autocmd {
+      group = "lsp_document_codelens",
+      event = "BufEnter",
+      once = true,
+      pattern = "<buffer>",
+      callback = require("vim.lsp.codelens").refresh,
+    }
+
+    vim.api.nvim_create_autocmd {
+      group = "lsp_document_codelens",
+      event = { "BufWritePost", "CursorHold" },
+      pattern = "<buffer>",
+      callback = require("vim.lsp.codelens").refresh,
     }
   end
 
   if client.resolved_capabilities.document_highlight then
-    util.define_augroup {
-      name = "lsp_document_highlight",
-      buf = true,
-      clear = true,
-      autocmds = {
-        {
-          event = "CursorHold",
-          pattern = "<buffer>",
-          callback = vim.lsp.buf.document_highlight,
-        },
-        {
-          event = "CursorMoved",
-          pattern = "<buffer>",
-          callback = vim.lsp.buf.clear_references,
-        },
-      },
+    vim.api.nvim_create_augroup { name = "lsp_document_highlight", clear = true }
+
+    vim.api.nvim_create_autocmd {
+      group = "lsp_document_highlight",
+      event = "CursorHold",
+      pattern = "<buffer>",
+      callback = vim.lsp.buf.document_highlight,
+    }
+
+    vim.api.nvim_create_autocmd {
+      group = "lsp_document_highlight",
+      event = "CursorMoved",
+      pattern = "<buffer>",
+      callback = vim.lsp.buf.clear_references,
     }
   end
 
   if client.resolved_capabilities.signature_help then
-    util.define_augroup {
-      name = "lsp_signature",
-      buf = true,
-      clear = true,
-      autocmds = {
-        {
-          event = "CursorHoldI",
-          pattern = "<buffer>",
-          callback = vim.lsp.buf.signature_help,
-        },
-      },
+    vim.api.nvim_create_augroup { name = "lsp_signature", clear = true }
+
+    vim.api.nvim_create_autocmd {
+      group = "lsp_signature",
+      event = "CursorHoldI",
+      pattern = "<buffer>",
+      callback = vim.lsp.buf.signature_help,
     }
   end
 

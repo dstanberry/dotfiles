@@ -35,16 +35,13 @@ M.show_inlay_hints = function()
   )
 end
 
--- require("util").define_augroup {
---   name = "rust_show_line_hints",
---   clear = true,
---   autocmds = {
---     {
---       event = { "CursorHold", "CursorHoldI" },
---       pattern = "*.rs",
---       callback = M.show_inlay_hints,
---     },
---   },
+-- vim.api.nvim_create_augroup { name = "rust_show_line_hints", clear = true }
+--
+-- vim.api.nvim_create_autocmd {
+--   group = "rust_show_line_hints",
+--   event = { "CursorHold", "CursorHoldI" },
+--   pattern = "*.rs",
+--   callback = M.show_inlay_hints,
 -- }
 
 return M

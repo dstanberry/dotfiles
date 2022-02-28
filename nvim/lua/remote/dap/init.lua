@@ -100,16 +100,13 @@ M.setup = function()
     require(mod).setup()
   end
 
-  util.define_augroup {
-    name = "dap-repl",
-    clear = true,
-    autocmds = {
-      {
-        event = "FileType",
-        pattern = "dap-repl",
-        callback = require("dap.ext.autocompl").attach,
-      },
-    },
+  vim.api.nvim_create_augroup { name = "dap-repl", clear = true }
+
+  vim.api.nvim_create_autocmd {
+    group = "dap-repl",
+    event = "FileType",
+    pattern = "dap-repl",
+    callback = require("dap.ext.autocompl").attach,
   }
 end
 
