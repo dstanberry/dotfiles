@@ -224,7 +224,7 @@ M.highlight_fenced_code_blocks = function()
   if not vim.api.nvim_buf_is_loaded(bufnr) then
     return
   end
-  pcall(vim.cmd, ("sign unplace * file=%s"):format(vim.fn.expand "%"))
+  pcall(vim.cmd, ("sign unplace * file=%s"):format(vim.fn.expand "%:p"))
   local continue = false
   for lnum = 1, #vim.fn.getline(1, "$"), 1 do
     local line = vim.fn.getline(lnum)
