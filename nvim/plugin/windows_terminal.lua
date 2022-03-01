@@ -61,30 +61,27 @@ local reset_cursor_hl = function()
   groups.new("WTCursorBg", { guibg = attr })
 end
 
-vim.api.nvim_create_augroup { name = "wt_reverse_cursor", clear = true }
+vim.api.nvim_create_augroup("wt_reverse_cursor", { clear = true })
 
-vim.api.nvim_create_autocmd {
+vim.api.nvim_create_autocmd("FocusGained", {
   group = "wt_reverse_cursor",
-  event = "FocusGained",
   callback = function()
     if vim.fn.mode(1) ~= "i" then
       set_cursor_hl()
     end
   end,
-}
+})
 
-vim.api.nvim_create_autocmd {
+vim.api.nvim_create_autocmd({ "CmdLineEnter", "FocusLost", "InsertEnter" }, {
   group = "wt_reverse_cursor",
-  event = { "CmdLineEnter", "FocusLost", "InsertEnter" },
   callback = function()
     reset_cursor_hl()
   end,
-}
+})
 
-vim.api.nvim_create_autocmd {
+vim.api.nvim_create_autocmd({ "CursorMoved", "InsertLeave" }, {
   group = "wt_reverse_cursor",
-  event = { "CursorMoved", "InsertLeave" },
   callback = function()
     set_cursor_hl()
   end,
-}
+})

@@ -219,21 +219,19 @@ M.dim = function(win_id)
 end
 
 M.setup = function()
-  vim.api.nvim_create_augroup { name = "statusline", clear = true }
+  vim.api.nvim_create_augroup("statusline", { clear = true })
 
-  vim.api.nvim_create_autocmd {
+  vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "BufWinEnter" }, {
     group = "statusline",
-    event = { "FocusGained", "BufEnter", "BufWinEnter" },
     pattern = "*",
     command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=],
-  }
+  })
 
-  vim.api.nvim_create_autocmd {
+  vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave", "WinLeave" }, {
     group = "statusline",
-    event = { "FocusLost", "BufLeave", "WinLeave" },
     pattern = "*",
     command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=],
-  }
+  })
 end
 
 return M
