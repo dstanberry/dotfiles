@@ -99,14 +99,6 @@ M.setup = function()
     local mod = util.get_module_name(file)
     require(mod).setup()
   end
-
-  vim.api.nvim_create_augroup("dap-repl", { clear = true })
-
-  vim.api.nvim_create_autocmd("FileType", {
-    group = "dap-repl",
-    pattern = "dap-repl",
-    callback = require("dap.ext.autocompl").attach,
-  })
 end
 
 return M

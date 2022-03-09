@@ -16,13 +16,7 @@ vim.keymap.set("n", "<f2>", dap.step_into)
 vim.keymap.set("n", "<f3>", dap.step_out)
 vim.keymap.set("n", "<f4>", dap.step_over)
 vim.keymap.set("n", "<f5>", dap.continue)
-
-vim.keymap.set("n", "<f10>", function()
-  dap.disconnect { terminateDebuggee = true }
-  dap.close()
-  -- (hack) because event listener does not always fire
-  dapui.close()
-end)
+vim.keymap.set("n", "<f10>", dap.terminate)
 
 vim.keymap.set("n", "<f12>", function()
   dap.repl.toggle { height = 15 }
