@@ -18,26 +18,20 @@ vim.keymap.set("i", "<c-w>p", markdown.insert_link, { buffer = vim.api.nvim_get_
 vim.keymap.set({ "n", "v" }, "<c-a>b", markdown.toggle_bullet, { buffer = vim.api.nvim_get_current_buf() })
 vim.keymap.set({ "n", "v" }, "<c-a>c", markdown.toggle_checkbox, { buffer = vim.api.nvim_get_current_buf() })
 
-vim.api.nvim_create_augroup { name = "filetype_markdown", clear = true }
+vim.api.nvim_create_augroup("filetype_markdown", { clear = true })
 
-vim.api.nvim_create_autocmd {
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
   group = "filetype_markdown",
-  event = "BufEnter",
-  pattern = { "*.md", "*.mdx" },
-  command = "syntax sync fromstart",
-}
-
-vim.api.nvim_create_autocmd {
-  group = "filetype_markdown",
-  event = { "BufEnter", "TextChanged", "TextChangedI" },
   pattern = { "*.md", "*.mdx" },
   callback = function()
     markdown.highlight_fenced_code_blocks()
   end,
-}
+})
 
 groups.new("CodeBlock", { guifg = nil, guibg = c.baseXX, gui = "none", guisp = nil })
 
 vim.fn.sign_define("codeblock", {
   linehl = "CodeBlock",
 })
+
+markdown.highlight_fenced_code_blocks()
