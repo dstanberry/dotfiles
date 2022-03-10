@@ -3,6 +3,7 @@ bash/rc.private
 breezerc
 configstore
 dconf/
+dlv/
 drkonqirc
 emaildefaults
 fontconfig/
