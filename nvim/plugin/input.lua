@@ -21,36 +21,36 @@ local confirm = function(items, on_choice, key)
   on_choice(items[choice], choice)
 end
 
-vim.ui.input = function(opts, on_confirm)
-  vim.validate {
-    on_confirm = { on_confirm, "function", false },
-  }
-  opts = opts or {}
-
-  local lines = {}
-  local title = opts.prompt
-  lines = { title, string.rep(window.separator, 30), unpack(lines) }
-
-  local bufnr, _ = window.popup_window {
-    width = 30,
-    lines = lines,
-    height = 3,
-    enter = true,
-    input = true,
-    prompt = {
-      enable = true,
-      prefix = options.prefix,
-      highlight = "Float",
-    },
-    on_confirm = function()
-      local input = vim.trim(vim.fn.getline("."):sub(#options.prefix + 1, -1))
-      vim.api.nvim_win_close(0, true)
-      on_confirm(input)
-    end,
-  }
-  vim.api.nvim_buf_add_highlight(bufnr, -1, "Title", 0, 0, #title)
-  vim.api.nvim_buf_add_highlight(bufnr, -1, "FloatBorder", 1, 0, -1)
-end
+-- vim.ui.input = function(opts, on_confirm)
+--   vim.validate {
+--     on_confirm = { on_confirm, "function", false },
+--   }
+--   opts = opts or {}
+--
+--   local lines = {}
+--   local title = opts.prompt
+--   lines = { title, string.rep(window.separator, 30), unpack(lines) }
+--
+--   local bufnr, _ = window.popup_window {
+--     width = 30,
+--     lines = lines,
+--     height = 3,
+--     enter = true,
+--     input = true,
+--     prompt = {
+--       enable = true,
+--       prefix = options.prefix,
+--       highlight = "Float",
+--     },
+--     on_confirm = function()
+--       local input = vim.trim(vim.fn.getline("."):sub(#options.prefix + 1, -1))
+--       vim.api.nvim_win_close(0, true)
+--       on_confirm(input)
+--     end,
+--   }
+--   vim.api.nvim_buf_add_highlight(bufnr, -1, "Title", 0, 0, #title)
+--   vim.api.nvim_buf_add_highlight(bufnr, -1, "FloatBorder", 1, 0, -1)
+-- end
 
 vim.ui.select = function(items, opts, on_choice)
   vim.validate {
