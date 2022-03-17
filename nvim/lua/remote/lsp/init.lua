@@ -4,6 +4,8 @@ if not ok then
   return
 end
 
+local configs = require "lspconfig/configs"
+
 local util = require "util"
 
 -- vim.lsp.set_log_level("debug")
@@ -114,6 +116,19 @@ for _, file in ipairs(configurations) do
       flags = { debounce_text_changes = 150 },
     }
     require(mod).setup(vim.tbl_deep_extend("force", cfg, config or {}))
+  elseif vim.fn.match(mod, "zk") > 0 then
+    config = require(mod).config or {}
+    configs.zk = { default_config = config }
+    configs.zk.index = require(mod).index
+    configs.zk.new = require(mod).new
+    lspconfig.zk.setup(vim.tbl_deep_extend("force", {
+      capabilities = capabilities,
+      flags = { debounce_text_changes = 150 },
+      on_attach = function(client, bufnr)
+        on_attach_nvim(client, bufnr)
+        require(mod).on_attach(client, bufnr)
+      end,
+    }, config))
   else
     local key = (mod):match "[^%.]*$"
     config = require(mod).config or {}

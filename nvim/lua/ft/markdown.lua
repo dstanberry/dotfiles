@@ -6,148 +6,104 @@ end
 
 local telescope = require "remote.telescope"
 local pickers = telescope.pickers
-local zk = require "remote.lsp.servers.zk"
 
 local M = {}
-
-local zk_exec = zk.get_executable_path()
-local zk_notebook = zk.get_notebook_path()
-local zk_template = zk.get_templates_path()
 
 local types = {
   {
     ordinal = 1,
     label = "Meeting Note",
-    directory = "vault/inbox",
+    directory = "inbox",
   },
   {
     ordinal = 2,
     label = "Journal Entry",
-    directory = "vault/journal",
+    directory = "journal",
   },
   {
     ordinal = 3,
     label = "Literature Note",
-    directory = "vault/literature",
+    directory = "literature",
   },
   {
     ordinal = 4,
     label = "Permanent Note",
-    directory = "vault/permanent",
+    directory = "permanent",
   },
 }
 
 local templates = {
   {
     ordinal = 1,
-    label = "Daily team standup",
-    directory = "vault/inbox",
+    label = "Team standup",
+    directory = "inbox",
     ask_for_title = false,
     prefix_date = true,
   },
   {
     ordinal = 2,
     label = "One-on-one",
-    directory = "vault/inbox",
+    directory = "journal",
     ask_for_title = false,
     prefix_date = true,
   },
   {
     ordinal = 3,
     label = "Iteration retrospective meeting",
-    directory = "vault/inbox",
+    directory = "inbox",
     ask_for_title = false,
     prefix_date = true,
   },
   {
     ordinal = 4,
     label = "Backlog refinement meeting",
-    directory = "vault/inbox",
+    directory = "inbox",
     ask_for_title = false,
     prefix_date = true,
   },
   {
     ordinal = 5,
     label = "Feature replenishment meeting",
-    directory = "vault/inbox",
+    directory = "inbox",
     ask_for_title = false,
     prefix_date = true,
   },
   {
     ordinal = 6,
-    label = "Literature Note",
-    directory = "vault/literature",
-    ask_for_title = true,
+    label = "Project meeting",
+    directory = "inbox",
+    ask_for_title = false,
     prefix_date = true,
   },
   {
     ordinal = 7,
-    label = "Permanent Note",
-    directory = "vault/permanent",
-    ask_for_title = true,
+    label = "Other meeting",
+    directory = "inbox",
+    ask_for_title = false,
     prefix_date = true,
   },
   {
     ordinal = 8,
-    label = "Fleeting Note",
-    directory = "vault/journal",
+    label = "Literature note",
+    directory = "literature",
+    ask_for_title = true,
+    prefix_date = true,
+  },
+  {
+    ordinal = 9,
+    label = "Permanent note",
+    directory = "permanent",
+    ask_for_title = true,
+    prefix_date = true,
+  },
+  {
+    ordinal = 10,
+    label = "Other note",
+    directory = "journal",
     ask_for_title = true,
     prefix_date = false,
   },
 }
-
-local _transform_line = function(line, title)
-  local lut = {
-    title = title,
-    tags = "",
-    content = "",
-    date = os.date "%Y-%m-%d",
-    ["date now"] = os.date "%Y-%m-%d",
-    ["date now 'short'"] = os.date "%m/%d/%Y",
-    ["date now 'time'"] = os.date "%H:%M",
-    ["date now 'timestamp'"] = os.date "%Y%m%d%H%M",
-    ["extra.author"] = "Demaro Stanberry",
-  }
-  for k, v in pairs(lut) do
-    line = line:gsub(string.format("{{%s}}", k), v)
-  end
-  return line
-end
-
-local create_note_from_template = function(title, box)
-  local file = vim.fn.expand(string.format("%s/%s", zk_notebook, box))
-  local i = vim.fn.match(file, "inbox") > 0
-  local j = vim.fn.match(file, "journal") > 0
-  local t = (i or j) and "journal.md" or "default.md"
-  local template = vim.fn.expand(string.format("%s/%s", zk_template, t))
-  local date = (i or j) and os.date "%Y%m%d%H%M" or os.date "%Y-%m-%d"
-  file = vim.fn.expand(string.format("%s/%s-%s.md", file, date, title))
-  local lines = {}
-  if vim.fn.filereadable(template) then
-    for line in io.lines(template) do
-      lines[#lines + 1] = line
-    end
-  end
-  local ofile = io.open(file, "a")
-  for _, line in pairs(lines) do
-    local parsed = _transform_line(line, title)
-    ofile:write(string.format("%s\n", parsed))
-  end
-  ofile:close()
-  return file
-end
-
-local get_lines = function()
-  local line_start, line_end
-  if vim.fn.getpos("'<")[2] == vim.fn.getcurpos()[2] and vim.fn.getpos("'<")[3] == vim.fn.getcurpos()[3] then
-    line_start = vim.fn.getpos("'<")[2]
-    line_end = vim.fn.getpos("'>")[2]
-  else
-    line_start = vim.fn.getcurpos()[2]
-    line_end = vim.fn.getcurpos()[2]
-  end
-  return line_start, line_end, vim.fn.getline(line_start, line_end)
-end
 
 M.create_template_reference = function()
   pickers.create_dropdown(templates, {
@@ -162,20 +118,14 @@ M.create_template_reference = function()
         title = selection.value.label
       end
       local file
-      if zk_exec then
-        local cmd = string.format(
-          '%s new --working-dir "%s" --no-input --title "%s" "%s" --print-path',
-          zk_exec,
-          zk_notebook,
-          title,
-          selection.value.directory
-        )
-        file = vim.fn.system(cmd)
-        file = file:gsub("^%s*(.-)%s*$", "%1")
-      else
-        title = string.gsub(title, "%s", "-"):lower()
-        file = create_note_from_template(title, selection.value.directory)
-      end
+      local cmd = string.format(
+        'zk new --working-dir "%s" --no-input --title "%s" "%s" --print-path',
+        vim.g.zk_notebook,
+        title,
+        selection.value.directory
+      )
+      file = vim.fn.system(cmd)
+      file = file:gsub("^%s*(.-)%s*$", "%1")
       if vim.fn.filereadable(file) then
         local segments = vim.split(file, "/")
         local filename = segments[#segments]
@@ -192,26 +142,14 @@ M.create_note = function()
   pickers.create_dropdown(types, {
     callback = function(selection)
       local file
-      if zk_exec then
-        local cmd = ([[%s new --working-dir "%s" --no-input "%s" --print-path]]):format(
-          zk_exec,
-          zk_notebook,
-          selection.value.directory
-        )
-        file = vim.fn.system(cmd)
-        file = file:gsub("^%s*(.-)%s*$", "%1")
-      else
-        file = create_note_from_template("scratchpad", selection.value.directory)
-      end
+      local cmd = ([[zk new --working-dir "%s" --no-input "%s" --print-path]]):format(
+        vim.g.zk_notebook,
+        selection.value.directory
+      )
+      file = vim.fn.system(cmd)
+      file = file:gsub("^%s*(.-)%s*$", "%1")
       if vim.fn.filereadable(file) then
-        vim.cmd(string.format(
-          [[
-            tabnew %s
-            tcd %s
-          ]],
-          file,
-          zk_notebook
-        ))
+        vim.cmd(string.format("edit %s", file))
       else
         vim.notify("File not found: " .. file, 2)
       end
@@ -248,6 +186,18 @@ M.insert_link = function()
   local cursor = vim.fn.getpos "."
   vim.api.nvim_put({ link }, "c", true, true)
   vim.fn.setpos(".", { cursor[1], cursor[2], cursor[3] + 1, cursor[4] })
+end
+
+local get_lines = function()
+  local line_start, line_end
+  if vim.fn.getpos("'<")[2] == vim.fn.getcurpos()[2] and vim.fn.getpos("'<")[3] == vim.fn.getcurpos()[3] then
+    line_start = vim.fn.getpos("'<")[2]
+    line_end = vim.fn.getpos("'>")[2]
+  else
+    line_start = vim.fn.getcurpos()[2]
+    line_end = vim.fn.getcurpos()[2]
+  end
+  return line_start, line_end, vim.fn.getline(line_start, line_end)
 end
 
 M.toggle_bullet = function()

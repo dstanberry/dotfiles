@@ -5,8 +5,6 @@ local M = {}
 local path = string.format("%s/lspconfig", vim.fn.stdpath "data")
 local basedir = ("%s/%s"):format(path, "zk")
 
-local zk_executable = vim.env.hash_notes and ("%s/zk"):format(basedir) or ("%s/go/bin/zk.exe"):format(vim.env.HOME)
-
 local win_documents_path = ("%s/Documents"):format(vim.env.HOME)
 if has "win32" and vim.fn.empty(vim.fn.glob(win_documents_path)) > 0 then
   if vim.fn.empty(vim.fn.glob "D:\\Documents") == 0 then
@@ -14,33 +12,45 @@ if has "win32" and vim.fn.empty(vim.fn.glob(win_documents_path)) > 0 then
   end
 end
 
-local zk_notebook = vim.env.hash_notes and ("%s/zettelkasten/vault"):format(vim.env.hash_notes)
+vim.g.zk_notebook = vim.env.hash_notes and ("%s/zettelkasten/vault"):format(vim.env.hash_notes)
   or ("%s/_notes/zettelkasten/vault"):format(win_documents_path)
 
-local zk_template = vim.env.hash_notes and ("%s/../zk/templates"):format(vim.fn.stdpath "config")
-  or ("%s/.zk/templates"):format(zk_notebook)
-
-zk_executable = vim.fn.expand(zk_executable)
-zk_notebook = vim.fn.expand(zk_notebook)
-zk_template = vim.fn.expand(zk_template)
-
 M.config = {
-  cmd = { zk_executable, "lsp" },
+  cmd = { "zk", "lsp" },
+  filetypes = { "markdown" },
+  root_dir = function()
+    -- lspconfig.util.root_pattern ".zk"
+    return vim.loop.cwd()
+  end,
 }
 
-M.get_executable_path = function()
-  if vim.fn.empty(vim.fn.glob(basedir)) > 0 then
-    return nil
-  end
-  return zk_executable
+M.on_attach = function(_, bufnr)
+  vim.keymap.set("n", "<leader>mi", M.index, { buffer = bufnr })
+  vim.keymap.set("n", "<leader>mn", function()
+    M.new { title = vim.fn.input "Title: ", dir = "journal" }
+  end, { buffer = bufnr })
 end
 
-M.get_notebook_path = function()
-  return zk_notebook
+M.index = function()
+  vim.lsp.buf.execute_command {
+    command = "zk.index",
+    arguments = { vim.api.nvim_buf_get_name(0) },
+  }
 end
 
-M.get_templates_path = function()
-  return zk_template
+M.new = function(...)
+  vim.lsp.buf_request(0, "workspace/executeCommand", {
+    command = "zk.new",
+    arguments = {
+      vim.api.nvim_buf_get_name(0),
+      ...,
+    },
+  }, function(_, _, result)
+    if not (result and result.path) then
+      return
+    end
+    vim.cmd(string.format("edit %s", result.path))
+  end)
 end
 
 M.setup = function(force)
@@ -49,9 +59,10 @@ M.setup = function(force)
       git clone https://github.com/mickael-menu/zk.git
       cd zk
       make
-      mkdir -vp %s/vault/{inbox,journal,literature,permanent}
+      mkdir -vp %s/{inbox,journal,literature,permanent}
+      cp zk $GOPATH/bin/
     ]],
-    zk_notebook
+    vim.g.zk_notebook
   )
   util.terminal.install_package("zk", basedir, path, install_cmd, force)
 end

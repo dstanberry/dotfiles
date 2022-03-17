@@ -2,7 +2,7 @@ local telescope = require "remote.telescope"
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 
-local markdown = require("ft.markdown")
+local markdown = require "ft.markdown"
 
 vim.keymap.set("n", "<localleader><localleader>", telescope.find_nvim)
 vim.keymap.set("n", "<leader><leader>", telescope.project_files)
@@ -19,25 +19,16 @@ vim.keymap.set("n", "<leader>ws", telescope.lsp.workspace_symbols)
 vim.keymap.set("n", "<leader>mm", markdown.create_note)
 vim.keymap.set("n", "<leader>mr", markdown.create_template_reference)
 vim.keymap.set("n", "<localleader>mm", function()
-  local zk = require "remote.lsp.servers.zk"
-  local zk_notebook = zk.get_notebook_path()
   local opts
   opts = {
-    prompt_title = [[\ Zettelkasten Notes /]],
-    cwd = zk_notebook,
+    prompt_title = [[\ Notes /]],
+    cwd = vim.g.zk_notebook,
     attach_mappings = function(bufnr, map)
       actions.select_default:replace(function()
         actions.close(bufnr)
         local selection = action_state.get_selected_entry()
-        local file = vim.fn.expand(string.format("%s/%s", zk_notebook, selection[1]))
-        vim.cmd(string.format(
-          [[
-            tabnew %s
-            tcd %s
-          ]],
-          file,
-          zk_notebook
-        ))
+        local file = vim.fn.expand(string.format("%s/%s", vim.g.zk_notebook, selection[1]))
+        vim.cmd(string.format("edit %s", file))
       end)
       map("i", "<cr>", function()
         actions.select_default(bufnr)
