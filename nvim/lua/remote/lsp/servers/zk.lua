@@ -5,11 +5,17 @@ local M = {}
 local path = string.format("%s/lspconfig", vim.fn.stdpath "data")
 local basedir = ("%s/%s"):format(path, "zk")
 
-local zk_executable = ("%s/zk"):format(basedir)
-local zk_notebook = vim.env.hash_notes and ("%s/zettelkasten"):format(vim.env.hash_notes)
-  or ("%s/Documents/_notes/zettelkasten"):format(vim.env.HOME)
+local zk_executable = vim.env.hash_notes and ("%s/zk"):format(basedir) or ("%s/go/bin/zk.exe"):format(vim.env.HOME)
+
+local zk_notebook = vim.env.hash_notes and ("%s/zettelkasten/vault"):format(vim.env.hash_notes)
+  or ("%s/Documents/_notes/zettelkasten/vault"):format(vim.env.HOME)
+
 local zk_template = vim.env.hash_notes and ("%s/../zk/templates"):format(vim.fn.stdpath "config")
   or ("%s/Documents/_notes/zettelkasten/templates"):format(vim.env.HOME)
+
+zk_executable = vim.fn.expand(zk_executable)
+zk_notebook = vim.fn.expand(zk_notebook)
+zk_template = vim.fn.expand(zk_template)
 
 M.config = {
   cmd = { zk_executable, "lsp" },
