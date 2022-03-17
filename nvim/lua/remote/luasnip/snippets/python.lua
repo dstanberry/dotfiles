@@ -67,7 +67,7 @@ M.config = {
       t { "def init(self," },
       i(3),
       t { "):", "\t\t" },
-      d(4, pycdoc, { 3 }, 2),
+      d(4, pycdoc, { 3 }, { user_args = { 2 } }),
       f(function(args)
         if not args[1][1] or args[1][1] == "" then
           return { "" }
@@ -86,7 +86,7 @@ M.config = {
       t "(",
       i(2),
       t { "):", "\t" },
-      d(3, pyfdoc, { 2 }, 1),
+      d(3, pyfdoc, { 2 }, { user_args = { 1 } }),
     }),
   },
 }

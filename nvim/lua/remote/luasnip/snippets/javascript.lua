@@ -13,7 +13,13 @@ local M = {}
 local snippets = {
   s("log", fmt([[ console.log({}); ]], i(1))),
   s("import", fmt([[ import {} from '{}' ]], { i(1), i(2) })),
-  s("req", fmt([[const {} = require("{}");]], { d(2, util.get_word_choice, { 1 }, "/", "."), i(1, "module") })),
+  s(
+    "req",
+    fmt(
+      [[const {} = require("{}");]],
+      { d(2, util.get_word_choice, { 1 }, { user_args = { "/", "." } }), i(1, "module") }
+    )
+  ),
   s(
     "arrow",
     fmt([[{} => {}]], {
