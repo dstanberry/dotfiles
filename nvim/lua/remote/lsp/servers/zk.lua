@@ -7,11 +7,18 @@ local basedir = ("%s/%s"):format(path, "zk")
 
 local zk_executable = vim.env.hash_notes and ("%s/zk"):format(basedir) or ("%s/go/bin/zk.exe"):format(vim.env.HOME)
 
+local win_documents_path = ("%s/Documents"):format(vim.env.HOME)
+if has "win32" and vim.fn.empty(vim.fn.glob(win_documents_path)) > 0 then
+  if vim.fn.empty(vim.fn.glob "D:\\Documents") == 0 then
+    win_documents_path = "D:\\Documents"
+  end
+end
+
 local zk_notebook = vim.env.hash_notes and ("%s/zettelkasten/vault"):format(vim.env.hash_notes)
-  or ("%s/Documents/_notes/zettelkasten/vault"):format(vim.env.HOME)
+  or ("%s/_notes/zettelkasten/vault"):format(win_documents_path)
 
 local zk_template = vim.env.hash_notes and ("%s/../zk/templates"):format(vim.fn.stdpath "config")
-  or ("%s/Documents/_notes/zettelkasten/templates"):format(vim.env.HOME)
+  or ("%s/.zk/templates"):format(zk_notebook)
 
 zk_executable = vim.fn.expand(zk_executable)
 zk_notebook = vim.fn.expand(zk_notebook)
