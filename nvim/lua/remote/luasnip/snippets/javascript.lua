@@ -12,46 +12,17 @@ local M = {}
 
 local snippets = {
   s("log", fmt([[ console.log({}); ]], i(1))),
-  s(
-    "import",
-    fmt([[ import {} from '{}' ]], {
-      i(1),
-      i(2),
-    })
-  ),
-  s(
-    "req",
-    fmt([[const {} = require("{}");]], {
-      -- util.get_last_word(1, "/"),
-      d(2, util.get_word_choice, { 1 }, "/", "."),
-      i(1, "module"),
-    })
-  ),
+  s("import", fmt([[ import {} from '{}' ]], { i(1), i(2) })),
+  s("req", fmt([[const {} = require("{}");]], { d(2, util.get_word_choice, { 1 }, "/", "."), i(1, "module") })),
   s(
     "arrow",
     fmt([[{} => {}]], {
       c(1, {
-        sn(
-          nil,
-          fmt([[({})]], {
-            i(1),
-          })
-        ),
-        sn(
-          nil,
-          fmt([[const {} = ({})]], {
-            i(1),
-            i(2),
-          })
-        ),
+        sn(nil, fmt([[({})]], { i(1) })),
+        sn(nil, fmt([[const {} = ({})]], { i(1), i(2) })),
       }),
       c(2, {
-        sn(
-          nil,
-          fmt([[{};]], {
-            i(1),
-          })
-        ),
+        sn(nil, fmt([[{};]], { i(1) })),
         sn(
           nil,
           fmt(
@@ -60,9 +31,7 @@ local snippets = {
                 {}
               }}
             ]],
-            {
-              i(1),
-            }
+            { i(1) }
           )
         ),
       }),
@@ -78,28 +47,9 @@ local snippets = {
       ]],
       {
         c(1, {
-          sn(
-            nil,
-            fmt([[{} = {};{}]], {
-              i(1, "i"),
-              i(2, "0"),
-              i(3),
-            })
-          ),
-          sn(
-            nil,
-            fmt([[{} in {}]], {
-              i(1, "element"),
-              i(2, "object"),
-            })
-          ),
-          sn(
-            nil,
-            fmt([[{} of {}]], {
-              i(1, "element"),
-              i(2, "array"),
-            })
-          ),
+          sn(nil, fmt([[{} = {};{}]], { i(1, "i"), i(2, "0"), i(3) })),
+          sn(nil, fmt([[{} in {}]], { i(1, "element"), i(2, "object") })),
+          sn(nil, fmt([[{} of {}]], { i(1, "element"), i(2, "array") })),
         }),
         i(2),
       }

@@ -44,12 +44,8 @@ M.config = {
         i(1)
       )
     ),
-    s({ trig = "date" }, {
-      p(os.date, "%m-%d-%Y"),
-    }),
-    s({ trig = "#!" }, {
-      d(1, shebang, {}),
-    }),
+    s({ trig = "date" }, { p(os.date, "%m-%d-%Y") }),
+    s({ trig = "#!" }, { d(1, shebang, {}) }),
   },
 }
 

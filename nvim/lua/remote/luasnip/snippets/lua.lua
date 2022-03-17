@@ -15,6 +15,8 @@ local M = {}
 
 M.config = {
   lua = {
+    s({ trig = "ig", wordTrig = true, hidden = true }, { t "-- stylua: ignore" }),
+    s("req", fmt([[local {} = require("{}")]], { d(2, util.get_word_choice, { 1 }, "."), i(1, "mod") })),
     s(
       { trig = "[[-", wordTrig = false, hidden = true },
       fmt(
@@ -37,9 +39,6 @@ M.config = {
         i(1)
       )
     ),
-    s({ trig = "ig", wordTrig = true, hidden = true }, {
-      t "-- stylua: ignore",
-    }),
     s(
       { trig = "fn", dscr = "function(param) .. end" },
       fmt(
@@ -169,13 +168,6 @@ M.config = {
           util.same(1),
         }
       )
-    ),
-    s(
-      "req",
-      fmt([[local {} = require("{}")]], {
-        d(2, util.get_word_choice, { 1 }, "."),
-        i(1, "mod"),
-      })
     ),
   },
 }
