@@ -1,20 +1,20 @@
 [note]
 language = "en"
-default-title = "scratchpad"
-filename = "{{date now}}-{{slug title}}"
+default-title = "Untitled"
+filename = "{{date now '%Y-%m-%d'}}-{{slug title}}"
 extension = "md"
 template = "default.md"
-id-charset = "alphanum"
-id-length = 6
+id-charset = "hex"
+id-length = 5
 id-case = "lower"
 
 [extra]
 author = "Demaro Stanberry"
 
 [group.journal]
-paths = ["vault/inbox", "vault/journal"]
+paths = ["inbox", "journal"]
 [group.journal.note]
-filename = "{{date now 'timestamp'}}-{{slug title}}"
+filename = "{{date now '%Y-%m-%d'}}-{{id}}"
 extension = "md"
 template = "journal.md"
 
