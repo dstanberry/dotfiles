@@ -87,6 +87,14 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+  group = "ftplugin",
+  pattern = { "*.md", "*.mdx" },
+  callback = function()
+    require("ft.markdown").highlight_fenced_code_blocks()
+  end,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
   group = "ftplugin",
   pattern = "sql",

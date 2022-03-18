@@ -1,10 +1,9 @@
-local markdown = require "ft.markdown"
-
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
+local markdown = require "ft.markdown"
 
 vim.opt_local.formatlistpat = [=[^\s*\d\+\.\s\+\|^\s*[-*+>]\s\+\|^\[^\ze[^\]]\+\]:]=]
-vim.opt_local.iskeyword:append("-")
+vim.opt_local.iskeyword:append "-"
 vim.opt_local.breakindent = true
 vim.opt_local.breakindentopt = "min:5,list:-1"
 vim.opt_local.concealcursor = "c"
@@ -16,16 +15,6 @@ vim.keymap.set("i", "<c-w>c", markdown.insert_checkbox, { buffer = vim.api.nvim_
 vim.keymap.set("i", "<c-w>p", markdown.insert_link, { buffer = vim.api.nvim_get_current_buf() })
 vim.keymap.set({ "n", "v" }, "<c-a>b", markdown.toggle_bullet, { buffer = vim.api.nvim_get_current_buf() })
 vim.keymap.set({ "n", "v" }, "<c-a>c", markdown.toggle_checkbox, { buffer = vim.api.nvim_get_current_buf() })
-
-vim.api.nvim_create_augroup("filetype_markdown", { clear = true })
-
-vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
-  group = "filetype_markdown",
-  pattern = { "*.md", "*.mdx" },
-  callback = function()
-    markdown.highlight_fenced_code_blocks()
-  end,
-})
 
 groups.new("CodeBlock", { guifg = nil, guibg = c.baseXX, gui = "none", guisp = nil })
 

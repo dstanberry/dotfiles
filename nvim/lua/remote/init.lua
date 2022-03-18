@@ -71,18 +71,6 @@ local function plugins(use)
 
   -- filetype specific extensions
   use { "gennaro-tedesco/nvim-jqx", ft = "json" }
-  use {
-    "npxbr/glow.nvim",
-    cmd = "Glow",
-    opt = true,
-    config = function()
-      if has "win32" then
-        vim.g.glow_binary_path = ("%s\\go\\bin"):format(vim.env.HOME)
-      else
-        vim.g.glow_binary_path = ("%s/go/bin"):format(vim.env.XDG_DATA_HOME)
-      end
-    end,
-  }
 
   -- iconography
   use {
