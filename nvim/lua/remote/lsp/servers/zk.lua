@@ -15,13 +15,16 @@ end
 vim.g.zk_notebook = vim.env.hash_notes and ("%s/zettelkasten/vault"):format(vim.env.hash_notes)
   or ("%s/_notes/zettelkasten/vault"):format(win_documents_path)
 
+local project_root = function(fname)
+  local lspconfig = require "lspconfig.util"
+  local root_dirs = { ".zk", "vault" }
+  return lspconfig.root_pattern(unpack(root_dirs))(fname) or lspconfig.path.dirname(fname)
+end
+
 M.config = {
   cmd = { "zk", "lsp" },
   filetypes = { "markdown" },
-  root_dir = function()
-    -- lspconfig.util.root_pattern ".zk"
-    return vim.loop.cwd()
-  end,
+  root_dir = project_root,
 }
 
 M.on_attach = function(_, bufnr)
@@ -49,7 +52,7 @@ M.new = function(...)
     if not (result and result.path) then
       return
     end
-    vim.cmd(string.format("edit %s", result.path))
+    vim.cmd(string.format("edit %s", vim.fn.expand(result.path)))
   end)
 end
 
