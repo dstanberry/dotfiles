@@ -130,7 +130,13 @@ vim.api.nvim_create_autocmd("TermOpen", {
 vim.api.nvim_create_autocmd("TermClose", {
   group = "terminal_ui",
   pattern = "*",
-  command = "execute 'bdelete! ' . expand('<abuf>')",
+  callback = function()
+    local bufnr = vim.api.nvim_get_current_buf()
+    local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+    if ft ~= "md_preview" then
+      vim.fn.execute(string.format("bdelete! %s", vim.fn.expand "<abuf"))
+    end
+  end,
 })
 
 vim.api.nvim_create_augroup("fold_behaviour", { clear = true })

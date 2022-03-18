@@ -37,14 +37,13 @@ vim.api.nvim_add_user_command("Glow", function()
   end
 
   vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
-  vim.api.nvim_buf_set_option(buf, "filetype", "glowpreview")
-  -- vim.api.nvim_win_set_option(win, "winblend", 0)
-  vim.keymap.set("n", "q", close_win, { buffer = bufnr })
-  -- vim.keymap.set("n", "<esc>", close_win, { buffer = bufnr })
+  vim.api.nvim_buf_set_option(buf, "filetype", "md_preview")
+  vim.api.nvim_win_set_option(win, "winblend", 0)
+  vim.keymap.set("n", "q", close_win, { buffer = buf, silent = true })
+  vim.keymap.set("n", "<esc>", close_win, { buffer = buf, silent = true })
 
   local path = vim.fn.bufname(bufnr)
   path = vim.fn.expand(path)
   path = vim.fn.fnamemodify(path, ":p")
-  dump(string.format("glow %s", vim.fn.shellescape(path)))
   vim.fn.termopen(string.format("glow %s", vim.fn.shellescape(path)))
 end, {})
