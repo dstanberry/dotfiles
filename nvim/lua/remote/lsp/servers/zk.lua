@@ -35,10 +35,12 @@ M.on_attach = function(_, bufnr)
 end
 
 M.index = function()
-  vim.lsp.buf.execute_command {
+  vim.lsp.buf_request(0, "workspace/executeCommand", {
     command = "zk.index",
     arguments = { vim.api.nvim_buf_get_name(0) },
-  }
+  }, function(_, _, stats)
+    vim.notify(vim.inspect(stats))
+  end)
 end
 
 M.new = function(...)

@@ -8,7 +8,7 @@ local M = {}
 
 local default_entry_maker = function(entry)
   return {
-    ordinal = entry.ordinal,
+    ordinal = entry.label,
     display = entry.label,
     value = entry,
   }

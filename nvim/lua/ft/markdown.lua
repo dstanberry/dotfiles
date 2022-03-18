@@ -11,97 +11,49 @@ local M = {}
 
 local types = {
   {
-    ordinal = 1,
-    label = "Meeting Note",
-    directory = "inbox",
-  },
-  {
-    ordinal = 2,
-    label = "Journal Entry",
+    label = "Journal entry",
     directory = "journal",
   },
   {
-    ordinal = 3,
-    label = "Literature Note",
-    directory = "literature",
+    label = "Meeting note",
+    directory = "inbox",
   },
   {
-    ordinal = 4,
-    label = "Permanent Note",
-    directory = "permanent",
+    label = "Project note",
+    directory = "resources",
   },
 }
 
 local templates = {
   {
-    ordinal = 1,
     label = "Team standup",
     directory = "inbox",
     ask_for_title = false,
-    prefix_date = true,
   },
   {
-    ordinal = 2,
     label = "One-on-one",
     directory = "journal",
     ask_for_title = false,
-    prefix_date = true,
   },
   {
-    ordinal = 3,
-    label = "Iteration retrospective meeting",
-    directory = "inbox",
-    ask_for_title = false,
-    prefix_date = true,
-  },
-  {
-    ordinal = 4,
     label = "Backlog refinement meeting",
     directory = "inbox",
     ask_for_title = false,
-    prefix_date = true,
   },
   {
-    ordinal = 5,
     label = "Feature replenishment meeting",
     directory = "inbox",
     ask_for_title = false,
-    prefix_date = true,
   },
   {
-    ordinal = 6,
-    label = "Project meeting",
-    directory = "inbox",
-    ask_for_title = false,
-    prefix_date = true,
-  },
-  {
-    ordinal = 7,
     label = "Other meeting",
     directory = "inbox",
-    ask_for_title = false,
-    prefix_date = true,
+    ask_for_title = true,
   },
   {
-    ordinal = 8,
-    label = "Literature note",
-    directory = "literature",
+    label = "New project",
+    directory = "resources",
     ask_for_title = true,
-    prefix_date = true,
-  },
-  {
-    ordinal = 9,
-    label = "Permanent note",
-    directory = "permanent",
-    ask_for_title = true,
-    prefix_date = true,
-  },
-  {
-    ordinal = 10,
-    label = "Other note",
-    directory = "journal",
-    ask_for_title = true,
-    prefix_date = false,
   },
 }
 
