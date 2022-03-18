@@ -63,7 +63,7 @@ end
 
 vim.api.nvim_create_augroup("wt_reverse_cursor", { clear = true })
 
-vim.api.nvim_create_autocmd("FocusGained", {
+vim.api.nvim_create_autocmd({ "FocusGained", "WinEnter" }, {
   group = "wt_reverse_cursor",
   callback = function()
     if vim.fn.mode(1) ~= "i" then
@@ -72,7 +72,7 @@ vim.api.nvim_create_autocmd("FocusGained", {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "CmdLineEnter", "FocusLost", "InsertEnter" }, {
+vim.api.nvim_create_autocmd({ "CmdLineEnter", "FocusLost", "InsertEnter", "WinLeave" }, {
   group = "wt_reverse_cursor",
   callback = function()
     reset_cursor_hl()
