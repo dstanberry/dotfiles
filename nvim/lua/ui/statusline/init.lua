@@ -221,15 +221,19 @@ end
 M.setup = function()
   vim.api.nvim_create_augroup("statusline", { clear = true })
 
-  vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "BufWinEnter" }, {
+  vim.api.nvim_create_autocmd({ "FocusGained", "WinEnter" }, {
     group = "statusline",
-    pattern = "*",
     command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=],
   })
 
-  vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave", "WinLeave" }, {
+  vim.api.nvim_create_autocmd("FileType", {
     group = "statusline",
-    pattern = "*",
+    pattern = "TelescopePrompt",
+    command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=],
+  })
+
+  vim.api.nvim_create_autocmd({ "FocusLost", "WinLeave" }, {
+    group = "statusline",
     command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=],
   })
 end
