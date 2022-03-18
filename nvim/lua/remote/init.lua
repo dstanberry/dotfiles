@@ -76,10 +76,10 @@ local function plugins(use)
     cmd = "Glow",
     opt = true,
     config = function()
-      if has("win32") then
-      vim.g.glow_binary_path = ("%s\\go\\bin"):format(vim.env.HOME)
+      if has "win32" then
+        vim.g.glow_binary_path = ("%s\\go\\bin"):format(vim.env.HOME)
       else
-      vim.g.glow_binary_path = ("%s/go/bin"):format(vim.env.XDG_DATA_HOME)
+        vim.g.glow_binary_path = ("%s/go/bin"):format(vim.env.XDG_DATA_HOME)
       end
     end,
   }
