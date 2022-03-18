@@ -223,19 +223,34 @@ M.setup = function()
 
   vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
     group = "statusline",
-    command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").focus(%s)')]], vim.api.nvim_get_current_win()) ]=],
+    callback = function()
+      vim.wo.statusline = string.format(
+        [[%%!luaeval('require("ui.statusline").focus(%s)')]],
+        vim.api.nvim_get_current_win()
+      )
+    end,
   })
 
   vim.api.nvim_create_autocmd("FileType", {
     group = "statusline",
     pattern = "TelescopePrompt",
-    command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=],
+    callback = function()
+      vim.wo.statusline = string.format(
+        [[%%!luaeval('require("ui.statusline").dim(%s)')]],
+        vim.api.nvim_get_current_win()
+      )
+    end,
   })
 
-    vim.api.nvim_create_autocmd({ "WinLeave" }, {
-      group = "statusline",
-      command = [=[ lua vim.wo.statusline = string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win()) ]=],
-    })
+  vim.api.nvim_create_autocmd({ "WinLeave" }, {
+    group = "statusline",
+    callback = function()
+      vim.wo.statusline = string.format(
+        [[%%!luaeval('require("ui.statusline").dim(%s)')]],
+        vim.api.nvim_get_current_win()
+      )
+    end,
+  })
 end
 
 return M
