@@ -41,6 +41,10 @@ end
 M.filename = function(bufnr)
   local name = vim.fn.bufname(bufnr)
   local fname = vim.fn.fnamemodify(name, ":t")
+  local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+  if ft == "TelescopePrompt" then
+    return ""
+  end
   if fname == "" then
     return "[No Name]"
   end
@@ -132,7 +136,7 @@ M.git_branch = function(bufnr)
         icon, branch = M.buffer(bufnr)
       end
     else
-      branch = vim.trim(vim.fn.system("git branch --show-current"))
+      branch = vim.trim(vim.fn.system "git branch --show-current")
       if not branch or #branch == 0 then
         icon, branch = M.buffer(bufnr)
       end
