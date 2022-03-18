@@ -53,7 +53,7 @@ vim.opt.incsearch = true
 -- disable padding when joining mulitple lines
 vim.opt.joinspaces = false
 -- display the statusline
-vim.opt.laststatus = 2
+vim.opt.laststatus = 3
 -- show whitespace characters
 vim.opt.list = true
 -- soft line wrapping
