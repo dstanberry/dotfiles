@@ -1,7 +1,4 @@
 local telescope = require "remote.telescope"
-local actions = require "telescope.actions"
-local action_state = require "telescope.actions.state"
-
 local markdown = require "ft.markdown"
 
 vim.keymap.set("n", "<localleader><localleader>", telescope.find_nvim)
@@ -16,29 +13,7 @@ vim.keymap.set("n", "<leader>fk", telescope.help_tags)
 vim.keymap.set("n", "<leader>fp", telescope.find_plugins)
 vim.keymap.set("n", "<leader>ws", telescope.lsp.workspace_symbols)
 
-vim.keymap.set("n", "<leader>mm", markdown.create_note)
-vim.keymap.set("n", "<leader>mr", markdown.create_template_reference)
-vim.keymap.set("n", "<localleader>mm", function()
-  local opts
-  opts = {
-    prompt_title = [[\ Notes /]],
-    cwd = vim.g.zk_notebook,
-    attach_mappings = function(bufnr, map)
-      actions.select_default:replace(function()
-        actions.close(bufnr)
-        local selection = action_state.get_selected_entry()
-        local file = vim.fn.expand(string.format("%s/%s", vim.g.zk_notebook, selection[1]))
-        vim.cmd(string.format("edit %s", file))
-      end)
-      map("i", "<cr>", function()
-        actions.select_default(bufnr)
-      end)
-      map("i", "-", function()
-        local selection = action_state.get_selected_entry()
-        dump(selection)
-      end)
-      return true
-    end,
-  }
-  telescope.find_files(opts)
-end)
+vim.keymap.set("n", "<localleader>mm", markdown.find_notes)
+vim.keymap.set("n", "<leader>mm", markdown.zk.create_note)
+vim.keymap.set("n", "<leader>mr", markdown.zk.create_reference)
+vim.keymap.set("n", "<leader>mt", markdown.zk.tag_list)

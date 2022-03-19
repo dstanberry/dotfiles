@@ -1,112 +1,29 @@
--- verify telescope is available
-local ok, _ = pcall(require, "telescope")
-if not ok then
-  return
-end
-
 local telescope = require "remote.telescope"
-local pickers = telescope.pickers
+local actions = require "telescope.actions"
+local action_state = require "telescope.actions.state"
+local themes = require "telescope.themes"
 
 local M = {}
 
-local types = {
-  {
-    label = "Journal entry",
-    directory = "journal",
-  },
-  {
-    label = "Meeting note",
-    directory = "inbox",
-  },
-  {
-    label = "Project note",
-    directory = "resources",
-  },
-}
-
-local templates = {
-  {
-    label = "Team standup",
-    directory = "inbox",
-    ask_for_title = false,
-  },
-  {
-    label = "One-on-one",
-    directory = "journal",
-    ask_for_title = false,
-  },
-  {
-    label = "Backlog refinement meeting",
-    directory = "inbox",
-    ask_for_title = false,
-  },
-  {
-    label = "Feature replenishment meeting",
-    directory = "inbox",
-    ask_for_title = false,
-  },
-  {
-    label = "Other meeting",
-    directory = "inbox",
-    ask_for_title = true,
-  },
-  {
-    label = "New project",
-    directory = "resources",
-    ask_for_title = true,
-  },
-}
-
-M.create_template_reference = function()
-  pickers.create_dropdown(templates, {
-    callback = function(selection)
-      local title = ""
-      if selection.value.ask_for_title then
-        title = vim.fn.input "Title: "
-        if title == "" then
-          return
-        end
-      else
-        title = selection.value.label
-      end
-      local file
-      local cmd = string.format(
-        'zk new --working-dir "%s" --no-input --title "%s" "%s" --print-path',
-        vim.g.zk_notebook,
-        title,
-        selection.value.directory
-      )
-      file = vim.fn.system(cmd)
-      file = file:gsub("^%s*(.-)%s*$", "%1")
-      if vim.fn.filereadable(file) then
-        local segments = vim.split(file, "/")
-        local filename = segments[#segments]
-        filename = filename:gsub(".md", "")
-        vim.api.nvim_put({ string.format("[[%s]]", filename) }, "c", true, true)
-      else
-        vim.notify("File not found: " .. file, 2)
-      end
-    end,
-  })
-end
-
-M.create_note = function()
-  pickers.create_dropdown(types, {
-    callback = function(selection)
-      local file
-      local cmd = ([[zk new --working-dir "%s" --no-input "%s" --print-path]]):format(
-        vim.g.zk_notebook,
-        selection.value.directory
-      )
-      file = vim.fn.system(cmd)
-      file = file:gsub("^%s*(.-)%s*$", "%1")
-      if vim.fn.filereadable(file) then
+M.find_notes = function()
+  local opts
+  opts = {
+    prompt_title = [[\ Notes /]],
+    cwd = vim.g.zk_notebook,
+    attach_mappings = function(bufnr, map)
+      actions.select_default:replace(function()
+        actions.close(bufnr)
+        local selection = action_state.get_selected_entry()
+        local file = vim.fn.expand(string.format("%s/%s", vim.g.zk_notebook, selection[1]))
         vim.cmd(string.format("edit %s", file))
-      else
-        vim.notify("File not found: " .. file, 2)
-      end
+      end)
+      map("i", "<cr>", function()
+        actions.select_default(bufnr)
+      end)
+      return true
     end,
-  })
+  }
+  telescope.find_files(themes.get_ivy(opts))
 end
 
 M.highlight_fenced_code_blocks = function()
@@ -190,4 +107,16 @@ M.toggle_checkbox = function()
   end
 end
 
-return M
+return setmetatable({}, {
+  __index = function(t, k)
+    if M[k] then
+      return M[k]
+    else
+      local ok, val = pcall(require, string.format("ft.markdown.%s", k))
+      if ok then
+        rawset(t, k, val)
+        return val
+      end
+    end
+  end,
+})

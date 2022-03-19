@@ -21,6 +21,58 @@ local project_root = function(fname)
   return lspconfig.root_pattern(unpack(root_dirs))(fname) or lspconfig.path.dirname(fname)
 end
 
+local execute_command = function(cmd, options, cb)
+  if options and vim.tbl_isempty(options) then
+    options = nil
+  end
+  vim.lsp.buf_request(0, "workspace/executeCommand", {
+    command = string.format("zk.%s", cmd),
+    arguments = {
+      project_root(vim.api.nvim_buf_get_name(0)),
+      options,
+    },
+  }, cb)
+end
+
+M.index = function(...)
+  execute_command("index", ..., function(err, stats)
+    assert(not err, tostring(err))
+    vim.notify(vim.inspect(stats))
+  end)
+end
+
+M.new = function(...)
+  execute_command("new", ..., function(err, result)
+    assert(not err, tostring(err))
+    if not (result and result.path) then
+      return
+    end
+    vim.cmd(string.format("edit %s", vim.fn.expand(result.path)))
+  end)
+end
+
+M.list = function(options, cb)
+  execute_command("list", options, function(err, notes)
+    assert(not err, tostring(err))
+    if not notes then
+      return
+    end
+    cb(notes)
+  end)
+end
+
+M.tag = {}
+
+M.tag.list = function(options, cb)
+  execute_command("tag.list", options, function(err, tags)
+    assert(not err, tostring(err))
+    if not tags then
+      return
+    end
+    cb(tags)
+  end)
+end
+
 M.config = {
   cmd = { "zk", "lsp" },
   filetypes = { "markdown" },
@@ -32,30 +84,6 @@ M.on_attach = function(_, bufnr)
   vim.keymap.set("n", "<leader>mn", function()
     M.new { title = vim.fn.input "Title: ", dir = "journal" }
   end, { buffer = bufnr })
-end
-
-M.index = function()
-  vim.lsp.buf_request(0, "workspace/executeCommand", {
-    command = "zk.index",
-    arguments = { vim.api.nvim_buf_get_name(0) },
-  }, function(_, _, stats)
-    vim.notify(vim.inspect(stats))
-  end)
-end
-
-M.new = function(...)
-  vim.lsp.buf_request(0, "workspace/executeCommand", {
-    command = "zk.new",
-    arguments = {
-      vim.api.nvim_buf_get_name(0),
-      ...,
-    },
-  }, function(_, _, result)
-    if not (result and result.path) then
-      return
-    end
-    vim.cmd(string.format("edit %s", vim.fn.expand(result.path)))
-  end)
 end
 
 M.setup = function(force)
