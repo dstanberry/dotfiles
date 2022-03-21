@@ -37,7 +37,9 @@ end
 M.index = function(...)
   execute_command("index", ..., function(err, stats)
     assert(not err, tostring(err))
-    vim.notify(vim.inspect(stats))
+    if stats then
+      vim.notify(vim.inspect(stats))
+    end
   end)
 end
 
