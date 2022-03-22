@@ -1,6 +1,6 @@
 ---
 title: {{title}}
-date: {{date now}}
+date: {{date now 'short'}}
 tags: [{{tags}}]
 ---
 
