@@ -62,6 +62,7 @@ local new = function(selection)
   )
   file = vim.fn.system(cmd)
   file = file:gsub("^%s*(.-)%s*$", "%1")
+  return file
 end
 
 M.create_note = function()
