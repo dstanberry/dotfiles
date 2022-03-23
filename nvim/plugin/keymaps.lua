@@ -250,9 +250,9 @@ vim.keymap.set("v", "H", "^")
 vim.keymap.set("v", "L", "g_")
 
 -- shift selected text down
-vim.keymap.set("x", "J", ":move '>+<cr>gv=gv")
+vim.keymap.set("x", "<c-down>", ":move '>+<cr>gv=gv")
 -- shift selected text up
-vim.keymap.set("x", "K", ":move -2<cr>gv=gv")
+vim.keymap.set("x", "<c-up>", ":move -2<cr>gv=gv")
 
 ---------------------------------------------------------------
 -- => Visual | Leader
