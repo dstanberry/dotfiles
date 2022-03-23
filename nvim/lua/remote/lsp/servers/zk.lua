@@ -94,7 +94,7 @@ M.setup = function(force)
       git clone https://github.com/mickael-menu/zk.git
       cd zk
       make
-      mkdir -vp %s/{inbox,journal,literature,permanent}
+      mkdir -vp %s/{inbox,journal,resources}
       cp zk $GOPATH/bin/
     ]],
     vim.g.zk_notebook
