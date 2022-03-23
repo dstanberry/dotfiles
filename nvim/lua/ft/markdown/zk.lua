@@ -7,6 +7,11 @@ local M = {}
 
 local templates = {
   {
+    label = "Permanent note",
+    directory = "resources",
+    ask_for_title = true,
+  },
+  {
     label = "Team standup",
     directory = "inbox",
     ask_for_title = false,
@@ -33,7 +38,7 @@ local templates = {
   },
   {
     label = "Literature note",
-    directory = "resources",
+    directory = "journal",
     ask_for_title = true,
   },
   {
