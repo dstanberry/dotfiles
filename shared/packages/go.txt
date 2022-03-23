@@ -1,4 +1,3 @@
 github.com/charmbracelet/glow@latest
 github.com/itchyny/mmv/cmd/mmv@latest
-github.com/mattn/efm-langserver@latest
 golang.org/x/tools/gopls@latest
