@@ -23,6 +23,14 @@ vim.opt.complete:append "kspell"
 vim.opt.completeopt = "menuone,noselect"
 -- highlight current line
 vim.opt.cursorline = true
+-- define diff options
+vim.opt.diffopt = {
+  "internal",
+  "filler",
+  "closeoff",
+  "hiddenoff",
+  "algorithm:minimal",
+}
 -- define location for swap files
 vim.opt.directory = cache .. "/swap//,."
 -- don't expand spaces to tabs
