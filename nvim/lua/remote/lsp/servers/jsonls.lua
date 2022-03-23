@@ -1,4 +1,4 @@
--- verify go is available
+-- verify schemastore is available
 local ok, schemastore = pcall(require, "schemastore")
 if not ok then
   return
