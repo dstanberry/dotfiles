@@ -38,6 +38,7 @@ function M.get_module_name(file)
       mod = (mod):gsub("/", ".")
     end
   end
+  mod = (mod):gsub(".init", "")
   return mod or ""
 end
 
