@@ -60,7 +60,7 @@ M.setup = function()
     local config = require(("remote.luasnip.snippets.%s"):format(mod)).config
     if type(config) == "table" then
       for k, v in pairs(config) do
-        luasnip.snippets[k] = v
+        luasnip.add_snippets(k, v)
       end
     end
   end
