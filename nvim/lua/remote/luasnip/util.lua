@@ -44,13 +44,35 @@ M.recursive_case = function()
   return sn(nil, {
     c(1, {
       t "",
-      sn(nil, { t { "", "\t\tbreak;", "\tdefault:", "\t\t" }, i(1, "// code") }),
+      sn(nil, {
+        t { "", "\t\tbreak;", "\tdefault:", "\t\t" },
+        i(1, "// code"),
+      }),
       sn(nil, {
         t { "", "\t\tbreak;", "\tcase " },
         i(1, "value"),
         t { ":", "\t\t" },
         i(2, "// code"),
         d(3, M.recursive_case, {}),
+      }),
+    }),
+  })
+end
+
+M.recursive_if = function()
+  return sn(nil, {
+    c(1, {
+      t "",
+      sn(nil, {
+        t { "", "} else {", "\t" },
+        i(1, "// code"),
+      }),
+      sn(nil, {
+        t { "", "} elseif (", "\t" },
+        i(1, "expr"),
+        t { ") {", "\t" },
+        i(2, "// code"),
+        d(3, M.recursive_if, {}),
       }),
     }),
   })

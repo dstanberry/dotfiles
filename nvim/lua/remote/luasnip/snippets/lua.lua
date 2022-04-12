@@ -16,9 +16,9 @@ local M = {}
 
 M.config = {
   lua = {
-    s({ trig = "ig", wordTrig = true, hidden = true }, { t "-- stylua: ignore" }),
+    s({ trig = "ig[nore]", regTrig = true, wordTrig = true, hidden = true }, { t "-- stylua: ignore" }),
     s(
-      "req",
+      { trig = "req[uire]", regTrig = true },
       fmt([[local {} = require("{}")]], { d(2, util.get_word_choice, { 1 }, { user_args = { "." } }), i(1, "mod") })
     ),
     s(
@@ -166,7 +166,6 @@ M.config = {
         ]],
         {
           i(1, "ok"),
-          -- util.get_last_word(2, "."),
           d(3, util.get_word_choice, { 2 }, { user_args = { "." } }),
           i(2, "mod"),
           util.same(1),

@@ -14,21 +14,29 @@ local rep = luasnip.extras.rep
 local M = {}
 
 local snippets = {
-  s("log", fmt([[ console.log({}); ]], i(1))),
-  s("import", fmt([[ import {} from '{}' ]], { i(1), i(2) })),
+  s("log", fmt([[console.log({});]], i(1))),
   s(
-    "req",
+    { trig = "imp[ort]", regTrig = true },
+    fmt([[import {};]], {
+      c(1, {
+        sn(nil, fmt([["{}"]], { i(1, "module-name") })),
+        sn(nil, fmt([[{} from "{}"]], { i(1, "defaultExport"), i(2, "module-name") })),
+      }),
+    })
+  ),
+  s(
+    { trig = "req[uire]", regTrig = true },
     fmt(
       [[const {} = require("{}");]],
       { d(2, util.get_word_choice, { 1 }, { user_args = { "/", "." } }), i(1, "module") }
     )
   ),
   s(
-    "arrow",
+    ">>",
     fmt([[{} => {}]], {
       c(1, {
         sn(nil, fmt([[({})]], { i(1) })),
-        sn(nil, fmt([[const {} = ({})]], { i(1), i(2) })),
+        sn(nil, fmt([[{} {} = ({})]], { c(1, { t "var", t "const" }), i(2), i(3) })),
       }),
       c(2, {
         sn(nil, fmt([[{};]], { i(1) })),
@@ -76,6 +84,24 @@ local snippets = {
       }
     )
   ),
+  s("if", {
+    t "if (",
+    i(1, "expr"),
+    t { ") {", "\t" },
+    i(2, "// code"),
+    d(3, util.recursive_if, {}),
+    t { "", "}" },
+  }),
+  s("switch", {
+    t "switch (",
+    i(1, "condition"),
+    t { ") {", "\tcase " },
+    i(2, "value"),
+    t { ":", "\t\t" },
+    i(3, "// code"),
+    d(4, util.recursive_case, {}),
+    t { "", "}" },
+  }),
 }
 
 M.config = {

@@ -39,13 +39,6 @@ M.config = {
       d(4, util.recursive_case, {}),
       t { "", "}" },
     }),
-    s("case", {
-      t { "case " },
-      i(2, "value"),
-      t { ":", "\t\t" },
-      i(3, "// code"),
-      d(4, util.recursive_case, {}),
-    }),
     s("printf", {
       t "printf(",
       c(1, {
