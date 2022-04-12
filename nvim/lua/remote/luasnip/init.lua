@@ -39,11 +39,6 @@ M.setup = function()
           virt_text = { { "﬘ ", "Constant" } },
         },
       },
-      [types.insertNode] = {
-        passive = {
-          hl_group = "Bold",
-        },
-      },
     },
   }
 
