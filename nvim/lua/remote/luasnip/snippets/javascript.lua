@@ -3,10 +3,13 @@ local util = require "remote.luasnip.util"
 
 local c = luasnip.choice_node
 local d = luasnip.dynamic_node
-local fmt = luasnip.extras_fmt.fmt
 local i = luasnip.insert_node
 local s = luasnip.snippet
 local sn = luasnip.snippet_node
+local t = luasnip.text_node
+
+local fmt = luasnip.extras_fmt.fmt
+local rep = luasnip.extras.rep
 
 local M = {}
 
@@ -47,17 +50,29 @@ local snippets = {
     "for",
     fmt(
       [[
-        for (var {}) {{
+        for ({} {}) {{
           {}
         }}
       ]],
       {
         c(1, {
-          sn(nil, fmt([[{} = {};{}]], { i(1, "i"), i(2, "0"), i(3) })),
-          sn(nil, fmt([[{} in {}]], { i(1, "element"), i(2, "object") })),
-          sn(nil, fmt([[{} of {}]], { i(1, "element"), i(2, "array") })),
+          t "let",
+          t "const",
         }),
-        i(2),
+        c(2, {
+          sn(
+            nil,
+            fmt([[{} = 0; {} < {}; {}++]], {
+              i(1, "i"),
+              d(2, util.get_word_choice, { 1 }, { user_args = { " " } }),
+              c(3, { i(1, "num"), sn(1, { i(1, "arr"), t ".length" }) }),
+              rep(1),
+            })
+          ),
+          sn(nil, fmt([[{} in {}]], { i(1, "element"), i(2, "array") })),
+          sn(nil, fmt([[{} of {}]], { i(1, "element"), i(2, "iterable") })),
+        }),
+        i(3),
       }
     )
   ),
