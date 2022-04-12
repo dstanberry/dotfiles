@@ -106,7 +106,7 @@ local snippets = {
 
 M.config = {
   javascript = snippets,
-  js = snippets,
+  typescript = snippets,
 }
 
 return M
