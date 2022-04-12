@@ -1,4 +1,4 @@
--- verify lua-dev is available
+-- verify lsp_extensions is available
 local ok, inlay_hints = pcall(require, "lsp_extensions.inlay_hints")
 if not ok then
   return
