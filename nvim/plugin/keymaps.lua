@@ -148,7 +148,8 @@ vim.keymap.set("n", "<localleader>c", ":<up>", { silent = false })
 -- create/edit file within the current directory
 vim.keymap.set("n", "<localleader>e", function()
   local path = vim.fn.expand "%:p:h"
-  return (":edit %s/"):format(path)
+  local separator = has "win32" and [[\]] or "/"
+  return (":edit %s%s"):format(path, separator)
 end, { silent = false, expr = true, replace_keycodes = true })
 
 -- trim trailing whitespace
