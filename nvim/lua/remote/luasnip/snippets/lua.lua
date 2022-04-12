@@ -3,13 +3,14 @@ local util = require "remote.luasnip.util"
 
 local c = luasnip.choice_node
 local d = luasnip.dynamic_node
-local fmt = luasnip.extras_fmt.fmt
-local fmta = luasnip.extras_fmt.fmta
 local i = luasnip.insert_node
--- local l = luasnip.extras.lambda
 local s = luasnip.snippet
 local sn = luasnip.snippet_node
 local t = luasnip.text_node
+
+local fmt = luasnip.extras_fmt.fmt
+local fmta = luasnip.extras_fmt.fmta
+-- local l = luasnip.extras.lambda
 
 local M = {}
 

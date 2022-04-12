@@ -2,10 +2,11 @@ local luasnip = require "remote.luasnip"
 
 local s = luasnip.snippet
 local c = luasnip.choice_node
-local fmt = luasnip.extras_fmt.fmt
 local i = luasnip.insert_node
 local sn = luasnip.snippet_node
 local t = luasnip.text_node
+
+local fmt = luasnip.extras_fmt.fmt
 
 local M = {}
 

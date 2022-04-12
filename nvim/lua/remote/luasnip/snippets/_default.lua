@@ -2,12 +2,13 @@ local luasnip = require "remote.luasnip"
 local util = require "remote.luasnip.util"
 
 local d = luasnip.dynamic_node
-local fmt = luasnip.extras_fmt.fmt
 local i = luasnip.insert_node
-local p = luasnip.extras.partial
 local s = luasnip.snippet
 local sn = luasnip.snippet_node
 local t = luasnip.text_node
+
+local fmt = luasnip.extras_fmt.fmt
+local p = luasnip.extras.partial
 
 local function shebang(_, _)
   local cstring = vim.split(vim.bo.commentstring, "%s", true)[1]
