@@ -23,7 +23,7 @@ groups.new("TSRainbow6", { guifg = c.tree05, guibg = "none", gui = "none", guisp
 groups.new("TSRainbow7", { guifg = c.tree06, guibg = "none", gui = "none", guisp = nil })
 
 require("nvim-treesitter.configs").setup {
-  ensure_installed = "maintained",
+  ensure_installed = "all",
   context_commentstring = {
     enable = true,
     enable_autocmd = false,
