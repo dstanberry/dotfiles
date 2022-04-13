@@ -7,11 +7,11 @@ end
 local util = require "util"
 
 local fname
-if has("mac") then
+if has "mac" then
   fname = "lua-language-server"
-elseif has("unix") then
+elseif has "unix" then
   fname = "lua-language-server"
-elseif has("win32") then
+elseif has "win32" then
   fname = "lua-language-server.exe"
 else
   print "Unsupported system for sumneko"
@@ -39,7 +39,7 @@ end
 
 M.config = luadev.setup {
   lspconfig = {
-    cmd = { executable, "-E", string.format("%s/bin/main.lua", root_path) },
+    cmd = { executable },
     settings = {
       Lua = {
         completion = {
@@ -49,6 +49,9 @@ M.config = luadev.setup {
         diagnostics = {
           enable = true,
           globals = { "dump", "has", "profile", "reload" },
+        },
+        format = {
+          enable = false,
         },
       },
     },

@@ -107,6 +107,17 @@ for _, file in ipairs(configurations) do
   local config
   if vim.fn.match(mod, "null-ls") > 0 then
     require(mod).setup(on_attach_nvim)
+  elseif vim.fn.match(mod, "sumneko_lua") > 0 then
+    config = require(mod).config or {}
+    lspconfig.sumneko_lua.setup(vim.tbl_deep_extend("force", {
+      capabilities = capabilities,
+      flags = { debounce_text_changes = 150 },
+      on_attach = function(client, bufnr)
+        client.resolved_capabilities.document_formatting = false
+        client.resolved_capabilities.document_range_formatting = false
+        on_attach_nvim(client, bufnr)
+      end,
+    }, config))
   elseif vim.fn.match(mod, "rust_analyzer") > 0 then
     config = require(mod).config or {}
   elseif vim.fn.match(mod, "rust_tools") > 0 then
