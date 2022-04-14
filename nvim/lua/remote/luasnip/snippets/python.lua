@@ -9,6 +9,8 @@ local i = luasnip.insert_node
 local sn = luasnip.snippet_node
 local t = luasnip.text_node
 
+local fmt = luasnip.extras_fmt.fmt
+
 local function generic_pdoc(ilevel, args)
   local nodes = { t { "'''", string.rep("\t", ilevel) } }
   nodes[#nodes + 1] = i(1, "Small Description.")
@@ -86,6 +88,17 @@ M.config = {
       i(2),
       t { "):", "\t" },
       d(3, pyfdoc, { 2 }, { user_args = { 1 } }),
+    }),
+    s({ trig = "main" }, {
+      t { "def main():", "\t" },
+      i(1, "pass"),
+      t { "", "", "", [[if __name__ == "__main__":]], "\t" },
+      t { "main()" },
+    }),
+    s({ trig = "print" }, {
+      t [[print(f"]],
+      i(1),
+      t [[")]],
     }),
   },
 }
