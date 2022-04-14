@@ -84,8 +84,9 @@ local function plugins(use)
   use {
     "neovim/nvim-lspconfig",
     config = function()
-      require "remote.lsp"
-      require "remote.lsp.handlers"
+      local lspconfig = require "remote.lsp"
+      lspconfig.setup()
+      lspconfig.handlers.setup()
     end,
     requires = {
       "b0o/schemastore.nvim",

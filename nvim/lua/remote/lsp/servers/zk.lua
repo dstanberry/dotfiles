@@ -81,7 +81,8 @@ M.config = {
   root_dir = project_root,
 }
 
-M.on_attach = function(_, bufnr)
+M.on_attach = function(client, bufnr)
+  require("remote.lsp").handlers.on_attach(client, bufnr)
   vim.keymap.set("n", "<leader>mi", M.index, { buffer = bufnr })
   vim.keymap.set("n", "<leader>mn", function()
     M.new { title = vim.fn.input "Title: ", dir = "journal" }

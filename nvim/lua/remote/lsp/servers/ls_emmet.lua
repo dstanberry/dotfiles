@@ -9,21 +9,15 @@ configs.ls_emmet = {
     cmd = { "ls_emmet", "--stdio" },
     filetypes = {
       "css",
-      "haml",
       "html",
       "javascript",
       "javascriptreact",
       "less",
-      "pug",
       "sass",
       "scss",
-      "slim",
-      "sss",
-      "stylus",
       "typescript",
       "typescriptreact",
       "xml",
-      "xsl",
     },
     root_dir = function(_)
       return vim.loop.cwd()
@@ -32,8 +26,4 @@ configs.ls_emmet = {
   },
 }
 
-local M = {}
-
-M.config = {}
-
-return M
+return {}
