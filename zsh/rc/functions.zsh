@@ -39,6 +39,15 @@ function del() {
   fi
 }
 
+# use side-by-side diff view if shell width is large enough
+function delta() {
+  if [[ -n "$COLUMNS" ]] && [[ "$COLUMNS" -gt 200 ]]; then
+    command delta --side-by-side --width "$COLUMNS" $@
+  else
+    command delta $@
+  fi
+}
+
 # poor man's fd runtime configuration
 function fd() {
   emulate -L zsh
