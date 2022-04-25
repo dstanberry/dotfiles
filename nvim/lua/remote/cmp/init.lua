@@ -9,7 +9,6 @@ local color = require "util.color"
 local groups = require "ui.theme.groups"
 
 cmp.setup {
-  documentation = true,
   snippet = {
     expand = function(args)
       pcall(function()
@@ -17,19 +16,22 @@ cmp.setup {
       end)
     end,
   },
-  mapping = {
+  mapping = cmp.mapping.preset.insert {
     ["<c-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
     ["<c-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
     ["<c-space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
     ["<esc>"] = cmp.mapping { i = cmp.mapping.abort(), c = cmp.mapping.close() },
     ["<cr>"] = cmp.mapping.confirm { select = true },
   },
-  sources = {
+  sources = cmp.config.sources {
     { name = "nvim_lua" },
     { name = "nvim_lsp" },
     { name = "luasnip" },
     { name = "path" },
     { name = "buffer", keyword_length = 5, max_item_count = 5 },
+  },
+  experimental = {
+    ghost_text = true,
   },
   formatting = {
     format = function(_, vim_item)
@@ -63,8 +65,9 @@ cmp.setup {
       return vim_item
     end,
   },
-  experimental = {
-    ghost_text = true,
+  window = {
+    -- completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
   },
 }
 
@@ -72,6 +75,7 @@ cmp.setup.cmdline("/", {
   completion = {
     autocomplete = false,
   },
+  mapping = cmp.mapping.preset.cmdline(),
   sources = {
     { name = "nvim_lsp_document_symbol" },
     { name = "buffer" },
@@ -79,10 +83,10 @@ cmp.setup.cmdline("/", {
 })
 
 cmp.setup.cmdline(":", {
+  mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
     { name = "path" },
   }, {
-    -- { name = "cmdline" },
     { name = "cmdline", keyword_pattern = [=[[^[:blank:]\!]*]=] },
   }),
 })
