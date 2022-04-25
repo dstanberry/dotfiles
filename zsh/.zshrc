@@ -67,6 +67,9 @@ zstyle ':completion:*:complete:(cd|pushd):*' tag-order 'local-directories named-
 # enable keyboard navigation of completions in menu
 zstyle ':completion:*' menu select
 
+# colorize directores and files in completion menu
+zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+
 ###############################################################
 # Directories
 ###############################################################
