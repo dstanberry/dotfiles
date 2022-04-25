@@ -38,7 +38,7 @@ M.apply = function(c)
   c.base13 = color.lighten(c.base08, 20)
   c.base14 = color.darken(c.base0C, 20)
   c.base15 = color.lighten(c.base0E, 30)
-  c.base16 = color.lighten(c.base0F, 30)
+  c.base16 = color.darken(c.base0A, 10)
   c.base17 = color.darken(c.base0E, 20)
   c.base18 = color.lighten(c.base0C, 20)
 
