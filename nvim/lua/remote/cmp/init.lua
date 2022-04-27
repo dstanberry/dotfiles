@@ -9,33 +9,12 @@ local color = require "util.color"
 local groups = require "ui.theme.groups"
 
 cmp.setup {
-  snippet = {
-    expand = function(args)
-      pcall(function()
-        require("luasnip").lsp_expand(args.body)
-      end)
-    end,
-  },
-  mapping = cmp.mapping.preset.insert {
-    ["<c-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
-    ["<c-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-    ["<c-space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-    ["<esc>"] = cmp.mapping { i = cmp.mapping.abort(), c = cmp.mapping.close() },
-    ["<cr>"] = cmp.mapping.confirm { select = true },
-  },
-  sources = cmp.config.sources {
-    { name = "nvim_lua" },
-    { name = "nvim_lsp" },
-    { name = "luasnip" },
-    { name = "path" },
-    { name = "buffer", keyword_length = 5, max_item_count = 5 },
-  },
   experimental = {
     ghost_text = true,
   },
   formatting = {
-    format = function(_, vim_item)
-      vim_item.kind = ({
+    format = function(_, item)
+      item.kind = ({
         Class = " (class)",
         Color = " (color)",
         Constant = " (constant)",
@@ -61,9 +40,30 @@ cmp.setup {
         Unit = " (unit)",
         Value = " (value)",
         Variable = "勞 (variable)",
-      })[vim_item.kind]
-      return vim_item
+      })[item.kind]
+      return item
     end,
+  },
+  mapping = cmp.mapping.preset.insert {
+    ["<c-d>"] = cmp.mapping.scroll_docs(-4),
+    ["<c-f>"] = cmp.mapping.scroll_docs(4),
+    ["<c-space>"] = cmp.mapping.complete(),
+    ["<c-c>"] = cmp.mapping.close(),
+    ["<cr>"] = cmp.mapping.confirm { select = true },
+  },
+  snippet = {
+    expand = function(args)
+      pcall(function()
+        require("luasnip").lsp_expand(args.body)
+      end)
+    end,
+  },
+  sources = cmp.config.sources {
+    { name = "nvim_lua" },
+    { name = "nvim_lsp" },
+    { name = "luasnip" },
+    { name = "path" },
+    { name = "buffer", keyword_length = 5, max_item_count = 5 },
   },
   window = {
     -- completion = cmp.config.window.bordered(),
