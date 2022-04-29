@@ -11,9 +11,7 @@ local t = luasnip.text_node
 local fmt = luasnip.extras_fmt.fmt
 local rep = luasnip.extras.rep
 
-local M = {}
-
-local snippets = {
+return {
   s("log", fmt([[console.log({});]], i(1))),
   s(
     { trig = "imp[ort]", regTrig = true },
@@ -103,10 +101,3 @@ local snippets = {
     t { "", "}" },
   }),
 }
-
-M.config = {
-  javascript = snippets,
-  typescript = snippets,
-}
-
-return M

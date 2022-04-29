@@ -8,14 +8,11 @@ local t = luasnip.text_node
 
 local fmt = luasnip.extras_fmt.fmt
 
-local M = {}
-
-M.config = {
-  html = {
-    s(
-      "html",
-      fmt(
-        [[
+return {
+  s(
+    "html",
+    fmt(
+      [[
         <!DOCTYPE html>
         <html>
         <head>
@@ -27,30 +24,27 @@ M.config = {
           {}
         </body>
         </html>]],
-        {
-          i(1, "Title"),
-          i(2, "<!-- body -->"),
-        }
-      )
-    ),
-    s("script", {
-      t "<script",
-      c(1, {
-        sn(nil, {
-          t ' src="',
-          i(1, "path/to/file.js"),
-          t '">',
-        }),
-        sn(nil, {
-          t { ">", "\t" },
-          i(1, "// code"),
-          t { "", "" },
-        }),
+      {
+        i(1, "Title"),
+        i(2, "<!-- body -->"),
+      }
+    )
+  ),
+  s("script", {
+    t "<script",
+    c(1, {
+      sn(nil, {
+        t ' src="',
+        i(1, "path/to/file.js"),
+        t '">',
       }),
-      i(0),
-      t "</script>",
+      sn(nil, {
+        t { ">", "\t" },
+        i(1, "// code"),
+        t { "", "" },
+      }),
     }),
-  },
+    i(0),
+    t "</script>",
+  }),
 }
-
-return M

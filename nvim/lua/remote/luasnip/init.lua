@@ -42,22 +42,9 @@ M.setup = function()
     },
   }
 
-  local snippets = vim.api.nvim_get_runtime_file("lua/remote/luasnip/snippets/*.lua", true)
-  for _, file in ipairs(snippets) do
-    local fname
-    if has "win32" then
-      fname = (file):match "^.+\\(.+)$"
-    else
-      fname = (file):match "^.+/(.+)$"
-    end
-    local mod = fname:sub(1, -5)
-    local config = reload(("remote.luasnip.snippets.%s"):format(mod)).config
-    if type(config) == "table" then
-      for k, v in pairs(config) do
-        luasnip.add_snippets(k, v)
-      end
-    end
-  end
+  require("luasnip.loaders.from_lua").load {
+    paths = ("%s/lua/remote/luasnip/snippets/"):format(vim.fn.stdpath "config"),
+  }
 end
 
 return M
