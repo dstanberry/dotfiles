@@ -39,13 +39,13 @@ local function generate_lorem(words)
 end
 
 return {
-  util.autopair("(", ")", util.char_count_same),
-  util.autopair("{", "}", util.char_count_same),
-  util.autopair("[", "]", util.char_count_same),
-  util.autopair("<", ">", util.char_count_same),
-  util.autopair("'", "'", util.even_count),
-  util.autopair('"', '"', util.even_count),
-  util.autopair("`", "`", util.even_count),
+  util.autopair.create("(", ")", util.autopair.punctuation_matched),
+  util.autopair.create("{", "}", util.autopair.punctuation_matched),
+  util.autopair.create("[", "]", util.autopair.punctuation_matched),
+  util.autopair.create("<", ">", util.autopair.punctuation_matched),
+  util.autopair.create("'", "'", util.autopair.char_matched),
+  util.autopair.create('"', '"', util.autopair.char_matched),
+  util.autopair.create("`", "`", util.autopair.char_matched),
   s({ trig = "date" }, { p(os.date, "%m-%d-%Y") }),
   s({ trig = "time" }, { p(os.date, "%H:%M") }),
 }, {

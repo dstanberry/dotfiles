@@ -5,6 +5,7 @@ flake8==4.0.1
 httpie==2.4.0
 isort==5.9.3
 lookatme==2.3.2
+lorem-text==2.1
 neovim-remote==2.4.0
 numpy==1.21.1
 pip-autoremove==0.10.0
