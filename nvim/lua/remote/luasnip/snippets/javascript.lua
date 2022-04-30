@@ -26,7 +26,7 @@ return {
     { trig = "req[uire]", regTrig = true },
     fmt(
       [[const {} = require("{}");]],
-      { d(2, util.repeat_word, { 1 }, { user_args = { "/", "." } }), i(1, "module") }
+      { d(2, util.get_word_choice, { 1 }, { user_args = { "/", "." } }), i(1, "module") }
     )
   ),
   s(
@@ -70,7 +70,7 @@ return {
             nil,
             fmt([[{} = 0; {} < {}; {}++]], {
               i(1, "i"),
-              d(2, util.repeat_word, { 1 }, { user_args = { " " } }),
+              d(2, util.get_word_choice, { 1 }, { user_args = { " " } }),
               c(3, { i(1, "num"), sn(1, { i(1, "arr"), t ".length" }) }),
               rep(1),
             })

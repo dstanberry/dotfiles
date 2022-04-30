@@ -16,7 +16,7 @@ return {
   s(
     { trig = "req[uire]", regTrig = true },
     fmt([[local {} = require("{}")]], {
-      d(2, util.repeat_word, { 1 }, { user_args = { "." } }),
+      d(2, util.get_word_choice, { 1 }, { user_args = { "." } }),
       i(1, "mod"),
     })
   ),
@@ -125,9 +125,9 @@ return {
       ]],
       {
         i(1, "ok"),
-        d(3, util.repeat_word, { 2 }, { user_args = { "." } }),
+        d(3, util.get_word_choice, { 2 }, { user_args = { "." } }),
         i(2, "mod"),
-        util.mimic(1),
+        util.same(1),
       }
     )
   ),

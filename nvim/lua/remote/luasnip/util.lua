@@ -10,9 +10,7 @@ local t = luasnip.text_node
 
 local M = {}
 
-M.autopair = {}
-
-M.autopair.create = function(pair_begin, pair_end, ...)
+M.autopair = function(pair_begin, pair_end, ...)
   local function negate(fn, ...)
     return not fn(...)
   end
@@ -29,14 +27,14 @@ M.autopair.create = function(pair_begin, pair_end, ...)
   )
 end
 
-M.autopair.punctuation_matched = function(c1, c2)
+M.char_count_same = function(c1, c2)
   local line = vim.api.nvim_get_current_line()
   local _, ct1 = string.gsub(line, "%" .. c1, "")
   local _, ct2 = string.gsub(line, "%" .. c2, "")
   return ct1 == ct2
 end
 
-M.autopair.char_matched = function(char)
+M.even_count = function(char)
   local line = vim.api.nvim_get_current_line()
   local _, ct = string.gsub(line, char, "")
   return ct % 2 == 0
@@ -80,13 +78,21 @@ M.recursive_if = function()
   })
 end
 
-M.mimic = function(index)
+M.same = function(index)
   return f(function(args)
     return args[1]
   end, { index })
 end
 
-M.repeat_word = function(args, _, _, delim, ext)
+M.get_last_word = function(index, delim)
+  return f(function(args)
+    local text = args[1][1] or ""
+    local split = vim.split(text, delim, { plain = true })
+    return split[#split]
+  end, { index })
+end
+
+M.get_word_choice = function(args, _, _, delim, ext)
   local text = args[1][1] or ""
   if ext then
     local stripped = text:match "(.+)%..+$"
