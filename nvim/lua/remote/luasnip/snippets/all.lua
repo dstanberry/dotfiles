@@ -31,7 +31,7 @@ local function generate_lorem(words)
     table.insert(
       ret,
       f(function()
-        return vim.fn.systemlist("lorem_text --words " .. w)
+        return vim.fn.systemlist("lorem --lines " .. w)
       end)
     )
   end
@@ -48,6 +48,17 @@ return {
   util.autopair.create("`", "`", util.autopair.char_matched),
   s({ trig = "date" }, { p(os.date, "%m-%d-%Y") }),
   s({ trig = "time" }, { p(os.date, "%H:%M") }),
+  s({ trig = "lorem" }, c(1, generate_lorem(100))),
+  s(
+    { trig = "(%d+)lorem", regTrig = true },
+    f(function(_, snip)
+      local lines = snip.captures[1]
+      if not tonumber(lines) then
+        lines = 1
+      end
+      return vim.fn.systemlist("lorem --lines " .. lines)
+    end)
+  ),
 }, {
   s({ trig = "#!" }, { d(1, shebang, {}) }),
   s(
@@ -61,5 +72,4 @@ return {
       i(1)
     )
   ),
-  s({ trig = "lorem" }, c(1, generate_lorem(100))),
 }
