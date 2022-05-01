@@ -42,6 +42,12 @@ M.autopair.char_matched = function(char)
   return ct % 2 == 0
 end
 
+M.mimic = function(index)
+  return f(function(args)
+    return args[1]
+  end, { index })
+end
+
 M.recursive_case = function()
   return sn(nil, {
     c(1, {
@@ -70,7 +76,7 @@ M.recursive_if = function()
         i(1, "// code"),
       }),
       sn(nil, {
-        t { "", "} elseif (", "\t" },
+        t { "", "} elseif (" },
         i(1, "expr"),
         t { ") {", "\t" },
         i(2, "// code"),
@@ -78,12 +84,6 @@ M.recursive_if = function()
       }),
     }),
   })
-end
-
-M.mimic = function(index)
-  return f(function(args)
-    return args[1]
-  end, { index })
 end
 
 M.repeat_word = function(args, _, _, delim, ext)
@@ -102,6 +102,33 @@ M.repeat_word = function(args, _, _, delim, ext)
   return sn(nil, {
     c(1, options),
   })
+end
+
+M.saved_text = function(_, snip, old_state, user_args)
+  local nodes = {}
+  old_state = old_state or {}
+  user_args = user_args or {}
+
+  local indent = user_args.indent and "\t" or ""
+
+  if snip.snippet.env and snip.snippet.env.SELECT_DEDENT and #snip.snippet.env.SELECT_DEDENT > 0 then
+    local lines = vim.deepcopy(snip.snippet.env.SELECT_DEDENT)
+    for idx = 1, #lines do
+      local line = indent .. lines[idx]
+      local node = idx == #lines and { line } or { line, "" }
+      table.insert(nodes, t(node))
+    end
+  else
+    local text = user_args.text or M.get_comment "code"
+    if indent ~= "" then
+      table.insert(nodes, t(indent))
+    end
+    table.insert(nodes, i(1, text))
+  end
+
+  local snip_node = sn(nil, nodes)
+  snip_node.old_state = old_state
+  return snip_node
 end
 
 return M

@@ -24,10 +24,7 @@ return {
   ),
   s(
     { trig = "req[uire]", regTrig = true },
-    fmt(
-      [[const {} = require("{}");]],
-      { d(2, util.repeat_word, { 1 }, { user_args = { "/", "." } }), i(1, "module") }
-    )
+    fmt([[const {} = require("{}");]], { d(2, util.repeat_word, { 1 }, { user_args = { "/", "." } }), i(1, "module") })
   ),
   s(
     ">>",
@@ -86,7 +83,7 @@ return {
     t "if (",
     i(1, "expr"),
     t { ") {", "\t" },
-    i(2, "// code"),
+    d(2, util.saved_text, {}, { user_args = { { text = "// code", indent = true } } }),
     d(3, util.recursive_if, {}),
     t { "", "}" },
   }),
@@ -96,7 +93,7 @@ return {
     t { ") {", "\tcase " },
     i(2, "value"),
     t { ":", "\t\t" },
-    i(3, "// code"),
+    d(3, util.saved_text, {}, { user_args = { { text = "// code", indent = true } } }),
     d(4, util.recursive_case, {}),
     t { "", "}" },
   }),

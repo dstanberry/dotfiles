@@ -56,7 +56,7 @@ return {
           sn(nil, fmt([[local function {}({})]], { i(1), i(2) })),
           sn(nil, fmt([[local {} = function({})]], { i(1), i(2) })),
         }),
-        i(2),
+        d(2, util.saved_text, {}, { user_args = { { indent = true } } }),
       }
     )
   ),
@@ -70,7 +70,7 @@ return {
       ]],
       {
         i(1, "expr"),
-        i(2),
+        d(2, util.saved_text, {}, { user_args = { { indent = true } } }),
       }
     )
   ),
@@ -104,13 +104,13 @@ return {
             nil,
             fmt([[{} = {}, {}, {}]], {
               i(1, "i"),
-              i(2, "v"),
+              i(2, "value"),
               i(3, "bound"),
               i(4, "direction"),
             })
           ),
         }),
-        i(2),
+        d(2, util.saved_text, {}, { user_args = { { indent = true } } }),
       }
     )
   ),
