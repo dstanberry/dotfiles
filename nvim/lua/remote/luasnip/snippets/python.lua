@@ -98,7 +98,7 @@ return {
     )
   ),
   s(
-    { trig = "def" },
+    { trig = "(def|fn)", regTrig = true },
     fmt(
       [[
         def {}({}):

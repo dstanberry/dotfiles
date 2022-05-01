@@ -14,13 +14,6 @@ local fmt = luasnip.extras_fmt.fmt
 return {
   s({ trig = "ig[nore]", regTrig = true, wordTrig = true, hidden = true }, { t "-- stylua: ignore" }),
   s(
-    { trig = "req[uire]", regTrig = true },
-    fmt([[local {} = require("{}")]], {
-      d(2, util.repeat_word, { 1 }, { user_args = { "." } }),
-      i(1, "mod"),
-    })
-  ),
-  s(
     { trig = "[[-", wordTrig = false, hidden = true },
     fmt(
       [=[
@@ -41,6 +34,13 @@ return {
       ]=],
       i(1)
     )
+  ),
+  s(
+    { trig = "req[uire]", regTrig = true },
+    fmt([[local {} = require("{}")]], {
+      d(2, util.repeat_word, { 1 }, { user_args = { "." } }),
+      i(1, "mod"),
+    })
   ),
   s(
     { trig = "fn" },

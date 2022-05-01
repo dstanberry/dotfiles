@@ -12,7 +12,6 @@ local fmt = luasnip.extras_fmt.fmt
 local rep = luasnip.extras.rep
 
 return {
-  s("log", fmt([[console.log({});]], i(1))),
   s(
     { trig = "imp[ort]", regTrig = true },
     fmt([[import {};]], {
@@ -25,6 +24,21 @@ return {
   s(
     { trig = "req[uire]", regTrig = true },
     fmt([[const {} = require("{}");]], { d(2, util.repeat_word, { 1 }, { user_args = { "/", "." } }), i(1, "module") })
+  ),
+  s(
+    { trig = "fn" },
+    fmt(
+      [[
+        function {}({}) {{
+        {}
+        }}
+      ]],
+      {
+        i(1, "myFunction"),
+        i(2, ""),
+        d(3, util.saved_text, {}, { user_args = { { text = "// code", indent = true } } }),
+      }
+    )
   ),
   s(
     ">>",
@@ -49,6 +63,16 @@ return {
       }),
     })
   ),
+  s("switch", {
+    t "switch (",
+    i(1, "condition"),
+    t { ") {", "\tcase " },
+    i(2, "value"),
+    t { ":", "\t\t" },
+    d(3, util.saved_text, {}, { user_args = { { text = "// code", indent = true } } }),
+    d(4, util.recursive_case, {}),
+    t { "", "}" },
+  }),
   s(
     "for",
     fmt(
@@ -87,14 +111,5 @@ return {
     d(3, util.recursive_if, {}),
     t { "", "}" },
   }),
-  s("switch", {
-    t "switch (",
-    i(1, "condition"),
-    t { ") {", "\tcase " },
-    i(2, "value"),
-    t { ":", "\t\t" },
-    d(3, util.saved_text, {}, { user_args = { { text = "// code", indent = true } } }),
-    d(4, util.recursive_case, {}),
-    t { "", "}" },
-  }),
+  s("log", fmt([[console.log({});]], i(1))),
 }

@@ -7,15 +7,6 @@ local i = luasnip.insert_node
 
 return {
   s(
-    "link",
-    fmt([[ [{}]({}) ]], {
-      i(1),
-      f(function(_, snip)
-        return snip.env.TM_SELECTED_TEXT[1] or {}
-      end, {}),
-    })
-  ),
-  s(
     "meta",
     fmt(
       [[
@@ -39,6 +30,15 @@ return {
         i(3),
       }
     )
+  ),
+  s(
+    "link",
+    fmt([[ [{}]({}) ]], {
+      i(1),
+      f(function(_, snip)
+        return snip.env.TM_SELECTED_TEXT[1] or {}
+      end, {}),
+    })
   ),
 }, {
   s(
