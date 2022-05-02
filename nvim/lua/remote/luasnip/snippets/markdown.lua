@@ -1,13 +1,15 @@
 local luasnip = require "remote.luasnip"
+local util = require "remote.luasnip.util"
 
 local s = luasnip.snippet
+local d = luasnip.dynamic_node
 local f = luasnip.function_node
 local fmt = luasnip.extras_fmt.fmt
 local i = luasnip.insert_node
 
 return {
   s(
-    "meta",
+    { trig = "meta" },
     fmt(
       [[
         ---
@@ -32,8 +34,8 @@ return {
     )
   ),
   s(
-    "link",
-    fmt([[ [{}]({}) ]], {
+    { trig = "link" },
+    fmt([[[{}]({})]], {
       i(1),
       f(function(_, snip)
         return snip.env.TM_SELECTED_TEXT[1] or {}
@@ -42,21 +44,18 @@ return {
   ),
 }, {
   s(
-    "```",
+    { trig = "```", wordTrig = false, hidden = true },
     fmt(
       [[
-        ```{}
-        {}
-        ```
+      ```{}
+      {}
+      ```
+      {}
       ]],
       {
         i(1, "lang"),
-        f(function(_, snip)
-          local tmp = {}
-          tmp = snip.env.TM_SELECTED_TEXT
-          tmp[0] = nil
-          return tmp or {}
-        end, {}),
+        d(2, util.saved_text, {}, { user_args = { { text = "", indent = false } } }),
+        i(0),
       }
     )
   ),
