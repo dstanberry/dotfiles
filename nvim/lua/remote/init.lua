@@ -200,6 +200,7 @@ local function plugins(use)
   use { "michaelb/sniprun", run = "bash ./install.sh", cmd = "SnipRun", opt = true }
 
   -- git integrations
+  use { "akinsho/git-conflict.nvim" }
   use { "lewis6991/gitsigns.nvim", requires = { "nvim-lua/plenary.nvim" } }
   use { "ruifm/gitlinker.nvim", requires = "nvim-lua/plenary.nvim" }
   use { "sindrets/diffview.nvim" }
