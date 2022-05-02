@@ -100,16 +100,23 @@ telescope.setup {
         prompt_position = "top",
       },
     },
-    lsp_document_symbols = { layout_strategy = "vertical" },
+    lsp_document_symbols = {
+      layout_strategy = "vertical",
+      path_display = { "hidden" },
+    },
     lsp_dynamic_workspace_symbols = { layout_strategy = "vertical" },
     lsp_references = {
+      path_display = { "shorten" },
       theme = "ivy",
       layout_config = {
         height = 60,
         prompt_position = "top",
       },
     },
-    lsp_workspace_symbols = { layout_strategy = "vertical" },
+    lsp_workspace_symbols = {
+      layout_strategy = "vertical",
+      path_display = { "shorten" },
+    },
   },
   extensions = {
     file_browser = {
