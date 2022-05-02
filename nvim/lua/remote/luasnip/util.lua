@@ -42,12 +42,6 @@ M.autopair.char_matched = function(char)
   return ct % 2 == 0
 end
 
-M.mimic = function(index)
-  return f(function(args)
-    return args[1]
-  end, { index })
-end
-
 M.recursive_case = function()
   return sn(nil, {
     c(1, {
@@ -86,7 +80,13 @@ M.recursive_if = function()
   })
 end
 
-M.repeat_word = function(args, _, _, delim, ext)
+M.repeat_node = function(index)
+  return f(function(args)
+    return args[1]
+  end, { index })
+end
+
+M.repeat_node_segment = function(args, _, _, delim, ext)
   local text = args[1][1] or ""
   if ext then
     local stripped = text:match "(.+)%..+$"
