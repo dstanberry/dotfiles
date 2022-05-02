@@ -42,7 +42,7 @@ M.setup = function()
     },
   }
 
-  require("luasnip.loaders.from_lua").load {
+  require("luasnip.loaders.from_lua").lazy_load {
     paths = ("%s/lua/remote/luasnip/snippets/"):format(vim.fn.stdpath "config"),
   }
 end
