@@ -35,11 +35,16 @@ return {
   ),
   s(
     { trig = "link" },
-    fmt([[[{}]({})]], {
+    fmt([=[[{}]({})]=], {
       i(1),
-      f(function(_, snip)
-        return snip.env.TM_SELECTED_TEXT[1] or {}
-      end, {}),
+      d(2, util.saved_text, {}, { user_args = { { indent = false } } }),
+    })
+  ),
+  s(
+    { trig = "img" },
+    fmt([=[![{}]({})]=], {
+      i(1),
+      d(2, util.saved_text, {}, { user_args = { { indent = false } } }),
     })
   ),
 }, {
@@ -54,7 +59,7 @@ return {
       ]],
       {
         i(1, "lang"),
-        d(2, util.saved_text, {}, { user_args = { { text = "", indent = false } } }),
+        d(2, util.saved_text, {}, { user_args = { { indent = false } } }),
         i(0),
       }
     )
