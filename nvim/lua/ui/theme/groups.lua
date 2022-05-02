@@ -128,6 +128,11 @@ M.apply = function(c)
   hi.Typedef = { guifg = c.base0A, guibg = nil, gui = nil, guisp = nil }
 
   -- diff highlighting
+  c.diff00 = "#132e1f"
+  c.diff01 = "#361f21"
+  c.diff02 = "#174061"
+  c.diff03 = "#1b3956"
+
   hi.DiffAdd = { guifg = "none", guibg = c.diff00, gui = "none", guisp = nil }
   hi.DiffChange = { guifg = "none", guibg = c.diff02, gui = "none", guisp = nil }
   hi.DiffDelete = { guifg = "none", guibg = c.diff01, gui = "none", guisp = nil }
