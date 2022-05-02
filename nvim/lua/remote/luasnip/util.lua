@@ -119,7 +119,7 @@ M.saved_text = function(_, snip, old_state, user_args)
       table.insert(nodes, t(node))
     end
   else
-    local text = user_args.text or M.get_comment "code"
+    local text = user_args.text or ""
     if indent ~= "" then
       table.insert(nodes, t(indent))
     end
