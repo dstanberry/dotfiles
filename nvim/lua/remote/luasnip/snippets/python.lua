@@ -163,6 +163,22 @@ return {
       }
     )
   ),
+  s(
+    "try",
+    fmt(
+      [[
+    try:
+    {}
+    except {}:
+        {}
+    ]],
+      {
+        d(1, util.saved_text, {}, { user_args = { { text = "pass", indent = true } } }),
+        i(2, "Exception"),
+        i(3, "pass"),
+      }
+    )
+  ),
 }, {
   s({ trig = "print" }, {
     t [[print(f"]],
