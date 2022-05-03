@@ -59,6 +59,8 @@ M.on_attach = function(client, bufnr)
       pattern = "<buffer>",
       callback = vim.lsp.buf.signature_help,
     })
+
+    vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr })
   end
 
   if client.server_capabilities.documentFormattingProvider then
@@ -75,7 +77,6 @@ M.on_attach = function(client, bufnr)
   vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr })
   vim.keymap.set("n", "gk", vim.lsp.buf.hover, { buffer = bufnr })
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
-  vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr })
   vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr })
   vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr })
   vim.keymap.set("n", "g/", vim.lsp.buf.rename, { buffer = bufnr })
