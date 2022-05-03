@@ -13,7 +13,7 @@ local rep = luasnip.extras.rep
 
 return {
   s(
-    { trig = "imp[ort]", regTrig = true },
+    { trig = "im[port]", regTrig = true },
     fmt([[import {};]], {
       c(1, {
         sn(nil, fmt([["{}"]], { i(1, "module-name") })),
@@ -22,11 +22,14 @@ return {
     })
   ),
   s(
-    { trig = "req[uire]", regTrig = true },
-    fmt([[const {} = require("{}");]], { d(2, util.repeat_node_segment, { 1 }, { user_args = { "/", "." } }), i(1, "module") })
+    { trig = "re[quire]", regTrig = true },
+    fmt(
+      [[const {} = require("{}");]],
+      { d(2, util.repeat_node_segment, { 1 }, { user_args = { "/", "." } }), i(1, "module") }
+    )
   ),
   s(
-    { trig = "fn" },
+    "fn",
     fmt(
       [[
         function {}({}) {{
@@ -34,7 +37,7 @@ return {
         }}
       ]],
       {
-        i(1, "myFunction"),
+        i(1, "function"),
         i(2, ""),
         d(3, util.saved_text, {}, { user_args = { { text = "// code", indent = true } } }),
       }
@@ -74,6 +77,20 @@ return {
     t { "", "}" },
   }),
   s(
+    "while",
+    fmt(
+      [[
+      while({}) {{
+      {}
+      }}
+      ]],
+      {
+        i(1, "condition"),
+        d(2, saved_text, {}, { user_args = { { indent = true } } }),
+      }
+    )
+  ),
+  s(
     "for",
     fmt(
       [[
@@ -111,5 +128,22 @@ return {
     d(3, util.recursive_if, {}),
     t { "", "}" },
   }),
+  s(
+    "try",
+    fmt(
+      [[
+      try {{
+      {}
+      catch ({}) {{
+        {}
+      }}
+      ]],
+      {
+        d(1, util.saved_text, {}, { user_args = { { indent = true } } }),
+        i(2, "err"),
+        i(3, "console.error(err)"),
+      }
+    )
+  ),
   s("log", fmt([[console.log({});]], i(1))),
 }

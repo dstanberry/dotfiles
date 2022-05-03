@@ -36,7 +36,7 @@ return {
     )
   ),
   s(
-    { trig = "req[uire]", regTrig = true },
+    { trig = "re[quire]", regTrig = true },
     fmt([[local {} = require("{}")]], {
       d(2, util.repeat_node_segment, { 1 }, { user_args = { "." } }),
       i(1, "mod"),

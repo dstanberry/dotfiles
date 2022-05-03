@@ -71,7 +71,7 @@ end
 
 return {
   s(
-    { trig = "imp[ort]", regTrig = true },
+    { trig = "im[port]", regTrig = true },
     fmt([[{}]], {
       c(1, {
         sn(nil, fmt([[import {}]], { i(1, "module-name") })),

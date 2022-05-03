@@ -50,7 +50,7 @@ return {
   s({ trig = "time" }, { p(os.date, "%H:%M") }),
   s({ trig = "lorem" }, c(1, generate_lorem(100))),
   s(
-    { trig = "(%d+)lorem", regTrig = true },
+    { trig = "(%d+)lorem", regTrig = true, wordTrig = false, hidden = true },
     f(function(_, snip)
       local lines = snip.captures[1]
       if not tonumber(lines) then
