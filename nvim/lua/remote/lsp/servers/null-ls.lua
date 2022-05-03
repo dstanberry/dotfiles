@@ -25,9 +25,9 @@ local sources = {
       return arguments
     end,
   },
+  null_ls.builtins.formatting.black,
   null_ls.builtins.formatting.shfmt.with { args = { "-i", "2", "-ci", "-sr", "-s", "-bn" } },
   null_ls.builtins.formatting.stylua,
-  null_ls.builtins.formatting.yapf,
 }
 
 M.setup = function(on_attached)
