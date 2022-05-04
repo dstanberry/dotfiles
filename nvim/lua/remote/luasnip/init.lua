@@ -9,6 +9,12 @@ local groups = require "ui.theme.groups"
 
 groups.new("LuasnipChoiceNodePassive", { guifg = nil, guibg = nil, gui = "bold", guisp = nil })
 
+luasnip.filetype_extend("javascript.jsx", { "javascript" })
+luasnip.filetype_extend("javascriptreact", { "javascript" })
+luasnip.filetype_extend("typescript", { "javascript" })
+luasnip.filetype_extend("typescript.tsx", { "javascript" })
+luasnip.filetype_extend("typescriptreact", { "javascript" })
+
 local M = setmetatable({}, {
   __index = function(t, k)
     if k == "extras" then
