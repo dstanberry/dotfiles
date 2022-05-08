@@ -91,7 +91,8 @@ M.apply = function(c)
 
   hi.NvimInternalError = { guifg = c.base08, guibg = c.base00, gui = "none", guisp = nil }
 
-  hi.NormalFloat = { guifg = c.base05, guibg = c.baseXX, gui = nil, guisp = nil }
+  -- hi.NormalFloat = { guifg = c.base05, guibg = c.baseXX, gui = nil, guisp = nil }
+  hi.NormalFloat = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
   hi.FloatBorder = { guifg = c.base07, guibg = c.base00, gui = nil, guisp = nil }
 
   hi.NormalNC = { guifg = c.base05, guibg = c.base00, gui = nil, guisp = nil }
