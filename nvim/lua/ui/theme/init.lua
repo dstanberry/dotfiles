@@ -14,7 +14,7 @@ M.setup = function(colors)
     colors = M.colorschemes[colors]
   end
   -- fallback to a safe theme if `colors` not found
-  M.colors = colors or M.colorschemes["base16-kdark"]
+  M.colors = colors or M.colorschemes["kdark"]
   groups.apply(M.colors)
 end
 

@@ -6,21 +6,24 @@ end
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 
-c.tree00 = "#73c1b9"
-c.tree01 = "#80d3dd"
-c.tree02 = "#9086a4"
-c.tree03 = "#bfafc4"
-c.tree04 = "#dec7d0"
-c.tree05 = "#e09696"
-c.tree06 = "#ffdca8"
 
-groups.new("TSRainbow1", { guifg = c.tree00, guibg = "none", gui = "none", guisp = nil })
-groups.new("TSRainbow2", { guifg = c.tree01, guibg = "none", gui = "none", guisp = nil })
-groups.new("TSRainbow3", { guifg = c.tree02, guibg = "none", gui = "none", guisp = nil })
-groups.new("TSRainbow4", { guifg = c.tree03, guibg = "none", gui = "none", guisp = nil })
-groups.new("TSRainbow5", { guifg = c.tree04, guibg = "none", gui = "none", guisp = nil })
-groups.new("TSRainbow6", { guifg = c.tree05, guibg = "none", gui = "none", guisp = nil })
-groups.new("TSRainbow7", { guifg = c.tree06, guibg = "none", gui = "none", guisp = nil })
+
+
+local CYAN = "#73c1b9"
+local CYAN_LIGHT = "#80d3dd"
+local PINK = "#dec7d0"
+local ORANGE = "#e09696"
+local YELLOW = "#ffdca8"
+local MAGENTA = "#9086a4"
+local MAGENTA_LIGHT = "#bfafc4"
+
+groups.new("TSRainbow1", { guifg = CYAN, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow2", { guifg = CYAN_LIGHT, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow3", { guifg = MAGENTA, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow4", { guifg = MAGENTA_LIGHT, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow5", { guifg = PINK, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow6", { guifg = ORANGE, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow7", { guifg = YELLOW, guibg = "none", gui = "none", guisp = nil })
 
 require("nvim-treesitter.configs").setup {
   ensure_installed = "all",
@@ -78,13 +81,13 @@ require("nvim-treesitter.configs").setup {
   rainbow = {
     enable = true,
     colors = {
-      c.tree00,
-      c.tree01,
-      c.tree02,
-      c.tree03,
-      c.tree04,
-      c.tree05,
-      c.tree06,
+      c.CYAN,
+      c.CYAN_LIGHT,
+      c.MAGENTA,
+      c.MAGENTA_LIGHT,
+      c.PINK,
+      c.ORANGE,
+      c.YELLOW,
     },
   },
   refactor = {

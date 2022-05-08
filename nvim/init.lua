@@ -67,7 +67,7 @@ vim.fn.mkdir(swap, "p")
 vim.fn.mkdir(undo, "p")
 vim.fn.mkdir(shada, "p")
 
-vim.cmd "colorscheme base16-kdark"
+vim.cmd "colorscheme kdark"
 
 util.reload("ui.statusline").setup()
 

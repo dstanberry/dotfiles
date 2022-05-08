@@ -7,8 +7,7 @@ end
 local c = require("ui.theme").colors
 
 hlargs.setup {
-  -- color = "#ef9062",
-  color = c.base16,
+  color = c.yellow_dark,
   excluded_filetypes = {},
   -- disable = function(lang, bufnr) -- If changed, `excluded_filetypes` will be ignored
   --   return vim.tbl_contains(opts.excluded_filetypes, lang)

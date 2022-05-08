@@ -94,6 +94,9 @@ cmp.setup.cmdline("/", {
 })
 
 cmp.setup.cmdline(":", {
+  completion = {
+    autocomplete = false,
+  },
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
     { name = "path" },
@@ -102,23 +105,23 @@ cmp.setup.cmdline(":", {
   }),
 })
 
-c.comp00 = color.lighten(c.base0D, 15)
-c.comp01 = color.lighten(c.base0D, 21)
-c.comp02 = color.lighten(c.base0E, 9)
-c.comp03 = color.darken(c.base0D, 35)
+local BLUE = color.lighten(c.blue, 15)
+local BLUE_LIGHT = color.lighten(c.blue, 21)
+local BLUE_DARK = color.darken(c.blue, 35)
+local MAGENTA = color.lighten(c.magenta, 9)
 
 groups.new("CmpItemAbbrDefault", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
 groups.new("CmpItemAbbrDeprecatedDefault", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
-groups.new("CmpItemAbbrMatchDefault", { guifg = c.comp00, guibg = nil, gui = "bold", guisp = nil })
-groups.new("CmpItemAbbrMatchFuzzyDefault", { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil })
+groups.new("CmpItemAbbrMatchDefault", { guifg = BLUE, guibg = nil, gui = "bold", guisp = nil })
+groups.new("CmpItemAbbrMatchFuzzyDefault", { guifg = c.orange, guibg = nil, gui = "bold", guisp = nil })
 
-groups.new("CmpItemMenu", { guifg = c.comp03, guibg = nil, gui = "none", guisp = nil })
-groups.new("CmpItemKindFunction", { guifg = c.comp02, guibg = nil, gui = "none", guisp = nil })
-groups.new("CmpItemKindKeyword", { guifg = c.comp01, guibg = nil, gui = "none", guisp = nil })
-groups.new("CmpItemKindMethod", { guifg = c.comp02, guibg = nil, gui = "none", guisp = nil })
-groups.new("CmpItemKindSnippet", { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemMenu", { guifg = BLUE_DARK, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindFunction", { guifg = MAGENTA, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindKeyword", { guifg = BLUE_LIGHT, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindMethod", { guifg = MAGENTA, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindSnippet", { guifg = c.blue_dark, guibg = nil, gui = "none", guisp = nil })
 groups.new("CmpItemKindText", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
-groups.new("CmpItemKindVariable", { guifg = c.comp01, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindVariable", { guifg = BLUE_LIGHT, guibg = nil, gui = "none", guisp = nil })
 
-groups.new("CmpBorder", { guifg = c.baseXX, guibg = c.baseXX, gui = nil, guisp = nil })
-groups.new("CmpFloat", { guifg = c.base04, guibg = c.baseXX, gui = nil, guisp = nil })
+groups.new("CmpBorder", { guifg = c.bg_dark, guibg = c.bg_dark, gui = nil, guisp = nil })
+groups.new("CmpFloat", { guifg = c.base04, guibg = c.bg_dark, gui = nil, guisp = nil })

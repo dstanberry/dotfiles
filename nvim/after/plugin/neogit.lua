@@ -32,4 +32,4 @@ vim.keymap.set("n", "<leader>gc", function()
   neogit.open { "commit" }
 end)
 
-groups.new("NeogitObjectId", { guifg = c.base0A, guibg = nil, gui = nil, guisp = nil })
+groups.new("NeogitObjectId", { guifg = c.yellow, guibg = nil, gui = nil, guisp = nil })

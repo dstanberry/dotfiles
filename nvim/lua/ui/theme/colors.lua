@@ -1,5 +1,5 @@
 local M = {}
 
-M['base16-kdark'] = require('ui.theme.colors.base16-kdark')
+M['kdark'] = require('ui.theme.colors.kdark')
 
 return M

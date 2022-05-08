@@ -31,7 +31,7 @@ local function plugins(use)
       local c = require("ui.theme").colors
       local groups = require "ui.theme.groups"
 
-      groups.new("IncSearch", { guifg = c.base01, guibg = c.base0A, gui = "none", guisp = nil })
+      groups.new("IncSearch", { guifg = c.bg_light, guibg = c.yellow, gui = "none", guisp = nil })
 
       vim.g.LoupeClearHighlightMap = 0
       vim.g.LoupeVeryMagic = 0
