@@ -13,33 +13,35 @@ cmp.setup {
     ghost_text = true,
   },
   formatting = {
+    fields = { "kind", "abbr", "menu" },
     format = function(_, item)
+      item.menu = item.kind
       item.kind = ({
-        Class = " (class)",
-        Color = " (color)",
-        Constant = " (constant)",
-        Constructor = " (constructor)",
-        Enum = " (enum)",
-        EnumMember = " (enum member)",
-        Event = " (event)",
-        Field = "陋 (field)",
-        File = " (file)",
-        Folder = " (folder)",
-        Function = " (function)",
-        Interface = " (interface)",
-        Keyword = " (keyword)",
-        Method = " (method)",
-        Module = " (module)",
-        Operator = " (operator)",
-        Property = " (property)",
-        Reference = " (reference)",
-        Snippet = " (snippet)",
-        Struct = " (struct)",
-        Text = " (text)",
-        TypeParameter = " (type parameter)",
-        Unit = " (unit)",
-        Value = " (value)",
-        Variable = "勞 (variable)",
+        Class = "",
+        Color = "",
+        Constant = "",
+        Constructor = "",
+        Enum = "",
+        EnumMember = "",
+        Event = "",
+        Field = "陋",
+        File = "",
+        Folder = "",
+        Function = "",
+        Interface = "",
+        Keyword = "",
+        Method = "",
+        Module = "",
+        Operator = "",
+        Property = "",
+        Reference = "",
+        Snippet = "",
+        Struct = "",
+        Text = "",
+        TypeParameter = "",
+        Unit = "",
+        Value = "",
+        Variable = "勞",
       })[item.kind]
       return item
     end,
@@ -65,9 +67,18 @@ cmp.setup {
     { name = "path" },
     { name = "buffer", keyword_length = 5, max_item_count = 5 },
   },
+  view = {
+    entries = { name = "custom", selection_order = "near_cursor" },
+  },
   window = {
-    -- completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
+    completion = {
+      border = "single",
+      winhighlight = "Normal:CmpBorder,FloatBorder:CmpBorder,CursorLine:PmenuSel,Search:None",
+    },
+    documentation = {
+      border = "single",
+      winhighlight = "NormalFloat:CmpFloat,FloatBorder:CmpBorder",
+    },
   },
 }
 
@@ -94,17 +105,20 @@ cmp.setup.cmdline(":", {
 c.comp00 = color.lighten(c.base0D, 15)
 c.comp01 = color.lighten(c.base0D, 21)
 c.comp02 = color.lighten(c.base0E, 9)
+c.comp03 = color.darken(c.base0D, 35)
 
 groups.new("CmpItemAbbrDefault", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
 groups.new("CmpItemAbbrDeprecatedDefault", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
 groups.new("CmpItemAbbrMatchDefault", { guifg = c.comp00, guibg = nil, gui = "bold", guisp = nil })
 groups.new("CmpItemAbbrMatchFuzzyDefault", { guifg = c.base09, guibg = nil, gui = "bold", guisp = nil })
-groups.new("CmpItemItemDefault", { guifg = c.base0C, guibg = nil, gui = "none", guisp = nil })
-groups.new("CmpItemItemMenuDefault", { guifg = c.base10, guibg = nil, gui = "none", guisp = nil })
 
+groups.new("CmpItemMenu", { guifg = c.comp03, guibg = nil, gui = "none", guisp = nil })
 groups.new("CmpItemKindFunction", { guifg = c.comp02, guibg = nil, gui = "none", guisp = nil })
-groups.new("CmpItemKindMethod", { guifg = c.comp02, guibg = nil, gui = "none", guisp = nil })
-groups.new("CmpItemKindSnippet", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
-groups.new("CmpItemKindVariable", { guifg = c.comp01, guibg = nil, gui = "none", guisp = nil })
 groups.new("CmpItemKindKeyword", { guifg = c.comp01, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindMethod", { guifg = c.comp02, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindSnippet", { guifg = c.base0F, guibg = nil, gui = "none", guisp = nil })
 groups.new("CmpItemKindText", { guifg = c.base04, guibg = nil, gui = "none", guisp = nil })
+groups.new("CmpItemKindVariable", { guifg = c.comp01, guibg = nil, gui = "none", guisp = nil })
+
+groups.new("CmpBorder", { guifg = c.baseXX, guibg = c.baseXX, gui = nil, guisp = nil })
+groups.new("CmpFloat", { guifg = c.base04, guibg = c.baseXX, gui = nil, guisp = nil })
