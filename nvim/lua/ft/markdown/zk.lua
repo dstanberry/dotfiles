@@ -107,7 +107,7 @@ M.list = function(options)
   end
   zk.list(options, function(notes)
     telescope.pickers.create("ivy", notes, {
-      title = string.format([[\ Notes %s/]], tags),
+      title = string.format("Notes %s", tags),
       previewer = previewers.new_buffer_previewer {
         define_preview = function(self, entry)
           vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, vim.split(entry.value.rawContent, "\n"))
