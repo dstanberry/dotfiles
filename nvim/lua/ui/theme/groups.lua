@@ -63,7 +63,7 @@ M.apply = function(c)
   hi.SignColumn = { guifg = c.gray_light, guibg = c.bg, gui = nil, guisp = nil }
   hi.StatusLine = { guifg = c.fg_dark, guibg = c.gray, gui = "none", guisp = nil }
   hi.StatusLineNC = { guifg = c.gray_light, guibg = c.gray, gui = "none", guisp = nil }
-  hi.VertSplit = { clear = true, guifg = c.cyan, guibg = "none", gui = "none", guisp = nil }
+  hi.VertSplit = { clear = true, guifg = c.gray, guibg = "none", gui = "none", guisp = nil }
   hi.ColorColumn = { guifg = nil, guibg = c.bg_light, gui = "none", guisp = nil }
   hi.CursorColumn = { guifg = nil, guibg = c.bg_light, gui = "none", guisp = nil }
   hi.CursorLine = { guifg = nil, guibg = c.bg_light, gui = "none", guisp = nil }
