@@ -8,7 +8,7 @@ local M = {}
 M.find_notes = function()
   local opts
   opts = {
-    prompt_title = [[\ Notes /]],
+    prompt_title = "Notes",
     cwd = vim.g.zk_notebook,
     attach_mappings = function(bufnr, map)
       actions.select_default:replace(function()
