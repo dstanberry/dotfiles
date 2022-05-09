@@ -9,6 +9,8 @@ local groups = require "ui.theme.groups"
 
 groups.new("LuasnipChoiceNodePassive", { guifg = nil, guibg = nil, gui = "bold", guisp = nil })
 
+luasnip.filetype_extend("NeogitCommitMessage", { "gitcommit" })
+
 luasnip.filetype_extend("javascript.jsx", { "javascript" })
 luasnip.filetype_extend("javascriptreact", { "javascript" })
 luasnip.filetype_extend("typescript", { "javascript" })
