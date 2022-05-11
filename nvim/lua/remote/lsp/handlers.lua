@@ -4,6 +4,9 @@ if not ok then
   return
 end
 
+local c = require("ui.theme").colors
+local groups = require "ui.theme.groups"
+
 local M = {}
 
 M.on_attach = function(client, bufnr)
@@ -136,6 +139,35 @@ M.setup = function()
     vim.lsp.handlers["textDocument/references"] = telescope.lsp_references
     vim.lsp.handlers["textDocument/typeDefinition"] = telescope.lsp_definitions
     vim.lsp.handlers["workspace/symbol"] = telescope.lsp_workspace_symbols
+  end
+
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
+    groups.new("LspUnnecessary", { guifg = c.gray_lighter, guibg = nil, gui = "none", guisp = nil })
+
+    local bufnr = vim.uri_to_bufnr(result.uri)
+    if not bufnr then
+      return
+    end
+
+    local ns_unused = vim.api.nvim_create_namespace "unused"
+    vim.api.nvim_buf_clear_namespace(bufnr, ns_unused, 0, -1)
+    local real_diags = {}
+    for _, diag in pairs(result.diagnostics) do
+      if
+        diag.severity == vim.lsp.protocol.DiagnosticSeverity.Hint
+        and vim.tbl_contains(diag.tags, vim.lsp.protocol.DiagnosticTag.Unnecessary)
+      then
+        pcall(vim.api.nvim_buf_set_extmark, bufnr, ns_unused, diag.range.start.line, diag.range.start.character, {
+          end_row = diag.range["end"].line,
+          end_col = diag.range["end"].character,
+          hl_group = "LspUnnecessary",
+        })
+      else
+        table.insert(real_diags, diag)
+      end
+    end
+    result.diagnostics = real_diags
+    vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
   end
 end
 
