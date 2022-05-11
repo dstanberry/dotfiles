@@ -159,7 +159,7 @@ M.apply = function(c)
   hi.LspCodeLensSeparator = { clear = true, guifg = c.gray_lsp, guibg = nil, gui = "none", guisp = nil }
 
   -- lsp document highlighting
-  hi.LspReferenceText = { guifg = c.gray_darker, guibg = c.gray_light, gui = nil, guisp = nil }
+  hi.LspReferenceText = { guifg = c.gray_darker, guibg = c.yellow_dark, gui = nil, guisp = nil }
   hi.LspReferenceRead = { guifg = c.gray_darker, guibg = c.cyan_lsp, gui = nil, guisp = nil }
   hi.LspReferenceWrite = { guifg = c.gray_darker, guibg = c.orange, gui = nil, guisp = nil }
 
