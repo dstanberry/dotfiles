@@ -4,25 +4,25 @@ local M = {
   _callbackStore = _G.__UtilCallbackStore,
 }
 
-function M._create(key, callback)
+function M._create_callback(key, callback)
   M._callbackStore[key] = callback
 end
 
-function M._execute(id)
+function M._execute_callback(id)
   local func = M._callbackStore[id]
   if not (func and type(func) == "function") then
-    print("Function doest not exist: " .. id)
+    print("Function does not exist: " .. id)
   end
   return func()
 end
 
-function M.delegate(cb, expr)
+function M.add_callback(cb, expr)
   local key = tostring(cb)
-  M._create(key, cb)
+  M._create_callback(key, cb)
   if expr then
-    return ([[luaeval('require("util")._execute("%s")')]]):format(key)
+    return ([[luaeval('require("util")._execute_callback("%s")')]]):format(key)
   end
-  return ([[lua require("util")._execute("%s")]]):format(key)
+  return ([[lua require("util")._execute_callback("%s")]]):format(key)
 end
 
 function M.get_module_name(file)
