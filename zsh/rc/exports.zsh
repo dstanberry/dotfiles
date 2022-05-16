@@ -90,7 +90,6 @@ if hash fzf 2> /dev/null; then
     --scroll-off=3
     --bind=ctrl-d:preview-down
     --bind=ctrl-f:preview-up
-    --bind=q:abort
     --color=dark
     --color=fg:#bebebe,bg:-1,hl:#93b379
     --color=fg+:#dfe3ec,bg+:-1,hl+:#93b379
