@@ -153,6 +153,9 @@ M.setup = function()
     vim.api.nvim_buf_clear_namespace(bufnr, ns_unused, 0, -1)
     local real_diags = {}
     for _, diag in pairs(result.diagnostics) do
+      if diag.tags == nil then
+        diag.tags = {}
+      end
       if
         diag.severity == vim.lsp.protocol.DiagnosticSeverity.Hint
         and vim.tbl_contains(diag.tags, vim.lsp.protocol.DiagnosticTag.Unnecessary)
