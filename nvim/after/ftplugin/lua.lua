@@ -1,7 +1,7 @@
 local dir_separator = function()
   if package.config then
     return string.match(package.config, "^[^\n]")
-  elseif vim.fn.has "win32" == 1 then
+  elseif has "win32" then
     return "\\"
   else
     return "/"
