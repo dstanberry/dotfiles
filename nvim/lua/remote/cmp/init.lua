@@ -7,6 +7,7 @@ end
 local c = require("ui.theme").colors
 local color = require "util.color"
 local groups = require "ui.theme.groups"
+local icons = require "ui.icons"
 
 cmp.setup {
   experimental = {
@@ -16,33 +17,7 @@ cmp.setup {
     fields = { "kind", "abbr", "menu" },
     format = function(_, item)
       item.menu = item.kind
-      item.kind = ({
-        Class = "",
-        Color = "",
-        Constant = "",
-        Constructor = "",
-        Enum = "",
-        EnumMember = "",
-        Event = "",
-        Field = "陋",
-        File = "",
-        Folder = "",
-        Function = "",
-        Interface = "",
-        Keyword = "",
-        Method = "",
-        Module = "",
-        Operator = "",
-        Property = "",
-        Reference = "",
-        Snippet = "",
-        Struct = "",
-        Text = "",
-        TypeParameter = "",
-        Unit = "",
-        Value = "",
-        Variable = "勞",
-      })[item.kind]
+      item.kind = icons[item.kind]
       return item
     end,
   },
