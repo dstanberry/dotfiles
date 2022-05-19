@@ -124,8 +124,8 @@ vim.opt.showcmd = false
 vim.opt.showmode = false
 -- show matching braces
 vim.opt.showmatch = true
--- hide the tabline
-vim.opt.showtabline = 0
+-- show the tabline
+vim.opt.showtabline = 2
 -- columns: begin scrolling before reaching viewport boundary
 vim.opt.sidescrolloff = 3
 -- make search case sensitive if expression contains a capital letter
