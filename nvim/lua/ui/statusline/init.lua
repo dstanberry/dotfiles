@@ -17,17 +17,17 @@ end
 
 local function add(highlight, items, join)
   local out = ""
-  join = join or nil
+  local sep = join and "" or " "
   for _, item in pairs(items) do
     if item ~= "" then
       if out == "" then
         out = item
       else
-        out = join and string.format("%s%s", out, item) or string.format("%s %s", out, item)
+        out = string.format("%s%s%s", out, sep, item)
       end
     end
   end
-  return join and string.format("%s%s", highlight, out) or string.format("%s%s ", highlight, out)
+  return string.format("%s%s%s", highlight, out, sep)
 end
 
 local function collapse_diag(hl, prefix, count)
