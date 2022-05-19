@@ -131,6 +131,12 @@ local function plugins(use)
   use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   use { "lukas-reineke/indent-blankline.nvim" }
   use { "rcarriga/nvim-notify" }
+  use {
+    "stevearc/aerial.nvim",
+    config = function()
+      require "remote.aerial"
+    end,
+  }
 
   -- path and file navigation
   use {
