@@ -51,10 +51,6 @@ M.setup = function()
       elseif key == "sumneko_lua" then
         extends[key] = { on_attach = require(mod).on_attach }
       elseif key == "zk" then
-        local configs = require "lspconfig.configs"
-        configs.zk = { default_config = config }
-        configs.zk.index = require(mod).index
-        configs.zk.new = require(mod).new
         extends[key] = { on_attach = require(mod).on_attach }
       end
       servers = vim.tbl_deep_extend("force", servers, { [key] = config })
