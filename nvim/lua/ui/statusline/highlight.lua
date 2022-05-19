@@ -1,7 +1,10 @@
+local c = require("ui.theme").colors
+local groups = require "ui.theme.groups"
+
 local M = {}
 
-local function sanitize(mode)
-  return "%#" .. mode .. "#"
+local function sanitize(group)
+  return "%#" .. group .. "#"
 end
 
 local modes = setmetatable({
@@ -38,6 +41,7 @@ M.mode = function(m)
 end
 
 M.segment = "%="
+M.reset = "%*"
 
 M.statusline = sanitize "StatusLine"
 M.statuslinenc = sanitize "StatusLine"
@@ -65,5 +69,9 @@ M.lsp_error = sanitize "DiagnosticStatusError"
 M.lsp_warn = sanitize "DiagnosticStatusWarn"
 M.lsp_info = sanitize "DiagnosticStatusInfo"
 M.lsp_hint = sanitize "DiagnosticStatusHint"
+
+M.winbarNormal = sanitize "WinbarNormal"
+
+groups.new("WinbarNormal", { guifg = c.green, guibg = c.gray, gui = nil, guisp = nil })
 
 return M

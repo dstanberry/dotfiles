@@ -70,6 +70,7 @@ vim.fn.mkdir(shada, "p")
 vim.cmd "colorscheme kdark"
 
 util.reload("ui.statusline").setup()
+util.reload("ui.statusline.winbar").setup()
 
 require "util.globals"
 

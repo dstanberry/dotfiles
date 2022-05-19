@@ -3,6 +3,8 @@ local hi = require "ui.statusline.highlight"
 local lsp = require "ui.statusline.lsp"
 local views = require "ui.statusline.views"
 
+local add = require("ui.statusline.helper").add
+
 local function contains(haystack, value)
   local found = false
   for _, v in pairs(haystack) do
@@ -13,21 +15,6 @@ local function contains(haystack, value)
     end
   end
   return found
-end
-
-local function add(highlight, items, join)
-  local out = ""
-  local sep = join and "" or " "
-  for _, item in pairs(items) do
-    if item ~= "" then
-      if out == "" then
-        out = item
-      else
-        out = string.format("%s%s%s", out, sep, item)
-      end
-    end
-  end
-  return string.format("%s%s%s", highlight, out, sep)
 end
 
 local function collapse_diag(hl, prefix, count)
