@@ -17,14 +17,18 @@ diffview.setup {
     fold_open = "",
   },
   file_panel = {
-    position = "bottom",
-    width = 35,
-    height = 10,
+    win_config = {
+      position = "bottom",
+      width = 35,
+      height = 10,
+    },
   },
   file_history_panel = {
-    position = "bottom",
-    width = 35,
-    height = 16,
+    win_config = {
+      position = "bottom",
+      width = 35,
+      height = 16,
+    },
     log_options = {
       max_count = 256,
       follow = false,
