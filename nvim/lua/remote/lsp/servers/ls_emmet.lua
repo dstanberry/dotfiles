@@ -1,11 +1,6 @@
--- verify lspconfig is available
-local ok, configs = pcall(require, "lspconfig.configs")
-if not ok then
-  return
-end
+local M = {}
 
-configs.ls_emmet = {
-  default_config = {
+M.config = {
     cmd = { "ls_emmet", "--stdio" },
     filetypes = {
       "css",
@@ -23,7 +18,6 @@ configs.ls_emmet = {
       return vim.loop.cwd()
     end,
     settings = {},
-  },
 }
 
-return {}
+return M

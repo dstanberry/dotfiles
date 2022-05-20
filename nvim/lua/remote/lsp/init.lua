@@ -30,7 +30,12 @@ M.setup = function()
       local mod = util.get_module_name(file)
       local key = (mod):match "[^%.]*$"
       local config = require(mod).config or {}
-      if key == "null-ls" then
+      if key == "ls_emmet" then
+        local configs = require "lspconfig.configs"
+        if not configs.ls_emmet then
+          configs.ls_emmet = { default_config = config }
+        end
+      elseif key == "null-ls" then
         require(mod).setup(on_attach_nvim)
         do
           break
