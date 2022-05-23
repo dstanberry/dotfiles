@@ -5,15 +5,17 @@ local add = require("ui.statusline.helper").add
 
 local M = {}
 
-gps.setup {
-  icons = {
-    ["class-name"] = " ",
-    ["function-name"] = " ",
-    ["method-name"] = " ",
-    ["container-name"] = " ",
-    ["tag-name"] = " ",
-  },
-}
+if ok then
+  gps.setup {
+    icons = {
+      ["class-name"] = " ",
+      ["function-name"] = " ",
+      ["method-name"] = " ",
+      ["container-name"] = " ",
+      ["tag-name"] = " ",
+    },
+  }
+end
 
 M.focus = function()
   if not ok or vim.api.nvim_eval_statusline("%f", {})["str"] == "[No Name]" then
