@@ -76,13 +76,14 @@ M.filepath = function(bufnr)
   return vim.fn.fnamemodify(name, "%:p")
 end
 
-M.relpath = function(bufnr)
+M.relpath = function(bufnr, maxlen)
   local name = vim.fn.bufname(bufnr)
   local path = vim.fn.fnamemodify(name, ":~:.:h:p")
+  maxlen = maxlen or 60
   if path == "" or path == "." then
     return ""
   else
-    local maxlen = math.min(40, math.floor(0.6 * vim.fn.winwidth(0)))
+    maxlen = math.min(maxlen, math.floor(0.8 * vim.fn.winwidth(0)))
     path = path:gsub("/$", "") .. path_separator()
     if (#path + #M.filename(bufnr)) > maxlen then
       path = vim.fn.pathshorten(path)
@@ -124,7 +125,8 @@ end
 
 M.git_branch = function(bufnr)
   local name = vim.fn.bufname(bufnr)
-  local icon = " "
+  -- local icon = " "
+  local icon = " "
   local ok, branch
   if GIT_ENABLED then
     if has_plenary then

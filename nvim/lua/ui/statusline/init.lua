@@ -29,7 +29,7 @@ local function default(state, bufnr)
     return table.concat {
       add(mode_hl, { data.mode() }),
       add(mode_hl, { data.git_branch(bufnr) }),
-      add(hi.user1, { data.relpath(bufnr) }, true),
+      -- add(hi.user1, { data.relpath(bufnr) }, true),
       add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
       -- add(hi.user3, { lsp.get_messages(bufnr) }, true),
