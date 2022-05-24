@@ -78,6 +78,20 @@ function M.load_dirhash(s)
   end
 end
 
+function M.load_settings()
+  local file = vim.fn.stdpath "config" .. "/settings.conf"
+  local f = io.open(file, "rb")
+  if f then
+    f:close()
+    for line in io.lines(file) do
+      local parts = vim.split(line, "=")
+      local l = vim.trim(parts[1])
+      local r = tonumber(parts[2])
+      vim.g["config_" .. l] = r
+    end
+  end
+end
+
 function M.reload(name)
   local ok, r = pcall(require, "plenary.reload")
   if ok then

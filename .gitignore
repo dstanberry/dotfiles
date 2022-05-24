@@ -40,6 +40,7 @@ libfm/
 lnav/
 nitrogen/
 npm/
+nvim/settings.conf
 nvim/lua/remote/packer_compiled.lua
 okularpartrc
 okularrc

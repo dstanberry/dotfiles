@@ -69,15 +69,17 @@ vim.fn.mkdir(shada, "p")
 
 vim.cmd "colorscheme kdark"
 
-util.reload("ui.statusline").setup()
-util.reload("ui.statusline.winbar").setup()
-
 require "util.globals"
 
 vim.defer_fn(function()
   util.load_dirhash(vim.env.SHELL)
-  if vim.fn.filereadable(vim.fn.expand "~/.hushremote") == 0 then
+  util.load_settings()
+
+  if setting_enabled "remote_plugins" then
     pcall(require, "remote")
     pcall(require, "remote.packer_compiled")
   end
+
+  reload("ui.statusline").setup()
+  reload("ui.statusline.winbar").setup()
 end, 0)

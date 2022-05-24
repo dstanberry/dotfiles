@@ -1,10 +1,6 @@
 local has_plenary, Job = pcall(require, "plenary.job")
 
-local GIT_ENABLED = true
-
-if vim.fn.filereadable(vim.fn.expand "~/.hushgit") == 1 then
-  GIT_ENABLED = false
-end
+local GIT_ENABLED = setting_enabled "git"
 
 local paste = function()
   local result = ""
