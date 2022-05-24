@@ -86,7 +86,7 @@ _G.reload = require("util").reload
 _G.setting_enabled = function(setting)
   local var = "config_" .. setting
   if vim.g[var] == nil then
-    return false
+    return true
   end
   return vim.g[var] == 1
 end

@@ -71,15 +71,15 @@ vim.cmd "colorscheme kdark"
 
 require "util.globals"
 
-vim.defer_fn(function()
-  util.load_dirhash(vim.env.SHELL)
-  util.load_settings()
+util.load_dirhash(vim.env.SHELL)
+util.load_settings()
 
+reload("ui.statusline").setup()
+reload("ui.statusline.winbar").setup()
+
+vim.defer_fn(function()
   if setting_enabled "remote_plugins" then
     pcall(require, "remote")
     pcall(require, "remote.packer_compiled")
   end
-
-  reload("ui.statusline").setup()
-  reload("ui.statusline.winbar").setup()
 end, 0)
