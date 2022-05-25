@@ -21,6 +21,10 @@ local function collapse_diag(hl, prefix, count)
   return count > 0 and string.format("%s%s%s", hl, prefix, count) or ""
 end
 
+local function spacing()
+  return add(hi.custom0, {""})
+end
+
 local function default(state, bufnr)
   local mode = vim.fn.mode()
   local mode_hl = hi.mode(mode)
@@ -29,18 +33,23 @@ local function default(state, bufnr)
     return table.concat {
       add(mode_hl, { data.mode() }),
       add(mode_hl, { data.git_branch(bufnr) }),
+      add(hi.custom0, { vim.b.gitsigns_status }),
+      spacing(),
       -- add(hi.user1, { data.relpath(bufnr) }, true),
-      add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
+      -- add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
+      add(hi.custom0, {
+        hi.custom0, " ", diagnostics.error,
+        hi.custom0, "  ", diagnostics.warn,
+        collapse_diag(hi.lsp_hint, "  ", diagnostics.hint),
+        collapse_diag(hi.lsp_info, "  ", diagnostics.info),
+      }, true),
+      spacing(),
       hi.segment,
       -- add(hi.user3, { lsp.get_messages(bufnr) }, true),
-      add(hi.custom0, {
-        collapse_diag(hi.lsp_error, " ", diagnostics.error),
-        collapse_diag(hi.lsp_warn, " ", diagnostics.warn),
-        collapse_diag(hi.lsp_hint, " ", diagnostics.hint),
-        collapse_diag(hi.lsp_info, " ", diagnostics.info),
-      }),
-      add(hi.custom00, { data.readonly(bufnr), data.metadata(bufnr) }),
-      add(mode_hl, { data.filetype(bufnr) }),
+      add(hi.custom0, { data.readonly(bufnr), data.metadata(bufnr) }),
+      spacing(),
+      add(hi.custom0, { data.filetype(bufnr) }),
+      spacing(),
       add(hi.user4, { " ", data.line_number(), data.column_number() }),
     }
   else

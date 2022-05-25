@@ -63,8 +63,9 @@ M.filetype = function(bufnr)
   local ext = vim.fn.fnamemodify(fn, ":e")
   local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
   local type = #ext > 0 and ext or ft
-  local icon = M.file_icon(fn, type)
-  return string.format("%s %s", icon, ft)
+  -- local icon = M.file_icon(fn, type)
+  -- return string.format("%s %s", icon, ft)
+  return string.format("%s", ft)
 end
 
 M.filepath = function(bufnr)
@@ -96,7 +97,7 @@ M.metadata = function(bufnr)
   if #format > 0 and format ~= "unix" then
     lhs = format
   end
-  if #encoding > 0 and encoding ~= "utf-8" then
+  if #encoding > 0 then
     rhs = encoding
   end
   if #lhs > 0 and #rhs > 0 then
