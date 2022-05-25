@@ -1,39 +1,10 @@
-local ok, gps = pcall(require, "nvim-gps")
-
 local hi = require "ui.statusline.highlight"
 local add = require("ui.statusline.helper").add
 local data = require "ui.statusline.data"
 local icons = require "ui.icons"
+local gps = require "remote.gps"
 
 local M = {}
-
-if ok then
-  gps.setup {
-    icons = {
-      ["class-name"] = pad(icons.kind.Class, "right"),
-      ["function-name"] = pad(icons.kind.Function, "right"),
-      ["method-name"] = pad(icons.kind.Function, "right"),
-      ["container-name"] = pad(icons.type.Object, "right"),
-      ["tag-name"] = pad(icons.misc.Tag, "right"),
-      ["mapping-name"] = pad(icons.type.Object, "right"),
-      ["sequence-name"] = pad(icons.type.Array, "right"),
-      ["null-name"] = pad(icons.kind.Field, "right"),
-      ["boolean-name"] = pad(icons.type.Boolean, "right"),
-      ["integer-name"] = pad(icons.type.Number, "right"),
-      ["float-name"] = pad(icons.type.Number, "right"),
-      ["string-name"] = pad(icons.type.String, "right"),
-      ["array-name"] = pad(icons.type.Array, "right"),
-      ["object-name"] = pad(icons.type.Object, "right"),
-      ["number-name"] = pad(icons.type.Number, "right"),
-      ["table-name"] = pad(icons.misc.Table, "right"),
-      ["date-name"] = pad(icons.misc.Calendar, "right"),
-      ["date-time-name"] = pad(icons.misc.Table, "right"),
-      ["inline-table-name"] = pad(icons.type.Object, "right"),
-      ["time-name"] = pad(icons.misc.Watch, "right"),
-      ["module-name"] = pad(icons.kind.Module, "right"),
-    },
-  }
-end
 
 local separator = pad(icons.misc.ChevronRight, "right")
 
@@ -69,7 +40,7 @@ local get_filepath = function()
 end
 
 local get_symbols = function()
-  if not ok or (gps and not gps.is_available()) then
+  if not gps.is_available() then
     return ""
   end
 
