@@ -18,6 +18,7 @@ signs.setup {
   numhl = false,
   update_debounce = 1000,
   current_line_blame = false,
+  current_line_blame_formatter = " <author>, <author_time:%R>",
   current_line_blame_opts = {
     virt_text = true,
     virt_text_pos = "eol",
