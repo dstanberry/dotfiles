@@ -43,6 +43,11 @@ end
 M.segment = "%="
 M.reset = "%*"
 
+M.lsp_error = sanitize "DiagnosticStatusError"
+M.lsp_warn = sanitize "DiagnosticStatusWarn"
+M.lsp_info = sanitize "DiagnosticStatusInfo"
+M.lsp_hint = sanitize "DiagnosticStatusHint"
+
 M.statusline = sanitize "StatusLine"
 M.statuslinenc = sanitize "StatusLine"
 
@@ -65,9 +70,8 @@ M.custom4 = sanitize "Custom4"
 M.custom5 = sanitize "Custom5"
 M.custom6 = sanitize "Custom6"
 
-M.lsp_error = sanitize "DiagnosticStatusError"
-M.lsp_warn = sanitize "DiagnosticStatusWarn"
-M.lsp_info = sanitize "DiagnosticStatusInfo"
-M.lsp_hint = sanitize "DiagnosticStatusHint"
+M.winbar = sanitize "Winbar"
+M.winbar_icon = sanitize "WinbarIcon"
+M.winbarnc = sanitize "WinbarNC"
 
 return M

@@ -40,9 +40,9 @@ local get_filepath = function()
   for _, s in ipairs(parts) do
     if #s > 0 then
       if #segments == 0 then
-        section = add(hi.custom0, { " " .. s })
+        section = add(hi.winbar, { " " .. s })
       else
-        section = add(hi.custom0, { s })
+        section = add(hi.winbar, { s })
       end
       table.insert(segments, section)
     end
@@ -69,11 +69,11 @@ local get_symbols = function()
 
   for _, symbol in ipairs(symbols) do
     if #segments == 0 then
-      section = add(hi.custom0, { separator }, true)
-        .. add(hi.custom2, { symbol.icon }, true)
-        .. add(hi.custom0, { symbol.text })
+      section = add(hi.winbar, { separator }, true)
+        .. add(hi.winbar_icon, { symbol.icon }, true)
+        .. add(hi.winbar, { symbol.text })
     else
-      section = add(hi.custom2, { symbol.icon }, true) .. add(hi.custom0, { symbol.text })
+      section = add(hi.winbar_icon, { symbol.icon }, true) .. add(hi.winbar, { symbol.text })
     end
     table.insert(segments, section)
   end

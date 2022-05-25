@@ -71,9 +71,9 @@ M.apply = function(c)
   hi.QuickFixLine = { guifg = c.bg_light, guibg = c.yellow, gui = "none", guisp = nil }
   hi.PMenu = { guifg = c.fg, guibg = c.gray_darker, gui = "none", guisp = nil }
   hi.PMenuSel = { guifg = c.bg_light, guibg = c.blue_dark, gui = nil, guisp = nil }
-  hi.TabLine = { guifg = c.gray_light, guibg = c.gray_darker, gui = "none", guisp = nil }
-  hi.TabLineFill = { guifg = c.gray_light, guibg = c.bg_dark, gui = "none", guisp = nil }
-  hi.TabLineSel = { guifg = c.fg, guibg = c.bg, gui = "bold", guisp = nil }
+  hi.TabLine = { guifg = c.gray_light, guibg = c.bg, gui = "none", guisp = nil }
+  hi.TabLineFill = { guifg = c.gray_light, guibg = c.bg, gui = "none", guisp = nil }
+  hi.TabLineSel = { guifg = c.fg, guibg = c.bg_dark, gui = "bold", guisp = nil }
 
   hi.NvimInternalError = { guifg = c.red, guibg = c.bg, gui = "none", guisp = nil }
 
@@ -267,6 +267,11 @@ M.apply = function(c)
   hi.Custom6 = { guifg = c.orange, guibg = c.gray, gui = "none", guisp = nil }
 
   vim.wo.winhighlight = "SpecialKey:SpecialKeyWin"
+
+  -- statusline highlighting
+  hi.Winbar = { guifg = c.gray_light, guibg = c.bg, gui = "none", guisp = nil }
+  hi.WinbarIcon = { guifg = c.blue_dark, guibg = c.bg, gui = "none", guisp = nil }
+  hi.WinbarNC = { guifg = nil, guibg = c.bg, gui = "none", guisp = nil }
 
   -- ensure termguicolors is set (likely redundant)
   vim.opt.termguicolors = true
