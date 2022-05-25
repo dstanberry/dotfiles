@@ -33,4 +33,6 @@ vim.keymap.set("n", "<leader>gc", function()
   neogit.open { "commit" }
 end)
 
+groups.new("NeogitHunkHeader", { guifg = nil, guibg = c.bg_light, gui = nil, guisp = nil })
+groups.new("NeogitHunkHeaderHighlight", { guifg = c.blue, guibg = c.bg_light, gui = nil, guisp = nil })
 groups.new("NeogitObjectId", { guifg = c.yellow, guibg = nil, gui = nil, guisp = nil })
