@@ -268,7 +268,7 @@ M.apply = function(c)
 
   vim.wo.winhighlight = "SpecialKey:SpecialKeyWin"
 
-  -- statusline highlighting
+  -- winbar highlighting
   hi.Winbar = { guifg = c.gray_light, guibg = c.bg, gui = "none", guisp = nil }
   hi.WinbarIcon = { guifg = c.blue_dark, guibg = c.bg, gui = "none", guisp = nil }
   hi.WinbarNC = { guifg = nil, guibg = c.bg, gui = "none", guisp = nil }
