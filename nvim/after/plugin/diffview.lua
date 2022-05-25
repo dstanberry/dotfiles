@@ -4,17 +4,19 @@ if not ok then
   return
 end
 
+local icons = require "ui.icons"
+
 diffview.setup {
   diff_binaries = false,
   use_icons = true,
   enhanced_diff_hl = true,
   icons = {
-    folder_closed = " ",
-    folder_open = " ",
+    folder_closed = pad(icons.documents.FolderClosed, "right"),
+    folder_open = pad(icons.documents.FolderClosed, "right"),
   },
   signs = {
-    fold_closed = "",
-    fold_open = "",
+    fold_closed = icons.misc.FoldClosed,
+    fold_open = icons.misc.FoldOpened,
   },
   file_panel = {
     win_config = {

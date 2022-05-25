@@ -5,6 +5,7 @@ if not ok then
 end
 
 local util = require "util"
+local icons = require "ui.icons"
 
 local M = setmetatable({}, {
   __index = function(t, k)
@@ -21,13 +22,13 @@ M.setup = function()
   dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
 
   vim.fn.sign_define("DapBreakpoint", {
-    text = "",
+    text = icons.misc.Bug,
     texthl = "DiagnosticSignError",
     linehl = "",
     numhl = "",
   })
   vim.fn.sign_define("DapStopped", {
-    text = "",
+    text = icons.misc.RightArrow,
     texthl = "DiagnosticSignWarn",
     linehl = "IncSearch",
     numhl = "",

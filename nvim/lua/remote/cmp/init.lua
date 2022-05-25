@@ -17,7 +17,7 @@ cmp.setup {
     fields = { "kind", "abbr", "menu" },
     format = function(_, item)
       item.menu = item.kind
-      item.kind = icons[item.kind]
+      item.kind = icons.kind[item.kind]
       return item
     end,
   },

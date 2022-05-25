@@ -2,8 +2,8 @@ local data = require "ui.statusline.data"
 local hi = require "ui.statusline.highlight"
 local lsp = require "ui.statusline.lsp"
 local views = require "ui.statusline.views"
-
 local add = require("ui.statusline.helper").add
+local icons = require "ui.icons"
 
 local function contains(haystack, value)
   local found = false
@@ -17,12 +17,8 @@ local function contains(haystack, value)
   return found
 end
 
-local function collapse_diag(hl, prefix, count)
-  return count > 0 and string.format("%s%s%s", hl, prefix, count) or ""
-end
-
 local function spacing()
-  return add(hi.custom0, {""})
+  return add(hi.custom0, { "" })
 end
 
 local function default(state, bufnr)
@@ -38,10 +34,12 @@ local function default(state, bufnr)
       -- add(hi.user1, { data.relpath(bufnr) }, true),
       -- add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
       add(hi.custom0, {
-        hi.custom0, " ", diagnostics.error,
-        hi.custom0, "  ", diagnostics.warn,
-        collapse_diag(hi.lsp_hint, "  ", diagnostics.hint),
-        collapse_diag(hi.lsp_info, "  ", diagnostics.info),
+        hi.custom0,
+        pad(icons.status.Error, "right"),
+        diagnostics.error,
+        hi.custom0,
+        pad(icons.status.Warn, "both"),
+        diagnostics.warn,
       }, true),
       spacing(),
       hi.segment,

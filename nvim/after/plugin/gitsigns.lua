@@ -6,19 +6,20 @@ end
 
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
+local icons = require "ui.icons"
 
 signs.setup {
   signs = {
-    add = { hl = "GitSignsAdd", text = "│" },
-    change = { hl = "GitSignsChange", text = "│" },
-    delete = { hl = "GitSignsDelete", text = "▸" },
-    topdelete = { hl = "GitSignsDelete", text = "▾" },
-    changedelete = { hl = "GitSignsDelete", text = "▍" },
+    add = { hl = "GitSignsAdd", text = icons.misc.VerticalBarThin },
+    change = { hl = "GitSignsChange", text = icons.misc.VerticalBarThin },
+    delete = { hl = "GitSignsDelete", text = icons.misc.CaretRight },
+    topdelete = { hl = "GitSignsDelete", text = icons.misc.CaretRight },
+    changedelete = { hl = "GitSignsDelete", text = icons.misc.VerticalBar },
   },
   numhl = false,
   update_debounce = 1000,
   current_line_blame = false,
-  current_line_blame_formatter = " <author>, <author_time:%R>",
+  current_line_blame_formatter = icons.git.Commit .. " <author>, <author_time:%R>",
   current_line_blame_opts = {
     virt_text = true,
     virt_text_pos = "eol",

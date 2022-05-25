@@ -6,6 +6,7 @@ end
 
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
+local icons = require "ui.icons"
 
 neogit.setup {
   disable_commit_confirmation = true,
@@ -16,8 +17,8 @@ neogit.setup {
   },
   signs = {
     hunk = { "", "" },
-    item = { "", "" },
-    section = { "", "" },
+    item = { icons.misc.FoldClosed, icons.misc.FoldOpened },
+    section = { icons.misc.FoldClosed, icons.misc.FoldOpened },
   },
   integrations = {
     diffview = true,

@@ -4,6 +4,8 @@ if not ok then
   return
 end
 
+local icons = require "ui.icons"
+
 tabline.setup {
   tab_format = " #{i} #{b}#{f} ",
   disable_commands = true,
@@ -11,7 +13,7 @@ tabline.setup {
   go_to_maps = false,
   start_hidden = false,
   flags = {
-    modified = "●",
+    modified = pad(icons.misc.FilledCircle, "both"),
     not_modifiable = "",
     readonly = "",
   },

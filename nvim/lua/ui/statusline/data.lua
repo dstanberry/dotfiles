@@ -1,4 +1,5 @@
 local has_plenary, Job = pcall(require, "plenary.job")
+local icons = require "ui.icons"
 
 local GIT_ENABLED = setting_enabled "git"
 
@@ -6,7 +7,7 @@ local paste = function()
   local result = ""
   local paste = vim.go.paste
   if paste then
-    result = " "
+    result = pad(icons.misc.Clipboard, "right")
   end
   return result
 end
@@ -20,10 +21,8 @@ local M = {}
 M.readonly = function(bufnr)
   local ro = vim.api.nvim_buf_get_option(bufnr, "readonly")
   local modifiable = vim.api.nvim_buf_get_option(bufnr, "modifiable")
-  if not modifiable then
-    return " "
-  elseif ro then
-    return " "
+  if not modifiable or ro then
+    return pad(icons.misc.Lock, "right")
   else
     return ""
   end
@@ -32,7 +31,7 @@ end
 M.modified = function(bufnr)
   local mod = vim.api.nvim_buf_get_option(bufnr, "modified")
   if mod then
-    return "●"
+    return icons.misc.FilledCircle
   else
     return ""
   end
@@ -108,11 +107,11 @@ M.metadata = function(bufnr)
 end
 
 M.mode = function()
-  return "▊"
+  return icons.misc.VerticalBarBold
 end
 
 M.buffer = function(bufnr)
-  local icon = " "
+  local icon = pad(icons.misc.Orbit, "right")
   for i, b in ipairs(vim.api.nvim_list_bufs()) do
     if bufnr == b then
       return icon, i
@@ -122,8 +121,7 @@ end
 
 M.git_branch = function(bufnr)
   local name = vim.fn.bufname(bufnr)
-  -- local icon = " "
-  local icon = " "
+  local icon = pad(icons.git.Branch, "right")
   local ok, branch
   if GIT_ENABLED then
     if has_plenary then
@@ -156,7 +154,7 @@ M.git_branch = function(bufnr)
 end
 
 M.line_number = function()
-  return "ℓ %l"
+  return icons.misc.ScriptSmall .. " %l"
 end
 
 M.column_number = function()

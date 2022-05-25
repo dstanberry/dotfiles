@@ -6,6 +6,7 @@ end
 
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
+local icons = require "ui.icons"
 
 local M = {}
 
@@ -117,13 +118,13 @@ M.setup = function()
       source = "always",
     },
     virtual_text = {
-      prefix = "▪",
+      prefix = icons.misc.Dot,
       source = "if_many",
       spacing = 8,
     },
   }
 
-  local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+  local signs = icons.diagnostics
   for type, icon in pairs(signs) do
     local hl = string.format("DiagnosticSign%s", type)
     vim.fn.sign_define(hl, { text = icon, texthl = hl })

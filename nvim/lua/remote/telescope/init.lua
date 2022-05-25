@@ -23,6 +23,7 @@ local themes = require "telescope.themes"
 local c = require("ui.theme").colors
 local color = require "util.color"
 local groups = require "ui.theme.groups"
+local icons = require "ui.icons"
 
 local set_prompt_to_entry_value = function(prompt_bufnr)
   local entry = state.get_selected_entry()
@@ -34,8 +35,8 @@ end
 
 telescope.setup {
   defaults = {
-    prompt_prefix = " ❯ ",
-    selection_caret = " ",
+    prompt_prefix = pad(icons.misc.Prompt, "right"),
+    selection_caret = pad(icons.misc.CaretRight, "right"),
     scroll_strategy = "cycle",
     layout_strategy = "flex",
     sorting_strategy = "descending",

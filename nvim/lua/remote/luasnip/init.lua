@@ -6,6 +6,7 @@ end
 
 local types = require "luasnip.util.types"
 local groups = require "ui.theme.groups"
+local icons = require "ui.icons"
 
 groups.new("LuasnipChoiceNodePassive", { guifg = nil, guibg = nil, gui = "bold", guisp = nil })
 
@@ -44,7 +45,7 @@ M.setup = function()
     ext_opts = {
       [types.choiceNode] = {
         active = {
-          virt_text = { { "﬘ ", "Constant" } },
+          virt_text = { { icons.misc.Layer, "Constant" } },
         },
       },
     },
