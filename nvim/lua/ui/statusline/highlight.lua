@@ -70,8 +70,4 @@ M.lsp_warn = sanitize "DiagnosticStatusWarn"
 M.lsp_info = sanitize "DiagnosticStatusInfo"
 M.lsp_hint = sanitize "DiagnosticStatusHint"
 
-M.winbarNormal = sanitize "WinbarNormal"
-
-groups.new("WinbarNormal", { guifg = c.green, guibg = c.gray, gui = nil, guisp = nil })
-
 return M
