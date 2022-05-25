@@ -5,6 +5,7 @@ _G.dump = function(...)
     table.insert(objects, vim.inspect(v))
   end
 
+---@diagnostic disable-next-line: discard-returns
   print(table.concat(objects, "\n"))
   return ...
 end
@@ -64,6 +65,12 @@ _G.has = function(feature)
   return vim.fn.has(feature) > 0
 end
 
+_G.pad = function(s, direction)
+  local left = (direction == "left" or direction == "both") and " " or ""
+  local right = (direction == "right" or direction == "both") and " " or ""
+  return string.format("%s%s%s", left, s, right)
+end
+
 _G.profile = function(cmd, times)
   times = times or 100
   local args = {}
@@ -78,6 +85,8 @@ _G.profile = function(cmd, times)
       error("Command failed: " .. tostring(ok) .. " " .. vim.inspect { cmd = cmd, args = args })
     end
   end
+
+---@diagnostic disable-next-line: discard-returns
   print(((vim.loop.hrtime() - start) / 1000000 / times) .. "ms")
 end
 
