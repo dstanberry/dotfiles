@@ -28,7 +28,7 @@ local get_filepath = function()
   for _, s in ipairs(parts) do
     if #s > 0 then
       if #segments == 0 then
-        section = add(hi.winbar, { " " .. s })
+        section = add(hi.winbar, { pad(s, "left") })
       else
         section = add(hi.winbar, { s })
       end
