@@ -17,8 +17,8 @@ local function contains(haystack, value)
   return found
 end
 
-local function spacing()
-  return add(hi.custom0, { "" })
+local function spacer()
+  return add(hi.custom0, { " " })
 end
 
 local function default(state, bufnr)
@@ -30,9 +30,11 @@ local function default(state, bufnr)
       add(mode_hl, { data.mode() }),
       add(mode_hl, { data.git_branch(bufnr) }),
       add(hi.custom0, { vim.b.gitsigns_status }),
-      spacing(),
+      -- spacer(),
       -- add(hi.user1, { data.relpath(bufnr) }, true),
+      -- spacer(),
       -- add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
+      spacer(),
       add(hi.custom0, {
         hi.custom0,
         pad(icons.status.Error, "right"),
@@ -41,14 +43,18 @@ local function default(state, bufnr)
         pad(icons.status.Warn, "both"),
         diagnostics.warn,
       }, true),
-      spacing(),
+      spacer(),
       hi.segment,
+      -- spacer(),
       -- add(hi.user3, { lsp.get_messages(bufnr) }, true),
-      add(hi.custom0, { data.readonly(bufnr), data.metadata(bufnr) }),
-      spacing(),
+      spacer(),
+      add(hi.custom0, { data.cursor_position() }),
+      spacer(),
+      add(hi.custom0, { data.readonly(bufnr), data.file_encoding(bufnr) }),
+      spacer(),
+      add(hi.custom0, { data.file_format(bufnr) }),
+      spacer(),
       add(hi.custom0, { data.filetype(bufnr) }),
-      spacing(),
-      add(hi.user4, { " ", data.line_number(), data.column_number() }),
     }
   else
     return table.concat {
@@ -139,9 +145,17 @@ local function simple(state, bufnr)
       add(mode_hl, { data.git_branch(bufnr) }),
       add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
-      add(hi.custom00, { data.readonly(bufnr), data.metadata(bufnr) }),
-      add(mode_hl, { data.filetype(bufnr) }),
-      add(hi.user4, { " ", data.line_number(), data.column_number() }),
+      -- add(hi.custom0, { data.readonly(bufnr), data.file_encoding(bufnr), data.file_format(bufnr) }),
+      -- add(mode_hl, { data.filetype(bufnr) }),
+      -- add(hi.user4, { " ", data.cursor_position() }),
+      spacer(),
+      add(hi.custom0, { data.cursor_position() }),
+      spacer(),
+      add(hi.custom0, { data.readonly(bufnr), data.file_encoding(bufnr) }),
+      spacer(),
+      add(hi.custom0, { data.file_format(bufnr) }),
+      spacer(),
+      add(hi.custom0, { data.filetype(bufnr) }),
     }
   else
     return hi.segment

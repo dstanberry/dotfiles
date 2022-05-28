@@ -64,7 +64,7 @@ M.filetype = function(bufnr)
   local type = #ext > 0 and ext or ft
   -- local icon = M.file_icon(fn, type)
   -- return string.format("%s %s", icon, ft)
-  return string.format("%s", ft)
+  return string.format("%s", ft:gsub("^%l", string.upper))
 end
 
 M.filepath = function(bufnr)
@@ -88,22 +88,25 @@ M.relpath = function(bufnr, maxlen)
   end
 end
 
-M.metadata = function(bufnr)
-  local lhs = ""
-  local rhs = ""
+M.file_format = function(bufnr)
+  local out = ""
   local format = vim.api.nvim_buf_get_option(bufnr, "fileformat")
+  if format == "unix" then
+    out = "LF"
+  end
+  if format == "dos" then
+    out = "CRLF"
+  end
+  return out
+end
+
+M.file_encoding = function(bufnr)
+  local out = ""
   local encoding = vim.api.nvim_buf_get_option(bufnr, "fileencoding")
-  if #format > 0 and format ~= "unix" then
-    lhs = format
-  end
   if #encoding > 0 then
-    rhs = encoding
+    out = string.upper(encoding)
   end
-  if #lhs > 0 and #rhs > 0 then
-    return vim.fn.join({ lhs, rhs }, " | ")
-  else
-    return string.format("%s%s", lhs, rhs)
-  end
+  return out
 end
 
 M.mode = function()
@@ -153,12 +156,8 @@ M.git_branch = function(bufnr)
   return icon .. branch
 end
 
-M.line_number = function()
-  return icons.misc.ScriptSmall .. " %l"
-end
-
-M.column_number = function()
-  return "с %c"
+M.cursor_position = function()
+  return "%l:%c"
 end
 
 return M
