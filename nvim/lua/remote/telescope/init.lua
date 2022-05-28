@@ -56,17 +56,18 @@ telescope.setup {
     },
     mappings = {
       i = {
-        ["<c-h>"] = layout.toggle_preview,
         ["<c-d>"] = actions.preview_scrolling_down,
         ["<c-f>"] = actions.preview_scrolling_up,
-        ["<c-s>"] = actions.select_horizontal,
+        ["<c-p>"] = layout.toggle_preview,
+        ["<c-t>"] = actions.select_tab,
         ["<c-v>"] = actions.select_vertical,
-        ["<c-u>"] = false,
+        ["<c-x>"] = actions.select_horizontal,
         ["<c-y>"] = set_prompt_to_entry_value,
+        ["<c-n>"] = false,
+        ["<c-u>"] = false,
         ["jk"] = actions.close,
       },
       n = {
-        ["<c-h>"] = layout.toggle_preview,
         ["q"] = actions.close,
       },
     },
@@ -105,7 +106,9 @@ telescope.setup {
       layout_strategy = "vertical",
       path_display = { "hidden" },
     },
-    lsp_dynamic_workspace_symbols = { layout_strategy = "vertical" },
+    lsp_dynamic_workspace_symbols = {
+      layout_strategy = "vertical",
+    },
     lsp_references = {
       path_display = { "shorten" },
       theme = "ivy",
