@@ -247,24 +247,24 @@ M.apply = function(c)
   hi.TSWarning = { guifg = c.orange, guibg = c.bg, gui = "bold", guisp = nil }
 
   -- statusline highlighting
-  hi.User1 = { guifg = c.white_dark, guibg = c.bg_dark, gui = "none", guisp = nil }
-  hi.User2 = { guifg = c.white, guibg = c.bg_dark, gui = "bold", guisp = nil }
-  hi.User3 = { guifg = c.white_dark, guibg = c.bg_dark, gui = "italic", guisp = nil }
+  hi.User1 = { guifg = c.white_dark, guibg = c.gray, gui = "none", guisp = nil }
+  hi.User2 = { guifg = c.white, guibg = c.gray, gui = "bold", guisp = nil }
+  hi.User3 = { guifg = c.white_dark, guibg = c.gray, gui = "italic", guisp = nil }
   hi.User4 = { guifg = c.bg, guibg = c.white_darker, gui = "bold", guisp = nil }
-  hi.User5 = { guifg = c.white_dark, guibg = c.bg_dark, gui = "italic", guisp = nil }
+  hi.User5 = { guifg = c.white_dark, guibg = c.gray, gui = "italic", guisp = nil }
   hi.User6 = { guifg = c.bg, guibg = c.green, gui = "none", guisp = nil }
   hi.User7 = { guifg = c.bg, guibg = c.blue_dark, gui = "none", guisp = nil }
   hi.User8 = { guifg = c.bg, guibg = c.blue_light, gui = "none", guisp = nil }
   hi.User9 = { guifg = c.bg, guibg = c.red, gui = "none", guisp = nil }
 
-  hi.Custom00 = { guifg = c.red, guibg = c.bg_dark, gui = "none", guisp = nil }
-  hi.Custom0 = { guifg = c.white_darker, guibg = c.bg_dark, gui = "none", guisp = nil }
-  hi.Custom1 = { guifg = c.green, guibg = c.bg_dark, gui = "none", guisp = nil }
-  hi.Custom2 = { guifg = c.blue_dark, guibg = c.bg_dark, gui = "none", guisp = nil }
-  hi.Custom3 = { guifg = c.blue_light, guibg = c.bg_dark, gui = "none", guisp = nil }
-  hi.Custom4 = { guifg = c.red, guibg = c.bg_dark, gui = "none", guisp = nil }
-  hi.Custom5 = { guifg = c.magenta, guibg = c.bg_dark, gui = "none", guisp = nil }
-  hi.Custom6 = { guifg = c.orange, guibg = c.bg_dark, gui = "none", guisp = nil }
+  hi.Custom00 = { guifg = c.red, guibg = c.gray, gui = "none", guisp = nil }
+  hi.Custom0 = { guifg = c.white_darker, guibg = c.gray, gui = "none", guisp = nil }
+  hi.Custom1 = { guifg = c.green, guibg = c.gray, gui = "none", guisp = nil }
+  hi.Custom2 = { guifg = c.blue_dark, guibg = c.gray, gui = "none", guisp = nil }
+  hi.Custom3 = { guifg = c.blue_light, guibg = c.gray, gui = "none", guisp = nil }
+  hi.Custom4 = { guifg = c.red, guibg = c.gray, gui = "none", guisp = nil }
+  hi.Custom5 = { guifg = c.magenta, guibg = c.gray, gui = "none", guisp = nil }
+  hi.Custom6 = { guifg = c.orange, guibg = c.gray, gui = "none", guisp = nil }
 
   vim.wo.winhighlight = "SpecialKey:SpecialKeyWin"
 
