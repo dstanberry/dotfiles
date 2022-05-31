@@ -5,18 +5,6 @@ local views = require "ui.statusline.views"
 local add = require("ui.statusline.helper").add
 local icons = require "ui.icons"
 
-local function contains(haystack, value)
-  local found = false
-  for _, v in pairs(haystack) do
-    local match = string.match(value, v) or ""
-    if v == value or #match > 0 then
-      found = true
-      break
-    end
-  end
-  return found
-end
-
 local function spacer()
   return add(hi.custom0, { " " })
 end
@@ -30,10 +18,6 @@ local function default(state, bufnr)
       add(mode_hl, { data.mode() }),
       add(mode_hl, { data.git_branch(bufnr) }),
       add(hi.custom0, { vim.b.gitsigns_status }),
-      -- spacer(),
-      -- add(hi.user1, { data.relpath(bufnr) }, true),
-      -- spacer(),
-      -- add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
       spacer(),
       add(hi.custom0, {
         hi.custom0,
@@ -45,8 +29,6 @@ local function default(state, bufnr)
       }, true),
       spacer(),
       hi.segment,
-      -- spacer(),
-      -- add(hi.user3, { lsp.get_messages(bufnr) }, true),
       spacer(),
       add(hi.custom0, { data.cursor_position() }),
       spacer(),
@@ -145,9 +127,6 @@ local function simple(state, bufnr)
       add(mode_hl, { data.git_branch(bufnr) }),
       add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
-      -- add(hi.custom0, { data.readonly(bufnr), data.file_encoding(bufnr), data.file_format(bufnr) }),
-      -- add(mode_hl, { data.filetype(bufnr) }),
-      -- add(hi.user4, { " ", data.cursor_position() }),
       spacer(),
       add(hi.custom0, { data.cursor_position() }),
       spacer(),
@@ -172,19 +151,19 @@ M.focus = function(win_id)
   local bufnr = vim.api.nvim_win_get_buf(win_id)
   local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
   local name = vim.fn.bufname(bufnr)
-  if contains(views.browsers, type) then
+  if vim.tbl_contains(views.browsers, type) then
     return explorer(state, bufnr)
   end
-  if contains(views.plugins, type) or contains(views.filenames, name) then
+  if vim.tbl_contains(views.plugins, type) or vim.tbl_contains(views.filenames, name) then
     return plugin(state, bufnr)
   end
-  if contains(views.terminal, name) then
+  if vim.tbl_contains(views.terminal, name) then
     return plugin(state, bufnr, true)
   end
-  if contains(views.basic, type) then
+  if vim.tbl_contains(views.basic, type) then
     return basic(state, bufnr)
   end
-  if contains(views.uri, type) then
+  if vim.tbl_contains(views.uri, type) then
     return uri(state, bufnr)
   end
   type = vim.fn.getftype(data.filepath(bufnr))
@@ -203,19 +182,19 @@ M.dim = function(win_id)
   local bufnr = vim.api.nvim_win_get_buf(win_id)
   local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
   local name = vim.fn.bufname(bufnr)
-  if contains(views.browsers, type) then
+  if vim.tbl_contains(views.browsers, type) then
     return explorer(state, bufnr)
   end
-  if contains(views.plugins, type) or contains(views.filenames, name) then
+  if vim.tbl_contains(views.plugins, type) or vim.tbl_contains(views.filenames, name) then
     return plugin(state, bufnr)
   end
-  if contains(views.terminal, name) then
+  if vim.tbl_contains(views.terminal, name) then
     return plugin(state, bufnr, true)
   end
-  if contains(views.basic, type) then
+  if vim.tbl_contains(views.basic, type) then
     return basic(state, bufnr)
   end
-  if contains(views.uri, type) then
+  if vim.tbl_contains(views.uri, type) then
     return uri(state, bufnr)
   end
   type = vim.fn.getftype(data.filepath(bufnr))
