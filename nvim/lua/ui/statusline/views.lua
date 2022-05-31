@@ -19,7 +19,7 @@ local views = {
     "packer",
     "qf",
     "startuptime",
-    "Telescope",
+    "TelescopePrompt",
   },
   terminal = {
     "term://",
