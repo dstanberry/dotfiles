@@ -1,6 +1,7 @@
-local hi = require "ui.statusline.highlight"
-local add = require("ui.statusline.helper").add
 local data = require "ui.statusline.data"
+local hi = require "ui.statusline.highlight"
+local views = require "ui.statusline.views"
+local add = require("ui.statusline.helper").add
 local icons = require "ui.icons"
 local gps = require "remote.gps"
 
@@ -78,7 +79,22 @@ M.focus = function()
 end
 
 M.setup = function()
-  vim.opt.winbar = [[%{%v:lua.require("ui.statusline.winbar").focus()%}]]
+  vim.api.nvim_create_augroup("winbar", { clear = true })
+
+  vim.api.nvim_create_autocmd({ "BufWinEnter", "BufFilePost" }, {
+    group = "winbar",
+    callback = function()
+      if
+        vim.bo.filetype == ""
+        or vim.tbl_contains(views.basic, vim.bo.filetype)
+        or vim.tbl_contains(views.plugins, vim.bo.filetype)
+      then
+        vim.opt_local.winbar = ""
+        return
+      end
+      vim.opt_local.winbar = [[%{%v:lua.require("ui.statusline.winbar").focus()%}]]
+    end,
+  })
 end
 
 return M
