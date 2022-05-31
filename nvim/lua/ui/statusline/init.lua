@@ -118,7 +118,7 @@ local function uri(state, bufnr)
   end
 end
 
-local function simple(state, bufnr)
+local function irregular(state, bufnr)
   if state == "active" then
     local mode = vim.fn.mode()
     local mode_hl = hi.mode(mode)
@@ -145,7 +145,7 @@ local M = {}
 
 M.focus = function(win_id)
   if not vim.api.nvim_win_is_valid(win_id) then
-    return simple("inactive", _)
+    return irregular("inactive", _)
   end
   local state = "active"
   local bufnr = vim.api.nvim_win_get_buf(win_id)
@@ -169,15 +169,14 @@ M.focus = function(win_id)
   type = vim.fn.getftype(data.filepath(bufnr))
   if type == "file" or #name > 0 then
     return default(state, bufnr)
-  else
-    return simple(state, bufnr)
   end
+  return irregular(state, bufnr)
 end
 
 M.dim = function(win_id)
   local state = "inactive"
   if not vim.api.nvim_win_is_valid(win_id) then
-    return simple(state, _)
+    return irregular(state, _)
   end
   local bufnr = vim.api.nvim_win_get_buf(win_id)
   local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
@@ -201,7 +200,7 @@ M.dim = function(win_id)
   if type == "file" or #name > 0 then
     return default(state, bufnr)
   else
-    return simple(state, bufnr)
+    return irregular(state, bufnr)
   end
 end
 
