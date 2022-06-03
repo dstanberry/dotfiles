@@ -33,7 +33,7 @@ local function plugins(use)
   use { "rrethy/vim-hexokinase", run = "make hexokinase" }
   use { "tpope/vim-scriptease", cmd = { "Messages", "Verbose", "Time" }, opt = true }
   -- syntax highlighting
-  if vim.fn.isdirectory "/etc/portage" then
+  if vim.fn.isdirectory "/etc/portage" == 1 then
     use {
       "gentoo/gentoo-syntax",
       ft = {
