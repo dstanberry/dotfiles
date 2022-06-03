@@ -24,7 +24,6 @@ local function plugins(use)
   use { "antoinemadec/FixCursorHold.nvim" }
 
   -- written in vimscript
-  use { "duggiefresh/vim-easydir" }
   use { "tpope/vim-repeat" }
   use { "tpope/vim-surround", event = "BufRead" }
 

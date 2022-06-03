@@ -38,6 +38,19 @@ vim.api.nvim_create_autocmd("CmdLineLeave", {
   end,
 })
 
+vim.api.nvim_create_augroup("filesystem", { clear = true })
+
+vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
+  group = "filesystem",
+  pattern = "*",
+  callback = function()
+    local d = vim.fn.expand "<afile>:p:h"
+    if vim.fn.isdirectory(d) == 0 then
+      vim.fn.mkdir(d, "p")
+    end
+  end,
+})
+
 vim.api.nvim_create_augroup("ftplugin", { clear = true })
 
 vim.api.nvim_create_autocmd("BufEnter", {
