@@ -24,13 +24,11 @@ local function plugins(use)
   use { "antoinemadec/FixCursorHold.nvim" }
 
   -- written in vimscript
-  use { "tpope/vim-repeat" }
-  use { "tpope/vim-surround", event = "BufRead" }
-
   use { "dstein64/vim-startuptime", cmd = "StartupTime", opt = true }
-  use { "godlygeek/tabular", cmd = "Tabularize" }
   use { "rrethy/vim-hexokinase", run = "make hexokinase" }
+  use { "tpope/vim-repeat" }
   use { "tpope/vim-scriptease", cmd = { "Messages", "Verbose", "Time" }, opt = true }
+  use { "tpope/vim-surround", event = "BufRead" }
   -- syntax highlighting
   if vim.fn.isdirectory "/etc/portage" == 1 then
     use {
