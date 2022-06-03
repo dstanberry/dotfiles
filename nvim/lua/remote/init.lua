@@ -181,6 +181,7 @@ local function plugins(use)
       "saadparwaiz1/cmp_luasnip",
     },
   }
+  use { "hrsh7th/nvim-pasta" }
   use { "numToStr/Comment.nvim" }
 
   -- debug and evaluate code chunks
