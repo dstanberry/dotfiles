@@ -45,6 +45,8 @@ M.apply = function(c)
   hi.MoreMsg = { guifg = c.green, guibg = nil, gui = nil, guisp = nil }
   hi.Question = { guifg = c.blue, guibg = nil, gui = nil, guisp = nil }
   hi.Search = { guifg = c.magenta, guibg = c.bg, gui = "underline", guisp = nil }
+  hi.CurSearch = { guifg = c.bg_light, guibg = c.yellow, gui = "none", guisp = nil }
+  hi.IncSearch = { guifg = c.bg_light, guibg = c.yellow, gui = "none", guisp = nil }
   hi.Substitute = { guifg = c.bg_light, guibg = c.yellow, gui = "none", guisp = nil }
   hi.SpecialKey = { guifg = c.blue_lightest, guibg = nil, gui = nil, guisp = nil }
   hi.SpecialKeyWin = { guifg = c.gray_light, guibg = nil, gui = nil, guisp = nil }

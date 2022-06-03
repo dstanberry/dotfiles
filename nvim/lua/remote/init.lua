@@ -24,19 +24,6 @@ local function plugins(use)
   use { "antoinemadec/FixCursorHold.nvim" }
 
   -- written in vimscript
-  use {
-    "wincent/loupe",
-    event = "BufRead",
-    config = function()
-      local c = require("ui.theme").colors
-      local groups = require "ui.theme.groups"
-
-      groups.new("IncSearch", { guifg = c.bg_light, guibg = c.yellow, gui = "none", guisp = nil })
-
-      vim.g.LoupeClearHighlightMap = 0
-      vim.g.LoupeVeryMagic = 0
-    end,
-  }
   use { "duggiefresh/vim-easydir" }
   use { "tpope/vim-repeat" }
   use { "tpope/vim-surround", event = "BufRead" }
