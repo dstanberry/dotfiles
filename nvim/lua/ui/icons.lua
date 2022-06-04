@@ -47,6 +47,7 @@ return {
   },
   misc = {
     Bug = "",
+    Key = "",
     Calendar = "",
     CaretRight = "",
     ChevronRight = "›",
