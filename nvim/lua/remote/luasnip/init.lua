@@ -8,7 +8,7 @@ local types = require "luasnip.util.types"
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
-groups.new("LuasnipChoiceNodePassive", { guifg = nil, guibg = nil, gui = "bold", guisp = nil })
+groups.new("LuasnipChoiceNodePassive", { bold = true })
 
 luasnip.filetype_extend("NeogitCommitMessage", { "gitcommit" })
 

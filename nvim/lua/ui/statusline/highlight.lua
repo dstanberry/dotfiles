@@ -1,5 +1,4 @@
 local c = require("ui.theme").colors
-local groups = require "ui.theme.groups"
 
 local M = {}
 

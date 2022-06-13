@@ -6,9 +6,6 @@ end
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 
-
-
-
 local CYAN = "#73c1b9"
 local CYAN_LIGHT = "#80d3dd"
 local PINK = "#dec7d0"
@@ -17,13 +14,13 @@ local YELLOW = "#ffdca8"
 local MAGENTA = "#9086a4"
 local MAGENTA_LIGHT = "#bfafc4"
 
-groups.new("TSRainbow1", { guifg = CYAN, guibg = "none", gui = "none", guisp = nil })
-groups.new("TSRainbow2", { guifg = CYAN_LIGHT, guibg = "none", gui = "none", guisp = nil })
-groups.new("TSRainbow3", { guifg = MAGENTA, guibg = "none", gui = "none", guisp = nil })
-groups.new("TSRainbow4", { guifg = MAGENTA_LIGHT, guibg = "none", gui = "none", guisp = nil })
-groups.new("TSRainbow5", { guifg = PINK, guibg = "none", gui = "none", guisp = nil })
-groups.new("TSRainbow6", { guifg = ORANGE, guibg = "none", gui = "none", guisp = nil })
-groups.new("TSRainbow7", { guifg = YELLOW, guibg = "none", gui = "none", guisp = nil })
+groups.new("TSRainbow1", { fg = CYAN })
+groups.new("TSRainbow2", { fg = CYAN_LIGHT })
+groups.new("TSRainbow3", { fg = MAGENTA })
+groups.new("TSRainbow4", { fg = MAGENTA_LIGHT })
+groups.new("TSRainbow5", { fg = PINK })
+groups.new("TSRainbow6", { fg = ORANGE })
+groups.new("TSRainbow7", { fg = YELLOW })
 
 require("nvim-treesitter.configs").setup {
   ensure_installed = "all",

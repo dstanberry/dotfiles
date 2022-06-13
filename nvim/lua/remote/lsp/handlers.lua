@@ -143,7 +143,7 @@ M.setup = function()
   end
 
   vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
-    groups.new("LspUnnecessary", { guifg = c.gray_lighter, guibg = nil, gui = "none", guisp = nil })
+    groups.new("LspUnnecessary", { fg = c.gray_lighter })
 
     local bufnr = vim.uri_to_bufnr(result.uri)
     if not bufnr then

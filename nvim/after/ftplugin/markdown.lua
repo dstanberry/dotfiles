@@ -16,7 +16,7 @@ vim.keymap.set("i", "<c-w>p", markdown.insert_link, { buffer = vim.api.nvim_get_
 vim.keymap.set({ "n", "v" }, "<c-a>b", markdown.toggle_bullet, { buffer = vim.api.nvim_get_current_buf() })
 vim.keymap.set({ "n", "v" }, "<c-a>c", markdown.toggle_checkbox, { buffer = vim.api.nvim_get_current_buf() })
 
-groups.new("CodeBlock", { guifg = nil, guibg = c.bg_dark, gui = "none", guisp = nil })
+groups.new("CodeBlock", { bg = c.bg_dark })
 
 vim.fn.sign_define("codeblock", {
   linehl = "CodeBlock",

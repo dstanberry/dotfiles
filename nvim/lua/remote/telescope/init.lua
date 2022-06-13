@@ -151,23 +151,23 @@ local GRAY = color.darken(c.gray, 10)
 local GRAY_DARK = color.darken(c.gray, 25)
 local BLUE = color.darken(c.blue_dark, 43)
 
-groups.new("TelescopePromptBorder", { guifg = GRAY, guibg = GRAY, gui = nil, guisp = nil })
-groups.new("TelescopePreviewBorder", { guifg = c.bg_dark, guibg = c.bg_dark, gui = nil, guisp = nil })
-groups.new("TelescopeResultsBorder", { guifg = GRAY_DARK, guibg = GRAY_DARK, gui = nil, guisp = nil })
+groups.new("TelescopePromptBorder", { fg = GRAY, bg = GRAY })
+groups.new("TelescopePreviewBorder", { fg = c.bg_dark, bg = c.bg_dark })
+groups.new("TelescopeResultsBorder", { fg = GRAY_DARK, bg = GRAY_DARK })
 
-groups.new("TelescopePromptTitle", { guifg = c.gray_light, guibg = nil, gui = "none", guisp = nil })
-groups.new("TelescopePreviewTitle", { guifg = c.bg_dark, guibg = nil, gui = "none", guisp = nil })
-groups.new("TelescopeResultsTitle", { guifg = GRAY_DARK, guibg = nil, gui = "none", guisp = nil })
+groups.new("TelescopePromptTitle", { fg = c.gray_light })
+groups.new("TelescopePreviewTitle", { fg = c.bg_dark })
+groups.new("TelescopeResultsTitle", { fg = GRAY_DARK })
 
-groups.new("TelescopePromptPrefix", { guifg = c.green, guibg = GRAY, gui = "none", guisp = nil })
-groups.new("TelescopePromptNormal", { guifg = nil, guibg = GRAY, gui = "none", guisp = nil })
-groups.new("TelescopePreviewNormal", { guifg = c.green, guibg = c.bg_dark, gui = "none", guisp = nil })
-groups.new("TelescopeResultsNormal", { guifg = nil, guibg = GRAY_DARK, gui = "none", guisp = nil })
+groups.new("TelescopePromptPrefix", { fg = c.green, bg = GRAY })
+groups.new("TelescopePromptNormal", { fg = nil, bg = GRAY })
+groups.new("TelescopePreviewNormal", { fg = c.green, bg = c.bg_dark })
+groups.new("TelescopeResultsNormal", { fg = nil, bg = GRAY_DARK })
 
-groups.new("TelescopeMatching", { guifg = c.orange, guibg = nil, gui = "bold", guisp = nil })
-groups.new("TelescopeMultiSelection", { guifg = c.magenta, guibg = nil, gui = "none", guisp = nil })
-groups.new("TelescopeSelection", { guifg = nil, guibg = BLUE, gui = "bold", guisp = nil })
-groups.new("TelescopeSelectionCaret", { guifg = c.fg_dark, guibg = BLUE, gui = "bold", guisp = nil })
+groups.new("TelescopeMatching", { fg = c.orange, bold = true })
+groups.new("TelescopeMultiSelection", { fg = c.magenta })
+groups.new("TelescopeSelection", { fg = nil, bg = BLUE, bold = true })
+groups.new("TelescopeSelectionCaret", { fg = c.fg_dark, bg = BLUE, bold = true })
 
 local ignored = {
   "%.DAT",

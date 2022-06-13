@@ -6,8 +6,8 @@ end
 local groups = require "ui.theme.groups"
 local ts_info = require "nvim-treesitter-playground.hl-info"
 
-groups.new("WTCursorBg", { clear = true, gui = "none" })
-groups.new("WTCursorFg", { clear = true, gui = "none" })
+groups.new("WTCursorBg", {})
+groups.new("WTCursorFg", {})
 
 vim.opt.guicursor:append "n-v-c-sm:block-WTCursorBg"
 
@@ -15,8 +15,8 @@ local id = 99991
 
 local set_cursor_hl = function()
   if vim.bo.filetype == "lir" then
-    groups.new("WTCursorBg", { clear = true, guibg = "none" })
-    groups.new("WTCursorFg", { clear = true, gui = "none" })
+    groups.new("WTCursorBg", {})
+    groups.new("WTCursorFg", {})
     return
   end
   local matches = vim.fn.getmatches()
@@ -38,8 +38,8 @@ local set_cursor_hl = function()
   if attr == "" then
     attr = "white"
   end
-  groups.new("WTCursorBg", { clear = true, guibg = attr })
-  groups.new("WTCursorFg", { clear = true, gui = "reverse" })
+  groups.new("WTCursorBg", { bg = attr })
+  groups.new("WTCursorFg", { reverse = true })
 end
 
 local reset_cursor_hl = function()
@@ -58,7 +58,7 @@ local reset_cursor_hl = function()
   if attr == "" then
     attr = "white"
   end
-  groups.new("WTCursorBg", { guibg = attr })
+  groups.new("WTCursorBg", { bg = attr })
 end
 
 vim.api.nvim_create_augroup("wt_reverse_cursor", { clear = true })

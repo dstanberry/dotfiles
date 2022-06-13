@@ -1,4 +1,4 @@
-package.loaded["kdark"] = nil
+-- package.loaded["kdark"] = nil
 
 require("util").reload("ui.theme").setup()
 

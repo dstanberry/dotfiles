@@ -64,5 +64,5 @@ vim.g.symbols_outline = {
   },
 }
 
-groups.new("FocusedSymbol", { guifg = c.bg_light, guibg = c.yellow, gui = "bold", guisp = nil })
-groups.new("SymbolsOutlineConnector", { guifg = c.gray_alt, guibg = nil, gui = nil, guisp = nil })
+groups.new("FocusedSymbol", { fg = c.bg_light, bg = c.yellow, bold = true })
+groups.new("SymbolsOutlineConnector", { fg = c.gray_alt })

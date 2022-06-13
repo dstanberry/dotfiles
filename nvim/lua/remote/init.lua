@@ -16,7 +16,7 @@ local config = {
 local function plugins(use)
   -- package manager
   use { "wbthomason/packer.nvim" }
-
+  use "tiagovla/tokyodark.nvim"
   -- startup optimization
   use { "lewis6991/impatient.nvim" }
 
