@@ -32,12 +32,22 @@ diffview.setup {
       height = 16,
     },
     log_options = {
-      max_count = 256,
-      follow = false,
-      all = false,
-      merges = false,
-      no_merges = false,
-      reverse = false,
+      single_file = {
+        max_count = 256,
+        follow = false,
+        all = false,
+        merges = false,
+        no_merges = false,
+        reverse = false,
+      },
+      multi_file = {
+        max_count = 256,
+        follow = false,
+        all = false,
+        merges = false,
+        no_merges = false,
+        reverse = false,
+      },
     },
   },
 }
