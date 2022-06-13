@@ -73,6 +73,10 @@ M.on_attach = function(client, bufnr)
     end, { buffer = bufnr })
   end
 
+  if client.server_capabilities.documentSymbolProvider then
+    require("remote.navic").attach(client, bufnr)
+  end
+
   local list_workspace_folders = function()
     dump(vim.lsp.buf.list_workspace_folders())
   end

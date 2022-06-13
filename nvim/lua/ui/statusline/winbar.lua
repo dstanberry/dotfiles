@@ -3,7 +3,7 @@ local hi = require "ui.statusline.highlight"
 local views = require "ui.statusline.views"
 local add = require("ui.statusline.helper").add
 local icons = require "ui.icons"
-local gps = require "remote.gps"
+local navic = require "remote.navic"
 
 local M = {}
 
@@ -41,11 +41,16 @@ local get_filepath = function()
 end
 
 local get_symbols = function()
-  if not gps.is_available() then
+  if not navic.is_available() then
     return ""
   end
 
-  local symbols = gps.get_data()
+  local symbols = navic.get_data()
+
+  if symbols == nil then
+    return ""
+  end
+
   local segments = {}
   local depth = #symbols
   local section
@@ -60,9 +65,9 @@ local get_symbols = function()
     if #segments == 0 then
       section = add(hi.winbar, { separator }, true)
         .. add(hi.winbar_icon, { symbol.icon }, true)
-        .. add(hi.winbar, { symbol.text })
+        .. add(hi.winbar, { symbol.name })
     else
-      section = add(hi.winbar_icon, { symbol.icon }, true) .. add(hi.winbar, { symbol.text })
+      section = add(hi.winbar_icon, { symbol.icon }, true) .. add(hi.winbar, { symbol.name })
     end
     table.insert(segments, section)
   end

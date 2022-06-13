@@ -115,7 +115,7 @@ local function plugins(use)
   use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   use { "lukas-reineke/indent-blankline.nvim" }
   use { "rcarriga/nvim-notify" }
-  use { "SmiteshP/nvim-gps", requires = "nvim-treesitter/nvim-treesitter" }
+  use { "SmiteshP/nvim-navic", requires = "neovim/nvim-lspconfig" }
 
   -- path and file navigation
   use {
