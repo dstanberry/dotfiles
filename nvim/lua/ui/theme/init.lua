@@ -8,13 +8,13 @@ local M = {}
 M.colorschemes = themes
 
 -- define colorscheme
-M.setup = function(colors)
+M.setup = function(t)
   -- lookup requested theme
-  if type(colors) == "string" then
-    colors = M.colorschemes[colors]
+  if type(t) == "string" then
+    t = M.colorschemes[t]
   end
   -- fallback to a safe theme if `colors` not found
-  M.colors = colors or M.colorschemes["kdark"]
+  M.colors = t or M.colorschemes["kdark"]
   groups.apply(M.colors)
 end
 

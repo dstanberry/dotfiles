@@ -1,6 +1,6 @@
--- package.loaded["kdark"] = nil
+local theme = "kdark"
 
-require("util").reload("ui.theme").setup()
+require("util").reload("ui.theme").setup(theme)
 
--- set colorscheme name
-vim.g.colors_name = "kdark"
+vim.g.colors_name = theme
+vim.o.background = "dark"
