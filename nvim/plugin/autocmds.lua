@@ -154,7 +154,7 @@ vim.api.nvim_create_autocmd("TermClose", {
 
 vim.api.nvim_create_augroup("fold_behaviour", { clear = true })
 
-vim.api.nvim_create_autocmd("BufEnter", {
+vim.api.nvim_create_autocmd("BufWinEnter", {
   group = "fold_behaviour",
   callback = function()
     vim.wo.foldenable = false
