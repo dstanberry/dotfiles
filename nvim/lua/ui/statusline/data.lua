@@ -59,12 +59,10 @@ end
 
 M.filetype = function(bufnr)
   local fn = M.filename(bufnr)
-  local ext = vim.fn.fnamemodify(fn, ":e")
-  local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
-  local type = #ext > 0 and ext or ft
-  -- local icon = M.file_icon(fn, type)
-  -- return string.format("%s %s", icon, ft)
-  return string.format("%s", ft:gsub("^%l", string.upper))
+  if fn == "[No Name]" then
+    return "[text]"
+  end
+  return vim.api.nvim_buf_get_option(bufnr, "filetype")
 end
 
 M.filepath = function(bufnr)
@@ -92,19 +90,19 @@ M.file_format = function(bufnr)
   local out = ""
   local format = vim.api.nvim_buf_get_option(bufnr, "fileformat")
   if format == "unix" then
-    out = "LF"
+    out = "lf"
   end
   if format == "dos" then
-    out = "CRLF"
+    out = "crlf"
   end
   return out
 end
 
 M.file_encoding = function(bufnr)
-  local out = ""
+  local out = "utf-8"
   local encoding = vim.api.nvim_buf_get_option(bufnr, "fileencoding")
   if #encoding > 0 then
-    out = string.upper(encoding)
+    return encoding
   end
   return out
 end

@@ -5,8 +5,12 @@ local views = require "ui.statusline.views"
 local add = require("ui.statusline.helper").add
 local icons = require "ui.icons"
 
-local function spacer()
-  return add(hi.custom0, { " " })
+local function l_spacer()
+  return add(hi.user9, { " " })
+end
+
+local function r_spacer()
+  return add(hi.user9, { " " })
 end
 
 local function default(state, bufnr)
@@ -17,31 +21,31 @@ local function default(state, bufnr)
     return table.concat {
       add(mode_hl, { data.mode() }),
       add(mode_hl, { data.git_branch(bufnr) }),
-      add(hi.custom0, { vim.b.gitsigns_status }),
-      spacer(),
-      add(hi.custom0, {
-        hi.custom0,
+      add(hi.user7, { vim.b.gitsigns_status }),
+      l_spacer(),
+      add(hi.user7, {
+        hi.user7,
         pad(icons.status.Error, "right"),
         diagnostics.error,
-        hi.custom0,
+        hi.user7,
         pad(icons.status.Warn, "both"),
         diagnostics.warn,
       }, true),
-      spacer(),
+      l_spacer(),
       hi.segment,
-      spacer(),
-      add(hi.custom0, { data.cursor_position() }),
-      spacer(),
-      add(hi.custom0, { data.readonly(bufnr), data.file_encoding(bufnr) }),
-      spacer(),
-      add(hi.custom0, { data.file_format(bufnr) }),
-      spacer(),
-      add(hi.custom0, { data.filetype(bufnr) }),
+      r_spacer(),
+      add(hi.user7, { data.cursor_position() }),
+      r_spacer(),
+      add(hi.user7, { data.readonly(bufnr), data.file_encoding(bufnr) }),
+      r_spacer(),
+      add(hi.user7, { data.file_format(bufnr) }),
+      r_spacer(),
+      add(hi.user7, { data.filetype(bufnr) }),
     }
   else
     return table.concat {
-      add(hi.user3, { " ", data.relpath(bufnr) }, true),
-      add(hi.user3, { data.filename(bufnr), data.modified(bufnr) }),
+      add(hi.user7, { " ", data.relpath(bufnr) }, true),
+      add(hi.user8, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
     }
   end
@@ -53,12 +57,12 @@ local function explorer(state, bufnr)
     local mode_hl = hi.mode(mode)
     return table.concat {
       add(mode_hl, { data.mode() }),
-      add(hi.user1, { " ", data.relpath(bufnr) }, true),
+      add(hi.user7, { " ", data.relpath(bufnr) }, true),
       hi.segment,
     }
   else
     return table.concat {
-      add(hi.user3, { " ", data.relpath(bufnr) }, true),
+      add(hi.user7, { " ", data.relpath(bufnr) }, true),
       hi.segment,
     }
   end
@@ -76,7 +80,7 @@ local function plugin(state, bufnr, t)
     }
   else
     return table.concat {
-      add(hi.user3, { " ", term and "term://" or "", data.filename(bufnr) }, true),
+      add(hi.user7, { " ", term and "term://" or "", data.filename(bufnr) }, true),
       hi.segment,
     }
   end
@@ -88,13 +92,13 @@ local function basic(state, bufnr)
     local mode_hl = hi.mode(mode)
     return table.concat {
       add(mode_hl, { data.mode() }),
-      add(hi.user1, { " ", data.relpath(bufnr) }, true),
-      add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
+      add(hi.user7, { " ", data.relpath(bufnr) }, true),
+      add(hi.user8, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
     }
   else
     return table.concat {
-      add(hi.user3, { " ", data.filepath(bufnr) }, true),
+      add(hi.user8, { " ", data.filepath(bufnr) }, true),
       hi.segment,
     }
   end
@@ -106,13 +110,13 @@ local function uri(state, bufnr)
     local mode_hl = hi.mode(mode)
     return table.concat {
       add(mode_hl, { data.mode() }),
-      add(hi.user1, { " ", data.relpath(bufnr), "/" }, true),
-      add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
+      add(hi.user7, { " ", data.relpath(bufnr), "/" }, true),
+      add(hi.user8, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
     }
   else
     return table.concat {
-      add(hi.user3, { " ", data.filepath(bufnr) }, true),
+      add(hi.user8, { " ", data.filepath(bufnr) }, true),
       hi.segment,
     }
   end
@@ -125,16 +129,16 @@ local function irregular(state, bufnr)
     return table.concat {
       add(mode_hl, { data.mode() }),
       add(mode_hl, { data.git_branch(bufnr) }),
-      add(hi.user2, { data.filename(bufnr), data.modified(bufnr) }),
+      add(hi.user8, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
-      spacer(),
-      add(hi.custom0, { data.cursor_position() }),
-      spacer(),
-      add(hi.custom0, { data.readonly(bufnr), data.file_encoding(bufnr) }),
-      spacer(),
-      add(hi.custom0, { data.file_format(bufnr) }),
-      spacer(),
-      add(hi.custom0, { data.filetype(bufnr) }),
+      r_spacer(),
+      add(hi.user7, { data.cursor_position() }),
+      r_spacer(),
+      add(hi.user7, { data.readonly(bufnr), data.file_encoding(bufnr) }),
+      r_spacer(),
+      add(hi.user7, { data.file_format(bufnr) }),
+      r_spacer(),
+      add(hi.user7, { data.filetype(bufnr) }),
     }
   else
     return hi.segment

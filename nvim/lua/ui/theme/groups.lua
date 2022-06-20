@@ -182,7 +182,7 @@ M.apply = function(c)
   hi.TSEnvironmentType = { fg = c.yellow }
   hi.TSError = { fg = c.red }
   hi.TSException = { fg = c.red }
-  hi.TSField = { fg = c.fg_alt }
+  hi.TSField = { fg = c.fg_light }
   hi.TSFloat = { fg = c.magenta_light }
   hi.TSFuncBuiltin = { fg = c.blue, bold = true }
   hi.TSFuncMacro = { fg = c.blue_dark }
@@ -231,24 +231,15 @@ M.apply = function(c)
   hi.TSWarning = { fg = c.orange, bg = c.bg, bold = true }
 
   -- statusline highlighting
-  hi.User1 = { fg = c.white_dark, bg = c.gray }
-  hi.User2 = { fg = c.white, bg = c.gray, bold = true }
-  hi.User3 = { fg = c.white_dark, bg = c.gray, italic = true }
-  hi.User4 = { fg = c.bg, bg = c.white_darker, bold = true }
-  hi.User5 = { fg = c.white_dark, bg = c.gray, italic = true }
-  hi.User6 = { fg = c.bg, bg = c.green }
-  hi.User7 = { fg = c.bg, bg = c.blue_dark }
-  hi.User8 = { fg = c.bg, bg = c.blue_light }
-  hi.User9 = { fg = c.bg, bg = c.red }
-
-  hi.Custom00 = { fg = c.red, bg = c.gray }
-  hi.Custom0 = { fg = c.white_darker, bg = c.gray }
-  hi.Custom1 = { fg = c.green, bg = c.gray }
-  hi.Custom2 = { fg = c.blue_dark, bg = c.gray }
-  hi.Custom3 = { fg = c.blue_light, bg = c.gray }
-  hi.Custom4 = { fg = c.red, bg = c.gray }
-  hi.Custom5 = { fg = c.magenta, bg = c.gray }
-  hi.Custom6 = { fg = c.orange, bg = c.gray }
+  hi.User1 = { fg = c.green, bg = c.gray }
+  hi.User2 = { fg = c.blue_dark, bg = c.gray }
+  hi.User3 = { fg = c.blue_light, bg = c.gray }
+  hi.User4 = { fg = c.red, bg = c.gray }
+  hi.User5 = { fg = c.magenta, bg = c.gray }
+  hi.User6 = { fg = c.orange, bg = c.gray }
+  hi.User7 = { fg = c.white, bg = c.gray }
+  hi.User8 = { fg = c.fg, bg = c.gray, bold = true }
+  hi.User9 = { fg = c.gray_dark, bg = c.gray }
 
   vim.wo.winhighlight = "SpecialKey:SpecialKeyWin"
 

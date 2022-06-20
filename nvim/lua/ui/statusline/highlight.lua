@@ -1,5 +1,3 @@
-local c = require("ui.theme").colors
-
 local M = {}
 
 local function sanitize(group)
@@ -7,36 +5,36 @@ local function sanitize(group)
 end
 
 local modes = setmetatable({
-  n = "Custom2",
-  no = "Custom2",
-  v = "Custom4",
-  V = "Custom4",
-  ["\22"] = "Custom4",
-  s = "Custom6",
-  S = "Custom6",
-  i = "Custom1",
-  ic = "Custom1",
-  ix = "Custom1",
-  R = "Custom3",
-  Rc = "Custom3",
-  Rv = "Custom3",
-  Rx = "Custom3",
-  c = "Custom5",
-  cv = "Custom5",
-  ce = "Custom5",
-  r = "Custom2",
-  rm = "Custom2",
-  ["r?"] = "Custom2",
-  ["!"] = "Custom2",
-  t = "Custom2",
+  n = "%2*",
+  no = "%2*",
+  v = "%4*",
+  V = "%4*",
+  ["\22"] = "%4*",
+  s = "%6*",
+  S = "%6*",
+  i = "%1*",
+  ic = "%1*",
+  ix = "%1*",
+  R = "%3*",
+  Rc = "%3*",
+  Rv = "%3*",
+  Rx = "%3*",
+  c = "%5*",
+  cv = "%5*",
+  ce = "%5*",
+  r = "%2*",
+  rm = "%2*",
+  ["r?"] = "%2*",
+  ["!"] = "%2*",
+  t = "%2*",
 }, {
   __index = function()
-    return "Custom2"
+    return "%2*"
   end,
 })
 
 M.mode = function(m)
-  return sanitize(modes[m])
+  return modes[m]
 end
 
 M.segment = "%="
@@ -59,15 +57,6 @@ M.user6 = "%6*"
 M.user7 = "%7*"
 M.user8 = "%8*"
 M.user9 = "%9*"
-
-M.custom00 = sanitize "Custom00"
-M.custom0 = sanitize "Custom0"
-M.custom1 = sanitize "Custom1"
-M.custom2 = sanitize "Custom2"
-M.custom3 = sanitize "Custom3"
-M.custom4 = sanitize "Custom4"
-M.custom5 = sanitize "Custom5"
-M.custom6 = sanitize "Custom6"
 
 M.winbar = sanitize "Winbar"
 M.winbar_icon = sanitize "WinbarIcon"

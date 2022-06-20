@@ -20,14 +20,13 @@ local c = {
   magenta = "#b48ead",
 }
 
-c.white = color.lighten(c.fg, 5)
-c.white_dark = color.darken(c.fg_light, 10)
-c.white_darker = color.darken(c.fg_light, 20)
+c.white = color.darken(c.fg, 10)
 
-c.gray_darker = color.darken(c.gray, 40)
-c.gray_lighter = color.lighten(c.gray_light, 70)
 c.gray_alt = color.darken(c.gray_light, 25)
-c.fg_alt = color.lighten(c.fg_dark, 15)
+c.gray_darker = color.darken(c.gray, 40)
+c.gray_dark = color.darken(c.gray, 25)
+c.gray_lighter = color.lighten(c.gray_light, 70)
+
 c.red_light = color.lighten(c.red, 20)
 c.yellow_dark = color.darken(c.yellow, 10)
 c.blue_lightest = color.lighten(c.blue_light, 20)
