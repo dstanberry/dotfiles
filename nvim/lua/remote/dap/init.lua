@@ -58,20 +58,22 @@ M.setup = function()
         edit = "e",
         repl = "r",
       },
-      sidebar = {
-        elements = {
+      layouts = {
+        {
+          elements = {
           { id = "scopes", size = 0.25 },
           { id = "breakpoints", size = 0.25 },
           { id = "stacks", size = 0.25 },
           { id = "watches", size = 0.25 },
+          },
+          size = 50,
+          position = "left",
         },
-        size = 50,
-        position = "left",
-      },
-      tray = {
-        elements = { "repl" },
-        size = 15,
-        position = "bottom",
+        {
+          elements = { "repl" },
+          size = 15,
+          position = "bottom",
+        },
       },
       floating = {
         boder = "single",
