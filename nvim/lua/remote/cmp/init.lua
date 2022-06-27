@@ -59,8 +59,8 @@ cmp.setup {
 
 cmp.setup.cmdline("/", {
   mapping = cmp.mapping.preset.cmdline {
-    ["<down>"] = { c = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert } },
-    ["<up>"] = { c = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert } },
+    ["<down>"] = { c = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert } },
+    ["<up>"] = { c = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert } },
   },
   sources = {
     { name = "buffer" },
@@ -70,8 +70,8 @@ cmp.setup.cmdline("/", {
 
 cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline {
-    ["<down>"] = { c = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert } },
-    ["<up>"] = { c = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert } },
+    ["<down>"] = { c = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert } },
+    ["<up>"] = { c = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert } },
   },
   sources = cmp.config.sources({
     { name = "cmdline", keyword_pattern = [=[[^[:blank:]\!]*]=] },
