@@ -17,6 +17,8 @@ vim.opt.belloff = "all"
 vim.opt.breakindentopt = "shift:2"
 -- setup clipboard
 vim.opt.clipboard = "unnamedplus"
+-- define line-height for command-line
+vim.opt.cmdheight = 0
 -- include dictionary in completion matches
 vim.opt.complete:append "kspell"
 -- use popup menu to show possible completions
