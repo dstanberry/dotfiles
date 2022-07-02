@@ -169,18 +169,9 @@ function precmd() {
   fi
 }
 
-# change cursor shape
-function -set-cursor() {
-  if [[ $TMUX = '' ]]; then
-    echo -ne $1
-  else
-    echo -ne "\ePtmux;\e\e$1\e\\"
-  fi
-}
-
 # block cursor
 function -set-block-cursor() {
-  -set-cursor '\e[0 q\e[2 q\e]12;Gray\a'
+  echo -ne "\e[0 q\e[2 q\e]12;gray\a"
 }
 
 # set the cursor shape depending on current vi mode
