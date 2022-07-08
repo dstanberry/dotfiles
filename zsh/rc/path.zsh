@@ -12,7 +12,7 @@ NEWPATH=$ULOCAL:$NEWPATH:$LOCAL
 unset ULOCAL
 unset LOCAL
 
-# set default gem configuration options
+# HACK: set default gem configuration options
 function _gem_config() {
   OLDIFS=$IFS
   IFS=:
@@ -101,8 +101,6 @@ if [ -d "${PYENV_ROOT}" ]; then
   PBIN="$PYENV_ROOT/bin"
   PSHIMS="$PYENV_ROOT/shims"
   NEWPATH=$PSHIMS:$PBIN:$NEWPATH
-  # _evalcache $PBIN/pyenv init --path
-  _evalcache $PBIN/pyenv init -
   unset PBIN
   unset PSHIMS
 fi
@@ -112,3 +110,8 @@ unset NEWPATH
 
 # ensure no duplicate entries are present in PATH
 dedup_pathvar PATH
+
+# HACK: delay setting up pyenv until after PATH is reset
+if [ -d "${PYENV_ROOT}" ]; then
+  _evalcache pyenv init -
+fi
