@@ -42,7 +42,7 @@ get_term() {
 
 # determine if this is a macos distribution
 is_darwin() {
-  [[ $(uname) == *"Darwin"* || $(uname) == *"darwin"* ]]
+  [[ $(/bin/uname) == *"Darwin"* || $(/bin/uname) == *"darwin"* ]]
 }
 
 # determine if this is a gentoo distribution
@@ -52,5 +52,5 @@ is_gentoo() {
 
 # determine if this is a wsl distribution
 is_wsl() {
-  [[ $(uname -r) == *"Microsoft"* || $(uname -r) == *"microsoft"* ]]
+  [[ $(/bin/uname -r) == *"Microsoft"* || $(/bin/uname -r) == *"microsoft"* ]]
 }
