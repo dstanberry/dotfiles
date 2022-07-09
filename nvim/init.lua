@@ -21,9 +21,6 @@ vim.g.markdown_fenced_languages = {
   "zsh=sh",
 }
 
-vim.g.do_filetype_lua = 1
-vim.g.did_load_filetype = 0
-
 vim.filetype.add {
   extension = {
     scm = "query",
