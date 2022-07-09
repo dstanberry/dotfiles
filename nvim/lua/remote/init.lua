@@ -28,7 +28,6 @@ local function plugins(use)
   use { "rrethy/vim-hexokinase", run = "make hexokinase" }
   use { "tpope/vim-repeat" }
   use { "tpope/vim-scriptease", cmd = { "Messages", "Verbose", "Time" }, opt = true }
-  use { "tpope/vim-surround", event = "BufRead" }
   -- syntax highlighting
   if vim.fn.isdirectory "/etc/portage" == 1 then
     use {
@@ -166,6 +165,7 @@ local function plugins(use)
     },
   }
   use { "hrsh7th/nvim-pasta" }
+  use { "kylechui/nvim-surround", event = "BufRead" }
   use { "numToStr/Comment.nvim" }
 
   -- debug and evaluate code chunks
