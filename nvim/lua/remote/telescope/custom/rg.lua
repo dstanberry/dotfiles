@@ -8,6 +8,7 @@ local M = {}
 
 M.live_grep_with_shortcuts = function(opts)
   opts = opts or {}
+  opts.layout_strategy = "vertical"
   opts.cwd = opts.cwd and vim.fn.expand(opts.cwd) or vim.loop.cwd()
   opts.shortcuts = opts.shortcuts or {
     ["l"] = "*.lua",
