@@ -30,14 +30,14 @@ local sources = {
   null_ls.builtins.formatting.stylua,
 }
 
-M.setup = function(on_attached)
+M.setup = function(cb)
   null_ls.setup {
     debug = false,
     debounce = 150,
     diagnostics_format = "(#{s}) #{m}",
     save_after_format = false,
     sources = sources,
-    on_attach = on_attached,
+    on_attach = cb,
   }
 end
 
