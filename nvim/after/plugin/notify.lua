@@ -4,6 +4,8 @@ if not ok then
   return
 end
 
+local telescope = require("remote.telescope")
+
 notify.setup {
   stages = "slide",
   timeout = 5000,
@@ -11,3 +13,5 @@ notify.setup {
 }
 
 vim.notify = notify
+
+telescope.load_extension "notify"

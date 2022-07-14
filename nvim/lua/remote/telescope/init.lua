@@ -144,7 +144,6 @@ if not has "win32" then
   pcall(telescope.load_extension "fzf")
 end
 pcall(telescope.load_extension "gh")
-pcall(telescope.load_extension "notify")
 pcall(telescope.load_extension "ui-select")
 
 local GRAY = color.darken(c.gray, 10)
@@ -193,8 +192,10 @@ local meta = setmetatable({}, {
     elseif use_custom then
       rawset(t, k, custom)
       return custom
-    else
+    elseif builtin[k] then
       return builtin[k]
+    else
+      return telescope[k]
     end
   end,
 })
