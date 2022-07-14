@@ -58,6 +58,9 @@ M.config = luadev.setup {
         format = {
           enable = false,
         },
+        workspace = {
+          checkThirdParty = false,
+        },
       },
     },
   },
