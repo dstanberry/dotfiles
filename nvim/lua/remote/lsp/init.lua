@@ -56,7 +56,14 @@ M.setup = function()
       elseif key == "sumneko_lua" then
         extends[key] = { on_attach = require(mod).on_attach }
       elseif key == "zk" then
-        extends[key] = { on_attach = require(mod).on_attach }
+        require(mod).setup(vim.tbl_deep_extend("force", {
+          capabilities = client_capabilities,
+          flags = { debounce_text_changes = 150 },
+          on_attach = on_attach_nvim,
+        }, config))
+        do
+          break
+        end
       end
       servers = vim.tbl_deep_extend("force", servers, { [key] = config })
     until true

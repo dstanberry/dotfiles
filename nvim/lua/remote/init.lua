@@ -75,6 +75,7 @@ local function plugins(use)
       "b0o/schemastore.nvim",
       "folke/lua-dev.nvim",
       "jose-elias-alvarez/null-ls.nvim",
+      "mickael-menu/zk-nvim",
       "nvim-lua/lsp_extensions.nvim",
       "ray-x/go.nvim",
       "simrat39/rust-tools.nvim",

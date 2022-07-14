@@ -1,30 +1,4 @@
-local telescope = require "remote.telescope"
-local actions = require "telescope.actions"
-local action_state = require "telescope.actions.state"
-local themes = require "telescope.themes"
-
 local M = {}
-
-M.find_notes = function()
-  local opts
-  opts = {
-    prompt_title = "Notes",
-    cwd = vim.g.zk_notebook,
-    attach_mappings = function(bufnr, map)
-      actions.select_default:replace(function()
-        actions.close(bufnr)
-        local selection = action_state.get_selected_entry()
-        local file = vim.fn.expand(string.format("%s/%s", vim.g.zk_notebook, selection[1]))
-        vim.cmd(string.format("edit %s", file))
-      end)
-      map("i", "<cr>", function()
-        actions.select_default(bufnr)
-      end)
-      return true
-    end,
-  }
-  telescope.find_files(themes.get_ivy(opts))
-end
 
 M.highlight_fenced_code_blocks = function()
   local bufnr = vim.api.nvim_get_current_buf()
