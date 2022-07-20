@@ -80,7 +80,7 @@ vim.api.nvim_create_autocmd("Filetype", {
 
 vim.api.nvim_create_autocmd("FileType", {
   group = "ftplugin",
-  pattern = { "bash", "lua", "sh", "zsh" },
+  pattern = { "bash", "javascript", "lua", "sh", "typescript", "zsh" },
   callback = function()
     vim.bo.expandtab = true
     vim.bo.shiftwidth = 2
