@@ -37,6 +37,7 @@ telescope.setup {
   defaults = {
     prompt_prefix = pad(icons.misc.Prompt, "right"),
     selection_caret = pad(icons.misc.CaretRight, "right"),
+    multi_icon = pad(icons.misc.CaretRight, "right"),
     scroll_strategy = "cycle",
     layout_strategy = "flex",
     sorting_strategy = "descending",
