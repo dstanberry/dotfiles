@@ -2,8 +2,6 @@ local telescope = require "remote.telescope"
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 local themes = require "telescope.themes"
-local previewers = require "telescope.previewers"
-local putils = require "telescope.previewers.utils"
 
 local zk = require "remote.lsp.servers.zk"
 local zku = require "zk.util"
@@ -11,16 +9,6 @@ local zku = require "zk.util"
 local M = {}
 
 local templates = {
-  {
-    label = "Permanent note",
-    directory = "resources",
-    ask_for_title = true,
-  },
-  {
-    label = "Team standup",
-    directory = "inbox",
-    ask_for_title = false,
-  },
   {
     label = "Backlog refinement meeting",
     directory = "inbox",
@@ -35,11 +23,6 @@ local templates = {
     label = "Other meeting",
     directory = "inbox",
     ask_for_title = true,
-  },
-  {
-    label = "One-on-one",
-    directory = "journal",
-    ask_for_title = false,
   },
   {
     label = "Literature note",
