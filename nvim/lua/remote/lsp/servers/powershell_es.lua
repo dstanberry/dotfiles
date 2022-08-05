@@ -1,7 +1,7 @@
 local util = require "util"
 
-local basedir = vim.fn.expand(string.format("%s/lspconfig", vim.fn.stdpath "data"))
-local root_path = vim.fn.expand(string.format("%s/PowerShellEditorServices", basedir))
+local path = vim.fn.expand(string.format("%s/lspconfig", vim.fn.stdpath "data"))
+local basedir = vim.fn.expand(string.format("%s/PowerShellEditorServices", path))
 -- stylua: ignore
 local command_fmt = {
   "%s/module/PowerShellEditorServices/Start-EditorServices.ps1",
@@ -17,7 +17,7 @@ local command_fmt = {
   "-LogLevel","Normal",
 }
 command_fmt = table.concat(command_fmt, " ")
-local command = command_fmt:format(root_path, root_path, vim.fn.stdpath "cache", vim.fn.stdpath "cache")
+local command = command_fmt:format(basedir, root_path, vim.fn.stdpath "cache", vim.fn.stdpath "cache")
 
 local M = {}
 
@@ -29,12 +29,12 @@ M.setup = function(force)
     Install-Module platyPS -Scope CurrentUser -Force
     Invoke-Build Build
   ]]
-  util.terminal.install_package("PSES", root_path, basedir, install_cmd, force)
+  util.terminal.install_package("PSES", basedir, path, install_cmd, force)
 end
 
 M.config = has "win32"
     and {
-      bundle_path = root_path,
+      bundle_path = basedir,
       cmd = { "pwsh", "-NoLogo", "-NoProfile", "-Command", command },
       root_dir = require("lspconfig.util").find_git_ancestor or vim.loop.cwd(),
     }

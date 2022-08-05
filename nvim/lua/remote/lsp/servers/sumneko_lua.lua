@@ -18,9 +18,9 @@ else
   return
 end
 
-local basedir = string.format("%s/lspconfig", vim.fn.stdpath "data")
-local root_path = string.format("%s/lua-language-server", basedir)
-local executable = string.format("%s/bin/%s", root_path, fname)
+local path = string.format("%s/lspconfig", vim.fn.stdpath "data")
+local basedir = string.format("%s/lua-language-server", path)
+local executable = string.format("%s/bin/%s", basedir, fname)
 
 local M = {}
 
@@ -39,17 +39,10 @@ M.setup = function(force)
     cd ../..
     ./3rd/luamake/luamake rebuild
   ]]
-  util.terminal.install_package("lua-language-server", basedir, basedir, install_cmd, force)
+  util.terminal.install_package("lua-language-server", basedir, path, install_cmd, force)
 end
 
 M.config = luadev.setup {
-  library = {
-    vimruntime = true, -- runtime path
-    types = true, -- full signature, docs and completion of vim.api, vim.treesitter, vim.lsp and others
-    plugins = true, -- installed opt or start plugins in packpath
-    -- you can also specify the list of plugins to make available as a workspace library
-    -- plugins = { "nvim-treesitter", "plenary.nvim", "telescope.nvim" },
-  },
   lspconfig = {
     cmd = { executable },
     settings = {
