@@ -207,6 +207,9 @@ vim.keymap.set("i", "<c-enter>", "<c-o>O")
 -- insert newline below current line
 vim.keymap.set("i", "<a-enter>", "<c-o>o")
 
+-- delete all text to the right of the curor
+vim.keymap.set("i", "<c-s-del>", "<c-o>D")
+
 -- go to the beginning of the current line
 vim.keymap.set("i", "<c-a>", "<c-o>^")
 -- go to the end of the current line
