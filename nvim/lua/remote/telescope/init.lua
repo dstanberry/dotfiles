@@ -57,8 +57,8 @@ telescope.setup {
     },
     mappings = {
       i = {
-        ["<c-d>"] = actions.preview_scrolling_up,
-        ["<c-f>"] = actions.preview_scrolling_down,
+        ["<c-d>"] = actions.preview_scrolling_down,
+        ["<c-f>"] = actions.preview_scrolling_up,
         ["<c-p>"] = layout.toggle_preview,
         ["<c-t>"] = actions.select_tab,
         ["<c-v>"] = actions.select_vertical,
