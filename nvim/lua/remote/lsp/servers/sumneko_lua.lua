@@ -53,6 +53,7 @@ M.config = luadev.setup {
         },
         diagnostics = {
           enable = true,
+          disable = { "cast-local-type", "missing-parameter", "param-type-mismatch" },
           globals = { "dump", "has", "profile", "reload" },
         },
         format = {
