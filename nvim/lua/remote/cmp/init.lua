@@ -58,10 +58,7 @@ cmp.setup {
 }
 
 cmp.setup.cmdline("/", {
-  mapping = cmp.mapping.preset.cmdline {
-    ["<down>"] = { c = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert } },
-    ["<up>"] = { c = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert } },
-  },
+  mapping = cmp.mapping.preset.cmdline(),
   sources = {
     { name = "buffer" },
     { name = "nvim_lsp_document_symbol" },
@@ -69,10 +66,7 @@ cmp.setup.cmdline("/", {
 })
 
 cmp.setup.cmdline(":", {
-  mapping = cmp.mapping.preset.cmdline {
-    ["<down>"] = { c = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert } },
-    ["<up>"] = { c = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert } },
-  },
+  mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
     { name = "cmdline", keyword_pattern = [=[[^[:blank:]\!]*]=] },
   }, {
