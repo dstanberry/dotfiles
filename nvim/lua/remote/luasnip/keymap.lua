@@ -17,9 +17,17 @@ vim.keymap.set({ "i", "s" }, "<s-tab>", function()
 end, { silent = true })
 
 vim.keymap.set({ "i", "s" }, "<c-d>", function()
-  luasnip.change_choice(1)
+  if luasnip.in_snippet() and luasnip.choice_active() then
+    luasnip.change_choice(1)
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-d>", true, true, true), "n", true)
+  end
 end, { silent = true })
 
 vim.keymap.set({ "i", "s" }, "<c-f>", function()
-  luasnip.change_choice(-1)
+  if luasnip.in_snippet() and luasnip.choice_active() then
+    luasnip.change_choice(-1)
+  else
+    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-d>", true, true, true), "n", true)
+  end
 end, { silent = true })
