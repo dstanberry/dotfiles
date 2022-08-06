@@ -4,6 +4,7 @@ if not ok then
   return
 end
 
+---@diagnostic disable-next-line: redundant-parameter
 tmux.setup {
   copy_sync = {
     enable = false,
