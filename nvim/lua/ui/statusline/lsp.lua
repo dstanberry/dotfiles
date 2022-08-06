@@ -15,7 +15,7 @@ M.get_diagnostics = function(bufnr)
 end
 
 M.get_messages = function(bufnr)
-  if #vim.lsp.buf_get_clients(bufnr) == 0 then
+  if #vim.lsp.get_active_clients { bufnr = bufnr } == 0 then
     return ""
   end
   local messages = {}
