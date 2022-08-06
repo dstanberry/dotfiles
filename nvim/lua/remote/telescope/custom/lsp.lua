@@ -50,9 +50,9 @@ end
 
 M.workspace_symbols = function(opts)
   opts = opts or {}
-  opts.shorten_path = utils.get_default(opts.shorten_path, true)
-  opts.ignore_filename = utils.get_default(opts.ignore_filename, false)
-  opts.hide_filename = utils.get_default(opts.hide_filename, false)
+  opts.shorten_path = vim.F.if_nil(opts.shorten_path, true)
+  opts.ignore_filename = vim.F.if_nil(opts.ignore_filename, false)
+  opts.hide_filename = vim.F.if_nil(opts.hide_filename, false)
   local params = { query = opts.query or "#" }
   vim.lsp.buf_request(0, "workspace/symbol", params, M._create_workspace_handler(opts))
 end
