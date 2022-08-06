@@ -92,6 +92,14 @@ telescope.setup {
       layout_strategy = "vertical",
       layout_config = { height = 70 },
     },
+    diagnostics = {
+      path_display = { "shorten" },
+      theme = "ivy",
+      layout_config = {
+        height = 30,
+        prompt_position = "top",
+      },
+    },
     lsp_code_actions = {
       theme = "cursor",
       previewer = false,
@@ -104,23 +112,36 @@ telescope.setup {
       },
     },
     lsp_document_symbols = {
-      layout_strategy = "vertical",
       path_display = { "hidden" },
+      theme = "ivy",
+      layout_config = {
+        height = 40,
+        prompt_position = "top",
+      },
     },
     lsp_dynamic_workspace_symbols = {
-      layout_strategy = "vertical",
+      path_display = { "shorten" },
+      theme = "ivy",
+      layout_config = {
+        height = 40,
+        prompt_position = "top",
+      },
     },
     lsp_references = {
       path_display = { "shorten" },
       theme = "ivy",
       layout_config = {
-        height = 60,
+        height = 40,
         prompt_position = "top",
       },
     },
     lsp_workspace_symbols = {
-      layout_strategy = "vertical",
       path_display = { "shorten" },
+      theme = "ivy",
+      layout_config = {
+        height = 40,
+        prompt_position = "top",
+      },
     },
   },
   extensions = {
