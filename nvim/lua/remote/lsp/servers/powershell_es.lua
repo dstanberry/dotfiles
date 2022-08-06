@@ -17,7 +17,7 @@ local command_fmt = {
   "-LogLevel","Normal",
 }
 command_fmt = table.concat(command_fmt, " ")
-local command = command_fmt:format(basedir, root_path, vim.fn.stdpath "cache", vim.fn.stdpath "cache")
+local command = command_fmt:format(path, path, vim.fn.stdpath "cache", vim.fn.stdpath "cache")
 
 local M = {}
 

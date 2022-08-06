@@ -86,7 +86,7 @@ return {
       ]],
       {
         i(1, "condition"),
-        d(2, saved_text, {}, { user_args = { { indent = true } } }),
+        d(2, util.saved_text, {}, { user_args = { { indent = true } } }),
       }
     )
   ),
