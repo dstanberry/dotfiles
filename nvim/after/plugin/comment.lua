@@ -20,6 +20,4 @@ comment.setup {
     line = "gcc",
     block = "gbc",
   },
-  pre_hook = nil,
-  post_hook = nil,
 }
