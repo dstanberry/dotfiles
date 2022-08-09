@@ -11,12 +11,10 @@ local M = {}
 M.setup = function(rust_analyzer_config)
   rust_tools.setup {
     tools = {
-      autoSetHints = true,
-      hover_with_actions = true,
       executor = require("rust-tools.executors").termopen,
       inlay_hints = {
+        auto = true,
         only_current_line = false,
-        -- only_current_line_autocmd = "CursorHold",
         show_parameter_hints = true,
         parameter_hints_prefix = ":",
         other_hints_prefix = "→ ",
@@ -35,7 +33,12 @@ M.setup = function(rust_analyzer_config)
         full = true,
       },
     },
-    server = rust_analyzer_config,
+    server = vim.tbl_deep_extend("force", {
+      on_attach = function(_, bufnr)
+        vim.keymap.set("n", "gk", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
+        vim.keymap.set("n", "ga", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
+      end,
+    }, rust_analyzer_config),
     dap = {
       adapter = {
         require("rust-tools.dap").get_codelldb_adapter(paths.code, paths.library),
