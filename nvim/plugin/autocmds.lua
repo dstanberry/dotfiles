@@ -159,9 +159,9 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   callback = function()
     vim.wo.foldenable = false
     vim.wo.foldlevel = 99
-    vim.wo.foldtext = "v:lua.fold_text()"
+    vim.wo.foldtext = [[v:lua.require("util.buffer").fold_text()]]
     vim.wo.foldmethod = "expr"
-    vim.wo.foldexpr = "v:lua.fold_expr(v:lnum)"
+    vim.wo.foldexpr = [[v:lua.require("util.buffer").fold_expr(v:lnum)]]
   end,
 })
 

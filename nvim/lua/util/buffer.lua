@@ -36,6 +36,44 @@ function M.delete_buffer(force)
   end
 end
 
+M.fold_text = function()
+  local indent = vim.fn.indent(vim.v.foldstart - 1)
+  local indent_level = vim.fn["repeat"](" ", indent)
+  local line_count = string.format("%s lines", (vim.v.foldend - vim.v.foldstart + 1))
+  local header = vim.api.nvim_buf_get_lines(0, vim.v.foldstart - 1, vim.v.foldstart, true)[1]:gsub(" *", "", 1)
+  local width = vim.fn.winwidth(0) - vim.wo.foldcolumn - (vim.wo.number and 8 or 0)
+  local lhs = string.format("%s%s", indent_level, header)
+  local rhs = string.format("%s  · %s", vim.v.foldlevel, line_count)
+  local separator = vim.fn["repeat"](" ", width - vim.fn.strwidth(lhs) - vim.fn.strwidth(rhs))
+  return string.format("%s %s%s ", lhs, separator, rhs)
+end
+
+M.fold_expr = function(lnum)
+  if string.find(vim.fn.getline(lnum), "%S") == nil then
+    return "-1"
+  end
+  local get_indent_level = function(n)
+    return vim.fn.indent(n) / vim.bo.shiftwidth
+  end
+  local get_next_line_with_content = function()
+    local count = vim.fn.line "$"
+    local line = lnum + 1
+    while line <= count do
+      if string.find(vim.fn.getline(line), "%S") ~= nil then
+        return line
+      end
+      line = line + 1
+    end
+    return -2
+  end
+  local current = get_indent_level(lnum)
+  local next = get_indent_level(get_next_line_with_content())
+  if next <= current then
+    return current
+  end
+  return ">" .. next
+end
+
 function M.get_marked_region(mark1, mark2, options)
   local bufnr = 0
   local adjust = options.adjust or function(pos1, pos2)
