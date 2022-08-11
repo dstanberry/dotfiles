@@ -83,6 +83,8 @@ vim.opt.listchars = {
 vim.opt.magic = true
 -- enable mouse events in normal and visual mode
 vim.opt.mouse = "nv"
+-- prevent showing context-menu on right-click
+vim.opt.mousemodel = "extend"
 -- show line numbers
 vim.opt.number = true
 -- toggle paste mode (to be able to accurately paste from external apps)
