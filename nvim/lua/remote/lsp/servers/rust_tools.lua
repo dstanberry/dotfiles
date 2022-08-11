@@ -33,12 +33,12 @@ M.setup = function(rust_analyzer_config)
         full = true,
       },
     },
-    server = vim.tbl_deep_extend("force", {
+    server = vim.tbl_deep_extend("force", rust_analyzer_config, {
       on_attach = function(_, bufnr)
         vim.keymap.set("n", "gk", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
         vim.keymap.set("n", "ga", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
       end,
-    }, rust_analyzer_config),
+    }),
     dap = {
       adapter = {
         require("rust-tools.dap").get_codelldb_adapter(paths.code, paths.library),
