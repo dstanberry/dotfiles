@@ -1,4 +1,5 @@
 akregatorrc
+angular/
 bash/rc.private
 breezerc
 configstore
@@ -40,8 +41,8 @@ libfm/
 lnav/
 nitrogen/
 npm/
-nvim/settings.conf
 nvim/lua/remote/packer_compiled.lua
+nvim/settings.conf
 okularpartrc
 okularrc
 pavucontrol.ini
