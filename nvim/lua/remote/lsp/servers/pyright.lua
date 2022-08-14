@@ -10,6 +10,8 @@ M.config = {
       elseif has "win32" and venv:joinpath("Scripts"):is_dir() then
         config.settings.python.pythonPath = tostring(venv:joinpath("Scripts", "python.exe"))
       end
+      require("dap").configurations.python = {}
+      require("remote.dap.debuggers.python").setup(config.settings.python.pythonPath)
     end
   end,
   settings = {

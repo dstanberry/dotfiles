@@ -8,18 +8,13 @@ local dap = require "remote.dap"
 
 local M = {}
 
-M.setup = function()
-  dap.configurations.python = {
-    {
-      type = "python",
-      request = "launch",
-      name = "Debug Current File",
-      program = "${file}",
-      args = { "--target", "api" },
-      console = "integratedTerminal",
-    },
-  }
-  dap_python.setup("python", { include_configs = true })
+M.setup = function(cmd)
+  cmd = cmd or "python"
+  dap_python.setup(cmd, {
+    include_configs = true,
+    pythonPath = cmd,
+    console = "integratedTerminal",
+  })
   dap_python.test_runner = "pytest"
 end
 
