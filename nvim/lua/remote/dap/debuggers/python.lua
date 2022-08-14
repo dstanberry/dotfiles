@@ -10,6 +10,7 @@ local M = {}
 
 M.setup = function(cmd)
   cmd = cmd or "python"
+  dap.configurations.python = {}
   dap_python.setup(cmd, {
     include_configs = true,
     pythonPath = cmd,
