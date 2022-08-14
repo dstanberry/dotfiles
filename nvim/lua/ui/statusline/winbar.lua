@@ -86,7 +86,6 @@ end
 M.setup = function()
   vim.api.nvim_create_augroup("winbar", { clear = true })
 
-  -- using `vim.opt` instead of `vim.opt_local` until https://github.com/neovim/neovim/issues/19458 is resolved
   vim.api.nvim_create_autocmd({ "BufWinEnter", "BufFilePost" }, {
     group = "winbar",
     callback = function()
@@ -95,10 +94,10 @@ M.setup = function()
         or vim.tbl_contains(views.basic, vim.bo.filetype)
         or vim.tbl_contains(views.plugins, vim.bo.filetype)
       then
-        vim.opt.winbar = ""
+        vim.opt_local.winbar = ""
         return
       end
-      vim.opt.winbar = [[%{%v:lua.require("ui.statusline.winbar").focus()%}]]
+      vim.opt_local.winbar = [[%{%v:lua.require("ui.statusline.winbar").focus()%}]]
     end,
   })
 end
