@@ -1,7 +1,7 @@
 local M = {}
 
 M.config = {
-  before_init = function(params, config)
+  before_init = function(_, config)
     local ok, Path = pcall(require, "plenary.path")
     if ok then
       local venv = Path:new((config.root_dir:gsub("/", Path.path.sep)), ".venv")
