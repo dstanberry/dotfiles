@@ -63,7 +63,7 @@ local function plugins(use)
     end,
   }
 
-  -- builtins
+  -- code intelligence
   use {
     "neovim/nvim-lspconfig",
     config = function()
@@ -103,7 +103,7 @@ local function plugins(use)
 
   use { "simrat39/symbols-outline.nvim", cmd = "SymbolsOutline", requires = { "nvim-lua/plenary.nvim" } }
 
-  -- interface
+  -- look-and-feel
   use {
     "folke/zen-mode.nvim",
     cmd = "ZenMode",
@@ -117,7 +117,7 @@ local function plugins(use)
   use { "rcarriga/nvim-notify" }
   use { "SmiteshP/nvim-navic", requires = "neovim/nvim-lspconfig" }
 
-  -- path and file navigation
+  -- file/path navigation
   use {
     "tamago324/lir.nvim",
     requires = { "kyazdani42/nvim-web-devicons", "tamago324/lir-git-status.nvim", "tamago324/lir-mmv.nvim" },
@@ -193,7 +193,7 @@ local function plugins(use)
   use { "sindrets/diffview.nvim" }
   use { "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" }
 
-  -- workflow integrations
+  -- workflow/session management
   use { "aserowy/tmux.nvim" }
 end
 
