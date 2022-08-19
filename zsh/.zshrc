@@ -109,11 +109,6 @@ if [ ! -d "${HOME}"/.cache/less ]; then
   mkdir -p "${HOME}"/.cache/less
 fi
 
-# ensure less wrapper exists in PATH
-if [ ! -L "${HOME}"/.local/bin/menos ]; then
-  ln -s "${CONFIG_HOME}"/less/menos "${HOME}"/.local/bin/menos
-fi
-
 # include wsl scripts where appropriate
 if is_wsl; then
   for file in "${CONFIG_HOME}"/wsl/*; do
