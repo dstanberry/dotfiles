@@ -26,6 +26,7 @@ M.setup = function(rust_analyzer_config)
       },
       hover_actions = {
         auto_focus = true,
+        border = "none",
       },
       crate_graph = {
         backend = "x11",
