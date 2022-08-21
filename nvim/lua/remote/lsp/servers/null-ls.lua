@@ -15,12 +15,11 @@ local sources = {
   },
   null_ls.builtins.diagnostics.vint,
   null_ls.builtins.formatting.eslint_d,
-  null_ls.builtins.formatting.isort,
   null_ls.builtins.formatting.prettier.with {
-    args = function(params)
-      local arguments = { "$FILENAME" }
+    extra_args = function(params)
+      local arguments = {}
       if params.ft == "markdown" then
-        arguments = { "$FILENAME", "--print-width", "80", "--prose-wrap", "always" }
+        arguments = { "--print-width", "80", "--prose-wrap", "always" }
       end
       return arguments
     end,
