@@ -25,6 +25,8 @@ local sources = {
     end,
   },
   null_ls.builtins.formatting.black,
+  null_ls.builtins.formatting.gofmt,
+  null_ls.builtins.formatting.rustfmt,
   null_ls.builtins.formatting.shfmt.with { args = { "-i", "2", "-ci", "-sr", "-s", "-bn" } },
   null_ls.builtins.formatting.stylua,
 }
