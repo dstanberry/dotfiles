@@ -19,14 +19,7 @@ vim.keymap.set("n", "<s-tab>", "<cmd>tabprevious<cr>")
 
 -- clear hlsearch if set, otherwise send default behaviour
 vim.keymap.set("n", "<cr>", function()
-  if vim.v.hlsearch == 1 then
-    if vim.g.LoupeLoaded == 1 then
-      vim.fn["loupe#private#clear_highlight"]()
-    end
-    return "<cmd>nohl<cr>"
-  else
-    return "<cr>"
-  end
+  return vim.v.hlsearch and "<cmd>nohl<cr>" or "<cr>"
 end, { expr = true, replace_keycodes = true })
 
 -- navigate quickfix list
