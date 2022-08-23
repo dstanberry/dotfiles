@@ -23,7 +23,8 @@ return {
         <body>
           {}
         </body>
-        </html>]],
+        </html>
+      ]],
       {
         i(1, "Title"),
         i(2, "<!-- body -->"),

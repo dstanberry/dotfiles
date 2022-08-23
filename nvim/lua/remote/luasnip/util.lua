@@ -108,9 +108,7 @@ M.saved_text = function(_, snip, old_state, user_args)
   local nodes = {}
   old_state = old_state or {}
   user_args = user_args or {}
-
   local indent = user_args.indent and "\t" or ""
-
   if snip.snippet.env and snip.snippet.env.SELECT_DEDENT and #snip.snippet.env.SELECT_DEDENT > 0 then
     local lines = vim.deepcopy(snip.snippet.env.SELECT_DEDENT)
     for idx = 1, #lines do
@@ -125,7 +123,6 @@ M.saved_text = function(_, snip, old_state, user_args)
     end
     table.insert(nodes, i(1, text))
   end
-
   local snip_node = sn(nil, nodes)
   snip_node.old_state = old_state
   return snip_node

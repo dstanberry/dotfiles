@@ -115,17 +115,14 @@ return {
     { trig = "main" },
     fmt(
       [[
-      if __name__ == "__main__":
-          {}
-      else:
-          {}
+        if __name__ == "__main__":
+        {}
       ]],
       {
         c(1, {
-          sn(nil, { t { "exit(" }, i(1, "main()"), t { ")" } }),
-          t { "pass" },
+          d(1, util.saved_text, {}, { user_args = { { text = "# code", indent = true } } }),
+          sn(nil, { t "\texit(" , i(1, "main()"), t { ")" } }),
         }),
-        i(2, "pass"),
       }
     )
   ),
@@ -140,8 +137,8 @@ return {
     { trig = "for" },
     fmt(
       [[
-      for {} in {}:
-      {}
+        for {} in {}:
+        {}
       ]],
       {
         i(1, "i"),
@@ -154,8 +151,8 @@ return {
     { trig = "while" },
     fmt(
       [[
-      while {}:
-      {}
+        while {}:
+        {}
       ]],
       {
         i(1, "condition"),
@@ -167,10 +164,10 @@ return {
     "try",
     fmt(
       [[
-    try:
-    {}
-    except {}:
+        try:
         {}
+        except {}:
+            {}
     ]],
       {
         d(1, util.saved_text, {}, { user_args = { { text = "pass", indent = true } } }),

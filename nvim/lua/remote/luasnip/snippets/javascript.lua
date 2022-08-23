@@ -43,29 +43,6 @@ return {
       }
     )
   ),
-  s(
-    ">>",
-    fmt([[{} => {}]], {
-      c(1, {
-        sn(nil, fmt([[({})]], { i(1) })),
-        sn(nil, fmt([[{} {} = ({})]], { c(1, { t "var", t "const" }), i(2), i(3) })),
-      }),
-      c(2, {
-        sn(nil, fmt([[{};]], { i(1) })),
-        sn(
-          nil,
-          fmt(
-            [[
-              {{
-                {}
-              }}
-            ]],
-            { i(1) }
-          )
-        ),
-      }),
-    })
-  ),
   s("switch", {
     t "switch (",
     i(1, "condition"),
@@ -80,9 +57,9 @@ return {
     "while",
     fmt(
       [[
-      while({}) {{
-      {}
-      }}
+        while({}) {{
+        {}
+        }}
       ]],
       {
         i(1, "condition"),
@@ -123,7 +100,7 @@ return {
   s("if", {
     t "if (",
     i(1, "expr"),
-    t { ") {", "\t" },
+    t { ") {", "" },
     d(2, util.saved_text, {}, { user_args = { { text = "// code", indent = true } } }),
     d(3, util.recursive_if, {}),
     t { "", "}" },
@@ -132,11 +109,11 @@ return {
     "try",
     fmt(
       [[
-      try {{
-      {}
-      catch ({}) {{
+        try {{
         {}
-      }}
+        catch ({}) {{
+          {}
+        }}
       ]],
       {
         d(1, util.saved_text, {}, { user_args = { { indent = true } } }),
@@ -146,4 +123,30 @@ return {
     )
   ),
   s("log", fmt([[console.log({});]], i(1))),
+}, {
+  s(
+    ">>",
+    fmt([[{} => {}]], {
+      c(1, {
+        sn(nil, fmt([[({})]], { i(1) })),
+        sn(nil, fmt([[{} {} = ({})]], { c(1, { t "var", t "const" }), i(2), i(3) })),
+      }),
+      c(2, {
+        sn(nil, fmt([[{};]], { i(1) })),
+        sn(
+          nil,
+          fmt(
+            [[
+              {{
+                {}
+              }}
+            ]],
+            {
+              d(1, util.saved_text, {}, { user_args = { { indent = true } } }),
+            }
+          )
+        ),
+      }),
+    })
+  ),
 }
