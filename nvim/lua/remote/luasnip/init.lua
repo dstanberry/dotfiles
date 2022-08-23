@@ -18,19 +18,18 @@ luasnip.filetype_extend("typescript", { "javascript" })
 luasnip.filetype_extend("typescript.tsx", { "javascript" })
 luasnip.filetype_extend("typescriptreact", { "javascript" })
 
-local M = setmetatable({}, {
+local M = {}
+
+local meta = setmetatable({}, {
   __index = function(t, k)
-    if k == "extras" then
-      local val = require "luasnip.extras"
+    local val
+    ok, val = pcall(require, string.format("remote.luasnip.%s", k))
+    if M[k] then
+      return M[k]
+    elseif ok then
       rawset(t, k, val)
       return val
     end
-    if k == "extras_fmt" then
-      local val = require "luasnip.extras.fmt"
-      rawset(t, k, val)
-      return val
-    end
-    return luasnip[k]
   end,
 })
 
@@ -56,4 +55,4 @@ M.setup = function()
   }
 end
 
-return M
+return meta

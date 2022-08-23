@@ -1,17 +1,10 @@
-local luasnip = require "remote.luasnip"
+---@diagnostic disable: undefined-global
+require("remote.luasnip").nodes.setup_snip_env()
 
-local s = luasnip.snippet
-local c = luasnip.choice_node
-local i = luasnip.insert_node
-local sn = luasnip.snippet_node
-local t = luasnip.text_node
-
-local fmt = luasnip.extras_fmt.fmt
-
-local function make(trig, name)
+local function make(trigger, name)
   return s(
-    trig,
-    fmt("{} {}\n\n{}", {
+    { trig = trigger },
+    fmt("{} {}\n{}", {
       c(1, {
         sn(nil, fmt("{}({}):", { t(name), i(1, "scope") })),
         t(name .. ":"),

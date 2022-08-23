@@ -1,4 +1,10 @@
-local luasnip = require "remote.luasnip"
+-- verify luasnip is available
+local ok, luasnip = pcall(require, "luasnip")
+if not ok then
+  return
+end
+
+local rutil = require("remote.luasnip.util")
 
 vim.keymap.set({ "i", "s" }, "<tab>", function()
   if luasnip.expand_or_locally_jumpable() then
@@ -30,4 +36,8 @@ vim.keymap.set({ "i", "s" }, "<c-f>", function()
   else
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-d>", true, true, true), "n", true)
   end
+end, { silent = true })
+
+vim.keymap.set({ "i", "s" }, "<c-t>", function()
+  rutil.dynamic_node_external_update(1)
 end, { silent = true })

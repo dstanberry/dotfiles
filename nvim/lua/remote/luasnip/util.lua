@@ -1,14 +1,17 @@
-local luasnip = require "remote.luasnip"
+local luasnip = require "luasnip"
 
-local s = luasnip.snippet
-local c = luasnip.choice_node
-local d = luasnip.dynamic_node
-local f = luasnip.function_node
-local i = luasnip.insert_node
-local sn = luasnip.snippet_node
-local t = luasnip.text_node
+---@diagnostic disable: undefined-global
+require("remote.luasnip").nodes.setup_snip_env()
 
 local M = {}
+
+M.comment_string = function()
+  local cstring = vim.split(vim.bo.commentstring, "%s", true)[1]
+  if cstring == "/*" then
+    cstring = "//"
+  end
+  return vim.trim(cstring)
+end
 
 M.autopair = {}
 
@@ -42,43 +45,38 @@ M.autopair.char_matched = function(char)
   return ct % 2 == 0
 end
 
-M.recursive_case = function()
-  return sn(nil, {
-    c(1, {
-      t "",
-      sn(nil, {
-        t { "", "\t\tbreak;", "\tdefault:", "\t\t" },
-        i(1, "// code"),
-      }),
-      sn(nil, {
-        t { "", "\t\tbreak;", "\tcase " },
-        i(1, "value"),
-        t { ":", "\t\t" },
-        i(2, "// code"),
-        d(3, M.recursive_case, {}),
-      }),
-    }),
-  })
+local case_node
+local function get_case_node(index)
+  return d(index, function()
+    return sn(
+      nil,
+      fmta("<keyword><condition>:\n\t<body>\n\tbreak;\n\n<continuation>", {
+        keyword = t { "case " },
+        condition = i(1, "condition"),
+        body = d(
+          2,
+          M.saved_text,
+          {},
+          { user_args = { { text = ("%s TODO"):format(M.comment_string), indent = false } } }
+        ),
+        continuation = c(3, {
+          sn(
+            nil,
+            fmta("\ndefault:\n\t<body>\n", { body = i(1, ("%s TODO"):format(M.comment_string)) }, { dedent = false })
+          ),
+          vim.deepcopy(case_node),
+        }),
+      })
+    )
+  end, {})
 end
+case_node = get_case_node(1)
 
-M.recursive_if = function()
-  return sn(nil, {
-    c(1, {
-      t "",
-      sn(nil, {
-        t { "", "} else {", "\t" },
-        i(1, "// code"),
-      }),
-      sn(nil, {
-        t { "", "} elseif (" },
-        i(1, "expr"),
-        t { ") {", "\t" },
-        i(2, "// code"),
-        d(3, M.recursive_if, {}),
-      }),
-    }),
-  })
-end
+M.switch_case_node = fmta("<keyword> (<expression>) {\n<case>\n}", {
+  keyword = t "switch",
+  expression = i(1, "expression"),
+  case = isn(2, { t "\t", get_case_node(1) }, "$PARENT_INDENT\t"),
+})
 
 M.repeat_node = function(index)
   return f(function(args)
@@ -126,6 +124,45 @@ M.saved_text = function(_, snip, old_state, user_args)
   local snip_node = sn(nil, nodes)
   snip_node.old_state = old_state
   return snip_node
+end
+
+local function find_dynamic_node(node)
+  while not node.dynamicNode do
+    node = node.parent
+  end
+  return node.dynamicNode
+end
+
+local external_update_id = 0
+M.dynamic_node_external_update = function(func_indx)
+  local current_node = luasnip.session.current_nodes[vim.api.nvim_get_current_buf()]
+  local dynamic_node = find_dynamic_node(current_node)
+  external_update_id = external_update_id + 1
+  current_node.external_update_id = external_update_id
+  local insert_pre_call = vim.fn.mode() == "i"
+  local cursor_pos_pre_relative = util.pos_sub(util.get_cursor_0ind(), current_node.mark:pos_begin_raw())
+  dynamic_node.snip:store()
+  node_util.leave_nodes_between(dynamic_node.snip, current_node)
+  local func = dynamic_node.user_args[func_indx]
+  if func then
+    func(dynamic_node.parent.snippet)
+  end
+  dynamic_node.last_args = nil
+  dynamic_node:update()
+  local target_node = dynamic_node:find_node(function(test_node)
+    return test_node.external_update_id == external_update_id
+  end)
+  if target_node then
+    node_util.enter_nodes_between(dynamic_node, target_node, true)
+    if insert_pre_call then
+      util.set_cursor_0ind(util.pos_add(target_node.mark:pos_begin_raw(), cursor_pos_pre_relative))
+    else
+      node_util.select_node(target_node)
+    end
+    luasnip.session.current_nodes[vim.api.nvim_get_current_buf()] = target_node
+  else
+    luasnip.session.current_nodes[vim.api.nvim_get_current_buf()] = dynamic_node.snip:jump_into(1)
+  end
 end
 
 return M

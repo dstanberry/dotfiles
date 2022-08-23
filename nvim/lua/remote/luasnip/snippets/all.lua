@@ -1,25 +1,11 @@
-local luasnip = require "remote.luasnip"
-local util = require "remote.luasnip.util"
+local rutil = require "remote.luasnip.util"
 
-local s = luasnip.snippet
-local c = luasnip.choice_node
-local d = luasnip.dynamic_node
-local i = luasnip.insert_node
-local f = luasnip.function_node
-local sn = luasnip.snippet_node
-local t = luasnip.text_node
-
--- local fmt = luasnip.extras_fmt.fmt
-local p = luasnip.extras.partial
+---@diagnostic disable: undefined-global
+require("remote.luasnip").nodes.setup_snip_env()
 
 local function shebang(_, _)
-  local cstring = vim.split(vim.bo.commentstring, "%s", true)[1]
-  if cstring == "/*" then
-    cstring = "//"
-  end
-  cstring = vim.trim(cstring)
   return sn(nil, {
-    t(cstring),
+    t(rutil.comment_string()),
     t "!/usr/bin/env ",
     i(1, vim.bo.filetype),
   })
@@ -39,13 +25,13 @@ local function generate_lorem(words)
 end
 
 return {
-  util.autopair.create("(", ")", util.autopair.punctuation_matched),
-  util.autopair.create("{", "}", util.autopair.punctuation_matched),
-  util.autopair.create("[", "]", util.autopair.punctuation_matched),
-  util.autopair.create("<", ">", util.autopair.punctuation_matched),
-  util.autopair.create("'", "'", util.autopair.char_matched),
-  util.autopair.create('"', '"', util.autopair.char_matched),
-  util.autopair.create("`", "`", util.autopair.char_matched),
+  rutil.autopair.create("(", ")", rutil.autopair.punctuation_matched),
+  rutil.autopair.create("{", "}", rutil.autopair.punctuation_matched),
+  rutil.autopair.create("[", "]", rutil.autopair.punctuation_matched),
+  rutil.autopair.create("<", ">", rutil.autopair.punctuation_matched),
+  rutil.autopair.create("'", "'", rutil.autopair.char_matched),
+  rutil.autopair.create('"', '"', rutil.autopair.char_matched),
+  rutil.autopair.create("`", "`", rutil.autopair.char_matched),
   s({ trig = "date" }, { p(os.date, "%m-%d-%Y") }),
   s({ trig = "time" }, { p(os.date, "%H:%M") }),
   s({ trig = "lorem" }, c(1, generate_lorem(100))),
@@ -61,11 +47,16 @@ return {
   ),
 }, {
   s({ trig = "#!" }, { d(1, shebang, {}) }),
-  s({ trig = "{;", wordTrig = false, hidden = true }, {
-    t "{",
-    t { "", "\t" },
-    i(1),
-    t { "", "}" },
-    i(0),
-  }),
+  s(
+    { trig = "{;", wordTrig = false, hidden = true },
+    fmt(
+      "{{\n{}\n}}",
+      d(
+        1,
+        rutil.saved_text,
+        {},
+        { user_args = { { text = ("%s TODO"):format(rutil.comment_string()), indent = true } } }
+      )
+    )
+  ),
 }

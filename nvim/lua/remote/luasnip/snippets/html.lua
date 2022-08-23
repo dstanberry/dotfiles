@@ -1,16 +1,9 @@
-local luasnip = require "remote.luasnip"
-
-local s = luasnip.snippet
-local c = luasnip.choice_node
-local i = luasnip.insert_node
-local sn = luasnip.snippet_node
-local t = luasnip.text_node
-
-local fmt = luasnip.extras_fmt.fmt
+---@diagnostic disable: undefined-global
+require("remote.luasnip").nodes.setup_snip_env()
 
 return {
   s(
-    "html",
+    { trig = "html" },
     fmt(
       [[
         <!DOCTYPE html>
@@ -31,21 +24,14 @@ return {
       }
     )
   ),
-  s("script", {
-    t "<script",
-    c(1, {
-      sn(nil, {
-        t ' src="',
-        i(1, "path/to/file.js"),
-        t '">',
+  s(
+    { trig = "script" },
+    fmt("{}</script>", {
+
+      c(1, {
+        sn(nil, fmt("<script>\n\t{}\n", { i(1, "<!-- TODO -->") }, { trim_empty = false })),
+        sn(nil, fmt([[<script src="{}">]], { i(1, "path/to/file.js") })),
       }),
-      sn(nil, {
-        t { ">", "\t" },
-        i(1, "// code"),
-        t { "", "" },
-      }),
-    }),
-    i(0),
-    t "</script>",
-  }),
+    })
+  ),
 }
