@@ -44,7 +44,7 @@ M.setup = function()
     ext_opts = {
       [types.choiceNode] = {
         active = {
-          virt_text = { { icons.misc.Layer, "Constant" } },
+          virt_text = { { pad(icons.misc.Layer, "both"), "Constant" } },
         },
       },
     },

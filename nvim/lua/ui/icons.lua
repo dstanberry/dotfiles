@@ -56,7 +56,7 @@ return {
     FilledCircle = "●",
     FoldClosed = "",
     FoldOpened = "",
-    Layer = "﬘",
+    Layer = "﬘",
     Lock = "",
     Orbit = " ",
     Prompt = "❯",
