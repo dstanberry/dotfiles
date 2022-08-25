@@ -1,9 +1,3 @@
--- verify lsp_extensions is available
-local ok, inlay_hints = pcall(require, "lsp_extensions.inlay_hints")
-if not ok then
-  return
-end
-
 local M = {}
 
 M.config = {
@@ -20,27 +14,5 @@ M.config = {
     },
   },
 }
-
-M.show_inlay_hints = function()
-  vim.lsp.buf_request(
-    0,
-    "rust-analyzer/inlayHints",
-    inlay_hints.get_params(),
-    inlay_hints.get_callback {
-      highlight = "LspCodeLensText",
-      prefix = "  ",
-      only_current_line = false,
-      enabled = { "TypeHint", "ChainingHint", "ParameterHint" },
-    }
-  )
-end
-
--- vim.api.nvim_create_augroup("rust_show_line_hints", {clear = true })
-
--- vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
---   group = "rust_show_line_hints",
---   pattern = "*.rs",
---   callback = M.show_inlay_hints,
--- })
 
 return M
