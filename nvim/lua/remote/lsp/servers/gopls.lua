@@ -146,7 +146,7 @@ local handler = function(err, result, ctx)
         end
       end
       local parameter_hint_prefix = ":"
-      local other_hint_prefix = icons.misc.RightArrow
+      local type_hint_prefix = icons.misc.RightArrow
       if not vim.tbl_isempty(param_hints) then
         virt_text = virt_text .. parameter_hint_prefix .. "("
         for i, value_inner_inner in ipairs(param_hints) do
@@ -158,7 +158,7 @@ local handler = function(err, result, ctx)
         virt_text = virt_text .. ") "
       end
       if not vim.tbl_isempty(other_hints) then
-        virt_text = virt_text .. other_hint_prefix
+        virt_text = virt_text .. type_hint_prefix
         for i, value_inner_inner in ipairs(other_hints) do
           if value_inner_inner.kind == 2 then
             local char_start = value_inner_inner.range.start.character
