@@ -1,6 +1,6 @@
 local M = {}
 
-local preferences = {
+local prefs = {
   format = {
     convertTabsToSpaces = true,
     indentSize = 2,
@@ -11,7 +11,7 @@ local preferences = {
     includeInlayEnumMemberValueHints = true,
     includeInlayFunctionLikeReturnTypeHints = true,
     includeInlayFunctionParameterTypeHints = true,
-    includeInlayParameterNameHints = true,
+    includeInlayParameterNameHints = "all",
     includeInlayParameterNameHintsWhenArgumentMatchesName = true,
     includeInlayPropertyDeclarationTypeHints = true,
     includeInlayVariableTypeHints = true,
@@ -20,8 +20,8 @@ local preferences = {
 
 M.config = {
   settings = {
-    javascript = preferences,
-    typescript = preferences,
+    javascript = prefs,
+    typescript = prefs,
   },
 }
 

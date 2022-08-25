@@ -13,10 +13,13 @@ M.setup = function(rust_analyzer_config)
   local cfg = rust_analyzer_config or {}
   rust_tools.setup {
     tools = {
+      on_initialized = function()
+        pcall(require("inlay-hints").set_all, nil)
+      end,
       executor = require("rust-tools.executors").termopen,
       autoSetHints = true,
       inlay_hints = {
-        auto = true,
+        auto = false,
         only_current_line = false,
         only_current_line_autocmd = "CursorHold",
         show_parameter_hints = true,

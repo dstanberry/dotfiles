@@ -76,6 +76,7 @@ local function plugins(use)
       "folke/lua-dev.nvim",
       "jose-elias-alvarez/null-ls.nvim",
       "mickael-menu/zk-nvim",
+      "simrat39/inlay-hints.nvim",
       "simrat39/rust-tools.nvim",
     },
   }
