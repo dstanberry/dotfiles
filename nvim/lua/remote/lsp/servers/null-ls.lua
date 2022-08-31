@@ -4,18 +4,26 @@ if not ok then
   return
 end
 
+local b = null_ls.builtins
+
 local M = {}
 
 local sources = {
-  null_ls.builtins.code_actions.gitsigns,
-  null_ls.builtins.diagnostics.flake8,
-  null_ls.builtins.diagnostics.markdownlint,
-  null_ls.builtins.diagnostics.shellcheck.with {
+  b.code_actions.gitrebase,
+  b.code_actions.gitsigns,
+  b.diagnostics.flake8,
+  b.diagnostics.markdownlint,
+  b.diagnostics.shellcheck.with {
     diagnostics_format = "[#{c}] (#{s}) #{m}",
   },
-  null_ls.builtins.diagnostics.vint,
-  null_ls.builtins.formatting.eslint_d,
-  null_ls.builtins.formatting.prettier.with {
+  b.diagnostics.vint,
+  b.formatting.black,
+  b.formatting.cbfmt.with {
+    extra_args = { "--config", vim.fn.expand(("%s/cbfmt.toml"):format(vim.fn.stdpath "config")) },
+  },
+  b.formatting.eslint_d,
+  b.formatting.gofmt,
+  b.formatting.prettier.with {
     extra_args = function(params)
       local arguments = {}
       if params.ft == "markdown" then
@@ -24,11 +32,9 @@ local sources = {
       return arguments
     end,
   },
-  null_ls.builtins.formatting.black,
-  null_ls.builtins.formatting.gofmt,
-  null_ls.builtins.formatting.rustfmt,
-  null_ls.builtins.formatting.shfmt.with { args = { "-i", "2", "-ci", "-sr", "-s", "-bn" } },
-  null_ls.builtins.formatting.stylua,
+  b.formatting.rustfmt,
+  b.formatting.shfmt.with { args = { "-i", "2", "-ci", "-sr", "-s", "-bn" } },
+  b.formatting.stylua,
 }
 
 M.setup = function(cb)
