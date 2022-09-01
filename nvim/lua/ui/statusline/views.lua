@@ -16,6 +16,7 @@ local views = {
     "dapui_watches",
     "Diffview",
     "Neogit",
+    "NeogitStatus",
     "packer",
     "qf",
     "startuptime",
