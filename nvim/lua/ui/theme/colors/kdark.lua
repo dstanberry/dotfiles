@@ -18,6 +18,7 @@ local c = {
   blue_light = "#77b3c5",
   blue_dark = "#6f8fb4",
   magenta = "#b48ead",
+  rose = "#cd8d88",
 }
 
 c.white = color.darken(c.fg, 10)
