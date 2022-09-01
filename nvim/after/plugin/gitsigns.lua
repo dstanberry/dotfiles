@@ -25,18 +25,41 @@ signs.setup {
     virt_text_pos = "eol",
     delay = 150,
   },
-}
+  on_attach = function(bufnr)
+    local function map(mode, l, r, opts)
+      opts = opts or {}
+      opts.buffer = bufnr
+      vim.keymap.set(mode, l, r, opts)
+    end
 
-vim.keymap.set("n", "]j", signs.next_hunk)
-vim.keymap.set("n", "]k", signs.prev_hunk)
-vim.keymap.set("n", "<leader>hs", signs.stage_hunk)
-vim.keymap.set("n", "<leader>hu", signs.undo_stage_hunk)
-vim.keymap.set("n", "<leader>hr", signs.reset_hunk)
-vim.keymap.set("n", "<leader>hp", signs.preview_hunk)
-vim.keymap.set("n", "<leader>hb", signs.toggle_current_line_blame)
-vim.keymap.set("n", "<leader>gb", function()
-  signs.blame_line(true)
-end)
+    map("n", "]c", function()
+      if vim.wo.diff then
+        return "]c"
+      end
+      vim.schedule(function()
+        signs.next_hunk()
+      end)
+      return "<Ignore>"
+    end, { expr = true })
+    map("n", "[c", function()
+      if vim.wo.diff then
+        return "[c"
+      end
+      vim.schedule(function()
+        signs.prev_hunk()
+      end)
+      return "<Ignore>"
+    end, { expr = true })
+    map("n", "<leader>hs", signs.stage_hunk)
+    map("n", "<leader>hu", signs.undo_stage_hunk)
+    map("n", "<leader>hr", signs.reset_hunk)
+    map("n", "<leader>hp", signs.preview_hunk)
+    map("n", "<leader>hb", signs.toggle_current_line_blame)
+    map("n", "<leader>hB", function()
+      signs.blame_line { full = true }
+    end)
+  end,
+}
 
 groups.new("GitSignsAdd", { fg = c.green, bg = c.bg })
 groups.new("GitSignsChange", { fg = c.yellow, bg = c.bg })
