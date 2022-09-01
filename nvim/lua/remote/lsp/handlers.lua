@@ -161,7 +161,7 @@ M.setup = function()
       source = "always",
     },
     underline = {
-      severity = vim.diagnostic.severity.WARN,
+      severity = { min = vim.diagnostic.severity.WARN },
     },
   }
 
