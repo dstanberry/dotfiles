@@ -153,20 +153,16 @@ M.setup = function()
   vim.diagnostic.config {
     severity_sort = true,
     signs = true,
-    underline = true,
     update_in_insert = false,
+    virtual_text = false,
     float = {
-      -- border = "rounded",
       focusable = false,
       show_header = true,
       source = "always",
     },
-    -- virtual_text = {
-    --   prefix = icons.misc.Dot,
-    --   source = "if_many",
-    --   spacing = 8,
-    -- },
-    virtual_text = false,
+    underline = {
+      severity = vim.diagnostic.severity.WARN,
+    },
   }
 
   local signs = icons.diagnostics
