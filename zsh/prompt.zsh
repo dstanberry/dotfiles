@@ -67,8 +67,8 @@ zstyle ':vcs_info:*' enable git
   zstyle ':vcs_info:*' unstagedstr "%F{red}▪%f"
   zstyle ':vcs_info:*' use-simple true
   zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
-  zstyle ':vcs_info:git*:*' formats '%F{cyan} %b%m%c%u%f '
-  zstyle ':vcs_info:git*:*' actionformats '%F{cyan} %b|%a%m%c%u %f'
+  zstyle ':vcs_info:git*:*' formats '%F{cyan} %b%m%c%u%f '
+  zstyle ':vcs_info:git*:*' actionformats '%F{cyan} %b|%a%m%c%u %f'
 
   # show untracked status in git prompt
   function +vi-git-untracked() {
