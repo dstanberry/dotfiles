@@ -1,7 +1,6 @@
 local util = require "util"
 
 vim.api.nvim_create_user_command("Scratch", util.buffer.create_scratch, {})
-vim.api.nvim_create_user_command("Write", util.buffer.sudo_write, {})
 
 vim.api.nvim_create_user_command("Glow", function()
   local bufnr = vim.api.nvim_get_current_buf()
