@@ -20,7 +20,7 @@ diffview.setup {
   },
   file_panel = {
     win_config = {
-      position = "bottom",
+      position = "left",
       width = 35,
       height = 10,
     },
