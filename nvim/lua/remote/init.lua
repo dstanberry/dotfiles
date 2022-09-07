@@ -25,7 +25,6 @@ local function plugins(use)
 
   -- written in vimscript
   use { "dstein64/vim-startuptime", cmd = "StartupTime", opt = true }
-  use { "rrethy/vim-hexokinase", run = "make hexokinase" }
   use { "tpope/vim-repeat" }
   use { "tpope/vim-scriptease", cmd = { "Messages", "Verbose", "Time" }, opt = true }
   -- syntax highlighting
@@ -113,9 +112,9 @@ local function plugins(use)
   use { "j-hui/fidget.nvim" }
   use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   use { "lukas-reineke/indent-blankline.nvim" }
+  use { "NvChad/nvim-colorizer.lua" }
   use { "rcarriga/nvim-notify" }
   use { "SmiteshP/nvim-navic", requires = "neovim/nvim-lspconfig" }
-
   -- file/path navigation
   use {
     "tamago324/lir.nvim",

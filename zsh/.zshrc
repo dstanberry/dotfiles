@@ -266,6 +266,24 @@ function fg-bg() {
 zle -N fg-bg
 bindkey '^Z' fg-bg
 
+# execute the next vim command in normal mode
+vi-cmd () {
+  local REPLY
+  # read the next keystroke, look it up in the `vicmd` keymap and, if successful,
+  # evalute the widget bound to it in the context of the `vicmd` keymap.
+  zle .read-command -K vicmd &&
+    zle $REPLY -K vicmd
+}
+
+# make a keyboard widget out of the function above.
+zle -N vi-cmd
+
+# simulate vim's <c-o> behavior in insert mode
+bindkey -v '^O' vi-cmd
+
+# delete the word to the right of the cursor
+bindkey -s '^[w' '^OcW'
+
 ###############################################################
 # evalcache
 ###############################################################
