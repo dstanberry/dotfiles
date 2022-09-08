@@ -260,7 +260,7 @@ vim.keymap.set("v", "<c-w><c-r>", function()
   return (":<c-u>%%s/%s/"):format(selection)
 end, { silent = false, expr = true, replace_keycodes = true })
 
--- execute selected text
+-- execute selected text (for vim/lua files)
 vim.keymap.set("v", "<leader>x", function()
   local function eval_chunk(str, ...)
     local chunk = loadstring(str, "@[evalrangeX]")
