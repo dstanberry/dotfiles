@@ -163,7 +163,6 @@ local function plugins(use)
       "saadparwaiz1/cmp_luasnip",
     },
   }
-  use { "hrsh7th/nvim-pasta" }
   use { "kylechui/nvim-surround", event = "BufRead" }
   use { "numToStr/Comment.nvim" }
 
