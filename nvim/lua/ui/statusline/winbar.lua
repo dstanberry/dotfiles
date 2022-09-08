@@ -85,19 +85,26 @@ end
 
 M.setup = function()
   vim.api.nvim_create_augroup("winbar", { clear = true })
-
   vim.api.nvim_create_autocmd({ "BufWinEnter", "BufFilePost" }, {
     group = "winbar",
     callback = function()
-      if
-        vim.bo.filetype == ""
-        or vim.tbl_contains(views.basic, vim.bo.filetype)
-        or vim.tbl_contains(views.plugins, vim.bo.filetype)
-      then
-        vim.opt_local.winbar = ""
-        return
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        local ft, bt = vim.bo[buf].filetype, vim.bo[buf].buftype
+        local is_diff = vim.wo[win].diff
+        if
+          not is_diff
+          and not vim.tbl_contains(views.basic, ft)
+          and not vim.tbl_contains(views.plugins, ft)
+          and vim.fn.win_gettype(win) == ""
+          and bt == ""
+          and ft ~= ""
+        then
+          vim.wo[win].winbar = [[%{%v:lua.require("ui.statusline.winbar").focus()%}]]
+        elseif is_diff or vim.tbl_contains(views.basic, ft) or vim.tbl_contains(views.plugins, ft) then
+          vim.wo[win].winbar = nil
+        end
       end
-      vim.opt_local.winbar = [[%{%v:lua.require("ui.statusline.winbar").focus()%}]]
     end,
   })
 end
