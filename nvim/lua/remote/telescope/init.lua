@@ -239,8 +239,7 @@ function M.project_files()
     hidden = has "win32" and false or true,
     prompt_title = "Project Files",
   }
-  ok = pcall(builtin.git_files, opts)
-  if not ok then
+  if not pcall(builtin.git_files, opts) then
     builtin.find_files(opts)
   end
 end

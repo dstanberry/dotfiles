@@ -13,7 +13,6 @@ M.live_grep_with_shortcuts = function(opts)
   opts.shortcuts = opts.shortcuts or {
     ["l"] = "*.lua",
     ["v"] = "*.vim",
-    ["n"] = "*.{vim,lua}",
   }
   opts.pattern = opts.pattern or "%s"
   local custom_grep = finders.new_async_job {
