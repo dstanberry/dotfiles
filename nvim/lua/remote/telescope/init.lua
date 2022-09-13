@@ -176,7 +176,7 @@ groups.new("TelescopePromptBorder", { fg = GRAY, bg = GRAY })
 groups.new("TelescopePreviewBorder", { fg = c.bg_dark, bg = c.bg_dark })
 groups.new("TelescopeResultsBorder", { fg = GRAY_DARK, bg = GRAY_DARK })
 
-groups.new("TelescopePromptTitle", { fg = c.gray_light })
+groups.new("TelescopePromptTitle", { fg = c.bg, bg = c.red, bold = true })
 groups.new("TelescopePreviewTitle", { fg = c.bg_dark })
 groups.new("TelescopeResultsTitle", { fg = GRAY_DARK })
 
