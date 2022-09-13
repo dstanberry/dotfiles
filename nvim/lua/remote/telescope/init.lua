@@ -33,6 +33,24 @@ local set_prompt_to_entry_value = function(prompt_bufnr)
   state.get_current_picker(prompt_bufnr):reset_prompt(entry.ordinal)
 end
 
+local interactive_rebase = function(prompt_bufnr)
+  local commit = state.get_selected_entry().value
+  actions.close(prompt_bufnr)
+  vim.api.nvim_exec("tabnew | terminal", false)
+  local term_channel = vim.opt_local.channel:get()
+  vim.api.nvim_chan_send(term_channel, ("git rebase --interactive %s\r"):format(commit))
+  vim.cmd.normal "a"
+end
+
+local copy_commit = function(prompt_bufnr)
+  local commit = state.get_selected_entry().value
+  actions.close(prompt_bufnr)
+  vim.fn.setreg("+", commit)
+  vim.defer_fn(function()
+    vim.notify(("'%s' copied to clipboard"):format(commit), nil, { timeout = 500 })
+  end, 500)
+end
+
 telescope.setup {
   defaults = {
     prompt_prefix = pad(icons.misc.Prompt, "right"),
@@ -91,6 +109,26 @@ telescope.setup {
     live_grep = {
       layout_strategy = "vertical",
       layout_config = { height = 70 },
+    },
+    git_bcommits = {
+      layout_strategy = "vertical",
+      layout_config = { height = 70 },
+      mappings = {
+        i = {
+          ["<c-r>"] = interactive_rebase,
+          ["<c-y>"] = copy_commit,
+        },
+      },
+    },
+    git_commits = {
+      layout_strategy = "vertical",
+      layout_config = { height = 70 },
+      mappings = {
+        i = {
+          ["<c-r>"] = interactive_rebase,
+          ["<c-y>"] = copy_commit,
+        },
+      },
     },
     diagnostics = {
       path_display = { "shorten" },
