@@ -16,8 +16,8 @@ cmp.setup {
   formatting = {
     fields = { "kind", "abbr", "menu" },
     format = function(_, item)
-      item.menu = item.kind
-      item.kind = icons.kind[item.kind]
+      item.menu = pad(item.kind, "both")
+      item.kind = pad(icons.kind[item.kind], "both")
       return item
     end,
   },
@@ -83,15 +83,34 @@ groups.new("CmpItemAbbrDefault", { fg = c.white })
 groups.new("CmpItemAbbrDeprecatedDefault", { fg = c.white })
 groups.new("CmpItemAbbrMatchDefault", { fg = BLUE, bold = true })
 groups.new("CmpItemAbbrMatchFuzzyDefault", { fg = c.orange, bold = true })
-
 groups.new("CmpItemMenu", { fg = BLUE_DARK })
-groups.new("CmpItemKindFunction", { fg = MAGENTA })
-groups.new("CmpItemKindKeyword", { fg = BLUE_LIGHT })
-groups.new("CmpItemKindMethod", { fg = MAGENTA })
-groups.new("CmpItemKindSnippet", { fg = c.blue_dark })
-groups.new("CmpItemKindText", { fg = c.white })
+
+groups.new("CmpItemKindClass", { link = "Type" })
+-- groups.new("CmpItemKindColor", { link = "" })
+groups.new("CmpItemKindConstant", { link = "TSConstant" })
+groups.new("CmpItemKindConstructor", { link = "TSConstructor" })
 groups.new("CmpItemKindDefault", { fg = c.white })
-groups.new("CmpItemKindVariable", { fg = BLUE_LIGHT })
+groups.new("CmpItemKindEnum", { link = "TSEnum" })
+groups.new("CmpItemKindEnumMember", { link = "TSField" })
+groups.new("CmpItemKindEvent", { link = "TSBoolean" })
+groups.new("CmpItemKindField", { link = "TSField" })
+groups.new("CmpItemKindFile", { link = "Directory" })
+groups.new("CmpItemKindFolder", { link = "Directory" })
+groups.new("CmpItemKindFunction", { link = "TSFunction" })
+groups.new("CmpItemKindInterface", { link = "TSKeywordFunction" })
+groups.new("CmpItemKindKeyword", { link = "TSKeyword" })
+groups.new("CmpItemKindMethod", { link = "TSFunction" })
+groups.new("CmpItemKindModule", { link = "TSNamespace" })
+groups.new("CmpItemKindOperator", { link = "TSOperator" })
+groups.new("CmpItemKindProperty", { link = "TSProperty" })
+groups.new("CmpItemKindReference", { link = "TSTextReference" })
+groups.new("CmpItemKindSnippet", { fg = c.white })
+groups.new("CmpItemKindStruct", { link = "Type" })
+groups.new("CmpItemKindText", { link = "TSText" })
+groups.new("CmpItemKindTypeParameter", { link = "Identifier" })
+groups.new("CmpItemKindUnit", { link = "SpecialChar" })
+groups.new("CmpItemKindValue", { link = "TSText" })
+groups.new("CmpItemKindVariable", { link = "TSVariable" })
 
 groups.new("CmpBorder", { fg = c.bg_dark, bg = c.bg_dark })
 groups.new("CmpFloat", { fg = c.white, bg = c.bg_dark })
