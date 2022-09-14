@@ -46,7 +46,6 @@ local get_symbols = function()
   end
 
   local symbols = navic.get_data()
-
   if symbols == nil then
     return ""
   end
@@ -64,10 +63,11 @@ local get_symbols = function()
   for _, symbol in ipairs(symbols) do
     if #segments == 0 then
       section = add(hi.winbar, { separator }, true)
-        .. add(hi.winbar_icon, { symbol.icon }, true)
+        .. add(hi.winbar_icon(("NavicIcons%s"):format(symbol.type)), { symbol.icon }, true)
         .. add(hi.winbar, { symbol.name })
     else
-      section = add(hi.winbar_icon, { symbol.icon }, true) .. add(hi.winbar, { symbol.name })
+      section = add(hi.winbar_icon(("NavicIcons%s"):format(symbol.type)), { symbol.icon }, true)
+        .. add(hi.winbar, { symbol.name })
     end
     table.insert(segments, section)
   end

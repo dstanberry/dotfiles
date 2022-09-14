@@ -3,12 +3,40 @@ if not ok then
   return
 end
 
+local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
+
+groups.new("NavicIconsArray", {link = "TSConstant"})
+groups.new("NavicIconsBoolean", {link = "TSBoolean"})
+groups.new("NavicIconsClass", {link = "Type"})
+groups.new("NavicIconsConstant", {link = "TSConstant"})
+groups.new("NavicIconsConstructor", {link = "TSConstructor"})
+groups.new("NavicIconsEnum", {link = "TSEnum"})
+groups.new("NavicIconsEnumMember", {link = "TSField"})
+groups.new("NavicIconsEvent", {link = "TSBoolean"})
+groups.new("NavicIconsField", {link = "TSField"})
+groups.new("NavicIconsFile", {link = "Directory"})
+groups.new("NavicIconsFunction", {link = "TSFunction"})
+groups.new("NavicIconsInterface", {link = "TSKeywordFunction"})
+groups.new("NavicIconsKey", {link = "TSText"})
+groups.new("NavicIconsMethod", {link = "TSFunction"})
+groups.new("NavicIconsModule", {link = "TSNamespace"})
+groups.new("NavicIconsNamespace", {link = "TSNamespace"})
+groups.new("NavicIconsNull", {link = "TSType"})
+groups.new("NavicIconsNumber", {link = "TSNumber"})
+groups.new("NavicIconsObject", {link = "TSType"})
+groups.new("NavicIconsOperator", {link = "TSOperator"})
+groups.new("NavicIconsPackage", {link = "TSNamespace"})
+groups.new("NavicIconsProperty", {link = "TSProperty"})
+groups.new("NavicIconsString", {link = "TSString"})
+groups.new("NavicIconsStruct", {link = "Type"})
+groups.new("NavicIconsTypeParameter", {link = "Identifier"})
+groups.new("NavicIconsVariable", {link = "TSVariable"})
 
 navic.setup {
   depth_limit = 0,
   depth_limit_indicator = "..",
-  highlight = false,
+  highlight = true,
   icons = {
     Array = pad(icons.type.Array, "right"),
     Boolean = pad(icons.type.Boolean, "right"),

@@ -59,7 +59,9 @@ M.user8 = "%8*"
 M.user9 = "%9*"
 
 M.winbar = sanitize "Winbar"
-M.winbar_icon = sanitize "WinbarIcon"
 M.winbarnc = sanitize "WinbarNC"
+M.winbar_icon = function(group)
+  return sanitize(group)
+end
 
 return M

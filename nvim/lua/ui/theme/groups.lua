@@ -177,6 +177,7 @@ M.apply = function(c)
   hi.TSDanger = { fg = c.red, bg = c.bg, bold = true }
   hi.TSDefinition = { underline = true, sp = c.magenta }
   hi.TSDefinitionUsage = { bg = c.gray }
+  hi.TSEnum = { bold = true }
   hi.TSEmphasis = { fg = c.yellow, italic = true }
   hi.TSEnvironment = { fg = c.blue_dark }
   hi.TSEnvironmentType = { fg = c.yellow }
