@@ -1,9 +1,4 @@
--- verify buftabline is available
-local ok, tabline = pcall(require, "buftabline")
-if not ok then
-  return
-end
-
+local tabline = require("ui.tabline")
 local icons = require "ui.icons"
 
 tabline.setup {
@@ -21,5 +16,6 @@ tabline.setup {
     current = "TabLineSel",
     normal = "TabLine",
   },
-  show_tabpages = false,
+  show_tabpages = true,
+  tabpage_position = "right",
 }

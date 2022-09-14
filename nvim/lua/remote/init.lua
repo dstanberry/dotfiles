@@ -110,7 +110,6 @@ local function plugins(use)
     requires = { { "folke/twilight.nvim", requires = { "nvim-treesitter/nvim-treesitter" } } },
   }
   use { "j-hui/fidget.nvim" }
-  use { "jose-elias-alvarez/buftabline.nvim", requires = { "kyazdani42/nvim-web-devicons" } }
   use { "lukas-reineke/indent-blankline.nvim" }
   use { "NvChad/nvim-colorizer.lua" }
   use { "rcarriga/nvim-notify" }
