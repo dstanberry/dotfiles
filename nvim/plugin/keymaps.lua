@@ -337,3 +337,24 @@ end, { silent = false, expr = true, replace_keycodes = true })
 vim.keymap.set("c", "%P", function()
   return vim.fn.expand "%:p"
 end, { silent = false, expr = true, replace_keycodes = true })
+
+---------------------------------------------------------------
+-- => Terminal
+---------------------------------------------------------------
+-- leave terminal mode
+vim.keymap.set("t", "<esc><esc>", [[<c-\><c-n>]])
+
+-- switch to left window
+vim.keymap.set("t", "<c-h>", [[<c-\><c-n><c-w>h]])
+-- switch to bottom window
+vim.keymap.set("t", "<c-j>", [[<c-\><c-n><c-w>j]])
+-- switch to toptwindow
+vim.keymap.set("t", "<c-k>", [[<c-\><c-n><c-w>k]])
+-- switch to rigtt window
+vim.keymap.set("t", "<c-l>", [[<c-\><c-n><c-w>l]])
+
+---------------------------------------------------------------
+-- => Terminal | Leader
+---------------------------------------------------------------
+-- leave terminal mode
+vim.keymap.set("t", "<leader><esc>", [[<c-\><c-n>]])
