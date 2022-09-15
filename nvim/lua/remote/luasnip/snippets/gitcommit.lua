@@ -11,11 +11,14 @@ local function make(trigger, name)
       }),
       i(2, "title"),
       i(0),
-    })
+    }),
+    {
+      condition = conds.line_begin,
+    }
   )
 end
 
-return {
+return {}, {
   make("build", "build"),
   make("chore", "chore"),
   make("feat", "feat"),
