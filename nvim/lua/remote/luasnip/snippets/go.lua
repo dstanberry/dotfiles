@@ -162,5 +162,7 @@ return {
     })
   ),
 }, {
-  s({ trig = "print" }, fmt([[fmt.Println("{}")]], { i(1) })),
+  s({ trig = "print" }, fmt([[fmt.Println("{}")]], { i(1) }), {
+    condition = conds.line_begin,
+  }),
 }

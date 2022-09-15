@@ -33,5 +33,7 @@ return {
     })
   ),
 }, {
-  s({ trig = "print[ln]", regTrig = true }, fmt([[println!("{}: {{:?}}", {});]], { rep(1), i(1) })),
+  s({ trig = "print[ln]", regTrig = true }, fmt([[println!("{}: {{:?}}", {});]], { rep(1), i(1) }), {
+    condition = conds.line_begin,
+  }),
 }

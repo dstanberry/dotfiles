@@ -1,4 +1,4 @@
-local rutil = require("remote.luasnip.util")
+local rutil = require "remote.luasnip.util"
 
 ---@diagnostic disable: undefined-global
 require("remote.luasnip").nodes.setup_snip_env()
@@ -86,5 +86,7 @@ return {
       }),
     })
   ),
-  s({ trig = "log" }, fmt([[console.log({});]], i(1))),
+  s({ trig = "log" }, fmt([[console.log({});]], i(1)), {
+    condition = conds.line_begin,
+  }),
 }
