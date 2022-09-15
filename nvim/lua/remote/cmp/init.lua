@@ -67,11 +67,9 @@ cmp.setup.cmdline("/", {
 
 cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = "cmdline", keyword_pattern = [=[[^[:blank:]\!]*]=] },
-  }, {
+  sources = cmp.config.sources {
     { name = "path" },
-  }),
+  },
 })
 
 local BLUE = color.lighten(c.blue, 15)
