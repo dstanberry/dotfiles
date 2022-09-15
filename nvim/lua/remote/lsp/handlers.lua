@@ -12,11 +12,11 @@ pcall(require("inlay-hints").setup, {
   renderer = "inlay-hints.render.eol",
   hints = {
     parameter = {
-      show = true,
+      show = false,
       highlight = "Comment",
     },
     type = {
-      show = true,
+      show = false,
       highlight = "Comment",
     },
   },
