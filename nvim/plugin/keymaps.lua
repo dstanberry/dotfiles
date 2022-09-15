@@ -23,8 +23,8 @@ vim.keymap.set("n", "<cr>", function()
 end, { expr = true, replace_keycodes = true })
 
 -- navigate quickfix list
-vim.keymap.set("n", "<c-up>", "<cmd>cprevious<cr>zz")
-vim.keymap.set("n", "<c-down>", "<cmd>cnext<cr>zz")
+vim.keymap.set("n", "<c-up>", "<cmd>try | cprevious | catch | endtry<cr>zz")
+vim.keymap.set("n", "<c-down>", "<cmd>try | cnext | catch | endtry<cr>zz")
 
 -- navigate location list
 vim.keymap.set("n", "<a-up>", "<cmd>lprevious<cr>zz")
