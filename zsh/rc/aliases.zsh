@@ -13,12 +13,14 @@ alias grep='grep --color=auto'
 
 # enable color support for ls
 if hash exa 2> /dev/null; then
-  if is_darwin; then
-    alias ls="exa --all --group-directories-first --group"
-  elif is_wsl; then
+  if is_wsl; then
     alias ls="exa --ignore-glob='ntuser\.*' --ignore-glob='NTUSER\.*' --all --group-directories-first --group"
+    alias ll="exa --ignore-glob='ntuser\.*' --ignore-glob='NTUSER\.*' --long --git-ignore --icons --git --tree"
+    alias lla="exa --ignore-glob='ntuser\.*' --ignore-glob='NTUSER\.*' --all --long --git-ignore --icons --git --tree"
   else
     alias ls="exa --all --group-directories-first --group"
+    alias ll="exa --long --git-ignore --icons --git --tree"
+    alias lla="exa --all --long --git-ignore --icons --git --tree"
   fi
 else
   if is_darwin; then
