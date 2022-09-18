@@ -1,6 +1,7 @@
 pcall(require, "impatient")
 
 local util = require "util"
+require "util.globals"
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
@@ -64,9 +65,7 @@ vim.fn.mkdir(swap, "p")
 vim.fn.mkdir(undo, "p")
 vim.fn.mkdir(shada, "p")
 
-vim.cmd "colorscheme kdark"
-
-require "util.globals"
+vim.cmd.colorscheme "kdark"
 
 util.load_dirhash(vim.env.SHELL)
 util.load_settings()
