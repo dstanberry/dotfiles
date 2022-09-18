@@ -64,6 +64,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 
 vim.api.nvim_create_autocmd("Filetype", {
   group = "ftplugin",
+  pattern = "*",
   callback = function()
     vim.bo.formatoptions = "cjlnqr"
   end,
