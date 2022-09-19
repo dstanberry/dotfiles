@@ -95,7 +95,6 @@ local function plugins(use)
     "m-demare/hlargs.nvim",
     requires = { "nvim-treesitter/nvim-treesitter" },
   }
-
   use { "simrat39/symbols-outline.nvim", cmd = "SymbolsOutline", requires = { "nvim-lua/plenary.nvim" } }
 
   -- look-and-feel
@@ -111,6 +110,7 @@ local function plugins(use)
   use { "NvChad/nvim-colorizer.lua" }
   use { "rcarriga/nvim-notify" }
   use { "SmiteshP/nvim-navic", requires = "neovim/nvim-lspconfig" }
+
   -- file/path navigation
   use {
     "tamago324/lir.nvim",
@@ -162,7 +162,7 @@ local function plugins(use)
   use { "kylechui/nvim-surround", event = "BufRead" }
   use { "numToStr/Comment.nvim" }
 
-  -- debug and evaluate code chunks
+  -- interactive debugging/REPL
   use { "bfredl/nvim-luadev", cmd = "Luadev", opt = true }
   use {
     "mfussenegger/nvim-dap",
