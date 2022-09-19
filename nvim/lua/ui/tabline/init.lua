@@ -5,7 +5,7 @@ local M = {}
 
 local reset_icon_colors = vim.schedule_wrap(function()
   highlights.reset()
-  vim.cmd "redrawtabline"
+  vim.cmd.redrawtabline()
 end)
 
 M.setup = function(config)

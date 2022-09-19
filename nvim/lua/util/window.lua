@@ -21,7 +21,7 @@ M.popup_window = function(opts)
   if opts.enter then
     vim.api.nvim_set_current_win(winnr)
     vim.keymap.set("i", "jk", function()
-      vim.cmd [[stopinsert]]
+      vim.cmd.stopinsert()
       vim.api.nvim_win_close(0, true)
     end, { buffer = bufnr })
     vim.keymap.set("n", "<esc>", function()
@@ -34,7 +34,7 @@ M.popup_window = function(opts)
   if opts.on_confirm then
     vim.keymap.set("i", "<cr>", function()
       opts.on_confirm()
-      vim.cmd [[stopinsert]]
+      vim.cmd.stopinsert()
     end, { buffer = bufnr })
     vim.keymap.set("n", "<cr>", function()
       opts.on_confirm()
@@ -42,7 +42,7 @@ M.popup_window = function(opts)
   end
   if opts.input then
     vim.api.nvim_buf_set_option(bufnr, "modifiable", true)
-    vim.cmd [[startinsert]]
+    vim.cmd.startinsert()
   end
   if opts.prompt and opts.prompt.enable then
     vim.api.nvim_buf_set_option(bufnr, "buftype", "prompt")

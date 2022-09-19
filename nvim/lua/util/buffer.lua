@@ -2,7 +2,8 @@ local M = {}
 
 function M.create_scratch()
   local ft = vim.fn.input "scratch buffer filetype: "
-  vim.cmd "20new [Scratch]"
+  vim.cmd.split "20"
+  vim.cmd.new "[Scratch]"
   vim.bo.bufhidden = "wipe"
   vim.bo.buflisted = false
   vim.bo.buftype = "nofile"
@@ -15,24 +16,24 @@ end
 function M.delete_buffer(force)
   local buflisted = vim.fn.getbufinfo { buflisted = 1 }
   if #buflisted < 2 then
-    vim.cmd "enew"
+    vim.cmd.enew()
     return
   end
   local winnr = vim.fn.winnr()
   local bufnr = vim.fn.bufnr()
   for _, winid in ipairs(vim.fn.getbufinfo(bufnr)[1].windows) do
-    vim.cmd(string.format("%d wincmd w", vim.fn.win_id2win(winid)))
+    vim.cmd.wincmd { args = { "w" }, range = { vim.fn.win_id2win(winid) } }
     if bufnr == buflisted[#buflisted].bufnr then
-      vim.cmd "bp"
+      vim.cmd.bprevious()
     else
-      vim.cmd "bn"
+      vim.cmd.bnext()
     end
   end
-  vim.cmd(string.format("%d wincmd w", winnr))
+  vim.cmd.wincmd { args = { "w" }, range = { winnr } }
   if force or vim.fn.getbufvar(bufnr, "&buftype") == "terminal" then
-    vim.cmd "bd! #"
+    vim.cmd.bdelete { args = { "#" }, bang = true }
   else
-    vim.cmd "silent! confirm bd #"
+    vim.cmd.bdelete { args = { "#" }, mods = { emsg_silent = true, confirm = true } }
   end
 end
 

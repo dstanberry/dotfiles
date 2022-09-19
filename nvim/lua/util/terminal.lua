@@ -1,13 +1,13 @@
 local M = {}
 
 local launch_term = function(task, opts)
-  vim.cmd [[belowright 5new]]
+  vim.cmd.new { range = { 5 }, mods = { split = "belowright" } }
   vim.bo.bufhidden = "wipe"
   vim.bo.buflisted = false
   vim.bo.buftype = "nofile"
   vim.bo.swapfile = false
   vim.fn.termopen(task, opts)
-  vim.cmd [[startinsert]]
+  vim.cmd.startinsert()
 end
 
 M.transform_win_cmd = function(install_cmd)

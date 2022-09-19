@@ -119,11 +119,11 @@ end, { silent = false, expr = true, replace_keycodes = true })
 -- save current buffer to disk and execute the file
 vim.keymap.set("n", "<leader>x", function()
   local ft = vim.bo.filetype
-  print(vim.cmd "write")
+  print(vim.cmd.write())
   if ft == "vim" then
-    print(vim.cmd "source %")
+    print(vim.cmd.source "%")
   elseif ft == "lua" then
-    print(vim.cmd "luafile %")
+    print(vim.cmd.luafile "%")
   end
 end, { silent = false })
 
@@ -160,13 +160,11 @@ vim.keymap.set("n", "<localleader>s", function()
   local sep = has "win32" and [[\]] or "/"
   local updated = vim.fn.input("Save as: ", path .. sep)
   if #updated > 0 and updated ~= file then
-    vim.cmd(("saveas %s"):format(updated))
+    vim.cmd.saveas(updated)
     local move = vim.fn.input "Delete original file? (y/n): "
     if move == "y" or move == "yes" then
-      vim.cmd(([[
-        silent !rm %s
-        bdelete %s
-      ]]):format(file, file))
+      vim.fn.delete(file)
+      vim.cmd.bdelete(file)
     end
   end
 end, { silent = false })
@@ -181,9 +179,9 @@ vim.keymap.set("n", "<localleader>qa", "<cmd>qa!<cr>")
 vim.keymap.set("n", "<localleader>x", function()
   local ft = vim.bo.filetype
   if ft == "vim" then
-    print(vim.cmd [[execute getline(".")]])
+    print(vim.cmd.execute(vim.fn.getline "."))
   elseif ft == "lua" then
-    print(vim.cmd(([[lua %s]]):format(vim.fn.getline ".")))
+    print(vim.cmd.lua(vim.fn.getline "."))
   end
 end, { silent = false })
 

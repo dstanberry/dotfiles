@@ -58,7 +58,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "COMMIT_EDITMSG",
   callback = function()
     vim.fn.setpos(".", { 0, 1, 1, 0 })
-    vim.cmd [[startinsert]]
+    vim.cmd.startinsert()
   end,
 })
 

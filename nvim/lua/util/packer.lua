@@ -9,7 +9,7 @@ function M.bootstrap()
       string.format("git clone %s %s", "https://github.com/wbthomason/packer.nvim", path .. "/packer.nvim")
     )
     print(out)
-    vim.cmd [[packadd packer.nvim]]
+    vim.cmd.packadd("packer.nvim")
   end
 end
 
