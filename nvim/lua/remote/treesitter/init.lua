@@ -36,7 +36,7 @@ require("nvim-treesitter.configs").setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "<leader>v",
+      init_selection = "<leader>gn",
       node_incremental = "gn",
       scope_incremental = "ga",
       node_decremental = "gp",
@@ -137,6 +137,7 @@ require("nvim-treesitter.configs").setup {
     },
     select = {
       enable = true,
+      lookahead = true,
       keymaps = {
         ["ab"] = "@block.outer",
         ["ib"] = "@block.inner",
