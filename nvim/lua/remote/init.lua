@@ -20,9 +20,6 @@ local function plugins(use)
   -- startup optimization
   use { "lewis6991/impatient.nvim" }
 
-  -- hacks (until merged/fixed in upstream)
-  use { "antoinemadec/FixCursorHold.nvim" }
-
   -- written in vimscript
   use { "dstein64/vim-startuptime", cmd = "StartupTime", opt = true }
   use { "tpope/vim-repeat" }
