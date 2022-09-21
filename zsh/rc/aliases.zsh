@@ -11,24 +11,16 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
 
-# enable color support for ls
+# enable color support for ls (using exa)
 if hash exa 2> /dev/null; then
   if is_wsl; then
-    alias ls="exa --ignore-glob='ntuser\.*' --ignore-glob='NTUSER\.*' --all --group-directories-first --group"
-    alias ll="exa --ignore-glob='ntuser\.*' --ignore-glob='NTUSER\.*' --long --git-ignore --icons --git --tree"
-    alias lla="exa --ignore-glob='ntuser\.*' --ignore-glob='NTUSER\.*' --all --long --git-ignore --icons --git --tree"
+    alias ls="exa --ignore-glob='ntuser.*|NTUSER.*' --all --group-directories-first --group"
+    alias ll="exa --ignore-glob='ntuser.*|NTUSER.*' --long --git-ignore --icons --git --tree"
+    alias lla="exa --ignore-glob='ntuser.*|NTUSER.*' --all --long --git-ignore --icons --git --tree"
   else
     alias ls="exa --all --group-directories-first --group"
     alias ll="exa --long --git-ignore --icons --git --tree"
     alias lla="exa --all --long --git-ignore --icons --git --tree"
-  fi
-else
-  if is_darwin; then
-    alias ls="gls --color=auto --almost-all --group-directories-first"
-  elif is_wsl; then
-    alias ls="ls --color=auto --ignore='ntuser\.*' --ignore='NTUSER\.*' --almost-all --group-directories-first"
-  else
-    alias ls="ls --color=auto --almost-all --group-directories-first"
   fi
 fi
 
