@@ -218,6 +218,7 @@ groups.new("TelescopePromptTitle", { fg = c.bg, bg = c.red, bold = true })
 groups.new("TelescopePreviewTitle", { fg = c.bg_dark })
 groups.new("TelescopeResultsTitle", { fg = GRAY_DARK })
 
+groups.new("TelescopePromptCounter", { fg = c.gray_light })
 groups.new("TelescopePromptPrefix", { fg = c.green, bg = GRAY })
 groups.new("TelescopePromptNormal", { fg = nil, bg = GRAY })
 groups.new("TelescopePreviewNormal", { fg = c.green, bg = c.bg_dark })
