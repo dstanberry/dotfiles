@@ -276,9 +276,10 @@ function M.project_files()
     file_ignore_patterns = ignored,
     follow = has "win32" and false or true,
     hidden = has "win32" and false or true,
-    prompt_title = "Project Files",
+    prompt_title = "Project Files (Git)",
   }
   if not pcall(builtin.git_files, opts) then
+    opts.prompt_title = "Project Files"
     builtin.find_files(opts)
   end
 end
