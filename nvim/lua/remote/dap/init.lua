@@ -71,9 +71,13 @@ M.setup = function()
         },
         {
           elements = { "repl" },
-          size = 15,
+          size = 0.20,
           position = "bottom",
         },
+      },
+      controls = {
+        enabled = true,
+        element = "repl",
       },
       floating = {
         boder = "single",
