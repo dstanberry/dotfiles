@@ -48,9 +48,7 @@ M.setup = function(rust_analyzer_config)
       end,
     }),
     dap = {
-      adapter = {
-        require("rust-tools.dap").get_codelldb_adapter(paths.code, paths.library),
-      },
+      adapter = require("rust-tools.dap").get_codelldb_adapter(paths.code, paths.library),
     },
   }
 end
