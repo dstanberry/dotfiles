@@ -60,7 +60,7 @@ M.setup = function()
         if has_ts then
           typescript.setup {
             disable_commands = false,
-            debug = true,
+            debug = false,
             go_to_source_definition = {
               fallback = true,
             },
