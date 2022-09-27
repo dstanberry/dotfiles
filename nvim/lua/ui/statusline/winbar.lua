@@ -1,3 +1,5 @@
+local has_devicons, devicons = pcall(require, "nvim-web-devicons")
+
 local data = require "ui.statusline.data"
 local hi = require "ui.statusline.highlight"
 local views = require "ui.statusline.views"
@@ -19,6 +21,7 @@ local get_filepath = function()
 
   local path = data.relpath(bufnr, 200)
   local fname = data.filename(bufnr)
+  local ext = vim.fn.fnamemodify(fname, ":e")
   local fsep = has "win32" and [[\]] or "/"
   local parts = vim.split(path, fsep)
   local segments = {}
@@ -26,12 +29,17 @@ local get_filepath = function()
 
   table.insert(parts, fname)
 
-  for _, s in ipairs(parts) do
-    if #s > 0 then
+  for k, v in ipairs(parts) do
+    if #v > 0 then
       if #segments == 0 then
-        section = add(hi.winbar, { pad(s, "left") })
+        section = add(hi.winbar, { pad(v, "left") })
       else
-        section = add(hi.winbar, { s })
+        if k == #parts and has_devicons then
+          local icon, icon_hl = require("nvim-web-devicons").get_icon(fname, ext, { default = true })
+          section = add(hi.winbar_icon(icon_hl), { pad(icon, "right") }, true) .. add(hi.winbar, { v })
+        else
+          section = add(hi.winbar, { v })
+        end
       end
       table.insert(segments, section)
     end
