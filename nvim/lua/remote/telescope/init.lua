@@ -138,10 +138,6 @@ telescope.setup {
         prompt_position = "top",
       },
     },
-    lsp_code_actions = {
-      theme = "cursor",
-      previewer = false,
-    },
     lsp_definitions = {
       theme = "ivy",
       layout_config = {
@@ -194,7 +190,6 @@ telescope.setup {
     ["ui-select"] = {
       themes.get_cursor {
         previewer = false,
-        layout_config = { width = 40 },
       },
     },
   },

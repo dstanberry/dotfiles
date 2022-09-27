@@ -173,7 +173,6 @@ M.setup = function()
 
   local has_tele, telescope = pcall(require, "remote.telescope")
   if has_tele then
-    -- vim.lsp.handlers["textDocument/codeAction"] = telescope.lsp_code_actions
     vim.lsp.handlers["textDocument/declaration"] = telescope.lsp_definitions
     vim.lsp.handlers["textDocument/definition"] = telescope.lsp_definitions
     vim.lsp.handlers["textDocument/documentSymbol"] = telescope.lsp_symbols
