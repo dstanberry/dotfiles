@@ -71,6 +71,7 @@ local function plugins(use)
       "b0o/schemastore.nvim",
       "folke/lua-dev.nvim",
       "jose-elias-alvarez/null-ls.nvim",
+      "jose-elias-alvarez/typescript.nvim",
       "mickael-menu/zk-nvim",
       "simrat39/inlay-hints.nvim",
       "simrat39/rust-tools.nvim",

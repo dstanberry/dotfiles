@@ -55,6 +55,27 @@ M.setup = function()
         end
       elseif key == "sumneko_lua" then
         extends[key] = { on_attach = require(mod).on_attach }
+      elseif key == "tsserver" then
+        local has_ts, typescript = pcall(require, "typescript")
+        if has_ts then
+          typescript.setup {
+            disable_commands = false,
+            debug = true,
+            go_to_source_definition = {
+              fallback = true,
+            },
+            server = {
+              vim.tbl_deep_extend("force", {
+                capabilities = client_capabilities,
+                flags = { debounce_text_changes = 150 },
+                on_attach = on_attach_nvim,
+              }, config),
+            },
+          }
+          do
+            break
+          end
+        end
       elseif key == "zk" then
         require(mod).setup(vim.tbl_deep_extend("force", {
           capabilities = client_capabilities,
