@@ -1,3 +1,9 @@
+-- verify typescript is available
+local ok, typescript = pcall(require, "typescript")
+if not ok then
+  return
+end
+
 local M = {}
 
 local prefs = {
@@ -17,6 +23,17 @@ local prefs = {
     includeInlayVariableTypeHints = true,
   },
 }
+
+M.setup = function(config)
+  typescript.setup {
+    disable_commands = false,
+    debug = false,
+    go_to_source_definition = {
+      fallback = true,
+    },
+    server = { config },
+  }
+end
 
 M.config = {
   settings = {
