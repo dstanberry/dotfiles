@@ -40,31 +40,39 @@ M.setup = function(force)
     ./3rd/luamake/luamake rebuild
   ]]
   util.terminal.install_package("lua-language-server", basedir, path, install_cmd, force)
+  luadev.setup {
+    library = {
+      enabled = true,
+      runtime = true,
+      types = true,
+      plugins = true,
+    },
+    -- setup_jsonls = true,
+    -- override = function(root_dir, options) end,
+  }
 end
 
-M.config = luadev.setup {
-  lspconfig = {
-    cmd = { executable },
-    settings = {
-      Lua = {
-        completion = {
-          showWord = "Disable",
-          -- keywordSnippet = "Disable",
-        },
-        diagnostics = {
-          enable = true,
-          disable = { "cast-local-type", "missing-parameter", "param-type-mismatch" },
-          globals = { "dump", "has", "profile", "reload" },
-        },
-        format = {
-          enable = false,
-        },
-        hint = {
-          enable = true,
-        },
-        workspace = {
-          checkThirdParty = false,
-        },
+M.config = {
+  cmd = { executable },
+  settings = {
+    Lua = {
+      completion = {
+        showWord = "Disable",
+        -- keywordSnippet = "Disable",
+      },
+      diagnostics = {
+        enable = true,
+        disable = { "cast-local-type", "missing-parameter", "param-type-mismatch" },
+        globals = { "dump", "has", "profile", "reload" },
+      },
+      format = {
+        enable = false,
+      },
+      hint = {
+        enable = true,
+      },
+      workspace = {
+        checkThirdParty = false,
       },
     },
   },

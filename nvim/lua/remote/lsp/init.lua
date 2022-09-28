@@ -54,6 +54,7 @@ M.setup = function()
           break
         end
       elseif key == "sumneko_lua" then
+        require(mod).setup(false)
         extends[key] = { on_attach = require(mod).on_attach }
       elseif key == "tsserver" then
         local has_ts, typescript = pcall(require, "typescript")
