@@ -14,7 +14,7 @@ elseif has "unix" then
 elseif has "win32" then
   fname = "lua-language-server.exe"
 else
-  print "Unsupported system for sumneko"
+  error "Unsupported system for sumneko"
   return
 end
 

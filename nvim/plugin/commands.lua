@@ -7,7 +7,7 @@ vim.api.nvim_create_user_command("Glow", function()
   local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
 
   if ft ~= "markdown" then
-    print("Markdown previewer is only valid for markdown files, not " .. ft)
+    error(("Previewer not valid for '%s' files"):format(ft))
     return
   end
 

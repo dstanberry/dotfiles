@@ -75,7 +75,7 @@ M.on_attach = function(client, bufnr)
       elseif cmd == "run" then
         vim.lsp.codelens.run()
       else
-        print(("Invalid codelens operation: '%s'"):format(cmd))
+        error(("Invalid codelens operation: '%s'"):format(cmd))
       end
     end, {
       nargs = "*",
@@ -151,7 +151,7 @@ M.on_attach = function(client, bufnr)
     elseif cmd == "remove" then
       vim.lsp.buf.remove_workspace_folder()
     else
-      print(("Invalid workspace operation: '%s'"):format(cmd))
+      error(("Invalid workspace operation: '%s'"):format(cmd))
     end
   end, {
     nargs = "*",

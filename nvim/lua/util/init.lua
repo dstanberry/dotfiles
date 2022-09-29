@@ -11,7 +11,7 @@ end
 function M._execute_callback(id)
   local func = M._callbackStore[id]
   if not (func and type(func) == "function") then
-    print("Function does not exist: " .. id)
+    error(("Function does not exist: %s"):format(id))
   end
   return func()
 end
