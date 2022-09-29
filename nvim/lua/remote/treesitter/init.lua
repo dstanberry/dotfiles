@@ -93,7 +93,7 @@ require("nvim-treesitter.configs").setup {
     smart_rename = {
       enable = true,
       keymaps = {
-        smart_rename = "g<space>",
+        smart_rename = "g<localleader>",
       },
     },
     navigation = {
