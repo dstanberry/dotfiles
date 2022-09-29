@@ -55,25 +55,54 @@ M.setup = function(cfg)
     config = cfg,
   }
 
-  zkc.add("ZkOrphans", M.edit_with({ orphan = true }, { title = "Notes (orphaned)" }))
-  zkc.add("ZkRecent", M.edit_with({ createdAfter = "2 weeks ago" }, { title = "Notes (recent)" }))
-  zkc.add("ZkDaily", M.edit_with({ hrefs = { "journal" }, sort = { "created" } }, { title = "Notes (journal)" }))
-  zkc.add("ZkMeeting", M.edit_with({ hrefs = { "inbox" }, sort = { "created" } }, { title = "Notes (inbox)" }))
-  zkc.add("ZkResource", M.edit_with({ hrefs = { "resources" }, sort = { "created" } }, { title = "Notes (resources)" }))
-
-  zkc.add("ZkNewReferenceFromTitleSelection", markdown.zk.create_reference_with_title, { needs_selection = true })
-  zkc.add("ZkNewReferenceFromContentSelection", markdown.zk.create_reference_with_content, { needs_selection = true })
-  zkc.add("ZkGrep", function(options)
-    options = options or {}
+  vim.api.nvim_create_user_command("ZkOrphans", function()
+    M.edit_with({ orphan = true }, { title = "Notes (orphaned)" })
+  end, {})
+  vim.api.nvim_create_user_command("ZkRecent", function()
+    M.edit_with({ createdAfter = "2 weeks ago" }, { title = "Notes (recent)" })
+  end, {})
+  vim.api.nvim_create_user_command("ZkDaily", function()
+    M.edit_with({ hrefs = { "journal" }, sort = { "created" } }, { title = "Notes (journal)" })
+  end, {})
+  vim.api.nvim_create_user_command("ZkMeeting", function()
+    M.edit_with({ hrefs = { "inbox" }, sort = { "created" } }, { title = "Notes (inbox)" })
+  end, {})
+  vim.api.nvim_create_user_command("ZkResource", function()
+    M.edit_with({ hrefs = { "resources" }, sort = { "created" } }, { title = "Notes (resources)" })
+  end, {})
+  vim.api.nvim_create_user_command("ZkResource", function(opts)
+    local options = opts.fargs and unpack(opts.fargs) or {}
     local notebook_path = options.notebook_path or zku.resolve_notebook_path(0)
     local notebook_root = zku.notebook_root(notebook_path)
     assert(notebook_root ~= nil and #notebook_root > 0, "No notebook found.")
     telescope.live_grep { cwd = notebook_root, prompt_title = "Notes (live grep)" }
-  end)
+  end, {})
+  vim.api.nvim_create_user_command("ZkReference", function(opts)
+    local cmd = unpack(opts.fargs)
+    if cmd == "content" then
+      markdown.zk.create_reference_with_title()
+    elseif cmd == "title" then
+      markdown.zk.create_reference_with_content()
+    else
+      error(("Invalid option to create reference: '%s'"):format(cmd))
+    end
+  end, {
+    nargs = "?",
+    range = true,
+    force = true,
+    complete = function(_, line)
+      local l = vim.split(line, "%s+")
+      local n = #l - 2
+      if n == 0 then
+        return vim.tbl_filter(function(val)
+          return vim.startswith(val, l[2])
+        end, { "content", "title" })
+      end
+    end,
+  })
 
-  vim.keymap.set("n", "<localleader>mm", markdown.zk.find_notes)
   vim.keymap.set("n", "<leader>mm", markdown.zk.create_note)
-  vim.keymap.set("n", "<localleader>mt", function()
+  vim.keymap.set("n", "<leader>mt", function()
     zk.pick_tags({}, { title = "Notes (tags)", telescope = themes.get_dropdown {} }, function(tags)
       tags = vim.tbl_map(function(v)
         return v.name
@@ -81,15 +110,16 @@ M.setup = function(cfg)
       M.edit_with({ tags = tags }, { title = ("Notes (tagged with %s)"):format(vim.inspect(tags)) })()
     end)
   end)
+  vim.keymap.set("x", "<leader>mr", function()
+    vim.cmd { cmd = "ZkReference", args = { "title" }, mods = { keepmarks = true } }
+  end)
 
-  vim.keymap.set("n", "<localleader>mb", "<cmd>ZkBacklinks<cr>")
-  vim.keymap.set("n", "<localleader>mgg", "<cmd>ZkGrep<cr>")
-  vim.keymap.set("n", "<localleader>mb", "<cmd>ZkBacklinks<cr>")
+  vim.keymap.set("n", "<localleader>mm", markdown.zk.find_notes)
+  vim.keymap.set("x", "<localleader>mr", function()
+    vim.cmd { cmd = "ZkReference", args = { "title" }, mods = { keepmarks = true } }
+  end)
 
-  vim.keymap.set("x", "<localleader>mr", ":'<,'>ZkNewReferenceFromTitleSelection<cr>")
-  vim.keymap.set("x", "<localleader>mR", ":'<,'>ZkNewReferenceFromContentSelection<cr>")
-
-  telescope.load_extension "zk"
+  pcall(telescope.load_extension, "zk")
 end
 
 return setmetatable({}, {

@@ -3,6 +3,7 @@ local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 local themes = require "telescope.themes"
 
+local util = require "util"
 local zk = require "remote.lsp.servers.zk"
 local zku = require "zk.util"
 
@@ -83,9 +84,10 @@ M.create_note = function()
 end
 
 M.create_reference_with_title = function()
-  local location = zku.get_lsp_location_from_selection()
-  local chunk = zku.get_text_in_range(location.range)
-  assert(chunk ~= nil, "No selected text")
+  local chunk = util.buffer.get_visual_selection()
+  if(chunk == nil) then
+    error("No selected text")
+  end
   telescope.pickers.create("dropdown", templates, {
     callback = function(selection)
       local opts = {}
@@ -97,9 +99,10 @@ M.create_reference_with_title = function()
 end
 
 M.create_reference_with_content = function()
-  local location = zku.get_lsp_location_from_selection()
-  local chunk = zku.get_text_in_range(location.range)
-  assert(chunk ~= nil, "No selected text")
+  local chunk = util.buffer.get_visual_selection()
+  if(chunk == nil) then
+    error("No selected text")
+  end
   telescope.pickers.create("dropdown", templates, {
     callback = function(selection)
       local opts = {}
