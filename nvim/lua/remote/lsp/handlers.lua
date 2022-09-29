@@ -66,8 +66,29 @@ M.on_attach = function(client, bufnr)
       callback = require("vim.lsp.codelens").refresh,
     })
 
-    vim.keymap.set("n", "gll", vim.lsp.codelens.display, { buffer = bufnr })
-    vim.keymap.set("n", "glr", vim.lsp.codelens.run, { buffer = bufnr })
+    vim.api.nvim_buf_create_user_command(bufnr, "Codelens", function(opts)
+      local cmd = unpack(opts.fargs)
+      if cmd == "display" then
+        vim.lsp.codelens.display()
+      elseif cmd == "refresh" then
+        vim.lsp.codelens.refresh()
+      elseif cmd == "run" then
+        vim.lsp.codelens.run()
+      else
+        print(("Invalid codelens operation: '%s'"):format(cmd))
+      end
+    end, {
+      nargs = "*",
+      complete = function(_, line)
+        local l = vim.split(line, "%s+")
+        local n = #l - 2
+        if n == 0 then
+          return vim.tbl_filter(function(val)
+            return vim.startswith(val, l[2])
+          end, { "display", "refresh", "run" })
+        end
+      end,
+    })
   end
 
   if client.server_capabilities.documentHighlightProvider then
@@ -95,6 +116,7 @@ M.on_attach = function(client, bufnr)
       callback = vim.lsp.buf.signature_help,
     })
 
+    vim.keymap.set("i", "<c-h>", vim.lsp.buf.signature_help, { buffer = bufnr })
     vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr })
   end
 
@@ -108,23 +130,41 @@ M.on_attach = function(client, bufnr)
     require("remote.navic").attach(client, bufnr)
   end
 
-  local list_workspace_folders = function()
-    dump(vim.lsp.buf.list_workspace_folders())
-  end
-
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
   vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr })
   vim.keymap.set("n", "gk", vim.lsp.buf.hover, { buffer = bufnr })
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
   vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr })
   vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr })
-  vim.keymap.set("n", "g/", vim.lsp.buf.rename, { buffer = bufnr })
+  vim.keymap.set("n", "gS", vim.lsp.buf.workspace_symbol, { buffer = bufnr })
+  vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr })
   vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr })
   vim.keymap.set("n", "gn", vim.diagnostic.goto_next, { buffer = bufnr })
   vim.keymap.set("n", "gp", vim.diagnostic.goto_prev, { buffer = bufnr })
-  vim.keymap.set("n", "<localleader>wl", list_workspace_folders, { buffer = bufnr })
-  vim.keymap.set("n", "<localleader>wa", vim.lsp.buf.add_workspace_folder, { buffer = bufnr })
-  vim.keymap.set("n", "<localleader>wr", vim.lsp.buf.remove_workspace_folder, { buffer = bufnr })
+
+  vim.api.nvim_buf_create_user_command(bufnr, "Workspace", function(opts)
+    local cmd = unpack(opts.fargs)
+    if cmd == "list" then
+      dump(vim.lsp.buf.list_workspace_folders())
+    elseif cmd == "add" then
+      vim.lsp.buf.add_workspace_folder()
+    elseif cmd == "remove" then
+      vim.lsp.buf.remove_workspace_folder()
+    else
+      print(("Invalid workspace operation: '%s'"):format(cmd))
+    end
+  end, {
+    nargs = "*",
+    complete = function(_, line)
+      local l = vim.split(line, "%s+")
+      local n = #l - 2
+      if n == 0 then
+        return vim.tbl_filter(function(val)
+          return vim.startswith(val, l[2])
+        end, { "list", "add", "remove" })
+      end
+    end,
+  })
 
   if
     client.name == "gopls"
@@ -175,11 +215,11 @@ M.setup = function()
   if has_tele then
     vim.lsp.handlers["textDocument/declaration"] = telescope.lsp_definitions
     vim.lsp.handlers["textDocument/definition"] = telescope.lsp_definitions
-    vim.lsp.handlers["textDocument/documentSymbol"] = telescope.lsp_symbols
+    vim.lsp.handlers["textDocument/documentSymbol"] = telescope.lsp_document_symbols
     vim.lsp.handlers["textDocument/implementation"] = telescope.lsp_implementations
     vim.lsp.handlers["textDocument/references"] = telescope.lsp_references
     vim.lsp.handlers["textDocument/typeDefinition"] = telescope.lsp_definitions
-    vim.lsp.handlers["workspace/symbol"] = telescope.lsp_workspace_symbols
+    vim.lsp.handlers["workspace/symbol"] = telescope.lsp_dynamic_workspace_symbols
   end
 
   vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx, config)

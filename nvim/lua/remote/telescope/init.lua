@@ -290,6 +290,18 @@ function M.file_browser()
   telescope.extensions.file_browser.file_browser(opts)
 end
 
+function M.file_browser_relative()
+  local opts
+  opts = {
+    path = "%:p:h",
+    follow = has "win32" and false or true,
+    hidden = has "win32" and false or true,
+    prompt_title = "File Browser",
+    sorting_strategy = "ascending",
+  }
+  telescope.extensions.file_browser.file_browser(opts)
+end
+
 function M.find_plugins()
   builtin.find_files {
     cwd = string.format("%s/site/pack/packer/", vim.fn.stdpath "data"),
