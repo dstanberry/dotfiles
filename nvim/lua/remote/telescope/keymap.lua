@@ -8,6 +8,7 @@ vim.keymap.set("n", "<leader>ff", telescope.current_buffer)
 vim.keymap.set("n", "<leader>fg", telescope.live_grep)
 vim.keymap.set("n", "<leader>fk", telescope.help_tags)
 vim.keymap.set("n", "<leader>fp", telescope.find_plugins)
+vim.keymap.set("n", "<leader>fr", telescope.oldfiles)
 
 vim.keymap.set("n", "<leader>fb", telescope.git_bcommits)
 

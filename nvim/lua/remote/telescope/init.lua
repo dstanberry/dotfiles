@@ -279,6 +279,12 @@ function M.project_files()
   end
 end
 
+function M.oldfiles()
+  builtin.oldfiles {
+    prompt_title = "Recent Files",
+  }
+end
+
 function M.file_browser()
   local opts
   opts = {
