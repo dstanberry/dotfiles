@@ -13,8 +13,8 @@ vim.opt_local.wrap = true
 
 vim.keymap.set("i", "<c-w>c", markdown.insert_checkbox, { buffer = vim.api.nvim_get_current_buf() })
 vim.keymap.set("i", "<c-w>p", markdown.insert_link, { buffer = vim.api.nvim_get_current_buf() })
-vim.keymap.set({ "n", "v" }, "<c-a>b", markdown.toggle_bullet, { buffer = vim.api.nvim_get_current_buf() })
-vim.keymap.set({ "n", "v" }, "<c-a>c", markdown.toggle_checkbox, { buffer = vim.api.nvim_get_current_buf() })
+vim.keymap.set({ "n", "v" }, "<c-w>b", markdown.toggle_bullet, { buffer = vim.api.nvim_get_current_buf() })
+vim.keymap.set({ "n", "v" }, "<c-w>c", markdown.toggle_checkbox, { buffer = vim.api.nvim_get_current_buf() })
 
 groups.new("CodeBlock", { bg = c.bg_dark })
 
