@@ -28,11 +28,8 @@ lir.setup {
   },
 }
 
-git_status.setup {
-  show_ignored = true,
-}
+git_status.setup { show_ignored = true }
 
 vim.keymap.set("n", "-", function()
-  local path = vim.fn.expand "%:h"
-  return ("<cmd>edit %s<cr>"):format(path)
-end, { expr = true, replace_keycodes = true })
+  vim.cmd.edit(vim.fn.expand "%:h")
+end)
