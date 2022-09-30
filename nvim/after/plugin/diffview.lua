@@ -18,11 +18,18 @@ diffview.setup {
     fold_closed = icons.misc.FoldClosed,
     fold_open = icons.misc.FoldOpened,
   },
+  view = {
+    default = { layout = "diff2_horizontal" },
+    file_history = { layout = "diff2_horizontal" },
+    merge_tool = { layout = "diff3_horizontal" },
+  },
   file_panel = {
+    listing_style = "tree",
     win_config = {
       position = "left",
       width = 35,
       height = 10,
+      win_opts = { winhighlight = "Normal:NormalSB,SignColumn:SignColumnSB" },
     },
   },
   file_history_panel = {
@@ -30,6 +37,7 @@ diffview.setup {
       position = "bottom",
       width = 35,
       height = 16,
+      win_opts = { winhighlight = "Normal:NormalSB,SignColumn:SignColumnSB" },
     },
     log_options = {
       single_file = {
