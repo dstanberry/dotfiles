@@ -16,7 +16,7 @@ local views = {
     "dapui_watches",
     "Diffview",
     "DiffviewFiles",
-    "Neogit",
+    "NeogitPopup",
     "NeogitStatus",
     "packer",
     "qf",

@@ -148,7 +148,6 @@ vim.api.nvim_create_autocmd("FileType", {
     "packer",
     "qf",
     "startuptime",
-    "toggleterm",
   },
   callback = function()
     vim.opt_local.winhighlight = "Normal:NormalSB,SignColumn:SignColumnSB"
