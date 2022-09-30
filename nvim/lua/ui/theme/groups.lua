@@ -43,23 +43,20 @@ M.apply = function(c)
   hi.Cursor = { fg = c.bg, bg = c.fg }
   hi.NonText = { fg = c.gray_alt }
   hi.Whitespace = { fg = c.gray_alt }
+
+  hi.NvimInternalError = { fg = c.red }
+
   hi.LineNr = { fg = c.gray_light }
   hi.SignColumn = { fg = c.gray_light }
-  hi.StatusLine = { fg = c.fg_dark, bg = c.gray }
-  hi.StatusLineNC = { fg = c.gray_light, bg = c.gray }
-  hi.VertSplit = { fg = c.gray }
+  hi.VertSplit = { fg = c.bg_light }
   hi.ColorColumn = { bg = c.bg_light }
   hi.CursorColumn = { bg = c.bg_light }
   hi.CursorLine = { bg = c.bg_light }
   hi.CursorLineNr = { fg = c.blue_light, bg = c.bg_light }
   hi.QuickFixLine = { fg = c.bg_light, bg = c.yellow }
+
   hi.PMenu = { fg = c.fg, bg = c.gray_darker }
   hi.PMenuSel = { fg = c.bg_light, bg = c.blue_dark }
-  hi.TabLine = { fg = c.gray_light, bg = c.bg }
-  hi.TabLineFill = { fg = c.gray_light, bg = c.bg }
-  hi.TabLineSel = { fg = c.fg, bg = c.bg_dark, bold = true }
-
-  hi.NvimInternalError = { fg = c.red }
 
   hi.NormalFloat = { fg = c.fg, bg = c.bg_dark }
   hi.FloatBorder = { fg = c.cyan, bg = c.bg }
@@ -68,6 +65,7 @@ M.apply = function(c)
   hi.TermCursor = { fg = c.bg, bg = c.fg_light }
   hi.TermCursorNC = { fg = c.bg, bg = c.fg_light }
 
+  -- dark(er) backgrounds
   hi.NormalSB = { fg = c.fg, bg = c.bg_dark }
   hi.SignColumSB = { fg = c.gray_dark }
 
@@ -226,6 +224,7 @@ M.apply = function(c)
   hi.TSText = { fg = c.fg }
   hi.TSTextReference = { fg = c.orange, bold = true }
   hi.TSTitle = { fg = c.blue, bold = true }
+  hi.TSTodo = { fg = c.yellow, bg = c.bg_light }
   hi.TSType = { fg = c.yellow }
   hi.TSTypeBuiltin = { fg = c.yellow, italic = true }
   hi.TSUnderline = { fg = c.bg, underline = true }
@@ -235,6 +234,9 @@ M.apply = function(c)
   hi.TSWarning = { fg = c.orange, bold = true }
 
   -- statusline highlighting
+  hi.StatusLine = { fg = c.fg_dark, bg = c.gray }
+  hi.StatusLineNC = { fg = c.gray_light, bg = c.gray }
+
   hi.User1 = { fg = c.green, bg = c.gray }
   hi.User2 = { fg = c.blue_dark, bg = c.gray }
   hi.User3 = { fg = c.blue_light, bg = c.gray }
@@ -244,6 +246,11 @@ M.apply = function(c)
   hi.User7 = { fg = c.white, bg = c.gray }
   hi.User8 = { fg = c.fg, bg = c.gray, bold = true }
   hi.User9 = { fg = c.gray_dark, bg = c.gray }
+
+  -- tabline highlighting
+  hi.TabLine = { fg = c.gray_light, bg = c.bg }
+  hi.TabLineFill = { fg = c.gray_light, bg = c.bg }
+  hi.TabLineSel = { fg = c.fg, bg = c.bg_dark, bold = true }
 
   vim.wo.winhighlight = "SpecialKey:SpecialKeyWin"
 
