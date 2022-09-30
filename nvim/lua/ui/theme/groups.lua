@@ -16,8 +16,8 @@ M.apply = function(c)
   hi.Bold = { bold = true }
   hi.Debug = { fg = c.blue_dark }
   hi.Directory = { fg = c.blue }
-  hi.Error = { fg = c.red, bg = c.bg }
-  hi.ErrorMsg = { fg = c.red, bg = c.bg }
+  hi.Error = { fg = c.red }
+  hi.ErrorMsg = { fg = c.red }
   hi.Exception = { fg = c.blue_dark }
   hi.FoldColumn = { fg = c.blue_light, bg = c.bg_light }
   hi.Folded = { fg = c.gray_lighter, bg = c.gray }
@@ -26,7 +26,7 @@ M.apply = function(c)
   hi.ModeMsg = { fg = c.green }
   hi.MoreMsg = { fg = c.green }
   hi.Question = { fg = c.blue }
-  hi.Search = { fg = c.magenta, bg = c.bg, underline = true }
+  hi.Search = { fg = c.magenta, underline = true }
   hi.CurSearch = { fg = c.bg_light, bg = c.yellow }
   hi.IncSearch = { fg = c.bg_light, bg = c.yellow }
   hi.Substitute = { fg = c.bg_light, bg = c.yellow }
@@ -39,12 +39,12 @@ M.apply = function(c)
   hi.WarningMsg = { fg = c.blue_dark }
   hi.WildMenu = { fg = c.blue_dark, bg = c.fg }
   hi.Title = { fg = c.blue }
-  hi.Conceal = { fg = c.blue, bg = c.bg }
+  hi.Conceal = { fg = c.blue }
   hi.Cursor = { fg = c.bg, bg = c.fg }
   hi.NonText = { fg = c.gray_alt }
   hi.Whitespace = { fg = c.gray_alt }
   hi.LineNr = { fg = c.gray_light }
-  hi.SignColumn = { fg = c.gray_light, bg = c.bg }
+  hi.SignColumn = { fg = c.gray_light }
   hi.StatusLine = { fg = c.fg_dark, bg = c.gray }
   hi.StatusLineNC = { fg = c.gray_light, bg = c.gray }
   hi.VertSplit = { fg = c.gray }
@@ -59,7 +59,7 @@ M.apply = function(c)
   hi.TabLineFill = { fg = c.gray_light, bg = c.bg }
   hi.TabLineSel = { fg = c.fg, bg = c.bg_dark, bold = true }
 
-  hi.NvimInternalError = { fg = c.red, bg = c.bg }
+  hi.NvimInternalError = { fg = c.red }
 
   hi.NormalFloat = { fg = c.fg, bg = c.bg_dark }
   hi.FloatBorder = { fg = c.cyan, bg = c.bg }
@@ -67,6 +67,9 @@ M.apply = function(c)
   hi.NormalNC = { fg = c.fg, bg = c.bg }
   hi.TermCursor = { fg = c.bg, bg = c.fg_light }
   hi.TermCursorNC = { fg = c.bg, bg = c.fg_light }
+
+  hi.NormalSB = { fg = c.fg, bg = c.bg_dark }
+  hi.SignColumSB = { fg = c.gray_dark }
 
   -- standard syntax highlighting
   hi.Boolean = { fg = c.yellow }
@@ -107,11 +110,11 @@ M.apply = function(c)
   hi.DiffChange = { bg = c.diff_change }
   hi.DiffDelete = { bg = c.diff_delete }
   hi.DiffText = { bg = c.diff_text }
-  hi.DiffAdded = { fg = c.green, bg = c.bg }
-  hi.DiffFile = { fg = c.blue_dark, bg = c.bg }
-  hi.DiffNewFile = { fg = c.green, bg = c.bg }
-  hi.DiffLine = { fg = c.blue, bg = c.bg }
-  hi.DiffRemoved = { fg = c.red, bg = c.bg }
+  hi.DiffAdded = { fg = c.green }
+  hi.DiffFile = { fg = c.blue_dark }
+  hi.DiffNewFile = { fg = c.green }
+  hi.DiffLine = { fg = c.blue }
+  hi.DiffRemoved = { fg = c.red }
 
   -- git highlighting
   hi.gitcommitBlank = { fg = c.fg }
@@ -174,7 +177,7 @@ M.apply = function(c)
   hi.TSConstMacro = { fg = c.blue_dark }
   hi.TSConstructor = { fg = c.blue_light }
   hi.TSCurrentScope = { bold = true }
-  hi.TSDanger = { fg = c.red, bg = c.bg, bold = true }
+  hi.TSDanger = { fg = c.red, bold = true }
   hi.TSDefinition = { underline = true, sp = c.magenta }
   hi.TSDefinitionUsage = { bg = c.gray }
   hi.TSEnum = { bold = true }
@@ -199,7 +202,7 @@ M.apply = function(c)
   hi.TSMethod = { fg = c.blue_light }
   hi.TSNamespace = { fg = c.blue_dark }
   hi.TSNone = { fg = c.fg }
-  hi.TSNote = { fg = c.yellow, bg = c.bg, bold = true }
+  hi.TSNote = { fg = c.yellow, bold = true }
   hi.TSNumber = { fg = c.orange }
   hi.TSOperator = { fg = c.fg }
   hi.TSParameter = { fg = c.yellow_dark }
@@ -208,7 +211,7 @@ M.apply = function(c)
   hi.TSPunctBracket = { fg = c.blue_alt }
   hi.TSPunctDelimiter = { fg = c.blue_alt }
   hi.TSPunctSpecial = { fg = c.blue_alt }
-  hi.TSQueryLinterError = { fg = c.orange, bg = c.bg }
+  hi.TSQueryLinterError = { fg = c.orange }
   hi.TSRepeat = { fg = c.red_light }
   hi.TSStrike = { fg = c.fg_dark, strikethrough = true }
   hi.TSString = { fg = c.green }
@@ -229,7 +232,7 @@ M.apply = function(c)
   hi.TSURI = { fg = c.blue_light, underline = true }
   hi.TSVariable = { fg = c.fg }
   hi.TSVariableBuiltin = { fg = c.blue_light, bold = true }
-  hi.TSWarning = { fg = c.orange, bg = c.bg, bold = true }
+  hi.TSWarning = { fg = c.orange, bold = true }
 
   -- statusline highlighting
   hi.User1 = { fg = c.green, bg = c.gray }

@@ -1,3 +1,6 @@
+local c = require("ui.theme").colors
+local groups = require "ui.theme.groups"
+
 vim.api.nvim_create_augroup("cursorline", { clear = true })
 
 vim.api.nvim_create_autocmd("WinEnter", {
@@ -128,6 +131,27 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.expandtab = true
     vim.bo.shiftwidth = 2
     vim.wo.foldmethod = "marker"
+  end,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = "ftplugin",
+  pattern = {
+    "dap-repl",
+    "dapui_breakpoints",
+    "dapui_scopes",
+    "dapui_stacks",
+    "dapui_watches",
+    "help",
+    "NeogitPopup",
+    "NeogitStatus",
+    "packer",
+    "qf",
+    "startuptime",
+    "toggleterm",
+  },
+  callback = function()
+    vim.opt_local.winhighlight = "Normal:NormalSB,SignColumn:SignColumnSB"
   end,
 })
 
