@@ -189,6 +189,7 @@ local function plugins(use)
   use { "TimUntersberger/neogit", requires = "nvim-lua/plenary.nvim" }
 
   -- workflow/session management
+  use { "akinsho/toggleterm.nvim" }
   use { "aserowy/tmux.nvim" }
 end
 

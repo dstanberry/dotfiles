@@ -22,6 +22,7 @@ local views = {
     "qf",
     "startuptime",
     "TelescopePrompt",
+    "toggleterm",
   },
   terminal = {
     "term://",
