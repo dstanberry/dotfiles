@@ -8,33 +8,49 @@ vim.keymap.set("n", "<up>", "<c-y>")
 vim.keymap.set("n", "<down>", "<c-e>")
 
 -- switch to next buffer
-vim.keymap.set("n", "<right>", "<cmd>bnext<cr>")
+vim.keymap.set("n", "<right>", vim.cmd.bnext)
 -- switch to previous buffer
-vim.keymap.set("n", "<left>", "<cmd>bprevious<cr>")
+vim.keymap.set("n", "<left>", vim.cmd.bprevious)
 
 -- switch to next tab
-vim.keymap.set("n", "<tab>", "<cmd>tabnext<cr>")
+vim.keymap.set("n", "<tab>", vim.cmd.tabnext)
 -- switch to previous tab
-vim.keymap.set("n", "<s-tab>", "<cmd>tabprevious<cr>")
+vim.keymap.set("n", "<s-tab>", vim.cmd.tabprevious)
 
 -- clear hlsearch if set, otherwise send default behaviour
 vim.keymap.set("n", "<cr>", function()
-  return vim.v.hlsearch and "<cmd>nohl<cr>" or "<cr>"
-end, { expr = true, replace_keycodes = true })
+  if vim.v.hlsearch then
+    vim.cmd.nohl()
+  else
+    vim.cmd.normal "<cr>"
+  end
+end)
 
 -- navigate quickfix list
-vim.keymap.set("n", "<c-up>", "<cmd>try | cprevious | catch | endtry<cr>zz")
-vim.keymap.set("n", "<c-down>", "<cmd>try | cnext | catch | endtry<cr>zz")
+vim.keymap.set("n", "<c-up>", function()
+  pcall(vim.cmd.cprevious, nil)
+end)
+vim.keymap.set("n", "<c-down>", function()
+  pcall(vim.cmd.cnext, nil)
+end)
 
 -- navigate location list
-vim.keymap.set("n", "<a-up>", "<cmd>lprevious<cr>zz")
-vim.keymap.set("n", "<a-down>", "<cmd>lnext<cr>zz")
+vim.keymap.set("n", "<a-up>", function()
+  pcall(vim.cmd.lprevious, nil)
+end)
+vim.keymap.set("n", "<a-down>", function()
+  pcall(vim.cmd.lnext, nil)
+end)
 
 -- find all occurences in buffer of word under cursor
-vim.keymap.set("n", "<c-w><c-f>", [[/\v<c-r><c-w><cr>]], { silent = false })
+vim.keymap.set("n", "<c-w><c-f>", function()
+  return ("/%s<cr>"):format(vim.fn.expand "<cword>")
+end, { silent = false, expr = true })
 
 -- begin substitution in buffer for word under cursor
-vim.keymap.set("n", "<c-w><c-r>", [[:%s/\<<c-r><c-w>\>/]], { silent = false })
+vim.keymap.set("n", "<c-w><c-r>", function()
+  return ([[:%%s/\<%s\>/]]):format(vim.fn.expand "<cword>")
+end, { silent = false, expr = true })
 
 -- switch to left window
 vim.keymap.set("n", "<c-h>", "<c-w><c-h>")
@@ -170,10 +186,14 @@ vim.keymap.set("n", "<localleader>s", function()
 end, { silent = false })
 
 -- discard all file modifications to current window
-vim.keymap.set("n", "<localleader>qq", "ZQ")
+vim.keymap.set("n", "<localleader>qq", function()
+  vim.cmd.quit { bang = true }
+end)
 
 -- discard all file modifications and close instance
-vim.keymap.set("n", "<localleader>qa", "<cmd>qa!<cr>")
+vim.keymap.set("n", "<localleader>qa", function()
+  vim.cmd.quitall { bang = true }
+end)
 
 -- execute current line
 vim.keymap.set("n", "<localleader>x", function()
