@@ -8,37 +8,6 @@ local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
-pcall(require("inlay-hints").setup, {
-  renderer = "inlay-hints.render.eol",
-  hints = {
-    parameter = {
-      show = false,
-      highlight = "Comment",
-    },
-    type = {
-      show = false,
-      highlight = "Comment",
-    },
-  },
-  only_current_line = false,
-  eol = {
-    right_align = false,
-    right_align_padding = 7,
-    parameter = {
-      separator = ", ",
-      format = function(hints)
-        return string.format(" <- (%s)", hints)
-      end,
-    },
-    type = {
-      separator = ", ",
-      format = function(hints)
-        return string.format(" %s (%s)", icons.misc.RightArrow, hints)
-      end,
-    },
-  },
-})
-
 local M = {}
 
 M.on_attach = function(client, bufnr)
@@ -165,15 +134,6 @@ M.on_attach = function(client, bufnr)
       end
     end,
   })
-
-  if
-    client.name == "gopls"
-    or client.name == "rust-tools"
-    or client.name == "sumneko_lua"
-    or client.name == "tsserver"
-  then
-    pcall(require("inlay-hints").on_attach, client, bufnr)
-  end
 end
 
 M.get_client_capabilities = function()

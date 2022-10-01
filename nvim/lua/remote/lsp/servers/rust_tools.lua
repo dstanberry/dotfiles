@@ -14,7 +14,6 @@ M.setup = function(rust_analyzer_config)
   rust_tools.setup {
     tools = {
       on_initialized = function()
-        pcall(require("inlay-hints").set_all, nil)
       end,
       executor = require("rust-tools.executors").termopen,
       autoSetHints = true,
