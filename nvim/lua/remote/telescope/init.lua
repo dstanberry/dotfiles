@@ -187,6 +187,7 @@ telescope.setup {
 if not has "win32" then
   pcall(telescope.load_extension "fzf")
 end
+pcall(telescope.load_extension "file_browser")
 pcall(telescope.load_extension "gh")
 pcall(telescope.load_extension "ui-select")
 
