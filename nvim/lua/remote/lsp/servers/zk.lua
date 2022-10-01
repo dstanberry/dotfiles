@@ -4,7 +4,6 @@ if not ok then
 end
 
 local zku = require "zk.util"
-local zkc = require "zk.commands"
 
 local telescope = require "remote.telescope"
 local themes = require "telescope.themes"
