@@ -85,8 +85,12 @@ end
 
 M.create_reference_with_title = function()
   local chunk = util.buffer.get_visual_selection()
-  if(chunk == nil) then
-    error("No selected text")
+  local location = vim.lsp.util.make_given_range_params()
+  location.uri = location.textDocument.uri
+  location.textDocument = nil
+  location.range = chunk
+  if chunk == nil then
+    error "No selected text"
   end
   telescope.pickers.create("dropdown", templates, {
     callback = function(selection)
@@ -100,8 +104,12 @@ end
 
 M.create_reference_with_content = function()
   local chunk = util.buffer.get_visual_selection()
-  if(chunk == nil) then
-    error("No selected text")
+  local location = vim.lsp.util.make_given_range_params()
+  location.uri = location.textDocument.uri
+  location.textDocument = nil
+  location.range = chunk
+  if chunk == nil then
+    error "No selected text"
   end
   telescope.pickers.create("dropdown", templates, {
     callback = function(selection)
