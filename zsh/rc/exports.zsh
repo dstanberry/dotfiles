@@ -9,6 +9,9 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 # define XDG_DATA_HOME
 export XDG_DATA_HOME="$HOME/.local/share"
 
+# define XDG_STATE_HOME
+export XDG_STATE_HOME="$HOME/.local/state"
+
 # define UID
 if hash id 2> /dev/null; then
   __uid="$(id -u)"
