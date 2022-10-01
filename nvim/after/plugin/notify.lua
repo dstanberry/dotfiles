@@ -4,7 +4,7 @@ if not ok then
   return
 end
 
-local telescope = require("remote.telescope")
+local telescope = require("telescope")
 
 notify.setup {
   stages = "slide",
@@ -14,4 +14,4 @@ notify.setup {
 
 vim.notify = notify
 
-telescope.load_extension "notify"
+pcall(telescope.load_extension "notify")
