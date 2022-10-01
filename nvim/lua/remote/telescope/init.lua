@@ -253,7 +253,6 @@ function M.find_nvim()
     follow = has "win32" and false or true,
     hidden = has "win32" and false or true,
     prompt_title = "Neovim RC Files",
-    sorting_strategy = "ascending",
   }
 end
 
@@ -263,7 +262,6 @@ function M.project_files()
     follow = has "win32" and false or true,
     hidden = has "win32" and false or true,
     prompt_title = "Project Files (Git)",
-    sorting_strategy = "ascending",
   }
   if not pcall(builtin.git_files, opts) then
     opts.prompt_title = "Project Files"
