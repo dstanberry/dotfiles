@@ -10,8 +10,6 @@ vim.keymap.set("n", "<leader>fk", telescope.help_tags)
 vim.keymap.set("n", "<leader>fp", telescope.find_plugins)
 vim.keymap.set("n", "<leader>fr", telescope.oldfiles)
 
-vim.keymap.set("n", "<leader>fb", telescope.git_bcommits)
-
 -- analagous to `<leader>` maps but with customizations
 vim.keymap.set("n", "<localleader><localleader>", telescope.find_nvim)
 vim.keymap.set("n", "<localleader>fe", telescope.file_browser_relative)
@@ -21,6 +19,7 @@ vim.keymap.set("n", "<localleader>fg", telescope.rg.live_grep_with_shortcuts)
 vim.keymap.set("n", "gW", telescope.diagnostics)
 
 -- custom commands
+vim.api.nvim_create_user_command("BCommits", telescope.git_bcommits, {})
 vim.api.nvim_create_user_command("Commits", telescope.git_commits, {})
 vim.api.nvim_create_user_command("Buffers", function()
   telescope.buffers { sort_lastused = true }

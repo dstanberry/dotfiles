@@ -33,15 +33,6 @@ local set_prompt_to_entry_value = function(prompt_bufnr)
   state.get_current_picker(prompt_bufnr):reset_prompt(entry.ordinal)
 end
 
-local interactive_rebase = function(prompt_bufnr)
-  local commit = state.get_selected_entry().value
-  actions.close(prompt_bufnr)
-  vim.api.nvim_exec("tabnew | terminal", false)
-  local term_channel = vim.opt_local.channel:get()
-  vim.api.nvim_chan_send(term_channel, ("git rebase --interactive %s\r"):format(commit))
-  vim.cmd.normal "a"
-end
-
 local copy_commit = function(prompt_bufnr)
   local commit = state.get_selected_entry().value
   actions.close(prompt_bufnr)
@@ -115,7 +106,6 @@ telescope.setup {
       layout_config = { height = 70 },
       mappings = {
         i = {
-          ["<c-r>"] = interactive_rebase,
           ["<c-y>"] = copy_commit,
         },
       },
@@ -125,7 +115,6 @@ telescope.setup {
       layout_config = { height = 70 },
       mappings = {
         i = {
-          ["<c-r>"] = interactive_rebase,
           ["<c-y>"] = copy_commit,
         },
       },
