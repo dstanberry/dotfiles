@@ -21,30 +21,8 @@ local function plugins(use)
   use { "lewis6991/impatient.nvim" }
 
   -- written in vimscript
-  use { "dstein64/vim-startuptime", cmd = "StartupTime", opt = true }
   use { "tpope/vim-repeat" }
-  use { "tpope/vim-scriptease", cmd = { "Messages", "Verbose", "Time" }, opt = true }
   -- syntax highlighting
-  if vim.fn.isdirectory "/etc/portage" == 1 then
-    use {
-      "gentoo/gentoo-syntax",
-      ft = {
-        "ebuild",
-        "gentoo-changelog",
-        "gentoo-conf-d",
-        "gentoo-env-d",
-        "gentoo-init-d",
-        "gentoo-make-conf",
-        "gentoo-metadata",
-        "gentoo-package-keywords",
-        "gentoo-package-license",
-        "gentoo-package-make",
-        "gentoo-package-properties",
-        "gentoo-package-use",
-        "gentoo-use-desc",
-      },
-    }
-  end
   use { "gisphm/vim-gitignore", ft = "gitignore" }
   use { "mtdl9/vim-log-highlighting", ft = "log" }
 
