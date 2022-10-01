@@ -16,6 +16,9 @@ vim.keymap.set("n", "<localleader>fe", telescope.file_browser_relative)
 vim.keymap.set("n", "<localleader>fg", telescope.rg.live_grep_with_shortcuts)
 
 -- lsp handlers
+vim.keymap.set("n", "gw", function()
+  telescope.diagnostics({ bufnr = 0 })
+end)
 vim.keymap.set("n", "gW", telescope.diagnostics)
 
 -- custom commands
