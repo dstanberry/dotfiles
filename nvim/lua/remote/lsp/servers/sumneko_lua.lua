@@ -24,11 +24,6 @@ local executable = string.format("%s/bin/%s", basedir, fname)
 
 local M = {}
 
-M.on_attach = function(client, bufnr)
-  client.server_capabilities.documentHighlightProvider = false
-  require("remote.lsp").handlers.on_attach(client, bufnr)
-end
-
 M.setup = function(force)
   local install_cmd = [[
     git clone https://github.com/sumneko/lua-language-server

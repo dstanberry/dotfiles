@@ -13,7 +13,6 @@ local util = require "util"
 local M = {}
 
 M.setup = function()
-  local extends = {}
   local servers = {
     bashls = {},
     cmake = {},
@@ -55,7 +54,6 @@ M.setup = function()
         end
       elseif key == "sumneko_lua" then
         require(mod).setup(false)
-        extends[key] = { on_attach = require(mod).on_attach }
       elseif key == "tsserver" then
         require(mod).setup(vim.tbl_deep_extend("force", {
           capabilities = client_capabilities,
@@ -83,7 +81,7 @@ M.setup = function()
     lspconfig[server].setup(vim.tbl_deep_extend("force", {
       capabilities = client_capabilities,
       flags = { debounce_text_changes = 150 },
-      on_attach = extends[server] and extends[server].on_attach or on_attach_nvim,
+      on_attach = on_attach_nvim,
     }, config))
   end
 end
