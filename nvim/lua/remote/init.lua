@@ -113,7 +113,7 @@ local function plugins(use)
       { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
     },
   }
-  use { "ThePrimeagen/harpoon" }
+  use { "dstanberry/harpoon" }
 
   -- text manipulation
   use {

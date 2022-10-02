@@ -1,5 +1,5 @@
 --verify harpoon is available
-local ok, harpoon = pcall(require, "harpoon")
+local ok, _ = pcall(require, "harpoon")
 if not ok then
   return
 end
