@@ -70,16 +70,23 @@ M.filepath = function(bufnr)
   return vim.fn.fnamemodify(name, "%:p")
 end
 
-M.relpath = function(bufnr, maxlen)
-  local name = vim.fn.bufname(bufnr)
+M.relpath = function(opts)
+  opts.winid = vim.F.if_nil(opts.winid, 0)
+  opts.buffer = vim.F.if_nil(opts.buffer, 0)
+  opts.maxlen = vim.F.if_nil(opts.maxlen, 60)
+  opts.truncate = vim.F.if_nil(opts.truncate, 60)
+  local name = vim.fn.bufname(opts.buffer)
   local path = vim.fn.fnamemodify(name, ":~:.:h:p")
-  maxlen = maxlen or 60
+  opts.truncate = vim.F.if_nil(opts.truncate, false)
   if path == "" or path == "." then
     return ""
   else
-    maxlen = math.min(maxlen, math.floor(0.8 * vim.fn.winwidth(0)))
+    opts.maxlen = math.min(opts.maxlen, math.floor(0.4 * vim.fn.winwidth(opts.winid)))
     path = path:gsub("/$", "") .. path_separator()
-    if (#path + #M.filename(bufnr)) > maxlen then
+    if (#path + #M.filename(opts.buffer)) > opts.maxlen then
+      if opts.truncate then
+        return ""
+      end
       path = vim.fn.pathshorten(path)
     end
     return path

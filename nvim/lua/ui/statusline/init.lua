@@ -44,7 +44,7 @@ local function default(state, bufnr)
     }
   else
     return table.concat {
-      add(hi.user7, { " ", data.relpath(bufnr) }, true),
+      add(hi.user7, { " ", data.relpath { buffer = bufnr } }, true),
       add(hi.user8, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
     }
@@ -57,12 +57,12 @@ local function explorer(state, bufnr)
     local mode_hl = hi.mode(mode)
     return table.concat {
       add(mode_hl, { data.mode() }),
-      add(hi.user7, { " ", data.relpath(bufnr) }, true),
+      add(hi.user7, { " ", data.relpath { buffer = bufnr } }, true),
       hi.segment,
     }
   else
     return table.concat {
-      add(hi.user7, { " ", data.relpath(bufnr) }, true),
+      add(hi.user7, { " ", data.relpath { buffer = bufnr } }, true),
       hi.segment,
     }
   end
@@ -92,7 +92,7 @@ local function basic(state, bufnr)
     local mode_hl = hi.mode(mode)
     return table.concat {
       add(mode_hl, { data.mode() }),
-      add(hi.user7, { " ", data.relpath(bufnr) }, true),
+      add(hi.user7, { " ", data.relpath { buffer = bufnr } }, true),
       add(hi.user8, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
     }
@@ -110,7 +110,7 @@ local function uri(state, bufnr)
     local mode_hl = hi.mode(mode)
     return table.concat {
       add(mode_hl, { data.mode() }),
-      add(hi.user7, { " ", data.relpath(bufnr), "/" }, true),
+      add(hi.user7, { " ", data.relpath { buffer = bufnr }, "/" }, true),
       add(hi.user8, { data.filename(bufnr), data.modified(bufnr) }),
       hi.segment,
     }
@@ -214,10 +214,8 @@ M.setup = function()
   vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
     group = "statusline",
     callback = function()
-      vim.wo.statusline = string.format(
-        [[%%!luaeval('require("ui.statusline").focus(%s)')]],
-        vim.api.nvim_get_current_win()
-      )
+      vim.wo.statusline =
+        string.format([[%%!luaeval('require("ui.statusline").focus(%s)')]], vim.api.nvim_get_current_win())
     end,
   })
 
@@ -225,20 +223,16 @@ M.setup = function()
     group = "statusline",
     pattern = "TelescopePrompt",
     callback = function()
-      vim.wo.statusline = string.format(
-        [[%%!luaeval('require("ui.statusline").dim(%s)')]],
-        vim.api.nvim_get_current_win()
-      )
+      vim.wo.statusline =
+        string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win())
     end,
   })
 
   vim.api.nvim_create_autocmd({ "WinLeave" }, {
     group = "statusline",
     callback = function()
-      vim.wo.statusline = string.format(
-        [[%%!luaeval('require("ui.statusline").dim(%s)')]],
-        vim.api.nvim_get_current_win()
-      )
+      vim.wo.statusline =
+        string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win())
     end,
   })
 end

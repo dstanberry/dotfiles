@@ -19,11 +19,11 @@ local get_filepath = function()
   local win_id = vim.api.nvim_get_current_win()
   local bufnr = vim.api.nvim_win_get_buf(win_id)
 
-  local path = data.relpath(bufnr, 200)
+  local path = data.relpath { winid = win_id, buffer = bufnr, maxlen = 60, truncate = true }
   local fname = data.filename(bufnr)
   local ext = vim.fn.fnamemodify(fname, ":e")
   local fsep = has "win32" and [[\]] or "/"
-  local parts = vim.split(path, fsep)
+  local parts = #path > 0 and vim.split(path, fsep) or {}
   local segments = {}
   local section
 
@@ -35,7 +35,7 @@ local get_filepath = function()
         section = add(hi.winbar, { pad(v, "left") })
       else
         if k == #parts and has_devicons then
-          local icon, icon_hl = require("nvim-web-devicons").get_icon(fname, ext, { default = true })
+          local icon, icon_hl = devicons.get_icon(fname, ext, { default = true })
           section = add(hi.winbar_icon(icon_hl), { pad(icon, "right") }, true) .. add(hi.winbar, { v })
         else
           section = add(hi.winbar, { v })
