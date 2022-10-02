@@ -186,12 +186,12 @@ vim.keymap.set("n", "<localleader>s", function()
 end, { silent = false })
 
 -- discard all file modifications to current window
-vim.keymap.set("n", "<localleader>qq", function()
+vim.keymap.set("n", "<localleader>q", function()
   vim.cmd.quit { bang = true }
 end)
 
 -- discard all file modifications and close instance
-vim.keymap.set("n", "<localleader>qa", function()
+vim.keymap.set("n", "<localleader>Q", function()
   vim.cmd.quitall { bang = true }
 end)
 
