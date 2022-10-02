@@ -42,4 +42,20 @@ M.config = {
   },
 }
 
+vim.api.nvim_create_augroup("lsp_tssserver", {})
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = "lsp_tssserver",
+  callback = function(args)
+    if not (args.data and args.data.client_id) then
+      return
+    end
+
+    local bufnr = args.buf
+    vim.keymap.set("n", "ff", function()
+      typescript.actions.organizeImports()
+      vim.lsp.buf.format { async = true }
+    end, { buffer = bufnr })
+  end,
+})
+
 return M
