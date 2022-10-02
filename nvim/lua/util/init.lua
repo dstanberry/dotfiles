@@ -58,7 +58,7 @@ function M.load_dirhash(s)
   else
     shell = s
   end
-  if shell ~= "bash" and shell ~= "zsh" then
+  if not vim.tbl_contains({ "bash", "zsh" }, shell) then
     print("cannot load hashes for unsupported shell: " .. shell)
     return
   end
