@@ -49,7 +49,7 @@ require("nvim-treesitter.configs").setup {
     highlight_self = false,
     goto_right_end = false,
     keymaps = {
-      goto_partner = "<localleader>%",
+      goto_partner = "%",
     },
   },
   playground = {
