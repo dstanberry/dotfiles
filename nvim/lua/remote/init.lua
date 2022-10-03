@@ -60,11 +60,12 @@ local function plugins(use)
     run = ":TSUpdate",
     requires = {
       "JoosepAlviste/nvim-ts-context-commentstring",
+      "nvim-treesitter/nvim-treesitter-context",
       "nvim-treesitter/nvim-treesitter-refactor",
       "nvim-treesitter/nvim-treesitter-textobjects",
+      "nvim-treesitter/playground",
       "p00f/nvim-ts-rainbow",
       "theHamsta/nvim-treesitter-pairs",
-      "nvim-treesitter/playground",
     },
     config = function()
       require "remote.treesitter"
