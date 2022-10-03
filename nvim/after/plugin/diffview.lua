@@ -29,7 +29,7 @@ diffview.setup {
       position = "left",
       width = 35,
       height = 10,
-      win_opts = { winhighlight = "Normal:NormalSB,SignColumn:SignColumnSB" },
+      win_opts = { winhighlight = "Normal:NormalSB" },
     },
   },
   file_history_panel = {
@@ -37,7 +37,7 @@ diffview.setup {
       position = "bottom",
       width = 35,
       height = 16,
-      win_opts = { winhighlight = "Normal:NormalSB,SignColumn:SignColumnSB" },
+      win_opts = { winhighlight = "Normal:NormalSB" },
     },
     log_options = {
       single_file = {

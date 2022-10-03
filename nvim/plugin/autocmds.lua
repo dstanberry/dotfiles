@@ -150,7 +150,7 @@ vim.api.nvim_create_autocmd("FileType", {
     "startuptime",
   },
   callback = function()
-    vim.opt_local.winhighlight = "Normal:NormalSB,SignColumn:SignColumnSB"
+    vim.opt_local.winhighlight = "Normal:NormalSB"
   end,
 })
 
