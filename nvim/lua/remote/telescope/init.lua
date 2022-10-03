@@ -220,6 +220,7 @@ local ignored = {
   "%.git",
   "%.gitattributes",
   "%.gpg",
+  "%.venv",
   "git%-crypt",
   "karabiner/assets",
   "node_modules",
