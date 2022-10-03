@@ -1,7 +1,7 @@
 local ts_locals = require "nvim-treesitter.locals"
 local ts_utils = require "nvim-treesitter.ts_utils"
 
-local get_node_text = vim.treesitter.get_node_text
+local get_node_text = vim.treesitter.query.get_node_text
 
 local rutil = require "remote.luasnip.util"
 
