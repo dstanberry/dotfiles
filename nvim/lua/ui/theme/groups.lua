@@ -14,93 +14,110 @@ end
 
 M.apply = function(c)
   -- vim editor colors
-  hi.Bold = { bold = true }
   hi.ColorColumn = { bg = c.bg_light }
-  hi.Conceal = { fg = c.blue }
-  hi.CurSearch = { bg = color.blend(c.yellow, c.bg, "66") }
+  hi.Conceal = { fg = c.fg_conceal }
+  hi.CurSearch = { bg = c.bg_search }
+  hi.IncSearch = { fg = c.black, bg = c.orange }
+  hi.Substitute = { fg = c.black, bg = c.red }
+  hi.Search = { fg = c.orange, underline = true }
   hi.Cursor = { fg = c.bg, bg = c.fg }
-  hi.CursorColumn = { bg = c.bg_light }
-  hi.CursorLine = { bg = c.bg_light }
-  hi.CursorLineNr = { fg = c.blue_light, bg = c.bg_light }
+  hi.CursorIM = { fg = c.bg, bg = c.fg }
+  hi.lCursor = { fg = c.bg, bg = c.fg }
+  hi.CursorColumn = { bg = c.bg_highlight }
+  hi.CursorLine = { bg = c.bg_highlight }
+  hi.CursorLineNr = { fg = c.blue_light }
   hi.Debug = { fg = c.blue_dark }
   hi.Directory = { fg = c.blue }
-  hi.Error = { fg = c.red }
   hi.ErrorMsg = { fg = c.red }
-  hi.Exception = { fg = c.blue_dark }
-  hi.FloatBorder = { fg = c.cyan, bg = c.bg }
   hi.FoldColumn = { fg = c.blue_light, bg = c.bg_light }
   hi.Folded = { fg = c.gray_lighter, bg = c.gray }
-  hi.IncSearch = { fg = c.bg_light, bg = c.yellow }
   hi.LineNr = { fg = c.gray_light }
   hi.Macro = { fg = c.blue_dark }
   hi.MatchParen = { fg = c.red, bold = true }
-  hi.ModeMsg = { fg = c.green }
-  hi.MoreMsg = { fg = c.green }
+  hi.ModeMsg = { fg = c.fg_dark, bold = true }
+  hi.MoreMsg = { fg = c.blue }
+  hi.MsgArea = { fg = c.fg_dark }
+  -- hi.MsgSeparator = { fg = c.fg_dark }
   hi.NonText = { fg = c.gray_alt }
   hi.Normal = { fg = c.fg, bg = c.bg }
-  hi.NormalFloat = { fg = c.fg, bg = c.bg_dark }
   hi.NormalNC = { fg = c.fg, bg = c.bg }
+  hi.NormalFloat = { fg = c.fg, bg = c.bg_float }
+  hi.FloatBorder = { fg = c.fg_border }
   hi.NvimInternalError = { link = "Error" }
   hi.PMenu = { fg = c.fg, bg = c.gray_darker }
   hi.PMenuSel = { fg = c.bg_light, bg = c.blue_dark }
   hi.Question = { fg = c.blue }
-  hi.QuickFixLine = { fg = c.bg_light, bg = c.yellow }
-  hi.Search = { fg = c.magenta, underline = true }
+  hi.QuickFixLine = { bg = c.bg_visual, bold = true }
+  hi.qfLineNr = { fg = c.gray_lighter }
+  hi.qfFileName = { fg = c.blue_dark }
   hi.SignColumn = { fg = c.gray_light }
   hi.SpecialKey = { fg = c.blue_lightest }
   hi.SpecialKeyWin = { fg = c.gray_light }
-  hi.Substitute = { fg = c.bg_light, bg = c.yellow }
-  hi.TermCursor = { fg = c.bg, bg = c.fg_light }
-  hi.TermCursorNC = { fg = c.bg, bg = c.fg_light }
-  hi.Title = { fg = c.blue }
-  hi.TooLong = { fg = c.blue_dark }
-  hi.Underlined = { underline = true }
+  hi.SpellBad = { sp = c.red_dark, undercurl = true }
+  hi.SpellCap = { sp = c.yellow, undercurl = true }
+  hi.SpellLocal = { sp = c.blue_alt, undercurl = true }
+  hi.SpellRare = { sp = c.teal, undercurl = true }
+  -- hi.TermCursor = { fg = c.bg, bg = c.fg_light }
+  -- hi.TermCursorNC = { fg = c.bg, bg = c.fg_light }
+  hi.Title = { fg = c.blue, bold = true }
   hi.VertSplit = { fg = c.bg_light }
-  hi.Visual = { bg = color.blend(c.yellow, c.bg, "20") }
+  hi.WinSeparator = { link = "VertSplit" }
+  hi.Visual = { bg = c.bg_visual }
   hi.VisualNOS = { fg = c.blue_dark }
-  hi.WarningMsg = { fg = c.orange }
+  hi.WarningMsg = { fg = c.yellow_dark }
   hi.Whitespace = { link = "NonText" }
-  hi.WildMenu = { fg = c.blue_dark, bg = c.fg }
-
+  hi.WildMenu = { link = "Visual" }
   -- alternate backgrounds
-  hi.NormalSB = { fg = c.fg, bg = color.blend(c.bg_dark, c.bg, "50") }
-  hi.SignColumSB = { fg = color.blend(c.gray_dark, c.bg, "50") }
+  hi.NormalSB = { fg = c.fg, bg = c.bg_alt }
 
   -- standard syntax highlighting
+  hi.Constant = { fg = c.orange }
   hi.Boolean = { fg = c.yellow }
-  hi.Character = { fg = c.blue_dark }
-  hi.Comment = { fg = c.gray_light, italic = true }
-  hi.Conditional = { fg = c.magenta }
-  hi.Constant = { fg = c.orange, bold = true }
-  hi.Define = { fg = c.magenta }
-  hi.Delimiter = { fg = c.blue_alt }
-  hi.Float = { fg = c.magenta_light }
-  hi.Function = { fg = c.blue_light }
-  hi.Identifier = { fg = c.blue_dark }
-  hi.Include = { fg = c.blue }
-  hi.Keyword = { fg = c.magenta }
-  hi.Label = { fg = c.yellow }
-  hi.Number = { fg = c.orange }
-  hi.Operator = { fg = c.fg }
-  hi.PreProc = { fg = c.yellow }
-  hi.Repeat = { fg = c.red_light }
-  hi.Special = { fg = c.blue_light }
-  hi.SpecialChar = { fg = c.red }
-  hi.Statement = { fg = c.blue_dark }
-  hi.StorageClass = { fg = c.yellow }
+  hi.Character = { fg = c.green }
   hi.String = { fg = c.green }
-  hi.Structure = { fg = c.magenta }
-  hi.Tag = { fg = c.yellow }
-  hi.Todo = { fg = c.yellow, bg = c.bg_light }
-  hi.Type = { fg = c.yellow }
-  hi.Typedef = { fg = c.yellow }
+  -- hi.Number = {}
+  -- hi.Float = {}
+
+  hi.Identifier = { fg = c.magenta }
+  hi.Function = { fg = c.blue_light }
+
+  hi.Statement = { fg = c.magenta }
+  hi.Keyword = { fg = c.magenta }
+  hi.Operator = { fg = c.fg }
+  -- hi.Conditional = {}
+  -- hi.Exception = {}
+  -- hi.Label = {}
+  -- hi.Repeat = {}
+
+  hi.PreProc = { fg = c.teal }
+  -- hi.Define = {}
+  -- hi.Include = {}
+  -- hi.Macro = {}
+  -- hi.PreCondit = {}
+
+  hi.Special = { fg = c.blue_light }
+  -- hi.Delimiter = {}
+  -- hi.SpecialChar = {}
+  -- hi.SpecialComment = {}
+  -- hi.Tag = {}
+
+  hi.Type = { fg = c.blue_darker }
+  -- hi.StorageClass = {}
+  -- hi.Structure = {}
+  -- hi.Typedef = {}
+
+  hi.Comment = { fg = c.gray_light, italic = true }
+  hi.Error = { fg = c.red }
+  hi.Todo = { fg = c.yellow }
+
+  hi.Underlined = { underline = true }
+  hi.Bold = { bold = true }
+  hi.Italic = { italic = true }
+
+  hi.htmlH1 = { fg = c.magenta, bold = true }
+  hi.htmlH2 = { fg = c.blue, bold = true }
 
   -- diff highlighting
-  c.diff_add = "#132e1f"
-  c.diff_delete = "#361f21"
-  c.diff_change = "#174061"
-  c.diff_text = "#1b3956"
-
   hi.DiffAdd = { bg = c.diff_add }
   hi.DiffChange = { bg = c.diff_change }
   hi.DiffDelete = { bg = c.diff_delete }
@@ -129,31 +146,27 @@ M.apply = function(c)
   hi.gitcommitDiscardedFile = { fg = c.blue_dark, bold = true }
   hi.gitcommitSelectedFile = { fg = c.green, bold = true }
 
-  -- spelling highlighting
-  hi.SpellBad = { undercurl = true, sp = c.blue_dark }
-  hi.SpellLocal = { undercurl = true, sp = c.blue_light }
-  hi.SpellCap = { undercurl = true, sp = c.blue }
-  hi.SpellRare = { undercurl = true, sp = c.magenta }
-
   -- lsp codelens highlighting
-  hi.LspCodeLens = { fg = c.gray_lsp }
-  hi.LspCodeLensText = { fg = c.gray_lsp }
-  hi.LspCodeLensSeparator = { fg = c.gray_lsp }
+  hi.LspCodeLens = { fg = c.lsp_gray }
+  hi.LspCodeLensText = { fg = c.lsp_gray }
+  hi.LspCodeLensSeparator = { fg = c.lsp_gray }
 
   -- lsp document highlighting
-  hi.LspReferenceText = { bg = color.blend(c.yellow_dark, c.bg, "66") }
-  hi.LspReferenceRead = { bg = color.blend(c.cyan_lsp, c.bg, "66") }
-  hi.LspReferenceWrite = { bg = color.blend(c.orange, c.bg, "66") }
+  hi.LspReferenceText = { bg = c.lsp_text }
+  hi.LspReferenceRead = { bg = c.lsp_read }
+  hi.LspReferenceWrite = { bg = c.lsp_write }
 
   -- lsp diagnostic highlighting
   hi.DiagnosticError = { fg = c.red }
   hi.DiagnosticWarn = { fg = c.yellow }
   hi.DiagnosticInfo = { fg = c.blue_light }
   hi.DiagnosticHint = { fg = c.magenta }
+
   hi.DiagnosticStatusError = { fg = c.red, bg = c.gray }
   hi.DiagnosticStatusWarn = { fg = c.yellow, bg = c.gray }
   hi.DiagnosticStatusInfo = { fg = c.blue_light, bg = c.gray }
   hi.DiagnosticStatusHint = { fg = c.magenta, bg = c.gray }
+
   hi.DiagnosticUnderlineError = { undercurl = true, sp = c.red }
   hi.DiagnosticUnderlineWarn = { undercurl = true, sp = c.yellow }
   hi.DiagnosticUnderlineInfo = { undercurl = true, sp = c.blue_light }
@@ -161,6 +174,7 @@ M.apply = function(c)
 
   -- treesitter highlighting
   hi.TreesitterContext = { bg = c.bg_light, italic = true }
+
   hi.TSAnnotation = { fg = c.yellow }
   hi.TSAttribute = { fg = c.yellow }
   hi.TSBoolean = { link = "Boolean" }
@@ -169,14 +183,14 @@ M.apply = function(c)
   hi.TSConditional = { fg = c.red_light }
   hi.TSConstant = { link = "Constant" }
   hi.TSConstBuiltin = { link = "Constant" }
-  hi.TSConstMacro = { fg = c.blue_dark }
+  hi.TSConstMacro = { fg = c.teal }
   hi.TSConstructor = { fg = c.blue_light }
   hi.TSCurrentScope = { bold = true }
-  hi.TSDanger = { fg = c.red, bold = true }
+  hi.TSDanger = { fg = c.bg, bg = c.red }
   hi.TSDefinition = { underline = true, sp = c.magenta }
   hi.TSDefinitionUsage = { bg = c.gray }
-  hi.TSEnum = { bold = true }
   hi.TSEmphasis = { fg = c.yellow, italic = true }
+  hi.TSEnum = { bold = true }
   hi.TSEnvironment = { fg = c.blue_dark }
   hi.TSEnvironmentType = { fg = c.yellow }
   hi.TSError = { fg = c.red }
@@ -191,18 +205,18 @@ M.apply = function(c)
   hi.TSKeywordFunction = { fg = c.magenta }
   hi.TSKeywordOperator = { fg = c.magenta }
   hi.TSKeywordReturn = { fg = c.magenta_light }
-  hi.TSLabel = { link = "Yellow" }
+  hi.TSLabel = { link = "Label" }
   hi.TSLiteral = { fg = c.orange }
   hi.TSMath = { fg = c.gray_lighter, bg = c.bg_dark }
   hi.TSMethod = { fg = c.blue_light }
   hi.TSNamespace = { fg = c.blue_dark }
   hi.TSNone = { fg = c.fg }
-  hi.TSNote = { fg = c.yellow, bold = true }
+  hi.TSNote = { fg = c.bg, bg = c.blue_alt }
   hi.TSNumber = { link = "Number" }
   hi.TSOperator = { link = "Operator" }
-  hi.TSParameter = { fg = c.yellow_dark }
-  hi.TSParameterReference = { fg = c.yellow_dark }
-  hi.TSProperty = { fg = c.blue_dark }
+  hi.TSParameter = { fg = c.yellow_darker }
+  hi.TSParameterReference = { fg = c.yellow_darker }
+  hi.TSProperty = { fg = c.fg_light }
   hi.TSPunctBracket = { fg = c.blue_alt }
   hi.TSPunctDelimiter = { fg = c.blue_alt }
   hi.TSPunctSpecial = { fg = c.blue_alt }
@@ -210,25 +224,25 @@ M.apply = function(c)
   hi.TSRepeat = { link = "Repeat" }
   hi.TSStrike = { fg = c.fg_dark, strikethrough = true }
   hi.TSString = { link = "String" }
-  hi.TSStringEscape = { fg = c.red }
+  hi.TSStringEscape = { fg = c.purple }
   hi.TSStringRegex = { link = "String" }
   hi.TSStrong = { bold = true }
   hi.TSStructure = { fg = c.fg }
   hi.TSSymbol = { fg = c.blue_dark }
   hi.TSTag = { link = "Tag" }
   hi.TSTagAttribute = { fg = c.orange }
-  hi.TSTagDelimiter = { fg = c.blue_alt }
+  hi.TSTagDelimiter = { link = "Tag" }
   hi.TSText = { fg = c.fg }
-  hi.TSTextReference = { fg = c.orange, bold = true }
-  hi.TSTitle = { fg = c.blue, bold = true }
+  hi.TSTextReference = { fg = c.teal }
+  hi.TSTitle = { link = "Title" }
   hi.TSTodo = { link = "Todo" }
   hi.TSType = { link = "Type" }
   hi.TSTypeBuiltin = { fg = c.yellow, italic = true }
   hi.TSUnderline = { link = "Underlined" }
   hi.TSURI = { fg = c.blue_light, underline = true }
   hi.TSVariable = { fg = c.fg }
-  hi.TSVariableBuiltin = { fg = c.blue_light, bold = true }
-  hi.TSWarning = { link = "WarningMsg" }
+  hi.TSVariableBuiltin = { fg = c.red }
+  hi.TSWarning = { fg = c.bg, bg = c.yellow }
 
   -- statusline highlighting
   hi.StatusLine = { fg = c.fg_dark, bg = c.gray }

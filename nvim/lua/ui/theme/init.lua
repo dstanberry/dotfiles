@@ -1,20 +1,18 @@
--- load colorscheme utilities
-local themes = require "ui.theme.colors"
 local groups = require "ui.theme.groups"
 
 local M = {}
 
--- assign all available color palettes
-M.colorschemes = themes
+M.colors = {}
 
--- define colorscheme
+M.themes = {
+  kdark = require "ui.theme.colors.kdark",
+}
+
 M.setup = function(t)
-  -- lookup requested theme
   if type(t) == "string" then
-    t = M.colorschemes[t]
+    t = M.themes[t]
   end
-  -- fallback to a safe theme if `colors` not found
-  M.colors = t or M.colorschemes["kdark"]
+  M.colors = vim.F.if_nil(t, M.themes.kdark)
   groups.apply(M.colors)
 end
 
