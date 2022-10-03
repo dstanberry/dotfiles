@@ -1,3 +1,5 @@
+local color = require "util.color"
+
 local M = {}
 
 local hi = setmetatable({}, {
@@ -12,62 +14,57 @@ end
 
 M.apply = function(c)
   -- vim editor colors
-  hi.Normal = { fg = c.fg, bg = c.bg }
   hi.Bold = { bold = true }
+  hi.ColorColumn = { bg = c.bg_light }
+  hi.Conceal = { fg = c.blue }
+  hi.CurSearch = { bg = color.blend(c.yellow, c.bg, "66") }
+  hi.Cursor = { fg = c.bg, bg = c.fg }
+  hi.CursorColumn = { bg = c.bg_light }
+  hi.CursorLine = { bg = c.bg_light }
+  hi.CursorLineNr = { fg = c.blue_light, bg = c.bg_light }
   hi.Debug = { fg = c.blue_dark }
   hi.Directory = { fg = c.blue }
   hi.Error = { fg = c.red }
   hi.ErrorMsg = { fg = c.red }
   hi.Exception = { fg = c.blue_dark }
+  hi.FloatBorder = { fg = c.cyan, bg = c.bg }
   hi.FoldColumn = { fg = c.blue_light, bg = c.bg_light }
   hi.Folded = { fg = c.gray_lighter, bg = c.gray }
+  hi.IncSearch = { fg = c.bg_light, bg = c.yellow }
+  hi.LineNr = { fg = c.gray_light }
   hi.Macro = { fg = c.blue_dark }
   hi.MatchParen = { fg = c.red, bold = true }
   hi.ModeMsg = { fg = c.green }
   hi.MoreMsg = { fg = c.green }
-  hi.Question = { fg = c.blue }
-  hi.Search = { fg = c.magenta, underline = true }
-  hi.CurSearch = { fg = c.bg_light, bg = c.yellow }
-  hi.IncSearch = { fg = c.bg_light, bg = c.yellow }
-  hi.Substitute = { fg = c.bg_light, bg = c.yellow }
-  hi.SpecialKey = { fg = c.blue_lightest }
-  hi.SpecialKeyWin = { fg = c.gray_light }
-  hi.TooLong = { fg = c.blue_dark }
-  hi.Underlined = { fg = c.blue_dark, underline = true }
-  hi.Visual = { fg = c.bg, bg = c.yellow }
-  hi.VisualNOS = { fg = c.blue_dark }
-  hi.WarningMsg = { fg = c.blue_dark }
-  hi.WildMenu = { fg = c.blue_dark, bg = c.fg }
-  hi.Title = { fg = c.blue }
-  hi.Conceal = { fg = c.blue }
-  hi.Cursor = { fg = c.bg, bg = c.fg }
   hi.NonText = { fg = c.gray_alt }
-  hi.Whitespace = { fg = c.gray_alt }
-
-  hi.NvimInternalError = { fg = c.red }
-
-  hi.LineNr = { fg = c.gray_light }
-  hi.SignColumn = { fg = c.gray_light }
-  hi.VertSplit = { fg = c.bg_light }
-  hi.ColorColumn = { bg = c.bg_light }
-  hi.CursorColumn = { bg = c.bg_light }
-  hi.CursorLine = { bg = c.bg_light }
-  hi.CursorLineNr = { fg = c.blue_light, bg = c.bg_light }
-  hi.QuickFixLine = { fg = c.bg_light, bg = c.yellow }
-
+  hi.Normal = { fg = c.fg, bg = c.bg }
+  hi.NormalFloat = { fg = c.fg, bg = c.bg_dark }
+  hi.NormalNC = { fg = c.fg, bg = c.bg }
+  hi.NvimInternalError = { link = "Error" }
   hi.PMenu = { fg = c.fg, bg = c.gray_darker }
   hi.PMenuSel = { fg = c.bg_light, bg = c.blue_dark }
-
-  hi.NormalFloat = { fg = c.fg, bg = c.bg_dark }
-  hi.FloatBorder = { fg = c.cyan, bg = c.bg }
-
-  hi.NormalNC = { fg = c.fg, bg = c.bg }
+  hi.Question = { fg = c.blue }
+  hi.QuickFixLine = { fg = c.bg_light, bg = c.yellow }
+  hi.Search = { fg = c.magenta, underline = true }
+  hi.SignColumn = { fg = c.gray_light }
+  hi.SpecialKey = { fg = c.blue_lightest }
+  hi.SpecialKeyWin = { fg = c.gray_light }
+  hi.Substitute = { fg = c.bg_light, bg = c.yellow }
   hi.TermCursor = { fg = c.bg, bg = c.fg_light }
   hi.TermCursorNC = { fg = c.bg, bg = c.fg_light }
+  hi.Title = { fg = c.blue }
+  hi.TooLong = { fg = c.blue_dark }
+  hi.Underlined = { underline = true }
+  hi.VertSplit = { fg = c.bg_light }
+  hi.Visual = { bg = color.blend(c.yellow, c.bg, "20") }
+  hi.VisualNOS = { fg = c.blue_dark }
+  hi.WarningMsg = { fg = c.orange }
+  hi.Whitespace = { link = "NonText" }
+  hi.WildMenu = { fg = c.blue_dark, bg = c.fg }
 
-  -- dark(er) backgrounds
-  hi.NormalSB = { fg = c.fg, bg = c.bg_dark }
-  hi.SignColumSB = { fg = c.gray_dark }
+  -- alternate backgrounds
+  hi.NormalSB = { fg = c.fg, bg = color.blend(c.bg_dark, c.bg, "50") }
+  hi.SignColumSB = { fg = color.blend(c.gray_dark, c.bg, "50") }
 
   -- standard syntax highlighting
   hi.Boolean = { fg = c.yellow }
@@ -77,16 +74,16 @@ M.apply = function(c)
   hi.Constant = { fg = c.orange, bold = true }
   hi.Define = { fg = c.magenta }
   hi.Delimiter = { fg = c.blue_alt }
-  hi.Float = { fg = c.magenta }
+  hi.Float = { fg = c.magenta_light }
   hi.Function = { fg = c.blue_light }
   hi.Identifier = { fg = c.blue_dark }
   hi.Include = { fg = c.blue }
   hi.Keyword = { fg = c.magenta }
   hi.Label = { fg = c.yellow }
-  hi.Number = { fg = c.magenta }
+  hi.Number = { fg = c.orange }
   hi.Operator = { fg = c.fg }
   hi.PreProc = { fg = c.yellow }
-  hi.Repeat = { fg = c.yellow }
+  hi.Repeat = { fg = c.red_light }
   hi.Special = { fg = c.blue_light }
   hi.SpecialChar = { fg = c.red }
   hi.Statement = { fg = c.blue_dark }
@@ -144,9 +141,9 @@ M.apply = function(c)
   hi.LspCodeLensSeparator = { fg = c.gray_lsp }
 
   -- lsp document highlighting
-  hi.LspReferenceText = { fg = c.gray_darker, bg = c.yellow_dark }
-  hi.LspReferenceRead = { fg = c.gray_darker, bg = c.cyan_lsp }
-  hi.LspReferenceWrite = { fg = c.gray_darker, bg = c.orange }
+  hi.LspReferenceText = { bg = color.blend(c.yellow_dark, c.bg, "66") }
+  hi.LspReferenceRead = { bg = color.blend(c.cyan_lsp, c.bg, "66") }
+  hi.LspReferenceWrite = { bg = color.blend(c.orange, c.bg, "66") }
 
   -- lsp diagnostic highlighting
   hi.DiagnosticError = { fg = c.red }
@@ -166,12 +163,12 @@ M.apply = function(c)
   hi.TreesitterContext = { bg = c.bg_light, italic = true }
   hi.TSAnnotation = { fg = c.yellow }
   hi.TSAttribute = { fg = c.yellow }
-  hi.TSBoolean = { fg = c.yellow }
+  hi.TSBoolean = { link = "Boolean" }
   hi.TSCharacter = { fg = c.blue_dark }
-  hi.TSComment = { fg = c.gray_light, italic = true }
+  hi.TSComment = { link = "Comment" }
   hi.TSConditional = { fg = c.red_light }
-  hi.TSConstant = { fg = c.orange }
-  hi.TSConstBuiltin = { fg = c.orange, bold = true }
+  hi.TSConstant = { link = "Constant" }
+  hi.TSConstBuiltin = { link = "Constant" }
   hi.TSConstMacro = { fg = c.blue_dark }
   hi.TSConstructor = { fg = c.blue_light }
   hi.TSCurrentScope = { bold = true }
@@ -185,24 +182,24 @@ M.apply = function(c)
   hi.TSError = { fg = c.red }
   hi.TSException = { fg = c.red }
   hi.TSField = { fg = c.fg_light }
-  hi.TSFloat = { fg = c.magenta_light }
+  hi.TSFloat = { link = "Float" }
   hi.TSFuncBuiltin = { fg = c.blue, bold = true }
   hi.TSFuncMacro = { fg = c.blue_dark }
-  hi.TSFunction = { fg = c.blue }
-  hi.TSInclude = { fg = c.blue }
-  hi.TSKeyword = { fg = c.magenta }
+  hi.TSFunction = { link = "Function" }
+  hi.TSInclude = { link = "Include" }
+  hi.TSKeyword = { link = "Keyword" }
   hi.TSKeywordFunction = { fg = c.magenta }
   hi.TSKeywordOperator = { fg = c.magenta }
   hi.TSKeywordReturn = { fg = c.magenta_light }
-  hi.TSLabel = { fg = c.yellow }
+  hi.TSLabel = { link = "Yellow" }
   hi.TSLiteral = { fg = c.orange }
   hi.TSMath = { fg = c.gray_lighter, bg = c.bg_dark }
   hi.TSMethod = { fg = c.blue_light }
   hi.TSNamespace = { fg = c.blue_dark }
   hi.TSNone = { fg = c.fg }
   hi.TSNote = { fg = c.yellow, bold = true }
-  hi.TSNumber = { fg = c.orange }
-  hi.TSOperator = { fg = c.fg }
+  hi.TSNumber = { link = "Number" }
+  hi.TSOperator = { link = "Operator" }
   hi.TSParameter = { fg = c.yellow_dark }
   hi.TSParameterReference = { fg = c.yellow_dark }
   hi.TSProperty = { fg = c.blue_dark }
@@ -210,28 +207,28 @@ M.apply = function(c)
   hi.TSPunctDelimiter = { fg = c.blue_alt }
   hi.TSPunctSpecial = { fg = c.blue_alt }
   hi.TSQueryLinterError = { fg = c.orange }
-  hi.TSRepeat = { fg = c.red_light }
+  hi.TSRepeat = { link = "Repeat" }
   hi.TSStrike = { fg = c.fg_dark, strikethrough = true }
-  hi.TSString = { fg = c.green }
+  hi.TSString = { link = "String" }
   hi.TSStringEscape = { fg = c.red }
-  hi.TSStringRegex = { fg = c.green }
+  hi.TSStringRegex = { link = "String" }
   hi.TSStrong = { bold = true }
   hi.TSStructure = { fg = c.fg }
   hi.TSSymbol = { fg = c.blue_dark }
-  hi.TSTag = { fg = c.yellow }
+  hi.TSTag = { link = "Tag" }
   hi.TSTagAttribute = { fg = c.orange }
   hi.TSTagDelimiter = { fg = c.blue_alt }
   hi.TSText = { fg = c.fg }
   hi.TSTextReference = { fg = c.orange, bold = true }
   hi.TSTitle = { fg = c.blue, bold = true }
-  hi.TSTodo = { fg = c.yellow, bg = c.bg_light }
-  hi.TSType = { fg = c.yellow }
+  hi.TSTodo = { link = "Todo" }
+  hi.TSType = { link = "Type" }
   hi.TSTypeBuiltin = { fg = c.yellow, italic = true }
-  hi.TSUnderline = { fg = c.bg, underline = true }
+  hi.TSUnderline = { link = "Underlined" }
   hi.TSURI = { fg = c.blue_light, underline = true }
   hi.TSVariable = { fg = c.fg }
   hi.TSVariableBuiltin = { fg = c.blue_light, bold = true }
-  hi.TSWarning = { fg = c.orange, bold = true }
+  hi.TSWarning = { link = "WarningMsg" }
 
   -- statusline highlighting
   hi.StatusLine = { fg = c.fg_dark, bg = c.gray }
@@ -251,8 +248,6 @@ M.apply = function(c)
   hi.TabLine = { fg = c.gray_light, bg = c.bg }
   hi.TabLineFill = { fg = c.gray_light, bg = c.bg }
   hi.TabLineSel = { fg = c.fg, bg = c.bg_dark, bold = true }
-
-  vim.wo.winhighlight = "SpecialKey:SpecialKeyWin"
 
   -- winbar highlighting
   hi.Winbar = { fg = c.gray_light, bg = c.bg }
@@ -278,6 +273,9 @@ M.apply = function(c)
   vim.g.terminal_color_13 = c.magenta
   vim.g.terminal_color_14 = c.blue_light
   vim.g.terminal_color_15 = c.cyan
+
+  -- highlighting for special characters
+  vim.wo.winhighlight = "SpecialKey:SpecialKeyWin"
 end
 
 return M
