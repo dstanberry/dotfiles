@@ -24,6 +24,6 @@ if has_telescope then
   end)
 end
 
-vim.keymap.set("n", "<localleader>ha", mark.add_file)
+vim.keymap.set("n", "<bs><bs>", mark.add_file)
 vim.keymap.set("n", "<localleader>.", ui.nav_next)
 vim.keymap.set("n", ".<localleader>", ui.nav_prev)
