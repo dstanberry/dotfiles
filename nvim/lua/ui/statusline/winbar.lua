@@ -31,11 +31,15 @@ local get_filepath = function()
 
   for k, v in ipairs(parts) do
     if #v > 0 then
+      local icon, icon_hl = devicons.get_icon(fname, ext, { default = true })
       if #segments == 0 then
-        section = add(hi.winbar, { pad(v, "left") })
+        if k == #parts and has_devicons then
+          section = add(hi.winbar_icon(icon_hl), { pad(icon, "both") }, true) .. add(hi.winbar, { v })
+        else
+          section = add(hi.winbar, { pad(v, "left") })
+        end
       else
         if k == #parts and has_devicons then
-          local icon, icon_hl = devicons.get_icon(fname, ext, { default = true })
           section = add(hi.winbar_icon(icon_hl), { pad(icon, "right") }, true) .. add(hi.winbar, { v })
         else
           section = add(hi.winbar, { v })
