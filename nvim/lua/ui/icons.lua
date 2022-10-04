@@ -51,6 +51,7 @@ return {
     CaretRight = "",
     ChevronRight = "›",
     Clipboard = "",
+    Close = "",
     Dot = "▪",
     FilledCircle = "●",
     FoldClosed = "",

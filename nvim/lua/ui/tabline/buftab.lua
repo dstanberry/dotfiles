@@ -24,6 +24,8 @@ function Buftab:generate_flags()
   local flags, buffer_flags = options.get().flags, {}
   if self.buf.changed and flags.modified ~= "" then
     table.insert(buffer_flags, flags.modified)
+  else
+    table.insert(buffer_flags, flags.close)
   end
   if not self.buf.modifiable and flags.not_modifiable ~= "" then
     table.insert(buffer_flags, flags.not_modifiable)
