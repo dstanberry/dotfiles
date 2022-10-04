@@ -2,7 +2,7 @@ local tabline = require("ui.tabline")
 local icons = require "ui.icons"
 
 tabline.setup {
-  tab_format = " #{i} #{b}#{f} ",
+  tab_format = "   #{i} #{b}   #{f}",
   disable_commands = true,
   icons = true,
   go_to_maps = false,
