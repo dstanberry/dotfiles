@@ -2,8 +2,7 @@ local M = {}
 
 function M.create_scratch()
   local ft = vim.fn.input "scratch buffer filetype: "
-  vim.cmd.split "20"
-  vim.cmd.new "[Scratch]"
+  vim.cmd.new { args = { "[Scratch]" }, range = { 20 } }
   vim.bo.bufhidden = "wipe"
   vim.bo.buflisted = false
   vim.bo.buftype = "nofile"
