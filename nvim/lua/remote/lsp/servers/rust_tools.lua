@@ -13,9 +13,11 @@ M.setup = function(rust_analyzer_config)
   local cfg = rust_analyzer_config or {}
   rust_tools.setup {
     tools = {
-      on_initialized = function()
-      end,
       executor = require("rust-tools.executors").termopen,
+      on_initialized = nil,
+      reload_workspace_from_cargo_toml = true,
+      runnables = { use_telescope = true },
+      debuggables = { use_telescope = true },
       autoSetHints = true,
       inlay_hints = {
         auto = false,
@@ -43,7 +45,7 @@ M.setup = function(rust_analyzer_config)
     server = vim.tbl_deep_extend("force", cfg, {
       on_attach = function(_, bufnr)
         vim.keymap.set("n", "gk", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
-        vim.keymap.set("n", "ga", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
+        -- vim.keymap.set("n", "ga", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
       end,
     }),
     dap = {
