@@ -38,7 +38,7 @@ hints.setup {
     labels_separator = "  ",
     max_len_align = false,
     max_len_align_padding = 1,
-    highlight = "NonText",
+    highlight = "Comment",
   },
   enabled_at_startup = true,
   debug_mode = false,
