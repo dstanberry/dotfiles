@@ -22,13 +22,13 @@ M.setup = function()
   dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
 
   vim.fn.sign_define("DapBreakpoint", {
-    text = icons.misc.Bug,
+    text = icons.debug.Bug,
     texthl = "DiagnosticSignError",
     linehl = "",
     numhl = "",
   })
   vim.fn.sign_define("DapStopped", {
-    text = icons.misc.RightArrow,
+    text = icons.debug.RightArrow,
     texthl = "DiagnosticSignWarn",
     linehl = "IncSearch",
     numhl = "",
@@ -78,6 +78,16 @@ M.setup = function()
       controls = {
         enabled = true,
         element = "repl",
+        icons = {
+          pause = icons.debug.Pause,
+          play = icons.debug.Continue,
+          step_into = icons.debug.StepInto,
+          step_over = icons.debug.StepOver,
+          step_out = icons.debug.StepOut,
+          step_back = icons.debug.StepBack,
+          run_last = icons.debug.Restart,
+          terminate = icons.debug.Stop,
+        },
       },
       floating = {
         boder = "single",

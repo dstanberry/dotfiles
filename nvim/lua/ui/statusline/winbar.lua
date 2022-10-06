@@ -52,7 +52,7 @@ local get_filepath = function()
   return table.concat(segments, separator)
 end
 
-local get_symbols = function()
+local get_lsp_symbols = function()
   if not navic.is_available() then
     return ""
   end
@@ -87,12 +87,29 @@ local get_symbols = function()
   return table.concat(segments, separator)
 end
 
-M.focus = function()
+M.show_file_sections = function()
   local relpath = get_filepath()
-  local symbols = get_symbols()
+  local symbols = get_lsp_symbols()
   local sep = symbols and "" or " "
 
   return string.format("%s%s%s%s", relpath, sep, symbols, hi.reset)
+end
+
+M.show_dap_sections = function()
+  local win_id = vim.api.nvim_get_current_win()
+  local bufnr = vim.api.nvim_win_get_buf(win_id)
+  local ft = vim.bo[bufnr].filetype
+  local name = ft
+  local icon = icons.misc.Square
+  local split = vim.split(ft, "_", { plain = true })
+  if #split == 2 then
+    name = (split[2]):gsub("^%l", string.upper)
+  end
+
+  icon = add(hi.winbar, { pad(icons.debug[name], "left") }, true)
+  name = add(hi.winbar, {"DAP " .. name})
+
+  return string.format("%s %s%s", icon, name, hi.reset)
 end
 
 M.setup = function()
@@ -112,7 +129,11 @@ M.setup = function()
           and bt == ""
           and ft ~= ""
         then
-          vim.wo[win].winbar = [[%{%v:lua.require("ui.statusline.winbar").focus()%}]]
+          vim.wo[win].winbar = [[%{%v:lua.require("ui.statusline.winbar").show_file_sections()%}]]
+        elseif vim.tbl_contains(views.plugins, ft) then
+          if ft:find "^dapui" ~= nil then
+            vim.wo[win].winbar = [[%{%v:lua.require("ui.statusline.winbar").show_dap_sections()%}]]
+          end
         elseif is_diff or vim.tbl_contains(views.basic, ft) or vim.tbl_contains(views.plugins, ft) then
           vim.wo[win].winbar = nil
         end
