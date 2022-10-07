@@ -79,6 +79,14 @@ local function plugins(use)
   use { "simrat39/symbols-outline.nvim", cmd = "SymbolsOutline", requires = { "nvim-lua/plenary.nvim" } }
 
   -- look-and-feel
+  use {
+    "folke/noice.nvim",
+    event = "VimEnter",
+    requires = {
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
+    },
+  }
   use { "folke/todo-comments.nvim", requires = "nvim-lua/plenary.nvim" }
   use {
     "folke/zen-mode.nvim",
