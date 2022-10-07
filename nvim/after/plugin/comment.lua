@@ -10,7 +10,6 @@ comment.setup {
   mappings = {
     basic = true,
     extra = true,
-    extended = true,
   },
   opleader = {
     line = "gc",
