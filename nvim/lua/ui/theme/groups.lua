@@ -172,6 +172,43 @@ M.apply = function(c)
   hi.DiagnosticUnderlineInfo = { undercurl = true, sp = c.blue_light }
   hi.DiagnosticUnderlineHint = { undercurl = true, sp = c.magenta }
 
+  -- lsp semantic tokens
+  hi.LspParameter = { fg = c.rose }
+  -- hi.LspClass = {}
+  -- hi.LspComment = {}
+  -- hi.LspDecorator = {}
+  -- hi.LspEnum = {}
+  -- hi.LspEnumMember = {}
+  -- hi.LspEvent = {}
+  -- hi.LspFunction = {}
+  -- hi.LspInterface = {}
+  -- hi.LspKeyword = {}
+  -- hi.LspMacro = {}
+  -- hi.LspMethod = {}
+  -- hi.LspModifier = {}
+  -- hi.LspNamespace = {}
+  -- hi.LspNumber = {}
+  -- hi.LspOperator = {}
+  -- hi.LspProperty = {}
+  -- hi.LspRegexp = {}
+  -- hi.LspString = {}
+  -- hi.LspStruct = {}
+  -- hi.LspType = {}
+  -- hi.LspTypeParameter = {}
+  -- hi.LspVariable = {}
+
+  -- lsp semantic modifier tokens
+  hi.LspDeprecated = { fg = c.red_dark, italic = true, strikethrough = true }
+  hi.LspAbstract = { fg = c.pink }
+  -- hi.LspAsync = {}
+  -- hi.LspDeclaration = {}
+  -- hi.LspDefaultLibrary = {}
+  -- hi.LspDefinition = {}
+  -- hi.LspDocumentation = {}
+  -- hi.LspModification = {}
+  -- hi.LspReadonly = {}
+  -- hi.LspStatic = {}
+
   -- treesitter highlighting
   hi.TreesitterContext = { bg = c.bg_light, italic = true }
 

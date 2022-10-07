@@ -53,6 +53,7 @@ local function plugins(use)
       "lvimuser/lsp-inlayhints.nvim",
       "mickael-menu/zk-nvim",
       "simrat39/rust-tools.nvim",
+      "theHamsta/nvim-semantic-tokens",
     },
   }
   use {

@@ -25,13 +25,13 @@ M.on_attach = function(client, bufnr)
     vim.api.nvim_create_autocmd("BufEnter", {
       group = "lsp_codelens",
       once = true,
-      pattern = "<buffer>",
+      buffer = bufnr,
       callback = require("vim.lsp.codelens").refresh,
     })
 
     vim.api.nvim_create_autocmd({ "InsertLeave", "CursorHold" }, {
       group = "lsp_codelens",
-      pattern = "<buffer>",
+      buffer = bufnr,
       callback = require("vim.lsp.codelens").refresh,
     })
 
@@ -65,13 +65,13 @@ M.on_attach = function(client, bufnr)
 
     vim.api.nvim_create_autocmd("CursorHold", {
       group = "lsp_highlight",
-      pattern = "<buffer>",
+      buffer = bufnr,
       callback = vim.lsp.buf.document_highlight,
     })
 
     vim.api.nvim_create_autocmd("CursorMoved", {
       group = "lsp_highlight",
-      pattern = "<buffer>",
+      buffer = bufnr,
       callback = vim.lsp.buf.clear_references,
     })
   end
@@ -81,7 +81,7 @@ M.on_attach = function(client, bufnr)
 
     vim.api.nvim_create_autocmd("CursorHoldI", {
       group = "lsp_signature",
-      pattern = "<buffer>",
+      buffer = bufnr,
       callback = vim.lsp.buf.signature_help,
     })
 
@@ -93,6 +93,26 @@ M.on_attach = function(client, bufnr)
     vim.keymap.set("n", "ff", function()
       vim.lsp.buf.format { async = true }
     end, { buffer = bufnr })
+  end
+
+  if client.server_capabilities.semanticTokensProvider and client.server_capabilities.semanticTokensProvider.full then
+    local has_tokens, nvim_semantic_tokens = pcall(require, "nvim-semantic-tokens")
+    if has_tokens then
+      nvim_semantic_tokens.setup {
+        preset = "default",
+        highlighters = { require "nvim-semantic-tokens.table-highlighter" },
+      }
+      vim.api.nvim_create_augroup("lsp_semantic_tokens", { clear = true })
+
+      vim.api.nvim_create_autocmd("TextChanged", {
+        group = "lsp_semantic_tokens",
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.semantic_tokens_full()
+        end,
+      })
+      vim.lsp.buf.semantic_tokens_full()
+    end
   end
 
   if client.server_capabilities.documentSymbolProvider then
@@ -183,7 +203,7 @@ M.setup = function()
   end
 
   vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
-    groups.new("LspUnnecessary", { fg = c.gray_lighter })
+    groups.new("LspUnnecessary", { fg = c.gray_lighter, italic = true })
 
     local bufnr = vim.uri_to_bufnr(result.uri)
     if not bufnr then
