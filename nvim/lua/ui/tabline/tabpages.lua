@@ -1,8 +1,6 @@
 local options = require "ui.tabline.options"
 local Tabpage = require "ui.tabline.tabpage-tab"
 
-local api = vim.api
-
 local M = {}
 
 M.tabinfo = function()
@@ -10,7 +8,7 @@ M.tabinfo = function()
     return {}
   end
 
-  local tabnrs = api.nvim_list_tabpages()
+  local tabnrs = vim.api.nvim_list_tabpages()
   if #tabnrs <= 1 and options.get().show_tabpages ~= "always" then
     return {}
   end
@@ -19,7 +17,7 @@ M.tabinfo = function()
 end
 
 M.make_tabpage_tabs = function()
-  local current_tabnr = api.nvim_get_current_tabpage()
+  local current_tabnr = vim.api.nvim_get_current_tabpage()
   local tabpage_tabs = {}
   for i, tabnr in ipairs(M.tabinfo()) do
     table.insert(
