@@ -16,6 +16,21 @@ signs.setup {
     topdelete = { hl = "GitSignsDelete", text = icons.misc.CaretRight },
     changedelete = { hl = "GitSignsDelete", text = icons.misc.VerticalBar },
   },
+  status_formatter = function(status)
+    local added = ""
+    local changed = ""
+    local removed = ""
+    if status.added and status.added > 0 then
+      added = pad(icons.git.TextAdded, "right") .. status.added
+    end
+    if status.changed and status.changed > 0 then
+      changed = pad(icons.git.TextChanged, "both") .. status.changed
+    end
+    if status.removed and status.removed > 0 then
+      removed = pad(icons.git.TextRemoved, "both") .. status.removed
+    end
+    return added .. changed .. removed
+  end,
   numhl = false,
   update_debounce = 1000,
   current_line_blame = false,

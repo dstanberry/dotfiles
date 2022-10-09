@@ -1,9 +1,5 @@
 local M = {}
 
-local function sanitize(group)
-  return "%#" .. group .. "#"
-end
-
 local modes = setmetatable({
   n = "%2*",
   no = "%2*",
@@ -37,16 +33,12 @@ M.mode = function(m)
   return modes[m]
 end
 
+M.sanitize = function(group)
+  return "%#" .. group .. "#"
+end
+
 M.segment = "%="
 M.reset = "%*"
-
-M.lsp_error = sanitize "DiagnosticStatusError"
-M.lsp_warn = sanitize "DiagnosticStatusWarn"
-M.lsp_info = sanitize "DiagnosticStatusInfo"
-M.lsp_hint = sanitize "DiagnosticStatusHint"
-
-M.statusline = sanitize "StatusLine"
-M.statuslinenc = sanitize "StatusLine"
 
 M.user1 = "%1*"
 M.user2 = "%2*"
@@ -57,11 +49,5 @@ M.user6 = "%6*"
 M.user7 = "%7*"
 M.user8 = "%8*"
 M.user9 = "%9*"
-
-M.winbar = sanitize "Winbar"
-M.winbarnc = sanitize "WinbarNC"
-M.winbar_icon = function(group)
-  return sanitize(group)
-end
 
 return M

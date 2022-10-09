@@ -1,2 +1,39 @@
-reload("ui.statusline").setup()
-reload("ui.statusline.winbar").setup()
+local icons = require "ui.icons"
+
+reload("ui.statusline").setup {
+  disabled_filetypes = {
+    "Diffview",
+    "DiffviewFiles",
+    "help",
+    "lir",
+    "NeogitPopup",
+    "NeogitStatus",
+    "packer",
+    "qf",
+    "startuptime",
+    "TelescopePrompt",
+    "toggleterm",
+  },
+  separators = { left = " ", right = " " },
+  sections = {
+    left = {
+      { modehl = icons.misc.VerticalBarBold },
+      { modehl = "git_branch" },
+      { user7 = "diagnostics" },
+      { user7 = "diff" },
+    },
+    right = {
+      { user7 = { "cursor", padding = { left = 0, right = 1 } } },
+      { user7 = { "encoding", padding = { left = 1, right = 1 } } },
+      { user7 = "fileformat" },
+      { user7 = { "filetype", text_only = true } },
+    },
+  },
+  winbar = {
+    left = {
+      { "navic" },
+    },
+  },
+}
+
+-- reload("ui.statusline.winbar").setup()

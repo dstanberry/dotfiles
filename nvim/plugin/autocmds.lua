@@ -161,6 +161,9 @@ vim.api.nvim_create_autocmd("TermOpen", {
   callback = function()
     vim.wo.relativenumber = false
     vim.wo.number = false
+    if vim.opt_local.filetype:get() == "" then
+      vim.opt_local.filetype = "term"
+    end
   end,
 })
 

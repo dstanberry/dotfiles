@@ -35,6 +35,9 @@ return {
     Compare = "",
     Merge = "",
     PullRequest = "",
+    TextAdded = "",
+    TextChanged = "",
+    TextRemoved = "",
   },
   kind = {
     Class = "",

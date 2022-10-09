@@ -1,238 +1,109 @@
-local data = require "ui.statusline.data"
-local hi = require "ui.statusline.highlight"
-local lsp = require "ui.statusline.lsp"
-local views = require "ui.statusline.views"
-local add = require("ui.statusline.helper").add
-local icons = require "ui.icons"
-
-local function l_spacer()
-  return add(hi.user9, { " " })
-end
-
-local function r_spacer()
-  return add(hi.user9, { " " })
-end
-
-local function default(state, bufnr)
-  local mode = vim.fn.mode()
-  local mode_hl = hi.mode(mode)
-  local diagnostics = lsp.get_diagnostics(bufnr)
-  if state == "active" then
-    return table.concat {
-      add(mode_hl, { data.mode() }),
-      add(mode_hl, { data.git_branch(bufnr) }),
-      add(hi.user7, { vim.b.gitsigns_status }),
-      l_spacer(),
-      add(hi.user7, {
-        hi.user7,
-        pad(icons.status.Error, "right"),
-        diagnostics.error,
-        hi.user7,
-        pad(icons.status.Warn, "both"),
-        diagnostics.warn,
-      }, true),
-      l_spacer(),
-      hi.segment,
-      r_spacer(),
-      add(hi.user7, { data.cursor_position() }),
-      r_spacer(),
-      add(hi.user7, { data.readonly(bufnr), data.file_encoding(bufnr) }),
-      r_spacer(),
-      add(hi.user7, { data.file_format(bufnr) }),
-      r_spacer(),
-      add(hi.user7, { data.filetype(bufnr) }),
-    }
-  else
-    return table.concat {
-      add(hi.user7, { " ", data.relpath { buffer = bufnr } }, true),
-      add(hi.user8, { data.filename(bufnr), data.modified(bufnr) }),
-      hi.segment,
-    }
-  end
-end
-
-local function explorer(state, bufnr)
-  if state == "active" then
-    local mode = vim.fn.mode()
-    local mode_hl = hi.mode(mode)
-    return table.concat {
-      add(mode_hl, { data.mode() }),
-      add(hi.user7, { " ", data.relpath { buffer = bufnr } }, true),
-      hi.segment,
-    }
-  else
-    return table.concat {
-      add(hi.user7, { " ", data.relpath { buffer = bufnr } }, true),
-      hi.segment,
-    }
-  end
-end
-
-local function plugin(state, bufnr, t)
-  local term = t or false
-  if state == "active" then
-    local mode = vim.fn.mode()
-    local mode_hl = hi.mode(mode)
-    return table.concat {
-      add(mode_hl, { data.mode() }),
-      add(mode_hl, { term and "term://" or "", data.filename(bufnr) }, true),
-      hi.segment,
-    }
-  else
-    return table.concat {
-      add(hi.user7, { " ", term and "term://" or "", data.filename(bufnr) }, true),
-      hi.segment,
-    }
-  end
-end
-
-local function basic(state, bufnr)
-  if state == "active" then
-    local mode = vim.fn.mode()
-    local mode_hl = hi.mode(mode)
-    return table.concat {
-      add(mode_hl, { data.mode() }),
-      add(hi.user7, { " ", data.relpath { buffer = bufnr } }, true),
-      add(hi.user8, { data.filename(bufnr), data.modified(bufnr) }),
-      hi.segment,
-    }
-  else
-    return table.concat {
-      add(hi.user8, { " ", data.filepath(bufnr) }, true),
-      hi.segment,
-    }
-  end
-end
-
-local function uri(state, bufnr)
-  if state == "active" then
-    local mode = vim.fn.mode()
-    local mode_hl = hi.mode(mode)
-    return table.concat {
-      add(mode_hl, { data.mode() }),
-      add(hi.user7, { " ", data.relpath { buffer = bufnr }, "/" }, true),
-      add(hi.user8, { data.filename(bufnr), data.modified(bufnr) }),
-      hi.segment,
-    }
-  else
-    return table.concat {
-      add(hi.user8, { " ", data.filepath(bufnr) }, true),
-      hi.segment,
-    }
-  end
-end
-
-local function irregular(state, bufnr)
-  if state == "active" then
-    local mode = vim.fn.mode()
-    local mode_hl = hi.mode(mode)
-    return table.concat {
-      add(mode_hl, { data.mode() }),
-      add(mode_hl, { data.git_branch(bufnr) }),
-      add(hi.user8, { data.filename(bufnr), data.modified(bufnr) }),
-      hi.segment,
-      r_spacer(),
-      add(hi.user7, { data.cursor_position() }),
-      r_spacer(),
-      add(hi.user7, { data.readonly(bufnr), data.file_encoding(bufnr) }),
-      r_spacer(),
-      add(hi.user7, { data.file_format(bufnr) }),
-      r_spacer(),
-      add(hi.user7, { data.filetype(bufnr) }),
-    }
-  else
-    return hi.segment
-  end
-end
+local Component = require "ui.statusline.component"
+local options = require "ui.statusline.options"
 
 local M = {}
 
-M.focus = function(win_id)
-  if not vim.api.nvim_win_is_valid(win_id) then
-    return irregular("inactive", _)
+local props = {}
+local left_separator
+local right_separator
+
+local draw_section = function(kind, placement, section)
+  if type(section) ~= "table" then
+    return {}
   end
-  local state = "active"
-  local bufnr = vim.api.nvim_win_get_buf(win_id)
-  local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
-  local name = vim.fn.bufname(bufnr)
-  if vim.tbl_contains(views.browsers, type) then
-    return explorer(state, bufnr)
+  local status = {}
+  for k, component in pairs(section) do
+    if kind == "statusline" and placement == "right" then
+      table.insert(status, right_separator)
+    end
+    table.insert(status, Component:new(props, component))
+    if  kind == "statusline" and placement == "left" and k >= 1 then
+      table.insert(status, left_separator)
+    end
   end
-  if vim.tbl_contains(views.plugins, type) or vim.tbl_contains(views.filenames, name) then
-    return plugin(state, bufnr)
-  end
-  if vim.tbl_contains(views.terminal, name) then
-    return plugin(state, bufnr, true)
-  end
-  if vim.tbl_contains(views.basic, type) then
-    return basic(state, bufnr)
-  end
-  if vim.tbl_contains(views.uri, type) then
-    return uri(state, bufnr)
-  end
-  type = vim.fn.getftype(data.filepath(bufnr))
-  if type == "file" or #name > 0 then
-    return default(state, bufnr)
-  end
-  return irregular(state, bufnr)
+  return status
 end
 
-M.dim = function(win_id)
-  local state = "inactive"
+M.generate = function(location, win_id)
   if not vim.api.nvim_win_is_valid(win_id) then
-    return irregular(state, _)
+    return ""
   end
-  local bufnr = vim.api.nvim_win_get_buf(win_id)
-  local type = vim.api.nvim_buf_get_option(bufnr, "filetype")
-  local name = vim.fn.bufname(bufnr)
-  if vim.tbl_contains(views.browsers, type) then
-    return explorer(state, bufnr)
+  if #props > 0 then
+    props = {}
   end
-  if vim.tbl_contains(views.plugins, type) or vim.tbl_contains(views.filenames, name) then
-    return plugin(state, bufnr)
-  end
-  if vim.tbl_contains(views.terminal, name) then
-    return plugin(state, bufnr, true)
-  end
-  if vim.tbl_contains(views.basic, type) then
-    return basic(state, bufnr)
-  end
-  if vim.tbl_contains(views.uri, type) then
-    return uri(state, bufnr)
-  end
-  type = vim.fn.getftype(data.filepath(bufnr))
-  if type == "file" or #name > 0 then
-    return default(state, bufnr)
-  else
-    return irregular(state, bufnr)
+  props.winid = win_id
+  props.bufnr = vim.api.nvim_win_get_buf(win_id)
+  props.filetype = vim.api.nvim_buf_get_option(props.bufnr, "filetype")
+  props.name = vim.fn.bufname(props.bufnr)
+
+  local sections
+  local left_section
+  local right_section
+  local has_ext, ext = pcall(require, ("ui.statusline.extensions.%s"):format(props.filetype:lower()))
+
+  if location == "statusline" then
+    if has_ext then
+      sections = ext.sections or options.get().sections
+    else
+      sections = options.get().sections
+    end
+    left_section = table.concat(draw_section("statusline", "left", sections.left), "")
+    right_section = table.concat(draw_section("statusline", "right", sections.right), "")
+    return ("%s%%=%s "):format(left_section, right_section)
+  elseif location == "winbar" then
+    if has_ext then
+      -- TODO: add winbar configuration for some custom filetypes
+      -- sections = ext.winbar or options.get().winbar
+    else
+      sections = options.get().winbar
+    end
+    left_section = table.concat(draw_section("winbar", "left", sections.left), "")
+    right_section = table.concat(draw_section("winbar", "right", sections.right), "")
+    return ("%s%%=%s"):format(left_section, right_section)
   end
 end
 
-M.setup = function()
+M.setup = function(config)
+  config = vim.F.if_nil(config, {})
+  options.set(config)
+
+  left_separator = Component:new({}, { user9 = options.get().separators.left })
+  right_separator = Component:new({}, { user9 = options.get().separators.right })
+
   vim.api.nvim_create_augroup("statusline", { clear = true })
-
-  vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+  vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "ModeChanged" }, {
     group = "statusline",
     callback = function()
-      vim.wo.statusline =
-        string.format([[%%!luaeval('require("ui.statusline").focus(%s)')]], vim.api.nvim_get_current_win())
+      vim.wo.statusline = string.format(
+        [[%%!luaeval('require("ui.statusline").generate("statusline", %s)')]],
+        vim.api.nvim_get_current_win()
+      )
     end,
   })
 
-  vim.api.nvim_create_autocmd("FileType", {
-    group = "statusline",
-    pattern = "TelescopePrompt",
+  vim.api.nvim_create_augroup("winbar", { clear = true })
+  vim.api.nvim_create_autocmd({ "BufWinEnter", "BufFilePost" }, {
+    group = "winbar",
     callback = function()
-      vim.wo.statusline =
-        string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win())
-    end,
-  })
-
-  vim.api.nvim_create_autocmd({ "WinLeave" }, {
-    group = "statusline",
-    callback = function()
-      vim.wo.statusline =
-        string.format([[%%!luaeval('require("ui.statusline").dim(%s)')]], vim.api.nvim_get_current_win())
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        local ft, bt = vim.bo[buf].filetype, vim.bo[buf].buftype
+        local is_diff = vim.wo[win].diff
+        if
+          not is_diff
+          and not vim.tbl_contains(options.get().disabled_filetypes, ft)
+          and vim.fn.win_gettype(win) == ""
+          and bt == ""
+          and ft ~= ""
+        then
+          vim.wo[win].winbar = string.format(
+            [[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]],
+            vim.api.nvim_get_current_win()
+          )
+        elseif is_diff or vim.tbl_contains(options.get().disabled_filetypes, ft) then
+          vim.wo[win].winbar = nil
+        end
+      end
     end,
   })
 end
