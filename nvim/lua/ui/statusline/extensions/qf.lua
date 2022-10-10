@@ -25,4 +25,8 @@ M.sections = {
   right = {},
 }
 
+M.filetypes = {
+  "qf"
+}
+
 return M

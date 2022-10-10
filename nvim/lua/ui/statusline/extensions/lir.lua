@@ -5,4 +5,8 @@ M.sections = {
   right = {},
 }
 
+M.filetypes = {
+  "lir",
+}
+
 return M

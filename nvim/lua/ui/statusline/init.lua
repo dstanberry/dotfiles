@@ -1,11 +1,25 @@
+local util = require "util"
 local Component = require "ui.statusline.component"
 local options = require "ui.statusline.options"
 
 local M = {}
 
+local cached_ft_map = {}
+
 local props = {}
 local left_separator
 local right_separator
+
+local load_extensions = function()
+  local extensions = vim.api.nvim_get_runtime_file("lua/ui/statusline/extensions/*.lua", true)
+  for _, file in ipairs(extensions) do
+    local mod = util.get_module_name(file)
+    local types = require(mod).filetypes or {}
+    for _, ft in ipairs(types) do
+      cached_ft_map[ft] = mod
+    end
+  end
+end
 
 local draw_section = function(kind, placement, section)
   if type(section) ~= "table" then
@@ -17,7 +31,7 @@ local draw_section = function(kind, placement, section)
       table.insert(status, right_separator)
     end
     table.insert(status, Component:new(props, component))
-    if  kind == "statusline" and placement == "left" and k >= 1 then
+    if kind == "statusline" and placement == "left" and k >= 1 then
       table.insert(status, left_separator)
     end
   end
@@ -31,6 +45,10 @@ M.generate = function(location, win_id)
   if #props > 0 then
     props = {}
   end
+  -- NOTE: winbar won't work quite right without doing this
+  if location == "winbar" then
+    win_id = vim.api.nvim_get_current_win()
+  end
   props.winid = win_id
   props.bufnr = vim.api.nvim_win_get_buf(win_id)
   props.filetype = vim.api.nvim_buf_get_option(props.bufnr, "filetype")
@@ -39,7 +57,13 @@ M.generate = function(location, win_id)
   local sections
   local left_section
   local right_section
-  local has_ext, ext = pcall(require, ("ui.statusline.extensions.%s"):format(props.filetype:lower()))
+
+  local has_ext, ext
+  local keys = vim.tbl_keys(cached_ft_map)
+  if vim.tbl_contains(keys, props.filetype) then
+    local mod = cached_ft_map[props.filetype]
+    has_ext, ext = pcall(require, mod)
+  end
 
   if location == "statusline" then
     if has_ext then
@@ -52,8 +76,10 @@ M.generate = function(location, win_id)
     return ("%s%%=%s "):format(left_section, right_section)
   elseif location == "winbar" then
     if has_ext then
-      -- TODO: add winbar configuration for some custom filetypes
-      -- sections = ext.winbar or options.get().winbar
+      if not ext.winbar then
+        return ""
+      end
+      sections = ext.winbar
     else
       sections = options.get().winbar
     end
@@ -66,6 +92,7 @@ end
 M.setup = function(config)
   config = vim.F.if_nil(config, {})
   options.set(config)
+  load_extensions()
 
   left_separator = Component:new({}, { user9 = options.get().separators.left })
   right_separator = Component:new({}, { user9 = options.get().separators.right })
@@ -82,13 +109,14 @@ M.setup = function(config)
   })
 
   vim.api.nvim_create_augroup("winbar", { clear = true })
-  vim.api.nvim_create_autocmd({ "BufWinEnter", "BufFilePost" }, {
+  vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "BufFilePost", "LspAttach" }, {
     group = "winbar",
     callback = function()
       for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
         local buf = vim.api.nvim_win_get_buf(win)
         local ft, bt = vim.bo[buf].filetype, vim.bo[buf].buftype
         local is_diff = vim.wo[win].diff
+        local keys = vim.tbl_keys(cached_ft_map)
         if
           not is_diff
           and not vim.tbl_contains(options.get().disabled_filetypes, ft)
@@ -102,6 +130,11 @@ M.setup = function(config)
           )
         elseif is_diff or vim.tbl_contains(options.get().disabled_filetypes, ft) then
           vim.wo[win].winbar = nil
+        elseif vim.tbl_contains(keys, ft) then
+          vim.wo[win].winbar = string.format(
+            [[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]],
+            vim.api.nvim_get_current_win()
+          )
         end
       end
     end,

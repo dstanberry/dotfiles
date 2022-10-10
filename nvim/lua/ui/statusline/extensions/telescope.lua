@@ -5,4 +5,8 @@ M.sections = {
   right = {},
 }
 
+M.filetypes = {
+  "TelescopePrompt",
+}
+
 return M

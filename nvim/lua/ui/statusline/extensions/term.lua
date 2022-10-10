@@ -9,4 +9,8 @@ M.sections = {
   right = {},
 }
 
+M.filetypes = {
+  "term",
+}
+
 return M

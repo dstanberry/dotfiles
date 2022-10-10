@@ -44,7 +44,7 @@ function Component:load()
         self.label = mod(opts)
       end
     elseif type(component) == "function" then
-      self.label = component()
+      self.label = component(opts)
     else
       self.label = tostring(component)
     end

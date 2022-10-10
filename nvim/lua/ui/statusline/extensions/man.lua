@@ -12,4 +12,8 @@ M.sections = {
   right = {},
 }
 
+M.filetypes = {
+  "man",
+}
+
 return M

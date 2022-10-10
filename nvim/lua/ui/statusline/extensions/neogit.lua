@@ -9,4 +9,9 @@ M.sections = {
   right = {},
 }
 
+M.filetypes = {
+  "NeogitPopup",
+  "NeogitStatus"
+}
+
 return M

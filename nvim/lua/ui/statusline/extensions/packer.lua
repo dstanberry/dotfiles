@@ -9,4 +9,8 @@ M.sections = {
   right = {},
 }
 
+M.filetypes = {
+  "packer",
+}
+
 return M
