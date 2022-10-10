@@ -50,7 +50,7 @@ local snip_defs = {
   parse = ls.parser.parse_snippet,
   n = require("luasnip.extras").nonempty,
   m = require("luasnip.extras").match,
-  conds = require "luasnip.extras.expand_conditions",
+  conds = require "luasnip.extras.conditions.expand",
   ai = require "luasnip.nodes.absolute_indexer",
   node_util = require "luasnip.nodes.util",
 }
