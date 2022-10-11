@@ -14,7 +14,10 @@ reload("ui.statusline").setup {
     "TelescopePrompt",
     "toggleterm",
   },
-  separators = { left = " ", right = " " },
+  separators = {
+    left = { hl = "user9", symbol = " " },
+    right = { hl = "user9", symbol = " " },
+  },
   sections = {
     left = {
       { modehl = icons.misc.VerticalBarBold },

@@ -94,8 +94,13 @@ M.setup = function(config)
   options.set(config)
   load_extensions()
 
-  left_separator = Component:new({}, { user9 = options.get().separators.left })
-  right_separator = Component:new({}, { user9 = options.get().separators.right })
+  local left_separator_hl = options.get().separators.left.hl
+  local left_separator_symbol = options.get().separators.left.symbol
+  left_separator = Component:new({}, { [left_separator_hl] = left_separator_symbol })
+
+  local right_separator_hl = options.get().separators.right.hl
+  local right_separator_symbol = options.get().separators.right.symbol
+  right_separator = Component:new({}, { [right_separator_hl] = right_separator_symbol })
 
   vim.api.nvim_create_augroup("statusline", { clear = true })
   vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "ModeChanged" }, {

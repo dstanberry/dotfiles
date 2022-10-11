@@ -1,6 +1,9 @@
 local defaults = {
   disabled_filetypes = {},
-  separators = { left = "", right = "" },
+  separators = {
+    left = { hl = "", symbol = "" },
+    right = { hl = "", symbol = "" },
+  },
   icons = true,
   sections = {
     left = {
