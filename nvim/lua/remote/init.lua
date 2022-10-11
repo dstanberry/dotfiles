@@ -150,7 +150,7 @@ local function plugins(use)
       "saadparwaiz1/cmp_luasnip",
     },
   }
-  use { "kylechui/nvim-surround", event = "BufRead" }
+  use { "kylechui/nvim-surround" }
   use { "numToStr/Comment.nvim" }
 
   -- interactive debugging/REPL
