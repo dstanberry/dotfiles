@@ -36,7 +36,7 @@ function M.delete_buffer(force)
   end
 end
 
-M.fold_text = function()
+function M.fold_text()
   local indent = vim.fn.indent(vim.v.foldstart - 1)
   local indent_level = vim.fn["repeat"](" ", indent)
   local line_count = string.format("%s lines", (vim.v.foldend - vim.v.foldstart + 1))
@@ -48,7 +48,7 @@ M.fold_text = function()
   return string.format("%s %s%s ", lhs, separator, rhs)
 end
 
-M.fold_expr = function(lnum)
+function M.fold_expr(lnum)
   if string.find(vim.fn.getline(lnum), "%S") == nil then
     return "-1"
   end
