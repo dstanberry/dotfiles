@@ -25,7 +25,8 @@ function M:load()
   local icon, icon_highlight
   if has_devicons then
     local fname = (self.options.name):match "^.+/(.+)$"
-    icon, icon_highlight = devicons.get_icon(fname, self.options.filetype)
+    local ext = vim.fn.fnamemodify(fname, ":e")
+    icon, icon_highlight = devicons.get_icon(fname, ext)
     if icon == nil and icon_highlight == nil then
       icon = icons.documents.File
       icon_highlight = "DevIconDefault"

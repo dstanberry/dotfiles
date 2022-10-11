@@ -101,7 +101,8 @@ end
 function M:load()
   local fname = (self.options.name):match "^.+/(.+)$"
   local path = get_relpath(self.options.winid, self.options.name, self.options.maxlen)
-  local file_sections = get_file_sections(path, fname, self.options.filetype, self.options.separator)
+  local ext = vim.fn.fnamemodify(fname, ":e")
+  local file_sections = get_file_sections(path, fname, ext, self.options.separator)
   local symbol_sections = get_lsp_symbols(self.options.separator)
 
   self.label = string.format("%s%s%s%s", file_sections, symbol_sections and "" or " ", symbol_sections, reset_hl)
