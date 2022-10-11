@@ -1,3 +1,5 @@
+local icons = require "ui.icons"
+
 local M = {}
 
 local function label()
@@ -5,13 +7,16 @@ local function label()
 end
 
 M.sections = {
-  left = { { user2 = label } },
+  left = {
+    { modehl = icons.misc.VerticalBarBold },
+    { modehl = label },
+  },
   right = {},
 }
 
 M.filetypes = {
   "NeogitPopup",
-  "NeogitStatus"
+  "NeogitStatus",
 }
 
 return M

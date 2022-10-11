@@ -1,7 +1,12 @@
+local icons = require "ui.icons"
+
 local M = {}
 
 M.sections = {
-  left = { { user8 = { "filename", relative = true } } },
+  left = {
+    { modehl = icons.misc.VerticalBarBold },
+    { user8 = { "filename", relative = true } },
+  },
   right = {},
 }
 

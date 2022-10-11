@@ -2,8 +2,6 @@ local icons = require "ui.icons"
 
 reload("ui.statusline").setup {
   disabled_filetypes = {
-    "Diffview",
-    "DiffviewFiles",
     "help",
     "lir",
     "NeogitPopup",

@@ -102,46 +102,66 @@ M.setup = function(config)
   local right_separator_symbol = options.get().separators.right.symbol
   right_separator = Component:new({}, { [right_separator_hl] = right_separator_symbol })
 
+  local set_statusline = function()
+    vim.wo.statusline = string.format(
+      [[%%!luaeval('require("ui.statusline").generate("statusline", %s)')]],
+      vim.api.nvim_get_current_win()
+    )
+  end
+
+  local set_winbar = function(diff_allowed)
+    diff_allowed = vim.F.if_nil(diff_allowed, false)
+    if type(diff_allowed) ~= "boolean" then
+      diff_allowed = false
+    end
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      local ft, bt = vim.bo[buf].filetype, vim.bo[buf].buftype
+      local is_diff = vim.wo[win].diff
+      if diff_allowed then
+        is_diff = false
+      end
+      local keys = vim.tbl_keys(cached_ft_map)
+      if
+        not is_diff
+        and not vim.tbl_contains(options.get().disabled_filetypes, ft)
+        and vim.fn.win_gettype(win) == ""
+        and bt == ""
+        and ft ~= ""
+      then
+        vim.wo[win].winbar = string.format(
+          [[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]],
+          vim.api.nvim_get_current_win()
+        )
+      elseif is_diff or vim.tbl_contains(options.get().disabled_filetypes, ft) then
+        vim.wo[win].winbar = nil
+      elseif vim.tbl_contains(keys, ft) then
+        vim.wo[win].winbar = string.format(
+          [[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]],
+          vim.api.nvim_get_current_win()
+        )
+      end
+    end
+  end
+
   vim.api.nvim_create_augroup("statusline", { clear = true })
   vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "ModeChanged" }, {
     group = "statusline",
-    callback = function()
-      vim.wo.statusline = string.format(
-        [[%%!luaeval('require("ui.statusline").generate("statusline", %s)')]],
-        vim.api.nvim_get_current_win()
-      )
-    end,
+    callback = set_statusline,
   })
 
   vim.api.nvim_create_augroup("winbar", { clear = true })
-  vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "BufFilePost", "LspAttach" }, {
+  vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "TabNew", "TabEnter" }, {
     group = "winbar",
     callback = function()
-      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-        local buf = vim.api.nvim_win_get_buf(win)
-        local ft, bt = vim.bo[buf].filetype, vim.bo[buf].buftype
-        local is_diff = vim.wo[win].diff
-        local keys = vim.tbl_keys(cached_ft_map)
-        if
-          not is_diff
-          and not vim.tbl_contains(options.get().disabled_filetypes, ft)
-          and vim.fn.win_gettype(win) == ""
-          and bt == ""
-          and ft ~= ""
-        then
-          vim.wo[win].winbar = string.format(
-            [[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]],
-            vim.api.nvim_get_current_win()
-          )
-        elseif is_diff or vim.tbl_contains(options.get().disabled_filetypes, ft) then
-          vim.wo[win].winbar = nil
-        elseif vim.tbl_contains(keys, ft) then
-          vim.wo[win].winbar = string.format(
-            [[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]],
-            vim.api.nvim_get_current_win()
-          )
-        end
-      end
+      set_winbar(false)
+    end,
+  })
+  vim.api.nvim_create_autocmd("User", {
+    group = "winbar",
+    pattern = { "DiffviewDiffBufRead", "DiffviewDiffBufWinEnter" },
+    callback = function()
+      set_winbar(true)
     end,
   })
 end

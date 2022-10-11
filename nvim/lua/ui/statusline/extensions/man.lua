@@ -1,3 +1,5 @@
+local icons = require "ui.icons"
+
 local M = {}
 
 local label = function()
@@ -6,7 +8,8 @@ end
 
 M.sections = {
   left = {
-    { user2 = label },
+    { modehl = icons.misc.VerticalBarBold },
+    { modehl = label },
     { user8 = { "filename", relative = false } },
   },
   right = {},

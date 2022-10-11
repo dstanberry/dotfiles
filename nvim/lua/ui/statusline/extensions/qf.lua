@@ -1,3 +1,5 @@
+local icons = require "ui.icons"
+
 local M = {}
 
 local is_loclist = function()
@@ -19,6 +21,7 @@ end
 
 M.sections = {
   left = {
+    { modehl = icons.misc.VerticalBarBold },
     { user2 = label },
     { user8 = title },
   },
@@ -26,7 +29,7 @@ M.sections = {
 }
 
 M.filetypes = {
-  "qf"
+  "qf",
 }
 
 return M

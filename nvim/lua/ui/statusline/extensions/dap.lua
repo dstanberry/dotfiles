@@ -34,7 +34,10 @@ local function winbar_label(options)
 end
 
 M.sections = {
-  left = { { user2 = statusline_label } },
+  left = {
+    { modehl = icons.misc.VerticalBarBold },
+    { modehl = statusline_label },
+  },
   right = {},
 }
 
