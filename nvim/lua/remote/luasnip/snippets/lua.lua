@@ -29,10 +29,11 @@ return {
       c(1, {
         sn(
           nil,
-          fmt("{}, {} in {}()", {
+          fmt("{}, {} in {}({})", {
             i(1, "k"),
             i(2, "v"),
             c(3, { t "pairs", t "ipairs" }),
+            i(4, "table"),
           })
         ),
         sn(
