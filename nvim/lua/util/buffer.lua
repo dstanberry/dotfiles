@@ -1,14 +1,16 @@
 local M = {}
 
-function M.create_scratch()
-  local ft = vim.fn.input "scratch buffer filetype: "
+function M.create_scratch(filetype)
+  if not filetype or filetype == "" then
+    filetype = vim.fn.input "scratch buffer filetype: "
+  end
   vim.cmd.new { args = { "[Scratch]" }, range = { 20 } }
   vim.bo.bufhidden = "wipe"
   vim.bo.buflisted = false
   vim.bo.buftype = "nofile"
   vim.bo.swapfile = false
-  if ft then
-    vim.bo.filetype = ft
+  if filetype then
+    vim.bo.filetype = filetype
   end
 end
 
