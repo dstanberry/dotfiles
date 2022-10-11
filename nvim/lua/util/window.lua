@@ -2,6 +2,8 @@ local M = {}
 
 M.separator = "─"
 
+---@param lines integer
+---@return integer width
 M.calculate_width = function(lines)
   local max_width = math.ceil(vim.o.columns * 0.8)
   local max_length = 0
@@ -13,6 +15,9 @@ M.calculate_width = function(lines)
   return max_length <= max_width and max_length or max_width
 end
 
+---Create a floating window containing a list of options to choose from
+---@param opts table
+---@return integer bufnr, integer winid
 M.popup_window = function(opts)
   local lines, syntax = opts.lines or {}, opts.syntax
   opts.border = opts.border or "rounded"

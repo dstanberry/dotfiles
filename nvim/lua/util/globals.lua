@@ -1,39 +1,56 @@
-_G.dump = function(...)
+---Prints a human-readable representation of the object(s) provided
+---@param ...? any
+---@return string[] result
+function _G.dump(...)
   local objects = {}
   for i = 1, select("#", ...) do
     local v = select(i, ...)
     table.insert(objects, vim.inspect(v))
   end
 
----@diagnostic disable-next-line: discard-returns
+  ---@diagnostic disable-next-line: discard-returns
   print(table.concat(objects, "\n"))
   return ...
 end
 
-_G.dump_text = function(...)
+---Prints a human-readable representation of the object(s) provided and places the result in the current buffer
+---@param ...? any
+---@return string[] result
+function _G.dump_text(...)
   local objects = {}
   for i = 1, select("#", ...) do
     local v = select(i, ...)
     table.insert(objects, vim.inspect(v))
   end
 
-  local lines = vim.split(table.concat(objects, "\n"), "\n")
-  local lnum = vim.api.nvim_win_get_cursor(0)[1]
-  vim.fn.append(lnum, lines)
+  vim.schedule(function()
+    local lines = vim.split(table.concat(objects, "\n"), "\n")
+    local lnum = vim.api.nvim_win_get_cursor(0)[1]
+    vim.fn.append(lnum, lines)
+  end)
   return ...
 end
 
-_G.has = function(feature)
+---Wrapper for Vim's `|has|`feature detection function
+---@param feature string
+---@return boolean
+function _G.has(feature)
   return vim.fn.has(feature) > 0
 end
 
-_G.pad = function(s, direction)
+---Adds whitespace to the start, end or both start and end of a string
+---@param s string
+---@param direction string
+---@return string result
+function _G.pad(s, direction)
   local left = (direction == "left" or direction == "both") and " " or ""
   local right = (direction == "right" or direction == "both") and " " or ""
   return string.format("%s%s%s", left, s, right)
 end
 
-_G.profile = function(cmd, times)
+---Perform a benchmark of a given command
+---@param cmd string|function
+function _G.profile(cmd, times)
   times = times or 100
   local args = {}
   if type(cmd) == "string" then
@@ -48,13 +65,19 @@ _G.profile = function(cmd, times)
     end
   end
 
----@diagnostic disable-next-line: discard-returns
+  ---@diagnostic disable-next-line: discard-returns
   print(((vim.loop.hrtime() - start) / 1000000 / times) .. "ms")
 end
 
-_G.reload = require("util").reload
-
-_G.setting_enabled = function(setting)
+---Unloads the provided module from memory and re-requires it
+---@param modname string
+function _G.reload(modname)
+  return require("util").reload(modname)
+end
+---Provides a machine-local way of disabling various custom configuration options/settings
+---@param setting string
+---@return boolean enabled
+function _G.setting_enabled(setting)
   local var = "config_" .. setting
   if vim.g[var] == nil then
     return true

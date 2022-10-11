@@ -1,5 +1,7 @@
 local M = {}
 
+---Creates a sandboxed buffer that cannot be saved but has highlighting enabled for the filetype
+---@param filetype string
 function M.create_scratch(filetype)
   if not filetype or filetype == "" then
     filetype = vim.fn.input "scratch buffer filetype: "
@@ -14,6 +16,8 @@ function M.create_scratch(filetype)
   end
 end
 
+---Unloads a buffer and if the buffer was in a split, the split is preserved.
+---@param force boolean
 function M.delete_buffer(force)
   local buflisted = vim.fn.getbufinfo { buflisted = 1 }
   if #buflisted < 2 then
@@ -38,6 +42,8 @@ function M.delete_buffer(force)
   end
 end
 
+---Customizes the appearance of folded text in a buffer
+---@return string
 function M.fold_text()
   local indent = vim.fn.indent(vim.v.foldstart - 1)
   local indent_level = vim.fn["repeat"](" ", indent)
@@ -50,6 +56,9 @@ function M.fold_text()
   return string.format("%s %s%s ", lhs, separator, rhs)
 end
 
+---Defines the conditions that determine how the text at the current cursor position might be folded
+---@param lnum integer
+---@return integer|string fold-level
 function M.fold_expr(lnum)
   if string.find(vim.fn.getline(lnum), "%S") == nil then
     return "-1"
@@ -76,7 +85,7 @@ function M.fold_expr(lnum)
   return ">" .. next
 end
 
-function M.get_marked_region(mark1, mark2, options)
+local get_marked_region = function(mark1, mark2, options)
   local bufnr = 0
   local adjust = options.adjust or function(pos1, pos2)
     return pos1, pos2
@@ -95,6 +104,8 @@ function M.get_marked_region(mark1, mark2, options)
   return region, start, finish
 end
 
+---Captures the currently selected region of text
+---@return string?
 function M.get_visual_selection()
   local bufnr = 0
   local visual_modes = {
@@ -119,7 +130,7 @@ function M.get_visual_selection()
       return pos1, pos2
     end
   end
-  local region, start, finish = M.get_marked_region("v", ".", options)
+  local region, start, finish = get_marked_region("v", ".", options)
   if region ~= nil and start ~= nil and finish ~= nil then
     local lines = vim.api.nvim_buf_get_lines(bufnr, start[1], finish[1] + 1, false)
     local line1_end
@@ -134,15 +145,6 @@ function M.get_visual_selection()
     end
     return table.concat(lines)
   end
-end
-
-function M.get_syntax_hl_group()
-  local win_id = vim.api.nvim_get_current_win()
-  local cursor = vim.api.nvim_win_get_cursor(win_id)
-  local stack = vim.fn.synstack(cursor[1], cursor[2])
-  dump(vim.tbl_map(function(entry)
-    return vim.fn.synIDattr(entry, "name")
-  end, stack))
 end
 
 return M

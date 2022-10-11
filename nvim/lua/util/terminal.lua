@@ -10,7 +10,8 @@ local launch_term = function(task, opts)
   vim.cmd.startinsert()
 end
 
-M.transform_win_cmd = function(install_cmd)
+-- HACK: concatenate multiple commands
+local transform_win_cmd = function(install_cmd)
   local win_cmd = ""
   for cmd in install_cmd:gmatch "([^\n]*)\n?" do
     cmd = cmd:gsub("^%s*", "")
@@ -25,7 +26,14 @@ M.transform_win_cmd = function(install_cmd)
   return win_cmd
 end
 
-M.install_package = function(name, basedir, path, script, force)
+---Spawns a terminal instance in a new split and executes the provided script.
+---The instance is removed when the script ends.
+---@param name string
+---@param basedir string
+---@param path string
+---@param script string
+---@param force boolean
+function M.install_package(name, basedir, path, script, force)
   if force then
     vim.fn.delete(basedir, "rf")
   end
@@ -33,7 +41,7 @@ M.install_package = function(name, basedir, path, script, force)
     print("Installing " .. name)
     vim.fn.mkdir(basedir, "p")
     if has "win32" then
-      script = M.transform_win_cmd(script)
+      script = transform_win_cmd(script)
     end
     launch_term(script, {
       cwd = path,
