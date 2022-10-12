@@ -52,6 +52,11 @@ vim.keymap.set("n", "<c-w><c-r>", function()
   return ([[:%%s/\<%s\>/]]):format(vim.fn.expand "<cword>")
 end, { silent = false, expr = true })
 
+-- change the word under the cursor to it's semantic opposite
+vim.keymap.set("n", "<c-w><c-t>", function()
+  vim.cmd { cmd = "ToggleWord" }
+end, { silent = false })
+
 -- switch to left window
 vim.keymap.set("n", "<c-h>", "<c-w><c-h>")
 -- switch to bottom window

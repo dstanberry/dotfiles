@@ -48,3 +48,21 @@ vim.api.nvim_create_user_command("Glow", function()
   path = vim.fn.fnamemodify(path, ":p")
   vim.fn.termopen(string.format("glow %s", vim.fn.shellescape(path)))
 end, {})
+
+vim.api.nvim_create_user_command("ToggleWord", function()
+  local lut = {
+    ["true"] = "false",
+    ["True"] = "False",
+    ["TRUE"] = "FALSE",
+    ["Yes"] = "No",
+    ["YES"] = "NO",
+  }
+  vim.tbl_add_reverse_lookup(lut)
+  local word = vim.fn.expand "<cword>"
+  vim.schedule(function()
+    local keys = vim.tbl_keys(lut)
+    if vim.tbl_contains(keys, word) then
+      vim.cmd.normal { args = { ("ciw%s"):format(lut[word]) } }
+    end
+  end)
+end, {})
