@@ -70,6 +70,23 @@ function M.load_settings()
   end
 end
 
+---Creates a new table populated with the results of calling a provided function
+--on every key-value pair in the calling table.
+---@param callback function
+---@param list table
+---@param newList table
+---@return table accum #A new table with each key-value pair being the result of the callback function
+function M.map(callback, list, newList)
+  newList = newList or {}
+  for k, v in pairs(list) do
+    newList = callback(newList, v, k)
+    if newList == nil then
+      error("newList must be returned on each iteration and cannot be null")
+    end
+  end
+  return newList
+end
+
 ---Unloads the provided module from memory and re-requires it
 ---@param modname string
 function M.reload(modname)

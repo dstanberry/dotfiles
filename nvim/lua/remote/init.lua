@@ -102,6 +102,7 @@ local function plugins(use)
   use { "SmiteshP/nvim-navic", requires = "neovim/nvim-lspconfig" }
 
   -- file/path navigation
+  use { "akinsho/bufferline.nvim", requires = { "tiagovla/scope.nvim" } }
   use {
     "tamago324/lir.nvim",
     requires = { "kyazdani42/nvim-web-devicons", "tamago324/lir-git-status.nvim", "tamago324/lir-mmv.nvim" },
