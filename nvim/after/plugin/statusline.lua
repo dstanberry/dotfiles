@@ -25,6 +25,7 @@ reload("ui.statusline").setup {
     },
     right = {
       { user7 = { "cursor", padding = { left = 0, right = 1 } } },
+      { user7 = { "indent", padding = { left = 1, right = 1 } } },
       { user7 = { "encoding", padding = { left = 1, right = 1 } } },
       { user7 = "fileformat" },
       { user7 = { "filetype", text_only = true } },
