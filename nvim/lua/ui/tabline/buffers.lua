@@ -1,10 +1,13 @@
 local Buftab = require "ui.tabline.buftab"
+local util = require "util.buffer"
+
+local M = {}
 
 local should_handle = function(bufnr)
   return vim.api.nvim_buf_get_option(bufnr, "buflisted") and vim.api.nvim_buf_get_name(bufnr) ~= ""
 end
 
-local getbufinfo = function()
+M.getbufinfo = function()
   local current_bufnr = vim.api.nvim_get_current_buf()
   local processed = {}
   for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
@@ -24,13 +27,9 @@ local getbufinfo = function()
   return processed
 end
 
-local M = {}
-
-M.getbufinfo = getbufinfo
-
 M.get_numbers = function()
   local numbers = {}
-  for _, buf in ipairs(getbufinfo()) do
+  for _, buf in ipairs(M.getbufinfo()) do
     table.insert(numbers, buf.bufnr)
   end
   return numbers
@@ -38,7 +37,7 @@ end
 
 M.get_current_index = function()
   local current = vim.api.nvim_get_current_buf()
-  for i, buf in ipairs(getbufinfo()) do
+  for i, buf in ipairs(M.getbufinfo()) do
     if buf.bufnr == current then
       return i
     end
@@ -46,7 +45,7 @@ M.get_current_index = function()
 end
 
 M.make_buftabs = function()
-  local bufinfo = getbufinfo()
+  local bufinfo = M.getbufinfo()
   local buftabs = {}
   for i, buf in ipairs(bufinfo) do
     table.insert(buftabs, Buftab:new(buf, i, i == #bufinfo))
