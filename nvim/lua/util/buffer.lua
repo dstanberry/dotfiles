@@ -147,4 +147,61 @@ function M.get_visual_selection()
   end
 end
 
+---@class ListBufsSpec
+---@field loaded boolean Filter out buffers that aren't loaded.
+---@field listed boolean Filter out buffers that aren't listed.
+---@field no_hidden boolean Filter out buffers that are hidden.
+---@field tabpage integer Filter out buffers that are not displayed in a given tabpage.
+---@field pattern string Filter out buffers whose name does not match a given lua pattern.
+---@field options table<string, any> Filter out buffers that don't match a given map of options.
+---@field vars table<string, any> Filter out buffers that don't match a given map of variables.
+
+---@param opt? ListBufsSpec
+---@return integer[] #Buffer numbers of matched buffers.
+function M.list_buffers(opt)
+  opt = opt or {}
+  local bufs
+  if opt.no_hidden or opt.tabpage then
+    local wins = opt.tabpage and vim.api.nvim_tabpage_list_wins(opt.tabpage) or vim.api.nvim_list_wins()
+    local bufnr
+    local seen = {}
+    bufs = {}
+    for _, winid in ipairs(wins) do
+      bufnr = vim.api.nvim_win_get_buf(winid)
+      if not seen[bufnr] then
+        bufs[#bufs+1] = bufnr
+      end
+      seen[bufnr] = true
+    end
+  else
+    bufs = vim.api.nvim_list_bufs()
+  end
+  return vim.tbl_filter(function(v)
+    if opt.loaded and not vim.api.nvim_buf_is_loaded(v) then
+      return false
+    end
+    if opt.listed and not vim.bo[v].buflisted then
+      return false
+    end
+    if opt.pattern and not vim.fn.bufname(v):match(opt.pattern) then
+      return false
+    end
+    if opt.options then
+      for name, value in pairs(opt.options) do
+        if vim.bo[v][name] ~= value then
+          return false
+        end
+      end
+    end
+    if opt.vars then
+      for name, value in pairs(opt.vars) do
+        if vim.b[v][name] ~= value then
+          return false
+        end
+      end
+    end
+    return true
+  end, bufs)
+end
+
 return M
