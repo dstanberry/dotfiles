@@ -86,6 +86,10 @@ local function plugins(use)
       "MunifTanjim/nui.nvim",
       "rcarriga/nvim-notify",
     },
+    config = function()
+      local file = vim.api.nvim_get_runtime_file("after/plugin/noice.lua", true)
+      vim.cmd.luafile { args = { file } }
+    end,
   }
   use { "folke/todo-comments.nvim", requires = "nvim-lua/plenary.nvim" }
   use {
