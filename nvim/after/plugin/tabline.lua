@@ -83,7 +83,7 @@ bufferline.setup {
     show_tab_indicators = true,
     separator_style = { "", "" },
     always_show_bufferline = true,
-    sort_by = "relative_directory",
+    sort_by = "insert_after_current",
     groups = {
       items = {
         {
