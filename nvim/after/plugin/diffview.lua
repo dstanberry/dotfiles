@@ -4,6 +4,13 @@ if not ok then
   return
 end
 
+local lazy = require "diffview.lazy"
+local lib = lazy.require "diffview.lib"
+local Diff2Hor = lazy.access("diffview.scene.layouts.diff_2_hor", "Diff2Hor")
+local Diff2Ver = lazy.access("diffview.scene.layouts.diff_2_ver", "Diff2Ver")
+local Diff3 = lazy.access("diffview.scene.layouts.diff_3", "Diff3")
+local Diff4 = lazy.access("diffview.scene.layouts.diff_4", "Diff4")
+
 local icons = require "ui.icons"
 
 diffview.setup {
@@ -21,7 +28,7 @@ diffview.setup {
   view = {
     default = { layout = "diff2_horizontal" },
     file_history = { layout = "diff2_horizontal" },
-    merge_tool = { layout = "diff3_horizontal" },
+    merge_tool = { layout = "diff3_mixed" },
   },
   file_panel = {
     listing_style = "tree",
@@ -36,7 +43,7 @@ diffview.setup {
     win_config = {
       position = "bottom",
       width = 35,
-      height = 16,
+      height = 20,
       win_opts = { winhighlight = "Normal:NormalSB" },
     },
     log_options = {
@@ -57,6 +64,43 @@ diffview.setup {
         reverse = false,
       },
     },
+  },
+  hooks = {
+    diff_buf_read = function(bufnr, _)
+      local view = lib.get_current_view()
+      local file = view.cur_entry
+      local target = ""
+      if file then
+        local layout = file.layout
+        if layout:instanceof(Diff2Hor.__get()) or layout:instanceof(Diff2Ver.__get()) then
+          if bufnr == layout.a.file.bufnr then
+            target = "OLD STATE"
+          elseif bufnr == layout.b.file.bufnr then
+            target = "NEW STATE"
+          end
+        elseif layout:instanceof(Diff3.__get()) then
+          if bufnr == layout.a.file.bufnr then
+            target = "OURS (current branch)"
+          elseif bufnr == layout.b.file.bufnr then
+            target = "LOCAL (file on disk)"
+          elseif bufnr == layout.c.file.bufnr then
+            target = "THEIRS (incoming branch)"
+          end
+        elseif layout:instanceof(Diff4.__get()) then
+          if bufnr == layout.a.file.bufnr then
+            target = "OURS (current branch)"
+          elseif bufnr == layout.b.file.bufnr then
+            target = "LOCAL (file on disk)"
+          elseif bufnr == layout.c.file.bufnr then
+            target = "THEIRS (incoming branch)"
+          elseif bufnr == layout.d.file.bufnr then
+            target = "BASE (common ancestor)"
+          end
+        end
+        vim.api.nvim_buf_set_var(bufnr, "bufid", "diffview")
+        vim.api.nvim_buf_set_var(bufnr, "diffview_label", target)
+      end
+    end,
   },
 }
 

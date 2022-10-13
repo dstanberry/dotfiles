@@ -109,17 +109,19 @@ M.setup = function(config)
     )
   end
 
-  local set_winbar = function(diff_allowed)
-    diff_allowed = vim.F.if_nil(diff_allowed, false)
-    if type(diff_allowed) ~= "boolean" then
-      diff_allowed = false
-    end
+  vim.api.nvim_create_augroup("statusline", { clear = true })
+  vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "ModeChanged" }, {
+    group = "statusline",
+    callback = set_statusline,
+  })
+
+  local set_winbar = function(is_diff)
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
       local buf = vim.api.nvim_win_get_buf(win)
       local ft, bt = vim.bo[buf].filetype, vim.bo[buf].buftype
-      local is_diff = vim.wo[win].diff
-      if diff_allowed then
-        is_diff = false
+      local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
+      if not is_diff then
+        is_diff = vim.wo[win].diff
       end
       local keys = vim.tbl_keys(cached_ft_map)
       if
@@ -133,9 +135,9 @@ M.setup = function(config)
           [[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]],
           vim.api.nvim_get_current_win()
         )
-      elseif is_diff or vim.tbl_contains(options.get().disabled_filetypes, ft) then
+      elseif (vim.wo[win].winbar == nil and is_diff) or vim.tbl_contains(options.get().disabled_filetypes, ft) then
         vim.wo[win].winbar = nil
-      elseif vim.tbl_contains(keys, ft) then
+      elseif vim.tbl_contains(keys, ft) or vim.tbl_contains(keys, bufid) then
         vim.wo[win].winbar = string.format(
           [[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]],
           vim.api.nvim_get_current_win()
@@ -143,12 +145,6 @@ M.setup = function(config)
       end
     end
   end
-
-  vim.api.nvim_create_augroup("statusline", { clear = true })
-  vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "ModeChanged" }, {
-    group = "statusline",
-    callback = set_statusline,
-  })
 
   vim.api.nvim_create_augroup("winbar", { clear = true })
   vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "TabNew", "TabEnter" }, {

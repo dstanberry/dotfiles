@@ -20,6 +20,7 @@ M.sections = {
 }
 
 M.filetypes = {
+  "diffview",
   "DiffviewFiles",
 }
 

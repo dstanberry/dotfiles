@@ -2,6 +2,7 @@ local icons = require "ui.icons"
 
 reload("ui.statusline").setup {
   disabled_filetypes = {
+    "DiffviewFiles",
     "help",
     "lir",
     "NeogitPopup",
@@ -33,7 +34,7 @@ reload("ui.statusline").setup {
   },
   winbar = {
     left = {
-      { "navic" },
+      { "breadcrumbs" },
     },
   },
 }
