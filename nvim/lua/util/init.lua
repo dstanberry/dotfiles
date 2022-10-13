@@ -72,10 +72,11 @@ end
 
 ---Creates a new table populated with the results of calling a provided function
 --on every key-value pair in the calling table.
----@param callback function
----@param list table
----@param newList table
----@return table accum #A new table with each key-value pair being the result of the callback function
+---@generic T : table
+---@param callback fun(T, T, key: string | number): T
+---@param list T[]
+---@param newList T?
+---@return T #A new table with each key-value pair being the result of the callback function
 function M.map(callback, list, newList)
   newList = newList or {}
   for k, v in pairs(list) do
