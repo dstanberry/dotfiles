@@ -65,12 +65,12 @@ signs.setup {
       end)
       return "<Ignore>"
     end, { expr = true })
-    map("n", "<leader>hs", signs.stage_hunk)
-    map("n", "<leader>hu", signs.undo_stage_hunk)
-    map("n", "<leader>hr", signs.reset_hunk)
-    map("n", "<leader>hp", signs.preview_hunk)
-    map("n", "<leader>hb", signs.toggle_current_line_blame)
-    map("n", "<leader>hB", function()
+    map("n", "<leader>gs", signs.stage_hunk)
+    map("n", "<leader>gu", signs.undo_stage_hunk)
+    map("n", "<leader>gr", signs.reset_hunk)
+    map("n", "<leader>gp", signs.preview_hunk)
+    map("n", "<leader>gb", signs.toggle_current_line_blame)
+    map("n", "<leader>gB", function()
       signs.blame_line { full = true }
     end)
   end,

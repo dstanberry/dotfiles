@@ -25,11 +25,11 @@ neogit.setup {
   },
 }
 
-vim.keymap.set("n", "<leader>gs", function()
+vim.keymap.set("n", "<localleader>gs", function()
   neogit.open { kind = "split" }
 end)
 
-vim.keymap.set("n", "<leader>gc", function()
+vim.keymap.set("n", "<localleader>gc", function()
   neogit.open { "commit" }
 end)
 

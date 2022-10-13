@@ -47,6 +47,11 @@ vim.keymap.set("n", "<c-w><c-f>", function()
   return ("/%s<cr>"):format(vim.fn.expand "<cword>")
 end, { silent = false, expr = true })
 
+-- shift current line down
+vim.keymap.set("n", "<c-w><c-j>", ":m .+1<cr>==")
+-- shift current line up
+vim.keymap.set("n", "<c-w><c-k>", ":m .-2<cr>==")
+
 -- begin substitution in buffer for word under cursor
 vim.keymap.set("n", "<c-w><c-r>", function()
   return ([[:%%s/\<%s\>/]]):format(vim.fn.expand "<cword>")
@@ -75,8 +80,23 @@ vim.keymap.set("n", "<a-k>", "<c-w>+")
 -- decrease active split vertical size
 vim.keymap.set("n", "<a-j>", "<c-w>-")
 
+-- (try to) make all windows the same size
+vim.keymap.set("n", "==", "<c-w>=")
+
 -- allow semi-colon to enter command mode
 vim.keymap.set("n", ";", ":", { silent = false })
+
+-- change text and preserve clipboard state
+vim.keymap.set("n", "c", '"_c', { silent = false })
+vim.keymap.set("n", "C", '"_C', { silent = false })
+
+-- trim trailing whitespace
+vim.keymap.set("n", "FF", function()
+  for ln, str in ipairs(vim.fn.getline(1, "$")) do
+    local sub = str:match "(.*%S)" or str
+    vim.fn.setline(ln, sub)
+  end
+end, { silent = false })
 
 -- move to the beginning of the current line
 vim.keymap.set("n", "H", "^")
@@ -105,26 +125,48 @@ vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "Y", "y$")
 
 ---------------------------------------------------------------
--- => Normal | Leader
+-- => Normal | Exotic Prefixes
 ---------------------------------------------------------------
--- (try to) make all windows the same size
-vim.keymap.set("n", "<leader>=", "<c-w>=")
-
--- change text and preserve clipboard state
-vim.keymap.set("n", "<leader>c", '"_c', { silent = false })
-vim.keymap.set("n", "<leader>C", '"_C', { silent = false })
-
 -- delete text and preserve clipboard state
-vim.keymap.set("n", "<leader>d", '"_d', { silent = false })
-vim.keymap.set("n", "<leader>D", '"_D', { silent = false })
+vim.keymap.set("n", "<bs>d", '"_d', { silent = false })
+vim.keymap.set("n", "<bs>D", '"_D', { silent = false })
 
--- shift current line down
-vim.keymap.set("n", "<leader>j", ":m .+1<cr>==")
--- shift current line up
-vim.keymap.set("n", "<leader>k", ":m .-2<cr>==")
+-- paste text and preserve clipboard state
+vim.keymap.set("n", "<bs>p", '"_p', { silent = false })
+vim.keymap.set("n", "<bs>P", '"_P', { silent = false })
+
+-- discard all file modifications to current window
+vim.keymap.set("n", "<bs>q", function()
+  vim.cmd.quit { bang = true }
+end)
+
+-- discard all file modifications and close instance
+vim.keymap.set("n", "<bs>Q", function()
+  vim.cmd.quitall { bang = true }
+end)
+
+-- close the current buffer
+vim.keymap.set("n", "<bs>z", function()
+  util.buffer.delete_buffer(false)
+end, { silent = false })
+
+-- discard changes to current buffer and close it
+vim.keymap.set("n", "<bs>Z", function()
+  util.buffer.delete_buffer(true)
+end, { silent = false })
+
+-- prepare to run most recent ex-command
+vim.keymap.set("n", "'c", ":<up>", { silent = false })
+
+-- create/edit file within the current directory
+vim.keymap.set("n", "'e", function()
+  local path = vim.fn.expand "%:p:h"
+  local separator = has "win32" and [[\]] or "/"
+  return (":edit %s%s"):format(path, separator)
+end, { silent = false, expr = true, replace_keycodes = true })
 
 -- prepare to call |reload()| on the current lua file
-vim.keymap.set("n", "<leader>r", function()
+vim.keymap.set("n", "'r", function()
   local ft = vim.bo.filetype
   if ft == "lua" then
     local file = (vim.fn.expand "%:p")
@@ -137,45 +179,8 @@ vim.keymap.set("n", "<leader>r", function()
   end
 end, { silent = false, expr = true, replace_keycodes = true })
 
--- save current buffer to disk and execute the file
-vim.keymap.set("n", "<leader>x", function()
-  local ft = vim.bo.filetype
-  print(vim.cmd.write())
-  if ft == "vim" then
-    print(vim.cmd.source "%")
-  elseif ft == "lua" then
-    print(vim.cmd.luafile "%")
-  end
-end, { silent = false })
-
--- close the current buffer
-vim.keymap.set("n", "<leader>z", function()
-  util.buffer.delete_buffer(false)
-end, { silent = false })
-
----------------------------------------------------------------
--- => Normal | Local Leader
----------------------------------------------------------------
--- prepare to run most recent ex-command
-vim.keymap.set("n", "<localleader>c", ":<up>", { silent = false })
-
--- create/edit file within the current directory
-vim.keymap.set("n", "<localleader>e", function()
-  local path = vim.fn.expand "%:p:h"
-  local separator = has "win32" and [[\]] or "/"
-  return (":edit %s%s"):format(path, separator)
-end, { silent = false, expr = true, replace_keycodes = true })
-
--- trim trailing whitespace
-vim.keymap.set("n", "<localleader>ff", function()
-  for ln, str in ipairs(vim.fn.getline(1, "$")) do
-    local sub = str:match "(.*%S)" or str
-    vim.fn.setline(ln, sub)
-  end
-end, { silent = false })
-
 -- save as new file within the current directory (with the option to delete the original)
-vim.keymap.set("n", "<localleader>s", function()
+vim.keymap.set("n", "'s", function()
   local file = vim.fn.expand "%"
   local path = vim.fn.expand "%:p:h"
   local sep = has "win32" and [[\]] or "/"
@@ -190,29 +195,15 @@ vim.keymap.set("n", "<localleader>s", function()
   end
 end, { silent = false })
 
--- discard all file modifications to current window
-vim.keymap.set("n", "<localleader>q", function()
-  vim.cmd.quit { bang = true }
-end)
-
--- discard all file modifications and close instance
-vim.keymap.set("n", "<localleader>Q", function()
-  vim.cmd.quitall { bang = true }
-end)
-
--- execute current line
-vim.keymap.set("n", "<localleader>x", function()
+-- save current buffer to disk and execute the file
+vim.keymap.set("n", "'x", function()
   local ft = vim.bo.filetype
+  print(vim.cmd.write())
   if ft == "vim" then
-    print(vim.cmd.execute(vim.fn.getline "."))
+    print(vim.cmd.source "%")
   elseif ft == "lua" then
-    print(vim.cmd.lua(vim.fn.getline "."))
+    print(vim.cmd.luafile "%")
   end
-end, { silent = false })
-
--- discard changes to current buffer and close it
-vim.keymap.set("n", "<localleader>z", function()
-  util.buffer.delete_buffer(true)
 end, { silent = false })
 
 ---------------------------------------------------------------
@@ -257,26 +248,6 @@ vim.keymap.set("v", "<c-j>", "<c-w>j")
 vim.keymap.set("v", "<c-k>", "<c-w>k")
 vim.keymap.set("v", "<c-l>", "<c-w>l")
 
--- maintain selection after indentation
-vim.keymap.set("v", "<", "<gv")
-vim.keymap.set("v", ">", ">gv")
-
--- allow semi-colon to enter command mode
-vim.keymap.set("v", ";", ":", { silent = false })
-
--- move selection to the beginning of the current line
-vim.keymap.set("v", "H", "^")
--- move selection to the end of the current line
-vim.keymap.set("v", "L", "g_")
-
--- shift selected text down
-vim.keymap.set("x", "<c-down>", ":move '>+<cr>gv=gv")
--- shift selected text up
-vim.keymap.set("x", "<c-up>", ":move -2<cr>gv=gv")
-
----------------------------------------------------------------
--- => Visual | Leader
----------------------------------------------------------------
 -- begin substitution in buffer for visual selection
 vim.keymap.set("v", "<c-w><c-r>", function()
   local selection = util.buffer.get_visual_selection()
@@ -284,7 +255,7 @@ vim.keymap.set("v", "<c-w><c-r>", function()
 end, { silent = false, expr = true, replace_keycodes = true })
 
 -- execute selected text (for vim/lua files)
-vim.keymap.set("v", "<leader>x", function()
+vim.keymap.set("v", "<c-w><c-x>", function()
   local function eval_chunk(str, ...)
     local chunk = loadstring(str, "@[evalrangeX]")
     local c = coroutine.create(chunk)
@@ -306,6 +277,23 @@ vim.keymap.set("v", "<leader>x", function()
   end
   print(out)
 end, { silent = true })
+
+-- maintain selection after indentation
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")
+
+-- allow semi-colon to enter command mode
+vim.keymap.set("v", ";", ":", { silent = false })
+
+-- move selection to the beginning of the current line
+vim.keymap.set("v", "H", "^")
+-- move selection to the end of the current line
+vim.keymap.set("v", "L", "g_")
+
+-- shift selected text down
+vim.keymap.set("x", "<c-down>", ":move '>+<cr>gv=gv")
+-- shift selected text up
+vim.keymap.set("x", "<c-up>", ":move -2<cr>gv=gv")
 
 ---------------------------------------------------------------
 -- => Command
@@ -375,9 +363,3 @@ vim.keymap.set("t", "<c-j>", [[<c-\><c-n><c-w>j]])
 vim.keymap.set("t", "<c-k>", [[<c-\><c-n><c-w>k]])
 -- switch to rigtt window
 vim.keymap.set("t", "<c-l>", [[<c-\><c-n><c-w>l]])
-
----------------------------------------------------------------
--- => Terminal | Leader
----------------------------------------------------------------
--- leave terminal mode
-vim.keymap.set("t", "<leader><esc>", [[<c-\><c-n>]])

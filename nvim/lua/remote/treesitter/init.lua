@@ -36,9 +36,9 @@ require("nvim-treesitter.configs").setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "<leader>gn",
+      init_selection = "=",
       node_incremental = "gn",
-      scope_incremental = "ga",
+      scope_incremental = "<c-a>",
       node_decremental = "gp",
     },
   },
@@ -98,13 +98,13 @@ require("nvim-treesitter.configs").setup {
     },
     navigation = {
       enable = false,
-      keymaps = {
-        goto_definition = "<leader>gd",
-        list_definitions = "<leader>gl",
-        list_definitions_toc = "<leader>gO",
-        goto_next_usage = "<leader>gr",
-        goto_previous_usage = "<leader>gR",
-      },
+      -- keymaps = {
+      --   goto_definition = "",
+      --   list_definitions = "",
+      --   list_definitions_toc = "",
+      --   goto_next_usage = "",
+      --   goto_previous_usage = "",
+      -- },
     },
   },
   textobjects = {
