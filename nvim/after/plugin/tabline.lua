@@ -70,9 +70,8 @@ bufferline.setup {
     offsets = {
       {
         filetype = "DiffviewFiles",
-        text = "DIFF VIEW",
+        text = "Source Control",
         text_align = "center",
-        highlight = "Title",
         separator = true,
       },
     },

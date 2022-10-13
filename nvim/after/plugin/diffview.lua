@@ -31,7 +31,7 @@ diffview.setup {
     merge_tool = { layout = "diff3_mixed" },
   },
   file_panel = {
-    listing_style = "tree",
+    listing_style = "list",
     win_config = {
       position = "left",
       width = 35,
