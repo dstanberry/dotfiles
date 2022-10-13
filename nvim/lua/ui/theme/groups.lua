@@ -1,5 +1,3 @@
-local color = require "util.color"
-
 local M = {}
 
 local hi = setmetatable({}, {
@@ -301,7 +299,7 @@ M.apply = function(c)
   hi.TabLineSel = { fg = c.fg, bg = c.bg_dark, bold = true }
 
   -- winbar highlighting
-  hi.Winbar = { fg = c.gray_light, bg = c.bg }
+  hi.Winbar = { fg = c.gray_lighter, bg = c.bg }
   hi.WinbarIcon = { fg = c.blue_dark, bg = c.bg }
   hi.WinbarNC = { bg = c.bg }
 
