@@ -74,33 +74,39 @@ diffview.setup {
         local layout = file.layout
         if layout:instanceof(Diff2Hor.__get()) or layout:instanceof(Diff2Ver.__get()) then
           if bufnr == layout.a.file.bufnr then
-            target = "OLD STATE"
+            target = "PREVIOUS"
           elseif bufnr == layout.b.file.bufnr then
-            target = "NEW STATE"
+            target = "CURRENT"
           end
         elseif layout:instanceof(Diff3.__get()) then
           if bufnr == layout.a.file.bufnr then
-            target = "OURS (current branch)"
+            target = "CURRENT"
           elseif bufnr == layout.b.file.bufnr then
-            target = "LOCAL (file on disk)"
+            target = "RESULT"
           elseif bufnr == layout.c.file.bufnr then
-            target = "THEIRS (incoming branch)"
+            target = "INCOMING"
           end
         elseif layout:instanceof(Diff4.__get()) then
           if bufnr == layout.a.file.bufnr then
-            target = "OURS (current branch)"
+            target = "CURRENT"
           elseif bufnr == layout.b.file.bufnr then
-            target = "LOCAL (file on disk)"
+            target = "RESULT"
           elseif bufnr == layout.c.file.bufnr then
-            target = "THEIRS (incoming branch)"
+            target = "INCOMING"
           elseif bufnr == layout.d.file.bufnr then
-            target = "BASE (common ancestor)"
+            target = "COMMON ANCESTOR"
           end
         end
         vim.api.nvim_buf_set_var(bufnr, "bufid", "diffview")
         vim.api.nvim_buf_set_var(bufnr, "diffview_label", target)
       end
     end,
+  },
+  keymaps = {
+    view = { q = diffview.close },
+    file_panel = { q = diffview.close },
+    file_history_panel = { q = diffview.close },
+    option_panel = { q = diffview.close },
   },
 }
 

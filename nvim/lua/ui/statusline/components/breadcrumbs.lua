@@ -93,11 +93,8 @@ local get_lsp_symbols = function(sep)
   return table.concat(segments, sep)
 end
 
-local get_diff_section = function(bufnr, bufid)
-  if bufid == "diffview" then
-    return "| " .. vim.api.nvim_buf_get_var(bufnr, "diffview_label")
-  end
-  return ""
+local get_diff_section = function(bufnr)
+  return add(highlight.sanitize "Title", { vim.api.nvim_buf_get_var(bufnr, "diffview_label") }, true)
 end
 
 function M:init(options)
@@ -107,13 +104,14 @@ end
 
 function M:load()
   local fname = (self.options.name):match "^.+/(.+)$"
-  local path = get_relpath(self.options.winid, self.options.name, self.options.maxlen)
-  local ext = vim.fn.fnamemodify(fname, ":e")
   local _, bufid = pcall(vim.api.nvim_buf_get_var, self.options.buf, "bufid")
+  local is_diff = vim.startswith(bufid, "diffview")
+  local path = is_diff and "" or get_relpath(self.options.winid, self.options.name, self.options.maxlen)
+  local ext = vim.fn.fnamemodify(fname, ":e")
   local file_sections = get_file_sections(path, fname, ext, self.options.separator)
-  if vim.startswith(bufid, "diffview") then
-    local diff_section = get_diff_section(self.options.buf, bufid)
-    self.label = string.format("%s%s%s%s", file_sections, diff_section and "" or " ", diff_section, reset_hl)
+  if is_diff then
+    local diff_section = get_diff_section(self.options.buf)
+    self.label = string.format("%s%s%s%s", diff_section, diff_section and "" or " ", file_sections, reset_hl)
   else
     local symbol_sections = get_lsp_symbols(self.options.separator)
     self.label = string.format("%s%s%s%s", file_sections, symbol_sections and "" or " ", symbol_sections, reset_hl)
