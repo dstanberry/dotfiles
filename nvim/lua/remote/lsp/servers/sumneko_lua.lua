@@ -1,5 +1,5 @@
--- verify lua-dev is available
-local ok, luadev = pcall(require, "lua-dev")
+-- verify neodev is available
+local ok, neodev = pcall(require, "neodev")
 if not ok then
   return
 end
@@ -35,7 +35,7 @@ M.setup = function(force)
     ./3rd/luamake/luamake rebuild
   ]]
   util.terminal.install_package("lua-language-server", basedir, path, install_cmd, force)
-  luadev.setup {
+  neodev.setup {
     library = {
       enabled = true,
       runtime = true,

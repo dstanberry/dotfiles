@@ -47,7 +47,7 @@ local function plugins(use)
     end,
     requires = {
       "b0o/schemastore.nvim",
-      "folke/lua-dev.nvim",
+      "folke/neodev.nvim",
       "jose-elias-alvarez/null-ls.nvim",
       "jose-elias-alvarez/typescript.nvim",
       "lvimuser/lsp-inlayhints.nvim",
