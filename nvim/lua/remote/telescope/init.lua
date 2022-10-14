@@ -47,27 +47,27 @@ telescope.setup {
     prompt_prefix = pad(icons.misc.Prompt, "right"),
     selection_caret = pad(icons.misc.CaretRight, "right"),
     multi_icon = pad(icons.misc.CaretRight, "right"),
-    scroll_strategy = "cycle",
-    layout_strategy = "flex",
     sorting_strategy = "descending",
     results_title = false,
+    scroll_strategy = "cycle",
+    layout_strategy = "flex",
+    cycle_layout_list = {
+      "flex",
+      "horizontal",
+      "vertical",
+      "bottom_pane",
+      "center",
+    },
     layout_config = {
-      -- prompt_position = "bottom",
-      horizontal = {
-        height = { padding = 0.1 },
-        width = { padding = 0.06 },
-        preview_width = 0.6,
-      },
-      vertical = {
-        height = { padding = 1 },
-        width = { padding = 0.05 },
-        preview_height = 0.5,
-      },
+      horizontal = { preview_width = 0.6 },
+      vertical = { preview_height = 0.7 },
     },
     mappings = {
       i = {
+        ["<c-/>"] = actions.which_key,
         ["<c-d>"] = actions.preview_scrolling_down,
         ["<c-f>"] = actions.preview_scrolling_up,
+        ["<c-l>"] = layout.cycle_layout_next,
         ["<c-p>"] = layout.toggle_preview,
         ["<c-t>"] = actions.select_tab,
         ["<c-v>"] = actions.select_vertical,
@@ -82,89 +82,85 @@ telescope.setup {
       },
     },
   },
+  file_ignore_patterns = {
+    "%.DAT",
+    "%.db",
+    "%.DS_Store",
+    "%.git",
+    "%.gitattributes",
+    "%.gpg",
+    "%.venv",
+    "^node_modules/",
+    "^ntuser",
+    "git%-crypt",
+    "karabiner/assets",
+  },
   pickers = {
-    buffers = { theme = "ivy" },
-    grep_string = {
-      layout_config = {
-        height = 60,
-        prompt_position = "top",
+    buffers = {
+      theme = "dropdown",
+      sort_mru = true,
+      sort_lastused = true,
+      show_all_buffers = true,
+      ignore_current_buffer = true,
+      previewer = false,
+      mappings = {
+        i = { ["<c-d>"] = "delete_buffer" },
+        n = { ["d"] = "delete_buffer" },
       },
+    },
+    grep_string = {
+      layout_config = { height = 30, prompt_position = "top" },
     },
     help_tags = {
       theme = "ivy",
-      layout_config = {
-        height = 60,
-        prompt_position = "top",
-      },
+      layout_config = { height = 30, prompt_position = "top" },
     },
     live_grep = {
       layout_strategy = "vertical",
-      layout_config = { height = 70 },
+    },
+    git_branches = {
+      theme = "dropdown",
     },
     git_bcommits = {
-      layout_strategy = "vertical",
-      layout_config = { height = 70 },
-      mappings = {
-        i = {
-          ["<c-y>"] = copy_commit,
-        },
-      },
+      layout_strategy = "horizontal",
+      mappings = { i = { ["<c-y>"] = copy_commit } },
     },
     git_commits = {
-      layout_strategy = "vertical",
-      layout_config = { height = 70 },
-      mappings = {
-        i = {
-          ["<c-y>"] = copy_commit,
-        },
-      },
+      layout_strategy = "horizontal",
+      mappings = { i = { ["<c-y>"] = copy_commit } },
     },
     diagnostics = {
       path_display = { "shorten" },
-      theme = "ivy",
-      layout_config = {
-        height = 30,
-        prompt_position = "top",
-      },
+      theme = "vertical",
+      layout_config = { height = 20 },
     },
     lsp_definitions = {
       theme = "ivy",
-      layout_config = {
-        height = 60,
-        prompt_position = "top",
-      },
+      layout_config = { height = 40, prompt_position = "top" },
     },
     lsp_document_symbols = {
       path_display = { "hidden" },
       theme = "ivy",
-      layout_config = {
-        height = 40,
-        prompt_position = "top",
-      },
+      layout_config = { height = 40, prompt_position = "top" },
     },
     lsp_dynamic_workspace_symbols = {
       path_display = { "shorten" },
       theme = "ivy",
-      layout_config = {
-        height = 40,
-        prompt_position = "top",
-      },
+      layout_config = { height = 40, prompt_position = "top" },
     },
     lsp_references = {
       path_display = { "shorten" },
       theme = "ivy",
-      layout_config = {
-        height = 40,
-        prompt_position = "top",
-      },
+      layout_config = { height = 40, prompt_position = "top" },
     },
     lsp_workspace_symbols = {
       path_display = { "shorten" },
       theme = "ivy",
-      layout_config = {
-        height = 40,
-        prompt_position = "top",
-      },
+      layout_config = { height = 40, prompt_position = "top" },
+    },
+    registers = {
+      theme = "dropdown",
+      layout_config = { height = 40 },
     },
   },
   extensions = {
@@ -214,21 +210,7 @@ groups.new("TelescopeMultiSelection", { fg = c.magenta })
 groups.new("TelescopeSelection", { fg = nil, bg = BLUE, bold = true })
 groups.new("TelescopeSelectionCaret", { fg = c.fg_dark, bg = BLUE, bold = true })
 
-local ignored = {
-  "%.DAT",
-  "%.db",
-  "%.git",
-  "%.gitattributes",
-  "%.gpg",
-  "%.venv",
-  "git%-crypt",
-  "karabiner/assets",
-  "node_modules",
-  "ntuser",
-}
-
 local M = {}
-
 local meta = setmetatable({}, {
   __index = function(t, k)
     reloader()
@@ -249,22 +231,22 @@ local meta = setmetatable({}, {
 
 function M.find_nvim()
   builtin.find_files {
-    cwd = vim.fn.stdpath "config",
-    file_ignore_patterns = ignored,
     follow = has "win32" and false or true,
     hidden = has "win32" and false or true,
+    cwd = vim.fn.stdpath "config",
+    sort_mru = true,
     prompt_title = "Neovim RC Files",
   }
 end
 
 function M.project_files()
   local opts = {
-    file_ignore_patterns = ignored,
     follow = has "win32" and false or true,
     hidden = has "win32" and false or true,
+    sort_mru = false,
   }
-  local search = vim.fs.find ".git"
-  if #search >= 1 then
+  local git = vim.fs.find ".git"
+  if #git >= 1 then
     opts.prompt_title = "Project Files (Git)"
     builtin.git_files(opts)
   else
