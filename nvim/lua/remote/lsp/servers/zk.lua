@@ -36,6 +36,12 @@ M.edit_with = function(opts, picker_options)
   end
 end
 
+M.config = {
+  -- cmd = { "zk", "lsp", "--log", "/tmp/zk-lsp.log" },
+  cmd = { "zk", "lsp" },
+  name = "zk",
+}
+
 M.setup = function(cfg)
   local install_cmd = string.format(
     [[
@@ -51,7 +57,11 @@ M.setup = function(cfg)
 
   zk.setup {
     picker = "telescope",
-    config = cfg,
+    lsp = { config = cfg },
+    auto_attach = {
+      enabled = true,
+      filetypes = { "markdown" },
+    },
   }
 
   vim.api.nvim_create_user_command("ZkOrphans", function()
@@ -99,6 +109,40 @@ M.setup = function(cfg)
       end
     end,
   })
+  vim.api.nvim_create_user_command("ZkInsertLink", function(opts)
+    local options = opts.fargs and unpack(opts.fargs) or {}
+    zk.pick_notes(options, { title = "Notes (insert link to note)", multi_select = false }, function(notes)
+      local pos = vim.api.nvim_win_get_cursor(0)[2]
+      local line = vim.api.nvim_get_current_line()
+      notes = { notes }
+      for _, note in ipairs(notes) do
+        local updated = ("%s[%s](%s)%s"):format(line:sub(0, pos), note.title, note.path:sub(1, -6), line:sub(pos + 1))
+        vim.api.nvim_set_current_line(updated)
+      end
+    end)
+  end, {})
+  vim.api.nvim_create_user_command("ZkLinkToNote", function(opts)
+    local options = opts.fargs and unpack(opts.fargs) or {}
+    local selection = util.buffer.get_visual_selection()
+    zk.pick_notes(
+      options,
+      { title = ("Notes (link '%s' to note)"):format(selection), multi_select = false },
+      function(notes)
+        local pos = vim.api.nvim_win_get_cursor(0)[2]
+        local line = vim.api.nvim_get_current_line()
+        notes = { notes }
+        for _, note in ipairs(notes) do
+          local updated = ("%s[%s](%s)%s"):format(
+            line:sub(0, pos - #selection),
+            selection,
+            note.path:sub(1, -6),
+            line:sub(pos + 1)
+          )
+          vim.api.nvim_set_current_line(updated)
+        end
+      end
+    )
+  end, { range = true })
 
   vim.keymap.set("n", "<leader>mm", markdown.zk.create_note)
   vim.keymap.set("n", "<leader>mt", function()
