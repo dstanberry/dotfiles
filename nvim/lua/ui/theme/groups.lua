@@ -208,76 +208,85 @@ M.apply = function(c)
   -- hi.LspStatic = {}
 
   -- treesitter highlighting
-  hi.TreesitterContext = { bg = c.bg_light, italic = true }
+  hi["@annotation"] = { fg = c.yellow }
+  hi["@attribute"] = { fg = c.yellow }
+  hi["@boolean"] = { link = "Boolean" }
+  hi["@character"] = { fg = c.blue_dark }
+  hi["@character.special"] = { link = "SpecialChar" }
+  hi["@comment"] = { link = "Comment" }
+  hi["@conditional"] = { fg = c.red_light }
+  hi["@constant"] = { link = "Constant" }
+  hi["@constant.builtin"] = { link = "Constant" }
+  hi["@constant.macro"] = { fg = c.teal }
+  hi["@constructor"] = { fg = c.blue_light }
+  hi["@debug"] = { link = "Debug" }
+  hi["@define"] = { link = "Define" }
+  hi["@error"] = { fg = c.red }
+  hi["@exception"] = { fg = c.red }
+  hi["@field"] = { fg = c.fg_light }
+  hi["@float"] = { link = "Float" }
+  hi["@function"] = { link = "Function" }
+  hi["@function.call"] = { link = "Function" }
+  hi["@function.builtin"] = { fg = c.blue, bold = true }
+  hi["@function.macro"] = { fg = c.blue_dark }
+  hi["@include"] = { link = "Include" }
+  hi["@keyword"] = { link = "Keyword" }
+  hi["@keyword.function"] = { fg = c.magenta }
+  hi["@keyword.operator"] = { fg = c.magenta }
+  hi["@keyword.return"] = { fg = c.magenta_light }
+  hi["@label"] = { link = "Label" }
+  hi["@method"] = { fg = c.blue_light }
+  hi["@method.call"] = { fg = c.blue_light }
+  hi["@namespace"] = { fg = c.blue_dark }
+  hi["@none"] = { fg = c.fg }
+  hi["@number"] = { link = "Number" }
+  hi["@operator"] = { link = "Operator" }
+  hi["@parameter"] = { fg = c.yellow_darker }
+  hi["@parameter.reference"] = { fg = c.yellow_darker }
+  hi["@preproc"] = { link = "PreProc" }
+  hi["@property"] = { fg = c.fg_light }
+  hi["@punctuation.bracket"] = { fg = c.blue_alt }
+  hi["@punctuation.delimiter"] = { fg = c.blue_alt }
+  hi["@punctuation.special"] = { fg = c.blue_alt }
+  hi["@repeat"] = { link = "Repeat" }
+  hi["@storageclass"] = { link = "Type" }
+  hi["@string"] = { link = "String" }
+  hi["@string.escape"] = { fg = c.purple }
+  hi["@string.regex"] = { link = "String" }
+  hi["@string.special"] = { link = "Special" }
+  hi["@symbol"] = { fg = c.blue_dark }
+  hi["@tag"] = { link = "tag" }
+  hi["@tag.attribute"] = { fg = c.orange }
+  hi["@tag.delimiter"] = { link = "Delimiter" }
+  hi["@text"] = { fg = c.fg }
+  hi["@text.danger"] = { fg = c.bg, bg = c.red }
+  hi["@text.emphasis"] = { fg = c.yellow, italic = true }
+  hi["@text.environment"] = { fg = c.blue_dark }
+  hi["@text.environment.name"] = { fg = c.yellow }
+  hi["@text.literal"] = { fg = c.orange }
+  hi["@text.math"] = { fg = c.gray_lighter, bg = c.bg_dark }
+  hi["@text.note"] = { fg = c.bg, bg = c.blue_alt }
+  hi["@text.reference"] = { fg = c.teal }
+  hi["@text.strike"] = { fg = c.fg_dark, strikethrough = true }
+  hi["@text.strong"] = { bold = true }
+  hi["@text.title"] = { link = "Title" }
+  hi["@text.underline"] = { link = "Underlined" }
+  hi["@text.uri"] = { fg = c.blue_light, underline = true }
+  hi["@text.warning"] = { fg = c.bg, bg = c.yellow }
+  hi["@todo"] = { link = "Todo" }
+  hi["@type"] = { link = "Type" }
+  hi["@type.builtin"] = { fg = c.yellow, italic = true }
+  hi["@type.qualifier"] = { link = "Type" }
+  hi["@type.definition"] = { link = "TypeDef" }
+  hi["@variable"] = { fg = c.fg }
+  hi["@variable.builtin"] = { fg = c.red }
 
-  hi.TSAnnotation = { fg = c.yellow }
-  hi.TSAttribute = { fg = c.yellow }
-  hi.TSBoolean = { link = "Boolean" }
-  hi.TSCharacter = { fg = c.blue_dark }
-  hi.TSComment = { link = "Comment" }
-  hi.TSConditional = { fg = c.red_light }
-  hi.TSConstant = { link = "Constant" }
-  hi.TSConstBuiltin = { link = "Constant" }
-  hi.TSConstMacro = { fg = c.teal }
-  hi.TSConstructor = { fg = c.blue_light }
-  hi.TSCurrentScope = { bold = true }
-  hi.TSDanger = { fg = c.bg, bg = c.red }
-  hi.TSDefinition = { underline = true, sp = c.magenta }
-  hi.TSDefinitionUsage = { bg = c.gray }
-  hi.TSEmphasis = { fg = c.yellow, italic = true }
-  hi.TSEnum = { bold = true }
-  hi.TSEnvironment = { fg = c.blue_dark }
-  hi.TSEnvironmentType = { fg = c.yellow }
-  hi.TSError = { fg = c.red }
-  hi.TSException = { fg = c.red }
-  hi.TSField = { fg = c.fg_light }
-  hi.TSFloat = { link = "Float" }
-  hi.TSFuncBuiltin = { fg = c.blue, bold = true }
-  hi.TSFuncMacro = { fg = c.blue_dark }
-  hi.TSFunction = { link = "Function" }
-  hi.TSInclude = { link = "Include" }
-  hi.TSKeyword = { link = "Keyword" }
-  hi.TSKeywordFunction = { fg = c.magenta }
-  hi.TSKeywordOperator = { fg = c.magenta }
-  hi.TSKeywordReturn = { fg = c.magenta_light }
-  hi.TSLabel = { link = "Label" }
-  hi.TSLiteral = { fg = c.orange }
-  hi.TSMath = { fg = c.gray_lighter, bg = c.bg_dark }
-  hi.TSMethod = { fg = c.blue_light }
-  hi.TSNamespace = { fg = c.blue_dark }
-  hi.TSNone = { fg = c.fg }
-  hi.TSNote = { fg = c.bg, bg = c.blue_alt }
-  hi.TSNumber = { link = "Number" }
-  hi.TSOperator = { link = "Operator" }
-  hi.TSParameter = { fg = c.yellow_darker }
-  hi.TSParameterReference = { fg = c.yellow_darker }
-  hi.TSProperty = { fg = c.fg_light }
-  hi.TSPunctBracket = { fg = c.blue_alt }
-  hi.TSPunctDelimiter = { fg = c.blue_alt }
-  hi.TSPunctSpecial = { fg = c.blue_alt }
-  hi.TSQueryLinterError = { fg = c.orange }
-  hi.TSRepeat = { link = "Repeat" }
-  hi.TSStrike = { fg = c.fg_dark, strikethrough = true }
-  hi.TSString = { link = "String" }
-  hi.TSStringEscape = { fg = c.purple }
-  hi.TSStringRegex = { link = "String" }
-  hi.TSStrong = { bold = true }
-  hi.TSStructure = { fg = c.fg }
-  hi.TSSymbol = { fg = c.blue_dark }
-  hi.TSTag = { link = "Tag" }
-  hi.TSTagAttribute = { fg = c.orange }
-  hi.TSTagDelimiter = { link = "Tag" }
-  hi.TSText = { fg = c.fg }
-  hi.TSTextReference = { fg = c.teal }
-  hi.TSTitle = { link = "Title" }
-  hi.TSTodo = { link = "Todo" }
-  hi.TSType = { link = "Type" }
-  hi.TSTypeBuiltin = { fg = c.yellow, italic = true }
-  hi.TSUnderline = { link = "Underlined" }
-  hi.TSURI = { fg = c.blue_light, underline = true }
-  hi.TSVariable = { fg = c.fg }
-  hi.TSVariableBuiltin = { fg = c.red }
-  hi.TSWarning = { fg = c.bg, bg = c.yellow }
+  -- hi["@currentScope"] = { bold = true }
+  -- hi["@definition"] = { underline = true, sp = c.magenta }
+  -- hi["@definitionusage"] = { bg = c.gray }
+  -- hi["@enum"] = { bold = true }
+  -- hi["@querylintererror"] = { fg = c.orange }
+  -- hi["@structure"] = { fg = c.fg }
 
   -- statusline highlighting
   hi.StatusLine = { fg = c.fg_dark, bg = c.gray }
