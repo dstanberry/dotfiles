@@ -164,7 +164,7 @@ M.get_client_capabilities = function()
   }
   local has_cmp, cmp = pcall(require, "cmp_nvim_lsp")
   if has_cmp then
-    capabilities = cmp.update_capabilities(capabilities)
+    return vim.tbl_deep_extend("keep", capabilities, cmp.default_capabilities())
   end
   return capabilities
 end
