@@ -7,7 +7,7 @@ end
 local handlers = reload "remote.lsp.handlers"
 local util = require "util"
 
--- vim.lsp.set_log_level("debug")
+-- vim.lsp.set_log_level "trace"
 -- vim.cmd.edit(vim.lsp.get_log_path())
 
 local M = {}
