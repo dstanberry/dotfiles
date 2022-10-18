@@ -3,6 +3,7 @@ local icons = require "ui.icons"
 reload("ui.statusline").setup {
   disabled_filetypes = {
     "DiffviewFiles",
+    "gitcommit",
     "help",
     "lir",
     "NeogitPopup",
