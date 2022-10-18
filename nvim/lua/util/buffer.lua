@@ -57,10 +57,9 @@ function M.fold_text()
 end
 
 ---Defines the conditions that determine how the text at the current cursor position might be folded
----@param lnum integer
 ---@return integer|string fold-level
-function M.fold_expr(lnum)
-  if string.find(vim.fn.getline(lnum), "%S") == nil then
+function M.fold_expr()
+  if string.find(vim.fn.getline(vim.v.lnum), "%S") == nil then
     return "-1"
   end
   local get_indent_level = function(n)
@@ -68,7 +67,7 @@ function M.fold_expr(lnum)
   end
   local get_next_line_with_content = function()
     local count = vim.fn.line "$"
-    local line = lnum + 1
+    local line = vim.v.lnum + 1
     while line <= count do
       if string.find(vim.fn.getline(line), "%S") ~= nil then
         return line
@@ -77,7 +76,7 @@ function M.fold_expr(lnum)
     end
     return -2
   end
-  local current = get_indent_level(lnum)
+  local current = get_indent_level(vim.v.lnum)
   local next = get_indent_level(get_next_line_with_content())
   if next <= current then
     return current
