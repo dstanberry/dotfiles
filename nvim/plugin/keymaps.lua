@@ -125,7 +125,7 @@ vim.keymap.set("n", "Q", "<nop>")
 vim.keymap.set("n", "Y", "y$")
 
 ---------------------------------------------------------------
--- => Normal | Exotic Prefixes
+-- => Normal | 'Third' Leader Prefix
 ---------------------------------------------------------------
 -- delete text and preserve clipboard state
 vim.keymap.set("n", "<bs>d", '"_d', { silent = false })
@@ -155,18 +155,21 @@ vim.keymap.set("n", "<bs>Z", function()
   util.buffer.delete_buffer(true)
 end, { silent = false })
 
+---------------------------------------------------------------
+-- => Normal | LocalLeader
+---------------------------------------------------------------
 -- prepare to run most recent ex-command
-vim.keymap.set("n", "'c", ":<up>", { silent = false })
+vim.keymap.set("n", "<localleader><localleader>c", ":<up>", { silent = false })
 
 -- create/edit file within the current directory
-vim.keymap.set("n", "'e", function()
+vim.keymap.set("n", "<localleader><localleader>e", function()
   local path = vim.fn.expand "%:p:h"
   local separator = has "win32" and [[\]] or "/"
   return (":edit %s%s"):format(path, separator)
 end, { silent = false, expr = true, replace_keycodes = true })
 
 -- prepare to call |reload()| on the current lua file
-vim.keymap.set("n", "'r", function()
+vim.keymap.set("n", "<localleader><localleader>r", function()
   local ft = vim.bo.filetype
   if ft == "lua" then
     local file = (vim.fn.expand "%:p")
@@ -180,7 +183,7 @@ vim.keymap.set("n", "'r", function()
 end, { silent = false, expr = true, replace_keycodes = true })
 
 -- save as new file within the current directory (with the option to delete the original)
-vim.keymap.set("n", "'s", function()
+vim.keymap.set("n", "<localleader><localleader>s", function()
   local file = vim.fn.expand "%"
   local path = vim.fn.expand "%:p:h"
   local sep = has "win32" and [[\]] or "/"
@@ -196,7 +199,7 @@ vim.keymap.set("n", "'s", function()
 end, { silent = false })
 
 -- save current buffer to disk and execute the file
-vim.keymap.set("n", "'x", function()
+vim.keymap.set("n", "<localleader><localleader>x", function()
   local ft = vim.bo.filetype
   print(vim.cmd.write())
   if ft == "vim" then
