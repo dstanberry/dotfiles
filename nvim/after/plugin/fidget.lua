@@ -6,10 +6,18 @@ end
 
 fidget.setup {
   text = {
-    spinner = "dots_snake",
+    spinner = "dots_pulse",
   },
   align = {
     bottom = true,
     right = true,
   },
 }
+
+vim.api.nvim_create_augroup("fidget", { clear = true })
+vim.api.nvim_create_autocmd({ "VimLeavePre", "LspDetach" }, {
+  group = "fidget",
+  callback = function()
+    vim.cmd { cmd = "FidgetClose", mods = { emsg_silent = true, confirm = true } }
+  end,
+})
