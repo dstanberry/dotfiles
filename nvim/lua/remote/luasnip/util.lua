@@ -110,7 +110,7 @@ M.saved_text = function(_, snip, old_state, user_args)
   if snip.snippet.env and snip.snippet.env.SELECT_DEDENT and #snip.snippet.env.SELECT_DEDENT > 0 then
     local lines = vim.deepcopy(snip.snippet.env.SELECT_DEDENT)
     for idx = 1, #lines do
-      local line = indent .. lines[idx]
+      local line = string.format("%s%s", indent, lines[idx] or "")
       local node = idx == #lines and { line } or { line, "" }
       table.insert(nodes, t(node))
     end
