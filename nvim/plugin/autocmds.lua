@@ -1,6 +1,3 @@
-local c = require("ui.theme").colors
-local groups = require "ui.theme.groups"
-
 vim.api.nvim_create_augroup("cursorline", { clear = true })
 
 vim.api.nvim_create_autocmd("WinEnter", {
