@@ -281,13 +281,6 @@ M.apply = function(c)
   hi["@variable"] = { fg = c.fg }
   hi["@variable.builtin"] = { fg = c.red }
 
-  -- hi["@currentScope"] = { bold = true }
-  -- hi["@definition"] = { underline = true, sp = c.magenta }
-  -- hi["@definitionusage"] = { bg = c.gray }
-  -- hi["@enum"] = { bold = true }
-  -- hi["@querylintererror"] = { fg = c.orange }
-  -- hi["@structure"] = { fg = c.fg }
-
   -- statusline highlighting
   hi.StatusLine = { fg = c.fg_dark, bg = c.gray }
   hi.StatusLineNC = { fg = c.gray_light, bg = c.gray }
