@@ -30,7 +30,7 @@ vim.filetype.add {
   },
   filename = {
     ["*/git/config"] = "gitconfig",
-    ["gitconfig"] = "gitconfig",
+    ['.gitignore'] = 'conf',
     ["tmux.conf"] = "tmux",
   },
 }

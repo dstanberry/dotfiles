@@ -23,7 +23,6 @@ local function plugins(use)
   -- written in vimscript
   use { "tpope/vim-repeat" }
   -- syntax highlighting
-  use { "gisphm/vim-gitignore", ft = "gitignore" }
   use { "mtdl9/vim-log-highlighting", ft = "log" }
 
   -- filetype specific extensions
