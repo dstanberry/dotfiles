@@ -214,6 +214,7 @@ M.apply = function(c)
   hi["@character"] = { fg = c.blue_dark }
   hi["@character.special"] = { link = "SpecialChar" }
   hi["@comment"] = { link = "Comment" }
+  hi["@conceal"] = { link = "Conceal" }
   hi["@conditional"] = { fg = c.red_light }
   hi["@constant"] = { link = "Constant" }
   hi["@constant.builtin"] = { link = "Constant" }
@@ -221,6 +222,7 @@ M.apply = function(c)
   hi["@constructor"] = { fg = c.blue_light }
   hi["@debug"] = { link = "Debug" }
   hi["@define"] = { link = "Define" }
+  hi["@definition.enum"] = { bold = true }
   hi["@error"] = { fg = c.red }
   hi["@exception"] = { fg = c.red }
   hi["@field"] = { fg = c.fg_light }
@@ -241,14 +243,15 @@ M.apply = function(c)
   hi["@none"] = { fg = c.fg }
   hi["@number"] = { link = "Number" }
   hi["@operator"] = { link = "Operator" }
-  hi["@parameter"] = { fg = c.yellow_darker }
-  hi["@parameter.reference"] = { fg = c.yellow_darker }
+  hi["@parameter"] = { fg = c.rose }
+  hi["@parameter.reference"] = { fg = c.rose }
   hi["@preproc"] = { link = "PreProc" }
   hi["@property"] = { fg = c.fg_light }
   hi["@punctuation.bracket"] = { fg = c.blue_alt }
   hi["@punctuation.delimiter"] = { fg = c.blue_alt }
   hi["@punctuation.special"] = { fg = c.blue_alt }
   hi["@repeat"] = { link = "Repeat" }
+  hi["@spell"] = { link = "SpellBad" }
   hi["@storageclass"] = { link = "Type" }
   hi["@string"] = { link = "String" }
   hi["@string.escape"] = { fg = c.purple }
@@ -260,6 +263,8 @@ M.apply = function(c)
   hi["@tag.delimiter"] = { link = "Delimiter" }
   hi["@text"] = { fg = c.fg }
   hi["@text.danger"] = { fg = c.bg, bg = c.red }
+  hi["@text.diff.add"] = { bg = c.diff_add }
+  hi["@text.diff.delete"] = { bg = c.diff_delete }
   hi["@text.emphasis"] = { fg = c.yellow, italic = true }
   hi["@text.environment"] = { fg = c.blue_dark }
   hi["@text.environment.name"] = { fg = c.yellow }
