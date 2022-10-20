@@ -94,6 +94,9 @@ local get_marked_region = function(mark1, mark2, options)
   local pos1 = vim.fn.getpos(mark1)
   local pos2 = vim.fn.getpos(mark2)
   pos1, pos2 = adjust(pos1, pos2)
+  if options.positions then
+    return "", pos1, pos2
+  end
   local start = { pos1[2] - 1, pos1[3] - 1 + pos1[4] }
   local finish = { pos2[2] - 1, pos2[3] - 1 + pos2[4] }
   if start[2] < 0 or finish[1] < start[1] then
@@ -103,18 +106,27 @@ local get_marked_region = function(mark1, mark2, options)
   return region, start, finish
 end
 
+---@class VisualSelectionSpec
+---@field positions boolean Request the result be a table containing
+---the row and column for the start and end of the selected range
+
 ---Captures the currently selected region of text
----@return string?
-function M.get_visual_selection()
+---@param opt? VisualSelectionSpec
+---@return table #Table containing each line of the selected range
+---or a table containing the row-column of the start and end of the range
+function M.get_visual_selection(opt)
+  opt = vim.F.if_nil(opt, {})
   local bufnr = 0
   local visual_modes = {
     v = true,
     V = true,
   }
   if visual_modes[vim.api.nvim_get_mode().mode] == nil then
-    return
+    return {}
   end
   local options = {}
+  ---@diagnostic disable-next-line: need-check-nil
+  options.positions = vim.F.if_nil(opt.positions, false)
   options.adjust = function(pos1, pos2)
     if vim.fn.mode() == "V" then
       pos1[3] = 1
@@ -130,6 +142,9 @@ function M.get_visual_selection()
     end
   end
   local region, start, finish = get_marked_region("v", ".", options)
+  if options.positions then
+    return { start, finish }
+  end
   if region ~= nil and start ~= nil and finish ~= nil then
     local lines = vim.api.nvim_buf_get_lines(bufnr, start[1], finish[1] + 1, false)
     local line1_end
@@ -142,8 +157,9 @@ function M.get_visual_selection()
     if start[1] ~= finish[1] then
       lines[#lines] = vim.fn.strpart(lines[#lines], region[finish[1]][1], region[finish[1]][2] - region[finish[1]][1])
     end
-    return table.concat(lines)
+    return lines
   end
+  return {}
 end
 
 ---@class ListBufsSpec
@@ -168,7 +184,7 @@ function M.list_buffers(opt)
     for _, winid in ipairs(wins) do
       bufnr = vim.api.nvim_win_get_buf(winid)
       if not seen[bufnr] then
-        bufs[#bufs+1] = bufnr
+        bufs[#bufs + 1] = bufnr
       end
       seen[bufnr] = true
     end
@@ -201,6 +217,31 @@ function M.list_buffers(opt)
     end
     return true
   end, bufs)
+end
+
+---Delete current line or selected range from quickfix list
+---@param bufnr integer?
+function M.quickfix_delete(bufnr)
+  bufnr = vim.F.if_nil(bufnr, vim.api.nvim_get_current_buf())
+  local qfl = vim.fn.getqflist()
+  local line = unpack(vim.api.nvim_win_get_cursor(0))
+  if string.lower(vim.api.nvim_get_mode().mode) == "v" then
+    local selection = M.get_visual_selection { positions = true }
+    local firstline = selection[1][2]
+    local lastline = selection[2][2]
+    local result = {}
+    for i, item in ipairs(qfl) do
+      if i < firstline or i > lastline then
+        table.insert(result, item)
+      end
+    end
+    qfl = result
+  else
+    table.remove(qfl, line)
+  end
+  vim.fn.setqflist({}, "r", { items = qfl })
+  vim.fn.setpos(".", { bufnr, line, 1, 0 })
+  vim.api.nvim_replace_termcodes("<esc>", true, false, true)
 end
 
 return M

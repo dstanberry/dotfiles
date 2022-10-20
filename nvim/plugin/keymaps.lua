@@ -28,18 +28,18 @@ end)
 
 -- navigate quickfix list
 vim.keymap.set("n", "<c-up>", function()
-  pcall(vim.cmd.cprevious())
+  pcall(vim.cmd.cprevious)
 end)
 vim.keymap.set("n", "<c-down>", function()
-  pcall(vim.cmd.cnext())
+  pcall(vim.cmd.cnext)
 end)
 
 -- navigate location list
 vim.keymap.set("n", "<a-up>", function()
-  pcall(vim.cmd.lprevious())
+  pcall(vim.cmd.lprevious)
 end)
 vim.keymap.set("n", "<a-down>", function()
-  pcall(vim.cmd.lnext())
+  pcall(vim.cmd.lnext)
 end)
 
 -- find all occurences in buffer of word under cursor
@@ -270,7 +270,8 @@ vim.keymap.set("v", "<c-w><c-x>", function()
     end
     return unpack(res)
   end
-  local selection = util.buffer.get_visual_selection()
+  local lines = util.buffer.get_visual_selection()
+  local selection = table.concat(lines)
   local ft = vim.bo.filetype
   local out = ""
   if ft == "vim" then

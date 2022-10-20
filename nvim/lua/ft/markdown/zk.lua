@@ -84,7 +84,8 @@ M.create_note = function()
 end
 
 M.create_reference_with_title = function()
-  local chunk = util.buffer.get_visual_selection()
+  local lines = util.buffer.get_visual_selection()
+  local chunk = table.concat(lines)
   local location = vim.lsp.util.make_given_range_params()
   location.uri = location.textDocument.uri
   location.textDocument = nil
@@ -103,7 +104,8 @@ M.create_reference_with_title = function()
 end
 
 M.create_reference_with_content = function()
-  local chunk = util.buffer.get_visual_selection()
+  local lines = util.buffer.get_visual_selection()
+  local chunk = table.concat(lines)
   local location = vim.lsp.util.make_given_range_params()
   location.uri = location.textDocument.uri
   location.textDocument = nil

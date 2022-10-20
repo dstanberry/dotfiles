@@ -123,7 +123,8 @@ M.setup = function(cfg)
   end, {})
   vim.api.nvim_create_user_command("ZkLinkToNote", function(opts)
     local options = opts.fargs and unpack(opts.fargs) or {}
-    local selection = util.buffer.get_visual_selection()
+    local lines = util.buffer.get_visual_selection()
+    local selection = table.concat(lines)
     zk.pick_notes(
       options,
       { title = ("Notes (link '%s' to note)"):format(selection), multi_select = false },
