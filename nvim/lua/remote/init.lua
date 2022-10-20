@@ -72,10 +72,6 @@ local function plugins(use)
       require "remote.treesitter"
     end,
   }
-  use {
-    "m-demare/hlargs.nvim",
-    requires = { "nvim-treesitter/nvim-treesitter" },
-  }
   use { "simrat39/symbols-outline.nvim", cmd = "SymbolsOutline", requires = { "nvim-lua/plenary.nvim" } }
 
   -- look-and-feel
