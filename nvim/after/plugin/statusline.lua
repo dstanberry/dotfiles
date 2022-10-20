@@ -1,6 +1,6 @@
 local icons = require "ui.icons"
 
-reload("ui.statusline").setup {
+require("ui.statusline").setup {
   disabled_filetypes = {
     "DiffviewFiles",
     "gitcommit",
