@@ -110,7 +110,7 @@ M.setup = function(config)
   end
 
   vim.api.nvim_create_augroup("statusline", { clear = true })
-  vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "ModeChanged" }, {
+  vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
     group = "statusline",
     callback = set_statusline,
   })
