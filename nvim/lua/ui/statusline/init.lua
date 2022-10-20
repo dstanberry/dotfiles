@@ -45,10 +45,6 @@ M.generate = function(location, win_id)
   if #props > 0 then
     props = {}
   end
-  -- NOTE: winbar won't work quite right without doing this
-  if location == "winbar" then
-    win_id = vim.api.nvim_get_current_win()
-  end
   props.winid = win_id
   props.bufnr = vim.api.nvim_win_get_buf(win_id)
   props.filetype = vim.api.nvim_buf_get_option(props.bufnr, "filetype")
@@ -120,6 +116,7 @@ M.setup = function(config)
       local buf = vim.api.nvim_win_get_buf(win)
       local ft, bt = vim.bo[buf].filetype, vim.bo[buf].buftype
       local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
+      local value = string.format([[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]], win)
       if not is_diff then
         is_diff = vim.wo[win].diff
       end
@@ -131,17 +128,11 @@ M.setup = function(config)
         and bt == ""
         and ft ~= ""
       then
-        vim.wo[win].winbar = string.format(
-          [[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]],
-          vim.api.nvim_get_current_win()
-        )
+        vim.wo[win].winbar = value
+      elseif vim.tbl_contains(keys, ft) or vim.tbl_contains(keys, bufid) then
+        vim.wo[win].winbar = value
       elseif (vim.wo[win].winbar == nil and is_diff) or vim.tbl_contains(options.get().disabled_filetypes, ft) then
         vim.wo[win].winbar = nil
-      elseif vim.tbl_contains(keys, ft) or vim.tbl_contains(keys, bufid) then
-        vim.wo[win].winbar = string.format(
-          [[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]],
-          vim.api.nvim_get_current_win()
-        )
       end
     end
   end
