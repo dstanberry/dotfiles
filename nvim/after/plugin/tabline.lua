@@ -1,5 +1,5 @@
 ---@diagnostic disable: assign-type-mismatch
-local ok, bufferline = pcall(require, "bufferline")
+local ok, bufferline = pcall(reload, "bufferline")
 if not ok then
   return
 end
@@ -21,6 +21,8 @@ bufferline.setup {
       local is_group = formatted:match "group"
       local is_offset = formatted:match "offset"
       local is_separator = formatted:match "separator"
+      local is_selected = formatted:match "selected"
+      local is_visible = formatted:match "visible"
       if diagnostic and diagnostic:match_str(formatted) then
         attrs.fg = c.fg
       end
@@ -28,17 +30,24 @@ bufferline.setup {
         attrs.bg = c.bg
       end
       if not is_group and not is_offset and is_separator then
-        attrs.fg = c.bg
+        attrs.fg = c.bg_alt
+      end
+      if is_group and not is_offset then
+        attrs.bg = c.red
+      end
+      if is_selected or is_visible then
+        attrs.bg = c.bg_alt
       end
       agg[name] = attrs
       return agg
     end, defaults.highlights)
 
+    hl.buffer_selected.italic = false
     hl.buffer_visible.bold = true
-    hl.buffer_visible.italic = true
+    hl.buffer_visible.italic = false
     hl.buffer_visible.fg = c.gray_light
-    hl.tab_selected.bold = true
     hl.tab_selected.fg = c.fg
+    hl.tab_separator_selected.bg = c.red
     return hl
   end,
   options = {
@@ -56,12 +65,11 @@ bufferline.setup {
     max_name_length = 20,
     diagnostics = "nvim_lsp",
     diagnostics_update_in_insert = false,
-    diagnostics_indicator = function(_, level, _, ctx)
+    diagnostics_indicator = function(_, _, _, ctx)
       if ctx.buffer:current() then
         return ""
       end
-      local icon = level:match "error" and icons.diagnostics.Error or icons.diagnostics.Warn
-      return pad(icon, "left")
+      return pad(icons.diagnostics.Warn, "left")
     end,
     indicator = {
       icon = pad(icons.misc.VerticalBarThin, "right"),
@@ -80,7 +88,7 @@ bufferline.setup {
     show_close_icon = false,
     show_buffer_default_icon = true,
     show_tab_indicators = true,
-    separator_style = { "", "" },
+    separator_style = "thin",
     always_show_bufferline = true,
     sort_by = "insert_after_current",
     groups = {
@@ -94,19 +102,20 @@ bufferline.setup {
             return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten"
           end,
           separator = {
-            style = require("bufferline.groups").separator.tab,
+            style = require("bufferline.groups").separator.pill,
           },
         },
         {
           name = "Tests",
           icon = icons.groups.Lab,
+          highlight = { fg = c.yellow_darker },
           auto_close = true,
           matcher = function(buf)
             local name = buf.filename
             return name:match "_spec" or name:match ".spec" or name:match "_test" or name:match ".test"
           end,
           separator = {
-            style = require("bufferline.groups").separator.tab,
+            style = require("bufferline.groups").separator.pill,
           },
         },
       },
