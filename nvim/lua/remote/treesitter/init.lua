@@ -165,15 +165,3 @@ require("nvim-treesitter.configs").setup {
 
 -- setup custom parsers
 require "remote.treesitter.parsers"
-
-local has_context, context = pcall(require, "treesitter-context")
-if not has_context then
-  return
-end
-
-context.setup {
-  enable = true,
-  max_lines = 2,
-  trim_scope = "outer",
-  min_window_height = 0,
-}
