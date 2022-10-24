@@ -48,11 +48,11 @@ cmp.setup {
   window = {
     completion = {
       border = "single",
-      winhighlight = "Normal:CmpBorder,FloatBorder:CmpBorder,CursorLine:PmenuSel,Search:None",
+      winhighlight = "Normal:FloatBorder,CursorLine:PmenuSel,Search:None",
     },
     documentation = {
       border = "single",
-      winhighlight = "NormalFloat:CmpFloat,FloatBorder:CmpBorder",
+      winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
     },
   },
 }
@@ -108,6 +108,3 @@ groups.new("CmpItemKindTypeParameter", { link = "@parameter" })
 groups.new("CmpItemKindUnit", { link = "SpecialChar" })
 groups.new("CmpItemKindValue", { link = "@text" })
 groups.new("CmpItemKindVariable", { link = "@variable" })
-
-groups.new("CmpBorder", { fg = c.bg_dark, bg = c.bg_dark })
-groups.new("CmpFloat", { fg = c.white, bg = c.bg_dark })

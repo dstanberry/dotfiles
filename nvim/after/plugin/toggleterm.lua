@@ -18,7 +18,7 @@ toggleterm.setup {
   hide_numbers = true,
   autochdir = true,
   highlights = {
-    NormalFloat = { link = "Normal" },
+    NormalFloat = { link = "NormalFloat" },
     FloatBorder = { link = "FloatBorder" },
   },
   float_opts = {
