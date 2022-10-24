@@ -24,7 +24,7 @@ M.apply = function(c)
   hi.CursorColumn = { bg = c.bg_highlight }
   hi.CursorLine = { bg = c.bg_highlight }
   hi.CursorLineNr = { fg = c.blue_light }
-  hi.Debug = { fg = c.blue_dark }
+  hi.Debug = { fg = c.gray_lighter }
   hi.Directory = { fg = c.blue }
   hi.ErrorMsg = { fg = c.red }
   hi.FoldColumn = { fg = c.blue_light, bg = c.bg_light }
@@ -39,10 +39,10 @@ M.apply = function(c)
   hi.NonText = { fg = c.gray_alt }
   hi.Normal = { fg = c.fg, bg = c.bg }
   hi.NormalNC = { fg = c.fg, bg = c.bg }
-  hi.NormalFloat = { fg = c.fg, bg = c.bg_float }
-  hi.FloatBorder = { fg = c.fg_border }
+  hi.FloatBorder = { fg = c.bg_dark, bg = c.bg_dark }
+  hi.NormalFloat = { fg = c.white, bg = c.bg_dark }
   hi.NvimInternalError = { link = "Error" }
-  hi.PMenu = { fg = c.fg, bg = c.gray_darker }
+  hi.PMenu = { link = "NormalFloat" }
   hi.PMenuSel = { fg = c.bg_light, bg = c.blue_dark }
   hi.Question = { fg = c.blue }
   hi.QuickFixLine = { bg = c.bg_visual, bold = true }
