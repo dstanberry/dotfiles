@@ -129,10 +129,10 @@ M.setup = function(config)
         and ft ~= ""
       then
         vim.wo[win].winbar = value
-      elseif vim.tbl_contains(keys, ft) or vim.tbl_contains(keys, bufid) then
-        vim.wo[win].winbar = value
       elseif (vim.wo[win].winbar == nil and is_diff) or vim.tbl_contains(options.get().disabled_filetypes, ft) then
         vim.wo[win].winbar = nil
+      elseif vim.tbl_contains(keys, ft) or vim.tbl_contains(keys, bufid) then
+        vim.wo[win].winbar = value
       end
     end
   end
