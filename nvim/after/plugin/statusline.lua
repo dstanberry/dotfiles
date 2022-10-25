@@ -16,7 +16,8 @@ require("ui.statusline").setup {
   },
   separators = {
     left = { hl = "user9", symbol = " " },
-    right = { hl = "user9", symbol = " " },
+    -- right = { hl = "user9", symbol = " " },
+    right = { hl = "user9", symbol = " " },
   },
   sections = {
     left = {
