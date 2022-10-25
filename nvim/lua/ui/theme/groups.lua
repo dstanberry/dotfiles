@@ -251,7 +251,6 @@ M.apply = function(c)
   hi["@punctuation.delimiter"] = { fg = c.blue_alt }
   hi["@punctuation.special"] = { fg = c.blue_alt }
   hi["@repeat"] = { link = "Repeat" }
-  hi["@spell"] = { link = "SpellBad" }
   hi["@storageclass"] = { link = "Type" }
   hi["@string"] = { link = "String" }
   hi["@string.escape"] = { fg = c.purple }
