@@ -114,9 +114,14 @@ M.setup = function(cfg)
     zk.pick_notes(options, { title = "Notes (insert link to note)", multi_select = false }, function(notes)
       local pos = vim.api.nvim_win_get_cursor(0)[2]
       local line = vim.api.nvim_get_current_line()
+      local pwd = vim.fn.expand "%:p:h:t"
       notes = { notes }
       for _, note in ipairs(notes) do
-        local updated = ("%s[%s](%s)%s"):format(line:sub(0, pos), note.title, note.path:sub(1, -6), line:sub(pos + 1))
+        local npath = note.path
+        if pwd ~= npath then
+          npath = ("../%s"):format(npath)
+        end
+        local updated = ("%s[%s](%s)%s"):format(line:sub(0, pos), note.title, npath:sub(1, -6), line:sub(pos + 1))
         vim.api.nvim_set_current_line(updated)
       end
     end)
@@ -131,12 +136,17 @@ M.setup = function(cfg)
       function(notes)
         local pos = vim.api.nvim_win_get_cursor(0)[2]
         local line = vim.api.nvim_get_current_line()
+        local pwd = vim.fn.expand "%:p:h:t"
         notes = { notes }
         for _, note in ipairs(notes) do
+          local npath = note.path
+          if pwd ~= npath then
+            npath = ("../%s"):format(npath)
+          end
           local updated = ("%s[%s](%s)%s"):format(
             line:sub(0, pos - #selection),
             selection,
-            note.path:sub(1, -6),
+            npath:sub(1, -6),
             line:sub(pos + 1)
           )
           vim.api.nvim_set_current_line(updated)

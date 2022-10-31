@@ -21,9 +21,8 @@ template = "journal.md"
 [format.markdown]
 hashtags = true
 colon-tags = true
-# link-format = "wiki"
-# link-format = "[[{{filename}}]]"
-link-format = "[{{title}}]({{path}})"
+# link-format = "[{{title}}]({{path}})"
+link-format = "markdown"
 link-encode-path = true
 link-drop-extension = true
 
