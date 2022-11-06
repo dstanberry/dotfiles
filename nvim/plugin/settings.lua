@@ -32,6 +32,7 @@ vim.opt.diffopt = {
   "closeoff",
   "hiddenoff",
   "algorithm:minimal",
+  "linematch:60",
 }
 -- define location for swap files
 vim.opt.directory = cache .. "/swap//,."
