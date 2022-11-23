@@ -33,10 +33,10 @@ signs.setup {
   end,
   numhl = false,
   update_debounce = 1000,
-  current_line_blame = false,
+  current_line_blame = true,
   current_line_blame_formatter = icons.git.Commit .. " <author>, <author_time:%R>",
   current_line_blame_opts = {
-    virt_text = true,
+    virt_text = false,
     virt_text_pos = "eol",
     delay = 150,
   },

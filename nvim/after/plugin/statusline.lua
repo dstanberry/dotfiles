@@ -25,6 +25,7 @@ require("ui.statusline").setup {
       { modehl = "git_branch" },
       { user7 = "diagnostics" },
       { user7 = "diff" },
+      { user7 = "git_blame" },
     },
     right = {
       { user7 = { "cursor", padding = { left = 0, right = 1 } } },
