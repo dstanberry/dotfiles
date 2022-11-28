@@ -24,7 +24,7 @@ require("ui.statusline").setup {
       { modehl = icons.misc.VerticalBarBold },
       { modehl = "git_branch" },
       { user7 = "diagnostics" },
-      { user7 = "diff" },
+      { user7 = "git_diff" },
       { user7 = "git_blame" },
     },
     right = {
