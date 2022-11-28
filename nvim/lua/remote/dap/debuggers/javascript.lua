@@ -1,19 +1,11 @@
 local dap = require "remote.dap"
-local util = require "util"
 
-local path = vim.fn.expand(string.format("%s/dap", vim.fn.stdpath "data"))
-local basedir = vim.fn.expand(("%s/%s"):format(path, "vscode-node-debug2"))
+local path = vim.fn.expand(string.format("%s/mason/packages", vim.fn.stdpath "data"))
+local basedir = vim.fn.expand(("%s/%s"):format(path, "node-debug2-adapter"))
 
 local M = {}
 
-M.setup = function(force)
-  local install_cmd = [[
-    git clone https://github.com/microsoft/vscode-node-debug2.git
-    cd vscode-node-debug2
-    npm install
-    npm run build
-  ]]
-  util.terminal.install_package("vscode-node-debug2", basedir, path, install_cmd, force)
+M.setup = function()
   dap.adapters.node2 = {
     type = "executable",
     command = "node",

@@ -1,6 +1,6 @@
 local util = require "util"
 
-local path = vim.fn.expand(string.format("%s/lspconfig", vim.fn.stdpath "data"))
+local path = vim.fn.expand(string.format("%s/mason/packages", vim.fn.stdpath "data"))
 local basedir = vim.fn.expand(string.format("%s/PowerShellEditorServices", path))
 -- stylua: ignore
 local command_fmt = {
@@ -23,7 +23,6 @@ local M = {}
 
 M.setup = function(force)
   local install_cmd = [[
-    git clone https://github.com/PowerShell/PowerShellEditorServices
     cd PowerShellEditorServices
     Install-Module InvokeBuild -Scope CurrentUser -Force
     Install-Module platyPS -Scope CurrentUser -Force

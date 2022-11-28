@@ -4,37 +4,9 @@ if not ok then
   return
 end
 
-local util = require "util"
-
-local fname
-if has "mac" then
-  fname = "lua-language-server"
-elseif has "unix" then
-  fname = "lua-language-server"
-elseif has "win32" then
-  fname = "lua-language-server.exe"
-else
-  error "Unsupported system for sumneko"
-  return
-end
-
-local path = string.format("%s/lspconfig", vim.fn.stdpath "data")
-local basedir = string.format("%s/lua-language-server", path)
-local executable = string.format("%s/bin/%s", basedir, fname)
-
 local M = {}
 
-M.setup = function(force)
-  local install_cmd = [[
-    git clone https://github.com/sumneko/lua-language-server
-    cd lua-language-server
-    git submodule update --init --recursive
-    cd 3rd/luamake
-    ./compile/install.sh
-    cd ../..
-    ./3rd/luamake/luamake rebuild
-  ]]
-  util.terminal.install_package("lua-language-server", basedir, path, install_cmd, force)
+M.setup = function()
   neodev.setup {
     library = {
       enabled = true,
@@ -48,7 +20,7 @@ M.setup = function(force)
 end
 
 M.config = {
-  cmd = { executable },
+  cmd = { "lua-language-server" },
   settings = {
     Lua = {
       completion = {

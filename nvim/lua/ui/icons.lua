@@ -73,7 +73,9 @@ return {
   misc = {
     Calendar = "",
     CaretRight = "",
+    CheckFilled = "",
     ChevronRight = "›",
+    Circle = "",
     Clipboard = "",
     Close = "",
     CloseBold = "",

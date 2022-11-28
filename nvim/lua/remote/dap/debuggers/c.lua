@@ -1,7 +1,6 @@
 local dap = require "remote.dap"
-local util = require "util"
 
-local path = string.format("%s/dap", vim.fn.stdpath "data")
+local path = string.format("%s/mason/packages", vim.fn.stdpath "data")
 local basedir = vim.fn.expand(("%s/%s"):format(path, "codelldb"))
 local bin = vim.fn.expand(("%s/%s"):format(basedir, "extension/adapter/codelldb"))
 local lib = vim.fn.expand(("%s/%s"):format(basedir, "extension/lldb/lib/liblldb.so"))
@@ -15,13 +14,7 @@ M.get_executable_path = function()
   }
 end
 
-M.setup = function(force)
-  local install_cmd = [[
-    curl -fLO  https://github.com/vadimcn/vscode-lldb/releases/latest/download/codelldb-x86_64-linux.vsix
-    unzip codelldb-x86_64-linux.vsix
-    rm -vf codelldb-x86_64-linux.vsix
-  ]]
-  util.terminal.install_package("netcoredbg", basedir, basedir, install_cmd, force)
+M.setup = function()
   dap.adapters.codelldb = {
     type = "server",
     port = "${port}",

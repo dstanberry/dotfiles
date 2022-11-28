@@ -16,6 +16,18 @@ local config = {
 local function plugins(use)
   -- package manager
   use { "wbthomason/packer.nvim" }
+  use { "williamboman/mason.nvim", requires = {
+    "williamboman/mason-lspconfig.nvim",
+  } }
+  use {
+    "jayp0521/mason-null-ls.nvim",
+    after = "mason.nvim",
+    config = function()
+      require("mason-null-ls").setup {
+        automatic_installation = true,
+      }
+    end,
+  }
 
   -- startup optimization
   use { "lewis6991/impatient.nvim" }

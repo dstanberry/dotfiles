@@ -43,18 +43,6 @@ M.config = {
 }
 
 M.setup = function(cfg)
-  local install_cmd = string.format(
-    [[
-      git clone https://github.com/mickael-menu/zk.git
-      cd zk
-      make
-      mkdir -vp %s/{inbox,journal,resources}
-      cp zk $GOPATH/bin/
-    ]],
-    vim.g.zk_notebook
-  )
-  util.terminal.install_package("zk", basedir, path, install_cmd, false)
-
   zk.setup {
     picker = "telescope",
     lsp = { config = cfg },

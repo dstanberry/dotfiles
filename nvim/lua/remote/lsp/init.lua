@@ -53,7 +53,7 @@ M.setup = function()
           break
         end
       elseif key == "sumneko_lua" then
-        require(mod).setup(false)
+        require(mod).setup()
       elseif key == "tsserver" then
         require(mod).setup(vim.tbl_deep_extend("force", {
           capabilities = client_capabilities,
