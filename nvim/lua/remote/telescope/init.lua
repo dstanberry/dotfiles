@@ -20,6 +20,8 @@ local layout = require "telescope.actions.layout"
 local state = require "telescope.actions.state"
 local themes = require "telescope.themes"
 
+local lga_actions = require "telescope-live-grep-args.actions"
+
 local c = require("ui.theme").colors
 local color = require "util.color"
 local groups = require "ui.theme.groups"
@@ -191,6 +193,15 @@ telescope.setup {
       override_file_sorter = true,
       override_generic_sorter = false,
     } or {},
+    live_grep_args = {
+      auto_quoting = true,
+      mappings = {
+        i = {
+          ["<c-k>"] = lga_actions.quote_prompt(),
+          ["<c-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
+        },
+      },
+    },
     ["ui-select"] = {
       themes.get_cursor {
         previewer = false,
@@ -334,6 +345,10 @@ function M.grep_last_search()
     search = register,
     word_match = "-w",
   }
+end
+
+function M.live_grep_args()
+  telescope.extensions.live_grep_args.live_grep_args()
 end
 
 return meta

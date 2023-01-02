@@ -136,6 +136,7 @@ local function plugins(use)
       "nvim-lua/popup.nvim",
       "nvim-telescope/telescope-file-browser.nvim",
       "nvim-telescope/telescope-github.nvim",
+      "nvim-telescope/telescope-live-grep-args.nvim",
       "nvim-telescope/telescope-symbols.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
       { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },

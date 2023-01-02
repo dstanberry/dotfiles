@@ -14,6 +14,7 @@ vim.keymap.set("n", "<leader>fr", telescope.oldfiles)
 vim.keymap.set("n", "<localleader><leader>", telescope.find_nvim)
 vim.keymap.set("n", "<localleader>fe", telescope.file_browser_relative)
 vim.keymap.set("n", "<localleader>fg", telescope.rg.live_grep_with_shortcuts)
+vim.keymap.set("n", "<localleader>fga", telescope.live_grep_args)
 
 -- lsp handlers
 vim.keymap.set("n", "gw", function()
