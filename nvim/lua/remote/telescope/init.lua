@@ -195,6 +195,7 @@ telescope.setup {
     } or {},
     live_grep_args = {
       auto_quoting = true,
+      layout_strategy = "vertical",
       mappings = {
         i = {
           ["<c-k>"] = lga_actions.quote_prompt(),
