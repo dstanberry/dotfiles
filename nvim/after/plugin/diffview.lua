@@ -46,24 +46,6 @@ diffview.setup {
       height = 20,
       win_opts = { winhighlight = "Normal:NormalSB" },
     },
-    log_options = {
-      single_file = {
-        max_count = 256,
-        follow = false,
-        all = false,
-        merges = false,
-        no_merges = false,
-        reverse = false,
-      },
-      multi_file = {
-        max_count = 256,
-        follow = false,
-        all = false,
-        merges = false,
-        no_merges = false,
-        reverse = false,
-      },
-    },
   },
   hooks = {
     diff_buf_read = function(bufnr, _)
