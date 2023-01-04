@@ -15,9 +15,9 @@ end
 
 local telescope = require "telescope"
 local actions = require "telescope.actions"
-local builtin = require "telescope.builtin"
 local layout = require "telescope.actions.layout"
 local state = require "telescope.actions.state"
+local builtin = require "telescope.builtin"
 local themes = require "telescope.themes"
 
 local lga_actions = require "telescope-live-grep-args.actions"
@@ -133,7 +133,7 @@ telescope.setup {
       theme = "dropdown",
     },
     git_bcommits = {
-      layout_strategy = "horizontal",
+      layout_strategy = "vertical",
       mappings = {
         i = {
           ["<c-r>"] = interactive_rebase,
@@ -142,7 +142,7 @@ telescope.setup {
       },
     },
     git_commits = {
-      layout_strategy = "horizontal",
+      layout_strategy = "vertical",
       mappings = {
         i = {
           ["<c-r>"] = interactive_rebase,
@@ -260,6 +260,14 @@ local meta = setmetatable({}, {
   end,
 })
 
+function M.current_buffer()
+  builtin.current_buffer_fuzzy_find {
+    previewer = false,
+    prompt_title = "Find in File",
+    sorting_strategy = "ascending",
+  }
+end
+
 function M.find_nvim()
   builtin.find_files {
     follow = has "win32" and false or true,
@@ -267,28 +275,6 @@ function M.find_nvim()
     cwd = vim.fn.stdpath "config",
     sort_mru = true,
     prompt_title = "Neovim RC Files",
-  }
-end
-
-function M.project_files()
-  local opts = {
-    follow = has "win32" and false or true,
-    hidden = has "win32" and false or true,
-    sort_mru = false,
-  }
-  local git = vim.fs.find ".git"
-  if #git >= 1 then
-    opts.prompt_title = "Project Files (Git)"
-    builtin.git_files(opts)
-  else
-    opts.prompt_title = "Project Files"
-    builtin.find_files(opts)
-  end
-end
-
-function M.oldfiles()
-  builtin.oldfiles {
-    prompt_title = "Recent Files",
   }
 end
 
@@ -323,14 +309,6 @@ function M.find_plugins()
   }
 end
 
-function M.current_buffer()
-  builtin.current_buffer_fuzzy_find {
-    previewer = false,
-    prompt_title = "Find in File",
-    sorting_strategy = "ascending",
-  }
-end
-
 function M.grep_string()
   builtin.grep_string {
     path_display = { "shorten" },
@@ -350,6 +328,28 @@ end
 
 function M.live_grep_args()
   telescope.extensions.live_grep_args.live_grep_args()
+end
+
+function M.oldfiles()
+  builtin.oldfiles {
+    prompt_title = "Recent Files",
+  }
+end
+
+function M.project_files()
+  local opts = {
+    follow = has "win32" and false or true,
+    hidden = has "win32" and false or true,
+    sort_mru = false,
+  }
+  local git = vim.fs.find ".git"
+  if #git >= 1 then
+    opts.prompt_title = "Project Files (Git)"
+    builtin.git_files(opts)
+  else
+    opts.prompt_title = "Project Files"
+    builtin.find_files(opts)
+  end
 end
 
 return meta
