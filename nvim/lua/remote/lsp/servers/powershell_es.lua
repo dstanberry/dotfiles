@@ -31,12 +31,10 @@ M.setup = function(force)
   util.terminal.install_package("PSES", basedir, path, install_cmd, force)
 end
 
-M.config = has "win32"
-    and {
-      bundle_path = basedir,
-      cmd = { "pwsh", "-NoLogo", "-NoProfile", "-Command", command },
-      root_dir = require("lspconfig.util").find_git_ancestor or vim.loop.cwd(),
-    }
-  or {}
+M.config = {
+  bundle_path = basedir,
+  cmd = { "pwsh", "-NoLogo", "-NoProfile", "-Command", command },
+  root_dir = require("lspconfig.util").find_git_ancestor or vim.loop.cwd(),
+}
 
 return M

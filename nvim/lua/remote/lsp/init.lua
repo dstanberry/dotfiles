@@ -27,23 +27,27 @@ M.setup = function()
   for _, file in ipairs(configurations) do
     repeat
       local mod = util.get_module_name(file)
-      local key = (mod):match "[^%.]*$"
+      local srv = (mod):match "[^%.]*$"
       local config = require(mod).config or {}
-      if key == "ls_emmet" then
+      if srv == "ls_emmet" then
         local configs = require "lspconfig.configs"
         if not configs.ls_emmet then
           configs.ls_emmet = { default_config = config }
         end
-      elseif key == "null-ls" then
+      elseif srv == "null-ls" then
         require(mod).setup(on_attach_nvim)
         do
           break
         end
-      elseif key == "rust_analyzer" then
+      elseif srv == "powershell_es" and not has "win32" then
         do
           break
         end
-      elseif key == "rust_tools" then
+      elseif srv == "rust_analyzer" then
+        do
+          break
+        end
+      elseif srv == "rust_tools" then
         require(mod).setup(vim.tbl_deep_extend("force", {
           capabilities = client_capabilities,
           flags = { debounce_text_changes = 150 },
@@ -52,9 +56,9 @@ M.setup = function()
         do
           break
         end
-      elseif key == "sumneko_lua" then
+      elseif srv == "sumneko_lua" then
         require(mod).setup()
-      elseif key == "tsserver" then
+      elseif srv == "tsserver" then
         require(mod).setup(vim.tbl_deep_extend("force", {
           capabilities = client_capabilities,
           flags = { debounce_text_changes = 150 },
@@ -63,7 +67,7 @@ M.setup = function()
         do
           break
         end
-      elseif key == "zk" then
+      elseif srv == "zk" then
         require(mod).setup(vim.tbl_deep_extend("force", {
           capabilities = client_capabilities,
           flags = { debounce_text_changes = 150 },
@@ -73,7 +77,7 @@ M.setup = function()
           break
         end
       end
-      servers = vim.tbl_deep_extend("force", servers, { [key] = config })
+      servers = vim.tbl_deep_extend("force", servers, { [srv] = config })
     until true
   end
 
