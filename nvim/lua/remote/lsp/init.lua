@@ -14,6 +14,7 @@ local M = {}
 
 M.setup = function()
   local servers = {
+    angularls = {},
     bashls = {},
     cmake = {},
     cssls = {},
