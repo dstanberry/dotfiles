@@ -8,6 +8,7 @@ end
 local icons = require "ui.icons"
 
 mason.setup {
+  PATH = "append",
   log_level = vim.log.levels.INFO,
   max_concurrent_installers = 4,
   ui = {
