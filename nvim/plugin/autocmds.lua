@@ -114,7 +114,7 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "sql",
   callback = function()
     vim.bo.expandtab = true
-    vim.bo.relativenumber = false
+    vim.wo.relativenumber = false
     vim.bo.shiftwidth = 2
     vim.bo.softtabstop = 2
     vim.bo.tabstop = 2
