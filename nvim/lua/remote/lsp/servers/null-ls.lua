@@ -34,6 +34,7 @@ local sources = {
   },
   b.formatting.rustfmt,
   b.formatting.shfmt.with { args = { "-i", "2", "-ci", "-sr", "-s", "-bn" } },
+  b.formatting.sql_formatter,
   b.formatting.stylua,
 }
 
