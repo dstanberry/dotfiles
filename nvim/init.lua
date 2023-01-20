@@ -30,8 +30,9 @@ vim.filetype.add {
   },
   filename = {
     ["*/git/config"] = "gitconfig",
-    ['.gitignore'] = 'conf',
     ["tmux.conf"] = "tmux",
+    [".gitignore"] = "conf",
+    jenkinsfile = "groovy",
   },
 }
 
