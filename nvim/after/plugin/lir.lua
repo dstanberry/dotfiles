@@ -9,7 +9,10 @@ local git_status = require "lir.git_status"
 local has_mmv, mmv_actions = pcall(require "lir.mmv.actions")
 
 lir.setup {
-  devicons_enable = true,
+  devicons = {
+    enable = true,
+    highlight_dirname = true,
+  },
   hide_cursor = true,
   show_hidden_files = false,
   mappings = {
