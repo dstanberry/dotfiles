@@ -1,12 +1,10 @@
 vim.api.nvim_create_augroup("cursorline", { clear = true })
-
 vim.api.nvim_create_autocmd("WinEnter", {
   group = "cursorline",
   callback = function()
     vim.opt_local.cursorline = true
   end,
 })
-
 vim.api.nvim_create_autocmd("FileType", {
   group = "cursorline",
   pattern = "TelescopePrompt",
@@ -14,7 +12,6 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.cursorline = false
   end,
 })
-
 vim.api.nvim_create_autocmd("WinLeave", {
   group = "cursorline",
   callback = function()
@@ -23,14 +20,12 @@ vim.api.nvim_create_autocmd("WinLeave", {
 })
 
 vim.api.nvim_create_augroup("cmdline", { clear = true })
-
 vim.api.nvim_create_autocmd("CmdLineEnter", {
   group = "cmdline",
   callback = function()
     vim.opt.smartcase = false
   end,
 })
-
 vim.api.nvim_create_autocmd("CmdLineLeave", {
   group = "cmdline",
   callback = function()
@@ -39,7 +34,6 @@ vim.api.nvim_create_autocmd("CmdLineLeave", {
 })
 
 vim.api.nvim_create_augroup("filesystem", { clear = true })
-
 vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
   group = "filesystem",
   pattern = "*",
@@ -52,7 +46,6 @@ vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
 })
 
 vim.api.nvim_create_augroup("ftplugin", { clear = true })
-
 vim.api.nvim_create_autocmd("BufEnter", {
   group = "ftplugin",
   pattern = "COMMIT_EDITMSG",
@@ -61,7 +54,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
     vim.cmd.startinsert()
   end,
 })
-
 vim.api.nvim_create_autocmd("Filetype", {
   group = "ftplugin",
   pattern = "*",
@@ -69,7 +61,6 @@ vim.api.nvim_create_autocmd("Filetype", {
     vim.bo.formatoptions = "cjlnqr"
   end,
 })
-
 vim.api.nvim_create_autocmd("Filetype", {
   group = "ftplugin",
   pattern = { "asc", "gpg", "pgp" },
@@ -78,7 +69,6 @@ vim.api.nvim_create_autocmd("Filetype", {
     vim.bo.swapfile = false
   end,
 })
-
 vim.api.nvim_create_autocmd("FileType", {
   group = "ftplugin",
   pattern = { "bash", "javascript", "lua", "sh", "typescript", "zsh" },
@@ -87,7 +77,6 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.shiftwidth = 2
   end,
 })
-
 vim.api.nvim_create_autocmd("FileType", {
   group = "ftplugin",
   pattern = "COMMIT_EDITMSG",
@@ -100,15 +89,13 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.wo.spell = true
   end,
 })
-
 vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
   group = "ftplugin",
-  pattern = { "*.md", "*.mdx" },
+  pattern = { "markdown" },
   callback = function()
     require("ft.markdown").highlight_fenced_code_blocks()
   end,
 })
-
 vim.api.nvim_create_autocmd("FileType", {
   group = "ftplugin",
   pattern = "sql",
@@ -120,7 +107,6 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.tabstop = 2
   end,
 })
-
 vim.api.nvim_create_autocmd("FileType", {
   group = "ftplugin",
   pattern = "vim",
@@ -130,7 +116,6 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.wo.foldmethod = "marker"
   end,
 })
-
 vim.api.nvim_create_autocmd("FileType", {
   group = "ftplugin",
   pattern = {
@@ -152,7 +137,6 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_augroup("terminal_ui", { clear = true })
-
 vim.api.nvim_create_autocmd("TermOpen", {
   group = "terminal_ui",
   callback = function()
@@ -163,7 +147,6 @@ vim.api.nvim_create_autocmd("TermOpen", {
     end
   end,
 })
-
 vim.api.nvim_create_autocmd("TermClose", {
   group = "terminal_ui",
   pattern = "*",
@@ -171,13 +154,12 @@ vim.api.nvim_create_autocmd("TermClose", {
     local bufnr = vim.api.nvim_get_current_buf()
     local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
     if ft ~= "md_preview" then
-      vim.fn.execute(string.format("bdelete! %s", vim.fn.expand "<abuf"))
+      vim.cmd.bdelete { vim.fn.expand "<abuf>", bang = true }
     end
   end,
 })
 
 vim.api.nvim_create_augroup("fold_behaviour", { clear = true })
-
 vim.api.nvim_create_autocmd("BufWinEnter", {
   group = "fold_behaviour",
   callback = function()
@@ -190,7 +172,6 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 })
 
 vim.api.nvim_create_augroup("yank_highlight", { clear = true })
-
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = "yank_highlight",
   callback = function()
