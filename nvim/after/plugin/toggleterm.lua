@@ -48,3 +48,17 @@ float = Terminal:new {
 vim.keymap.set({ "i", "n" }, "<a-t>", function()
   float:toggle()
 end)
+
+local tab
+tab = Terminal:new {
+  direction = "tab",
+  on_open = function(term)
+    vim.keymap.set({ "i", "n", "t" }, "<a-y>", function()
+      tab:toggle()
+    end, { buffer = term.bufnr })
+  end,
+}
+
+vim.keymap.set({ "i", "n" }, "<a-y>", function()
+  tab:toggle()
+end)
