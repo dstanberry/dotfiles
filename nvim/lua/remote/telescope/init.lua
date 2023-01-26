@@ -345,6 +345,7 @@ function M.project_files()
   local git = vim.fs.find ".git"
   if #git >= 1 then
     opts.prompt_title = "Project Files (Git)"
+    opts.show_untracked = true
     builtin.git_files(opts)
   else
     opts.prompt_title = "Project Files"
