@@ -6,40 +6,20 @@ if not ok or DISABLED then
 end
 
 local telescope = require "telescope"
-local icons = require "ui.icons"
 
 noice.setup {
-  cmdline = {
-    view = "cmdline_popup",
-    opts = {
-      buf_options = { filetype = "vim" },
-    },
-    icons = {
-      ["/"] = { icon = icons.misc.ChevronRight, hl_group = "String" },
-      ["?"] = { icon = icons.misc.ChevronRight, hl_group = "String" },
-      [":"] = { icon = icons.misc.ChevronRight, hl_group = "String", firstc = false },
-    },
-  },
   lsp = {
-    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
     override = {
+      ["cmp.entry.get_documentation"] = true,
       ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
       ["vim.lsp.util.stylize_markdown"] = true,
-      ["cmp.entry.get_documentation"] = true,
     },
   },
   popupmenu = {
     backend = "cmp",
   },
   routes = {
-    {
-      filter = { event = "msg_show", kind = "", find = "written" },
-      opts = { skip = true },
-    },
-    {
-      filter = { event = "msg_show", kind = "search_count" },
-      opts = { skip = true },
-    },
+    { filter = { event = "msg_show", find = "%d+L, %d+B" }, view = "mini" },
   },
   views = {
     cmdline_popup = {
