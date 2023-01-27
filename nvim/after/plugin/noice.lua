@@ -1,6 +1,6 @@
 -- verify noice is available
 local ok, noice = pcall(require, "noice")
-local DISABLED = true
+local DISABLED = false
 if not ok or DISABLED then
   return
 end
@@ -9,9 +9,6 @@ local telescope = require "telescope"
 local icons = require "ui.icons"
 
 noice.setup {
-  popupmenu = {
-    backend = "cmp",
-  },
   cmdline = {
     view = "cmdline_popup",
     opts = {
@@ -23,23 +20,16 @@ noice.setup {
       [":"] = { icon = icons.misc.ChevronRight, hl_group = "String", firstc = false },
     },
   },
-  views = {
-    cmdline_popup = {
-      filter_options = {},
-      position = { row = 10, col = "50%" },
-      border = {
-        style = "none",
-        padding = { 2, 3 },
-      },
-      win_options = {
-        winhighlight = { NormalFloat = "NormalFloat", FloatBorder = "NormalFloat" },
-      },
+  lsp = {
+    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true,
     },
-    popupmenu = {
-      relative = "editor",
-      position = { row = 13, col = "50%" },
-      size = { width = 60, height = 10 },
-    },
+  },
+  popupmenu = {
+    backend = "cmp",
   },
   routes = {
     {
@@ -49,6 +39,21 @@ noice.setup {
     {
       filter = { event = "msg_show", kind = "search_count" },
       opts = { skip = true },
+    },
+  },
+  views = {
+    cmdline_popup = {
+      border = { style = "none", padding = { 2, 3 } },
+      filter_options = {},
+      -- position = { row = 10, col = "50%" },
+      win_options = {
+        winhighlight = { NormalFloat = "NormalFloat", FloatBorder = "NormalFloat" },
+      },
+    },
+    popupmenu = {
+      relative = "editor",
+      position = { row = 13, col = "50%" },
+      size = { width = 60, height = 10 },
     },
   },
 }

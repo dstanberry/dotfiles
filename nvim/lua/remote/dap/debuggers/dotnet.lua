@@ -1,8 +1,8 @@
-local dap = require "remote.dap"
-
 local M = {}
 
 M.setup = function()
+  local dap = require "dap"
+
   dap.adapters.netcoredbg = {
     type = "executable",
     args = { "--interpreter=vscode" },

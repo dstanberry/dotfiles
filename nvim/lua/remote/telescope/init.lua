@@ -303,7 +303,7 @@ end
 
 function M.find_plugins()
   builtin.find_files {
-    cwd = string.format("%s/site/pack/packer/", vim.fn.stdpath "data"),
+    cwd = string.format("%s/lazy", vim.fn.stdpath "data"),
     layout_strategy = "vertical",
     prompt_title = "Remote Plugins",
   }

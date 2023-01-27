@@ -1,11 +1,11 @@
-local dap = require "remote.dap"
-
 local path = vim.fn.expand(string.format("%s/mason/packages", vim.fn.stdpath "data"))
 local basedir = vim.fn.expand(("%s/%s"):format(path, "node-debug2-adapter"))
 
 local M = {}
 
 M.setup = function()
+  local dap = require "dap"
+
   dap.adapters.node2 = {
     type = "executable",
     command = "node",

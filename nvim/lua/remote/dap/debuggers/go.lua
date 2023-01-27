@@ -1,8 +1,8 @@
-local dap = require "remote.dap"
-
 local M = {}
 
 M.setup = function()
+  local dap = require "dap"
+
   dap.adapters.delve = {
     type = "server",
     port = "${port}",

@@ -1,4 +1,4 @@
-local dap = require "remote.dap"
+local dap = require "dap"
 
 require("dap.ext.autocompl").attach()
 

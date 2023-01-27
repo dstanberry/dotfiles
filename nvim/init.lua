@@ -71,9 +71,4 @@ vim.cmd.colorscheme "kdark"
 util.load_dirhash(vim.env.SHELL)
 util.load_settings()
 
-vim.defer_fn(function()
-  if setting_enabled "remote_plugins" then
-    pcall(require, "remote")
-    pcall(require, "remote.packer_compiled")
-  end
-end, 0)
+require("remote")

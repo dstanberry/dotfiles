@@ -127,7 +127,6 @@ vim.api.nvim_create_autocmd("FileType", {
     "help",
     "NeogitPopup",
     "NeogitStatus",
-    "packer",
     "qf",
     "startuptime",
   },

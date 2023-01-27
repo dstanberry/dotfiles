@@ -5,7 +5,7 @@ end
 
 local zku = require "zk.util"
 
-local telescope = require "remote.telescope"
+local telescope = require "telescope"
 local themes = require "telescope.themes"
 
 local markdown = require "ft.markdown"

@@ -1,5 +1,3 @@
-local dap = require "remote.dap"
-
 local path = string.format("%s/mason/packages", vim.fn.stdpath "data")
 local basedir = vim.fn.expand(("%s/%s"):format(path, "codelldb"))
 local bin = vim.fn.expand(("%s/%s"):format(basedir, "extension/adapter/codelldb"))
@@ -15,13 +13,15 @@ M.get_executable_path = function()
 end
 
 M.setup = function()
+  local dap = require "dap"
+
   dap.adapters.codelldb = {
     type = "server",
     port = "${port}",
     executable = {
       command = bin,
       args = { "--port", "${port}" },
-      detached = has("win32") and false or nil,
+      detached = has "win32" and false or nil,
     },
   }
   dap.configurations.c = {

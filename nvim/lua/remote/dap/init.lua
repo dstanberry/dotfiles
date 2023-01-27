@@ -1,24 +1,15 @@
--- verify dap is available
-local ok, dap = pcall(require, "dap")
-if not ok then
-  return
-end
-
 local util = require "util"
 local icons = require "ui.icons"
 
-local M = setmetatable({}, {
-  __index = function(t, k)
-    if k == "widgets" then
-      local val = require "dap.ui.widgets"
-      rawset(t, k, val)
-      return val
-    end
-    return dap[k]
-  end,
-})
+local M = {}
 
 M.setup = function()
+  -- verify dap is available
+  local ok, dap = pcall(require, "dap")
+  if not ok then
+    return
+  end
+
   dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
 
   vim.fn.sign_define("DapBreakpoint", {

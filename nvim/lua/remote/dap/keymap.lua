@@ -1,8 +1,9 @@
-local dap = require "remote.dap"
+local dap = require "dap"
+local dapwidgets = require "dap.ui.widgets"
 local dapui = require "dapui"
 
 vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint)
-vim.keymap.set("n", "<leader>dh", dap.widgets.hover)
+vim.keymap.set("n", "<leader>dh", dapwidgets.hover)
 
 vim.keymap.set("n", "<leader>dB", function()
   dap.set_breakpoint(vim.fn.input "Breakpoint condition: ")

@@ -1,8 +1,10 @@
-local telescope = require "remote.telescope"
+local telescope = require "telescope"
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
+local builtin = require "telescope.builtin"
 local themes = require "telescope.themes"
 
+local pickers = require "remote.telescope.custom.pickers"
 local util = require "util"
 local zk = require "remote.lsp.servers.zk"
 local zku = require "zk.util"
@@ -58,14 +60,14 @@ M.find_notes = function()
     end,
   }
   if notebook_root then
-    telescope.find_files(themes.get_ivy(opts))
+    builtin.find_files(themes.get_ivy(opts))
   else
     vim.notify("Zk notebook not found!", vim.log.levels.ERROR)
   end
 end
 
 M.create_note = function()
-  telescope.pickers.create("dropdown", templates, {
+  pickers.create("dropdown", templates, {
     callback = function(selection)
       local opts = {}
       opts.prompt_title = "Notes (create from template)"
@@ -93,7 +95,7 @@ M.create_reference_with_title = function()
   if chunk == nil then
     error "No selected text"
   end
-  telescope.pickers.create("dropdown", templates, {
+  pickers.create("dropdown", templates, {
     callback = function(selection)
       local opts = {}
       opts.prompt_title = "Notes (create reference from template)"
@@ -113,7 +115,7 @@ M.create_reference_with_content = function()
   if chunk == nil then
     error "No selected text"
   end
-  telescope.pickers.create("dropdown", templates, {
+  pickers.create("dropdown", templates, {
     callback = function(selection)
       local opts = {}
       opts.prompt_title = "Notes (create reference from template)"

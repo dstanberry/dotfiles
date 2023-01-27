@@ -41,7 +41,7 @@ libfm/
 lnav/
 nitrogen/
 npm/
-nvim/lua/remote/packer_compiled.lua
+nvim/lua/remote/lazy-lock.json
 nvim/settings.conf
 okularpartrc
 okularrc
