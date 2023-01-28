@@ -11,6 +11,16 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+vim.api.nvim_create_augroup("lazy-buffer", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = "lazy-buffer",
+  pattern = "lazy",
+  callback = function()
+    -- force |BufEnter| so that statusline formatting applies
+    vim.cmd.doautocmd "BufEnter"
+  end,
+})
+
 local opts = {
   root = string.format("%s/lazy", vim.fn.stdpath "data"),
   lockfile = string.format("%s/lua/remote/lazy-lock.json", vim.fn.stdpath "config"),
@@ -93,9 +103,9 @@ local plugins = {
       "jose-elias-alvarez/null-ls.nvim",
       "jose-elias-alvarez/typescript.nvim",
       "lvimuser/lsp-inlayhints.nvim",
-      "mickael-menu/zk-nvim",
       "simrat39/rust-tools.nvim",
       "theHamsta/nvim-semantic-tokens",
+      { "mickael-menu/zk-nvim", dependencies = { "nvim-telescope/telescope.nvim" } },
     },
   },
   {
@@ -186,7 +196,6 @@ local plugins = {
     dependencies = {
       {
         "rcarriga/nvim-dap-ui",
-        commit = "b80227ea56a48177786904f6322abc8b2dc0bc36",
       },
       "jbyuki/one-small-step-for-vimkind",
       "mfussenegger/nvim-dap-python",
