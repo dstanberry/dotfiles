@@ -25,7 +25,7 @@ vim.api.nvim_create_user_command("ZkGrep", function(opts)
 end, {})
 
 vim.api.nvim_create_user_command("ZkReference", function(opts)
-  markdown.zk.create_reference_to_note(opts)
+  markdown.zk.create_note_from_selection(opts)
 end, {
   nargs = "?",
   range = true,
@@ -40,11 +40,3 @@ end, {
     end
   end,
 })
-
-vim.api.nvim_create_user_command("ZkInsertLink", function(opts)
-  markdown.zk.insert_backlink(opts)
-end, {})
-
-vim.api.nvim_create_user_command("ZkLinkToNote", function(opts)
-  markdown.zk.insert_link(opts)
-end, { range = true })

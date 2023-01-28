@@ -21,9 +21,6 @@ vim.keymap.set("i", "<c-w>c", markdown.insert_checkbox, { buffer = vim.api.nvim_
 vim.keymap.set("i", "<c-w>l", markdown.insert_link, { buffer = vim.api.nvim_get_current_buf() })
 vim.keymap.set({ "n", "v" }, "<c-w>b", markdown.toggle_bullet, { buffer = vim.api.nvim_get_current_buf() })
 vim.keymap.set({ "n", "v" }, "<c-w>c", markdown.toggle_checkbox, { buffer = vim.api.nvim_get_current_buf() })
-vim.keymap.set("i", "[[", function()
-  vim.cmd "ZkInsertLink"
-end, { buffer = vim.api.nvim_get_current_buf() })
-vim.keymap.set("v", "[[", function()
-  vim.cmd "ZkLinkToNote"
-end, { buffer = vim.api.nvim_get_current_buf() })
+
+vim.keymap.set("i", "[[", markdown.zk.insert_link, { buffer = vim.api.nvim_get_current_buf() })
+vim.keymap.set("v", "{{", markdown.zk.insert_link_from_selection, { buffer = vim.api.nvim_get_current_buf() })
