@@ -116,7 +116,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.documentSymbolProvider then
-    require("remote.navic").attach(client, bufnr)
+    pcall(require("nvim-navic").attach, client, bufnr)
   end
 
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })

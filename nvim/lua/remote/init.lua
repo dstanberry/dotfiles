@@ -156,7 +156,13 @@ local plugins = {
   { "lukas-reineke/indent-blankline.nvim" },
   { "NvChad/nvim-colorizer.lua" },
   { "rcarriga/nvim-notify" },
-  { "SmiteshP/nvim-navic", dependencies = { "neovim/nvim-lspconfig" } },
+  {
+    "SmiteshP/nvim-navic",
+    dependencies = { "neovim/nvim-lspconfig" },
+    config = function()
+      require "remote.navic"
+    end,
+  },
   -- text manipulation
   {
     "hrsh7th/nvim-cmp",

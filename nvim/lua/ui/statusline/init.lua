@@ -137,20 +137,20 @@ M.setup = function(config)
     end
   end
 
-  vim.api.nvim_create_augroup("winbar", { clear = true })
-  vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "TabNew", "TabEnter" }, {
-    group = "winbar",
-    callback = function()
-      set_winbar(false)
-    end,
-  })
-  vim.api.nvim_create_autocmd("User", {
-    group = "winbar",
-    pattern = { "DiffviewDiffBufRead", "DiffviewDiffBufWinEnter" },
-    callback = function()
-      set_winbar(true)
-    end,
-  })
+  -- vim.api.nvim_create_augroup("winbar", { clear = true })
+  -- vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "TabNew", "TabEnter" }, {
+  --   group = "winbar",
+  --   callback = function()
+  --     set_winbar(false)
+  --   end,
+  -- })
+  -- vim.api.nvim_create_autocmd("User", {
+  --   group = "winbar",
+  --   pattern = { "DiffviewDiffBufRead", "DiffviewDiffBufWinEnter" },
+  --   callback = function()
+  --     set_winbar(true)
+  --   end,
+  -- })
 end
 
 return M

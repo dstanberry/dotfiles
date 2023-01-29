@@ -1,5 +1,5 @@
 local has_devicons, devicons = pcall(require, "nvim-web-devicons")
-local navic = require "remote.navic"
+local navic = require "nvim-navic"
 local add = require("ui.statusline.helper").add
 local highlight = require "ui.statusline.highlight"
 local icons = require "ui.icons"

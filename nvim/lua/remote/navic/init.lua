@@ -36,7 +36,7 @@ groups.new("NavicIconsTypeParameter", { fg = c.rose })
 groups.new("NavicIconsVariable", { fg = c.magenta })
 
 navic.setup {
-  depth_limit = 0,
+  depth_limit = 5,
   depth_limit_indicator = "..",
   highlight = true,
   icons = {
@@ -69,9 +69,3 @@ navic.setup {
   },
   separator = pad(icons.misc.ChevronRight, "right"),
 }
-
-return setmetatable({}, {
-  __index = function(t, k)
-    return navic[k]
-  end,
-})
