@@ -30,7 +30,7 @@ M.config = {
       diagnostics = {
         enable = true,
         disable = { "cast-local-type", "missing-parameter", "param-type-mismatch" },
-        globals = { "dump", "has", "profile", "reload" },
+        globals = { "dump", "has", "profile", "reload", "vim" },
       },
       format = {
         enable = false,
