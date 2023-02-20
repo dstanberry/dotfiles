@@ -53,6 +53,7 @@ M.setup = function()
   require("luasnip.loaders.from_lua").lazy_load {
     paths = ("%s/lua/remote/luasnip/snippets/"):format(vim.fn.stdpath "config"),
   }
+  require "remote.luasnip.keymap"
 end
 
 return meta
