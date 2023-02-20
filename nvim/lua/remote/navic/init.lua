@@ -35,6 +35,16 @@ groups.new("NavicIconsStruct", { fg = c.orange })
 groups.new("NavicIconsTypeParameter", { fg = c.rose })
 groups.new("NavicIconsVariable", { fg = c.magenta })
 
+vim.api.nvim_create_augroup("navic-buffer", { clear = true })
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = "navic-buffer",
+  callback = function()
+    if vim.api.nvim_buf_line_count(0) > 10000 then
+      vim.b.navic_lazy_update_context = true
+    end
+  end,
+})
+
 navic.setup {
   depth_limit = 5,
   depth_limit_indicator = "..",
@@ -67,5 +77,5 @@ navic.setup {
     TypeParameter = pad(icons.kind.TypeParameter, "right"),
     Variable = pad(icons.kind.Variable, "right"),
   },
-  separator = pad(icons.misc.ChevronRight, "right"),
+  separator = pad(icons.misc.ChevronRight, "both"),
 }
