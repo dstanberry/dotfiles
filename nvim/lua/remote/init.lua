@@ -100,6 +100,14 @@ local plugins = {
     dependencies = {
       "b0o/schemastore.nvim",
       "folke/neodev.nvim",
+      {
+        "folke/neoconf.nvim",
+        cmd = { "Neoconf" },
+        opts = { local_settings = ".nvim.json", global_settings = "nvim.json" },
+        config = function()
+          require("neoconf").setup {}
+        end,
+      },
       "jose-elias-alvarez/null-ls.nvim",
       "jose-elias-alvarez/typescript.nvim",
       "lvimuser/lsp-inlayhints.nvim",
