@@ -1,5 +1,3 @@
-pcall(require, "impatient")
-
 local util = require "util"
 require "util.globals"
 

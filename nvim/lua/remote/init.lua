@@ -46,8 +46,6 @@ local plugins = {
       }
     end,
   },
-  -- startup optimization
-  { "lewis6991/impatient.nvim" },
   -- written in vimscript
   { "tpope/vim-repeat" },
   -- filetype extensions
