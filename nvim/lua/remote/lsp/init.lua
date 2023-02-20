@@ -57,7 +57,7 @@ M.setup = function()
         do
           break
         end
-      elseif srv == "sumneko_lua" then
+      elseif srv == "lua_ls" then
         require(mod).setup()
       elseif srv == "tsserver" then
         require(mod).setup(vim.tbl_deep_extend("force", {
