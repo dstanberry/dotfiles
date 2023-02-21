@@ -1,7 +1,8 @@
 local icons = require "ui.icons"
 
-return { 
+return {
   "lukas-reineke/indent-blankline.nvim",
+  event = { "BufReadPre", "BufNewFile" },
   opts = {
     indentLine_enabled = 1,
     show_current_context = false,
@@ -9,7 +10,7 @@ return {
     show_trailing_blankline_indent = false,
     space_char_blankline = " ",
     char_list = { icons.misc.VerticalBarThin, icons.misc.VerticalBarSplit },
-    buftype_exclude = { "terminal" },
+    buftype_exclude = { "terminal", "nofile" },
     filetype = {
       "go",
       "html",
