@@ -1,9 +1,3 @@
--- verify lspconfig is available
-local ok, _ = pcall(require, "lspconfig")
-if not ok then
-  return
-end
-
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"

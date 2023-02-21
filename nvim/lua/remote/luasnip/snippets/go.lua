@@ -6,7 +6,7 @@ local get_node_text = vim.treesitter.query.get_node_text
 local rutil = require "remote.luasnip.util"
 
 ---@diagnostic disable: undefined-global
-require("remote.luasnip").nodes.setup_snip_env()
+require("remote.luasnip.nodes").setup_snip_env()
 
 local transforms = {
   int = function(_, _)

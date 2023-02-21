@@ -1,8 +1,3 @@
--- verify nvim-treesitter is available
-if not pcall(require, "nvim-treesitter") then
-  return
-end
-
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 
@@ -22,146 +17,168 @@ groups.new("TSRainbow5", { fg = PINK })
 groups.new("TSRainbow6", { fg = ORANGE })
 groups.new("TSRainbow7", { fg = YELLOW })
 
-require("nvim-treesitter.configs").setup {
-  ensure_installed = "all",
-  context_commentstring = {
-    enable = true,
-    enable_autocmd = false,
-  },
-  highlight = {
-    enable = true,
-    use_languagetree = false,
-    -- disable = { "markdown" },
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "=",
-      node_incremental = "gn",
-      scope_incremental = "<c-a>",
-      node_decremental = "gp",
-    },
-  },
-  pairs = {
-    enable = true,
-    disable = {},
-    highlight_pair_events = {},
-    highlight_self = false,
-    goto_right_end = false,
-    keymaps = {
-      goto_partner = "%",
-    },
-  },
-  playground = {
-    enable = true,
-    disable = {},
-    updatetime = 25,
-    persist_queries = false,
-    keybindings = {
-      toggle_query_editor = "o",
-      toggle_hl_groups = "i",
-      toggle_injected_languages = "t",
-      toggle_anonymous_nodes = "a",
-      toggle_language_display = "I",
-      focus_language = "f",
-      unfocus_language = "F",
-      update = "R",
-      goto_node = "<cr>",
-      show_help = "?",
-    },
-  },
-  query_linter = {
-    enable = true,
-    use_virtual_text = true,
-    lint_events = { "BufWrite", "CursorHold" },
-  },
-  rainbow = {
-    enable = true,
-    colors = {
-      c.CYAN,
-      c.CYAN_LIGHT,
-      c.MAGENTA,
-      c.MAGENTA_LIGHT,
-      c.PINK,
-      c.ORANGE,
-      c.YELLOW,
-    },
-  },
-  refactor = {
-    highlight_definitions = { enable = true },
-    highlight_current_scope = { enable = false },
-    smart_rename = {
-      enable = true,
-      keymaps = {
-        smart_rename = "g<localleader>",
+return {
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = {
+      {
+        "nvim-treesitter/nvim-treesitter-context",
+        config = function()
+          require "remote.treesitter.context"
+        end,
       },
+      "JoosepAlviste/nvim-ts-context-commentstring",
+      "nvim-treesitter/nvim-treesitter-refactor",
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      "nvim-treesitter/playground",
+      "p00f/nvim-ts-rainbow",
+      "theHamsta/nvim-treesitter-pairs",
     },
-    navigation = {
-      enable = false,
-      -- keymaps = {
-      --   goto_definition = "",
-      --   list_definitions = "",
-      --   list_definitions_toc = "",
-      --   goto_next_usage = "",
-      --   goto_previous_usage = "",
-      -- },
-    },
-  },
-  textobjects = {
-    lsp_interop = {
-      enable = true,
-      peek_definition_code = {
-        ["df"] = "@function.outer",
-        ["dF"] = "@class.outer",
-      },
-    },
-    move = {
-      enable = true,
-      set_jumps = true,
-      goto_next_start = {
-        ["]{"] = "@function.outer",
-        ["]["] = "@class.outer",
-      },
-      goto_next_end = {
-        ["]}"] = "@function.outer",
-        ["]]"] = "@class.outer",
-      },
-      goto_previous_start = {
-        ["[{"] = "@function.outer",
-        ["[["] = "@class.outer",
-      },
-      goto_previous_end = {
-        ["[}"] = "@function.outer",
-        ["[]"] = "@class.outer",
-      },
-    },
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["ab"] = "@block.outer",
-        ["ib"] = "@block.inner",
-        ["ac"] = "@conditional.outer",
-        ["ic"] = "@conditional.inner",
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["aa"] = "@parameter.outer",
-        ["ii"] = "@parameter.inner",
-      },
-    },
-    swap = {
-      enable = true,
-      swap_next = {
-        ["<c-s><c-l>"] = "@parameter.inner",
-        ["<c-s><c-j>"] = "@function.outer",
-      },
-      swap_previous = {
-        ["<c-s><c-h>"] = "@parameter.inner",
-        ["<c-s><c-k>"] = "@function.outer",
-      },
-    },
+    config = function()
+      require("nvim-treesitter.configs").setup {
+        ensure_installed = "all",
+        context_commentstring = {
+          enable = true,
+          enable_autocmd = false,
+        },
+        highlight = {
+          enable = true,
+          use_languagetree = false,
+          -- disable = { "markdown" },
+        },
+        incremental_selection = {
+          enable = true,
+          keymaps = {
+            init_selection = "=",
+            node_incremental = "gn",
+            scope_incremental = "<c-a>",
+            node_decremental = "gp",
+          },
+        },
+        pairs = {
+          enable = true,
+          disable = {},
+          highlight_pair_events = {},
+          highlight_self = false,
+          goto_right_end = false,
+          keymaps = {
+            goto_partner = "%",
+          },
+        },
+        playground = {
+          enable = true,
+          disable = {},
+          updatetime = 25,
+          persist_queries = false,
+          keybindings = {
+            toggle_query_editor = "o",
+            toggle_hl_groups = "i",
+            toggle_injected_languages = "t",
+            toggle_anonymous_nodes = "a",
+            toggle_language_display = "I",
+            focus_language = "f",
+            unfocus_language = "F",
+            update = "R",
+            goto_node = "<cr>",
+            show_help = "?",
+          },
+        },
+        query_linter = {
+          enable = true,
+          use_virtual_text = true,
+          lint_events = { "BufWrite", "CursorHold" },
+        },
+        rainbow = {
+          enable = true,
+          colors = {
+            c.CYAN,
+            c.CYAN_LIGHT,
+            c.MAGENTA,
+            c.MAGENTA_LIGHT,
+            c.PINK,
+            c.ORANGE,
+            c.YELLOW,
+          },
+        },
+        refactor = {
+          highlight_definitions = { enable = true },
+          highlight_current_scope = { enable = false },
+          smart_rename = {
+            enable = true,
+            keymaps = {
+              smart_rename = "g<localleader>",
+            },
+          },
+          navigation = {
+            enable = false,
+            -- keymaps = {
+            --   goto_definition = "",
+            --   list_definitions = "",
+            --   list_definitions_toc = "",
+            --   goto_next_usage = "",
+            --   goto_previous_usage = "",
+            -- },
+          },
+        },
+        textobjects = {
+          lsp_interop = {
+            enable = true,
+            peek_definition_code = {
+              ["df"] = "@function.outer",
+              ["dF"] = "@class.outer",
+            },
+          },
+          move = {
+            enable = true,
+            set_jumps = true,
+            goto_next_start = {
+              ["]{"] = "@function.outer",
+              ["]["] = "@class.outer",
+            },
+            goto_next_end = {
+              ["]}"] = "@function.outer",
+              ["]]"] = "@class.outer",
+            },
+            goto_previous_start = {
+              ["[{"] = "@function.outer",
+              ["[["] = "@class.outer",
+            },
+            goto_previous_end = {
+              ["[}"] = "@function.outer",
+              ["[]"] = "@class.outer",
+            },
+          },
+          select = {
+            enable = true,
+            lookahead = true,
+            keymaps = {
+              ["ab"] = "@block.outer",
+              ["ib"] = "@block.inner",
+              ["ac"] = "@conditional.outer",
+              ["ic"] = "@conditional.inner",
+              ["af"] = "@function.outer",
+              ["if"] = "@function.inner",
+              ["aa"] = "@parameter.outer",
+              ["ii"] = "@parameter.inner",
+            },
+          },
+          swap = {
+            enable = true,
+            swap_next = {
+              ["<c-s><c-l>"] = "@parameter.inner",
+              ["<c-s><c-j>"] = "@function.outer",
+            },
+            swap_previous = {
+              ["<c-s><c-h>"] = "@parameter.inner",
+              ["<c-s><c-k>"] = "@function.outer",
+            },
+          },
+        },
+      }
+      -- setup custom parsers
+      require "remote.treesitter.parsers"
+    end,
   },
 }
-
--- setup custom parsers
-require "remote.treesitter.parsers"

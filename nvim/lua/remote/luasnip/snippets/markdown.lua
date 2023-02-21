@@ -1,7 +1,7 @@
 local rutil = require "remote.luasnip.util"
 
 ---@diagnostic disable: undefined-global
-require("remote.luasnip").nodes.setup_snip_env()
+require("remote.luasnip.nodes").setup_snip_env()
 
 local function repeat_list(delimiter)
   local ret

@@ -1,222 +1,7 @@
--- verify telescope is available
-local ok = pcall(require, "lspconfig")
-if not ok and not pcall(require, "telescope") then
-  return
-end
-
-local should_reload = true
-local reloader = function()
-  if should_reload then
-    reload "plenary"
-    reload "popup"
-    reload "telescope"
-  end
-end
-
-local telescope = require "telescope"
-local actions = require "telescope.actions"
-local layout = require "telescope.actions.layout"
-local state = require "telescope.actions.state"
-local builtin = require "telescope.builtin"
-local themes = require "telescope.themes"
-
-local lga_actions = require "telescope-live-grep-args.actions"
-
 local c = require("ui.theme").colors
 local color = require "util.color"
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
-
-local set_prompt_to_entry_value = function(prompt_bufnr)
-  local entry = state.get_selected_entry()
-  if not entry or not type(entry) == "table" then
-    return
-  end
-  state.get_current_picker(prompt_bufnr):reset_prompt(entry.ordinal)
-end
-
-local copy_commit = function(prompt_bufnr)
-  local commit = state.get_selected_entry().value
-  actions.close(prompt_bufnr)
-  vim.fn.setreg("+", commit)
-  vim.defer_fn(function()
-    vim.notify(("'%s' copied to clipboard"):format(commit), nil, { timeout = 500 })
-  end, 500)
-end
-
-local interactive_rebase = function(prompt_bufnr)
-  local commit = state.get_selected_entry().value
-  actions.close(prompt_bufnr)
-  vim.api.nvim_exec("tabnew | terminal", false)
-  local term_channel = vim.opt_local.channel:get()
-  vim.api.nvim_chan_send(term_channel, ("git rebase --interactive %s\r"):format(commit))
-  vim.cmd.normal "a"
-end
-
-telescope.setup {
-  defaults = {
-    prompt_prefix = pad(icons.misc.Prompt, "right"),
-    selection_caret = pad(icons.misc.CaretRight, "right"),
-    multi_icon = pad(icons.misc.CaretRight, "right"),
-    sorting_strategy = "descending",
-    results_title = false,
-    scroll_strategy = "cycle",
-    layout_strategy = "flex",
-    cycle_layout_list = {
-      "flex",
-      "horizontal",
-      "vertical",
-      "bottom_pane",
-      "center",
-    },
-    layout_config = {
-      horizontal = { preview_width = 0.6 },
-      vertical = { preview_height = 0.7 },
-    },
-    mappings = {
-      i = {
-        ["<c-/>"] = actions.which_key,
-        ["<c-d>"] = actions.preview_scrolling_down,
-        ["<c-f>"] = actions.preview_scrolling_up,
-        ["<c-l>"] = layout.cycle_layout_next,
-        ["<c-p>"] = layout.toggle_preview,
-        ["<c-t>"] = actions.select_tab,
-        ["<c-v>"] = actions.select_vertical,
-        ["<c-x>"] = actions.select_horizontal,
-        ["<c-y>"] = set_prompt_to_entry_value,
-        ["<c-n>"] = false,
-        ["<c-u>"] = false,
-        ["jk"] = actions.close,
-      },
-      n = {
-        ["q"] = actions.close,
-      },
-    },
-  },
-  file_ignore_patterns = {
-    "%.DAT",
-    "%.db",
-    "%.DS_Store",
-    "%.git",
-    "%.gitattributes",
-    "%.gpg",
-    "%.venv",
-    "^node_modules/",
-    "^ntuser",
-    "git%-crypt",
-    "karabiner/assets",
-  },
-  pickers = {
-    buffers = {
-      theme = "dropdown",
-      sort_mru = true,
-      sort_lastused = true,
-      show_all_buffers = true,
-      ignore_current_buffer = true,
-      previewer = false,
-      mappings = {
-        i = { ["<c-d>"] = "delete_buffer" },
-        n = { ["d"] = "delete_buffer" },
-      },
-    },
-    grep_string = {
-      layout_config = { height = 30, prompt_position = "top" },
-    },
-    help_tags = {
-      theme = "ivy",
-      layout_config = { height = 30, prompt_position = "top" },
-    },
-    live_grep = {
-      layout_strategy = "vertical",
-    },
-    git_branches = {
-      theme = "dropdown",
-    },
-    git_bcommits = {
-      layout_strategy = "vertical",
-      mappings = {
-        i = {
-          ["<c-r>"] = interactive_rebase,
-          ["<c-y>"] = copy_commit,
-        },
-      },
-    },
-    git_commits = {
-      layout_strategy = "vertical",
-      mappings = {
-        i = {
-          ["<c-r>"] = interactive_rebase,
-          ["<c-y>"] = copy_commit,
-        },
-      },
-    },
-    diagnostics = {
-      path_display = { "shorten" },
-      theme = "vertical",
-      layout_config = { height = 20 },
-    },
-    lsp_definitions = {
-      theme = "ivy",
-      layout_config = { height = 40, prompt_position = "top" },
-    },
-    lsp_document_symbols = {
-      path_display = { "hidden" },
-      theme = "ivy",
-      layout_config = { height = 40, prompt_position = "top" },
-    },
-    lsp_dynamic_workspace_symbols = {
-      path_display = { "shorten" },
-      theme = "ivy",
-      layout_config = { height = 40, prompt_position = "top" },
-    },
-    lsp_references = {
-      path_display = { "shorten" },
-      theme = "ivy",
-      layout_config = { height = 40, prompt_position = "top" },
-    },
-    lsp_workspace_symbols = {
-      path_display = { "shorten" },
-      theme = "ivy",
-      layout_config = { height = 40, prompt_position = "top" },
-    },
-    registers = {
-      theme = "dropdown",
-      layout_config = { height = 40 },
-    },
-  },
-  extensions = {
-    file_browser = {
-      theme = "ivy",
-    },
-    fzf = not has "win32" and {
-      case_mode = "smart_case",
-      override_file_sorter = true,
-      override_generic_sorter = false,
-    } or {},
-    live_grep_args = {
-      auto_quoting = true,
-      layout_strategy = "vertical",
-      mappings = {
-        i = {
-          ["<c-k>"] = lga_actions.quote_prompt(),
-          ["<c-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
-        },
-      },
-    },
-    ["ui-select"] = {
-      themes.get_cursor {
-        previewer = false,
-      },
-    },
-  },
-}
-
-if not has "win32" then
-  pcall(telescope.load_extension "fzf")
-end
-pcall(telescope.load_extension "file_browser")
-pcall(telescope.load_extension "gh")
-pcall(telescope.load_extension "ui-select")
 
 local GRAY = color.darken(c.gray, 10)
 local GRAY_DARK = color.darken(c.gray, 25)
@@ -241,35 +26,16 @@ groups.new("TelescopeMultiSelection", { fg = c.magenta })
 groups.new("TelescopeSelection", { fg = nil, bg = BLUE, bold = true })
 groups.new("TelescopeSelectionCaret", { fg = c.fg_dark, bg = BLUE, bold = true })
 
-local M = {}
-local meta = setmetatable({}, {
-  __index = function(t, k)
-    reloader()
-    local use_custom, custom = pcall(require, ("remote.telescope.custom.%s"):format(k))
-
-    if M[k] then
-      return M[k]
-    elseif use_custom then
-      rawset(t, k, custom)
-      return custom
-    elseif builtin[k] then
-      return builtin[k]
-    else
-      return telescope[k]
-    end
-  end,
-})
-
-function M.current_buffer()
-  builtin.current_buffer_fuzzy_find {
+local function current_buffer()
+  require("telescope.builtin").current_buffer_fuzzy_find {
     previewer = false,
     prompt_title = "Find in File",
     sorting_strategy = "ascending",
   }
 end
 
-function M.find_nvim()
-  builtin.find_files {
+local function find_nvim()
+  require("telescope.builtin").find_files {
     follow = has "win32" and false or true,
     hidden = has "win32" and false or true,
     cwd = vim.fn.stdpath "config",
@@ -278,7 +44,7 @@ function M.find_nvim()
   }
 end
 
-function M.file_browser()
+local function file_browser()
   local opts
   opts = {
     follow = has "win32" and false or true,
@@ -286,10 +52,10 @@ function M.file_browser()
     prompt_title = "File Browser",
     sorting_strategy = "ascending",
   }
-  telescope.extensions.file_browser.file_browser(opts)
+  require("telescope").extensions.file_browser.file_browser(opts)
 end
 
-function M.file_browser_relative()
+local function file_browser_relative()
   local opts
   opts = {
     path = "%:p:h",
@@ -298,45 +64,37 @@ function M.file_browser_relative()
     prompt_title = "File Browser",
     sorting_strategy = "ascending",
   }
-  telescope.extensions.file_browser.file_browser(opts)
+  require("telescope").extensions.file_browser.file_browser(opts)
 end
 
-function M.find_plugins()
-  builtin.find_files {
+local function find_plugins()
+  require("telescope.builtin").find_files {
     cwd = string.format("%s/lazy", vim.fn.stdpath "data"),
     layout_strategy = "vertical",
     prompt_title = "Remote Plugins",
   }
 end
 
-function M.grep_string()
-  builtin.grep_string {
-    path_display = { "shorten" },
-    prompt_title = "Grep Project",
-    search = vim.fn.input "grep: ",
-  }
-end
-
-function M.grep_last_search()
+local function grep_last_search()
   local register = vim.fn.getreg("/"):gsub("\\<", ""):gsub("\\>", ""):gsub("\\C", "")
-  builtin.grep_string {
+  require("telescope.builtin").grep_string {
     path_display = { "shorten" },
     search = register,
     word_match = "-w",
   }
 end
 
-function M.live_grep_args()
-  telescope.extensions.live_grep_args.live_grep_args()
+local function live_grep_args()
+  require("telescope").extensions.live_grep_args.live_grep_args()
 end
 
-function M.oldfiles()
-  builtin.oldfiles {
+local function oldfiles()
+  require("telescope.builtin").oldfiles {
     prompt_title = "Recent Files",
   }
 end
 
-function M.project_files()
+local function project_files()
   local opts = {
     follow = has "win32" and false or true,
     hidden = has "win32" and false or true,
@@ -346,11 +104,255 @@ function M.project_files()
   if #git >= 1 then
     opts.prompt_title = "Project Files (Git)"
     opts.show_untracked = true
-    builtin.git_files(opts)
+    require("telescope.builtin").git_files(opts)
   else
     opts.prompt_title = "Project Files"
-    builtin.find_files(opts)
+    require("telescope.builtin").find_files(opts)
   end
 end
 
-return meta
+return {
+  {
+    "nvim-telescope/telescope.nvim",
+    cmd = "Telescope",
+    dependencies = {
+      "kyazdani42/nvim-web-devicons",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope-file-browser.nvim",
+      "nvim-telescope/telescope-github.nvim",
+      "nvim-telescope/telescope-live-grep-args.nvim",
+      "nvim-telescope/telescope-symbols.nvim",
+      "nvim-telescope/telescope-ui-select.nvim",
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    },
+    keys = {
+      { "<leader><leader>", project_files },
+      { "<leader>f/", grep_last_search },
+      { "<leader>fe", file_browser },
+      { "<leader>ff", current_buffer },
+      { "<leader>fg", require("telescope.builtin").live_grep },
+      { "<leader>fk", require("telescope.builtin").help_tags },
+      { "<leader>fp", find_plugins },
+      { "<leader>fr", oldfiles },
+      -- analagous to `<leader>` maps but with customizations
+      { "<localleader><leader>", find_nvim },
+      { "<localleader>fe", file_browser_relative },
+      { "<localleader>fg", require("remote.telescope.custom.rg").live_grep_with_shortcuts },
+      { "<localleader>fga", live_grep_args },
+      -- lsp handlers
+      {
+        "gw",
+        function()
+          require("telescope.builtin").diagnostics { bufnr = 0 }
+        end,
+      },
+      { "gW", require("telescope.builtin").diagnostics },
+    },
+    config = function()
+      local telescope = require "telescope"
+      local actions = require "telescope.actions"
+      local layout = require "telescope.actions.layout"
+      local state = require "telescope.actions.state"
+      local themes = require "telescope.themes"
+
+      local lga_actions = require "telescope-live-grep-args.actions"
+
+      local set_prompt_to_entry_value = function(prompt_bufnr)
+        local entry = state.get_selected_entry()
+        if not entry or not type(entry) == "table" then
+          return
+        end
+        state.get_current_picker(prompt_bufnr):reset_prompt(entry.ordinal)
+      end
+
+      local copy_commit = function(prompt_bufnr)
+        local commit = state.get_selected_entry().value
+        actions.close(prompt_bufnr)
+        vim.fn.setreg("+", commit)
+        vim.defer_fn(function()
+          vim.notify(("'%s' copied to clipboard"):format(commit), nil, { timeout = 500 })
+        end, 500)
+      end
+
+      local interactive_rebase = function(prompt_bufnr)
+        local commit = state.get_selected_entry().value
+        actions.close(prompt_bufnr)
+        vim.api.nvim_exec("tabnew | terminal", false)
+        local term_channel = vim.opt_local.channel:get()
+        vim.api.nvim_chan_send(term_channel, ("git rebase --interactive %s\r"):format(commit))
+        vim.cmd.normal "a"
+      end
+
+      telescope.setup {
+        defaults = {
+          prompt_prefix = pad(icons.misc.Prompt, "right"),
+          selection_caret = pad(icons.misc.CaretRight, "right"),
+          multi_icon = pad(icons.misc.CaretRight, "right"),
+          sorting_strategy = "descending",
+          results_title = false,
+          scroll_strategy = "cycle",
+          layout_strategy = "flex",
+          cycle_layout_list = {
+            "flex",
+            "horizontal",
+            "vertical",
+            "bottom_pane",
+            "center",
+          },
+          layout_config = {
+            horizontal = { preview_width = 0.6 },
+            vertical = { preview_height = 0.7 },
+          },
+          mappings = {
+            i = {
+              ["<c-/>"] = actions.which_key,
+              ["<c-d>"] = actions.preview_scrolling_down,
+              ["<c-f>"] = actions.preview_scrolling_up,
+              ["<c-l>"] = layout.cycle_layout_next,
+              ["<c-p>"] = layout.toggle_preview,
+              ["<c-t>"] = actions.select_tab,
+              ["<c-v>"] = actions.select_vertical,
+              ["<c-x>"] = actions.select_horizontal,
+              ["<c-y>"] = set_prompt_to_entry_value,
+              ["<c-n>"] = false,
+              ["<c-u>"] = false,
+              ["jk"] = actions.close,
+            },
+            n = {
+              ["q"] = actions.close,
+            },
+          },
+        },
+        file_ignore_patterns = {
+          "%.DAT",
+          "%.db",
+          "%.DS_Store",
+          "%.git",
+          "%.gitattributes",
+          "%.gpg",
+          "%.venv",
+          "^node_modules/",
+          "^ntuser",
+          "git%-crypt",
+          "karabiner/assets",
+        },
+        pickers = {
+          buffers = {
+            theme = "dropdown",
+            sort_mru = true,
+            sort_lastused = true,
+            show_all_buffers = true,
+            ignore_current_buffer = true,
+            previewer = false,
+            mappings = {
+              i = { ["<c-d>"] = "delete_buffer" },
+              n = { ["d"] = "delete_buffer" },
+            },
+          },
+          grep_string = {
+            layout_config = { height = 30, prompt_position = "top" },
+          },
+          help_tags = {
+            theme = "ivy",
+            layout_config = { height = 30, prompt_position = "top" },
+          },
+          live_grep = {
+            layout_strategy = "vertical",
+          },
+          git_branches = {
+            theme = "dropdown",
+          },
+          git_bcommits = {
+            layout_strategy = "vertical",
+            mappings = {
+              i = {
+                ["<c-r>"] = interactive_rebase,
+                ["<c-y>"] = copy_commit,
+              },
+            },
+          },
+          git_commits = {
+            layout_strategy = "vertical",
+            mappings = {
+              i = {
+                ["<c-r>"] = interactive_rebase,
+                ["<c-y>"] = copy_commit,
+              },
+            },
+          },
+          diagnostics = {
+            path_display = { "shorten" },
+            theme = "vertical",
+            layout_config = { height = 20 },
+          },
+          lsp_definitions = {
+            theme = "ivy",
+            layout_config = { height = 40, prompt_position = "top" },
+          },
+          lsp_document_symbols = {
+            path_display = { "hidden" },
+            theme = "ivy",
+            layout_config = { height = 40, prompt_position = "top" },
+          },
+          lsp_dynamic_workspace_symbols = {
+            path_display = { "shorten" },
+            theme = "ivy",
+            layout_config = { height = 40, prompt_position = "top" },
+          },
+          lsp_references = {
+            path_display = { "shorten" },
+            theme = "ivy",
+            layout_config = { height = 40, prompt_position = "top" },
+          },
+          lsp_workspace_symbols = {
+            path_display = { "shorten" },
+            theme = "ivy",
+            layout_config = { height = 40, prompt_position = "top" },
+          },
+          registers = {
+            theme = "dropdown",
+            layout_config = { height = 40 },
+          },
+        },
+        extensions = {
+          file_browser = {
+            theme = "ivy",
+          },
+          fzf = not has "win32" and {
+            case_mode = "smart_case",
+            override_file_sorter = true,
+            override_generic_sorter = false,
+          } or {},
+          live_grep_args = {
+            auto_quoting = true,
+            layout_strategy = "vertical",
+            mappings = {
+              i = {
+                ["<c-k>"] = lga_actions.quote_prompt(),
+                ["<c-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
+              },
+            },
+          },
+          ["ui-select"] = {
+            themes.get_cursor {
+              previewer = false,
+            },
+          },
+        },
+      }
+      if not has "win32" then
+        telescope.load_extension "fzf"
+      end
+      telescope.load_extension "file_browser"
+      telescope.load_extension "gh"
+      telescope.load_extension "ui-select"
+    end,
+    init = function()
+      vim.api.nvim_create_user_command("BCommits", require("telescope.builtin").git_bcommits, {})
+      vim.api.nvim_create_user_command("Commits", require("telescope.builtin").git_commits, {})
+      vim.api.nvim_create_user_command("Buffers", function()
+        require("telescope.builtin").buffers { sort_lastused = true }
+      end, {})
+    end,
+  },
+}

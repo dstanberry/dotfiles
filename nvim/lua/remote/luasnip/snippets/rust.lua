@@ -1,7 +1,7 @@
 local rutil = require "remote.luasnip.util"
 
 ---@diagnostic disable: undefined-global
-require("remote.luasnip").nodes.setup_snip_env()
+require("remote.luasnip.nodes").setup_snip_env()
 
 return {
   s({ trig = "enum" }, fmt("#[derive(Debug, PartialEq)]\nenum {} {{\n\t{}\n}}", { i(1, "Name"), i(2) })),

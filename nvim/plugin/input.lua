@@ -44,35 +44,35 @@ end
 --   vim.api.nvim_buf_add_highlight(bufnr, -1, "FloatBorder", 1, 0, -1)
 -- end
 
-vim.ui.select = function(items, opts, on_choice)
-  vim.validate {
-    items = { items, "table", false },
-    on_choice = { on_choice, "function", false },
-  }
-  opts = opts or {}
-  local choices = { opts.prompt or "Select one of:" }
-  local format_item = opts.format_item or tostring
-  for i, item in pairs(items) do
-    table.insert(choices, string.format("[%d] %s", i, format_item(item)))
-  end
-  local title = table.remove(choices, 1)
-  local width = util.window.calculate_width(choices)
-  choices = { title, string.rep(util.window.separator, width), unpack(choices) }
-  local bufnr, _ = util.window.popup_window {
-    lines = choices,
-    enter = true,
-    set_cursor = true,
-    on_confirm = function()
-      confirm(items, on_choice)
-    end,
-  }
-  vim.api.nvim_buf_add_highlight(bufnr, -1, "Title", 0, 0, #title)
-  vim.api.nvim_buf_add_highlight(bufnr, -1, "FloatBorder", 1, 0, -1)
-  for k, _ in ipairs(choices) do
-    if k > 2 then
-      vim.keymap.set("n", string.format("%d", k - 2), function()
-        confirm(items, on_choice, k - 2)
-      end, { buffer = true })
-    end
-  end
-end
+-- vim.ui.select = function(items, opts, on_choice)
+--   vim.validate {
+--     items = { items, "table", false },
+--     on_choice = { on_choice, "function", false },
+--   }
+--   opts = opts or {}
+--   local choices = { opts.prompt or "Select one of:" }
+--   local format_item = opts.format_item or tostring
+--   for i, item in pairs(items) do
+--     table.insert(choices, string.format("[%d] %s", i, format_item(item)))
+--   end
+--   local title = table.remove(choices, 1)
+--   local width = util.window.calculate_width(choices)
+--   choices = { title, string.rep(util.window.separator, width), unpack(choices) }
+--   local bufnr, _ = util.window.popup_window {
+--     lines = choices,
+--     enter = true,
+--     set_cursor = true,
+--     on_confirm = function()
+--       confirm(items, on_choice)
+--     end,
+--   }
+--   vim.api.nvim_buf_add_highlight(bufnr, -1, "Title", 0, 0, #title)
+--   vim.api.nvim_buf_add_highlight(bufnr, -1, "FloatBorder", 1, 0, -1)
+--   for k, _ in ipairs(choices) do
+--     if k > 2 then
+--       vim.keymap.set("n", string.format("%d", k - 2), function()
+--         confirm(items, on_choice, k - 2)
+--       end, { buffer = true })
+--     end
+--   end
+-- end

@@ -1,59 +1,98 @@
--- verify luasnip is available
-local ok, luasnip = pcall(require, "luasnip")
-if not ok then
-  return
-end
-
-local types = require "luasnip.util.types"
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
 groups.new("LuasnipChoiceNodePassive", { bold = true })
 
-luasnip.filetype_extend("NeogitCommitMessage", { "gitcommit" })
+return {
+  "L3MON4D3/LuaSnip",
+  event = "InsertEnter",
+  keys = {
+    {
+      "<tab>",
+      function()
+        if require("luasnip").expand_or_locally_jumpable() then
+          require("luasnip").expand_or_jump()
+        else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<tab>", true, true, true), "n", true)
+        end
+      end,
+      silent = true,
+      mode = { "i", "s" },
+    },
+    {
+      "<s-tab>",
+      function()
+        if require("luasnip").in_snippet() and require("luasnip").jumpable(-1) then
+          require("luasnip").jump(-1)
+        else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<s-tab>", true, true, true), "n", true)
+        end
+      end,
+      silent = true,
+      mode = { "i", "s" },
+    },
+    {
+      "<c-d>",
+      function()
+        if require("luasnip").in_snippet() and require("luasnip").choice_active() then
+          require("luasnip").change_choice(1)
+        else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-d>", true, true, true), "n", true)
+        end
+      end,
+      silent = true,
+      mode = { "i", "s" },
+    },
+    {
+      "<c-f>",
+      function()
+        if require("luasnip").in_snippet() and require("luasnip").choice_active() then
+          require("luasnip").change_choice(-1)
+        else
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-d>", true, true, true), "n", true)
+        end
+      end,
+      silent = true,
+      mode = { "i", "s" },
+    },
+    {
+      "<c-f>",
+      function()
+        require("remote.luasnip.util").dynamic_node_external_update(1)
+      end,
+      silent = true,
+      mode = { "i", "s" },
+    },
+  },
+  config = function()
+    local luasnip = require "luasnip"
+    local types = require "luasnip.util.types"
 
-luasnip.filetype_extend("javascript.jsx", { "javascript" })
-luasnip.filetype_extend("javascriptreact", { "javascript" })
-luasnip.filetype_extend("typescript", { "javascript" })
-luasnip.filetype_extend("typescript.tsx", { "javascript" })
-luasnip.filetype_extend("typescriptreact", { "javascript" })
-
-local M = {}
-
-local meta = setmetatable({}, {
-  __index = function(t, k)
-    local val
-    ok, val = pcall(require, string.format("remote.luasnip.%s", k))
-    if M[k] then
-      return M[k]
-    elseif ok then
-      rawset(t, k, val)
-      return val
-    end
-  end,
-})
-
-M.setup = function()
-  luasnip.config.setup {
-    history = true,
-    enable_autosnippets = true,
-    updateevents = "TextChanged,TextChangedI",
-    region_check_events = "CursorHold,InsertLeave",
-    delete_check_events = "TextChanged,InsertEnter",
-    store_selection_keys = "<c-x>",
-    ext_opts = {
-      [types.choiceNode] = {
-        active = {
-          virt_text = { { pad(icons.misc.Layer, "both"), "Constant" } },
+    luasnip.config.setup {
+      history = true,
+      enable_autosnippets = true,
+      updateevents = "TextChanged,TextChangedI",
+      region_check_events = "CursorHold,InsertLeave",
+      delete_check_events = "TextChanged,InsertEnter",
+      store_selection_keys = "<c-x>",
+      ext_opts = {
+        [types.choiceNode] = {
+          active = {
+            virt_text = { { pad(icons.misc.Layer, "both"), "Constant" } },
+          },
         },
       },
-    },
-  }
+    }
 
-  require("luasnip.loaders.from_lua").lazy_load {
-    paths = ("%s/lua/remote/luasnip/snippets/"):format(vim.fn.stdpath "config"),
-  }
-  require "remote.luasnip.keymap"
-end
+    luasnip.filetype_extend("NeogitCommitMessage", { "gitcommit" })
+    luasnip.filetype_extend("javascript.jsx", { "javascript" })
+    luasnip.filetype_extend("javascriptreact", { "javascript" })
+    luasnip.filetype_extend("typescript", { "javascript" })
+    luasnip.filetype_extend("typescript.tsx", { "javascript" })
+    luasnip.filetype_extend("typescriptreact", { "javascript" })
 
-return meta
+    require("luasnip.loaders.from_lua").lazy_load {
+      paths = ("%s/lua/remote/luasnip/snippets/"):format(vim.fn.stdpath "config"),
+    }
+  end,
+}

@@ -1,24 +1,5 @@
--- verify notify is available
-local ok, notify = pcall(require, "notify")
-if not ok then
-  return
-end
-
 local telescope = require "telescope"
 local groups = require "ui.theme.groups"
-
-notify.setup {
-  stages = "fade_in_slide_out",
-  timeout = 3000,
-  background_colour = "Normal",
-  render = function(...)
-    local n = select(2, ...)
-    local style = n.title[1] == "" and "minimal" or "default"
-    require("notify.render")[style](...)
-  end,
-}
-
-vim.notify = notify
 
 groups.new("NotifyTRACEBody", { link = "NormalFloat" })
 groups.new("NotifyTRACEBorder", { link = "FloatBorder" })
@@ -45,4 +26,21 @@ groups.new("NotifyERRORBorder", { link = "FloatBorder" })
 groups.new("NotifyERRORIcon", { link = "ErrorMsg" })
 groups.new("NotifyERRORTitle", { link = "ErrorMsg" })
 
-pcall(telescope.load_extension "notify")
+return {
+  "rcarriga/nvim-notify",
+  dependencies = { "nvim-telescope/telescope.nvim" },
+  opts = {
+    stages = "fade_in_slide_out",
+    timeout = 3000,
+    background_colour = "Normal",
+    render = function(...)
+      local n = select(2, ...)
+      local style = n.title[1] == "" and "minimal" or "default"
+      require("notify.render")[style](...)
+    end,
+  },
+  init = function()
+    vim.notify = require "notify"
+    telescope.load_extension "notify"
+  end,
+}

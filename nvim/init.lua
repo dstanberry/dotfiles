@@ -70,5 +70,32 @@ util.load_dirhash(vim.env.SHELL)
 util.load_settings()
 
 if setting_enabled "remote_plugins" then
-  pcall(require, "remote")
+  local lazypath = string.format("%s/lazy/lazy.nvim", vim.fn.stdpath "data")
+  if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system {
+      "git",
+      "clone",
+      "--filter=blob:none",
+      "https://github.com/folke/lazy.nvim.git",
+      "--branch=stable",
+      lazypath,
+    }
+  end
+  vim.opt.rtp:prepend(lazypath)
+
+  vim.api.nvim_create_augroup("lazy-buffer", { clear = true })
+  vim.api.nvim_create_autocmd("FileType", {
+    group = "lazy-buffer",
+    pattern = "lazy",
+    callback = function()
+      -- force |BufEnter| so that statusline formatting applies
+      vim.cmd.doautocmd "BufEnter"
+    end,
+  })
+
+  require("lazy").setup("remote", {
+    root = string.format("%s/lazy", vim.fn.stdpath "data"),
+    lockfile = string.format("%s/lua/remote/lazy-lock.json", vim.fn.stdpath "config"),
+    ui = { border = "none" },
+  })
 end

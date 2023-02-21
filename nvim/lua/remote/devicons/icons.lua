@@ -1,4 +1,4 @@
-local custom_icons = {
+return {
   markdown = {
     icon = "",
     color = "#519aba",
@@ -20,5 +20,3 @@ local custom_icons = {
     name = "Svg",
   },
 }
-
-return custom_icons
