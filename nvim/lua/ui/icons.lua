@@ -80,6 +80,7 @@ return {
     Close = "",
     CloseBold = "",
     Dot = "▪",
+    Ellipses = "⋯",
     FilledCircle = "●",
     FoldClosed = "",
     FoldOpened = "",

@@ -1,3 +1,5 @@
+local icons = require "ui.icons"
+
 return {
   "kevinhwang91/nvim-ufo",
   event = "VeryLazy",
@@ -42,7 +44,7 @@ return {
         end_text[1][1] = end_text[1][1]:gsub("[%s\t]+", "")
       end
 
-      table.insert(result, { " ⋯ ", "UfoFoldedEllipsis" })
+      table.insert(result, { pad(icons.misc.Ellipses, "both"), "UfoFoldedEllipsis" })
       vim.list_extend(result, end_text)
       table.insert(result, { padding, "" })
 
