@@ -56,7 +56,7 @@ return {
       mode = { "i", "s" },
     },
     {
-      "<c-f>",
+      "<c-t>",
       function()
         require("remote.luasnip.util").dynamic_node_external_update(1)
       end,
