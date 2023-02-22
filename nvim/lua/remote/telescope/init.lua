@@ -50,6 +50,7 @@ local function file_browser()
     follow = has "win32" and false or true,
     hidden = has "win32" and false or true,
     prompt_title = "File Browser",
+    grouped = true,
     sorting_strategy = "ascending",
   }
   require("telescope").extensions.file_browser.file_browser(opts)
@@ -62,6 +63,7 @@ local function file_browser_relative()
     follow = has "win32" and false or true,
     hidden = has "win32" and false or true,
     prompt_title = "File Browser",
+    grouped = true,
     sorting_strategy = "ascending",
   }
   require("telescope").extensions.file_browser.file_browser(opts)
