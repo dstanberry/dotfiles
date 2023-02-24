@@ -1,32 +1,36 @@
-local bin_name = 'ls_emmet'
-local cmd = { bin_name, '--stdio' }
-
-if vim.fn.has 'win32' == 1 then
-  cmd = { 'cmd.exe', '/C', bin_name, '--stdio' }
+local cmd = { "ls_emmet", "--stdio" }
+local function get_cmd()
+  if has "win32" then
+    cmd[1] = vim.fn.exepath(cmd[1])
+  end
+  return cmd
 end
 
 local M = {}
 
 M.config = {
-    cmd = cmd,
-    filetypes = {
-      "css",
-      "html",
-      "javascript",
-      "javascriptreact",
-      'javascript.jsx',
-      "less",
-      "sass",
-      "scss",
-      "typescript",
-      "typescriptreact",
-      'typescript.tsx',
-      "xml",
-    },
-    root_dir = function(_)
-      return vim.loop.cwd()
-    end,
-    settings = {},
+  cmd = cmd,
+  on_new_config = function(new_config, _)
+    new_config.cmd = get_cmd()
+  end,
+  filetypes = {
+    "css",
+    "html",
+    "javascript",
+    "javascriptreact",
+    "javascript.jsx",
+    "less",
+    "sass",
+    "scss",
+    "typescript",
+    "typescriptreact",
+    "typescript.tsx",
+    "xml",
+  },
+  root_dir = function(_)
+    return vim.loop.cwd()
+  end,
+  settings = {},
 }
 
 return M
