@@ -4,7 +4,6 @@ local util = require "util"
 -- vim.cmd.edit(vim.lsp.get_log_path())
 
 local ensure_installed = {
-  angularls = {},
   bashls = {},
   cmake = {},
   cssls = {},
