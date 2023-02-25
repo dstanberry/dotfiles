@@ -185,7 +185,7 @@ M.setup = function()
     vim.fn.sign_define(hl, { text = icon, texthl = hl })
   end
 
-  local has_tele, telescope = pcall(require, "remote.telescope")
+  local has_tele, telescope = pcall(require, "telescope.builtin")
   if has_tele then
     vim.lsp.handlers["textDocument/declaration"] = telescope.lsp_definitions
     vim.lsp.handlers["textDocument/definition"] = telescope.lsp_definitions
