@@ -1,24 +1,28 @@
-local util = require "remote.lsp.util"
+local util = require "util"
 
 local path = vim.fn.expand(string.format("%s/mason/packages", vim.fn.stdpath "data"))
 local install_dir =
   vim.fn.expand(string.format("%s/angular-language-server/node_modules/@angular/language-server", path))
 local sep = has "win32" and "\\" or "/"
 
-local append_node_modules = util.map(function(dir)
-  return table.concat({ dir, "node_modules" }, sep)
-end)
+local node_modules = function(dirs)
+  return util.map(function(agg, dir, i)
+    dir = table.concat({ dir, "node_modules" }, sep)
+    agg[i] = dir
+    return agg
+  end, dirs)
+end
 
 local function get_cmd(workspace_dir)
   local cmd = {
     "ngserver",
     "--stdio",
     "--tsProbeLocations",
-    table.concat(append_node_modules { install_dir, workspace_dir }, ","),
+    table.concat(node_modules { install_dir, workspace_dir }, ","),
     "--ngProbeLocations",
     table.concat(
-      append_node_modules {
-        table.concat({ install_dir, "node_modules", "@angular", "language-server" }, sep),
+      node_modules {
+        table.concat({ install_dir, "node_modules", "@angular", "language-service" }, sep),
         workspace_dir,
       },
       ","

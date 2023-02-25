@@ -82,7 +82,7 @@ function M.map(callback, list, newList)
   for k, v in pairs(list) do
     newList = callback(newList, v, k)
     if newList == nil then
-      error("newList must be returned on each iteration and cannot be null")
+      error "|newList| must be returned on each iteration and cannot be null"
     end
   end
   return newList
