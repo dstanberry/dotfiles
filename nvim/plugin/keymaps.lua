@@ -8,9 +8,21 @@ vim.keymap.set("n", "<up>", "<c-y>")
 vim.keymap.set("n", "<down>", "<c-e>")
 
 -- switch to next buffer
-vim.keymap.set("n", "<right>", vim.cmd.bnext)
+vim.keymap.set("n", "<right>", function()
+  local ok, bufferline = pcall(require, "bufferline")
+  if not ok then
+    vim.cmd.bnext()
+  end
+  bufferline.cycle(1)
+end)
 -- switch to previous buffer
-vim.keymap.set("n", "<left>", vim.cmd.bprevious)
+vim.keymap.set("n", "<left>", function()
+  local ok, bufferline = pcall(require, "bufferline")
+  if not ok then
+    vim.cmd.bprevious()
+  end
+  bufferline.cycle(-1)
+end)
 
 -- switch to next tab
 vim.keymap.set("n", "<tab>", vim.cmd.tabnext)
