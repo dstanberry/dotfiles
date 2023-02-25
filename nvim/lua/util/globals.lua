@@ -64,7 +64,6 @@ function _G.profile(cmd, times)
       error("Command failed: " .. tostring(ok) .. " " .. vim.inspect { cmd = cmd, args = args })
     end
   end
-
   ---@diagnostic disable-next-line: discard-returns
   print(((vim.loop.hrtime() - start) / 1000000 / times) .. "ms")
 end
@@ -74,6 +73,7 @@ end
 function _G.reload(modname)
   return require("util").reload(modname)
 end
+
 ---Provides a machine-local way of disabling various custom configuration options/settings
 ---@param setting string
 ---@return boolean enabled
