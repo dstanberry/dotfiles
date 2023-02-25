@@ -103,6 +103,12 @@ if hash fzf 2> /dev/null; then
     --color=fg+:#dfe3ec,bg+:-1,hl+:#93b379
     --color=info:#5f5f5f,prompt:#93b379,pointer:#bebebe
     --color=marker:#b04b57,spinner:#4c566a,header:#4c566a'
+
+    # define default behaviour for ctrl-t
+  export FZF_CTRL_T_OPTS="
+  --select-1
+  --exit-0
+  --preview '(bat --color \"always\" {} || cat {} || tree -C {}) 2> /dev/null | head -200'"
 fi
 
 # define mocOS specific options
