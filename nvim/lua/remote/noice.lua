@@ -46,17 +46,21 @@ return {
     },
     views = {
       cmdline_popup = {
-        border = { style = "none", padding = { 2, 3 } },
-        filter_options = {},
+        border = { style = "single", padding = { 0, 1 } },
         -- position = { row = 10, col = "50%" },
+        filter_options = {},
         win_options = {
-          winhighlight = { NormalFloat = "NormalFloat", FloatBorder = "NormalFloat" },
+          winhighlight = { NormalFloat = "Normal", FloatBorder = "Macro" },
         },
       },
       popupmenu = {
         relative = "editor",
-        position = { row = 13, col = "50%" },
+        border = { style = "single", padding = { 0, 1 } },
+        position = { row = 8, col = "50%" },
         size = { width = 60, height = 10 },
+        win_options = {
+          winhighlight = { NormalFloat = "Normal", FloatBorder = "Macro" },
+        },
       },
     },
     presets = {
