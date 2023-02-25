@@ -17,6 +17,8 @@ groups.new("TSRainbow5", { fg = PINK })
 groups.new("TSRainbow6", { fg = ORANGE })
 groups.new("TSRainbow7", { fg = YELLOW })
 
+vim.treesitter.language.register("bash", "zsh")
+
 return {
   {
     "nvim-treesitter/nvim-treesitter",
@@ -177,8 +179,6 @@ return {
           },
         },
       }
-      -- setup custom parsers
-      require "remote.treesitter.parsers"
     end,
   },
 }
