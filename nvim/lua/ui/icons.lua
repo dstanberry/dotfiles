@@ -85,6 +85,8 @@ return {
     FilledCircle = "●",
     FoldClosed = "",
     FoldOpened = "",
+    HalfBlockLower = "▃",
+    HalfBlockUpper = "▀",
     Key = "",
     Layer = "﬘",
     LeftArrow = "",
