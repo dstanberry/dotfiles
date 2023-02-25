@@ -42,6 +42,7 @@ return {
   groups = {
     Book = "",
     Lab = "",
+    Sql = "",
   },
   kind = {
     Class = "",

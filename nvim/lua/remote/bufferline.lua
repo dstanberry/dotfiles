@@ -76,8 +76,8 @@ return {
         },
         offsets = {
           {
-            filetype = "DiffviewFiles",
             text = "Source Control",
+            filetype = "DiffviewFiles",
             text_align = "center",
             separator = true,
           },
@@ -93,12 +93,12 @@ return {
         groups = {
           items = {
             {
-              name = "Zettelkasten Notes",
-              icon = icons.groups.Book,
-              highlight = { fg = c.teal },
+              name = "SQL",
+              icon = icons.groups.Sql,
               auto_close = true,
+              highlight = { fg = c.orange },
               matcher = function(buf)
-                return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten"
+                return buf.filename:match "%.sql$"
               end,
               separator = {
                 style = groups.separator.pill,
@@ -112,6 +112,18 @@ return {
               matcher = function(buf)
                 local name = buf.filename
                 return name:match "_spec" or name:match ".spec" or name:match "_test" or name:match ".test"
+              end,
+              separator = {
+                style = groups.separator.pill,
+              },
+            },
+            {
+              name = "Zettelkasten Notes",
+              icon = icons.groups.Book,
+              highlight = { fg = c.teal },
+              auto_close = true,
+              matcher = function(buf)
+                return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten"
               end,
               separator = {
                 style = groups.separator.pill,
