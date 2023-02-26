@@ -20,6 +20,7 @@ return {
         delete = { hl = "GitSignsDelete", text = icons.misc.CaretRight },
         topdelete = { hl = "GitSignsDelete", text = icons.misc.CaretRight },
         changedelete = { hl = "GitSignsDelete", text = icons.misc.VerticalBar },
+        untracked = { hl = "GitSignsUntracked", text = icons.misc.VerticalBarSplit },
       },
       status_formatter = function(status)
         local added = ""
