@@ -74,14 +74,14 @@ vim.keymap.set("n", "<c-w><c-t>", function()
   vim.cmd { cmd = "ToggleWord" }
 end, { silent = false })
 
--- switch to left window
-vim.keymap.set("n", "<c-h>", "<c-w><c-h>")
--- switch to bottom window
-vim.keymap.set("n", "<c-j>", "<c-w><c-j>")
--- switch to top window
-vim.keymap.set("n", "<c-k>", "<c-w><c-k>")
--- switch to right window
-vim.keymap.set("n", "<c-l>", "<c-w><c-l>")
+-- -- switch to left window
+-- vim.keymap.set("n", "<c-h>", "<c-w><c-h>")
+-- -- switch to bottom window
+-- vim.keymap.set("n", "<c-j>", "<c-w><c-j>")
+-- -- switch to top window
+-- vim.keymap.set("n", "<c-k>", "<c-w><c-k>")
+-- -- switch to right window
+-- vim.keymap.set("n", "<c-l>", "<c-w><c-l>")
 
 -- decrease active split horizontal size
 vim.keymap.set("n", "<a-h>", "<c-w><")
