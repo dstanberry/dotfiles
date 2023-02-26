@@ -105,7 +105,7 @@ return {
               },
             },
             {
-              name = "Tests",
+              name = "Unit Tests",
               icon = icons.groups.Lab,
               highlight = { fg = c.yellow_darker },
               auto_close = true,
