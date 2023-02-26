@@ -1,18 +1,22 @@
+local ft = {
+  "css",
+  "html",
+  "javascript",
+  "javascriptreact",
+  "lua",
+  "typescript",
+  "typescriptreact",
+}
+
 return {
   "uga-rosa/ccc.nvim",
   event = "VeryLazy",
   cmd = { "CccHighlighterToggle" },
-  ft = {
-    "javascript",
-    "javascriptreact",
-    "lua",
-    "typescript",
-    "typescriptreact",
-  },
+  ft = ft,
   opts = {
     highlighter = {
       auto_enable = true,
-      excludes = {},
+      filetypes = ft,
     },
   },
 }
