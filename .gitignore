@@ -42,7 +42,7 @@ lnav/
 nitrogen/
 npm/
 nvim/lua/remote/lazy-lock.json
-nvim/settings.conf
+nvim/settings.json
 okularpartrc
 okularrc
 pavucontrol.ini
