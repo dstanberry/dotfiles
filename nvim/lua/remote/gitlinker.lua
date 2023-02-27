@@ -56,4 +56,14 @@ return {
       end,
     },
   },
+  config = function(_, opts)
+    local github_work = vim.g.config_github_work
+    if github_work then
+      opts.callbacks[github_work] = function(url_data)
+        url_data = get_relative_filepath(url_data)
+        return require("gitlinker.hosts").get_github_type_url(url_data)
+      end
+    end
+    require("gitlinker").setup(opts)
+  end,
 }
