@@ -1,3 +1,19 @@
+local function get_relative_filepath(url_data)
+  if has "win32" then
+    local git_root = require("gitlinker.git").get_git_root()
+    -- use forward slashes only (browser urls don't use backslash char)
+    git_root = git_root:gsub("\\", "/")
+    url_data.file = url_data.file:gsub("\\", "/")
+    -- HACK: trim git root from file to get relative path.. YMMV
+    url_data.file = url_data.file:gsub(git_root, "")
+    -- trim leading slash
+    if url_data.file:sub(1, 1) == "/" then
+      url_data.file = url_data.file:sub(2)
+    end
+  end
+  return url_data
+end
+
 local function open(url)
   local Job = require "plenary.job"
   local command
@@ -33,5 +49,11 @@ return {
   },
   opts = {
     mappings = nil,
+    callbacks = {
+      ["github.com"] = function(url_data)
+        url_data = get_relative_filepath(url_data)
+        return require("gitlinker.hosts").get_github_type_url(url_data)
+      end,
+    },
   },
 }
