@@ -173,8 +173,8 @@ vim.keymap.set("n", "<localleader><localleader>s", function()
   local updated = vim.fn.input("Save as: ", path .. sep)
   if #updated > 0 and updated ~= file then
     vim.cmd.saveas(updated)
-    local move = vim.fn.input "Delete original file? (y/n): "
-    if move == "y" or move == "yes" then
+    local move = vim.fn.confirm("Delete original file?", "&Yes\n&No")
+    if move == 1 then
       vim.fn.delete(file)
       vim.cmd.bdelete(file)
     end
