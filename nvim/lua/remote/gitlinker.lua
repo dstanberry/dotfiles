@@ -4,7 +4,7 @@ return {
   -- stylua: ignore
   keys = {
     { "<localleader>gy", function() require("gitlinker").get_buf_range_url "n" end, desc = "gitlinker: copy line", },
-    { "<localleader>gy", function() require("gitlinker").get_buf_range_url "v" end, desc = "neogit: copy range", },
+    { "<localleader>gy", function() require("gitlinker").get_buf_range_url "v" end, mode = "v", desc = "neogit: copy range", },
   },
   opts = {
     mappings = nil,
