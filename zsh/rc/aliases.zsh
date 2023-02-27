@@ -42,6 +42,8 @@ alias reload='source "${ZSH_CONFIG_HOME}/.zshrc"'
 
 # dirty hack to expose native specific Windows utils
 if is_wsl; then
+  alias open="cmd.exe /c start"
+  alias xdg-open="cmd.exe /c start"
   alias code='sh /mnt/c/Program\ Files/Microsoft\ VS\ Code/bin/code'
   alias posh='powershell.exe -NoProfile'
 fi
