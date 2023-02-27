@@ -1,10 +1,35 @@
+local function open(url)
+  local Job = require "plenary.job"
+  local command
+  local args = { url }
+  if vim.loop.os_uname().sysname == "Darwin" then
+    command = "open"
+  elseif has "win32" or has "wsl" then
+    command = "cmd.exe"
+    args = { "/c", "start", url }
+  else
+    command = "xdg-open"
+  end
+  Job:new({ command = command, args = args }):start()
+end
+
+local function browser()
+  return { action_callback = open }
+end
+
+local function gitlinker()
+  return require "gitlinker"
+end
+
 return {
   "ruifm/gitlinker.nvim",
   dependencies = { "nvim-lua/plenary.nvim" },
   -- stylua: ignore
   keys = {
-    { "<localleader>gy", function() require("gitlinker").get_buf_range_url "n" end, desc = "gitlinker: copy line", },
-    { "<localleader>gy", function() require("gitlinker").get_buf_range_url "v" end, mode = "v", desc = "neogit: copy range", },
+    { "<localleader>gy", function() gitlinker().get_buf_range_url "n" end, desc = "gitlinker: copy line" },
+    { "<localleader>go", function() gitlinker().get_buf_range_url('n', browser()) end, desc = "gitlinker: open line in browser" },
+    { "<localleader>gy", function() gitlinker().get_buf_range_url "v" end, mode = "v", desc = "neogit: copy selection" },
+    { "<localleader>go", function() gitlinker().get_buf_range_url('v', browser()) end, mode = "v", desc = "gitlinker: open selection in browser" },
   },
   opts = {
     mappings = nil,
