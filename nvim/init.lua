@@ -66,8 +66,8 @@ vim.fn.mkdir(shada, "p")
 
 vim.cmd.colorscheme "kdark"
 
-util.load_dirhash(vim.env.SHELL)
-util.load_settings()
+util.filesystem.load_dirhash(vim.env.SHELL)
+util.filesystem.load_settings()
 
 vim.env.ZK_NOTEBOOK_DIR = vim.env.hash_notes and ("%s/zettelkasten/vault"):format(vim.env.hash_notes)
 if has "win32" then
