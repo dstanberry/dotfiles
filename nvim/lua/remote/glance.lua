@@ -1,3 +1,5 @@
+local groups = require "ui.theme.groups"
+
 return {
   "DNLHC/glance.nvim",
   -- stylua: ignore
@@ -16,4 +18,18 @@ return {
       mode = "darken",
     },
   },
+  config = function(_, opts)
+    local glance = require "glance"
+    opts.mappings = {
+      list = {
+        ["<c-f>"] = glance.actions.preview_scroll_win(5),
+        ["<c-d>"] = glance.actions.preview_scroll_win(-5),
+      },
+      preview = {
+        ["q"] = glance.actions.close,
+      },
+    }
+    glance.setup(opts)
+    groups.new("GlancePreviewMatch", { link = "Visual" })
+  end,
 }
