@@ -37,10 +37,12 @@ end
 
 ---Utility function to load machine-specific overrides that can disable various configuration options/settings
 function M.load_settings()
-  local file = vim.fn.stdpath "config" .. "/settings.json"
-  local options = vim.json.decode(M.read(file, "r"))
-  for k, v in pairs(options) do
-    vim.g["config_" .. k] = v
+  local file = M.read(vim.fn.stdpath "config" .. "/settings.json", "r")
+  if file then
+    local options = vim.json.decode(file)
+    for k, v in pairs(options) do
+      vim.g["config_" .. k] = v
+    end
   end
 end
 
