@@ -36,12 +36,12 @@ return {
       on_open = function(term)
         vim.keymap.set({ "i", "n", "t" }, "<a-t>", function()
           float:toggle()
-        end, { buffer = term.bufnr })
+        end, { buffer = term.bufnr, desc = "toggleterm: toggle float" })
       end,
     }
     vim.keymap.set({ "i", "n" }, "<a-t>", function()
       float:toggle()
-    end)
+    end, { desc = "toggleterm: toggle float" })
 
     local tab
     tab = Terminal:new {
@@ -49,11 +49,11 @@ return {
       on_open = function(term)
         vim.keymap.set({ "i", "n", "t" }, "<a-y>", function()
           tab:toggle()
-        end, { buffer = term.bufnr })
+        end, { buffer = term.bufnr, desc = "toggleterm: toggle tab" })
       end,
     }
     vim.keymap.set({ "i", "n" }, "<a-y>", function()
       tab:toggle()
-    end)
+    end, { desc = "toggleterm: toggle tab" })
   end,
 }

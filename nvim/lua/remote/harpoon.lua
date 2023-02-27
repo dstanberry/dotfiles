@@ -15,16 +15,16 @@ return {
 
     if has_telescope then
       telescope.load_extension "harpoon"
-      vim.keymap.set("n", "<leader>fh", function()
+      vim.keymap.set("n", "<leader>hf", function()
         telescope.extensions.harpoon.marks(themes.get_dropdown {
           previewer = false,
           prompt_title = "Harpoon (marks)",
         })
-      end)
+      end, { desc = "find marks" })
     end
 
-    vim.keymap.set("n", "mm", mark.add_file)
-    vim.keymap.set("n", "<localleader>.", ui.nav_next)
-    vim.keymap.set("n", ".<localleader>", ui.nav_prev)
+    vim.keymap.set("n", "<leader>ha", mark.add_file, { desc = "mark file" })
+    vim.keymap.set("n", "<leader>hh", ui.nav_next, { desc = "next file" })
+    vim.keymap.set("n", "<leader>hl", ui.nav_prev, { desc = "previous file" })
   end,
 }

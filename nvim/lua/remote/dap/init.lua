@@ -12,17 +12,17 @@ return {
   },
     -- stylua: ignore
   keys = {
-    { "<leader>db", function() require("dap").toggle_breakpoint() end },
-    { "<leader>dh", function() require('dap.ui.widgets').hover() end },
-    { "<leader>dB", function() require('dap').set_breakpoint(vim.fn.input "Breakpoint condition: ") end },
-    { "<leader>dE", function() require("dapui").eval(vim.fn.input "Evaluate expression: ") end },
-    { "<f1>", function() require('dapui').eval() end },
-    { "<f2>", function() require('dap').step_into() end },
-    { "<f3>", function() require('dap').step_out() end },
-    { "<f4>", function() require('dap').step_over() end },
-    { "<f5>", function() require('dap').continue() end },
-    { "<f10>", function() require('dap').terminate() end },
-    { "<f12>", function() require('dap').repl.toggle { height = 15 } end },
+    { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "dap: toggle breakpoint" },
+    { "<leader>dh", function() require('dap.ui.widgets').hover() end, desc = "dap: hover" },
+    { "<leader>dB", function() require('dap').set_breakpoint(vim.fn.input "Breakpoint condition: ") end, desc = "dap: set conditional breakpoint" },
+    { "<leader>dE", function() require("dapui").eval(vim.fn.input "Evaluate expression: ") end, desc = "dap: evaluate expression" },
+    { "<f1>", function() require('dapui').eval() end, desc = "dap: evalutae" },
+    { "<f2>", function() require('dap').step_into() end, desc = "dap: step into" },
+    { "<f3>", function() require('dap').step_out() end, desc = "dap: step out" },
+    { "<f4>", function() require('dap').step_over() end, desc = "dap: step over" },
+    { "<f5>", function() require('dap').continue() end, desc = "dap: continue" },
+    { "<f10>", function() require('dap').terminate() end, desc = "dap: terminate" },
+    { "<f12>", function() require('dap').repl.toggle { height = 15 } end, desc = "dap: toggle repl" },
   },
   config = function()
     local dap = require "dap"

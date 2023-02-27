@@ -5,6 +5,6 @@ return {
   },
   -- stylua: ignore
   keys = {
-      { "<leader>sr", function() require("spectre").open() end },
+      { "<leader>sr", function() require("spectre").open() end, desc = "spectre: replace in files" },
   },
 }

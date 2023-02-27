@@ -6,11 +6,11 @@ local M = {}
 
 M.on_attach = function(client, bufnr)
   if client.server_capabilities.declarationProvider then
-    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr })
+    -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "" })
   end
 
   if client.server_capabilities.codeActionProvider then
-    vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr })
+    vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr, desc = "lsp: code action" })
   end
 
   if client.server_capabilities.codeLensProvider then
@@ -79,14 +79,14 @@ M.on_attach = function(client, bufnr)
       callback = vim.lsp.buf.signature_help,
     })
 
-    vim.keymap.set("i", "<c-h>", vim.lsp.buf.signature_help, { buffer = bufnr })
-    vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr })
+    vim.keymap.set("i", "<c-h>", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
+    vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
   end
 
   if client.server_capabilities.documentFormattingProvider then
     vim.keymap.set("n", "ff", function()
       vim.lsp.buf.format { async = true }
-    end, { buffer = bufnr })
+    end, { buffer = bufnr, desc = "lsp: format document" })
   end
 
   if client.server_capabilities.semanticTokensProvider and client.server_capabilities.semanticTokensProvider.full then
@@ -113,17 +113,23 @@ M.on_attach = function(client, bufnr)
     pcall(require("nvim-navic").attach, client, bufnr)
   end
 
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr })
-  vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr })
-  vim.keymap.set("n", "gk", vim.lsp.buf.hover, { buffer = bufnr })
-  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr })
-  vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr })
-  vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr })
-  vim.keymap.set("n", "gS", vim.lsp.buf.workspace_symbol, { buffer = bufnr })
-  vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr })
-  vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr })
-  vim.keymap.set("n", "gn", vim.diagnostic.goto_next, { buffer = bufnr })
-  vim.keymap.set("n", "gp", vim.diagnostic.goto_prev, { buffer = bufnr })
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "lsp: Goto definition" })
+  vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "lsp: goto type definition" })
+  vim.keymap.set("n", "gk", vim.lsp.buf.hover, { buffer = bufnr, desc = "lsp: show documentation" })
+  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "lsp: go to implementation" })
+  vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "lsp: show references" })
+  vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "lsp: show documents symbols" })
+  vim.keymap.set("n", "gS", vim.lsp.buf.workspace_symbol, { buffer = bufnr, desc = "lsp: show workspace symbols" })
+  vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr, desc = "lsp: show line diagnostics" })
+  vim.keymap.set("n", "gn", vim.diagnostic.goto_next, { buffer = bufnr, desc = "lsp: next diagnostic" })
+  vim.keymap.set("n", "gp", vim.diagnostic.goto_prev, { buffer = bufnr, desc = "lsp: previous diagnostic" })
+
+  if require("lazy.core.config").plugins["inc-rename.nvim"] ~= nil then
+    -- stylua: ignore
+    vim.keymap.set("n", "g<leader>", function() return ":IncRename " .. vim.fn.expand "<cword>" end, { buffer = bufnr, expr = true, desc = "lsp: rename" })
+  else
+    vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr, desc = "lsp: rename" })
+  end
 
   vim.api.nvim_buf_create_user_command(bufnr, "Workspace", function(opts)
     local cmd = unpack(opts.fargs)

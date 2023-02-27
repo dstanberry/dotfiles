@@ -44,7 +44,7 @@ M.setup = function(rust_analyzer_config)
     },
     server = vim.tbl_deep_extend("force", cfg, {
       on_attach = function(_, bufnr)
-        vim.keymap.set("n", "gk", rust_tools.hover_actions.hover_actions, { buffer = bufnr })
+        vim.keymap.set("n", "gk", rust_tools.hover_actions.hover_actions, { buffer = bufnr, desc = "rust: lsp hover" })
         -- vim.keymap.set("n", "ga", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
       end,
     }),

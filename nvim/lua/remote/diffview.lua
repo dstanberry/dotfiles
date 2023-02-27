@@ -2,8 +2,14 @@ local icons = require "ui.icons"
 
 return {
   "sindrets/diffview.nvim",
+  -- stylua: ignore
+  keys = {
+    { "<localleader>gd", "<cmd>DiffviewOpen<cr>", mode = "n", desc = "diffview: open" },
+    { "gh", [[:'<'>DiffviewFileHistory<cr>]], mode = "v", desc = "diffview: file history" },
+    { "<localleader>gh", "<cmd>DiffviewFileHistory<cr>", mode = "n", desc = "diffview: file history" },
+  },
   config = function()
-    local diffview = require("diffview")
+    local diffview = require "diffview"
     local lazy = require "diffview.lazy"
     local lib = lazy.require "diffview.lib"
     local Diff2Hor = lazy.access("diffview.scene.layouts.diff_2_hor", "Diff2Hor")

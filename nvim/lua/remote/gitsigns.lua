@@ -61,7 +61,7 @@ return {
             signs.next_hunk()
           end)
           return "<Ignore>"
-        end, { expr = true })
+        end, { expr = true, desc = "gitsigns: next hunk" })
         map("n", "[c", function()
           if vim.wo.diff then
             return "[c"
@@ -70,15 +70,17 @@ return {
             signs.prev_hunk()
           end)
           return "<Ignore>"
-        end, { expr = true })
-        map("n", "<leader>gs", signs.stage_hunk)
-        map("n", "<leader>gu", signs.undo_stage_hunk)
-        map("n", "<leader>gr", signs.reset_hunk)
-        map("n", "<leader>gp", signs.preview_hunk)
-        map("n", "<leader>gb", signs.toggle_current_line_blame)
+        end, { expr = true, desc = "gitsigns: previous hunk" })
+        map("n", "<leader>gs", signs.stage_hunk, { desc = "gitsigns: stage hunk" })
+        map("n", "<leader>gS", signs.stage_buffer, { desc = "gitsigns: stage buffer" })
+        map("n", "<leader>gu", signs.undo_stage_hunk, { desc = "gitsigns: unstage Hunk" })
+        map("n", "<leader>gr", signs.reset_hunk, { desc = "gitsigns: reset hunk" })
+        map("n", "<leader>gR", signs.reset_buffer, { desc = "gitsigns: reset buffer" })
+        map("n", "<leader>gp", signs.preview_hunk, { desc = "gitsigns: preview Hunk" })
+        map("n", "<leader>gb", signs.toggle_current_line_blame, { desc = "gitsigns: toggle blame line" })
         map("n", "<leader>gB", function()
           signs.blame_line { full = true }
-        end)
+        end, { desc = "gitsigns: blame line" })
       end,
     }
   end,

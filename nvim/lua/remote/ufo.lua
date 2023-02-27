@@ -6,9 +6,9 @@ return {
   dependencies = { "kevinhwang91/promise-async" },
     -- stylua: ignore
     keys = {
-      { "zR", function() require("ufo").openAllFolds() end },
-      { "zM", function() require("ufo").closeAllFolds() end },
-      { "zP", function() require("ufo").peekFoldedLinesUnderCursor() end },
+      { "zR", function() require("ufo").openAllFolds() end, desc = "ufo: open all folds" },
+      { "zM", function() require("ufo").closeAllFolds() end, desc = "ufo: close all folds" },
+      { "zP", function() require("ufo").peekFoldedLinesUnderCursor() end, desc = "ufo: peek fold" },
     },
   opts = {
     open_fold_hl_timeout = 0,

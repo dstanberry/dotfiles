@@ -29,7 +29,7 @@ groups.new("TelescopeSelectionCaret", { fg = c.fg_dark, bg = BLUE, bold = true }
 local function current_buffer()
   require("telescope.builtin").current_buffer_fuzzy_find {
     previewer = false,
-    prompt_title = "Find in File",
+    prompt_title = "Find in Buffer",
     sorting_strategy = "ascending",
   }
 end
@@ -127,28 +127,23 @@ return {
       "nvim-telescope/telescope-ui-select.nvim",
       { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
+    -- stylua: ignore
     keys = {
-      { "<leader><leader>", project_files },
-      { "<leader>f/", grep_last_search },
-      { "<leader>fe", file_browser },
-      { "<leader>ff", current_buffer },
-      { "<leader>fg", require("telescope.builtin").live_grep },
-      { "<leader>fk", require("telescope.builtin").help_tags },
-      { "<leader>fp", find_plugins },
-      { "<leader>fr", oldfiles },
+      { "<leader><leader>", project_files, desc = "telescope: find files (project)" },
+      { "<leader>f/", grep_last_search, desc = "find word (last searched)" },
+      { "<leader>fe", file_browser, desc = "file browser" },
+      { "<leader>ff", current_buffer, desc = "find in buffer" },
+      { "<leader>fg", require("telescope.builtin").live_grep, desc = "live grep" },
+      { "<leader>fk", require("telescope.builtin").help_tags, desc = "help pages" },
+      { "<leader>fp", find_plugins, desc = "find files (neovim plugins)" },
+      { "<leader>fr", oldfiles, desc = "find files (recently used)" },
       -- analagous to `<leader>` maps but with customizations
-      { "<localleader><leader>", find_nvim },
-      { "<localleader>fe", file_browser_relative },
-      { "<localleader>fg", require("remote.telescope.custom.rg").live_grep_with_shortcuts },
-      { "<localleader>fga", live_grep_args },
+      { "<localleader><leader>", find_nvim, desc = "telescope: find files (neovim config)" },
+      { "<localleader>fe", file_browser_relative, desc = "file browser (relative to current buffer)" },
+      { "<localleader>fg", live_grep_args, desc = "find in files (grep with args)" },
       -- lsp handlers
-      {
-        "gw",
-        function()
-          require("telescope.builtin").diagnostics { bufnr = 0 }
-        end,
-      },
-      { "gW", require("telescope.builtin").diagnostics },
+      { "gw", function() require("telescope.builtin").diagnostics { bufnr = 0 } end, desc = "telescope: lsp diagnostics (buffer)" },
+      { "gW", require("telescope.builtin").diagnostics, desc = "telescope: lsp diagnostics (workspace)" },
     },
     config = function()
       local telescope = require "telescope"

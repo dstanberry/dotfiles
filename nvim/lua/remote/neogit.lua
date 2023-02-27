@@ -15,8 +15,8 @@ return {
   dependencies = { "nvim-lua/plenary.nvim" },
   -- stylua: ignore
   keys = {
-    { "<localleader>gs", function() require("neogit").open { kind = "split" } end },
-    { "<localleader>gc", function() require("neogit").open { "commit" } end },
+    { "<localleader>gs", function() require("neogit").open { kind = "split" } end, desc = "neogit: open" },
+    { "<localleader>gc", function() require("neogit").open { "commit" } end, desc = "neogit: commit" },
   },
   opts = {
     disable_commit_confirmation = true,

@@ -54,7 +54,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     vim.keymap.set("n", "ff", function()
       typescript.actions.organizeImports()
       vim.lsp.buf.format { async = true }
-    end, { buffer = bufnr })
+    end, { buffer = bufnr, desc = "typescript: lsp format document" })
   end,
 })
 
