@@ -72,6 +72,7 @@ return {
     Variable = "",
   },
   misc = {
+    ArrowSwap = " ",
     Calendar = "",
     CaretRight = "",
     CheckFilled = "",
