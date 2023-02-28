@@ -69,16 +69,12 @@ vim.cmd.colorscheme "kdark"
 util.filesystem.load_dirhash(vim.env.SHELL)
 util.filesystem.load_settings()
 
-vim.env.ZK_NOTEBOOK_DIR = vim.env.hash_notes and ("%s/zettelkasten/vault"):format(vim.env.hash_notes)
-if has "win32" then
-  local win_documents_path = ("%s\\Documents"):format(vim.env.HOME)
-  if vim.fn.empty(vim.fn.glob(win_documents_path)) > 0 then
-    if vim.fn.empty(vim.fn.glob "D:\\Documents") == 0 then
-      win_documents_path = "D:\\Documents"
-    end
-  end
-  vim.env.ZK_NOTEBOOK_DIR = vim.fn.expand(("%s/_notes/zettelkasten/vault"):format(win_documents_path))
-end
+vim.g.dotfiles_dir = vim.fn.expand(("%s/.config"):format(vim.env.HOME))
+vim.g.projects_dir = vim.env.projects_dir and vim.fn.expand(vim.env.projects_dir)
+  or vim.fn.expand(("%s/Projects"):format(vim.env.HOME))
+
+vim.env.ZK_NOTEBOOK_DIR = vim.env.hash_notes and vim.fn.expand(("%s/zettelkasten/vault"):format(vim.env.hash_notes))
+  or vim.fn.expand(("%s/Documents/notes"):format(vim.env.HOME))
 
 if setting_enabled "remote_plugins" then
   local lazypath = string.format("%s/lazy/lazy.nvim", vim.fn.stdpath "data")
