@@ -1,12 +1,13 @@
 return {
-  "olimorris/persisted.nvim",
+  -- "olimorris/persisted.nvim",
+  "dstanberry/persisted.nvim",
   dependencies = { "nvim-telescope/telescope.nvim" },
   lazy = false,
   init = function()
     vim.api.nvim_create_augroup("sessionmgr", { clear = true })
     vim.api.nvim_create_autocmd("User", {
       group = "sessionmgr",
-      pattern = "PersistedTelescopePre",
+      pattern = "PersistedTelescopeLoadPre",
       callback = function()
         -- stylua: ignore
         vim.schedule(function() vim.cmd "%bd" end)
@@ -18,7 +19,7 @@ return {
       callback = function(session)
         vim.notify("Loaded session " .. session.data.name, vim.log.levels.INFO, { title = title })
         local path = session.data.dir_path
-        if string.find(path, "/") ~= 1 then
+        if not has "win32" and string.find(path, "/") ~= 1 then
           vim.cmd.cd(vim.fn.expand "~" .. "/" .. path)
           vim.cmd.tcd(vim.fn.expand "~" .. "/" .. path)
         else
