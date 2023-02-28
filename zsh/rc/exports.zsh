@@ -63,6 +63,9 @@ export LESSHISTFILE="${XDG_CACHE_HOME}/less/history"
 # define the default pager
 export PAGER=less
 
+# define location for local projects
+export PROJECTS_DIR="${HOME}/Projects"
+
 # define the default manpager
 export MANPAGER='nvim +Man!'
 
