@@ -77,18 +77,6 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.shiftwidth = 2
   end,
 })
-vim.api.nvim_create_autocmd("FileType", {
-  group = "ftplugin",
-  pattern = "COMMIT_EDITMSG",
-  callback = function()
-    vim.bo.backup = false
-    vim.bo.spell = true
-    vim.bo.swapfile = false
-    vim.bo.undofile = false
-    vim.wo.foldenable = false
-    vim.wo.spell = true
-  end,
-})
 vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
   group = "ftplugin",
   pattern = { "markdown" },

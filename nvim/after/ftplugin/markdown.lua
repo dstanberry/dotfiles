@@ -9,11 +9,6 @@ vim.opt_local.conceallevel = 2
 -- vim.opt_local.spell = true
 vim.opt_local.wrap = true
 
--- vim.fn.sign_define("codeblock", {
---   linehl = "CodeBlock",
--- })
--- markdown.highlight_fenced_code_blocks()
-
 vim.keymap.set("i", "<c-w>c", markdown.insert_checkbox, { buffer = vim.api.nvim_get_current_buf() })
 vim.keymap.set("i", "<c-w>l", markdown.insert_link, { buffer = vim.api.nvim_get_current_buf() })
 vim.keymap.set({ "n", "v" }, "<c-w>b", markdown.toggle_bullet, { buffer = vim.api.nvim_get_current_buf() })
