@@ -105,6 +105,7 @@ return {
     VerticalBarBold = "▊",
     VerticalBarSplit = "┊",
     VerticalBarThin = "│",
+    VerticalBarVeryThin = "▕",
     Watch = "",
   },
   status = {

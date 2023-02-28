@@ -46,6 +46,13 @@ vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
 })
 
 vim.api.nvim_create_augroup("ftplugin", { clear = true })
+vim.api.nvim_create_autocmd("Filetype", {
+  group = "ftplugin",
+  pattern = "*",
+  callback = function()
+    vim.bo.formatoptions = "cjlnqr"
+  end,
+})
 vim.api.nvim_create_autocmd("BufEnter", {
   group = "ftplugin",
   pattern = "COMMIT_EDITMSG",
@@ -54,11 +61,16 @@ vim.api.nvim_create_autocmd("BufEnter", {
     vim.cmd.startinsert()
   end,
 })
-vim.api.nvim_create_autocmd("Filetype", {
+vim.api.nvim_create_autocmd("FileType", {
   group = "ftplugin",
-  pattern = "*",
+  pattern = "COMMIT_EDITMSG",
   callback = function()
-    vim.bo.formatoptions = "cjlnqr"
+    vim.bo.backup = false
+    vim.bo.spell = true
+    vim.bo.swapfile = false
+    vim.bo.undofile = false
+    vim.wo.foldenable = false
+    vim.wo.spell = true
   end,
 })
 vim.api.nvim_create_autocmd("Filetype", {
@@ -71,17 +83,31 @@ vim.api.nvim_create_autocmd("Filetype", {
 })
 vim.api.nvim_create_autocmd("FileType", {
   group = "ftplugin",
-  pattern = { "bash", "javascript", "lua", "sh", "typescript", "zsh" },
+  pattern = { "bash", "javascript", "sh", "typescript", "zsh" },
   callback = function()
     vim.bo.expandtab = true
     vim.bo.shiftwidth = 2
+    vim.opt_local.colorcolumn = "80"
   end,
 })
-vim.api.nvim_create_autocmd({ "TextChanged", "TextChangedI" }, {
+vim.api.nvim_create_autocmd("FileType", {
   group = "ftplugin",
-  pattern = { "markdown" },
+  pattern = "lua",
   callback = function()
-    require("ft.markdown").highlight_fenced_code_blocks()
+    vim.bo.expandtab = true
+    vim.bo.shiftwidth = 2
+    vim.opt_local.colorcolumn = "120"
+  end,
+})
+vim.api.nvim_create_autocmd("FileType", {
+  group = "ftplugin",
+  pattern = "python",
+  callback = function()
+    vim.bo.expandtab = true
+    vim.bo.tabstop = 4
+    vim.bo.softtabstop = 4
+    vim.bo.shiftwidth = 4
+    vim.opt_local.colorcolumn = "80"
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
@@ -102,6 +128,7 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.bo.expandtab = true
     vim.bo.shiftwidth = 2
     vim.wo.foldmethod = "marker"
+    vim.opt_local.colorcolumn = "120"
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
