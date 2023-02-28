@@ -1,6 +1,5 @@
 return {
-  -- "olimorris/persisted.nvim",
-  "dstanberry/persisted.nvim",
+  "olimorris/persisted.nvim",
   dependencies = { "nvim-telescope/telescope.nvim" },
   lazy = false,
   init = function()
@@ -17,7 +16,7 @@ return {
       group = "sessionmgr",
       pattern = "PersistedTelescopeLoadPost",
       callback = function(session)
-        vim.notify("Loaded session " .. session.data.name, vim.log.levels.INFO, { title = title })
+        vim.notify("Loaded session " .. session.data.name, vim.log.levels.INFO, { title = "persisted.nvim" })
         local path = session.data.dir_path
         if not has "win32" and string.find(path, "/") ~= 1 then
           vim.cmd.cd(vim.fn.expand "~" .. "/" .. path)
