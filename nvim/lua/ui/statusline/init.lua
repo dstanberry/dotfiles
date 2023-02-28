@@ -98,25 +98,16 @@ M.setup = function(config)
   local right_separator_symbol = options.get().separators.right.symbol
   right_separator = Component:new({}, { [right_separator_hl] = right_separator_symbol })
 
-  local set_statusline = function()
-    vim.wo.statusline = string.format(
-      [[%%!luaeval('require("ui.statusline").generate("statusline", %s)')]],
-      vim.api.nvim_get_current_win()
-    )
-  end
-
-  vim.api.nvim_create_augroup("statusline", { clear = true })
-  vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
-    group = "statusline",
-    callback = set_statusline,
-  })
+  vim.o.statusline = ([[%%{%%v:lua.require("ui.statusline").generate("statusline", %s)%%}]]):format(
+    vim.api.nvim_get_current_win()
+  )
 
   local set_winbar = function(is_diff)
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
       local buf = vim.api.nvim_win_get_buf(win)
       local ft, bt = vim.bo[buf].filetype, vim.bo[buf].buftype
       local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
-      local value = string.format([[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]], win)
+      local value = ([[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]]):format(win)
       if not is_diff then
         is_diff = vim.wo[win].diff
       end

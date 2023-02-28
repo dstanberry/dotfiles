@@ -1,6 +1,6 @@
 local icons = require "ui.icons"
 
-require("ui.statusline").setup {
+reload("ui.statusline").setup {
   disabled_filetypes = {
     "DiffviewFiles",
     "gitcommit",
@@ -16,7 +16,6 @@ require("ui.statusline").setup {
   },
   separators = {
     left = { hl = "user9", symbol = " " },
-    -- right = { hl = "user9", symbol = " " },
     right = { hl = "user9", symbol = " " },
   },
   sections = {
