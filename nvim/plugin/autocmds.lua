@@ -63,14 +63,15 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 vim.api.nvim_create_autocmd("FileType", {
   group = "ftplugin",
-  pattern = "COMMIT_EDITMSG",
+  pattern = { "COMMIT_EDITMSG", "gitcommit", "NeogitCommitMessage" },
   callback = function()
-    vim.bo.backup = false
-    vim.bo.spell = true
     vim.bo.swapfile = false
     vim.bo.undofile = false
-    vim.wo.foldenable = false
-    vim.wo.spell = true
+    vim.opt_local.backup = false
+    vim.opt_local.spell = true
+    vim.opt_local.colorcolumn = "50,72"
+    vim.opt_local.foldenable = false
+    vim.opt_local.spell = true
   end,
 })
 vim.api.nvim_create_autocmd("Filetype", {
