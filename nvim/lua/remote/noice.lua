@@ -19,7 +19,7 @@ return {
           return "<c-d>"
         end
       end,
-      mode = { "n", "i", "s" },
+      mode = "n",
       expr = true,
       desc = "noice: scroll down documentation",
     },
@@ -30,7 +30,7 @@ return {
           return "<c-f>"
         end
       end,
-      mode = { "n", "i", "s" },
+      mode = "n",
       expr = true,
       desc = "noice: scroll up documentation",
     },
