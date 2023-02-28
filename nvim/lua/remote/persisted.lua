@@ -26,5 +26,17 @@ return {
     use_git_branch = true,
     allowed_dirs = { vim.g.dotfiles, vim.g.work_dir },
     ignored_dirs = { vim.fn.stdpath "data" },
+    telescope = {
+      after_source = function(param)
+        local path = param.dir_path
+        if string.find(path, "/") ~= 1 then
+          vim.api.nvim_command("cd " .. vim.fn.expand "~" .. "/" .. path)
+          vim.api.nvim_command("tcd " .. vim.fn.expand "~" .. "/" .. path)
+        else
+          vim.api.nvim_command("cd " .. path)
+          vim.api.nvim_command("tcd " .. path)
+        end
+      end,
+    },
   },
 }
