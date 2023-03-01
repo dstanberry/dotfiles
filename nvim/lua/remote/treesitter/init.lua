@@ -18,6 +18,7 @@ groups.new("TSRainbow6", { fg = ORANGE })
 groups.new("TSRainbow7", { fg = YELLOW })
 
 vim.treesitter.language.register("bash", "zsh")
+vim.treesitter.language.register("typescript", "typescriptreact")
 
 return {
   {
