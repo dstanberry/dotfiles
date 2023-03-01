@@ -1,6 +1,9 @@
 local c = require("ui.theme").colors
+local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 local util = require "util"
+
+groups.new("PanelHeading", { link = "Title" })
 
 return {
   "akinsho/bufferline.nvim",
@@ -11,7 +14,7 @@ return {
     end,
   },
   config = function()
-    local groups = require "bufferline.groups"
+    local bgroups = require "bufferline.groups"
     require("bufferline").setup {
       highlights = function(defaults)
         local diagnostic = vim.regex [[\(error_selected\|warning_selected\|info_selected\|hint_selected\)]]
@@ -76,8 +79,10 @@ return {
         },
         offsets = {
           {
-            text = "Source Control",
+            text = pad(icons.groups.Diff, "right") .. "DIFF VIEW",
             filetype = "DiffviewFiles",
+            highlight = "PanelHeading",
+            separator = true,
             text_align = "center",
             separator = true,
           },
@@ -101,7 +106,7 @@ return {
                 return buf.filename:match "%.sql$"
               end,
               separator = {
-                style = groups.separator.pill,
+                style = bgroups.separator.pill,
               },
             },
             {
@@ -114,7 +119,7 @@ return {
                 return name:match "_spec" or name:match ".spec" or name:match "_test" or name:match ".test"
               end,
               separator = {
-                style = groups.separator.pill,
+                style = bgroups.separator.pill,
               },
             },
             {
@@ -126,7 +131,7 @@ return {
                 return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten"
               end,
               separator = {
-                style = groups.separator.pill,
+                style = bgroups.separator.pill,
               },
             },
           },
