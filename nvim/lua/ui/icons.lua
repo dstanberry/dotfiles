@@ -41,6 +41,7 @@ return {
   },
   groups = {
     Book = "",
+    Diff = "",
     Lab = "",
     Sql = "",
   },

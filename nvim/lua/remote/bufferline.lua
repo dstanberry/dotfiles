@@ -79,12 +79,18 @@ return {
         },
         offsets = {
           {
+            text = pad(icons.groups.Sql, "right") .. "DATABASE VIEWER",
+            filetype = "dbui",
+            highlight = "PanelHeading",
+            separator = true,
+            text_align = "center",
+          },
+          {
             text = pad(icons.groups.Diff, "right") .. "DIFF VIEW",
             filetype = "DiffviewFiles",
             highlight = "PanelHeading",
             separator = true,
             text_align = "center",
-            separator = true,
           },
         },
         color_icons = true,

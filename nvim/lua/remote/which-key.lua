@@ -43,6 +43,7 @@ return {
       ["<localleader>"] = {
         mode = "n",
         ["<localleader>"] = { name = "+command" },
+        d = { name = "+database" },
         f = { name = "+file/find" },
         g = { name = "+git" },
         m = { name = "+notes (markdown)" },
