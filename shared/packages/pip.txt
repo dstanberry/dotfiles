@@ -1,8 +1,5 @@
-black==22.6.0
-cmake-language-server==0.1.5
 coloredlogs==15.0.1
 configparser==5.2.0
-flake8==4.0.1
 httpie==2.6.0
 neovim-remote==2.5.1
 numpy==1.22.4
@@ -12,4 +9,3 @@ pipenv==2022.6.7
 poetry==1.1.14
 qmk==1.1.0
 toml==0.10.2
-vim-vint==0.3.21
