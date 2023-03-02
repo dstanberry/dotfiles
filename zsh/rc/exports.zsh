@@ -34,6 +34,9 @@ export COLORTERM=truecolor
 # define default name of primary upstream git branch
 export GIT_REVIEW_BASE=main
 
+# enable terminal colors in output
+export GH_FORCE_TTY="100%"
+
 # use standard ISO 8601 timestamp
 export HISTTIMEFORMAT='%F %T '
 
