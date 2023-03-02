@@ -4,9 +4,10 @@ local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
 local BLUE_DARK = color.blend(color.darken(c.blue, 40), c.bg, "66")
+local BG = color.blend(c.gray_alt, c.bg, "70")
 
 groups.new("Dash", { fg = c.yellow_darker, bold = true })
-groups.new("CodeBlock", { bg = c.bg_dark })
+groups.new("CodeBlock", { bg = BG })
 groups.new("Headline", { bg = BLUE_DARK, bold = true })
 
 return {
