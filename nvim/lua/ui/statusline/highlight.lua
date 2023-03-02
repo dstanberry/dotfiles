@@ -24,18 +24,12 @@ local modes = setmetatable({
   ["!"] = "%2*",
   t = "%2*",
 }, {
-  __index = function()
-    return "%2*"
-  end,
+  __index = function() return "%2*" end,
 })
 
-M.mode = function(m)
-  return modes[m]
-end
+M.mode = function(m) return modes[m] end
 
-M.sanitize = function(group)
-  return "%#" .. group .. "#"
-end
+M.sanitize = function(group) return "%#" .. group .. "#" end
 
 M.segment = "%="
 M.reset = "%*"

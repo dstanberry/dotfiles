@@ -57,9 +57,7 @@ return {
     },
     {
       "<c-t>",
-      function()
-        require("remote.luasnip.util").dynamic_node_external_update(1)
-      end,
+      function() require("remote.luasnip.util").dynamic_node_external_update(1) end,
       silent = true,
       mode = { "i", "s" },
     },

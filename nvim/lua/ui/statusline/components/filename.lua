@@ -22,15 +22,11 @@ end
 
 local shorten_path = function(path, sep, max_len)
   local len = #path
-  if len <= max_len then
-    return path
-  end
+  if len <= max_len then return path end
 
   local segments = vim.split(path, sep)
   for idx = 1, #segments - 1 do
-    if len <= max_len then
-      break
-    end
+    if len <= max_len then break end
 
     local segment = segments[idx]
     local shortened = segment:sub(1, vim.startswith(segment, ".") and 2 or 1)
@@ -57,9 +53,7 @@ function M:load()
     data = vim.fn.expand "%:t"
   end
 
-  if not data or data == "" then
-    data = self.options.symbols.unnamed
-  end
+  if not data or data == "" then data = self.options.symbols.unnamed end
 
   if self.options.viewport ~= 0 then
     local windwidth = self.options.globalstatus and vim.go.columns or vim.fn.winwidth(0)
@@ -74,12 +68,8 @@ function M:load()
     local modified = vim.api.nvim_buf_get_option(self.options.buf, "modified")
     local modifiable = vim.api.nvim_buf_get_option(self.options.buf, "modifiable")
     local readonly = vim.api.nvim_buf_get_option(self.options.buf, "readonly")
-    if modified then
-      table.insert(symbols, self.options.symbols.modified)
-    end
-    if modifiable == false or readonly == true then
-      table.insert(symbols, self.options.symbols.readonly)
-    end
+    if modified then table.insert(symbols, self.options.symbols.modified) end
+    if modifiable == false or readonly == true then table.insert(symbols, self.options.symbols.readonly) end
   end
 
   if self.options.newfile_status and is_new_file(self.options.buf) then

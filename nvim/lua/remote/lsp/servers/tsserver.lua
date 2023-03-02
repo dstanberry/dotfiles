@@ -1,8 +1,6 @@
 -- verify typescript is available
 local ok, typescript = pcall(require, "typescript")
-if not ok then
-  return
-end
+if not ok then return end
 
 local M = {}
 
@@ -46,9 +44,7 @@ vim.api.nvim_create_augroup("lsp_tssserver", {})
 vim.api.nvim_create_autocmd("LspAttach", {
   group = "lsp_tssserver",
   callback = function(args)
-    if not (args.data and args.data.client_id) then
-      return
-    end
+    if not (args.data and args.data.client_id) then return end
 
     local bufnr = args.buf
     vim.keymap.set("n", "ff", function()

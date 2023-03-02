@@ -60,9 +60,7 @@ return {
       d(4, init, {}, {
         user_args = {
           function(parent)
-            vim.ui.input({ prompt = "Number of args: " }, function(argc)
-              parent.argc = math.max(argc, 1)
-            end)
+            vim.ui.input({ prompt = "Number of args: " }, function(argc) parent.argc = math.max(argc, 1) end)
           end,
         },
       }),
@@ -89,9 +87,7 @@ return {
     d(1, init, {}, {
       user_args = {
         function(parent)
-          vim.ui.input({ prompt = "Number of args: " }, function(argc)
-            parent.argc = math.max(argc, 1)
-          end)
+          vim.ui.input({ prompt = "Number of args: " }, function(argc) parent.argc = math.max(argc, 1) end)
         end,
       },
     })

@@ -8,9 +8,11 @@ local snip_defs = {
   t = ls.t,
   i = ls.i,
   f = function(func, argnodes, ...)
-    return ls.f(function(args, imm_parent, user_args)
-      return func(args, imm_parent.snippet, user_args)
-    end, argnodes, ...)
+    return ls.f(
+      function(args, imm_parent, user_args) return func(args, imm_parent.snippet, user_args) end,
+      argnodes,
+      ...
+    )
   end,
   -- override to enable restore_cursor.
   c = function(pos, nodes, opts)
@@ -19,9 +21,12 @@ local snip_defs = {
     return ls.c(pos, nodes, opts)
   end,
   d = function(pos, func, argnodes, ...)
-    return ls.d(pos, function(args, imm_parent, old_state, ...)
-      return func(args, imm_parent.snippet, old_state, ...)
-    end, argnodes, ...)
+    return ls.d(
+      pos,
+      function(args, imm_parent, old_state, ...) return func(args, imm_parent.snippet, old_state, ...) end,
+      argnodes,
+      ...
+    )
   end,
   isn = require("luasnip.nodes.snippet").ISN,
   l = require("luasnip.extras").lambda,
@@ -55,8 +60,6 @@ local snip_defs = {
   node_util = require "luasnip.nodes.util",
 }
 
-M.setup_snip_env = function()
-  setfenv(2, vim.tbl_extend("force", _G, snip_defs))
-end
+M.setup_snip_env = function() setfenv(2, vim.tbl_extend("force", _G, snip_defs)) end
 
 return M

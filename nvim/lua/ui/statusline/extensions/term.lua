@@ -2,9 +2,7 @@ local icons = require "ui.icons"
 
 local M = {}
 
-local function label()
-  return "Terminal |" .. vim.o.shell .. "|"
-end
+local function label() return "Terminal |" .. vim.o.shell .. "|" end
 
 M.sections = {
   left = {

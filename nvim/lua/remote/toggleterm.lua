@@ -34,26 +34,28 @@ return {
     float = Terminal:new {
       direction = "float",
       on_open = function(term)
-        vim.keymap.set({ "i", "n", "t" }, "<a-t>", function()
-          float:toggle()
-        end, { buffer = term.bufnr, desc = "toggleterm: toggle float" })
+        vim.keymap.set(
+          { "i", "n", "t" },
+          "<a-t>",
+          function() float:toggle() end,
+          { buffer = term.bufnr, desc = "toggleterm: toggle float" }
+        )
       end,
     }
-    vim.keymap.set({ "i", "n" }, "<a-t>", function()
-      float:toggle()
-    end, { desc = "toggleterm: toggle float" })
+    vim.keymap.set({ "i", "n" }, "<a-t>", function() float:toggle() end, { desc = "toggleterm: toggle float" })
 
     local tab
     tab = Terminal:new {
       direction = "tab",
       on_open = function(term)
-        vim.keymap.set({ "i", "n", "t" }, "<a-y>", function()
-          tab:toggle()
-        end, { buffer = term.bufnr, desc = "toggleterm: toggle tab" })
+        vim.keymap.set(
+          { "i", "n", "t" },
+          "<a-y>",
+          function() tab:toggle() end,
+          { buffer = term.bufnr, desc = "toggleterm: toggle tab" }
+        )
       end,
     }
-    vim.keymap.set({ "i", "n" }, "<a-y>", function()
-      tab:toggle()
-    end, { desc = "toggleterm: toggle tab" })
+    vim.keymap.set({ "i", "n" }, "<a-y>", function() tab:toggle() end, { desc = "toggleterm: toggle tab" })
   end,
 }

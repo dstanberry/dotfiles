@@ -34,21 +34,15 @@ end
 ---@param script string
 ---@param force boolean
 function M.install_package(name, basedir, path, script, force)
-  if force then
-    vim.fn.delete(basedir, "rf")
-  end
+  if force then vim.fn.delete(basedir, "rf") end
   if vim.fn.empty(vim.fn.glob(basedir)) > 0 then
     print("Installing " .. name)
     vim.fn.mkdir(basedir, "p")
-    if has "win32" then
-      script = transform_win_cmd(script)
-    end
+    if has "win32" then script = transform_win_cmd(script) end
     launch_term(script, {
       cwd = path,
       ["on_exit"] = function(_, code)
-        if code ~= 0 then
-          error("Failed to install " .. name)
-        end
+        if code ~= 0 then error("Failed to install " .. name) end
         local winid = vim.api.nvim_get_current_win()
         vim.api.nvim_win_close(winid, true)
         print("Installed " .. name)

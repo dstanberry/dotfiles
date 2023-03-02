@@ -1,8 +1,6 @@
 -- verify rust-tools is available
 local ok, rust_tools = pcall(require, "rust-tools")
-if not ok then
-  return
-end
+if not ok then return end
 
 local icons = require "ui.icons"
 local paths = require("remote.dap.debuggers.c").get_executable_path()

@@ -1,14 +1,10 @@
 local M = {}
 
 local hi = setmetatable({}, {
-  __newindex = function(_, hlgroup, args)
-    vim.api.nvim_set_hl(0, hlgroup, args)
-  end,
+  __newindex = function(_, hlgroup, args) vim.api.nvim_set_hl(0, hlgroup, args) end,
 })
 
-M.new = function(group, args)
-  hi[group] = args
-end
+M.new = function(group, args) hi[group] = args end
 
 M.apply = function(c)
   -- vim editor colors

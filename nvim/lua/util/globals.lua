@@ -34,9 +34,7 @@ end
 ---Wrapper for Vim's `|has|`feature detection function
 ---@param feature string
 ---@return boolean
-function _G.has(feature)
-  return vim.fn.has(feature) > 0
-end
+function _G.has(feature) return vim.fn.has(feature) > 0 end
 
 ---Adds whitespace to the start, end or both start and end of a string
 ---@param s string
@@ -60,9 +58,7 @@ function _G.profile(cmd, times)
   local start = vim.loop.hrtime()
   for _ = 1, times, 1 do
     local ok = pcall(cmd, unpack(args))
-    if not ok then
-      error("Command failed: " .. tostring(ok) .. " " .. vim.inspect { cmd = cmd, args = args })
-    end
+    if not ok then error("Command failed: " .. tostring(ok) .. " " .. vim.inspect { cmd = cmd, args = args }) end
   end
   ---@diagnostic disable-next-line: discard-returns
   print(((vim.loop.hrtime() - start) / 1000000 / times) .. "ms")
@@ -70,17 +66,13 @@ end
 
 ---Unloads the provided module from memory and re-requires it
 ---@param modname string
-function _G.reload(modname)
-  return require("util").reload(modname)
-end
+function _G.reload(modname) return require("util").reload(modname) end
 
 ---Provides a machine-local way of disabling various custom configuration options/settings
 ---@param setting string
 ---@return boolean enabled
 function _G.setting_enabled(setting)
   local var = "config_" .. setting
-  if vim.g[var] == nil then
-    return true
-  end
+  if vim.g[var] == nil then return true end
   return vim.g[var] == 1
 end

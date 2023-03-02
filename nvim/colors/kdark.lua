@@ -11,7 +11,5 @@ vim.api.nvim_create_augroup("colorscheme_kdark", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePost", "FileWritePost" }, {
   group = "colorscheme_kdark",
   pattern = vim.F.if_nil(file, ""),
-  callback = function()
-    vim.cmd.colorscheme "kdark"
-  end,
+  callback = function() vim.cmd.colorscheme "kdark" end,
 })

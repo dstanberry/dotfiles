@@ -72,9 +72,7 @@ return {
     vim.api.nvim_create_autocmd("BufEnter", {
       group = "navic-buffer",
       callback = function()
-        if vim.api.nvim_buf_line_count(0) > 10000 then
-          vim.b.navic_lazy_update_context = true
-        end
+        if vim.api.nvim_buf_line_count(0) > 10000 then vim.b.navic_lazy_update_context = true end
       end,
     })
   end,

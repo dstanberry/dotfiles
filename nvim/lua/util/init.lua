@@ -7,14 +7,10 @@ function M.get_module_name(filename)
   local modname
   if has "win32" then
     modname = (filename):match "lua\\(.+)%.lua$"
-    if modname ~= nil then
-      modname = (modname):gsub("\\", ".")
-    end
+    if modname ~= nil then modname = (modname):gsub("\\", ".") end
   else
     modname = (filename):match "lua/(.+)%.lua$"
-    if modname ~= nil then
-      modname = (modname):gsub("/", ".")
-    end
+    if modname ~= nil then modname = (modname):gsub("/", ".") end
   end
   modname = (modname):gsub(".init", "")
   return modname or ""
@@ -31,9 +27,7 @@ function M.map(callback, list, newList)
   newList = newList or {}
   for k, v in pairs(list) do
     newList = callback(newList, v, k)
-    if newList == nil then
-      error "|newList| must be returned on each iteration and cannot be null"
-    end
+    if newList == nil then error "|newList| must be returned on each iteration and cannot be null" end
   end
   return newList
 end
@@ -42,9 +36,7 @@ end
 ---@param modname string
 function M.reload(modname)
   local ok, r = pcall(require, "plenary.reload")
-  if ok then
-    r.reload_module(modname)
-  end
+  if ok then r.reload_module(modname) end
   return require(modname)
 end
 

@@ -46,9 +46,7 @@ M.on_attach = function(client, bufnr)
         local l = vim.split(line, "%s+")
         local n = #l - 2
         if n == 0 then
-          return vim.tbl_filter(function(val)
-            return vim.startswith(val, l[2])
-          end, { "display", "refresh", "run" })
+          return vim.tbl_filter(function(val) return vim.startswith(val, l[2]) end, { "display", "refresh", "run" })
         end
       end,
     })
@@ -84,9 +82,12 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.documentFormattingProvider then
-    vim.keymap.set("n", "ff", function()
-      vim.lsp.buf.format { async = true }
-    end, { buffer = bufnr, desc = "lsp: format document" })
+    vim.keymap.set(
+      "n",
+      "ff",
+      function() vim.lsp.buf.format { async = true } end,
+      { buffer = bufnr, desc = "lsp: format document" }
+    )
   end
 
   if client.server_capabilities.semanticTokensProvider and client.server_capabilities.semanticTokensProvider.full then
@@ -101,17 +102,13 @@ M.on_attach = function(client, bufnr)
       vim.api.nvim_create_autocmd("TextChanged", {
         group = "lsp_semantic_tokens",
         buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.semantic_tokens_full()
-        end,
+        callback = function() vim.lsp.buf.semantic_tokens_full() end,
       })
       vim.lsp.buf.semantic_tokens_full()
     end
   end
 
-  if client.server_capabilities.documentSymbolProvider then
-    pcall(require("nvim-navic").attach, client, bufnr)
-  end
+  if client.server_capabilities.documentSymbolProvider then pcall(require("nvim-navic").attach, client, bufnr) end
 
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "lsp: Goto definition" })
   vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "lsp: goto type definition" })
@@ -148,9 +145,7 @@ M.on_attach = function(client, bufnr)
       local l = vim.split(line, "%s+")
       local n = #l - 2
       if n == 0 then
-        return vim.tbl_filter(function(val)
-          return vim.startswith(val, l[2])
-        end, { "list", "add", "remove" })
+        return vim.tbl_filter(function(val) return vim.startswith(val, l[2]) end, { "list", "add", "remove" })
       end
     end,
   })
@@ -163,9 +158,7 @@ M.get_client_capabilities = function()
     properties = { "documentation", "detail", "additionalTextEdits" },
   }
   local has_cmp, cmp = pcall(require, "cmp_nvim_lsp")
-  if has_cmp then
-    return vim.tbl_deep_extend("keep", capabilities, cmp.default_capabilities())
-  end
+  if has_cmp then return vim.tbl_deep_extend("keep", capabilities, cmp.default_capabilities()) end
   return capabilities
 end
 
@@ -206,17 +199,13 @@ M.setup = function()
     groups.new("LspUnnecessary", { fg = c.gray_lighter, italic = true })
 
     local bufnr = vim.uri_to_bufnr(result.uri)
-    if not bufnr then
-      return
-    end
+    if not bufnr then return end
 
     local ns_unused = vim.api.nvim_create_namespace "unused"
     vim.api.nvim_buf_clear_namespace(bufnr, ns_unused, 0, -1)
     local real_diags = {}
     for _, diag in pairs(result.diagnostics) do
-      if diag.tags == nil then
-        diag.tags = {}
-      end
+      if diag.tags == nil then diag.tags = {} end
       if
         diag.severity == vim.lsp.protocol.DiagnosticSeverity.Hint
         and vim.tbl_contains(diag.tags, vim.lsp.protocol.DiagnosticTag.Unnecessary)

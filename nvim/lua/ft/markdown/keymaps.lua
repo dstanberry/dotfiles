@@ -1,8 +1,7 @@
 local markdown = require "ft.markdown"
 
-local create_note_from_selection = function()
-  vim.cmd { cmd = "ZkReference", args = { "title" }, mods = { keepmarks = true } }
-end
+local create_note_from_selection =
+  function() vim.cmd { cmd = "ZkReference", args = { "title" }, mods = { keepmarks = true } } end
 
 -- standard
 vim.keymap.set("n", "<leader>mg", markdown.zk.grep_notes, { desc = "zk: find in notes (grep)" })

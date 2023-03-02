@@ -9,9 +9,7 @@ return {
   "akinsho/bufferline.nvim",
   dependencies = {
     "tiagovla/scope.nvim",
-    config = function()
-      require("scope").setup()
-    end,
+    config = function() require("scope").setup() end,
   },
   config = function()
     local bgroups = require "bufferline.groups"
@@ -25,21 +23,11 @@ return {
           local is_separator = formatted:match "separator"
           local is_selected = formatted:match "selected"
           local is_visible = formatted:match "visible"
-          if diagnostic and diagnostic:match_str(formatted) then
-            attrs.fg = c.fg
-          end
-          if not is_group or (is_group and is_separator) then
-            attrs.bg = c.bg
-          end
-          if not is_group and not is_offset and is_separator then
-            attrs.fg = c.bg_alt
-          end
-          if is_group and not is_offset then
-            attrs.bg = c.red
-          end
-          if is_selected or is_visible then
-            attrs.bg = c.bg_alt
-          end
+          if diagnostic and diagnostic:match_str(formatted) then attrs.fg = c.fg end
+          if not is_group or (is_group and is_separator) then attrs.bg = c.bg end
+          if not is_group and not is_offset and is_separator then attrs.fg = c.bg_alt end
+          if is_group and not is_offset then attrs.bg = c.red end
+          if is_selected or is_visible then attrs.bg = c.bg_alt end
           agg[name] = attrs
           return agg
         end, defaults.highlights)
@@ -68,9 +56,7 @@ return {
         diagnostics = "nvim_lsp",
         diagnostics_update_in_insert = false,
         diagnostics_indicator = function(_, _, _, ctx)
-          if ctx.buffer:current() then
-            return ""
-          end
+          if ctx.buffer:current() then return "" end
           return pad(icons.diagnostics.Warn, "left")
         end,
         indicator = {
@@ -108,9 +94,7 @@ return {
               icon = icons.groups.Sql,
               auto_close = true,
               highlight = { fg = c.orange },
-              matcher = function(buf)
-                return buf.filename:match "%.sql$"
-              end,
+              matcher = function(buf) return buf.filename:match "%.sql$" end,
               separator = {
                 style = bgroups.separator.pill,
               },
@@ -133,9 +117,7 @@ return {
               icon = icons.groups.Book,
               highlight = { fg = c.teal },
               auto_close = true,
-              matcher = function(buf)
-                return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten"
-              end,
+              matcher = function(buf) return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten" end,
               separator = {
                 style = bgroups.separator.pill,
               },

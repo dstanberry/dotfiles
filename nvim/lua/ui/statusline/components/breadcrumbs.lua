@@ -22,9 +22,7 @@ local get_relpath = function(winid, name, maxlen)
   else
     maxlen = math.min(maxlen, math.floor(0.4 * vim.fn.winwidth(winid)))
     path = path:gsub("/$", "") .. separator
-    if #name > maxlen then
-      return ""
-    end
+    if #name > maxlen then return "" end
     return path
   end
 end
@@ -59,13 +57,9 @@ local get_file_sections = function(path, fname, ext, sep)
 end
 
 local get_lsp_symbols = function(sep)
-  if not navic_ok or not navic.is_available() then
-    return ""
-  end
+  if not navic_ok or not navic.is_available() then return "" end
   local location_ok, location = pcall(navic.get_location)
-  if not location_ok or location == "" then
-    return ""
-  end
+  if not location_ok or location == "" then return "" end
   return sep .. location
 end
 

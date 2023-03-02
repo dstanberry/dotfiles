@@ -19,9 +19,7 @@ end
 
 function M:load()
   self.label = #self.options.filetype > 0 and self.options.filetype or self.options.unnamed
-  if self.options.text_only then
-    return
-  end
+  if self.options.text_only then return end
   local icon, icon_highlight
   if has_devicons then
     local fname = (self.options.name):match "^.+/(.+)$"

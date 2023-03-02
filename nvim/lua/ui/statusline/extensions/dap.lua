@@ -12,18 +12,14 @@ local function get_ft_name(ft)
   local split = vim.split(ft, "_", { plain = true })
   if #split == 1 then
     split = vim.split(ft, "-", { plain = true })
-    if #split == 2 then
-      name = (split[2]):upper()
-    end
+    if #split == 2 then name = (split[2]):upper() end
   elseif #split == 2 then
     name = (split[2]):gsub("^%l", string.upper)
   end
   return "DAP " .. name
 end
 
-local function statusline_label(options)
-  return get_ft_name(options.filetype)
-end
+local function statusline_label(options) return get_ft_name(options.filetype) end
 
 local function winbar_label(options)
   local name = get_ft_name(options.filetype)

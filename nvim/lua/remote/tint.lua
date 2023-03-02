@@ -1,8 +1,6 @@
 local function any(target, list)
   for _, item in ipairs(list) do
-    if target:match(item) then
-      return true
-    end
+    if target:match(item) then return true end
   end
   return false
 end
@@ -21,9 +19,7 @@ return {
       "Bqf.*",
     },
     window_ignore_function = function(win_id)
-      if vim.wo[win_id].diff or vim.fn.win_gettype(win_id) ~= "" then
-        return true
-      end
+      if vim.wo[win_id].diff or vim.fn.win_gettype(win_id) ~= "" then return true end
       local buf = vim.api.nvim_win_get_buf(win_id)
       local b = vim.bo[buf]
       local ignore_bt = { "terminal", "prompt", "nofile" }

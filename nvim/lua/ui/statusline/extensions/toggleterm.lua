@@ -2,9 +2,7 @@ local icons = require "ui.icons"
 
 local M = {}
 
-local function label()
-  return "ToggleTerm #" .. vim.b.toggle_number
-end
+local function label() return "ToggleTerm #" .. vim.b.toggle_number end
 
 M.sections = {
   left = {

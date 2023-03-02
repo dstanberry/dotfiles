@@ -1,8 +1,6 @@
 -- verify lspconfig is available
 local ok, util = pcall(require, "lspconfig.util")
-if not ok then
-  return
-end
+if not ok then return end
 
 local project_root = function(fname)
   local root_dirs = { "nvim", "vim" }

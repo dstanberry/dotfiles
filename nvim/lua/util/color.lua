@@ -2,9 +2,7 @@ local M = {}
 
 -- return value within range boundary
 local clamp = function(val, min, max)
-  if val == nil then
-    return
-  end
+  if val == nil then return end
   if val < min then
     return min
   elseif val > max then

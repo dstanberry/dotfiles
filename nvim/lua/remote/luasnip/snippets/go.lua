@@ -9,15 +9,9 @@ local rutil = require "remote.luasnip.util"
 require("remote.luasnip.nodes").setup_snip_env()
 
 local transforms = {
-  int = function(_, _)
-    return t "0"
-  end,
-  bool = function(_, _)
-    return t "false"
-  end,
-  string = function(_, _)
-    return t [[""]]
-  end,
+  int = function(_, _) return t "0" end,
+  bool = function(_, _) return t "false" end,
+  string = function(_, _) return t [[""]] end,
   error = function(_, info)
     if info then
       info.index = info.index + 1
@@ -30,11 +24,7 @@ local transforms = {
       return t "err"
     end
   end,
-  [function(text)
-    return string.find(text, "*", 1, true) ~= nil
-  end] = function(_, _)
-    return t "nil"
-  end,
+  [function(text) return string.find(text, "*", 1, true) ~= nil end] = function(_, _) return t "nil" end,
 }
 
 local transform = function(text, info)
@@ -46,9 +36,7 @@ local transform = function(text, info)
     end
   end
   for condition, result in pairs(transforms) do
-    if condition_matches(condition, text, info) then
-      return result(text, info)
-    end
+    if condition_matches(condition, text, info) then return result(text, info) end
   end
   return t(text)
 end
@@ -61,9 +49,7 @@ local handlers = {
       local matching_node = node:named_child(idx)
       local type_node = matching_node:field("type")[1]
       table.insert(result, transform(get_node_text(type_node, 0), info))
-      if idx ~= count - 1 then
-        table.insert(result, t { ", " })
-      end
+      if idx ~= count - 1 then table.insert(result, t { ", " }) end
     end
     return result
   end,
@@ -104,9 +90,7 @@ local return_types = function(info)
     ]]
   )
   for _, node in query:iter_captures(function_node, 0) do
-    if handlers[node:type()] then
-      return handlers[node:type()](node, info)
-    end
+    if handlers[node:type()] then return handlers[node:type()](node, info) end
   end
 end
 

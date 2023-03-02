@@ -7,23 +7,17 @@ local M = {}
 
 M.comment_string = function()
   local cstring = vim.split(vim.bo.commentstring, "%s", true)[1]
-  if cstring == "/*" then
-    cstring = "//"
-  end
+  if cstring == "/*" then cstring = "//" end
   return vim.trim(cstring)
 end
 
 M.autopair = {}
 
 M.autopair.create = function(pair_begin, pair_end, ...)
-  local function negate(fn, ...)
-    return not fn(...)
-  end
+  local function negate(fn, ...) return not fn(...) end
   local function part(func, ...)
     local args = { ... }
-    return function()
-      return func(unpack(args))
-    end
+    return function() return func(unpack(args)) end
   end
   return s(
     { trig = pair_begin, wordTrig = false, hidden = true },
@@ -47,28 +41,32 @@ end
 
 local case_node
 local function get_case_node(index)
-  return d(index, function()
-    return sn(
-      nil,
-      fmta("<keyword><condition>:\n\t<body>\n\tbreak;\n\n<continuation>", {
-        keyword = t { "case " },
-        condition = i(1, "condition"),
-        body = d(
-          2,
-          M.saved_text,
-          {},
-          { user_args = { { text = ("%s TODO"):format(M.comment_string), indent = false } } }
-        ),
-        continuation = c(3, {
-          sn(
-            nil,
-            fmta("\ndefault:\n\t<body>\n", { body = i(1, ("%s TODO"):format(M.comment_string)) }, { dedent = false })
+  return d(
+    index,
+    function()
+      return sn(
+        nil,
+        fmta("<keyword><condition>:\n\t<body>\n\tbreak;\n\n<continuation>", {
+          keyword = t { "case " },
+          condition = i(1, "condition"),
+          body = d(
+            2,
+            M.saved_text,
+            {},
+            { user_args = { { text = ("%s TODO"):format(M.comment_string), indent = false } } }
           ),
-          vim.deepcopy(case_node),
-        }),
-      })
-    )
-  end, {})
+          continuation = c(3, {
+            sn(
+              nil,
+              fmta("\ndefault:\n\t<body>\n", { body = i(1, ("%s TODO"):format(M.comment_string)) }, { dedent = false })
+            ),
+            vim.deepcopy(case_node),
+          }),
+        })
+      )
+    end,
+    {}
+  )
 end
 case_node = get_case_node(1)
 
@@ -79,18 +77,14 @@ M.switch_case_node = fmta("<keyword> (<expression>) {\n<case>\n}", {
 })
 
 M.repeat_node = function(index)
-  return f(function(args)
-    return args[1]
-  end, { index })
+  return f(function(args) return args[1] end, { index })
 end
 
 M.repeat_node_segment = function(args, _, _, delim, ext)
   local text = args[1][1] or ""
   if ext then
     local stripped = text:match "(.+)%..+$"
-    if stripped then
-      text = stripped
-    end
+    if stripped then text = stripped end
   end
   local split = vim.split(text, delim, { plain = true })
   local options = {}
@@ -116,9 +110,7 @@ M.saved_text = function(_, snip, old_state, user_args)
     end
   else
     local text = user_args.text or ""
-    if indent ~= "" then
-      table.insert(nodes, t(indent))
-    end
+    if indent ~= "" then table.insert(nodes, t(indent)) end
     table.insert(nodes, i(1, text))
   end
   local snip_node = sn(nil, nodes)
@@ -144,14 +136,12 @@ M.dynamic_node_external_update = function(func_indx)
   dynamic_node.snip:store()
   node_util.leave_nodes_between(dynamic_node.snip, current_node)
   local func = dynamic_node.user_args[func_indx]
-  if func then
-    func(dynamic_node.parent.snippet)
-  end
+  if func then func(dynamic_node.parent.snippet) end
   dynamic_node.last_args = nil
   dynamic_node:update()
-  local target_node = dynamic_node:find_node(function(test_node)
-    return test_node.external_update_id == external_update_id
-  end)
+  local target_node = dynamic_node:find_node(
+    function(test_node) return test_node.external_update_id == external_update_id end
+  )
   if target_node then
     node_util.enter_nodes_between(dynamic_node, target_node, true)
     if insert_pre_call then

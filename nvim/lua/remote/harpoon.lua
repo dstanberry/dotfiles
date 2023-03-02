@@ -7,20 +7,23 @@ return {
     local ui = require "harpoon.ui"
 
     local has_telescope, telescope = pcall(require, "telescope")
-    if not has_telescope then
-      return
-    end
+    if not has_telescope then return end
 
     local themes = require "telescope.themes"
 
     if has_telescope then
       telescope.load_extension "harpoon"
-      vim.keymap.set("n", "<leader>hf", function()
-        telescope.extensions.harpoon.marks(themes.get_dropdown {
-          previewer = false,
-          prompt_title = "Harpoon (marks)",
-        })
-      end, { desc = "find marks" })
+      vim.keymap.set(
+        "n",
+        "<leader>hf",
+        function()
+          telescope.extensions.harpoon.marks(themes.get_dropdown {
+            previewer = false,
+            prompt_title = "Harpoon (marks)",
+          })
+        end,
+        { desc = "find marks" }
+      )
     end
 
     vim.keymap.set("n", "<leader>ha", mark.add_file, { desc = "mark file" })

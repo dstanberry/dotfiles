@@ -3,9 +3,7 @@ local M = {}
 ---Utility to load linux directory hashes (if defined) into the current runtime
 ---@param shell any
 function M.load_dirhash(shell)
-  if has "win32" then
-    return
-  end
+  if has "win32" then return end
   if shell == nil then
     print "cannot load hashes without specifying shell"
     return
@@ -28,9 +26,7 @@ function M.load_dirhash(shell)
     if #pair == 2 then
       local var = pair[1]
       local dir = pair[2]
-      if vim.env["hash_" .. var] == nil then
-        vim.env["hash_" .. var] = dir
-      end
+      if vim.env["hash_" .. var] == nil then vim.env["hash_" .. var] = dir end
     end
   end
 end

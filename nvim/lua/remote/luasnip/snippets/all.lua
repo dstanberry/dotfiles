@@ -14,12 +14,7 @@ end
 local function generate_lorem(words)
   local ret = {}
   for w = 1, words + 1, 1 do
-    table.insert(
-      ret,
-      f(function()
-        return vim.fn.systemlist("lorem --lines " .. w)
-      end)
-    )
+    table.insert(ret, f(function() return vim.fn.systemlist("lorem --lines " .. w) end))
   end
   return ret
 end
@@ -39,9 +34,7 @@ return {
     { trig = "(%d+)lorem", regTrig = true, wordTrig = false, hidden = true },
     f(function(_, snip)
       local lines = snip.captures[1]
-      if not tonumber(lines) then
-        lines = 1
-      end
+      if not tonumber(lines) then lines = 1 end
       return vim.fn.systemlist("lorem --lines " .. lines)
     end)
   ),

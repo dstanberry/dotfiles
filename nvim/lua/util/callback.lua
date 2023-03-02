@@ -22,9 +22,7 @@ end
 function M.create(cb, expr)
   local key = tostring(cb)
   M._callbackStore[key] = cb
-  if expr then
-    return ([[luaeval('require("util.callback").execute("%s")')]]):format(key)
-  end
+  if expr then return ([[luaeval('require("util.callback").execute("%s")')]]):format(key) end
   return ([[lua require("util.callback").execute("%s")]]):format(key)
 end
 

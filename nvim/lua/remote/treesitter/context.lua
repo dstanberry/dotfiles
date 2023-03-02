@@ -1,7 +1,5 @@
 local ok, context = pcall(require, "treesitter-context")
-if not ok then
-  return
-end
+if not ok then return end
 
 local groups = require "ui.theme.groups"
 

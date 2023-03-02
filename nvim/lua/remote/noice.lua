@@ -15,9 +15,7 @@ return {
     {
       "<c-d>",
       function()
-        if not require("noice.lsp").scroll(4) then
-          return "<c-d>"
-        end
+        if not require("noice.lsp").scroll(4) then return "<c-d>" end
       end,
       mode = "n",
       expr = true,
@@ -26,9 +24,7 @@ return {
     {
       "<c-f>",
       function()
-        if not require("noice.lsp").scroll(-4) then
-          return "<c-f>"
-        end
+        if not require("noice.lsp").scroll(-4) then return "<c-f>" end
       end,
       mode = "n",
       expr = true,

@@ -26,15 +26,9 @@ return {
         local added = ""
         local changed = ""
         local removed = ""
-        if status.added and status.added > 0 then
-          added = pad(icons.git.TextAdded, "right") .. status.added
-        end
-        if status.changed and status.changed > 0 then
-          changed = pad(icons.git.TextChanged, "both") .. status.changed
-        end
-        if status.removed and status.removed > 0 then
-          removed = pad(icons.git.TextRemoved, "both") .. status.removed
-        end
+        if status.added and status.added > 0 then added = pad(icons.git.TextAdded, "right") .. status.added end
+        if status.changed and status.changed > 0 then changed = pad(icons.git.TextChanged, "both") .. status.changed end
+        if status.removed and status.removed > 0 then removed = pad(icons.git.TextRemoved, "both") .. status.removed end
         return added .. changed .. removed
       end,
       numhl = false,
@@ -54,21 +48,13 @@ return {
         end
 
         map("n", "]c", function()
-          if vim.wo.diff then
-            return "]c"
-          end
-          vim.schedule(function()
-            signs.next_hunk()
-          end)
+          if vim.wo.diff then return "]c" end
+          vim.schedule(function() signs.next_hunk() end)
           return "<Ignore>"
         end, { expr = true, desc = "gitsigns: next hunk" })
         map("n", "[c", function()
-          if vim.wo.diff then
-            return "[c"
-          end
-          vim.schedule(function()
-            signs.prev_hunk()
-          end)
+          if vim.wo.diff then return "[c" end
+          vim.schedule(function() signs.prev_hunk() end)
           return "<Ignore>"
         end, { expr = true, desc = "gitsigns: previous hunk" })
         map("n", "<leader>gs", signs.stage_hunk, { desc = "gitsigns: stage hunk" })
@@ -78,9 +64,7 @@ return {
         map("n", "<leader>gR", signs.reset_buffer, { desc = "gitsigns: reset buffer" })
         map("n", "<leader>gp", signs.preview_hunk, { desc = "gitsigns: preview Hunk" })
         map("n", "<leader>gb", signs.toggle_current_line_blame, { desc = "gitsigns: toggle blame line" })
-        map("n", "<leader>gB", function()
-          signs.blame_line { full = true }
-        end, { desc = "gitsigns: blame line" })
+        map("n", "<leader>gB", function() signs.blame_line { full = true } end, { desc = "gitsigns: blame line" })
       end,
     }
   end,

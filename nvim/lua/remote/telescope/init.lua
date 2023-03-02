@@ -86,9 +86,7 @@ local function grep_last_search()
   }
 end
 
-local function live_grep_args()
-  require("telescope").extensions.live_grep_args.live_grep_args()
-end
+local function live_grep_args() require("telescope").extensions.live_grep_args.live_grep_args() end
 
 local function oldfiles()
   require("telescope.builtin").oldfiles {
@@ -156,9 +154,7 @@ return {
 
       local set_prompt_to_entry_value = function(prompt_bufnr)
         local entry = state.get_selected_entry()
-        if not entry or not type(entry) == "table" then
-          return
-        end
+        if not entry or not type(entry) == "table" then return end
         state.get_current_picker(prompt_bufnr):reset_prompt(entry.ordinal)
       end
 
@@ -166,9 +162,10 @@ return {
         local commit = state.get_selected_entry().value
         actions.close(prompt_bufnr)
         vim.fn.setreg("+", commit)
-        vim.defer_fn(function()
-          vim.notify(("'%s' copied to clipboard"):format(commit), nil, { timeout = 500 })
-        end, 500)
+        vim.defer_fn(
+          function() vim.notify(("'%s' copied to clipboard"):format(commit), nil, { timeout = 500 }) end,
+          500
+        )
       end
 
       local interactive_rebase = function(prompt_bufnr)
@@ -337,9 +334,7 @@ return {
           },
         },
       }
-      if not has "win32" then
-        telescope.load_extension "fzf"
-      end
+      if not has "win32" then telescope.load_extension "fzf" end
       telescope.load_extension "file_browser"
       telescope.load_extension "gh"
       telescope.load_extension "ui-select"
@@ -347,9 +342,11 @@ return {
     init = function()
       vim.api.nvim_create_user_command("BCommits", require("telescope.builtin").git_bcommits, {})
       vim.api.nvim_create_user_command("Commits", require("telescope.builtin").git_commits, {})
-      vim.api.nvim_create_user_command("Buffers", function()
-        require("telescope.builtin").buffers { sort_lastused = true }
-      end, {})
+      vim.api.nvim_create_user_command(
+        "Buffers",
+        function() require("telescope.builtin").buffers { sort_lastused = true } end,
+        {}
+      )
     end,
   },
 }

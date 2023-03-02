@@ -3,17 +3,13 @@ local M = {}
 ---Creates a sandboxed buffer that cannot be saved but has highlighting enabled for the filetype
 ---@param filetype string
 function M.create_scratch(filetype)
-  if not filetype or filetype == "" then
-    filetype = vim.fn.input "scratch buffer filetype: "
-  end
+  if not filetype or filetype == "" then filetype = vim.fn.input "scratch buffer filetype: " end
   vim.cmd.new { args = { "[Scratch]" }, range = { 20 } }
   vim.bo.bufhidden = "wipe"
   vim.bo.buflisted = false
   vim.bo.buftype = "nofile"
   vim.bo.swapfile = false
-  if filetype then
-    vim.bo.filetype = filetype
-  end
+  if filetype then vim.bo.filetype = filetype end
 end
 
 ---Unloads a buffer and if the buffer was in a split, the split is preserved.
@@ -59,49 +55,35 @@ end
 ---Defines the conditions that determine how the text at the current cursor position might be folded
 ---@return integer|string fold-level
 function M.fold_expr()
-  if string.find(vim.fn.getline(vim.v.lnum), "%S") == nil then
-    return "-1"
-  end
-  local get_indent_level = function(n)
-    return vim.fn.indent(n) / vim.bo.shiftwidth
-  end
+  if string.find(vim.fn.getline(vim.v.lnum), "%S") == nil then return "-1" end
+  local get_indent_level = function(n) return vim.fn.indent(n) / vim.bo.shiftwidth end
   local get_next_line_with_content = function()
     local count = vim.fn.line "$"
     local line = vim.v.lnum + 1
     while line <= count do
-      if string.find(vim.fn.getline(line), "%S") ~= nil then
-        return line
-      end
+      if string.find(vim.fn.getline(line), "%S") ~= nil then return line end
       line = line + 1
     end
     return -2
   end
   local current = get_indent_level(vim.v.lnum)
   local next = get_indent_level(get_next_line_with_content())
-  if next <= current then
-    return current
-  end
+  if next <= current then return current end
   return ">" .. next
 end
 
 local get_marked_region = function(mark1, mark2, options)
   local bufnr = 0
-  local adjust = options.adjust or function(pos1, pos2)
-    return pos1, pos2
-  end
+  local adjust = options.adjust or function(pos1, pos2) return pos1, pos2 end
   local regtype = options.regtype or vim.fn.visualmode()
   local selection = options.selection or (vim.o.selection ~= "exclusive")
   local pos1 = vim.fn.getpos(mark1)
   local pos2 = vim.fn.getpos(mark2)
   pos1, pos2 = adjust(pos1, pos2)
-  if options.positions then
-    return "", pos1, pos2
-  end
+  if options.positions then return "", pos1, pos2 end
   local start = { pos1[2] - 1, pos1[3] - 1 + pos1[4] }
   local finish = { pos2[2] - 1, pos2[3] - 1 + pos2[4] }
-  if start[2] < 0 or finish[1] < start[1] then
-    return
-  end
+  if start[2] < 0 or finish[1] < start[1] then return end
   local region = vim.region(bufnr, start, finish, regtype, selection)
   return region, start, finish
 end
@@ -121,9 +103,7 @@ function M.get_visual_selection(opt)
     v = true,
     V = true,
   }
-  if visual_modes[vim.api.nvim_get_mode().mode] == nil then
-    return {}
-  end
+  if visual_modes[vim.api.nvim_get_mode().mode] == nil then return {} end
   local options = {}
   ---@diagnostic disable-next-line: need-check-nil
   options.positions = vim.F.if_nil(opt.positions, false)
@@ -142,9 +122,7 @@ function M.get_visual_selection(opt)
     end
   end
   local region, start, finish = get_marked_region("v", ".", options)
-  if options.positions then
-    return { start, finish }
-  end
+  if options.positions then return { start, finish } end
   if region ~= nil and start ~= nil and finish ~= nil then
     local lines = vim.api.nvim_buf_get_lines(bufnr, start[1], finish[1] + 1, false)
     local line1_end
@@ -183,36 +161,24 @@ function M.list_buffers(opt)
     bufs = {}
     for _, winid in ipairs(wins) do
       bufnr = vim.api.nvim_win_get_buf(winid)
-      if not seen[bufnr] then
-        bufs[#bufs + 1] = bufnr
-      end
+      if not seen[bufnr] then bufs[#bufs + 1] = bufnr end
       seen[bufnr] = true
     end
   else
     bufs = vim.api.nvim_list_bufs()
   end
   return vim.tbl_filter(function(v)
-    if opt.loaded and not vim.api.nvim_buf_is_loaded(v) then
-      return false
-    end
-    if opt.listed and not vim.bo[v].buflisted then
-      return false
-    end
-    if opt.pattern and not vim.fn.bufname(v):match(opt.pattern) then
-      return false
-    end
+    if opt.loaded and not vim.api.nvim_buf_is_loaded(v) then return false end
+    if opt.listed and not vim.bo[v].buflisted then return false end
+    if opt.pattern and not vim.fn.bufname(v):match(opt.pattern) then return false end
     if opt.options then
       for name, value in pairs(opt.options) do
-        if vim.bo[v][name] ~= value then
-          return false
-        end
+        if vim.bo[v][name] ~= value then return false end
       end
     end
     if opt.vars then
       for name, value in pairs(opt.vars) do
-        if vim.b[v][name] ~= value then
-          return false
-        end
+        if vim.b[v][name] ~= value then return false end
       end
     end
     return true
@@ -231,9 +197,7 @@ function M.quickfix_delete(bufnr)
     local lastline = selection[2][2]
     local result = {}
     for i, item in ipairs(qfl) do
-      if i < firstline or i > lastline then
-        table.insert(result, item)
-      end
+      if i < firstline or i > lastline then table.insert(result, item) end
     end
     qfl = result
   else

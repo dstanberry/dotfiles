@@ -26,12 +26,18 @@ vim.keymap.set(
   { buffer = vim.api.nvim_get_current_buf(), desc = "quickfix: delete item" }
 )
 
-vim.keymap.set("n", "H", function()
-  pcall(vim.cmd.colder)
-end, { buffer = vim.api.nvim_get_current_buf(), desc = "quickfix: goto older item" })
-vim.keymap.set("n", "L", function()
-  pcall(vim.cmd.cnewer)
-end, { buffer = vim.api.nvim_get_current_buf(), desc = "quickfix: goto newer item" })
+vim.keymap.set(
+  "n",
+  "H",
+  function() pcall(vim.cmd.colder) end,
+  { buffer = vim.api.nvim_get_current_buf(), desc = "quickfix: goto older item" }
+)
+vim.keymap.set(
+  "n",
+  "L",
+  function() pcall(vim.cmd.cnewer) end,
+  { buffer = vim.api.nvim_get_current_buf(), desc = "quickfix: goto newer item" }
+)
 
 local adjust_height = function(min_height, max_height)
   local line_end = vim.fn.line "$" + 1

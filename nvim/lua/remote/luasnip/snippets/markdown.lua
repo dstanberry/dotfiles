@@ -21,12 +21,8 @@ return {
     { trig = "meta" },
     fmt("---\ntitle: {}\ndate: {} {}\ntags: [{}]\n---\n\n{}", {
       i(1, "Work in progress"),
-      f(function()
-        return os.date "%m/%d/%Y"
-      end, {}),
-      f(function()
-        return os.date "%H:%M"
-      end, {}),
+      f(function() return os.date "%m/%d/%Y" end, {}),
+      f(function() return os.date "%H:%M" end, {}),
       i(2, "fleeting"),
       i(3),
     })
@@ -73,18 +69,14 @@ return {
   ),
   s(
     { trig = "*([2-6])", regTrig = true, hidden = true },
-    { f(function(_, snip)
-      return string.rep("*", tonumber(snip.captures[1])) .. " "
-    end, {}) },
+    { f(function(_, snip) return string.rep("*", tonumber(snip.captures[1])) .. " " end, {}) },
     {
       condition = conds.line_begin,
     }
   ),
   s(
     { trig = "-([2-6])", regTrig = true, hidden = true },
-    { f(function(_, snip)
-      return string.rep("-", tonumber(snip.captures[1])) .. " "
-    end, {}) },
+    { f(function(_, snip) return string.rep("-", tonumber(snip.captures[1])) .. " " end, {}) },
     {
       condition = conds.line_begin,
     }

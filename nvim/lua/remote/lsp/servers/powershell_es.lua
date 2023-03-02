@@ -1,6 +1,4 @@
-local basedir = vim.fn.expand(
-  string.format("%s/mason/packages/powershell-editor-services", vim.fn.stdpath "data")
-)
+local basedir = vim.fn.expand(string.format("%s/mason/packages/powershell-editor-services", vim.fn.stdpath "data"))
 -- stylua: ignore
 local command_fmt = {
   "%s/PowerShellEditorServices/Start-EditorServices.ps1",

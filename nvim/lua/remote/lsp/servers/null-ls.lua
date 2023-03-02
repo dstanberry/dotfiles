@@ -1,8 +1,6 @@
 -- verify null-ls is available
 local ok, null_ls = pcall(require, "null-ls")
-if not ok then
-  return
-end
+if not ok then return end
 
 local b = null_ls.builtins
 
@@ -27,9 +25,7 @@ local sources = {
   b.formatting.prettier.with {
     extra_args = function(params)
       local arguments = {}
-      if params.ft == "markdown" then
-        arguments = { "--print-width", "80", "--prose-wrap", "always" }
-      end
+      if params.ft == "markdown" then arguments = { "--print-width", "80", "--prose-wrap", "always" } end
       return arguments
     end,
   },

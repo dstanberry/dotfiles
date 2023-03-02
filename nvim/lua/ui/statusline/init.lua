@@ -22,29 +22,19 @@ local load_extensions = function()
 end
 
 local draw_section = function(kind, placement, section)
-  if type(section) ~= "table" then
-    return {}
-  end
+  if type(section) ~= "table" then return {} end
   local status = {}
   for k, component in pairs(section) do
-    if kind == "statusline" and placement == "right" then
-      table.insert(status, right_separator)
-    end
+    if kind == "statusline" and placement == "right" then table.insert(status, right_separator) end
     table.insert(status, Component:new(props, component))
-    if kind == "statusline" and placement == "left" and k >= 1 then
-      table.insert(status, left_separator)
-    end
+    if kind == "statusline" and placement == "left" and k >= 1 then table.insert(status, left_separator) end
   end
   return status
 end
 
 M.generate = function(location, win_id)
-  if not vim.api.nvim_win_is_valid(win_id) then
-    return ""
-  end
-  if #props > 0 then
-    props = {}
-  end
+  if not vim.api.nvim_win_is_valid(win_id) then return "" end
+  if #props > 0 then props = {} end
   props.winid = win_id
   props.bufnr = vim.api.nvim_win_get_buf(win_id)
   props.filetype = vim.api.nvim_buf_get_option(props.bufnr, "filetype")
@@ -72,9 +62,7 @@ M.generate = function(location, win_id)
     return ("%s%%=%s "):format(left_section, right_section)
   elseif location == "winbar" then
     if has_ext then
-      if not ext.winbar then
-        return ""
-      end
+      if not ext.winbar then return "" end
       sections = ext.winbar
     else
       sections = options.get().winbar
@@ -108,9 +96,7 @@ M.setup = function(config)
       local ft, bt = vim.bo[buf].filetype, vim.bo[buf].buftype
       local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
       local value = ([[%%{%%v:lua.require("ui.statusline").generate("winbar", %s)%%}]]):format(win)
-      if not is_diff then
-        is_diff = vim.wo[win].diff
-      end
+      if not is_diff then is_diff = vim.wo[win].diff end
       local keys = vim.tbl_keys(cached_ft_map)
       if
         not is_diff
@@ -131,16 +117,12 @@ M.setup = function(config)
   vim.api.nvim_create_augroup("winbar", { clear = true })
   vim.api.nvim_create_autocmd({ "BufWinEnter", "BufEnter", "TabNew", "TabEnter" }, {
     group = "winbar",
-    callback = function()
-      set_winbar(false)
-    end,
+    callback = function() set_winbar(false) end,
   })
   vim.api.nvim_create_autocmd("User", {
     group = "winbar",
     pattern = { "DiffviewDiffBufRead", "DiffviewDiffBufWinEnter" },
-    callback = function()
-      set_winbar(true)
-    end,
+    callback = function() set_winbar(true) end,
   })
 end
 

@@ -16,35 +16,35 @@ M._create_workspace_handler = function(opts)
     else
       locations = vim.lsp.util.symbols_to_items(result, bufnr)
     end
-    if not locations then
-      locations = {}
-    end
-    pickers.new(opts, {
-      prompt_title = "LSP Workspace Symbols",
-      finder = finders.new_table {
-        results = locations,
-        entry_maker = make_entry.gen_from_lsp_symbols(opts),
-      },
-      previewer = conf.qflist_previewer(opts),
-      sorter = conf.generic_sorter(opts),
-      on_input_filter_cb = function(prompt)
-        local params = { query = "#" .. prompt }
-        local new_result = vim.lsp.buf_request_sync(bufnr, "workspace/symbol", params)
-        local new_locations = {}
-        for _, server_results in pairs(new_result or {}) do
-          if server_results.result then
-            vim.list_extend(new_locations, vim.lsp.util.symbols_to_items(server_results.result, 0) or {})
+    if not locations then locations = {} end
+    pickers
+      .new(opts, {
+        prompt_title = "LSP Workspace Symbols",
+        finder = finders.new_table {
+          results = locations,
+          entry_maker = make_entry.gen_from_lsp_symbols(opts),
+        },
+        previewer = conf.qflist_previewer(opts),
+        sorter = conf.generic_sorter(opts),
+        on_input_filter_cb = function(prompt)
+          local params = { query = "#" .. prompt }
+          local new_result = vim.lsp.buf_request_sync(bufnr, "workspace/symbol", params)
+          local new_locations = {}
+          for _, server_results in pairs(new_result or {}) do
+            if server_results.result then
+              vim.list_extend(new_locations, vim.lsp.util.symbols_to_items(server_results.result, 0) or {})
+            end
           end
-        end
-        return {
-          prompt = prompt,
-          updated_finder = finders.new_table {
-            results = new_locations,
-            entry_maker = make_entry.gen_from_lsp_symbols(opts),
-          },
-        }
-      end,
-    }):find()
+          return {
+            prompt = prompt,
+            updated_finder = finders.new_table {
+              results = new_locations,
+              entry_maker = make_entry.gen_from_lsp_symbols(opts),
+            },
+          }
+        end,
+      })
+      :find()
   end
 end
 

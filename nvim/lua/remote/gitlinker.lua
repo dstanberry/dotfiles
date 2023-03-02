@@ -7,9 +7,7 @@ local function get_relative_filepath(url_data)
     -- HACK: trim git root from file to get relative path.. YMMV
     url_data.file = url_data.file:gsub(git_root, "")
     -- trim leading slash
-    if url_data.file:sub(1, 1) == "/" then
-      url_data.file = url_data.file:sub(2)
-    end
+    if url_data.file:sub(1, 1) == "/" then url_data.file = url_data.file:sub(2) end
   end
   return url_data
 end
@@ -29,13 +27,9 @@ local function open(url)
   Job:new({ command = command, args = args }):start()
 end
 
-local function browser()
-  return { action_callback = open }
-end
+local function browser() return { action_callback = open } end
 
-local function gitlinker()
-  return require "gitlinker"
-end
+local function gitlinker() return require "gitlinker" end
 
 return {
   "ruifm/gitlinker.nvim",

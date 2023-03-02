@@ -2,9 +2,7 @@ local icons = require "ui.icons"
 
 local M = {}
 
-local function label()
-  return "Neogit"
-end
+local function label() return "Neogit" end
 
 M.sections = {
   left = {

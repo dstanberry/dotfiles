@@ -41,9 +41,7 @@ return {
           local config = require(mod).config or {}
           if srv == "ls_emmet" then
             local configs = require "lspconfig.configs"
-            if not configs.ls_emmet then
-              configs.ls_emmet = { default_config = config }
-            end
+            if not configs.ls_emmet then configs.ls_emmet = { default_config = config } end
           elseif srv == "null-ls" then
             require(mod).setup(on_attach_nvim)
             do
@@ -108,9 +106,7 @@ return {
       vim.api.nvim_create_autocmd("LspAttach", {
         group = "lsp_type_hints",
         callback = function(args)
-          if not (args.data and args.data.client_id) then
-            return
-          end
+          if not (args.data and args.data.client_id) then return end
 
           local bufnr = args.buf
           local client = vim.lsp.get_client_by_id(args.data.client_id)

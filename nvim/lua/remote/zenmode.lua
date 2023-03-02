@@ -28,8 +28,6 @@ return {
         font = "+4",
       },
     },
-    on_close = function()
-      vim.cmd.doautocmd "BufWinEnter"
-    end,
+    on_close = function() vim.cmd.doautocmd "BufWinEnter" end,
   },
 }

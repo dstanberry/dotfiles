@@ -67,9 +67,7 @@ M.find_notes = function()
         local file = vim.fn.expand(string.format("%s/%s", notebook_root, selection[1]))
         vim.cmd.edit(file)
       end)
-      map("i", "<cr>", function()
-        telescope_actions.select_default(bufnr)
-      end)
+      map("i", "<cr>", function() telescope_actions.select_default(bufnr) end)
       return true
     end,
   }
@@ -88,9 +86,7 @@ M.create_note = function()
       opts.dir = selection.value.directory
       if selection.value.ask_for_title then
         opts.title = vim.fn.input "Title: "
-        if opts.title == "" or opts.title == nil then
-          return
-        end
+        if opts.title == "" or opts.title == nil then return end
       else
         opts.title = selection.value.label
       end
@@ -106,9 +102,7 @@ M.create_note_with_title = function()
   location.uri = location.textDocument.uri
   location.textDocument = nil
   location.range = chunk
-  if chunk == nil then
-    error "No selected text"
-  end
+  if chunk == nil then error "No selected text" end
   telescope_pickers.create("dropdown", templates, {
     callback = function(selection)
       local opts = {}
@@ -126,9 +120,7 @@ M.create_note_with_content = function()
   location.uri = location.textDocument.uri
   location.textDocument = nil
   location.range = chunk
-  if chunk == nil then
-    error "No selected text"
-  end
+  if chunk == nil then error "No selected text" end
   telescope_pickers.create("dropdown", templates, {
     callback = function(selection)
       local opts = {}
@@ -136,9 +128,7 @@ M.create_note_with_content = function()
       opts.dir = selection.value.directory
       if selection.value.ask_for_title then
         opts.title = vim.fn.input "Title: "
-        if opts.title == "" or opts.title == nil then
-          return
-        end
+        if opts.title == "" or opts.title == nil then return end
       else
         opts.title = selection.value.label
       end
@@ -147,13 +137,9 @@ M.create_note_with_content = function()
   })
 end
 
-M.find_orphans = function()
-  M.edit_with({ orphan = true }, { title = "Notes (orphaned)" })
-end
+M.find_orphans = function() M.edit_with({ orphan = true }, { title = "Notes (orphaned)" }) end
 
-M.find_recent_notes = function()
-  M.edit_with({ createdAfter = "2 weeks ago" }, { title = "Notes (recent)" })
-end
+M.find_recent_notes = function() M.edit_with({ createdAfter = "2 weeks ago" }, { title = "Notes (recent)" }) end
 
 M.find_templated_note = function(template)
   M.edit_with({ hrefs = { template }, sort = { "created" } }, { title = string.format("Notes (%s)", template) })
@@ -161,9 +147,7 @@ end
 
 M.find_tagged_notes = function()
   zk.pick_tags({}, { title = "Notes (tags)", telescope = telescope_themes.get_dropdown {} }, function(tags)
-    tags = vim.tbl_map(function(v)
-      return v.name
-    end, tags)
+    tags = vim.tbl_map(function(v) return v.name end, tags)
     M.edit_with({ tags = tags }, { title = ("Notes (tagged as %s)"):format(vim.inspect(tags)) })()
   end)
 end
@@ -199,9 +183,7 @@ M.insert_link = function(opts)
     notes = { notes }
     for _, note in ipairs(notes) do
       local npath = note.path
-      if pwd ~= npath then
-        npath = ("../%s"):format(npath)
-      end
+      if pwd ~= npath then npath = ("../%s"):format(npath) end
       local updated = ("%s[%s](%s)%s"):format(line:sub(0, pos), note.title, npath:sub(1, -6), line:sub(pos + 1))
       vim.api.nvim_set_current_line(updated)
     end
@@ -223,9 +205,7 @@ M.insert_link_from_selection = function(opts)
       notes = { notes }
       for _, note in ipairs(notes) do
         local npath = note.path
-        if pwd ~= npath then
-          npath = ("../%s"):format(npath)
-        end
+        if pwd ~= npath then npath = ("../%s"):format(npath) end
         local updated = ("%s[%s](%s)%s"):format(
           line:sub(0, pos - #selection),
           selection,

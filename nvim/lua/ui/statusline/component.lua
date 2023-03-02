@@ -23,9 +23,7 @@ function Component:highlight(name)
   else
     self.hl = highlight[name]
   end
-  if self.hl then
-    self.label = string.format("%s%s", self.hl, self.label)
-  end
+  if self.hl then self.label = string.format("%s%s", self.hl, self.label) end
 end
 
 function Component:load()
@@ -40,9 +38,7 @@ function Component:load()
     local ok, mod = pcall(require, ("ui.statusline.components.%s"):format(component))
     if ok then
       self.label = mod
-      if type(mod) == "function" or type(mod) == "table" then
-        self.label = mod(opts)
-      end
+      if type(mod) == "function" or type(mod) == "table" then self.label = mod(opts) end
     elseif type(component) == "function" then
       self.label = component(opts)
     else

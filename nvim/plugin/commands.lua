@@ -1,8 +1,10 @@
 local util = require "util"
 
-vim.api.nvim_create_user_command("Scratch", function(args)
-  util.buffer.create_scratch(args.fargs[1])
-end, { nargs = "?", complete = "filetype" })
+vim.api.nvim_create_user_command(
+  "Scratch",
+  function(args) util.buffer.create_scratch(args.fargs[1]) end,
+  { nargs = "?", complete = "filetype" }
+)
 
 vim.api.nvim_create_user_command("Glow", function()
   local bufnr = vim.api.nvim_get_current_buf()
@@ -33,9 +35,7 @@ vim.api.nvim_create_user_command("Glow", function()
   local buf = vim.api.nvim_create_buf(false, true)
   local win = vim.api.nvim_open_win(buf, true, opts)
 
-  local close_win = function()
-    vim.api.nvim_win_close(win, true)
-  end
+  local close_win = function() vim.api.nvim_win_close(win, true) end
 
   vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
   vim.api.nvim_buf_set_option(buf, "filetype", "md_preview")
@@ -61,8 +61,6 @@ vim.api.nvim_create_user_command("ToggleWord", function()
   local word = vim.fn.expand "<cword>"
   vim.schedule(function()
     local keys = vim.tbl_keys(lut)
-    if vim.tbl_contains(keys, word) then
-      vim.cmd.normal { args = { ("ciw%s"):format(lut[word]) } }
-    end
+    if vim.tbl_contains(keys, word) then vim.cmd.normal { args = { ("ciw%s"):format(lut[word]) } } end
   end)
 end, {})

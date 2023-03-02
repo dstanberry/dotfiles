@@ -54,9 +54,7 @@ return {
       },
       snippet = {
         expand = function(args)
-          pcall(function()
-            require("luasnip").lsp_expand(args.body)
-          end)
+          pcall(function() require("luasnip").lsp_expand(args.body) end)
         end,
       },
       sources = cmp.config.sources {

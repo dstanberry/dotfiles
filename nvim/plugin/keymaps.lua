@@ -10,17 +10,13 @@ vim.keymap.set("n", "<down>", "<c-e>", { desc = "scroll down" })
 -- switch to next buffer
 vim.keymap.set("n", "<right>", function()
   local ok, bufferline = pcall(require, "bufferline")
-  if not ok then
-    vim.cmd.bnext()
-  end
+  if not ok then vim.cmd.bnext() end
   bufferline.cycle(1)
 end, { desc = "next buffer" })
 -- switch to previous buffer
 vim.keymap.set("n", "<left>", function()
   local ok, bufferline = pcall(require, "bufferline")
-  if not ok then
-    vim.cmd.bprevious()
-  end
+  if not ok then vim.cmd.bprevious() end
   bufferline.cycle(-1)
 end, { desc = "previous buffer" })
 
@@ -39,25 +35,20 @@ vim.keymap.set("n", "<cr>", function()
 end, { desc = "clear |hlsearch|" })
 
 -- navigate quickfix list
-vim.keymap.set("n", "<c-up>", function()
-  pcall(vim.cmd.cprevious)
-end, { desc = "previous item in quickfix list" })
-vim.keymap.set("n", "<c-down>", function()
-  pcall(vim.cmd.cnext)
-end, { desc = "next item in quickfix list" })
+vim.keymap.set("n", "<c-up>", function() pcall(vim.cmd.cprevious) end, { desc = "previous item in quickfix list" })
+vim.keymap.set("n", "<c-down>", function() pcall(vim.cmd.cnext) end, { desc = "next item in quickfix list" })
 
 -- navigate location list
-vim.keymap.set("n", "<a-up>", function()
-  pcall(vim.cmd.lprevious)
-end, { desc = "previous entry in location list" })
-vim.keymap.set("n", "<a-down>", function()
-  pcall(vim.cmd.lnext)
-end, { desc = "next entry in location list" })
+vim.keymap.set("n", "<a-up>", function() pcall(vim.cmd.lprevious) end, { desc = "previous entry in location list" })
+vim.keymap.set("n", "<a-down>", function() pcall(vim.cmd.lnext) end, { desc = "next entry in location list" })
 
 -- find all occurences in buffer of word under cursor
-vim.keymap.set("n", "<c-w><c-f>", function()
-  return ("/%s<cr>"):format(vim.fn.expand "<cword>")
-end, { silent = false, expr = true, desc = "find occurences of word under cursor" })
+vim.keymap.set(
+  "n",
+  "<c-w><c-f>",
+  function() return ("/%s<cr>"):format(vim.fn.expand "<cword>") end,
+  { silent = false, expr = true, desc = "find occurences of word under cursor" }
+)
 
 -- show highlight information for word under cursor
 vim.keymap.set("n", "<c-w><c-i>", vim.show_pos, { desc = "show highlights for word under cursor" })
@@ -68,14 +59,20 @@ vim.keymap.set("n", "<c-w><c-j>", ":m .+1<cr>==", { desc = "move line down" })
 vim.keymap.set("n", "<c-w><c-k>", ":m .-2<cr>==", { desc = "move line up" })
 
 -- begin substitution in buffer for word under cursor
-vim.keymap.set("n", "<c-w><c-r>", function()
-  return ([[:%%s/\<%s\>/]]):format(vim.fn.expand "<cword>")
-end, { silent = false, expr = true, desc = "substitute occurences of word under cursor" })
+vim.keymap.set(
+  "n",
+  "<c-w><c-r>",
+  function() return ([[:%%s/\<%s\>/]]):format(vim.fn.expand "<cword>") end,
+  { silent = false, expr = true, desc = "substitute occurences of word under cursor" }
+)
 
 -- change the word under the cursor to it's semantic opposite
-vim.keymap.set("n", "<c-w><c-t>", function()
-  vim.cmd { cmd = "ToggleWord" }
-end, { silent = false, desc = "substitute word under cursor with antonym" })
+vim.keymap.set(
+  "n",
+  "<c-w><c-t>",
+  function() vim.cmd { cmd = "ToggleWord" } end,
+  { silent = false, desc = "substitute word under cursor with antonym" }
+)
 
 -- -- switch to left window
 -- vim.keymap.set("n", "<c-h>", "<c-w><c-h>")
@@ -158,9 +155,7 @@ vim.keymap.set("n", "<localleader><localleader>r", function()
     local file = (vim.fn.expand "%:p")
     local mod = util.get_module_name(file)
     local shift = ""
-    if #mod == 0 then
-      shift = "<left><left>"
-    end
+    if #mod == 0 then shift = "<left><left>" end
     return ([[:lua reload("%s")%s]]):format(mod, shift)
   end
 end, { silent = false, expr = true, replace_keycodes = true, desc = "reload current lua module" })
@@ -204,24 +199,26 @@ vim.keymap.set("n", "<bs>p", '"_p', { silent = false, desc = "paste (preserve cl
 vim.keymap.set("n", "<bs>P", '"_P', { silent = false, desc = "paste (preserve clipboard)" })
 
 -- discard all file modifications to current window
-vim.keymap.set("n", "<bs>q", function()
-  vim.cmd.quit { bang = true }
-end, { desc = "close current window" })
+vim.keymap.set("n", "<bs>q", function() vim.cmd.quit { bang = true } end, { desc = "close current window" })
 
 -- discard all file modifications and close instance
-vim.keymap.set("n", "<bs>Q", function()
-  vim.cmd.quitall { bang = true }
-end, { desc = "close application" })
+vim.keymap.set("n", "<bs>Q", function() vim.cmd.quitall { bang = true } end, { desc = "close application" })
 
 -- close the current buffer
-vim.keymap.set("n", "<bs>z", function()
-  util.buffer.delete_buffer(false)
-end, { silent = false, desc = "close current buffer" })
+vim.keymap.set(
+  "n",
+  "<bs>z",
+  function() util.buffer.delete_buffer(false) end,
+  { silent = false, desc = "close current buffer" }
+)
 
 -- discard changes to current buffer and close it
-vim.keymap.set("n", "<bs>Z", function()
-  util.buffer.delete_buffer(true)
-end, { silent = false, desc = "discard changes and close current buffer" })
+vim.keymap.set(
+  "n",
+  "<bs>Z",
+  function() util.buffer.delete_buffer(true) end,
+  { silent = false, desc = "discard changes and close current buffer" }
+)
 
 ---------------------------------------------------------------
 -- => Insert
@@ -279,9 +276,7 @@ vim.keymap.set("v", "<c-w><c-x>", function()
     local c = coroutine.create(chunk)
     local res = { coroutine.resume(c, ...) }
     if not res[1] then
-      if debug.getinfo(c, 0, "f").func ~= chunk then
-        res[2] = debug.traceback(c, res[2], 0)
-      end
+      if debug.getinfo(c, 0, "f").func ~= chunk then res[2] = debug.traceback(c, res[2], 0) end
     end
     return unpack(res)
   end
@@ -326,9 +321,7 @@ vim.keymap.set("c", "<c-e>", "<end>", { silent = false, desc = "goto end of line
 vim.keymap.set("c", "<up>", function()
   local ok, cmp = pcall(require, "cmp")
   local visible = false
-  if ok then
-    visible = cmp.visible()
-  end
+  if ok then visible = cmp.visible() end
   if vim.fn.pumvisible() == 1 or visible then
     return "<c-p>"
   else
@@ -340,9 +333,7 @@ end, { silent = false, expr = true, replace_keycodes = true })
 vim.keymap.set("c", "<down>", function()
   local ok, cmp = pcall(require, "cmp")
   local visible = false
-  if ok then
-    visible = cmp.visible()
-  end
+  if ok then visible = cmp.visible() end
   if vim.fn.pumvisible() == 1 or visible then
     return "<c-n>"
   else
@@ -354,19 +345,28 @@ end, { silent = false, expr = true, replace_keycodes = true })
 vim.keymap.set("c", "jk", "<c-c>", { desc = "leave command-line mode" })
 
 -- populate command line with path to parent dir of current buffer
-vim.keymap.set("c", "%H", function()
-  return vim.fn.expand "%:p:h" .. "/"
-end, { silent = false, expr = true, replace_keycodes = true, desc = "insert path to parent directory" })
+vim.keymap.set(
+  "c",
+  "%H",
+  function() return vim.fn.expand "%:p:h" .. "/" end,
+  { silent = false, expr = true, replace_keycodes = true, desc = "insert path to parent directory" }
+)
 
 -- populate command line with file name of current buffer
-vim.keymap.set("c", "%T", function()
-  return vim.fn.expand "%:t"
-end, { silent = false, expr = true, replace_keycodes = true, desc = "insert filename" })
+vim.keymap.set(
+  "c",
+  "%T",
+  function() return vim.fn.expand "%:t" end,
+  { silent = false, expr = true, replace_keycodes = true, desc = "insert filename" }
+)
 
 -- populate command line with path to file of current buffer
-vim.keymap.set("c", "%P", function()
-  return vim.fn.expand "%:p"
-end, { silent = false, expr = true, replace_keycodes = true, desc = "insert filepath" })
+vim.keymap.set(
+  "c",
+  "%P",
+  function() return vim.fn.expand "%:p" end,
+  { silent = false, expr = true, replace_keycodes = true, desc = "insert filepath" }
+)
 
 ---------------------------------------------------------------
 -- => Terminal

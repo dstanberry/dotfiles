@@ -23,16 +23,10 @@ local options = vim.deepcopy(defaults)
 
 local M = {}
 
-M.set = function(opts)
-  options = vim.tbl_deep_extend("force", options, opts)
-end
+M.set = function(opts) options = vim.tbl_deep_extend("force", options, opts) end
 
-M.get = function()
-  return options
-end
+M.get = function() return options end
 
-M.reset = function()
-  options = vim.deepcopy(defaults)
-end
+M.reset = function() options = vim.deepcopy(defaults) end
 
 return M

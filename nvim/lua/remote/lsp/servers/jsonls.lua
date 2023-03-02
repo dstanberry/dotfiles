@@ -1,8 +1,6 @@
 -- verify schemastore is available
 local ok, schemastore = pcall(require, "schemastore")
-if not ok then
-  return
-end
+if not ok then return end
 
 local M = {}
 

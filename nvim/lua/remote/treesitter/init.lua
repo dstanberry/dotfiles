@@ -28,9 +28,7 @@ return {
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-context",
-        config = function()
-          require "remote.treesitter.context"
-        end,
+        config = function() require "remote.treesitter.context" end,
       },
       "JoosepAlviste/nvim-ts-context-commentstring",
       "nvim-treesitter/nvim-treesitter-refactor",

@@ -1,8 +1,6 @@
 local M = {}
 
-M.insert_checkbox = function()
-  vim.api.nvim_put({ "[ ] " }, "c", true, true)
-end
+M.insert_checkbox = function() vim.api.nvim_put({ "[ ] " }, "c", true, true) end
 
 M.insert_link = function()
   local url = vim.fn.getreg "*"

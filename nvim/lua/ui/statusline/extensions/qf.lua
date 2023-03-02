@@ -7,15 +7,11 @@ local is_loclist = function()
   return loclist.filewinid ~= 0
 end
 
-local label = function()
-  return is_loclist() and "Location List" or "Quickfix List"
-end
+local label = function() return is_loclist() and "Location List" or "Quickfix List" end
 
 local title = function()
   local list
-  if is_loclist() then
-    return vim.fn.getloclist(0, { title = 0 }).title
-  end
+  if is_loclist() then return vim.fn.getloclist(0, { title = 0 }).title end
   return vim.fn.getqflist({ title = 0 }).title
 end
 
