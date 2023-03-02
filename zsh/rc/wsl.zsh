@@ -22,7 +22,7 @@ if is_wsl && [[ "$EUID" -gt 0 ]] ; then
   export XDG_RUNTIME_DIR=/mnt/wslg/runtime-dir
 
   # ensure X11 display socket exists
-  if [ ! -L /tmp/.X11-unix ]; then
+  if [ ! -L /tmp/.X11-unix ] && [ ! -d /tmp/.X11-unix ]; then
     ln -s /mnt/wslg/.X11-unix /tmp/.X11-unix
   fi
 
