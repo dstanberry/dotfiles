@@ -7,7 +7,7 @@ function ag() {
     --color-path=34\;3 \
     --color-line-number=33 \
     --color-match=35\;1\;4 "$@"
-  }
+}
 
 # support custom sub-commands
 function cargo() {
@@ -56,7 +56,12 @@ function fd() {
 
 # fuzzy search for files in the current directory and open in (n)vim
 function fe() {
-  IFS=$'\n' files=($(fzf-tmux --query="$1" --multi --select-1 --exit-0))
+  IFS=$'\n' files=($(fzf-tmux \
+        --query="$1" \
+        --multi \
+        --select-1 \
+        --exit-0 \
+    --preview '(bat --color ""always"" {} || cat {} || tree -C {}) | head -200'))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
 
@@ -66,7 +71,7 @@ function fh() {
     | fzf +s --tac \
     | sed -r 's/ *[0-9]*\*? *//' \
     | sed -r 's/\\/\\\\/g')"
-  }
+}
 
 # fix corrupt history file
 function fix_hist() {
@@ -99,6 +104,41 @@ function go() {
   else
     command go "$@"
   fi
+}
+
+# simplistic git-stash management
+# |enter| shows the contents of the stash
+# |alt-d| populates the command line with the command to drop the stash
+# |ctrl-d| shows a diff of the stash against your current HEAD
+# |ctrl-b| checks the stash out as a branch, for easier merging
+function gstash() {
+  local out q k sha
+  while stash=$(
+    git stash list --pretty="%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs" |
+    fzf --ansi --no-sort --query="$q" --print-query \
+      --header "ctrl-d: see diff, ctrl-b: apply selected, alt-d: drop selected" \
+      --preview "git stash show -p {1} --color=always" \
+    --expect=ctrl-d,ctrl-b,alt-d);
+  do
+    out=(${(f)"$(echo "$stash")"})
+    q="${out[1]}"
+    k="${out[2]}"
+    sha="${out[3]}"
+    sha="${sha%% *}"
+    [[ -z "$sha" ]] && continue
+    if [[ "$k" == 'ctrl-d' ]]; then
+      git diff "$sha"
+      break;
+    elif [[ "$k" == 'ctrl-b' ]]; then
+      git stash branch "stash-$sha" "$sha"
+      break;
+    elif [[ "$k" == 'alt-d' ]]; then
+      print -z "git stash drop $sha"
+      break
+    else
+      git stash show -p "$sha"
+    fi
+  done
 }
 
 # print response headers, following redirects.
@@ -139,10 +179,10 @@ function notes() {
   COMMAND_HELP=(help h)
   local date="$(date +'%Y-%m-%d')"
   local human_date="$(date +'%A, %B %d, %Y (%Y-%m-%d)')"
-  if [[ -d "$HOME/Documents/_notes" ]]; then
-    local base_path="$HOME/Documents/_notes"
+  if [[ -d "$ZK_NOTEBOOK_DIR" ]]; then
+    local base_path="$ZK_NOTEBOOK_DIR"
   else
-    local base_path="${XDG_DATA_HOME:-$HOME/.local/share}/notes"
+    local base_path="$HOME/Documents/_notes"
     mkdir -p "$base_path"
   fi
   local DEFAULT_NOTE_FILE="default"
@@ -220,7 +260,7 @@ Commands
 By default, if no command is provided and no name is provided, all notes will \
 be listed.
 By default, if no command is provided and a name is provided, the note with the \
-provided name will be opened (or created if does not exist) for editing."
+      provided name will be opened (or created if does not exist) for editing."
   fi
 }
 
@@ -229,13 +269,13 @@ function npm() {
   local PKG=$CONFIG_HOME/shared/packages/npm.txt
   if [ "$1" = "save" ]; then
     if [ "$EUID" -eq 0 ]; then
-    npm list -g --depth=0 | awk '{ print $2 }' \
-      | sed -r 's/^\(empty\)//' \
-      | sed '/^$/d' | grep -v 'npm@' > "$PKG"
+      npm list -g --depth=0 | awk '{ print $2 }' \
+        | sed -r 's/^\(empty\)//' \
+        | sed '/^$/d' | grep -v 'npm@' > "$PKG"
     else
-    sudo npm list -g --depth=0 | awk '{ print $2 }' \
-      | sed -r 's/^\(empty\)//' \
-      | sed '/^$/d' | grep -v 'npm@' > "$PKG"
+      sudo npm list -g --depth=0 | awk '{ print $2 }' \
+        | sed -r 's/^\(empty\)//' \
+        | sed '/^$/d' | grep -v 'npm@' > "$PKG"
     fi
   elif [ "$1" = "load" ]; then
     if [ "$EUID" -eq 0 ]; then
@@ -260,7 +300,7 @@ _npm_config() {
   npm config set update-notifier "$_notifier"
   npm config set tmp "$_tmp"
   if [[ "$EUID" -gt 0 ]]; then
-      npm config set prefix "$_prefix"
+    npm config set prefix "$_prefix"
   fi
 }
 
@@ -298,106 +338,106 @@ function rg() {
     --colors match:fg:magenta \
     --colors match:style:underline \
     --smart-case \
-    --pretty "$@" | less -iFMRSX
+      --pretty "$@" | less -iFMRSX
   }
 
-# display information about a remote ssl certificate
-function ssl() {
-  emulate -L zsh
-  if [ $# -eq 0 ]; then
-    echo "error: a host argument is required"
-    return 1
-  fi
-  local REMOTE=$1
-  if [ $# -eq 2 ];then
-    local PORT=$2
-    echo | openssl s_client -showcerts -servername "$REMOTE" \
-      -connect "$REMOTE:$PORT" 2>/dev/null \
-      | openssl x509 -inform pem -noout -text
-        else
-          echo | openssl s_client -showcerts -servername "$REMOTE" \
-            -connect "$REMOTE:443" 2>/dev/null \
-            | openssl x509 -inform pem -noout -text
-  fi
-}
-
-# print a pruned version of a tree
-function subtree() {
-  tree -a --prune -P "$@"
-}
-
-# shell profiler
-function profile() {
-  shell=${1-$SHELL}
-  for i in $(seq 1 10); do time $shell -i -c exit; done
-}
-
-# try to run tmux with session management
-function tmux() {
-  emulate -L zsh
-  local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
-  if [ -r "$SSH_AUTH_SOCK" ] && [ ! -L "$SSH_AUTH_SOCK" ]; then
-    ln -sf "$SSH_AUTH_SOCK" $SOCK_SYMLINK
-  fi
-  if [[ -n "$*" ]]; then
-    env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux "$@"
-    return
-  fi
-  if [ -x .tmux ]; then
-    local DIGEST
-	DIGEST="$(openssl dgst -sha512 .tmux)"
-    if ! grep -q "$DIGEST" "${TMUX_CONFIG_HOME}"/tmux.digests 2> /dev/null; then
-      cat .tmux
-      read -k 1 -r \
-        'REPLY?Trust (and run) this .tmux file? (t = trust, otherwise = skip) '
-              echo
-              if [[ $REPLY =~ ^[Tt]$ ]]; then
-                echo "$DIGEST" >> "${TMUX_CONFIG_HOME}"/tmux.digests
-                ./.tmux
-                return
-              fi
-            else
-              ./.tmux
-              return
+  # display information about a remote ssl certificate
+  function ssl() {
+    emulate -L zsh
+    if [ $# -eq 0 ]; then
+      echo "error: a host argument is required"
+      return 1
     fi
-  fi
-  local SESSION_NAME
-  SESSION_NAME=$(basename ${$(pwd)//[.:]/_})
-  env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
-}
+    local REMOTE=$1
+    if [ $# -eq 2 ];then
+      local PORT=$2
+      echo | openssl s_client -showcerts -servername "$REMOTE" \
+        -connect "$REMOTE:$PORT" 2>/dev/null \
+        | openssl x509 -inform pem -noout -text
+    else
+      echo | openssl s_client -showcerts -servername "$REMOTE" \
+        -connect "$REMOTE:443" 2>/dev/null \
+        | openssl x509 -inform pem -noout -text
+    fi
+  }
 
-# traverse parent directories in a trivial manner
-function up() {
-  if [[ "$#" == 0 ]]; then
-    cd ..
-  else
-    for ((i=0; i<$1; i++)) ; do
-      CDSTR="../$CDSTR"
-    done
-    cd "$CDSTR" || exit
-  fi
-}
+  # print a pruned version of a tree
+  function subtree() {
+    tree -a --prune -P "$@"
+  }
 
-# define configuration path for vim
-function vim() {
-  local MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
-  local __viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
-  __viminit+="${VIM_CONFIG_HOME}/after"
-  if is_darwin; then
-    # add fzf binary to rtp
-    __viminit+=",/usr/local/opt/fzf"
-  fi
-  __viminit+="|:source ${MYVIMRC}"
-  local viminit="VIMINIT='$__viminit'"
-  eval "$viminit command vim $*"
-}
+  # shell profiler
+  function profile() {
+    shell=${1-$SHELL}
+    for i in $(seq 1 10); do time $shell -i -c exit; done
+  }
 
-# poor man's wget runtime configuration
-function wget() {
-  command wget --hsts-file "${XDG_CACHE_HOME}/wget/wget-hsts" "$@"
-}
+  # try to run tmux with session management
+  function tmux() {
+    emulate -L zsh
+    local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
+    if [ -r "$SSH_AUTH_SOCK" ] && [ ! -L "$SSH_AUTH_SOCK" ]; then
+      ln -sf "$SSH_AUTH_SOCK" $SOCK_SYMLINK
+    fi
+    if [[ -n "$*" ]]; then
+      env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux "$@"
+      return
+    fi
+    if [ -x .tmux ]; then
+      local DIGEST
+      DIGEST="$(openssl dgst -sha512 .tmux)"
+      if ! grep -q "$DIGEST" "${TMUX_CONFIG_HOME}"/tmux.digests 2> /dev/null; then
+        cat .tmux
+        read -k 1 -r \
+          'REPLY?Trust (and run) this .tmux file? (t = trust, otherwise = skip) '
+        echo
+        if [[ $REPLY =~ ^[Tt]$ ]]; then
+          echo "$DIGEST" >> "${TMUX_CONFIG_HOME}"/tmux.digests
+          ./.tmux
+          return
+        fi
+      else
+        ./.tmux
+        return
+      fi
+    fi
+    local SESSION_NAME
+    SESSION_NAME=$(basename ${$(pwd)//[.:]/_})
+    env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
+  }
 
-# poor man's yarn runtime configuration
-function yarn() {
-  command yarn --use-yarnrc "${CONFIG_HOME}/yarn/config" "$@"
-}
+  # traverse parent directories in a trivial manner
+  function up() {
+    if [[ "$#" == 0 ]]; then
+      cd ..
+    else
+      for ((i=0; i<$1; i++)) ; do
+        CDSTR="../$CDSTR"
+      done
+      cd "$CDSTR" || exit
+    fi
+  }
+
+  # define configuration path for vim
+  function vim() {
+    local MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
+    local __viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
+    __viminit+="${VIM_CONFIG_HOME}/after"
+    if is_darwin; then
+      # add fzf binary to rtp
+      __viminit+=",/usr/local/opt/fzf"
+    fi
+    __viminit+="|:source ${MYVIMRC}"
+    local viminit="VIMINIT='$__viminit'"
+    eval "$viminit command vim $*"
+  }
+
+  # poor man's wget runtime configuration
+  function wget() {
+    command wget --hsts-file "${XDG_CACHE_HOME}/wget/wget-hsts" "$@"
+  }
+
+  # poor man's yarn runtime configuration
+  function yarn() {
+    command yarn --use-yarnrc "${CONFIG_HOME}/yarn/config" "$@"
+  }
