@@ -66,16 +66,60 @@ zstyle ':vcs_info:*' enable git
   zstyle ':vcs_info:*' stagedstr "%F{green}▪%f"
   zstyle ':vcs_info:*' unstagedstr "%F{red}▪%f"
   zstyle ':vcs_info:*' use-simple true
-  zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
+  zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-stash git-compare git-remotebranch
   zstyle ':vcs_info:git*:*' formats '%F{cyan} %b%m%c%u%f '
-  zstyle ':vcs_info:git*:*' actionformats '%F{cyan} %b|%a%m%c%u %f'
+  zstyle ':vcs_info:git*:*' actionformats '%B%F{red} %b|%a%m%c%u %f'
+
+  __in_git() {
+    [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]]
+  }
 
   # show untracked status in git prompt
   function +vi-git-untracked() {
     emulate -L zsh
-    if [ $(git rev-parse --is-inside-work-tree 2> /dev/null) = true ] && \
-      git status --porcelain | grep '??' &> /dev/null ; then
-      hook_com[unstaged]+="%F{blue}▪%f"
+    if __in_git; then
+      if [[ -n $(git ls-files --directory --no-empty-directory --exclude-standard --others 2> /dev/null) ]]; then
+        hook_com[unstaged]+="%F{blue}▪%f"
+      fi
+    fi
+  }
+
+  # show stashes in git prompt
+  function +vi-git-stash() {
+    local stash_icon=""
+    emulate -L zsh
+    if __in_git; then
+      if [[ -n $(git rev-list --walk-reflogs --count refs/stash 2> /dev/null) ]]; then
+        hook_com[unstaged]+=" %F{yellow}$stash_icon%f "
+      fi
+    fi
+  }
+
+  # show metrics local branch is ahead-of or behind remote HEAD.
+  function +vi-git-compare() {
+    local ahead behind
+    local -a gitstatus
+    git rev-parse ${hook_com[branch]}@{upstream} >/dev/null 2>&1 || return 0
+    local -a ahead_and_behind=(
+      $(git rev-list --left-right --count HEAD...${hook_com[branch]}@{upstream} 2>/dev/null)
+    )
+    ahead=${ahead_and_behind[1]}
+    behind=${ahead_and_behind[2]}
+    local ahead_symbol="%{$fg[red]%}⇡%{$reset_color%}${ahead}"
+    local behind_symbol="%{$fg[cyan]%}⇣%{$reset_color%}${behind}"
+    (( $ahead )) && gitstatus+=( "${ahead_symbol}" )
+    (( $behind )) && gitstatus+=( "${behind_symbol}" )
+    hook_com[misc]+="${(j: :)gitstatus}"
+  }
+
+  # show remote branch name for remote-tracking branches
+  function +vi-git-remotebranch() {
+    local remote
+    remote=${$(git rev-parse --verify ${hook_com[branch]}@{upstream} \
+      --symbolic-full-name 2>/dev/null)/refs\/remotes\/}
+    # if [[ -n ${remote} ]] ; then
+    if [[ -n ${remote} && ${remote#*/} != ${hook_com[branch]} ]] ; then
+      hook_com[branch]="${hook_com[branch]}→[${remote}]"
     fi
   }
 }
