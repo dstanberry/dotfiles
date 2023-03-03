@@ -112,28 +112,32 @@ function go() {
 # |ctrl-d| shows a diff of the stash against your current HEAD
 # |ctrl-b| checks the stash out as a branch, for easier merging
 function gstash() {
-  local out q k sha
+  local out q k ref sha
   while stash=$(
-    git stash list --pretty="%C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs" |
+    git stash list \
+      --pretty="%C(auto)%gD%Creset %C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs%Creset" |
     fzf --ansi --no-sort --query="$q" --print-query \
-      --header "ctrl-d: see diff, ctrl-b: apply selected, alt-d: drop selected" \
+      --header "alt-b: apply selected, alt-d: see diff, alt-s: drop selected" \
       --preview "git stash show -p {1} --color=always" \
-    --expect=ctrl-d,ctrl-b,alt-d);
+    --expect=alt-b,alt-d,alt-s);
   do
     out=(${(f)"$(echo "$stash")"})
     q="${out[1]}"
     k="${out[2]}"
+    ref="${out[3]}"
+    ref="${ref%% *}"
     sha="${out[3]}"
+    sha="${sha#refs* }"
     sha="${sha%% *}"
-    [[ -z "$sha" ]] && continue
-    if [[ "$k" == 'ctrl-d' ]]; then
-      git diff "$sha"
-      break;
-    elif [[ "$k" == 'ctrl-b' ]]; then
+    [[ -z "$ref" || -z "$sha" ]] && continue
+    if [[ "$k" == 'alt-b' ]]; then
       git stash branch "stash-$sha" "$sha"
       break;
     elif [[ "$k" == 'alt-d' ]]; then
-      print -z "git stash drop $sha"
+      git diff "$sha"
+      break;
+    elif [[ "$k" == 'alt-s' ]]; then
+      print -z "git stash drop $ref"
       break
     else
       git stash show -p "$sha"
