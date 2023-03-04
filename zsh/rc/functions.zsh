@@ -108,9 +108,9 @@ function go() {
 
 # simplistic git-stash management
 # |enter| shows the contents of the stash
-# |alt-d| populates the command line with the command to drop the stash
-# |ctrl-d| shows a diff of the stash against your current HEAD
-# |ctrl-b| checks the stash out as a branch, for easier merging
+# |alt-b| checks the stash out as a branch, for easier merging
+# |alt-d| shows a diff of the stash against your current HEAD
+# |alt-s| populates the command line with the command to drop the stash
 function gstash() {
   local out q k ref sha
   while stash=$(
@@ -119,7 +119,7 @@ function gstash() {
     fzf --ansi --no-sort --query="$q" --print-query \
       --header "alt-b: apply selected, alt-d: see diff, alt-s: drop selected" \
       --preview "git stash show -p {1} --color=always" \
-    --expect=alt-b,alt-d,alt-s);
+      --expect=alt-b,alt-d,alt-s,enter);
   do
     out=(${(f)"$(echo "$stash")"})
     q="${out[1]}"
