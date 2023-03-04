@@ -2,6 +2,10 @@ local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
+groups.new("NeogitNotificationInfo", { link = "String" })
+groups.new("NeogitNotificationWarning", { link = "WarningMsg" })
+groups.new("NeogitNotificationError", { link = "ErrorMsg" })
+
 groups.new("NeogitBranch", { fg = c.green })
 groups.new("NeogitRemote", { fg = c.red })
 groups.new("NeogitHunkHeader", { bg = c.bg_highlight })
