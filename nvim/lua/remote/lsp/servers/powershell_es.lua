@@ -21,6 +21,30 @@ M.config = {
   bundle_path = basedir,
   cmd = { "pwsh", "-NoLogo", "-NoProfile", "-Command", command },
   root_dir = require("lspconfig.util").find_git_ancestor or vim.loop.cwd(),
+  settings = {
+    powershell = {
+      codeFormatting = {
+        addWhitespaceAroundPipe = true,
+        autoCorrectAliases = false,
+        ignoreOneLineBlock = true,
+        newLineAfterCloseBrace = true,
+        newLineAfterOpenBrace = true,
+        openBraceOnSameLine = true,
+        pipelineIndentationStyle = "NoIndentation",
+        preset = "Custom",
+        trimWhitespaceAroundPipe = false,
+        useConstantStrings = false,
+        useCorrectCasing = false,
+        whitespaceAfterSeparator = true,
+        whitespaceAroundOperator = true,
+        whitespaceAroundPipe = true,
+        whitespaceBeforeOpenBrace = true,
+        whitespaceBeforeOpenParen = true,
+        whitespaceBetweenParameters = false,
+        whitespaceInsideBrace = true,
+      },
+    },
+  },
 }
 
 return M
