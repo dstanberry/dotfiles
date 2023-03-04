@@ -1,7 +1,7 @@
 return {
   "tamago324/lir.nvim",
   dependencies = {
-    "kyazdani42/nvim-web-devicons",
+    "nvim-tree/nvim-web-devicons",
     "tamago324/lir-git-status.nvim",
     "tamago324/lir-mmv.nvim",
   },
