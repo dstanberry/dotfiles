@@ -73,7 +73,7 @@ function M:init(options)
 end
 
 function M:load()
-  local fname = (self.options.name):match "^.+/(.+)$"
+  local fname = (self.options.name):match(("^.+%s(.+)$"):format(separator))
   local _, bufid = pcall(vim.api.nvim_buf_get_var, self.options.buf, "bufid")
   local is_diff = vim.startswith(bufid, "diffview")
   local path = is_diff and "" or get_relpath(self.options.winid, self.options.name, self.options.maxlen)
