@@ -15,7 +15,10 @@ local sources = {
     diagnostics_format = "[#{c}] (#{s}) #{m}",
   },
   b.diagnostics.vint,
-  b.formatting.beautysh,
+  b.formatting.beautysh.with {
+    filetypes = { "zsh" },
+    extra_args = { "--indent-size", "2" },
+  },
   b.formatting.black,
   b.formatting.cbfmt.with {
     extra_args = { "--config", vim.fn.expand(("%s/cbfmt.toml"):format(vim.fn.stdpath "config")) },
