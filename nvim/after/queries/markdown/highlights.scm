@@ -1,7 +1,7 @@
 ;; extends
 
-(atx_h1_marker) @attribute
-((atx_h1_marker) heading_content: (_) @attribute)
+(atx_h1_marker) @title
+((atx_h1_marker) heading_content: (_) @title)
 (atx_h2_marker) @label
 ((atx_h2_marker) heading_content: (_) @label)
 (atx_h3_marker) @constant.builtin
