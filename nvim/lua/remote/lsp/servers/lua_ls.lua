@@ -24,7 +24,7 @@ M.setup = function()
 end
 
 M.config = {
-  cmd = { "lua-language-server" },
+  cmd = cmd,
   on_new_config = function(new_config, _) new_config.cmd = get_cmd() end,
   settings = {
     Lua = {
