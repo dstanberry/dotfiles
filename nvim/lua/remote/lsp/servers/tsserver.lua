@@ -40,9 +40,9 @@ M.config = {
   },
 }
 
-vim.api.nvim_create_augroup("lsp_tssserver", {})
+vim.api.nvim_create_augroup("lsp_tsserver", {})
 vim.api.nvim_create_autocmd("LspAttach", {
-  group = "lsp_tssserver",
+  group = "lsp_tsserver",
   callback = function(args)
     if not (args.data and args.data.client_id) then return end
 
