@@ -27,6 +27,7 @@ local c = {
   magenta = "#b48ead",
   purple = "#9d7cd8",
   rose = "#cd8d88",
+  rose_light = "#e4c1be",
 }
 
 c.black = color.darken(c.bg, 50)

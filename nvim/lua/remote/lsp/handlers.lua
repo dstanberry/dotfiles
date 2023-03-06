@@ -90,30 +90,12 @@ M.on_attach = function(client, bufnr)
     )
   end
 
-  if client.server_capabilities.semanticTokensProvider and client.server_capabilities.semanticTokensProvider.full then
-    local has_tokens, nvim_semantic_tokens = pcall(require, "nvim-semantic-tokens")
-    if has_tokens then
-      nvim_semantic_tokens.setup {
-        preset = "default",
-        highlighters = { require "nvim-semantic-tokens.table-highlighter" },
-      }
-      vim.api.nvim_create_augroup("lsp_semantic_tokens", { clear = true })
-
-      vim.api.nvim_create_autocmd("TextChanged", {
-        group = "lsp_semantic_tokens",
-        buffer = bufnr,
-        callback = function() vim.lsp.buf.semantic_tokens_full() end,
-      })
-      vim.lsp.buf.semantic_tokens_full()
-    end
-  end
-
   if client.server_capabilities.documentSymbolProvider then pcall(require("nvim-navic").attach, client, bufnr) end
 
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "lsp: Goto definition" })
+  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "lsp: goto definition" })
   vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "lsp: goto type definition" })
   vim.keymap.set("n", "gk", vim.lsp.buf.hover, { buffer = bufnr, desc = "lsp: show documentation" })
-  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "lsp: go to implementation" })
+  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "lsp: goto implementation" })
   vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "lsp: show references" })
   vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "lsp: show documents symbols" })
   vim.keymap.set("n", "gS", vim.lsp.buf.workspace_symbol, { buffer = bufnr, desc = "lsp: show workspace symbols" })

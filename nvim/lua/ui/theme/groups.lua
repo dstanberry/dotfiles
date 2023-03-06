@@ -50,7 +50,7 @@ M.apply = function(c)
   hi.SpellBad = { sp = c.red_dark, undercurl = true }
   hi.SpellCap = { sp = c.yellow, undercurl = true }
   hi.SpellLocal = { sp = c.blue_alt, undercurl = true }
-  hi.SpellRare = { sp = c.teal, undercurl = true }
+  hi.SpellRare = { sp = c.purple, undercurl = true }
   -- hi.TermCursor = { fg = c.bg, bg = c.fg_light }
   -- hi.TermCursorNC = { fg = c.bg, bg = c.fg_light }
   hi.Title = { fg = c.blue, bold = true }
@@ -95,9 +95,9 @@ M.apply = function(c)
   -- hi.SpecialComment = {}
   -- hi.Tag = {}
 
-  hi.Type = { fg = c.blue_darker }
+  hi.Type = { fg = c.teal }
   -- hi.StorageClass = {}
-  -- hi.Structure = {}
+  hi.Structure = {fg = c.cyan}
   -- hi.Typedef = {}
 
   hi.Comment = { fg = c.gray_light, italic = true }
@@ -167,29 +167,16 @@ M.apply = function(c)
   hi.DiagnosticUnderlineHint = { undercurl = true, sp = c.magenta }
 
   -- lsp semantic tokens
-  hi.LspParameter = { fg = c.rose }
-  -- hi.LspClass = {}
-  -- hi.LspComment = {}
-  -- hi.LspDecorator = {}
-  -- hi.LspEnum = {}
-  -- hi.LspEnumMember = {}
-  -- hi.LspEvent = {}
-  -- hi.LspFunction = {}
-  -- hi.LspInterface = {}
-  -- hi.LspKeyword = {}
-  -- hi.LspMacro = {}
-  -- hi.LspMethod = {}
-  -- hi.LspModifier = {}
-  -- hi.LspNamespace = {}
-  -- hi.LspNumber = {}
-  -- hi.LspOperator = {}
-  -- hi.LspProperty = {}
-  -- hi.LspRegexp = {}
-  -- hi.LspString = {}
-  -- hi.LspStruct = {}
-  -- hi.LspType = {}
-  -- hi.LspTypeParameter = {}
-  -- hi.LspVariable = {}
+  hi["@class"] = { link = "Structure" }
+  hi["@decorator"] = { link = "Identifier" }
+  hi["@enum"] = { link = "@constructor" }
+  hi["@enumMember"] = { link = "Constant" }
+  hi["@event"] = { link = "Identifier" }
+  hi["@interface"] = { link = "Identifier" }
+  hi["@modifier"] = { link = "Identifier" }
+  hi["@regexp"] = { link = "@string.regex" }
+  hi["@struct"] = { link = "@constructor" }
+  hi["@typeParameter"] = { link = "TypeDef" }
 
   -- lsp semantic modifier tokens
   hi.LspDeprecated = { fg = c.red_dark, italic = true, strikethrough = true }
@@ -252,7 +239,7 @@ M.apply = function(c)
   hi["@string"] = { link = "String" }
   hi["@string.documentation"] = { fg = c.green_darker, italic = true }
   hi["@string.escape"] = { fg = c.purple }
-  hi["@string.regex"] = { link = "String" }
+  hi["@string.regex"] = { fg = c.rose_light }
   hi["@string.special"] = { link = "Special" }
   hi["@symbol"] = { fg = c.blue_dark }
   hi["@tag"] = { link = "tag" }
@@ -272,10 +259,10 @@ M.apply = function(c)
   hi["@text.strike"] = { fg = c.fg_dark, strikethrough = true }
   hi["@text.strong"] = { bold = true }
   hi["@text.title"] = { link = "Title" }
+  hi["@text.todo"] = { link = "Todo" }
   hi["@text.underline"] = { link = "Underlined" }
   hi["@text.uri"] = { fg = c.blue_light, underline = true }
   hi["@text.warning"] = { fg = c.bg, bg = c.yellow }
-  hi["@todo"] = { link = "Todo" }
   hi["@type"] = { link = "Type" }
   hi["@type.builtin"] = { fg = c.yellow, italic = true }
   hi["@type.qualifier"] = { link = "Type" }

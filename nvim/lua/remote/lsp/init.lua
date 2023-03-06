@@ -26,7 +26,6 @@ return {
       "jose-elias-alvarez/null-ls.nvim",
       "jose-elias-alvarez/typescript.nvim",
       "simrat39/rust-tools.nvim",
-      "theHamsta/nvim-semantic-tokens",
       { "mickael-menu/zk-nvim", dependencies = { "nvim-telescope/telescope.nvim" } },
     },
     config = function()
