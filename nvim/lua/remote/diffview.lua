@@ -2,13 +2,24 @@ local icons = require "ui.icons"
 
 return {
   "sindrets/diffview.nvim",
-  -- stylua: ignore
   keys = {
-    { "<localleader>gd", "<cmd>DiffviewOpen<cr>", mode = "n", desc = "diffview: open" },
+    {
+      "<localleader>gd",
+      function()
+        local view = require("diffview.lib").get_current_view()
+        if view then
+          vim.cmd "DiffviewClose"
+        else
+          vim.cmd "DiffviewOpen"
+        end
+      end,
+      desc = "diffview: toggle diff",
+    },
     { "gh", [[:'<'>DiffviewFileHistory<cr>]], mode = "v", desc = "diffview: file history" },
-    { "<localleader>gh", "<cmd>DiffviewFileHistory<cr>", mode = "n", desc = "diffview: file history" },
+    { "<localleader>gh", "<cmd>DiffviewFileHistory<cr>", desc = "diffview: file history" },
   },
   config = function()
+    local actions = require "diffview.actions"
     local diffview = require "diffview"
     local lazy = require "diffview.lazy"
     local lib = lazy.require "diffview.lib"
@@ -89,6 +100,42 @@ return {
         end,
       },
       keymaps = {
+        diff3 = {
+          {
+            { "n", "x" },
+            "2do",
+            actions.diffget "ours",
+            { desc = "Obtain the diff hunk from the CURRENT version of the file" },
+          },
+          {
+            { "n", "x" },
+            "3do",
+            actions.diffget "theirs",
+            { desc = "Obtain the diff hunk from the INCOMING version of the file" },
+          },
+          { "n", "g?", actions.help { "view", "diff3" }, { desc = "Open the help panel" } },
+        },
+        diff4 = {
+          {
+            { "n", "x" },
+            "1do",
+            actions.diffget "base",
+            { desc = "Obtain the diff hunk from the COMMON ANCESTOR version of the file" },
+          },
+          {
+            { "n", "x" },
+            "2do",
+            actions.diffget "ours",
+            { desc = "Obtain the diff hunk from the CURRENT version of the file" },
+          },
+          {
+            { "n", "x" },
+            "3do",
+            actions.diffget "theirs",
+            { desc = "Obtain the diff hunk from the INCOMING version of the file" },
+          },
+          { "n", "g?", actions.help { "view", "diff4" }, { desc = "Open the help panel" } },
+        },
         view = { q = diffview.close },
         file_panel = { q = diffview.close },
         file_history_panel = { q = diffview.close },
