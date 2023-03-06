@@ -210,6 +210,7 @@ M.apply = function(c)
   hi["@character"] = { fg = c.blue_dark }
   hi["@character.special"] = { link = "SpecialChar" }
   hi["@comment"] = { link = "Comment" }
+  hi["@comment.documentation"] = { fg = c.green_darker, italic = true }
   hi["@conceal"] = { link = "Conceal" }
   hi["@conditional"] = { fg = c.red_light }
   hi["@constant"] = { link = "Constant" }
@@ -249,6 +250,7 @@ M.apply = function(c)
   hi["@repeat"] = { link = "Repeat" }
   hi["@storageclass"] = { link = "Type" }
   hi["@string"] = { link = "String" }
+  hi["@string.documentation"] = { fg = c.green_darker, italic = true }
   hi["@string.escape"] = { fg = c.purple }
   hi["@string.regex"] = { link = "String" }
   hi["@string.special"] = { link = "Special" }
