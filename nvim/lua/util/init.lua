@@ -1,5 +1,24 @@
 local M = {}
 
+---Searches for a partial of of |needle| in a |haystack|
+---@param haystack string[]
+---@param needle string
+---@return boolean, number # Returns true if found and the position in the list
+function M.contains(haystack, needle)
+  local found = false
+  local pos = -1
+  for k, v in pairs(haystack) do
+    local safe_v = string.gsub(v, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
+    local match = string.match(needle, safe_v) or ""
+    if v == needle or #match > 0 then
+      found = true
+      pos = k
+      break
+    end
+  end
+  return found, pos
+end
+
 ---Prints lua formatted representation of the given file as a module
 ---@param filename string
 ---@return string modname

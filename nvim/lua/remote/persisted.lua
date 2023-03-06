@@ -1,3 +1,5 @@
+local util = require "util"
+
 return {
   "olimorris/persisted.nvim",
   dependencies = { "nvim-telescope/telescope.nvim" },
@@ -41,7 +43,12 @@ return {
   config = {
     autoload = true,
     use_git_branch = true,
-    allowed_dirs = { vim.g.dotfiles, vim.g.projects_dir },
+    allowed_dirs = { vim.g.dotfiles, vim.env.hash_notes, vim.g.projects_dir },
     ignored_dirs = { vim.fn.stdpath "data" },
+    should_autosave = function()
+      local cwd = vim.fn.getcwd()
+      if util.contains({ vim.g.dotfiles_dir, vim.env.hash_notes, vim.g.projects_dir }, cwd) then return true end
+      return false
+    end,
   },
 }
