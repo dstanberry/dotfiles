@@ -41,7 +41,7 @@ return {
   config = {
     autoload = true,
     use_git_branch = true,
-    allowed_dirs = { vim.g.dotfiles, vim.g.work_dir },
+    allowed_dirs = { vim.g.dotfiles, vim.g.projects_dir },
     ignored_dirs = { vim.fn.stdpath "data" },
   },
 }
