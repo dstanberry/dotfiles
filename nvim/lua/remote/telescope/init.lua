@@ -129,8 +129,9 @@ return {
     keys = {
       { "<leader><leader>", project_files, desc = "telescope: find files (project)" },
       { "<leader>f/", grep_last_search, desc = "find word (last searched)" },
-      { "<leader>fe", file_browser, desc = "file browser" },
-      { "<leader>ff", current_buffer, desc = "find in buffer" },
+      { "<leader>fb", current_buffer, desc = "find in buffer" },
+      { "<leader>fe", file_browser, desc = "file explorer" },
+      { "<leader>ff", require("telescope.builtin").find_files, desc = "find files" },
       { "<leader>fg", require("telescope.builtin").live_grep, desc = "live grep" },
       { "<leader>fk", require("telescope.builtin").help_tags, desc = "help pages" },
       { "<leader>fp", find_plugins, desc = "find files (neovim plugins)" },
@@ -239,7 +240,6 @@ return {
             ignore_current_buffer = true,
             previewer = false,
             mappings = {
-              i = { ["<c-d>"] = "delete_buffer" },
               n = { ["d"] = "delete_buffer" },
             },
           },
