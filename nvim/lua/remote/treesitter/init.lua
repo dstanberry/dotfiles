@@ -30,11 +30,11 @@ return {
         "nvim-treesitter/nvim-treesitter-context",
         config = function() require "remote.treesitter.context" end,
       },
+      "HiPhish/nvim-ts-rainbow2",
       "JoosepAlviste/nvim-ts-context-commentstring",
       "nvim-treesitter/nvim-treesitter-refactor",
       "nvim-treesitter/nvim-treesitter-textobjects",
       "nvim-treesitter/playground",
-      "p00f/nvim-ts-rainbow",
       "theHamsta/nvim-treesitter-pairs",
     },
     config = function()
@@ -93,14 +93,17 @@ return {
         },
         rainbow = {
           enable = true,
-          colors = {
-            c.CYAN,
-            c.CYAN_LIGHT,
-            c.MAGENTA,
-            c.MAGENTA_LIGHT,
-            c.PINK,
-            c.ORANGE,
-            c.YELLOW,
+          query = "rainbow-parens",
+          disable = { "typescriptreact" },
+          strategy = { require "ts-rainbow.strategy.local" },
+          hlgroups = {
+            "TSRainbow1",
+            "TSRainbow2",
+            "TSRainbow3",
+            "TSRainbow4",
+            "TSRainbow5",
+            "TSRainbow6",
+            "TSRainbow7",
           },
         },
         refactor = {
