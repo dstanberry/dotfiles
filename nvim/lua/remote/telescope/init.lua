@@ -276,7 +276,7 @@ return {
           },
           diagnostics = {
             path_display = { "shorten" },
-            theme = "vertical",
+            layout_strategy = "vertical",
             layout_config = { height = 20 },
           },
           lsp_definitions = {
