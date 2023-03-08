@@ -178,13 +178,11 @@ M.setup = function()
   end
 
   vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
-    groups.new("LspUnnecessary", { fg = c.gray_lighter, italic = true })
-
     local bufnr = vim.uri_to_bufnr(result.uri)
     if not bufnr then return end
 
-    local ns_unused = vim.api.nvim_create_namespace "unused"
-    vim.api.nvim_buf_clear_namespace(bufnr, ns_unused, 0, -1)
+    local ns = vim.api.nvim_create_namespace "custom_lsp_semantic_modifiers"
+    vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
     local real_diags = {}
     for _, diag in pairs(result.diagnostics) do
       if diag.tags == nil then diag.tags = {} end
@@ -192,10 +190,19 @@ M.setup = function()
         diag.severity == vim.lsp.protocol.DiagnosticSeverity.Hint
         and vim.tbl_contains(diag.tags, vim.lsp.protocol.DiagnosticTag.Unnecessary)
       then
-        pcall(vim.api.nvim_buf_set_extmark, bufnr, ns_unused, diag.range.start.line, diag.range.start.character, {
+        pcall(vim.api.nvim_buf_set_extmark, bufnr, ns, diag.range.start.line, diag.range.start.character, {
           end_row = diag.range["end"].line,
           end_col = diag.range["end"].character,
-          hl_group = "LspUnnecessary",
+          hl_group = "@lsp.mod.unnecessary",
+        })
+      elseif
+        diag.severity == vim.lsp.protocol.DiagnosticSeverity.Hint
+        and vim.tbl_contains(diag.tags, vim.lsp.protocol.DiagnosticTag.Deprecated)
+      then
+        pcall(vim.api.nvim_buf_set_extmark, bufnr, ns, diag.range.start.line, diag.range.start.character, {
+          end_row = diag.range["end"].line,
+          end_col = diag.range["end"].character,
+          hl_group = "@lsp.mod.deprecated",
         })
       else
         table.insert(real_diags, diag)

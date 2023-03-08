@@ -42,6 +42,7 @@ c.gray_dark = color.darken(c.gray, 25)
 c.gray_darker = color.darken(c.gray, 40)
 c.gray_lighter = color.lighten(c.gray_light, 70)
 
+c.teal_dark = color.darken(c.teal, 25)
 c.red_light = color.lighten(c.red, 20)
 c.yellow_darker = color.darken(c.yellow, 10)
 c.green_darker = color.blend(c.green, c.gray_light, "50")

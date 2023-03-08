@@ -86,7 +86,7 @@ M.apply = function(c)
   hi.PreProc = { fg = c.teal }
   -- hi.Define = {}
   -- hi.Include = {}
-  -- hi.Macro = {}
+  hi.Macro = { fg = c.teal_dark }
   -- hi.PreCondit = {}
 
   hi.Special = { fg = c.blue_light }
@@ -95,9 +95,9 @@ M.apply = function(c)
   -- hi.SpecialComment = {}
   -- hi.Tag = {}
 
-  hi.Type = { fg = c.teal }
+  hi.Type = { fg = c.red_light }
   -- hi.StorageClass = {}
-  hi.Structure = {fg = c.cyan}
+  hi.Structure = { fg = c.cyan }
   -- hi.Typedef = {}
 
   hi.Comment = { fg = c.gray_light, italic = true }
@@ -167,28 +167,36 @@ M.apply = function(c)
   hi.DiagnosticUnderlineHint = { undercurl = true, sp = c.magenta }
 
   -- lsp semantic tokens
-  hi["@class"] = { link = "Structure" }
-  hi["@decorator"] = { link = "Identifier" }
-  hi["@enum"] = { link = "@constructor" }
-  hi["@enumMember"] = { link = "Constant" }
-  hi["@event"] = { link = "Identifier" }
-  hi["@interface"] = { link = "Identifier" }
-  hi["@modifier"] = { link = "Identifier" }
-  hi["@regexp"] = { link = "@string.regex" }
-  hi["@struct"] = { link = "@constructor" }
-  hi["@typeParameter"] = { link = "TypeDef" }
+  hi["@lsp.type.class"] = { fg = c.teal }
+  hi["@lsp.type.decorator"] = { link = "@constant.macro" }
+  hi["@lsp.type.enum"] = { link = "@constructor" }
+  hi["@lsp.type.enumMember"] = { link = "@constant" }
+  hi["@lsp.type.event"] = { link = "Identifier" }
+  hi["@lsp.type.function"] = { link = "@function" }
+  hi["@lsp.type.interface"] = { link = "@class" }
+  hi["@lsp.type.method"] = { link = "@method" }
+  hi["@lsp.type.modifier"] = { link = "Identifier" }
+  hi["@lsp.type.namespace"] = { link = "@namespace" }
+  hi["@lsp.type.parameter"] = { link = "@parameter" }
+  hi["@lsp.type.property"] = { link = "@property" }
+  hi["@lsp.type.regexp"] = { link = "@string.regex" }
+  hi["@lsp.type.struct"] = { link = "@structure" }
+  hi["@lsp.type.type"] = { link = "@type" }
+  hi["@lsp.type.typeParameter"] = { link = "@class" }
+  hi["@lsp.type.variable"] = { link = "@variable" }
 
   -- lsp semantic modifier tokens
-  hi.LspDeprecated = { fg = c.red_dark, italic = true, strikethrough = true }
-  hi.LspAbstract = { fg = c.pink }
-  -- hi.LspAsync = {}
-  -- hi.LspDeclaration = {}
-  -- hi.LspDefaultLibrary = {}
-  -- hi.LspDefinition = {}
-  -- hi.LspDocumentation = {}
-  -- hi.LspModification = {}
-  -- hi.LspReadonly = {}
-  -- hi.LspStatic = {}
+  hi["@lsp.mod.deprecated"] = { fg = c.red_dark, italic = true, strikethrough = true }
+  hi["@lsp.mod.abstract"] = { fg = c.pink }
+  -- hi["@lsp.mod.async"] = {}
+  -- hi["@lsp.mod.declaration"] = {}
+  -- hi["@lsp.mod.defaultLibrary"] = {}
+  -- hi["@lsp.mod.definition"] = {}
+  -- hi["@lsp.mod.documentation"] = {}
+  -- hi["@lsp.mod.modification"] = {}
+  hi["@lsp.mod.readonly"] = { italic = true }
+  hi["@lsp.mod.static"] = { bold = true }
+  hi["@lsp.mod.unnecessary"] = { fg = c.gray_lighter, italic = true }
 
   -- treesitter highlighting
   hi["@annotation"] = { fg = c.yellow }
@@ -202,7 +210,7 @@ M.apply = function(c)
   hi["@conditional"] = { fg = c.red_light }
   hi["@constant"] = { link = "Constant" }
   hi["@constant.builtin"] = { link = "Constant" }
-  hi["@constant.macro"] = { fg = c.teal }
+  hi["@constant.macro"] = { fg = c.teal_dark }
   hi["@constructor"] = { fg = c.blue_light }
   hi["@debug"] = { link = "Debug" }
   hi["@define"] = { link = "Define" }
@@ -241,6 +249,7 @@ M.apply = function(c)
   hi["@string.escape"] = { fg = c.purple }
   hi["@string.regex"] = { fg = c.rose_light }
   hi["@string.special"] = { link = "Special" }
+  hi["@structure"] = { link = "Structure" }
   hi["@symbol"] = { fg = c.blue_dark }
   hi["@tag"] = { link = "tag" }
   hi["@tag.attribute"] = { fg = c.orange }
@@ -268,7 +277,7 @@ M.apply = function(c)
   hi["@type.qualifier"] = { link = "Type" }
   hi["@type.definition"] = { link = "TypeDef" }
   hi["@variable"] = { fg = c.fg }
-  hi["@variable.builtin"] = { fg = c.red }
+  hi["@variable.builtin"] = { fg = c.teal_dark }
 
   -- statusline highlighting
   hi.StatusLine = { fg = c.fg_dark, bg = c.gray }
