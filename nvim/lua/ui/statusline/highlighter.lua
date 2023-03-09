@@ -35,8 +35,8 @@ M.segment = "%="
 M.reset = "%*"
 
 M.create_hl = function(hlgroup, attr)
-  local id = vim.api.nvim_get_hl_id_by_name(hlgroup)
-  vim.api.nvim_set_hl(0, hlgroup, attr)
+  local id = vim.fn.hlID(hlgroup)
+  if id == 0 then vim.api.nvim_set_hl(0, hlgroup, attr) end
   return M.sanitize(hlgroup)
 end
 
