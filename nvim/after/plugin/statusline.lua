@@ -55,6 +55,8 @@ reload("ui.statusline").setup {
     },
   },
   winbar = {
-    left = { component = "breadcrumbs" },
+    left = {
+      { component = "breadcrumbs" },
+    },
   },
 }

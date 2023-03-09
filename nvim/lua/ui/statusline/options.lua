@@ -6,11 +6,16 @@ local defaults = {
   },
   icons = true,
   sections = {
-    left = { { component = "mode" }, { component = "filename" } },
+    left = {
+      { component = "mode" },
+      { component = "filename" },
+    },
     right = {},
   },
   winbar = {
-    left = { { component = "filename" } },
+    left = {
+      { component = "filename" },
+    },
   },
 }
 

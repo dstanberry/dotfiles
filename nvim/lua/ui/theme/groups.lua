@@ -289,9 +289,9 @@ M.apply = function(c)
   hi.User4 = { fg = c.red, bg = c.gray }
   hi.User5 = { fg = c.magenta, bg = c.gray }
   hi.User6 = { fg = c.orange, bg = c.gray }
-  hi.User7 = { fg = c.white, bg = c.gray }
-  hi.User8 = { fg = c.fg, bg = c.gray, bold = true }
-  hi.User9 = { fg = c.gray_dark, bg = c.gray }
+  -- hi.User7 = { fg = c.white, bg = c.gray }
+  -- hi.User8 = { fg = c.fg, bg = c.gray, bold = true }
+  -- hi.User9 = { fg = c.gray_dark, bg = c.gray }
 
   -- tabline highlighting
   hi.TabLine = { fg = c.gray_light, bg = c.bg }

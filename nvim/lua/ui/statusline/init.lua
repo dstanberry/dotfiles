@@ -5,7 +5,6 @@ local options = require "ui.statusline.options"
 local M = {}
 
 local cached_ft_map = {}
-
 local props = {}
 local left_separator
 local right_separator
@@ -34,43 +33,32 @@ end
 
 M.generate = function(location, win_id)
   if not vim.api.nvim_win_is_valid(win_id) then return "" end
+
+  local accessor = location == "statusline" and "sections" or "winbar"
+  local eol = location == "statusline" and " " or ""
+  local sections
+  local left_section
+  local right_section
+  local has_ext, ext
+
   if #props > 0 then props = {} end
   props.winid = win_id
   props.bufnr = vim.api.nvim_win_get_buf(win_id)
   props.filetype = vim.api.nvim_buf_get_option(props.bufnr, "filetype")
   props.name = vim.fn.bufname(props.bufnr)
 
-  local sections
-  local left_section
-  local right_section
-
-  local has_ext, ext
   local keys = vim.tbl_keys(cached_ft_map)
   if vim.tbl_contains(keys, props.filetype) then
     local mod = cached_ft_map[props.filetype]
     has_ext, ext = pcall(require, mod)
   end
 
-  if location == "statusline" then
-    if has_ext then
-      sections = ext.sections or options.get().sections
-    else
-      sections = options.get().sections
-    end
-    left_section = table.concat(draw_section("statusline", "left", sections.left), "")
-    right_section = table.concat(draw_section("statusline", "right", sections.right), "")
-    return ("%s%%=%s "):format(left_section, right_section)
-  elseif location == "winbar" then
-    if has_ext then
-      if not ext.winbar then return "" end
-      sections = ext.winbar
-    else
-      sections = options.get().winbar
-    end
-    left_section = table.concat(draw_section("winbar", "left", sections.left), "")
-    right_section = table.concat(draw_section("winbar", "right", sections.right), "")
-    return ("%s%%=%s"):format(left_section, right_section)
-  end
+  sections = options.get()[accessor]
+  if has_ext then sections = ext[accessor] end
+  if not sections then return "" end
+  left_section = table.concat(draw_section(location, "left", sections.left), "")
+  right_section = table.concat(draw_section(location, "right", sections.right), "")
+  return ("%s%%=%s%s"):format(left_section, right_section, eol)
 end
 
 M.setup = function(config)
