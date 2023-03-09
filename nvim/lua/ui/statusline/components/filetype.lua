@@ -1,6 +1,6 @@
 local has_devicons, devicons = pcall(require, "nvim-web-devicons")
 
-local highlight = require "ui.statusline.highlight"
+local highlighter = require "ui.statusline.highlighter"
 local icons = require "ui.icons"
 
 local M = require("ui.statusline.components._class"):extend()
@@ -37,7 +37,7 @@ function M:load()
   end
   if self.options.colored then
     -- TODO: fix bg color issue
-    self.label = ("%s%s"):format(highlight.sanitize(icon_highlight), self.label)
+    self.label = ("%s%s"):format(highlighter.sanitize(icon_highlight), self.label)
   end
 end
 

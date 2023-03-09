@@ -1,8 +1,9 @@
+local c = require("ui.theme").colors
 local M = {}
 
 M.sections = {
   left = {
-    { user2 = "" },
+    { component = "" },
   },
   right = {},
 }

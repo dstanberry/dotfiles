@@ -1,7 +1,6 @@
-local highlight = require "ui.statusline.highlight"
+local highlighter = require "ui.statusline.highlighter"
 
 local Component = {}
-
 Component.__index = Component
 
 function Component:new(properties, section)
@@ -17,35 +16,35 @@ function Component:new(properties, section)
   return c.label
 end
 
-function Component:highlight(name)
-  if name == "modehl" then
-    self.hl = highlight.mode(vim.fn.mode())
-  else
-    self.hl = highlight[name]
+function Component:highlight(attr)
+  if type(attr) == "string" and attr == "mode" then
+    self.hl = highlighter.mode(vim.fn.mode())
+  elseif type(attr) == "table" then
+    local hlgroup = self.section.component
+    if self.name == "separator" then
+      hlgroup = self.name
+    elseif #hlgroup == 0 or hlgroup:match "%S" == nil then
+      hlgroup = "empty_cell"
+    end
+    self.hl = highlighter.create_hl("statusline_" .. hlgroup, attr)
   end
   if self.hl then self.label = string.format("%s%s", self.hl, self.label) end
 end
 
 function Component:load()
-  for hl, component in pairs(self.section) do
-    local opts = vim.deepcopy(self)
-    if type(component) == "table" then
-      local copy = vim.deepcopy(component)
-      local tmp = table.remove(copy, 1)
-      opts = vim.tbl_deep_extend("force", opts, copy)
-      component = tmp
-    end
-    local ok, mod = pcall(require, ("ui.statusline.components.%s"):format(component))
-    if ok then
-      self.label = mod
-      if type(mod) == "function" or type(mod) == "table" then self.label = mod(opts) end
-    elseif type(component) == "function" then
-      self.label = component(opts)
-    else
-      self.label = tostring(component)
-    end
-    self:highlight(hl)
+  local copy = vim.deepcopy(self)
+  local opts = vim.F.if_nil(self.section.opts, {})
+  opts = vim.tbl_deep_extend("force", opts, copy)
+  local ok, mod = pcall(require, ("ui.statusline.components.%s"):format(self.section.component))
+  if ok then
+    self.label = mod
+    if type(mod) == "function" or type(mod) == "table" then self.label = mod(opts) end
+  elseif type(self.section.component) == "function" then
+    self.label = self.section.component(opts)
+  else
+    self.label = tostring(self.section.component)
   end
+  if self.section.highlight then self:highlight(self.section.highlight) end
 end
 
 return Component

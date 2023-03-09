@@ -24,9 +24,9 @@ end
 local draw_section = function(kind, placement, section)
   if type(section) ~= "table" then return {} end
   local status = {}
-  for k, component in pairs(section) do
+  for k, s in pairs(section) do
     if kind == "statusline" and placement == "right" then table.insert(status, right_separator) end
-    table.insert(status, Component:new(props, component))
+    table.insert(status, Component:new(props, s))
     if kind == "statusline" and placement == "left" and k >= 1 then table.insert(status, left_separator) end
   end
   return status
@@ -78,13 +78,14 @@ M.setup = function(config)
   options.set(config)
   load_extensions()
 
-  local left_separator_hl = options.get().separators.left.hl
-  local left_separator_symbol = options.get().separators.left.symbol
-  left_separator = Component:new({}, { [left_separator_hl] = left_separator_symbol })
-
-  local right_separator_hl = options.get().separators.right.hl
-  local right_separator_symbol = options.get().separators.right.symbol
-  right_separator = Component:new({}, { [right_separator_hl] = right_separator_symbol })
+  left_separator = Component:new({ name = "separator" }, {
+    component = options.get().separators.left.component,
+    highlight = options.get().separators.left.highlight,
+  })
+  right_separator = Component:new({ name = "separator" }, {
+    component = options.get().separators.right.component,
+    highlight = options.get().separators.right.highlight,
+  })
 
   vim.o.statusline = ([[%%{%%v:lua.require("ui.statusline").generate("statusline", %s)%%}]]):format(
     vim.api.nvim_get_current_win()

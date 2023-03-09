@@ -1,3 +1,4 @@
+local c = require("ui.theme").colors
 local icons = require "ui.icons"
 
 reload("ui.statusline").setup {
@@ -15,28 +16,45 @@ reload("ui.statusline").setup {
     "toggleterm",
   },
   separators = {
-    left = { hl = "user9", symbol = " " },
-    right = { hl = "user9", symbol = " " },
+    left = { component = " ", highlight = { fg = c.gray_dark, bg = c.gray } },
+    right = { component = " ", highlight = { fg = c.gray_dark, bg = c.gray } },
   },
   sections = {
     left = {
-      { modehl = icons.misc.VerticalBarBold },
-      { modehl = "git_branch" },
-      { user7 = "diagnostics" },
-      { user7 = "git_diff" },
-      { user7 = "git_blame" },
+      { component = icons.misc.VerticalBarBold, highlight = "mode" },
+      { component = "git_branch", highlight = "mode" },
+      { component = "diagnostics", highlight = { fg = c.white, bg = c.gray } },
+      { component = "git_diff", highlight = { fg = c.white, bg = c.gray } },
+      { component = "git_blame", highlight = { fg = c.white, bg = c.gray } },
     },
     right = {
-      { user7 = { "cursor", padding = { left = 0, right = 1 } } },
-      { user7 = { "indent", padding = { left = 1, right = 1 } } },
-      { user7 = { "encoding", padding = { left = 1, right = 1 } } },
-      { user7 = "fileformat" },
-      { user7 = { "filetype", text_only = true } },
+      {
+        component = "cursor",
+        highlight = { fg = c.white, bg = c.gray },
+        opts = { padding = { left = 0, right = 1 } },
+      },
+      {
+        component = "indent",
+        highlight = { fg = c.white, bg = c.gray },
+        opts = { padding = { left = 1, right = 1 } },
+      },
+      {
+        component = "encoding",
+        highlight = { fg = c.white, bg = c.gray },
+        opts = { padding = { left = 1, right = 1 } },
+      },
+      {
+        component = "fileformat",
+        highlight = { fg = c.white, bg = c.gray },
+      },
+      {
+        component = "filetype",
+        highlight = { fg = c.white, bg = c.gray },
+        opts = { text_only = true },
+      },
     },
   },
   winbar = {
-    left = {
-      { "breadcrumbs" },
-    },
+    left = { component = "breadcrumbs" },
   },
 }

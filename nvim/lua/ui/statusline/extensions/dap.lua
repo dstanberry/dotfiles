@@ -1,11 +1,11 @@
 local add = require("ui.statusline.helper").add
-local highlight = require "ui.statusline.highlight"
+local highlighter = require "ui.statusline.highlighter"
 local icons = require "ui.icons"
 
 local M = {}
 
-local txt_hl = highlight.sanitize "Winbar"
-local reset_hl = highlight.reset
+local txt_hl = highlighter.sanitize "Winbar"
+local reset_hl = highlighter.reset
 
 local function get_ft_name(ft)
   local name = ft
@@ -31,15 +31,15 @@ end
 
 M.sections = {
   left = {
-    { modehl = icons.misc.VerticalBarBold },
-    { modehl = statusline_label },
+    { component = icons.misc.VerticalBarBold, highlight = "mode" },
+    { component = statusline_label, highlight = "mode" },
   },
   right = {},
 }
 
 M.winbar = {
   right = {
-    { winbar_label },
+    { component = winbar_label },
   },
 }
 

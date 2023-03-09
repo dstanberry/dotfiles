@@ -34,14 +34,10 @@ M.sanitize = function(group) return "%#" .. group .. "#" end
 M.segment = "%="
 M.reset = "%*"
 
-M.user1 = "%1*"
-M.user2 = "%2*"
-M.user3 = "%3*"
-M.user4 = "%4*"
-M.user5 = "%5*"
-M.user6 = "%6*"
-M.user7 = "%7*"
-M.user8 = "%8*"
-M.user9 = "%9*"
+M.create_hl = function(hlgroup, attr)
+  local id = vim.api.nvim_get_hl_id_by_name(hlgroup)
+  vim.api.nvim_set_hl(0, hlgroup, attr)
+  return M.sanitize(hlgroup)
+end
 
 return M

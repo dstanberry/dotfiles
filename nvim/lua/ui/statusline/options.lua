@@ -1,21 +1,16 @@
 local defaults = {
   disabled_filetypes = {},
   separators = {
-    left = { hl = "", symbol = "" },
-    right = { hl = "", symbol = "" },
+    left = { separator = " " },
+    right = { separator = " " },
   },
   icons = true,
   sections = {
-    left = {
-      { "mode" },
-      { "filename" },
-    },
+    left = { { component = "mode" }, { component = "filename" } },
     right = {},
   },
   winbar = {
-    left = {
-      { "filename" },
-    },
+    left = { { component = "filename" } },
   },
 }
 

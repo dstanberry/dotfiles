@@ -11,8 +11,8 @@ end
 
 M.sections = {
   left = {
-    { modehl = icons.misc.VerticalBarBold },
-    { modehl = statusline_label },
+    { component = icons.misc.VerticalBarBold, highlight = "mode" },
+    { component = statusline_label, highlight = "mode" },
   },
   right = {},
 }

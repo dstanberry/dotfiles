@@ -6,8 +6,8 @@ local function label() return "ToggleTerm #" .. vim.b.toggle_number end
 
 M.sections = {
   left = {
-    { modehl = icons.misc.VerticalBarBold },
-    { modehl = label },
+    { component = icons.misc.VerticalBarBold, highlight = "mode" },
+    { component = label, highlight = "mode" },
   },
   right = {},
 }
