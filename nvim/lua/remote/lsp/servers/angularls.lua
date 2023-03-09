@@ -7,8 +7,7 @@ local sep = has "win32" and "\\" or "/"
 
 local node_modules = function(dirs)
   return util.map(function(agg, dir, i)
-    dir = table.concat({ dir, "node_modules" }, sep)
-    agg[i] = dir
+    agg[i] = table.concat({ dir, "node_modules" }, sep)
     return agg
   end, dirs)
 end
