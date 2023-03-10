@@ -227,7 +227,7 @@ M.apply = function(c)
   hi["@keyword"] = { link = "Keyword" }
   hi["@keyword.function"] = { fg = c.magenta }
   hi["@keyword.operator"] = { fg = c.magenta }
-  hi["@keyword.return"] = { fg = c.magenta_light }
+  hi["@keyword.return"] = { fg = c.red_light }
   hi["@label"] = { link = "Label" }
   hi["@method"] = { fg = c.blue_light }
   hi["@method.call"] = { fg = c.blue_light }
@@ -282,16 +282,6 @@ M.apply = function(c)
   -- statusline highlighting
   hi.StatusLine = { fg = c.fg_dark, bg = c.gray }
   hi.StatusLineNC = { fg = c.gray_light, bg = c.gray }
-
-  hi.User1 = { fg = c.green, bg = c.gray }
-  hi.User2 = { fg = c.blue_dark, bg = c.gray }
-  hi.User3 = { fg = c.blue_light, bg = c.gray }
-  hi.User4 = { fg = c.red, bg = c.gray }
-  hi.User5 = { fg = c.magenta, bg = c.gray }
-  hi.User6 = { fg = c.orange, bg = c.gray }
-  -- hi.User7 = { fg = c.white, bg = c.gray }
-  -- hi.User8 = { fg = c.fg, bg = c.gray, bold = true }
-  -- hi.User9 = { fg = c.gray_dark, bg = c.gray }
 
   -- tabline highlighting
   hi.TabLine = { fg = c.gray_light, bg = c.bg }

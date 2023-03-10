@@ -15,4 +15,10 @@ M.add = function(highlight, items, join)
   return string.format("%s%s%s", highlight, out, sep)
 end
 
+M.highlighter = {
+  sanitize = function(group) return "%#" .. group .. "#" end,
+  segment = "%=",
+  reset = "%*",
+}
+
 return M

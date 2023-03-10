@@ -94,6 +94,7 @@ return {
     LeftArrow = "",
     LeftArrowCircled = "",
     Lock = "",
+    Magnify = "",
     Orbit = " ",
     Prompt = "❯",
     RightArrow = "",
@@ -111,6 +112,8 @@ return {
   },
   status = {
     Error = "",
+    Hint = "",
+    Info = " ",
     Warn = "",
   },
   type = {

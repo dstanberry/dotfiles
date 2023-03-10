@@ -1,10 +1,10 @@
 local devicons_ok, devicons = pcall(require, "nvim-web-devicons")
-local navic_ok, navic = pcall(require, "nvim-navic")
-local add = require("ui.statusline.helper").add
-local highlighter = require "ui.statusline.highlighter"
-local icons = require "ui.icons"
+local diffview_ok, diffview = pcall(require, "diffview.lib")
 
-local M = require("ui.statusline.components._class"):extend()
+local icons = require "ui.icons"
+local util = require "remote.lualine.util"
+local add = util.add
+local highlighter = util.highlighter
 
 local default_options = {
   separator = pad(icons.misc.ChevronRight, "right"),
@@ -56,36 +56,24 @@ local get_file_sections = function(path, fname, ext, sep)
   return table.concat(segments, sep)
 end
 
-local get_lsp_symbols = function(sep)
-  if not navic_ok or not navic.is_available() then return "" end
-  local location_ok, location = pcall(navic.get_location)
-  if not location_ok or location == "" then return "" end
-  return sep .. location
-end
-
 local get_diff_section = function(bufnr)
   return add(highlighter.sanitize "Title", { vim.api.nvim_buf_get_var(bufnr, "diffview_label") }, true)
 end
 
-function M:init(options)
-  M.super.init(self, options)
-  self.options = vim.tbl_deep_extend("keep", self.options or {}, default_options)
-end
-
-function M:load()
-  local fname = (self.options.name):match(("^.+%s(.+)$"):format(separator))
-  local _, bufid = pcall(vim.api.nvim_buf_get_var, self.options.buf, "bufid")
+return function()
+  local opts = default_options
+  local winid = vim.api.nvim_get_current_win()
+  local buf = vim.api.nvim_win_get_buf(winid)
+  local name = vim.fn.bufname(buf)
+  local fname = (name):match(("^.+%s(.+)$"):format(separator))
+  local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
   local is_diff = vim.startswith(bufid, "diffview")
-  local path = is_diff and "" or get_relpath(self.options.winid, self.options.name, self.options.maxlen)
+  local path = is_diff and "" or get_relpath(winid, name, opts.maxlen)
   local ext = vim.fn.fnamemodify(fname, ":e")
-  local file_sections = get_file_sections(path, fname, ext, self.options.separator)
-  if is_diff then
-    local diff_section = get_diff_section(self.options.buf)
-    self.label = string.format("%s%s%s%s", diff_section, diff_section and "" or " ", file_sections, reset_hl)
-  else
-    local symbol_sections = get_lsp_symbols(self.options.separator)
-    self.label = string.format("%s%s%s%s", file_sections, symbol_sections and "" or " ", symbol_sections, reset_hl)
+  local file_sections = get_file_sections(path, fname, ext, opts.separator)
+  if is_diff and diffview_ok and diffview.get_current_view() then
+    local diff_section = get_diff_section(buf)
+    return string.format("%s%s%s%s", diff_section, diff_section and "" or " ", file_sections, reset_hl)
   end
+  return string.format("%s%s", file_sections, reset_hl)
 end
-
-return M
