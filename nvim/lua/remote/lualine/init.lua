@@ -104,6 +104,11 @@ return {
           },
         },
       },
+      inactive_winbar = {
+        lualine_a = {
+          { breadcrumbs, color = "Winbar" },
+        },
+      },
     }
   end,
 }

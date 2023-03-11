@@ -13,6 +13,7 @@ local disable_in_statusline = {
 
 local disable_in_winbar = {
   "DiffviewFilePanel",
+  "DiffviewFiles",
   "gitcommit",
   "help",
   "lazy",
