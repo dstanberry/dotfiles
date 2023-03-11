@@ -22,12 +22,12 @@ return {
             prompt_title = "Harpoon (marks)",
           })
         end,
-        { desc = "find marks" }
+        { desc = "harpoon: find marks" }
       )
     end
 
-    vim.keymap.set("n", "<leader>ha", mark.add_file, { desc = "mark file" })
-    vim.keymap.set("n", "<leader>hh", ui.nav_next, { desc = "next file" })
-    vim.keymap.set("n", "<leader>hl", ui.nav_prev, { desc = "previous file" })
+    vim.keymap.set("n", "<leader>ha", mark.add_file, { desc = "harpoon: mark file" })
+    vim.keymap.set("n", "<leader>hh", ui.nav_next, { desc = "harpoon: next file" })
+    vim.keymap.set("n", "<leader>hl", ui.nav_prev, { desc = "harpoon: previous file" })
   end,
 }
