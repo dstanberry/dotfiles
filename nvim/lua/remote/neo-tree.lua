@@ -1,5 +1,6 @@
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
+local icons = require "ui.icons"
 local util = require "util"
 
 groups.new("NeoTreeNormal", { link = "NormalSB" })
@@ -9,7 +10,7 @@ groups.new("NeoTreeTabInactive", { fg = c.gray_lighter, bg = c.bg })
 groups.new("NeoTreeTabSeparatorActive", { fg = c.fg, bg = c.bg_alt })
 groups.new("NeoTreeTabSeparatorInactive", { fg = c.gray_dark, bg = c.bg })
 
-groups.new("NeoTreeRootName", {})
+groups.new("NeoTreeRootName", { fg = c.fg })
 
 return {
   {
@@ -59,19 +60,16 @@ return {
       window = {
         mappings = {
           ["<space>"] = "none",
-          ["o"] = "toggle_node",
-          ["<CR>"] = "open_with_window_picker",
-          ["<c-s>"] = "split_with_window_picker",
-          ["<c-v>"] = "vsplit_with_window_picker",
           ["<esc>"] = "revert_preview",
+          ["o"] = "toggle_node",
           ["P"] = { "toggle_preview", config = { use_float = true } },
         },
       },
       default_component_configs = {
         indent = {
-          with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
-          expander_collapsed = "",
-          expander_expanded = "",
+          with_expanders = true,
+          expander_collapsed = icons.misc.FoldClosed,
+          expander_expanded = icons.misc.FoldOpened,
           expander_highlight = "NeoTreeExpander",
         },
       },

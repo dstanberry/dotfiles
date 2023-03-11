@@ -66,9 +66,10 @@ return function()
   local opts = default_options
   local winid = vim.api.nvim_get_current_win()
   local buf = vim.api.nvim_win_get_buf(winid)
+  local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+  if util.contains(filetypes.wb_suppressed, ft) then return " " end
   local name = vim.fn.bufname(buf)
   local fname = (name):match(("^.+%s(.+)$"):format(separator))
-  if util.contains(filetypes.wb_suppressed, name) or util.contains(filetypes.wb_suppressed, fname) then return " " end
   local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
   local is_diff = vim.startswith(bufid, "diffview")
   local path = is_diff and "" or get_relpath(winid, name, opts.maxlen)
