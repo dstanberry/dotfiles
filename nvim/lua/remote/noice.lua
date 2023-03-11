@@ -19,7 +19,7 @@ return {
       end,
       mode = "n",
       expr = true,
-      desc = "noice: scroll down documentation",
+      desc = "noice: scroll down",
     },
     {
       "<c-f>",
@@ -28,7 +28,7 @@ return {
       end,
       mode = "n",
       expr = true,
-      desc = "noice: scroll up documentation",
+      desc = "noice: scroll up",
     },
   },
   opts = {
@@ -46,53 +46,74 @@ return {
       },
     },
     lsp = {
+      documentation = { enabled = true },
+      hover = { enabled = true },
+      signature = { enabled = true },
       override = {
         ["cmp.entry.get_documentation"] = true,
         ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
         ["vim.lsp.util.stylize_markdown"] = true,
       },
     },
-    popupmenu = {
-      backend = "cmp",
-    },
     routes = {
       {
         filter = {
           any = {
-            { event = "msg_show", kind = "", find = "written" },
-            { event = "msg_show", kind = "", find = "%d+ lines, %d+ bytes" },
+            { event = "msg_show", find = "%d+ lines, %d+ bytes" },
+            { event = "msg_show", find = "%d+L, %d+B" },
+            { event = "msg_show", find = "written" },
+            { event = "msg_show", kind = "search_count" },
           },
         },
         opts = { skip = true },
-      },
-      {
-        filter = { event = "msg_show", kind = "search_count" },
-        opts = { skip = true },
-      },
-      {
-        view = "mini",
-        filter = { event = "msg_show", max_height = 2 },
       },
       {
         view = "mini",
         filter = {
           any = {
             { event = "msg_show", find = "^E486:" },
+            { event = "msg_show", find = "^Hunk %d+ of %d" },
           },
         },
       },
       {
-        view = "vsplit",
-        filter = { event = "notify", min_height = 10 },
+        view = "notify",
+        opts = { title = "", merge = true },
+        filter = {
+          any = {
+            { event = "msg_showmode" },
+            { kind = { "emsg", "echo", "echomsg" } },
+          },
+        },
+      },
+      {
+        view = "notify",
+        opts = { title = "Error", level = vim.log.levels.ERROR, merge = true, replace = false },
+        filter = {
+          any = {
+            { error = true },
+            { event = "msg_show", find = "^E%d+:" },
+            { event = "msg_show", find = "^Error" },
+          },
+        },
+      },
+      {
+        view = "split",
+        filter = {
+          any = {
+            filter = { event = "notify", min_height = 5 },
+          },
+        },
       },
     },
     commands = {
-      history = { view = "vsplit" },
+      history = { view = "split" },
     },
     views = {
       cmdline_popup = {
         border = { style = "single", padding = { 0, 1 } },
         position = { row = 10, col = "50%" },
+        size = { width = 70, height = 'auto' },
         filter_options = {},
         win_options = {
           winhighlight = { NormalFloat = "Normal", FloatBorder = "Macro" },
@@ -101,10 +122,15 @@ return {
       popupmenu = {
         relative = "editor",
         border = { style = "single", padding = { 0, 1 } },
-        position = { row = 8, col = "50%" },
-        size = { width = 60, height = 10 },
+        position = { row = 12, col = "50%" },
+        size = { width = 70, height = 10 },
         win_options = {
-          -- winhighlight = { NormalFloat = "Normal", FloatBorder = "Macro" },
+          winhighlight = { NormalFloat = "Normal", FloatBorder = "Macro" },
+        },
+      },
+      split = {
+        win_options = {
+          winhighlight = { Normal = "NormalSB" },
         },
       },
     },

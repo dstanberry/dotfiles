@@ -78,7 +78,7 @@ return {
         },
       },
     }
-
+--[[
     cmp.setup.cmdline({ "/", "?" }, {
       mapping = cmp.mapping.preset.cmdline(),
       sources = {
@@ -94,7 +94,7 @@ return {
         { name = "path" },
       },
     })
-
+]]
     groups.new("CmpItemAbbrDefault", { fg = c.white })
     groups.new("CmpItemAbbrDeprecatedDefault", { fg = c.white })
     groups.new("CmpItemAbbrMatchDefault", { fg = BLUE, bold = true })
