@@ -128,18 +128,18 @@ return {
     -- stylua: ignore
     keys = {
       { "<leader><leader>", project_files, desc = "telescope: find files (project)" },
-      { "<leader>f/", grep_last_search, desc = "find word (last searched)" },
-      { "<leader>fb", current_buffer, desc = "find in buffer" },
-      { "<leader>fe", file_browser, desc = "file explorer" },
-      { "<leader>ff", require("telescope.builtin").find_files, desc = "find files" },
-      { "<leader>fg", require("telescope.builtin").live_grep, desc = "live grep" },
-      { "<leader>fk", require("telescope.builtin").help_tags, desc = "help pages" },
-      { "<leader>fp", find_plugins, desc = "find files (neovim plugins)" },
-      { "<leader>fr", oldfiles, desc = "find files (recently used)" },
+      { "<leader>f/", grep_last_search, desc = "telescope: find word (last searched)" },
+      { "<leader>fb", current_buffer, desc = "telescope: find in buffer" },
+      { "<leader>fe", file_browser, desc = "telescope: browse root directory" },
+      { "<leader>ff", require("telescope.builtin").find_files, desc = "telescope: find files" },
+      { "<leader>fg", require("telescope.builtin").live_grep, desc = "telescope: live grep" },
+      { "<leader>fk", require("telescope.builtin").help_tags, desc = "telescope: help pages" },
+      { "<leader>fp", find_plugins, desc = "telescope: find files (neovim plugins)" },
+      { "<leader>fr", oldfiles, desc = "telescope: find files (recently used)" },
       -- analagous to `<leader>` maps but with customizations
       { "<localleader><leader>", find_nvim, desc = "telescope: find files (neovim config)" },
-      { "<localleader>fe", file_browser_relative, desc = "file browser (relative to current buffer)" },
-      { "<localleader>fg", live_grep_args, desc = "find in files (grep with args)" },
+      { "<localleader>fe", file_browser_relative, desc = "telescope: browse current directory" },
+      { "<localleader>fg", live_grep_args, desc = "telescope: find in files (grep with args)" },
       -- lsp handlers
       { "gw", function() require("telescope.builtin").diagnostics { bufnr = 0 } end, desc = "telescope: lsp diagnostics (buffer)" },
       { "gW", require("telescope.builtin").diagnostics, desc = "telescope: lsp diagnostics (workspace)" },

@@ -65,6 +65,13 @@ return {
         },
         offsets = {
           {
+            text = pad(icons.documents.FolderClosed, "right") .. "EXPLORER",
+            filetype = "neo-tree",
+            highlight = "PanelHeading",
+            separator = true,
+            text_align = "center",
+          },
+          {
             text = pad(icons.groups.Sql, "right") .. "DATABASE VIEWER",
             filetype = "dbui",
             highlight = "PanelHeading",

@@ -2,10 +2,10 @@ local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
-groups.new("GitSignsAdd", { fg = c.green, bg = c.bg })
-groups.new("GitSignsChange", { fg = c.yellow, bg = c.bg })
-groups.new("GitSignsDelete", { fg = c.red, bg = c.bg })
-groups.new("GitSignsChangeDelete", { fg = c.orange, bg = c.bg })
+groups.new("GitSignsAdd", { fg = c.green })
+groups.new("GitSignsChange", { fg = c.yellow })
+groups.new("GitSignsDelete", { fg = c.red })
+groups.new("GitSignsChangeDelete", { fg = c.orange })
 groups.new("GitSignsCurrentLineBlame", { fg = c.gray_light, italic = true })
 
 return {

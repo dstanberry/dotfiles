@@ -2,9 +2,11 @@ local devicons_ok, devicons = pcall(require, "nvim-web-devicons")
 local diffview_ok, diffview = pcall(require, "diffview.lib")
 
 local icons = require "ui.icons"
-local util = require "remote.lualine.util"
-local add = util.add
-local highlighter = util.highlighter
+local util = require "util"
+local stl_util = require "remote.lualine.util"
+local filetypes = require "remote.lualine.filetypes"
+local add = stl_util.add
+local highlighter = stl_util.highlighter
 
 local default_options = {
   separator = pad(icons.misc.ChevronRight, "right"),
@@ -66,6 +68,7 @@ return function()
   local buf = vim.api.nvim_win_get_buf(winid)
   local name = vim.fn.bufname(buf)
   local fname = (name):match(("^.+%s(.+)$"):format(separator))
+  if util.contains(filetypes.wb_suppressed, name) or util.contains(filetypes.wb_suppressed, fname) then return " " end
   local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
   local is_diff = vim.startswith(bufid, "diffview")
   local path = is_diff and "" or get_relpath(winid, name, opts.maxlen)

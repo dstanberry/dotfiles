@@ -126,6 +126,7 @@ vim.api.nvim_create_autocmd("FileType", {
     "dapui_scopes",
     "dapui_stacks",
     "dapui_watches",
+    "dbui",
     "help",
     "NeogitPopup",
     "NeogitStatus",

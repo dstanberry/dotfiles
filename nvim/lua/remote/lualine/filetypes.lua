@@ -1,9 +1,10 @@
 local disable_in_statusline = {
+  "dbui",
   "DiffviewFiles",
   "gitcommit",
   "help",
   "lazy",
-  "lir",
+  "neo-tree",
   "NeogitPopup",
   "NeogitStatus",
   "qf",
@@ -12,12 +13,12 @@ local disable_in_statusline = {
 }
 
 local disable_in_winbar = {
-  "DiffviewFilePanel",
-  "DiffviewFiles",
+  -- "DiffviewFilePanel",
+  -- "DiffviewFiles",
   "gitcommit",
   "help",
   "lazy",
-  "lir",
+  "neo-tree",
   "NeogitCommitMessage",
   "NeogitPopup",
   "NeogitStatus",
@@ -26,7 +27,15 @@ local disable_in_winbar = {
   "toggleterm",
 }
 
+local empty_in_winbar = {
+  "dbui",
+  "DiffviewFilePanel",
+  "DiffviewFiles",
+  "neo-tree",
+}
+
 return {
   stl_disabled = disable_in_statusline,
   wb_disabled = disable_in_winbar,
+  wb_suppressed = empty_in_winbar
 }
