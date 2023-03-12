@@ -64,6 +64,9 @@ return {
       },
       hooks = {
         diff_buf_read = function(bufnr, _)
+          vim.opt_local.colorcolumn = ""
+          vim.opt_local.relativenumber = false
+
           local view = lib.get_current_view()
           local file = view.cur_entry
           local target = ""
