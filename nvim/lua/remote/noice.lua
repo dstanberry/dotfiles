@@ -61,6 +61,7 @@ return {
           any = {
             { event = "msg_show", find = "%d+ lines, %d+ bytes" },
             { event = "msg_show", find = "%d+L, %d+B" },
+            { event = "msg_show", find = "search hit" },
             { event = "msg_show", find = "written" },
             { event = "msg_show", kind = "search_count" },
           },
@@ -88,7 +89,19 @@ return {
       },
       {
         view = "notify",
-        opts = { title = "Error", level = vim.log.levels.ERROR, merge = true, replace = false },
+        opts = { title = "Warning", level = vim.log.levels.WARN, merge = true, replace = true },
+        filter = {
+          any = {
+            { warning = true },
+            { event = "msg_show", find = "^Warn" },
+            { event = "msg_show", find = "^W%d+:" },
+            { event = "msg_show", find = "^No hunks$" },
+          },
+        },
+      },
+      {
+        view = "notify",
+        opts = { title = "Error", level = vim.log.levels.ERROR, merge = true, replace = true },
         filter = {
           any = {
             { error = true },
@@ -113,7 +126,7 @@ return {
       cmdline_popup = {
         border = { style = "single", padding = { 0, 1 } },
         position = { row = 10, col = "50%" },
-        size = { width = 70, height = 'auto' },
+        size = { width = 70, height = "auto" },
         filter_options = {},
         win_options = {
           winhighlight = { NormalFloat = "Normal", FloatBorder = "Macro" },
