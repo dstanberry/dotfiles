@@ -93,7 +93,7 @@
 	tool = nvim
 
 [mergetool]
-	prompt = true
+	prompt = false
 
 [mergetool "nvim"]
 	cmd = nvim +\"tabdo DiffviewOpen\"
