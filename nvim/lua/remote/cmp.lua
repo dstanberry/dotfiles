@@ -39,9 +39,10 @@ return {
       },
       formatting = {
         fields = { "kind", "abbr", "menu" },
-        format = function(_, item)
+        format = function(entry, item)
           item.menu = pad(item.kind, "both")
           item.kind = pad(icons.kind[item.kind], "both")
+          if entry.source.name == "vim-dadbod-completion" then item.kind = pad(icons.kind.Variable, "both") end
           return item
         end,
       },
@@ -58,7 +59,6 @@ return {
         end,
       },
       sources = cmp.config.sources {
-        { name = "nvim_lua" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
         { name = "path" },
@@ -78,7 +78,20 @@ return {
         },
       },
     }
---[[
+
+    cmp.setup.filetype("lua", {
+      sources = cmp.config.sources {
+        { name = "nvim_lua" },
+      },
+    })
+
+    cmp.setup.filetype({ "mysql", "pgsql", "plsql", "sql" }, {
+      sources = cmp.config.sources {
+        { name = "vim-dadbod-completion" },
+      },
+    })
+
+    --[[
     cmp.setup.cmdline({ "/", "?" }, {
       mapping = cmp.mapping.preset.cmdline(),
       sources = {
@@ -95,6 +108,7 @@ return {
       },
     })
 ]]
+
     groups.new("CmpItemAbbrDefault", { fg = c.white })
     groups.new("CmpItemAbbrDeprecatedDefault", { fg = c.white })
     groups.new("CmpItemAbbrMatchDefault", { fg = BLUE, bold = true })
