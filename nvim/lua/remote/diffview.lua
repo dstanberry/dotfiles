@@ -2,6 +2,7 @@ local icons = require "ui.icons"
 
 return {
   "sindrets/diffview.nvim",
+  cmd = "DiffviewOpen",
   keys = {
     {
       "<localleader>gd",
@@ -103,42 +104,6 @@ return {
         end,
       },
       keymaps = {
-        diff3 = {
-          {
-            { "n", "x" },
-            "2do",
-            actions.diffget "ours",
-            { desc = "Obtain the diff hunk from the CURRENT version of the file" },
-          },
-          {
-            { "n", "x" },
-            "3do",
-            actions.diffget "theirs",
-            { desc = "Obtain the diff hunk from the INCOMING version of the file" },
-          },
-          { "n", "g?", actions.help { "view", "diff3" }, { desc = "Open the help panel" } },
-        },
-        diff4 = {
-          {
-            { "n", "x" },
-            "1do",
-            actions.diffget "base",
-            { desc = "Obtain the diff hunk from the COMMON ANCESTOR version of the file" },
-          },
-          {
-            { "n", "x" },
-            "2do",
-            actions.diffget "ours",
-            { desc = "Obtain the diff hunk from the CURRENT version of the file" },
-          },
-          {
-            { "n", "x" },
-            "3do",
-            actions.diffget "theirs",
-            { desc = "Obtain the diff hunk from the INCOMING version of the file" },
-          },
-          { "n", "g?", actions.help { "view", "diff4" }, { desc = "Open the help panel" } },
-        },
         view = { q = diffview.close },
         file_panel = { q = diffview.close },
         file_history_panel = { q = diffview.close },
