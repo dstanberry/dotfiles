@@ -135,7 +135,7 @@ return {
       popupmenu = {
         relative = "editor",
         border = { style = "single", padding = { 0, 1 } },
-        position = { row = 12, col = "50%" },
+        position = { row = 13, col = "50%" },
         size = { width = 70, height = 10 },
         win_options = {
           winhighlight = { NormalFloat = "Normal", FloatBorder = "Macro" },
