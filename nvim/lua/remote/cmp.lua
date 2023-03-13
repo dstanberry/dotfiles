@@ -39,10 +39,9 @@ return {
       },
       formatting = {
         fields = { "kind", "abbr", "menu" },
-        format = function(entry, item)
+        format = function(_, item)
           item.menu = pad(item.kind, "both")
           item.kind = pad(icons.kind[item.kind], "both")
-          if entry.source.name == "vim-dadbod-completion" then item.kind = pad(icons.kind.Variable, "both") end
           return item
         end,
       },
@@ -85,13 +84,7 @@ return {
       },
     })
 
-    cmp.setup.filetype({ "mysql", "pgsql", "plsql", "sql" }, {
-      sources = cmp.config.sources {
-        { name = "vim-dadbod-completion" },
-      },
-    })
-
-    --[[
+--[[
     cmp.setup.cmdline({ "/", "?" }, {
       mapping = cmp.mapping.preset.cmdline(),
       sources = {

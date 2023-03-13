@@ -25,6 +25,7 @@ return {
       },
       "jose-elias-alvarez/null-ls.nvim",
       "jose-elias-alvarez/typescript.nvim",
+      "nanotee/sqls.nvim",
       "simrat39/rust-tools.nvim",
       { "mickael-menu/zk-nvim", dependencies = { "nvim-telescope/telescope.nvim" } },
     },
