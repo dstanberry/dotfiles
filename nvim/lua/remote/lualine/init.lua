@@ -29,12 +29,12 @@ return {
         lualine_a = {
           {
             function() return icons.misc.VerticalBarBold end,
-            color = function() return { fg = theme.modes[vim.fn.mode()], bg = c.gray } end,
+            color = function() return { fg = theme.modes[vim.fn.mode()], bg = c.gray0 } end,
             padding = { left = 0, right = 0 },
           },
           {
             git_branch,
-            color = function() return { fg = theme.modes[vim.fn.mode()], bg = c.gray } end,
+            color = function() return { fg = theme.modes[vim.fn.mode()], bg = c.gray0 } end,
             padding = { right = 3 },
           },
         },
@@ -48,9 +48,9 @@ return {
               removed = pad(icons.git.TextRemoved, "right"),
             },
             diff_color = {
-              added = { fg = c.green },
-              modified = { fg = c.yellow },
-              removed = { fg = c.red },
+              added = { fg = c.green2 },
+              modified = { fg = c.yellow2 },
+              removed = { fg = c.red1 },
             },
           },
         },
@@ -80,7 +80,7 @@ return {
               return string.format("%s %s %s",icons.misc.Magnify, query, counter)
             end,
             cond = function() return package.loaded["noice"] and require("noice").api.status.search.has() and min_width(80) end,
-            color = { fg = c.gray_lighter, bold = true },
+            color = { fg = c.gray2, bold = true },
           },
         },
         lualine_y = {

@@ -3,28 +3,28 @@ local color = require "util.color"
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
-local GRAY = color.darken(c.gray, 10)
-local GRAY_DARK = color.darken(c.gray, 25)
-local BLUE = color.darken(c.blue_dark, 43)
+local GRAY = color.darken(c.gray0, 10)
+local GRAY_DARK = color.darken(c.gray0, 25)
+local BLUE = color.darken(c.blue1, 43)
 
 groups.new("TelescopePromptBorder", { fg = GRAY, bg = GRAY })
-groups.new("TelescopePreviewBorder", { fg = c.bg_dark, bg = c.bg_dark })
+groups.new("TelescopePreviewBorder", { fg = c.bg0, bg = c.bg0 })
 groups.new("TelescopeResultsBorder", { fg = GRAY_DARK, bg = GRAY_DARK })
 
-groups.new("TelescopePromptTitle", { fg = c.bg, bg = c.red, bold = true })
-groups.new("TelescopePreviewTitle", { fg = c.bg_dark })
+groups.new("TelescopePromptTitle", { fg = c.bg2, bg = c.red1, bold = true })
+groups.new("TelescopePreviewTitle", { fg = c.bg0 })
 groups.new("TelescopeResultsTitle", { fg = GRAY_DARK })
 
-groups.new("TelescopePromptCounter", { fg = c.gray_light })
-groups.new("TelescopePromptPrefix", { fg = c.green })
-groups.new("TelescopePromptNormal", { fg = nil, bg = GRAY })
-groups.new("TelescopePreviewNormal", { fg = c.green, bg = c.bg_dark })
-groups.new("TelescopeResultsNormal", { fg = nil, bg = GRAY_DARK })
+groups.new("TelescopePromptCounter", { fg = c.gray1 })
+groups.new("TelescopePromptPrefix", { fg = c.green2 })
+groups.new("TelescopePromptNormal", { bg = GRAY })
+groups.new("TelescopePreviewNormal", { fg = c.green2, bg = c.bg0 })
+groups.new("TelescopeResultsNormal", { bg = GRAY_DARK })
 
-groups.new("TelescopeMatching", { fg = c.orange, bold = true })
-groups.new("TelescopeMultiSelection", { fg = c.magenta })
-groups.new("TelescopeSelection", { fg = nil, bg = BLUE, bold = true })
-groups.new("TelescopeSelectionCaret", { fg = c.fg_dark, bg = BLUE, bold = true })
+groups.new("TelescopeMatching", { fg = c.orange0, bold = true })
+groups.new("TelescopeMultiSelection", { fg = c.magenta1 })
+groups.new("TelescopeSelection", { bg = BLUE, bold = true })
+groups.new("TelescopeSelectionCaret", { fg = c.fg0, bg = BLUE, bold = true })
 
 local function current_buffer()
   require("telescope.builtin").current_buffer_fuzzy_find {

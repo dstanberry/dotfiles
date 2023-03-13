@@ -3,8 +3,8 @@ local color = require "util.color"
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
-local BLUE = color.lighten(c.blue, 15)
-local BLUE_DARK = color.darken(c.blue, 35)
+local BLUE = color.lighten(c.blue2, 15)
+local BLUE_DARK = color.darken(c.blue2, 35)
 
 return {
   "hrsh7th/nvim-cmp",
@@ -105,7 +105,7 @@ return {
     groups.new("CmpItemAbbrDefault", { fg = c.white })
     groups.new("CmpItemAbbrDeprecatedDefault", { fg = c.white })
     groups.new("CmpItemAbbrMatchDefault", { fg = BLUE, bold = true })
-    groups.new("CmpItemAbbrMatchFuzzyDefault", { fg = c.orange, bold = true })
+    groups.new("CmpItemAbbrMatchFuzzyDefault", { fg = c.orange0, bold = true })
     groups.new("CmpItemMenu", { fg = BLUE_DARK })
 
     groups.new("CmpItemKindClass", { link = "@type" })

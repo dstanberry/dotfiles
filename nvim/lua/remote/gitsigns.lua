@@ -2,11 +2,11 @@ local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
-groups.new("GitSignsAdd", { fg = c.green })
-groups.new("GitSignsChange", { fg = c.yellow })
-groups.new("GitSignsDelete", { fg = c.red })
-groups.new("GitSignsChangeDelete", { fg = c.orange })
-groups.new("GitSignsCurrentLineBlame", { fg = c.gray_light, italic = true })
+groups.new("GitSignsAdd", { fg = c.green2 })
+groups.new("GitSignsChange", { fg = c.yellow2 })
+groups.new("GitSignsDelete", { fg = c.red1 })
+groups.new("GitSignsChangeDelete", { fg = c.orange0 })
+groups.new("GitSignsCurrentLineBlame", { fg = c.gray1, italic = true })
 
 return {
   "lewis6991/gitsigns.nvim",

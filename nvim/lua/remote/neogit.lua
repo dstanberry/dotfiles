@@ -6,13 +6,13 @@ groups.new("NeogitNotificationInfo", { link = "String" })
 groups.new("NeogitNotificationWarning", { link = "WarningMsg" })
 groups.new("NeogitNotificationError", { link = "ErrorMsg" })
 
-groups.new("NeogitBranch", { fg = c.green })
-groups.new("NeogitRemote", { fg = c.red })
-groups.new("NeogitHunkHeader", { bg = c.bg_highlight })
-groups.new("NeogitHunkHeaderHighlight", { fg = c.blue, bg = c.bg_light })
-groups.new("NeogitDiffAddHighlight", { fg = c.green, bg = c.diff_add })
-groups.new("NeogitDiffDeleteHighlight", { fg = c.red, bg = c.diff_delete })
-groups.new("NeogitObjectId", { fg = c.yellow })
+groups.new("NeogitBranch", { fg = c.green2 })
+groups.new("NeogitRemote", { fg = c.red1 })
+groups.new("NeogitHunkHeader", { bg = c.bg3 })
+groups.new("NeogitHunkHeaderHighlight", { fg = c.blue2, bg = c.bg3 })
+groups.new("NeogitDiffAddHighlight", { fg = c.green2, bg = c.diff_add })
+groups.new("NeogitDiffDeleteHighlight", { fg = c.red1, bg = c.diff_delete })
+groups.new("NeogitObjectId", { fg = c.yellow2 })
 
 return {
   "TimUntersberger/neogit",

@@ -2,10 +2,10 @@ local c = require("ui.theme").colors
 local color = require "util.color"
 local groups = require "ui.theme.groups"
 
-local BLUE_DARK = color.blend(c.blue, c.bg_dark, "15")
+local BLUE_DARK = color.blend(c.blue2, c.bg0, "15")
 
 groups.new("WhichKeyFloat", { bg = BLUE_DARK })
-groups.new("WhichKeySeparator", { fg = c.lsp_gray })
+groups.new("WhichKeySeparator", { fg = c.lsp_fg })
 
 return {
   "folke/which-key.nvim",

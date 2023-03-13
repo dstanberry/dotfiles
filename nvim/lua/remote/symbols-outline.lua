@@ -63,8 +63,8 @@ return {
           TypeParameter = { icon = icons.kind.TypeParameter },
         },
       }
-      groups.new("FocusedSymbol", { fg = c.bg_light, bg = c.yellow, bold = true })
-      groups.new("SymbolsOutlineConnector", { fg = c.gray_alt })
+      groups.new("FocusedSymbol", { fg = c.bg3, bg = c.yellow2, bold = true })
+      groups.new("SymbolsOutlineConnector", { fg = c.grayX })
     end,
   },
 }

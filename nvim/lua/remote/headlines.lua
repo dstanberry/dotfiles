@@ -3,22 +3,22 @@ local color = require "util.color"
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
-local BG_LIGHT = color.blend(c.gray_alt, c.bg, "70")
-local BLUE_DARK = color.blend(color.darken(c.blue, 40), c.bg, "66")
-local MAGENTA_DARK = color.blend(color.darken(c.magenta, 40), c.bg, "66")
-local ORANGE_DARK = color.blend(color.darken(c.orange, 40), c.bg, "66")
-local TEAL_DARK = color.blend(color.darken(c.teal, 40), c.bg, "66")
-local BLUE_LIGHT = color.blend(color.darken(c.blue_light, 40), c.bg, "66")
-local BLUE_ALT = color.blend(color.darken(c.blue_alt, 40), c.bg, "66")
+local BG = color.blend(c.grayX, c.bg2, "70")
+local BLUE = color.blend(color.darken(c.blue2, 40), c.bg2, "66")
+local MAGENTA = color.blend(color.darken(c.magenta1, 40), c.bg2, "66")
+local ORANGE = color.blend(color.darken(c.orange0, 40), c.bg2, "66")
+local CYAN = color.blend(color.darken(c.cyan1, 40), c.bg2, "66")
+local AQUA_DARK = color.blend(color.darken(c.aqua1, 40), c.bg2, "66")
+local AQUA = color.blend(color.darken(c.aqua0, 40), c.bg2, "66")
 
-groups.new("CodeBlock", { bg = BG_LIGHT })
-groups.new("Dash", { fg = c.yellow_darker, bold = true })
-groups.new("Headline1", { bg = BLUE_DARK })
-groups.new("Headline2", { bg = MAGENTA_DARK })
-groups.new("Headline3", { bg = ORANGE_DARK })
-groups.new("Headline4", { bg = TEAL_DARK })
-groups.new("Headline5", { bg = BLUE_LIGHT })
-groups.new("Headline6", { bg = BLUE_ALT })
+groups.new("CodeBlock", { bg = BG })
+groups.new("Dash", { fg = c.yellow0, bold = true })
+groups.new("Headline1", { bg = BLUE })
+groups.new("Headline2", { bg = MAGENTA })
+groups.new("Headline3", { bg = ORANGE })
+groups.new("Headline4", { bg = CYAN })
+groups.new("Headline5", { bg = AQUA_DARK })
+groups.new("Headline6", { bg = AQUA })
 
 return {
   "lukas-reineke/headlines.nvim",

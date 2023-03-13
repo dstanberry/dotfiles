@@ -1,65 +1,80 @@
 local color = require "util.color"
 
 local c = {
-  bg = "#373737",
-  bg_highlight = "#3d3e40",
-  bg_dark = "#1f2021",
-  bg_light = "#3d3e40",
-  gray = "#414145",
-  gray_light = "#59595e",
-  fg = "#c9d1d9",
-  fg_dark = "#b8bec9",
-  fg_light = "#d8dee9",
-  cyan = "#8fbcbb",
-  teal = "#79bdaf",
-  red = "#bf616a",
-  pink = "#f7768e",
-  red_dark = "#db4b4b",
-  orange = "#d08770",
-  yellow = "#ebcb8b",
-  yellow_dark = "#e0af68",
-  green = "#a3be8c",
-  green_dark = "#9ece6a",
-  blue = "#81a1c1",
-  blue_light = "#77b3c5",
-  blue_dark = "#6f8fb4",
-  blue_darker = "#516882",
-  magenta = "#b48ead",
-  purple = "#9d7cd8",
-  rose = "#cd8d88",
-  rose_light = "#e4c1be",
+  bg0 = "#1f2021",
+  bg1 = "#323233",
+  bg2 = "#373737",
+  bg3 = "#3d3e40",
+  bg4 = "#3a3c3d",
+
+  fg0 = "#b8bec9",
+  fg1 = "#c9d1d9",
+  fg2 = "#d8dee9",
+
+  gray0 = "#414145",
+  gray1 = "#59595e",
+  gray2 = "#97979f",
+
+  rose0 = "#cd8d88",
+  rose1 = "#e4c1be",
+
+  red0 = "#db4b4b",
+  red1 = "#bf616a",
+  red2 = "#e5747f",
+  red3 = "#f7768e",
+
+  orange0 = "#d08770",
+  orange1 = "#ffab87",
+
+  yellow0 = "#d3b67d",
+  yellow1 = "#e0af68",
+  yellow2 = "#ebcb8b",
+
+  green0 = "#7f966d",
+  green1 = "#97b182",
+  green2 = "#a3be8c",
+
+  cyan0 = "#5a8d83",
+  cyan1 = "#79bdaf",
+  cyan2 = "#8fbcbb",
+
+  aqua0 = "#5F8F9D",
+  aqua1 = "#77b3c5",
+  aqua2 = "#8ed6ec",
+
+  blue0 = "#516882",
+  blue1 = "#6f8fb4",
+  blue2 = "#81a1c1",
+  blue3 = "#90b4d9",
+  blue4 = "#97b6e5",
+
+  purple0 = "#94628a",
+  purple1 = "#ac72a0",
+
+  magenta0 = "#90718A",
+  magenta1 = "#b48ead",
+  magenta2 = "#EAB8E0",
 }
 
-c.black = color.darken(c.bg, 50)
-c.white = color.darken(c.fg, 10)
+c.black = color.darken(c.bg2, 50)
+c.white = color.darken(c.fg1, 10)
 
-c.bg_alt = color.blend(c.bg_dark, c.bg, "50")
-c.bg_search = color.blend(c.yellow, c.bg, "66")
-c.bg_visual = color.blend(c.blue_dark, c.bg, "50")
-c.fg_conceal = color.blend(c.blue, c.bg, "50")
-c.gray_alt = color.darken(c.gray_light, 25)
-c.gray_dark = color.darken(c.gray, 25)
-c.gray_darker = color.darken(c.gray, 40)
-c.gray_lighter = color.lighten(c.gray_light, 70)
+c.bgX = color.blend(c.bg0, c.bg2, "50")
+c.bg_search = color.blend(c.yellow2, c.bg2, "66")
+c.bg_visual = color.blend(c.blue1, c.bg2, "50")
 
-c.teal_dark = color.darken(c.teal, 25)
-c.red_light = color.lighten(c.red, 20)
-c.yellow_darker = color.darken(c.yellow, 10)
-c.green_darker = color.blend(c.green, c.gray_light, "50")
-c.blue_lighter = color.lighten(c.blue, 30)
-c.blue_lightest = color.lighten(c.blue_light, 20)
-c.blue_alt = color.darken(c.blue_light, 20)
-c.magenta_dark = color.darken(c.magenta, 20)
-c.magenta_light = color.lighten(c.magenta, 30)
+c.fg_conceal = color.blend(c.blue2, c.bg2, "50")
+
+c.grayX = color.darken(c.gray1, 25)
 
 c.diff_add = "#132e1f"
 c.diff_delete = "#361f21"
 c.diff_change = "#174061"
 c.diff_text = "#1b3956"
 
-c.lsp_gray = color.lighten(c.gray_light, 20)
-c.lsp_read = color.blend(color.darken(c.cyan, 40), c.bg, "66")
-c.lsp_text = color.blend(c.yellow_darker, c.bg, "66")
-c.lsp_write = color.blend(c.orange, c.bg, "66")
+c.lsp_fg = color.lighten(c.gray1, 20)
+c.lsp_read = color.blend(color.darken(c.cyan2, 40), c.bg2, "66")
+c.lsp_text = color.blend(c.yellow0, c.bg2, "66")
+c.lsp_write = color.blend(c.orange0, c.bg2, "66")
 
 return c

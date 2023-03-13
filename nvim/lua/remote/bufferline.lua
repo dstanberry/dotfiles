@@ -23,11 +23,11 @@ return {
           local is_separator = formatted:match "separator"
           local is_selected = formatted:match "selected"
           local is_visible = formatted:match "visible"
-          if diagnostic and diagnostic:match_str(formatted) then attrs.fg = c.fg end
-          if not is_group or (is_group and is_separator) then attrs.bg = c.bg end
-          if not is_group and not is_offset and is_separator then attrs.fg = c.bg_alt end
-          if is_group and not is_offset then attrs.bg = c.red end
-          if is_selected or is_visible then attrs.bg = c.bg_alt end
+          if diagnostic and diagnostic:match_str(formatted) then attrs.fg = c.fg1 end
+          if not is_group or (is_group and is_separator) then attrs.bg = c.bg2 end
+          if not is_group and not is_offset and is_separator then attrs.fg = c.bgX end
+          if is_group and not is_offset then attrs.bg = c.red1 end
+          if is_selected or is_visible then attrs.bg = c.bgX end
           agg[name] = attrs
           return agg
         end, defaults.highlights)
@@ -35,9 +35,9 @@ return {
         hl.buffer_selected.italic = false
         hl.buffer_visible.bold = true
         hl.buffer_visible.italic = false
-        hl.buffer_visible.fg = c.gray_light
-        hl.tab_selected.fg = c.fg
-        hl.tab_separator_selected.bg = c.red
+        hl.buffer_visible.fg = c.gray1
+        hl.tab_selected.fg = c.fg1
+        hl.tab_separator_selected.bg = c.red1
         return hl
       end,
       options = {
@@ -100,7 +100,7 @@ return {
               name = "SQL",
               icon = icons.groups.Sql,
               auto_close = true,
-              highlight = { fg = c.orange },
+              highlight = { fg = c.orange0 },
               matcher = function(buf) return buf.filename:match "%.sql$" end,
               separator = {
                 style = bgroups.separator.pill,
@@ -109,7 +109,7 @@ return {
             {
               name = "Unit Tests",
               icon = icons.groups.Lab,
-              highlight = { fg = c.yellow_darker },
+              highlight = { fg = c.yellow0 },
               auto_close = true,
               matcher = function(buf)
                 local name = buf.filename
@@ -122,7 +122,7 @@ return {
             {
               name = "Zettelkasten Notes",
               icon = icons.groups.Book,
-              highlight = { fg = c.teal },
+              highlight = { fg = c.cyan1 },
               auto_close = true,
               matcher = function(buf) return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten" end,
               separator = {

@@ -5,12 +5,12 @@ local util = require "util"
 
 groups.new("NeoTreeNormal", { link = "NormalSB" })
 groups.new("NeoTreeNormalNC", { link = "NormalSB" })
-groups.new("NeoTreeTabActive", { fg = c.fg, bg = c.bg_alt })
-groups.new("NeoTreeTabInactive", { fg = c.gray_lighter, bg = c.bg })
-groups.new("NeoTreeTabSeparatorActive", { fg = c.fg, bg = c.bg_alt })
-groups.new("NeoTreeTabSeparatorInactive", { fg = c.gray_dark, bg = c.bg })
+groups.new("NeoTreeTabActive", { fg = c.fg1, bg = c.bgX })
+groups.new("NeoTreeTabInactive", { fg = c.gray2, bg = c.bg2 })
+groups.new("NeoTreeTabSeparatorActive", { fg = c.fg1, bg = c.bgX })
+groups.new("NeoTreeTabSeparatorInactive", { fg = c.bg1, bg = c.bg2 })
 
-groups.new("NeoTreeRootName", { fg = c.fg })
+groups.new("NeoTreeRootName", { fg = c.fg1 })
 
 return {
   {

@@ -36,7 +36,7 @@ function M.get_module_name(filename)
 end
 
 ---Creates a new table populated with the results of calling a provided function
---on every key-value pair in the calling table.
+---on every key-value pair in the calling table.
 ---@generic T : table
 ---@param callback fun(T, T, key: string | number): T
 ---@param list T[]
