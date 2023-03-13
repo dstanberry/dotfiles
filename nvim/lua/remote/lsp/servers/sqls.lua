@@ -1,3 +1,4 @@
+---@diagnostic disable-next-line: undefined-field
 local pgsql_work = vim.g.config_pgsql_work
 
 local cmd = { "sqls" }
@@ -19,7 +20,7 @@ M.config = {
     "plsql",
     "sql",
   },
-  root_dir = function(_) return require("lspconfig").util.root_pattern ".git" end,
+  root_dir = require("lspconfig.util").find_git_ancestor or vim.loop.cwd(),
   single_file_support = true,
   settings = {
     gopls = {
