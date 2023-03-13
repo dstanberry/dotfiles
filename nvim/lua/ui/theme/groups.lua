@@ -197,6 +197,7 @@ M.apply = function(c)
   hi["@lsp.mod.readonly"] = { italic = true }
   hi["@lsp.mod.static"] = { bold = true }
   hi["@lsp.mod.unnecessary"] = { fg = c.gray_lighter, italic = true }
+  hi["@lsp.mod.defaultLibrary"] = { italic = true }
 
   -- treesitter highlighting
   hi["@annotation"] = { fg = c.yellow }
