@@ -30,4 +30,6 @@ M.config = {
   name = "zk",
 }
 
+M.defer_setup = true
+
 return M

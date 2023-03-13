@@ -27,4 +27,6 @@ M.config = {
   settings = {},
 }
 
+M.register_default_config = true
+
 return M

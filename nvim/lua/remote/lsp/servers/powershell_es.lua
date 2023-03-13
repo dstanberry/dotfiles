@@ -47,4 +47,6 @@ M.config = {
   },
 }
 
+M.defer_setup = not has "win32"
+
 return M

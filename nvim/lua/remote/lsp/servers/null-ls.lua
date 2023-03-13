@@ -38,15 +38,17 @@ local sources = {
   b.formatting.stylua,
 }
 
-M.setup = function(cb)
+M.setup = function(opts)
   null_ls.setup {
     debug = false,
     debounce = 150,
     diagnostics_format = "(#{s}) #{m}",
     save_after_format = false,
     sources = sources,
-    on_attach = cb,
+    on_attach = opts and opts.on_attach and opts.on_attach or {},
   }
 end
+
+M.defer_setup = true
 
 return M

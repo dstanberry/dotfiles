@@ -15,4 +15,6 @@ M.config = {
   },
 }
 
+M.defer_setup = true
+
 return M

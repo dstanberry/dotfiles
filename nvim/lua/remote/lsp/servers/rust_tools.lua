@@ -1,14 +1,16 @@
 -- verify rust-tools is available
 local ok, rust_tools = pcall(require, "rust-tools")
-if not ok then return end
-
+if not ok then
+  dump(ok)
+  dump(rust_tools)
+end
+local rust_analyzer = require "remote.lsp.servers.rust_analyzer"
 local icons = require "ui.icons"
 local paths = require("remote.dap.debuggers.c").get_executable_path()
 
 local M = {}
 
-M.setup = function(rust_analyzer_config)
-  local cfg = rust_analyzer_config or {}
+M.setup = function()
   rust_tools.setup {
     tools = {
       executor = require("rust-tools.executors").termopen,
@@ -40,7 +42,7 @@ M.setup = function(rust_analyzer_config)
         full = true,
       },
     },
-    server = vim.tbl_deep_extend("force", cfg, {
+    server = vim.tbl_deep_extend("force", vim.F.if_nil(rust_analyzer.config, {}), {
       on_attach = function(_, bufnr)
         vim.keymap.set("n", "gk", rust_tools.hover_actions.hover_actions, { buffer = bufnr, desc = "rust: lsp hover" })
         -- vim.keymap.set("n", "ga", rust_tools.code_action_group.code_action_group, { buffer = bufnr })
@@ -51,5 +53,7 @@ M.setup = function(rust_analyzer_config)
     },
   }
 end
+
+M.defer_setup = true
 
 return M

@@ -35,58 +35,21 @@ return {
       local client_capabilities = handlers.get_client_capabilities()
       local configurations = vim.api.nvim_get_runtime_file("lua/remote/lsp/servers/*.lua", true)
       for _, file in ipairs(configurations) do
-        repeat
-          local mod = util.get_module_name(file)
-          local srv = (mod):match "[^%.]*$"
-          local config = require(mod).config or {}
-          if srv == "ls_emmet" then
-            local configs = require "lspconfig.configs"
-            if not configs.ls_emmet then configs.ls_emmet = { default_config = config } end
-          elseif srv == "null-ls" then
-            require(mod).setup(on_attach_nvim)
-            do
-              break
-            end
-          elseif srv == "powershell_es" and not has "win32" then
-            do
-              break
-            end
-          elseif srv == "rust_analyzer" then
-            do
-              break
-            end
-          elseif srv == "rust_tools" then
-            require(mod).setup(vim.tbl_deep_extend("force", {
-              capabilities = client_capabilities,
-              flags = { debounce_text_changes = 150 },
-              on_attach = on_attach_nvim,
-            }, config))
-            do
-              break
-            end
-          elseif srv == "lua_ls" then
-            require(mod).setup()
-          elseif srv == "tsserver" then
-            require(mod).setup(vim.tbl_deep_extend("force", {
-              capabilities = client_capabilities,
-              flags = { debounce_text_changes = 150 },
-              on_attach = on_attach_nvim,
-            }, config))
-            do
-              break
-            end
-          elseif srv == "zk" then
-            require(mod).setup(vim.tbl_deep_extend("force", {
-              capabilities = client_capabilities,
-              flags = { debounce_text_changes = 150 },
-              on_attach = on_attach_nvim,
-            }, config))
-            do
-              break
-            end
-          end
+        local modname = util.get_module_name(file)
+        local mod = require(modname)
+        local srv = (modname):match "[^%.]*$"
+        local config = vim.F.if_nil(mod.config, {})
+        local configs = require "lspconfig.configs"
+        local server_opts = vim.tbl_deep_extend("force", {
+          capabilities = client_capabilities,
+          flags = { debounce_text_changes = 150 },
+          on_attach = on_attach_nvim,
+        }, config)
+        if mod.register_default_config and not configs[srv] then configs[srv] = { default_config = config } end
+        if mod.setup then mod.setup(server_opts) end
+        if not mod.defer_setup then
           ensure_installed = vim.tbl_deep_extend("force", ensure_installed, { [srv] = config })
-        until true
+        end
       end
       for server, config in pairs(ensure_installed) do
         require("lspconfig")[server].setup(vim.tbl_deep_extend("force", {
