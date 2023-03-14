@@ -17,17 +17,16 @@ return {
     dependencies = {
       "b0o/schemastore.nvim",
       "folke/neodev.nvim",
+      "jose-elias-alvarez/null-ls.nvim",
+      "jose-elias-alvarez/typescript.nvim",
+      "simrat39/rust-tools.nvim",
+      { "mickael-menu/zk-nvim", dependencies = { "nvim-telescope/telescope.nvim" } },
       {
         "folke/neoconf.nvim",
         cmd = { "Neoconf" },
         opts = { local_settings = ".nvim.json", global_settings = "nvim.json" },
         config = true,
       },
-      "jose-elias-alvarez/null-ls.nvim",
-      "jose-elias-alvarez/typescript.nvim",
-      "nanotee/sqls.nvim",
-      "simrat39/rust-tools.nvim",
-      { "mickael-menu/zk-nvim", dependencies = { "nvim-telescope/telescope.nvim" } },
     },
     config = function()
       local handlers = require "remote.lsp.handlers"
