@@ -90,16 +90,6 @@ if setting_enabled "remote_plugins" then
   end
   vim.opt.rtp:prepend(lazypath)
 
-  vim.api.nvim_create_augroup("lazy-buffer", { clear = true })
-  vim.api.nvim_create_autocmd("FileType", {
-    group = "lazy-buffer",
-    pattern = "lazy",
-    callback = function()
-      -- force |BufEnter| so that statusline formatting applies
-      vim.cmd.doautocmd "BufEnter"
-    end,
-  })
-
   require("lazy").setup("remote", {
     root = string.format("%s/lazy", vim.fn.stdpath "data"),
     lockfile = string.format("%s/lua/remote/lazy-lock.json", vim.fn.stdpath "config"),
