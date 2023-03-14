@@ -96,6 +96,7 @@ return {
     Lock = "",
     Magnify = "",
     Orbit = " ",
+    Pencil = " ",
     Prompt = "❯",
     RightArrow = "",
     RightArrowCircled = "",

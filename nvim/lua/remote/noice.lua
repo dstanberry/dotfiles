@@ -35,14 +35,40 @@ return {
     cmdline = {
       format = {
         cmdline = { title = "" },
-        lua = { title = "" },
-        search_down = { title = "" },
-        search_up = { title = "" },
         filter = { title = "" },
         help = { title = "" },
         input = { title = "" },
-        IncRename = { title = "" },
-        substitute = { pattern = "^:%%?s/", icon = icons.misc.ArrowSwap, ft = "regex", kind = "search", title = "" },
+        lua = { title = "" },
+        IncRename = {
+          title = "",
+          pattern = "^:%s*IncRename%s+",
+          icon = icons.misc.Pencil,
+          conceal = true,
+          opts = {
+            relative = "cursor",
+            size = { min_width = 20 },
+            position = { row = -3, col = 0 },
+          },
+        },
+        search_down = {
+          title = "",
+          opts = {
+            position = { row = 5, col = -5 },
+          },
+        },
+        search_up = {
+          title = "",
+          opts = {
+            position = { row = 5, col = -5 },
+          },
+        },
+        substitute = {
+          pattern = "^:%%?s/",
+          icon = icons.misc.ArrowSwap,
+          ft = "regex",
+          kind = "search",
+          title = "",
+        },
       },
     },
     lsp = {
@@ -67,6 +93,15 @@ return {
           },
         },
         opts = { skip = true },
+      },
+      {
+        view = "cmdline_output",
+        filter = {
+          any = {
+            { event = "msg_show", min_height = 10 },
+            { event = "notify", min_height = 10 },
+          },
+        },
       },
       {
         view = "mini",
@@ -110,14 +145,6 @@ return {
           },
         },
       },
-      {
-        view = "split",
-        filter = {
-          any = {
-            filter = { event = "notify", min_height = 5 },
-          },
-        },
-      },
     },
     commands = {
       history = { view = "split" },
@@ -128,9 +155,6 @@ return {
         position = { row = 10, col = "50%" },
         size = { width = 70, height = "auto" },
         filter_options = {},
-        win_options = {
-          winhighlight = { NormalFloat = "Normal", FloatBorder = "Macro" },
-        },
       },
       popupmenu = {
         relative = "editor",
@@ -138,7 +162,7 @@ return {
         position = { row = 13, col = "50%" },
         size = { width = 70, height = 10 },
         win_options = {
-          winhighlight = { NormalFloat = "Normal", FloatBorder = "Macro" },
+          winhighlight = { Normal = "Normal", FloatBorder = "NoiceCmdlinePopupBorder" },
         },
       },
       split = {
@@ -146,10 +170,6 @@ return {
           winhighlight = { Normal = "NormalSB" },
         },
       },
-    },
-    presets = {
-      inc_rename = true,
-      long_message_to_split = true,
     },
   },
 }
