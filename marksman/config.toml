@@ -1,0 +1,5 @@
+[core]
+markdown.file_extensions = ["md", "markdown"]
+
+[completion]
+wiki.style = "file-path-stem"

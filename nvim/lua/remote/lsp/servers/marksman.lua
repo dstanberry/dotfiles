@@ -2,7 +2,7 @@
 local ok, lsp_util = pcall(require, "lspconfig.util")
 if not ok then return end
 
-local cmd = { "marksman" }
+local cmd = { "marksman", "server" }
 local function get_cmd()
   if has "win32" then cmd[1] = vim.fn.exepath(cmd[1]) end
   return cmd

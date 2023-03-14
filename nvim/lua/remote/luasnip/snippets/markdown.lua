@@ -60,16 +60,8 @@ return {
   s("l3", d(1, repeat_list "--- ", {})),
 }, {
   s(
-    { trig = "```", wordTrig = false, hidden = true },
-    fmt("```{}\n{}\n```\n{}", {
-      i(1, "lang"),
-      d(2, rutil.saved_text, {}, { user_args = { { indent = false } } }),
-      i(0),
-    })
-  ),
-  s(
-    { trig = "*([2-6])", regTrig = true, hidden = true },
-    { f(function(_, snip) return string.rep("*", tonumber(snip.captures[1])) .. " " end, {}) },
+    { trig = "#([2-6])", regTrig = true, hidden = true },
+    { f(function(_, snip) return string.rep("#", tonumber(snip.captures[1])) .. " " end, {}) },
     {
       condition = conds.line_begin,
     }
@@ -80,5 +72,13 @@ return {
     {
       condition = conds.line_begin,
     }
+  ),
+  s(
+    { trig = "```", wordTrig = false, hidden = true },
+    fmt("```{}\n{}\n```\n{}", {
+      i(1, "lang"),
+      d(2, rutil.saved_text, {}, { user_args = { { indent = false } } }),
+      i(0),
+    })
   ),
 }

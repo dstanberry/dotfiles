@@ -1,7 +1,7 @@
 [note]
 language = "en"
 default-title = "Untitled"
-filename = "{{date now '%Y-%m-%d'}}-{{slug title}}"
+filename = "{{format-date now '%Y-%m-%d'}}-{{slug title}}"
 extension = "md"
 template = "default.md"
 id-charset = "hex"
@@ -14,7 +14,7 @@ author = "Demaro Stanberry"
 [group.journal]
 paths = ["inbox", "journal"]
 [group.journal.note]
-filename = "{{date now '%Y-%m-%d'}}-{{id}}"
+filename = "{{format-date now '%Y-%m-%d'}}-{{id}}"
 extension = "md"
 template = "journal.md"
 

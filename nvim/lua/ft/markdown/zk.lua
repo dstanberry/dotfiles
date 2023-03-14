@@ -13,23 +13,18 @@ local util = require "util"
 
 local templates = {
   {
-    label = "Backlog refinement meeting",
+    label = "Team sync meeting",
     directory = "inbox",
     ask_for_title = false,
   },
   {
-    label = "Feature replenishment meeting",
-    directory = "inbox",
-    ask_for_title = false,
-  },
-  {
-    label = "Other meeting",
+    label = "Generic meeting",
     directory = "inbox",
     ask_for_title = true,
   },
   {
     label = "Literature note",
-    directory = "journal",
+    directory = "resources",
     ask_for_title = true,
   },
   {
@@ -80,9 +75,9 @@ end
 
 M.create_note = function()
   telescope_pickers.create("dropdown", templates, {
+    prompt_title = "Notes (create from template)",
     callback = function(selection)
       local opts = {}
-      opts.prompt_title = "Notes (create from template)"
       opts.dir = selection.value.directory
       if selection.value.ask_for_title then
         opts.title = vim.fn.input "Title: "
@@ -104,9 +99,9 @@ M.create_note_with_title = function()
   location.range = chunk
   if chunk == nil then error "No selected text" end
   telescope_pickers.create("dropdown", templates, {
+    prompt_title = "Notes (create from template)",
     callback = function(selection)
       local opts = {}
-      opts.prompt_title = "Notes (create from template)"
       opts.dir = selection.value.directory
       zk.new(vim.tbl_extend("force", { insertLinkAtLocation = location, title = chunk }, opts or {}))
     end,
@@ -146,7 +141,7 @@ M.find_templated_note = function(template)
 end
 
 M.find_tagged_notes = function()
-  zk.pick_tags({}, { title = "Notes (tags)", telescope = telescope_themes.get_dropdown {} }, function(tags)
+  zk.pick_tags({}, { telescope = telescope_themes.get_dropdown {}, title = "Notes (tags)" }, function(tags)
     tags = vim.tbl_map(function(v) return v.name end, tags)
     M.edit_with({ tags = tags }, { title = ("Notes (tagged as %s)"):format(vim.inspect(tags)) })()
   end)
@@ -176,18 +171,22 @@ end
 M.insert_link = function(opts)
   opts = vim.F.if_nil(opts, {})
   local options = opts.fargs and unpack(opts.fargs) or {}
-  zk.pick_notes(options, { title = "Notes (insert link to note)", multi_select = false }, function(notes)
-    local pos = vim.api.nvim_win_get_cursor(0)[2]
-    local line = vim.api.nvim_get_current_line()
-    local pwd = vim.fn.expand "%:p:h:t"
-    notes = { notes }
-    for _, note in ipairs(notes) do
-      local npath = note.path
-      if pwd ~= npath then npath = ("../%s"):format(npath) end
-      local updated = ("%s[%s](%s)%s"):format(line:sub(0, pos), note.title, npath:sub(1, -6), line:sub(pos + 1))
-      vim.api.nvim_set_current_line(updated)
+  zk.pick_notes(
+    options,
+    { telescope = telescope_themes.get_ivy {}, title = "Notes (insert link to note)", multi_select = false },
+    function(notes)
+      local pos = vim.api.nvim_win_get_cursor(0)[2]
+      local line = vim.api.nvim_get_current_line()
+      local pwd = vim.fn.expand "%:p:h:t"
+      notes = { notes }
+      for _, note in ipairs(notes) do
+        local npath = note.path
+        if pwd ~= npath then npath = ("../%s"):format(npath) end
+        local updated = ("%s[%s](%s)%s"):format(line:sub(0, pos), note.title, npath:sub(1, -6), line:sub(pos + 1))
+        vim.api.nvim_set_current_line(updated)
+      end
     end
-  end)
+  )
 end
 
 M.insert_link_from_selection = function(opts)
@@ -197,7 +196,11 @@ M.insert_link_from_selection = function(opts)
   local selection = table.concat(lines)
   zk.pick_notes(
     options,
-    { title = ("Notes (link '%s' to note)"):format(selection), multi_select = false },
+    {
+      telescope = telescope_themes.get_ivy {},
+      title = ("Notes (link '%s' to note)"):format(selection),
+      multi_select = false,
+    },
     function(notes)
       local pos = vim.api.nvim_win_get_cursor(0)[2]
       local line = vim.api.nvim_get_current_line()

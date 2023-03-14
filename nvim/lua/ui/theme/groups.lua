@@ -107,8 +107,9 @@ M.apply = function(c)
   hi.Bold = { bold = true }
   hi.Italic = { italic = true }
 
-  hi.htmlH1 = { fg = c.blue2, bold = true }
+  hi.htmlH1 = { fg = c.blue0, bold = true }
   hi.htmlH2 = { fg = c.magenta1, bold = true }
+  hi.htmlH3 = { fg = c.fg2, bold = true }
 
   -- diff highlighting
   hi.DiffAdd = { bg = c.diff_add }
@@ -266,7 +267,8 @@ M.apply = function(c)
   hi["@text.reference"] = { fg = c.cyan1 }
   hi["@text.strike"] = { strikethrough = true }
   hi["@text.strong"] = { bold = true }
-  hi["@text.title"] = { link = "Title" }
+  hi["@text.title"] = { link = "htmlH1" }
+  hi["@text.heading"] = { link = "htmlH2" }
   hi["@text.todo"] = { link = "Todo" }
   hi["@text.underline"] = { link = "Underlined" }
   hi["@text.uri"] = { fg = c.aqua1, underline = true }
