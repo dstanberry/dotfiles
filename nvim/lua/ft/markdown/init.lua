@@ -37,6 +37,7 @@ M.toggle_bullet = function()
   else
     vim.api.nvim_buf_set_lines(0, line_start - 1, line_end, true, newlines)
   end
+  require("ft.markdown.concealer").toggle_on()
 end
 
 M.toggle_checkbox = function()
@@ -58,6 +59,7 @@ M.toggle_checkbox = function()
   else
     vim.api.nvim_buf_set_lines(0, line_start - 1, line_end, true, newlines)
   end
+  require("ft.markdown.concealer").toggle_on()
 end
 
 return setmetatable({}, {

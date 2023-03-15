@@ -19,15 +19,15 @@ vim.api.nvim_create_autocmd({ "InsertEnter", "BufWritePost" }, {
   callback = function() markdown.concealer.disable() end,
 })
 
-vim.keymap.set("i", "<c-w><c-c>", markdown.insert_checkbox, { buffer = vim.api.nvim_get_current_buf() })
-vim.keymap.set("i", "<c-w><c-l>", markdown.insert_link, { buffer = vim.api.nvim_get_current_buf() })
+vim.keymap.set("i", "<c-w><c-c>", markdown.insert_checkbox, { buffer = 0, desc = "insert checkbox" })
+vim.keymap.set("i", "<c-w><c-l>", markdown.insert_link, { buffer = 0, desc = "insert link" })
 
-vim.keymap.set("n", "<c-w><c-a>", markdown.heading.insert_adjacent, { buffer = vim.api.nvim_get_current_buf() })
-vim.keymap.set("n", "<c-w><c-i>", markdown.heading.insert_inner, { buffer = vim.api.nvim_get_current_buf() })
-vim.keymap.set("n", "<c-w><c-o>", markdown.heading.insert_outer, { buffer = vim.api.nvim_get_current_buf() })
+vim.keymap.set("n", "<c-w><c-a>", markdown.heading.insert_adjacent, { buffer = 0, desc = "insert adjacent heading" })
+vim.keymap.set("n", "<c-w><c-i>", markdown.heading.insert_inner, { buffer = 0, desc = "insert inner heading" })
+vim.keymap.set("n", "<c-w><c-o>", markdown.heading.insert_outer, { buffer = 0, desc = "insert outer heading" })
 
-vim.keymap.set({ "n", "v" }, "<c-w><c-b>", markdown.toggle_bullet, { buffer = vim.api.nvim_get_current_buf() })
-vim.keymap.set({ "n", "v" }, "<c-w><c-c>", markdown.toggle_checkbox, { buffer = vim.api.nvim_get_current_buf() })
+vim.keymap.set({ "n", "v" }, "<c-w><c-b>", markdown.toggle_bullet, { buffer = 0, desc = "toggle bullet" })
+vim.keymap.set({ "n", "v" }, "<c-w><c-x>", markdown.toggle_checkbox, { buffer = 0, desc = "toggle checkbox" })
 
-vim.keymap.set("i", "[[", markdown.zk.insert_link, { buffer = vim.api.nvim_get_current_buf() })
-vim.keymap.set("v", "{{", markdown.zk.insert_link_from_selection, { buffer = vim.api.nvim_get_current_buf() })
+vim.keymap.set("i", "[[", markdown.zk.insert_link, { buffer = 0, desc = "insert link to note" })
+vim.keymap.set("v", "{{", markdown.zk.insert_link_from_selection, { buffer = 0, desc = "insert link to note" })
