@@ -11,7 +11,7 @@ M.apply = function(c)
   hi.ColorColumn = { bg = c.bg3 }
   hi.Conceal = { fg = c.fg_conceal }
   hi.CurSearch = { fg = c.black, bg = c.orange0 }
-  hi.IncSearch = { fg = c.black, bg = c.bg_search }
+  hi.IncSearch = { fg = c.black, bg = c.orange0 }
   hi.Substitute = { fg = c.black, bg = c.red1 }
   hi.Search = { fg = c.orange0, underline = true }
   hi.Cursor = { fg = c.bg2, bg = c.fg1 }

@@ -60,7 +60,6 @@ c.black = color.darken(c.bg2, 50)
 c.white = color.darken(c.fg1, 10)
 
 c.bgX = color.blend(c.bg0, c.bg2, "50")
-c.bg_search = color.blend(c.yellow2, c.bg2, "66")
 c.bg_visual = color.blend(c.blue1, c.bg2, "50")
 
 c.fg_conceal = color.blend(c.magenta2, c.bg2, "70")
