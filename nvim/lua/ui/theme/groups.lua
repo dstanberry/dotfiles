@@ -107,7 +107,7 @@ M.apply = function(c)
   hi.Bold = { bold = true }
   hi.Italic = { italic = true }
 
-  hi.htmlH1 = { fg = c.blue0, bold = true }
+  hi.htmlH1 = { fg = c.blue3, bold = true }
   hi.htmlH2 = { fg = c.magenta1, bold = true }
   hi.htmlH3 = { fg = c.fg2, bold = true }
 
@@ -218,6 +218,7 @@ M.apply = function(c)
   hi["@error"] = { fg = c.red1 }
   hi["@exception"] = { fg = c.red1 }
   hi["@field"] = { fg = c.fg1 }
+  hi["@field.yaml"] = { fg = c.aqua1 }
   hi["@float"] = { link = "Float" }
   hi["@function"] = { link = "Function" }
   hi["@function.call"] = { link = "Function" }

@@ -5,12 +5,12 @@ local icons = require "ui.icons"
 
 local BG = color.blend(c.grayX, c.bg2, "70")
 local FG = color.blend(color.darken(c.fg2, 40), c.bg2, "66")
-local BLUE = color.blend(color.darken(c.blue0, 40), c.bg2, "66")
+local AQUA = color.blend(color.darken(c.aqua1, 40), c.bg2, "66")
 local MAGENTA = color.blend(color.darken(c.magenta1, 40), c.bg2, "66")
 
 groups.new("CodeBlock", { bg = BG })
 groups.new("Dash", { fg = c.yellow0, bold = true })
-groups.new("Headline1", { bg = BLUE })
+groups.new("Headline1", { bg = AQUA })
 groups.new("Headline2", { bg = MAGENTA })
 groups.new("Headline3", { bg = FG })
 groups.new("Headline4", { bg = FG })

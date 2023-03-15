@@ -53,7 +53,14 @@ M.toggle_on = function()
       local start_row, start_column, end_row, _ =
         unpack(vim.tbl_extend("force", { node:range() }, (metadata[id] or {}).range or {}))
       local text = treesitter_query.get_node_text(node, 0, { concat = true })
-      if capture == "heading_marker" then
+      if capture == "yaml_frontmatter" then
+        local parts = vim.split(text, "\n")
+        if #parts >= 2 then
+          local top, bottom = parts[1], parts[#parts]
+          set_extmark(start_row, start_row, 0, #top, "@comment", top)
+          set_extmark(end_row - 1, end_row - 1, 0, #bottom, "@comment", bottom)
+        end
+      elseif capture == "heading_marker" then
         set_extmark(start_row, end_row, 0, #text, highlight_groups[#text], headings[#text])
       elseif capture == "checkbox_unchecked" then
         set_extmark(start_row, end_row, start_column, start_column + #text, "@text.todo", icons.markdown.Unchecked)
