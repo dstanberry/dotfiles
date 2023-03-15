@@ -58,6 +58,7 @@ return {
         end,
       },
       sources = cmp.config.sources {
+        { name = "nvim_lua" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
         { name = "path" },
@@ -77,12 +78,6 @@ return {
         },
       },
     }
-
-    cmp.setup.filetype("lua", {
-      sources = cmp.config.sources {
-        { name = "nvim_lua" },
-      },
-    })
 
 --[[
     cmp.setup.cmdline({ "/", "?" }, {
