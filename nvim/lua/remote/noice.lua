@@ -7,6 +7,7 @@ return {
   "folke/noice.nvim",
   event = "VeryLazy",
   enabled = true,
+  version = "1.9.1",
   dependencies = {
     "MunifTanjim/nui.nvim",
     "rcarriga/nvim-notify",
@@ -39,6 +40,8 @@ return {
         help = { title = "" },
         input = { title = "" },
         lua = { title = "" },
+        search_down = { title = "", view = "cmdline" },
+        search_up = { title = "", view = "cmdline" },
         IncRename = {
           title = "",
           pattern = "^:%s*IncRename%s+",
@@ -48,18 +51,6 @@ return {
             relative = "cursor",
             size = { min_width = 20 },
             position = { row = -3, col = 0 },
-          },
-        },
-        search_down = {
-          title = "",
-          opts = {
-            position = { row = 5, col = -5 },
-          },
-        },
-        search_up = {
-          title = "",
-          opts = {
-            position = { row = 5, col = -5 },
           },
         },
         substitute = {
