@@ -5,6 +5,16 @@ local function any(target, list)
   return false
 end
 
+local disabled_filetypes = require("remote.lualine.filetypes").stl_disabled
+  or {
+    "lazy",
+    "diff",
+    "help",
+    "toggleterm",
+    "Neogit.*",
+    "Telescope.*",
+  }
+
 return {
   "levouh/tint.nvim",
   event = "WinNew",
@@ -23,14 +33,7 @@ return {
       local buf = vim.api.nvim_win_get_buf(win_id)
       local b = vim.bo[buf]
       local ignore_bt = { "terminal", "prompt", "nofile" }
-      local ignore_ft = {
-        "packer",
-        "diff",
-        "toggleterm",
-        "Neogit.*",
-        "Telescope.*",
-        "qf",
-      }
+      local ignore_ft = disabled_filetypes
       return any(b.bt, ignore_bt) or any(b.ft, ignore_ft)
     end,
   },
