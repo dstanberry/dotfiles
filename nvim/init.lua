@@ -25,12 +25,15 @@ vim.filetype.add {
     scm = "query",
     vifm = "vim",
     vifmrc = "vim",
+    jenkinsfile = "groovy",
   },
   filename = {
-    ["*/git/config"] = "gitconfig",
     ["tmux.conf"] = "tmux",
     [".gitignore"] = "conf",
-    jenkinsfile = "groovy",
+  },
+  pattern = {
+    [".*/git/config"] = "gitconfig",
+    [".*/git/gitconfig"] = "gitconfig",
   },
 }
 
