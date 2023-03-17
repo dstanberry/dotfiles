@@ -74,5 +74,5 @@ function _G.reload(modname) return require("util").reload(modname) end
 function _G.setting_enabled(setting)
   local var = "config_" .. setting
   if vim.g[var] == nil then return true end
-  return vim.g[var] == 1
+  return vim.g[var] == true
 end
