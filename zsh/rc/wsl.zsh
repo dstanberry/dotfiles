@@ -46,4 +46,11 @@ if is_wsl && [[ "$EUID" -gt 0 ]] ; then
 
   # disable QT GLX
   # export QT_XCB_GL_INTEGRATION=none
+
+  # inform windows terminal of the current working directory
+  update_current_path() {
+    printf "\e]9;9;%s\e\\" "$(wslpath -w "$PWD")"
+  }
+  typeset -a precmd_functions
+  precmd_functions+=(update_current_path)
 fi
