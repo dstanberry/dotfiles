@@ -10,7 +10,6 @@ return {
       group = "sessionmgr",
       pattern = "PersistedTelescopeLoadPre",
       callback = function()
-        -- stylua: ignore
         vim.schedule(function() vim.cmd "%bd" end)
       end,
     })
@@ -27,12 +26,11 @@ return {
           vim.cmd.cd(path)
           vim.cmd.tcd(path)
         end
-        -- stylua: ignore
         vim.schedule(function() vim.cmd.edit "%" end)
       end,
     })
     require("telescope").load_extension "persisted"
-    vim.api.nvim_create_user_command("ListSessions", function()
+    vim.api.nvim_create_user_command("SessionList", function()
       local themes = require "telescope.themes"
       require("telescope").extensions.persisted.persisted(themes.get_dropdown {
         previewer = false,
