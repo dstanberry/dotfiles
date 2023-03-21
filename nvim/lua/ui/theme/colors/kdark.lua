@@ -63,6 +63,7 @@ c.bgX = color.blend(c.bg0, c.bg2, "50")
 c.bg_visual = color.blend(c.blue1, c.bg2, "50")
 
 c.fg_conceal = color.blend(c.magenta2, c.bg2, "70")
+c.fg_comment = color.blend(c.blue0, c.gray1, "50")
 
 c.grayX = color.darken(c.gray1, 25)
 

@@ -91,7 +91,7 @@ M.apply = function(c)
   hi.Special = { fg = c.aqua1 }
   -- hi.Delimiter = {}
   hi.SpecialChar = { fg = c.rose1 }
-  hi.SpecialComment = { fg = c.green0, italic = true }
+  hi.SpecialComment = { fg = c.fg_comment, italic = true }
   -- hi.Tag = {}
 
   hi.Type = { fg = c.red2 }
@@ -246,7 +246,7 @@ M.apply = function(c)
   hi["@repeat"] = { link = "Repeat" }
   hi["@storageclass"] = { link = "Type" }
   hi["@string"] = { link = "String" }
-  hi["@string.documentation"] = { fg = c.green0, italic = true }
+  hi["@string.documentation"] = { link = "SpecialComment" }
   hi["@string.escape"] = { fg = c.purple0 }
   hi["@string.regex"] = { fg = c.rose1 }
   hi["@string.special"] = { link = "Special" }
