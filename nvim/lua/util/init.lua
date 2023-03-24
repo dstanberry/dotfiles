@@ -59,6 +59,19 @@ function M.reload(modname)
   return require(modname)
 end
 
+---Escapes special characters before performing string substitution
+---@param str string
+---@param pattern string
+---@param repl string|number|table|function
+---@param n? integer
+---@return string
+---@return integer count
+function M.replace(str, pattern, repl, n)
+  pattern = string.gsub(pattern, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
+  repl = string.gsub(repl, "[%%]", "%%%%") -- escape replacement
+  return string.gsub(str, pattern, repl, n)
+end
+
 return setmetatable({}, {
   __index = function(t, k)
     if M[k] then

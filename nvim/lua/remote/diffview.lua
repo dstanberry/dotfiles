@@ -75,27 +75,36 @@ return {
             local layout = file.layout
             if layout:instanceof(Diff2Hor.__get()) or layout:instanceof(Diff2Ver.__get()) then
               if bufnr == layout.a.file.bufnr then
-                target = "PREVIOUS"
+                target = "Previous"
               elseif bufnr == layout.b.file.bufnr then
-                target = "CURRENT"
+                target = "Current"
               end
             elseif layout:instanceof(Diff3.__get()) then
+              vim.api.nvim_buf_set_var(bufnr, "diffview_view", "merge")
               if bufnr == layout.a.file.bufnr then
-                target = "CURRENT"
+                target = "Current"
+                vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.a.file.winbar)
               elseif bufnr == layout.b.file.bufnr then
-                target = "RESULT"
+                target = "Result"
+                vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.b.file.winbar)
               elseif bufnr == layout.c.file.bufnr then
-                target = "INCOMING"
+                target = "Incoming"
+                vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.c.file.winbar)
               end
             elseif layout:instanceof(Diff4.__get()) then
+              vim.api.nvim_buf_set_var(bufnr, "diffview_view", "merge")
               if bufnr == layout.a.file.bufnr then
-                target = "CURRENT"
+                target = "Current"
+                vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.a.file.winbar)
               elseif bufnr == layout.b.file.bufnr then
-                target = "RESULT"
+                target = "Result"
+                vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.b.file.winbar)
               elseif bufnr == layout.c.file.bufnr then
-                target = "INCOMING"
+                target = "Incoming"
+                vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.c.file.winbar)
               elseif bufnr == layout.d.file.bufnr then
-                target = "COMMON ANCESTOR"
+                target = "Common Ancestor"
+                vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.d.file.winbar)
               end
             end
             vim.api.nvim_buf_set_var(bufnr, "bufid", "diffview")
