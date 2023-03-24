@@ -1,35 +1,14 @@
----Prints a human-readable representation of the object(s) provided
+---Displays a notification containing a human-readable representation of the object(s) provided
 ---@param ...? any
----@return string[] result
 function _G.dump(...)
-  local objects = {}
-  for i = 1, select("#", ...) do
-    local v = select(i, ...)
-    table.insert(objects, vim.inspect(v))
+  local get_value = function(...)
+    local value = { ... }
+    return vim.tbl_islist(value) and vim.tbl_count(value) <= 1 and value[1] or value
   end
-
-  ---@diagnostic disable-next-line: discard-returns
-  print(table.concat(objects, "\n"))
-  return ...
+  require("util.debug").dump(get_value(...))
 end
 
----Prints a human-readable representation of the object(s) provided and places the result in the current buffer
----@param ...? any
----@return string[] result
-function _G.dump_text(...)
-  local objects = {}
-  for i = 1, select("#", ...) do
-    local v = select(i, ...)
-    table.insert(objects, vim.inspect(v))
-  end
-
-  vim.schedule(function()
-    local lines = vim.split(table.concat(objects, "\n"), "\n")
-    local lnum = vim.api.nvim_win_get_cursor(0)[1]
-    vim.fn.append(lnum, lines)
-  end)
-  return ...
-end
+vim.print = _G.dump
 
 ---Wrapper for Vim's `|has|`feature detection function
 ---@param feature string
