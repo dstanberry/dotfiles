@@ -4,7 +4,7 @@ M.separator = "─"
 
 ---@param lines integer
 ---@return integer width
-M.calculate_width = function(lines)
+function M.calculate_width(lines)
   local max_width = math.ceil(vim.o.columns * 0.8)
   local max_length = 0
   for _, line in pairs(lines) do
@@ -16,7 +16,7 @@ end
 ---Create a floating window containing a list of options to choose from
 ---@param opts table
 ---@return integer bufnr, integer winid
-M.popup_window = function(opts)
+function M.popup_window(opts)
   local lines, syntax = opts.lines or {}, opts.syntax
   opts.border = opts.border or "rounded"
   local bufnr, winnr = vim.lsp.util.open_floating_preview(lines, syntax, opts)
