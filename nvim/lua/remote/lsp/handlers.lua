@@ -1,13 +1,12 @@
-local c = require("ui.theme").colors
-local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
 local M = {}
 
 M.on_attach = function(client, bufnr)
-  if client.server_capabilities.declarationProvider then
+  -- NOTE: "gD" used by |glance.nvim|
+  -- if client.server_capabilities.declarationProvider then
     -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "" })
-  end
+  -- end
 
   if client.server_capabilities.codeActionProvider then
     vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr, desc = "lsp: code action" })
@@ -69,14 +68,13 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.signatureHelpProvider then
-    vim.api.nvim_create_augroup("lsp_signature", { clear = true })
-
-    vim.api.nvim_create_autocmd("CursorHoldI", {
-      group = "lsp_signature",
-      buffer = bufnr,
-      callback = vim.lsp.buf.signature_help,
-    })
-
+    -- NOTE: handled by |noice.nvim|
+    -- vim.api.nvim_create_augroup("lsp_signature", { clear = true })
+    -- vim.api.nvim_create_autocmd("CursorHoldI", {
+    --   group = "lsp_signature",
+    --   buffer = bufnr,
+    --   callback = vim.lsp.buf.signature_help,
+    -- })
     vim.keymap.set("i", "<c-h>", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
     vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
   end
