@@ -73,6 +73,7 @@ return {
     },
     routes = {
       {
+        opts = { skip = true },
         filter = {
           any = {
             { event = "msg_show", find = "%d+ lines, %d+ bytes" },
@@ -82,10 +83,10 @@ return {
             { event = "msg_show", kind = "search_count" },
           },
         },
-        opts = { skip = true },
       },
       {
         view = "cmdline_output",
+        opts = { lang = "lua" },
         filter = {
           any = {
             { event = "msg_show", min_height = 10 },
