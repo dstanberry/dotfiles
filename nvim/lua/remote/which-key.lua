@@ -6,6 +6,8 @@ local BLUE_DARK = color.blend(c.blue2, c.bg0, "15")
 
 groups.new("WhichKeyFloat", { bg = BLUE_DARK })
 groups.new("WhichKeySeparator", { fg = c.lsp_fg })
+groups.new("WhichKeyDesc", { link = "Constant" })
+groups.new("WhichKeyGroup", { link = "Identifier" })
 
 return {
   "folke/which-key.nvim",

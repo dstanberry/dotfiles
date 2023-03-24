@@ -1,7 +1,10 @@
+local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 
 groups.new("qfPosition", { link = "@text.reference" })
-groups.new("BqfPreviewBorder", { link = "Comment" })
+
+groups.new("BqfPreviewFloat", { link = "NormalFloat" })
+groups.new("BqfPreviewBorder", { link = "FloatBorder" })
 
 return {
   {
