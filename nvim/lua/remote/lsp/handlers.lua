@@ -173,6 +173,7 @@ M.setup = function()
     vim.lsp.handlers["workspace/symbol"] = telescope.lsp_dynamic_workspace_symbols
   end
 
+---@diagnostic disable-next-line: duplicate-set-field
   vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
     local bufnr = vim.uri_to_bufnr(result.uri)
     if not bufnr then return end

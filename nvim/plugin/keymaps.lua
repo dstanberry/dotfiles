@@ -165,6 +165,7 @@ vim.keymap.set("n", "<localleader><localleader>s", function()
   local file = vim.fn.expand "%"
   local path = vim.fn.expand "%:p:h"
   local sep = has "win32" and [[\]] or "/"
+---@diagnostic disable-next-line: redundant-parameter
   local updated = vim.fn.input("Save as: ", path .. sep)
   if #updated > 0 and updated ~= file then
     vim.cmd.saveas(updated)
