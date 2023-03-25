@@ -22,6 +22,7 @@ return {
     "lukas-reineke/headlines.nvim",
     ft = { "markdown", "yaml" },
     dependencies = "nvim-treesitter/nvim-treesitter",
+    enabled = false,
     config = function()
       require("headlines").setup {
         markdown = {
