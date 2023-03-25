@@ -21,7 +21,16 @@ local create_keymap = function(capture, start, down)
   local c = capture:sub(1, 1):lower()
   local lhs = (down and "]" or "[") .. (start and c or c:upper())
   local desc = (down and "next " or "previous ") .. (start and "start" or "end") .. " of " .. capture:gsub("%..*", "")
-  vim.keymap.set("n", lhs, rhs, { desc = "mini.ai: goto " .. desc })
+  if start and c == "c" then
+    -- NOTE: preserve builtin keybind to navigate diff chunks
+    vim.keymap.set("n", lhs, function()
+      if vim.wo.diff then return lhs end
+      vim.schedule(function() rhs() end)
+      return "<ignore>"
+    end, { expr = true, desc = "mini.ai: goto " .. desc .. "/change" })
+  else
+    vim.keymap.set("n", lhs, rhs, { desc = "mini.ai: goto " .. desc })
+  end
 end
 
 return {
