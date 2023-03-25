@@ -102,10 +102,10 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "sql",
   callback = function()
     vim.bo.expandtab = true
-    vim.wo.relativenumber = false
     vim.bo.shiftwidth = 2
     vim.bo.softtabstop = 2
     vim.bo.tabstop = 2
+    vim.opt_local.relativenumber = false
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
@@ -114,7 +114,7 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function()
     vim.bo.expandtab = true
     vim.bo.shiftwidth = 2
-    vim.wo.foldmethod = "marker"
+    vim.opt_local.foldmethod = "marker"
     vim.opt_local.colorcolumn = "120"
   end,
 })
@@ -136,6 +136,19 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function() vim.opt_local.winhighlight = "Normal:NormalSB" end,
 })
 
+vim.api.nvim_create_autocmd("Filetype", {
+  group = "ftplugin",
+  callback = function()
+    if not pcall(vim.treesitter.start) then return end
+    vim.opt_local.foldenable = false
+    vim.opt_local.foldlevel = 99
+    vim.opt_local.foldmethod = "expr"
+    vim.opt_local.foldexpr = [[v:lua.require("util.buffer").fold_expr()]]
+    vim.opt_local.foldtext = [[v:lua.require("util.buffer").fold_text()]]
+    vim.cmd.normal "zx"
+  end,
+})
+
 vim.api.nvim_create_augroup("terminal_ui", { clear = true })
 vim.api.nvim_create_autocmd("TermOpen", {
   group = "terminal_ui",
@@ -152,18 +165,6 @@ vim.api.nvim_create_autocmd("TermClose", {
     local bufnr = vim.api.nvim_get_current_buf()
     local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
     if ft ~= "md_preview" then vim.cmd.bdelete { vim.fn.expand "<abuf>", bang = true } end
-  end,
-})
-
-vim.api.nvim_create_augroup("fold_behaviour", { clear = true })
-vim.api.nvim_create_autocmd("BufWinEnter", {
-  group = "fold_behaviour",
-  callback = function()
-    vim.wo.foldenable = false
-    vim.wo.foldlevel = 99
-    vim.wo.foldmethod = "expr"
-    vim.wo.foldexpr = [[v:lua.require("util.buffer").fold_expr()]]
-    vim.wo.foldtext = [[v:lua.require("util.buffer").fold_text()]]
   end,
 })
 
