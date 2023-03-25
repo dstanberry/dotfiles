@@ -29,6 +29,8 @@ return {
     local wk = require "which-key"
     wk.setup(opts)
     wk.register {
+      ["]"] = { name = "+next" },
+      ["["] = { name = "+previous" },
       ["<leader>"] = {
         mode = "n",
         d = { name = "+debug" },
