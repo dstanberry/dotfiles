@@ -47,16 +47,8 @@ return {
           vim.keymap.set(mode, l, r, opts)
         end
 
-        map("n", "]c", function()
-          if vim.wo.diff then return "]c" end
-          vim.schedule(function() signs.next_hunk() end)
-          return "<Ignore>"
-        end, { expr = true, desc = "gitsigns: next hunk" })
-        map("n", "[c", function()
-          if vim.wo.diff then return "[c" end
-          vim.schedule(function() signs.prev_hunk() end)
-          return "<Ignore>"
-        end, { expr = true, desc = "gitsigns: previous hunk" })
+        map("n", "]h", signs.next_hunk, { desc = "gitsigns: next hunk" })
+        map("n", "[h", signs.prev_hunk, { desc = "gitsigns: previous hunk" })
         map("n", "<leader>gs", signs.stage_hunk, { desc = "gitsigns: stage hunk" })
         map("n", "<leader>gS", signs.stage_buffer, { desc = "gitsigns: stage buffer" })
         map("n", "<leader>gu", signs.undo_stage_hunk, { desc = "gitsigns: unstage Hunk" })
