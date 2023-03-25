@@ -17,18 +17,22 @@ function M.load_dirhash(shell)
     print("cannot load hashes for unsupported shell: " .. shell)
     return
   end
-  local path = vim.fn.expand(("%s/%s/rc.private/hashes.%s"):format(vim.env.XDG_CONFIG_HOME, shell, shell))
-  local cmd = ([[%s -c "source %s; hash -d"]]):format(shell, path)
-  local dirs = vim.fn.system(cmd)
-  local lines = vim.split(dirs, "\n")
-  for _, line in pairs(lines) do
-    local pair = vim.split(line, "=")
-    if #pair == 2 then
-      local var = pair[1]
-      local dir = pair[2]
-      if vim.env["hash_" .. var] == nil then vim.env["hash_" .. var] = dir end
+  local loader = function(rc_dir)
+    local path = vim.fn.expand(("%s/%s/%s/hashes.%s"):format(vim.env.XDG_CONFIG_HOME, shell, rc_dir, shell))
+    local cmd = ([[%s -c "source %s; hash -d"]]):format(shell, path)
+    local dirs = vim.fn.system(cmd)
+    local lines = vim.split(dirs, "\n")
+    for _, line in pairs(lines) do
+      local pair = vim.split(line, "=")
+      if #pair == 2 then
+        local var = pair[1]
+        local dir = pair[2]
+        if vim.env["hash_" .. var] == nil then vim.env["hash_" .. var] = dir end
+      end
     end
   end
+  loader "rc"
+  loader "rc.private"
 end
 
 ---Utility function to load machine-specific overrides that can disable various configuration options/settings
