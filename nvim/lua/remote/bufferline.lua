@@ -9,6 +9,11 @@ return {
   "akinsho/bufferline.nvim",
   dependencies = { "tiagovla/scope.nvim", config = true },
   event = "VimEnter",
+  keys = {
+    { "<leader>bg", ":BufferLineGroupToggle ", desc = "bufferline: toggle group" },
+    { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = "bufferline: toggle pin" },
+    { "<leader>bP", "<cmd>BufferLineGroupClose ungrouped<cr>", desc = "bufferline: delete all non-pinned buffers" },
+  },
   config = function()
     local bufferline_groups = require "bufferline.groups"
     require("bufferline").setup {
