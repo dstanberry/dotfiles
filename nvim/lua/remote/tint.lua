@@ -21,12 +21,13 @@ return {
   opts = {
     tint = -10,
     highlight_ignore_patterns = {
-      "WinSeparator",
-      "St.*",
-      "Comment",
-      "Panel.*",
-      "Telescope.*",
       "Bqf.*",
+      "Comment",
+      "NeoTree.*",
+      "Panel.*",
+      "St.*",
+      "Telescope.*",
+      "WinSeparator",
     },
     window_ignore_function = function(win_id)
       if vim.wo[win_id].diff or vim.fn.win_gettype(win_id) ~= "" then return true end

@@ -39,7 +39,8 @@ local function find_nvim()
     follow = has "win32" and false or true,
     hidden = has "win32" and false or true,
     cwd = vim.fn.stdpath "config",
-    sort_mru = true,
+    sort_mru = false,
+    grouped = true,
     prompt_title = "Neovim RC Files",
   }
 end
@@ -74,6 +75,7 @@ local function find_plugins()
     cwd = string.format("%s/lazy", vim.fn.stdpath "data"),
     layout_strategy = "vertical",
     prompt_title = "Remote Plugins",
+    grouped = true,
   }
 end
 
@@ -99,6 +101,7 @@ local function project_files()
     follow = has "win32" and false or true,
     hidden = has "win32" and false or true,
     sort_mru = false,
+    grouped = true,
   }
   local git = vim.fs.find ".git"
   if #git >= 1 then
@@ -200,6 +203,8 @@ return {
           },
           mappings = {
             i = {
+              ["<c-down>"] = actions.cycle_history_next,
+              ["<c-up>"] = actions.cycle_history_prev,
               ["<c-/>"] = actions.which_key,
               ["<c-d>"] = actions.preview_scrolling_down,
               ["<c-f>"] = actions.preview_scrolling_up,
@@ -211,6 +216,7 @@ return {
               ["<c-y>"] = set_prompt_to_entry_value,
               ["<c-n>"] = false,
               ["<c-u>"] = false,
+              ["<a-i>"] = function() require("telescope.builtin").find_files { no_ignore = true } end,
               ["jk"] = actions.close,
             },
             n = {
@@ -226,10 +232,9 @@ return {
           "%.gitattributes",
           "%.gpg",
           "%.venv",
+          "^%.git%-crypt/",
           "^node_modules/",
           "^ntuser",
-          "git%-crypt",
-          "karabiner/assets",
         },
         pickers = {
           buffers = {
