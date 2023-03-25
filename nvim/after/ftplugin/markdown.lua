@@ -12,10 +12,12 @@ vim.opt_local.colorcolumn = "80"
 
 vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave" }, {
   group = "ftplugin",
-  callback = function(args) markdown.concealer.toggle_on() end,
+  buffer = 0,
+  callback = function() markdown.concealer.toggle_on() end,
 })
 vim.api.nvim_create_autocmd({ "InsertEnter", "BufWritePost" }, {
   group = "ftplugin",
+  buffer = 0,
   callback = function() markdown.concealer.disable() end,
 })
 
