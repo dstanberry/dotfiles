@@ -1,4 +1,3 @@
-local treesitter_query = require "vim.treesitter.query"
 local markdown_treesitter = require "ft.markdown.treesitter"
 local icons = require "ui.icons"
 
@@ -52,7 +51,7 @@ M.toggle_on = function()
       local capture = parsed_query.captures[id]
       local start_row, start_column, end_row, _ =
         unpack(vim.tbl_extend("force", { node:range() }, (metadata[id] or {}).range or {}))
-      local text = treesitter_query.get_node_text(node, 0, { concat = true })
+      local text = vim.treesitter.get_node_text(node, 0, { concat = true })
       if capture == "yaml_frontmatter" then
         local parts = vim.split(text, "\n")
         if #parts >= 2 then

@@ -5,7 +5,7 @@ M.parse_document = function()
   local syntax_tree = language_tree:parse()
   local root = syntax_tree[1]:root()
   ---@diagnostic disable-next-line: undefined-field
-  local parsed_query = vim.treesitter.parse_query(
+  local parsed_query = vim.treesitter.query.parse(
     "markdown",
     [[
       ([

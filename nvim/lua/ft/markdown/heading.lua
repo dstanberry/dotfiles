@@ -1,4 +1,3 @@
-local treesitter_query = require "vim.treesitter.query"
 local markdown_treesitter = require "ft.markdown.treesitter"
 
 local M = {}
@@ -15,7 +14,7 @@ local get_all_headings = function()
         local hold = {
           start_row = start_row,
           end_row = end_row,
-          level = #treesitter_query.get_node_text(node, 0),
+          level = #vim.treesitter.get_node_text(node, 0),
           index = #data + 1,
         }
         table.insert(data, hold)
