@@ -76,9 +76,6 @@ vim.g.dotfiles_dir = vim.fn.expand(("%s/.config"):format(vim.env.HOME))
 vim.g.projects_dir = vim.env.projects_dir and vim.fn.expand(vim.env.projects_dir)
   or vim.fn.expand(("%s/Projects"):format(vim.env.HOME))
 
-vim.env.ZK_NOTEBOOK_DIR = vim.env.hash_notes and vim.fn.expand(("%s/zettelkasten/vault"):format(vim.env.hash_notes))
-  or vim.fn.expand(("%s/Documents/notes"):format(vim.env.HOME))
-
 if setting_enabled "remote_plugins" then
   local lazypath = string.format("%s/lazy/lazy.nvim", vim.fn.stdpath "data")
   if not vim.loop.fs_stat(lazypath) then
