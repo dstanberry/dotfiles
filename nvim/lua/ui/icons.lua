@@ -43,6 +43,7 @@ return {
     Book = "",
     Diff = "",
     Lab = "",
+    Pinned = "",
     Sql = "",
   },
   kind = {

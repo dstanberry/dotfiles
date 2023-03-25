@@ -128,6 +128,8 @@ return {
                 style = bufferline_groups.separator.pill,
               },
             },
+            bufferline_groups.builtin.pinned:with { icon = icons.groups.Pinned },
+            bufferline_groups.builtin.ungrouped,
           },
         },
       },
