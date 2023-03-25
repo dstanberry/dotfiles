@@ -1,4 +1,3 @@
-local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 
 local CYAN = "#73c1b9"
@@ -30,10 +29,26 @@ return {
         "nvim-treesitter/nvim-treesitter-context",
         config = function() require "remote.treesitter.context" end,
       },
+      {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        init = function()
+          -- PERF: no need to load the plugin, if we only need its queries for mini.ai
+          local plugin = require("lazy.core.config").spec.plugins["nvim-treesitter"]
+          local opts = require("lazy.core.plugin").values(plugin, "opts", false)
+          local enabled = false
+          if opts.textobjects then
+            for _, mod in ipairs { "move", "select", "swap", "lsp_interop" } do
+              if opts.textobjects[mod] and opts.textobjects[mod].enable then
+                enabled = true
+                break
+              end
+            end
+          end
+          if not enabled then require("lazy.core.loader").disable_rtp_plugin "nvim-treesitter-textobjects" end
+        end,
+      },
       "HiPhish/nvim-ts-rainbow2",
       "JoosepAlviste/nvim-ts-context-commentstring",
-      "nvim-treesitter/nvim-treesitter-refactor",
-      "nvim-treesitter/nvim-treesitter-textobjects",
       "nvim-treesitter/playground",
       "theHamsta/nvim-treesitter-pairs",
     },
@@ -104,80 +119,6 @@ return {
             "TSRainbow5",
             "TSRainbow6",
             "TSRainbow7",
-          },
-        },
-        refactor = {
-          highlight_definitions = { enable = true },
-          highlight_current_scope = { enable = false },
-          smart_rename = {
-            enable = true,
-            keymaps = {
-              smart_rename = "g<localleader>",
-            },
-          },
-          navigation = {
-            enable = false,
-            -- keymaps = {
-            --   goto_definition = "",
-            --   list_definitions = "",
-            --   list_definitions_toc = "",
-            --   goto_next_usage = "",
-            --   goto_previous_usage = "",
-            -- },
-          },
-        },
-        textobjects = {
-          lsp_interop = {
-            enable = true,
-            peek_definition_code = {
-              ["df"] = "@function.outer",
-              ["dF"] = "@class.outer",
-            },
-          },
-          move = {
-            enable = true,
-            set_jumps = true,
-            goto_next_start = {
-              ["]{"] = "@function.outer",
-              ["]["] = "@class.outer",
-            },
-            goto_next_end = {
-              ["]}"] = "@function.outer",
-              ["]]"] = "@class.outer",
-            },
-            goto_previous_start = {
-              ["[{"] = "@function.outer",
-              ["[["] = "@class.outer",
-            },
-            goto_previous_end = {
-              ["[}"] = "@function.outer",
-              ["[]"] = "@class.outer",
-            },
-          },
-          select = {
-            enable = true,
-            lookahead = true,
-            keymaps = {
-              ["ab"] = "@block.outer",
-              ["ib"] = "@block.inner",
-              ["ac"] = "@conditional.outer",
-              ["ic"] = "@conditional.inner",
-              ["af"] = "@function.outer",
-              ["if"] = "@function.inner",
-              ["aa"] = "@parameter.outer",
-              ["ii"] = "@parameter.inner",
-            },
-          },
-          swap = {
-            enable = true,
-            swap_next = {
-              ["<c-s><c-l>"] = "@parameter.inner",
-              ["<c-s><c-j>"] = "@function.outer",
-            },
-            swap_previous = {
-              ["<c-s><c-h>"] = "@parameter.inner",
-              ["<c-s><c-k>"] = "@function.outer",
-            },
           },
         },
       }
