@@ -26,6 +26,7 @@ groups.new("TelescopeMultiSelection", { fg = c.magenta1 })
 groups.new("TelescopeSelection", { bg = BLUE, bold = true })
 groups.new("TelescopeSelectionCaret", { fg = c.fg0, bg = BLUE, bold = true })
 
+-- builtin.buffers
 local function current_buffer()
   require("telescope.builtin").current_buffer_fuzzy_find {
     previewer = false,
@@ -34,40 +35,12 @@ local function current_buffer()
   }
 end
 
+-- builtin.find_files
 local function find_nvim()
   require("telescope.builtin").find_files {
-    follow = has "win32" and false or true,
-    hidden = has "win32" and false or true,
     cwd = vim.fn.stdpath "config",
-    sort_mru = false,
-    grouped = true,
     prompt_title = "Neovim RC Files",
   }
-end
-
-local function file_browser()
-  local opts
-  opts = {
-    follow = has "win32" and false or true,
-    hidden = has "win32" and false or true,
-    prompt_title = "File Browser",
-    grouped = true,
-    sorting_strategy = "ascending",
-  }
-  require("telescope").extensions.file_browser.file_browser(opts)
-end
-
-local function file_browser_relative()
-  local opts
-  opts = {
-    path = "%:p:h",
-    follow = has "win32" and false or true,
-    hidden = has "win32" and false or true,
-    prompt_title = "File Browser",
-    grouped = true,
-    sorting_strategy = "ascending",
-  }
-  require("telescope").extensions.file_browser.file_browser(opts)
 end
 
 local function find_plugins()
@@ -75,10 +48,22 @@ local function find_plugins()
     cwd = string.format("%s/lazy", vim.fn.stdpath "data"),
     layout_strategy = "vertical",
     prompt_title = "Remote Plugins",
-    grouped = true,
   }
 end
 
+local function find_project()
+  local git = vim.fs.find ".git"
+  if #git >= 1 then
+    require("telescope.builtin").git_files {
+      prompt_title = "Project Files (Git)",
+      show_untracked = true,
+    }
+  else
+    require("telescope.builtin").find_files { prompt_title = "Project Files" }
+  end
+end
+
+-- builtin.grep_string
 local function grep_last_search()
   local register = vim.fn.getreg("/"):gsub("\\<", ""):gsub("\\>", ""):gsub("\\C", "")
   require("telescope.builtin").grep_string {
@@ -88,30 +73,26 @@ local function grep_last_search()
   }
 end
 
-local function live_grep_args() require("telescope").extensions.live_grep_args.live_grep_args() end
-
+-- builtin.oldfiles
 local function oldfiles()
   require("telescope.builtin").oldfiles {
     prompt_title = "Recent Files",
   }
 end
 
-local function project_files()
-  local opts = {
-    follow = has "win32" and false or true,
-    hidden = has "win32" and false or true,
-    sort_mru = false,
-    grouped = true,
+-- extensions.live_grep_args
+local function live_grep_args() require("telescope").extensions.live_grep_args.live_grep_args() end
+
+-- extensions.file_browser
+local function file_browser()
+  require("telescope").extensions.file_browser.file_browser { prompt_title = "File Browser" }
+end
+
+local function file_browser_relative()
+  require("telescope").extensions.file_browser.file_browser {
+    path = "%:p:h",
+    prompt_title = "File Browser",
   }
-  local git = vim.fs.find ".git"
-  if #git >= 1 then
-    opts.prompt_title = "Project Files (Git)"
-    opts.show_untracked = true
-    require("telescope.builtin").git_files(opts)
-  else
-    opts.prompt_title = "Project Files"
-    require("telescope.builtin").find_files(opts)
-  end
 end
 
 return {
@@ -126,11 +107,16 @@ return {
       "nvim-telescope/telescope-live-grep-args.nvim",
       "nvim-telescope/telescope-symbols.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
-      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = has "win32"
+            and "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build"
+          or "make",
+      },
     },
     -- stylua: ignore
     keys = {
-      { "<leader><leader>", project_files, desc = "telescope: find files (project)" },
+      { "<leader><leader>", find_project, desc = "telescope: find files (project)" },
       { "<leader>f/", grep_last_search, desc = "telescope: find word (last searched)" },
       { "<leader>fb", current_buffer, desc = "telescope: find in buffer" },
       { "<leader>fe", file_browser, desc = "telescope: browse root directory" },
@@ -147,6 +133,15 @@ return {
       { "gw", function() require("telescope.builtin").diagnostics { bufnr = 0 } end, desc = "telescope: lsp diagnostics (buffer)" },
       { "gW", require("telescope.builtin").diagnostics, desc = "telescope: lsp diagnostics (workspace)" },
     },
+    init = function()
+      vim.api.nvim_create_user_command("BCommits", require("telescope.builtin").git_bcommits, {})
+      vim.api.nvim_create_user_command("Commits", require("telescope.builtin").git_commits, {})
+      vim.api.nvim_create_user_command(
+        "Buffers",
+        function() require("telescope.builtin").buffers { sort_lastused = true } end,
+        {}
+      )
+    end,
     config = function()
       local telescope = require "telescope"
       local actions = require "telescope.actions"
@@ -198,6 +193,7 @@ return {
             "center",
           },
           layout_config = {
+            width = 0.9,
             horizontal = { preview_width = 0.6 },
             vertical = { preview_height = 0.7 },
           },
@@ -239,14 +235,23 @@ return {
         pickers = {
           buffers = {
             theme = "dropdown",
-            sort_mru = true,
-            sort_lastused = true,
-            show_all_buffers = true,
             ignore_current_buffer = true,
             previewer = false,
+            show_all_buffers = true,
+            sort_lastused = true,
+            sort_mru = true,
             mappings = {
               n = { ["d"] = "delete_buffer" },
             },
+          },
+          find_files = {
+            follow = true,
+            hidden = true,
+          },
+          git_files = {
+            use_git_root = true,
+            show_untracked = true,
+            recurse_submodules = false,
           },
           grep_string = {
             layout_config = { height = 30, prompt_position = "top" },
@@ -280,33 +285,33 @@ return {
             },
           },
           diagnostics = {
-            path_display = { "shorten" },
-            layout_strategy = "vertical",
             layout_config = { height = 20 },
+            layout_strategy = "vertical",
+            path_display = { "shorten" },
           },
           lsp_definitions = {
             theme = "ivy",
             layout_config = { height = 40, prompt_position = "top" },
           },
           lsp_document_symbols = {
-            path_display = { "hidden" },
             theme = "ivy",
             layout_config = { height = 40, prompt_position = "top" },
+            path_display = { "hidden" },
           },
           lsp_dynamic_workspace_symbols = {
-            path_display = { "shorten" },
             theme = "ivy",
             layout_config = { height = 40, prompt_position = "top" },
+            path_display = { "shorten" },
           },
           lsp_references = {
-            path_display = { "shorten" },
             theme = "ivy",
             layout_config = { height = 40, prompt_position = "top" },
+            path_display = { "shorten" },
           },
           lsp_workspace_symbols = {
-            path_display = { "shorten" },
             theme = "ivy",
             layout_config = { height = 40, prompt_position = "top" },
+            path_display = { "shorten" },
           },
           registers = {
             theme = "dropdown",
@@ -316,12 +321,15 @@ return {
         extensions = {
           file_browser = {
             theme = "ivy",
+            grouped = true,
+            hidden = true,
+            sorting_strategy = "ascending",
           },
-          fzf = not has "win32" and {
+          fzf = {
             case_mode = "smart_case",
             override_file_sorter = true,
             override_generic_sorter = false,
-          } or {},
+          },
           live_grep_args = {
             auto_quoting = true,
             layout_strategy = "vertical",
@@ -339,19 +347,10 @@ return {
           },
         },
       }
-      if not has "win32" then telescope.load_extension "fzf" end
       telescope.load_extension "file_browser"
+      telescope.load_extension "fzf"
       telescope.load_extension "gh"
       telescope.load_extension "ui-select"
-    end,
-    init = function()
-      vim.api.nvim_create_user_command("BCommits", require("telescope.builtin").git_bcommits, {})
-      vim.api.nvim_create_user_command("Commits", require("telescope.builtin").git_commits, {})
-      vim.api.nvim_create_user_command(
-        "Buffers",
-        function() require("telescope.builtin").buffers { sort_lastused = true } end,
-        {}
-      )
     end,
   },
 }
