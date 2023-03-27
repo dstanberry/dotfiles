@@ -62,7 +62,7 @@ return function()
 
   if util.contains(filetypes.wb_suppressed, ft) then return " " end
 
-  local name = vim.fn.bufname(buf)
+  local name = vim.fn.expand(vim.fn.bufname(buf))
   local fname = (name):match(("^.+%s(.+)$"):format(separator))
   local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
   local path = vim.startswith(bufid, "diffview") and "" or get_relpath(winid, name, opts.maxlen)
