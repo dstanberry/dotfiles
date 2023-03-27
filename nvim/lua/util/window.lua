@@ -52,9 +52,9 @@ function M.popup_window(opts)
   end
   if opts.set_cursor then
     vim.api.nvim_win_set_cursor(winnr, { 3, 1 })
-    vim.api.nvim_create_augroup("update_cursor", { clear = true })
+    local update_cursor = vim.api.nvim_create_augroup("update_cursor", { clear = true })
     vim.api.nvim_create_autocmd("CursorMoved", {
-      group = "update_cursor",
+      group = update_cursor,
       callback = function()
         local current_line = vim.fn.line "."
         local max_lines = vim.api.nvim_buf_line_count(0)

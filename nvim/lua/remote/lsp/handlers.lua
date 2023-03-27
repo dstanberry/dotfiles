@@ -13,17 +13,17 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.codeLensProvider then
-    vim.api.nvim_create_augroup("lsp_codelens", { clear = true })
+    local lsp_codelens = vim.api.nvim_create_augroup("lsp_codelens", { clear = true })
 
     vim.api.nvim_create_autocmd("BufEnter", {
-      group = "lsp_codelens",
+      group = lsp_codelens,
       once = true,
       buffer = bufnr,
       callback = require("vim.lsp.codelens").refresh,
     })
 
     vim.api.nvim_create_autocmd({ "InsertLeave", "CursorHold" }, {
-      group = "lsp_codelens",
+      group = lsp_codelens,
       buffer = bufnr,
       callback = require("vim.lsp.codelens").refresh,
     })
@@ -52,10 +52,10 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.documentHighlightProvider then
-    vim.api.nvim_create_augroup("lsp_highlight", { clear = true })
+    local lsp_highlight = vim.api.nvim_create_augroup("lsp_highlight", { clear = true })
 
     vim.api.nvim_create_autocmd("CursorHold", {
-      group = "lsp_highlight",
+      group = lsp_highlight,
       buffer = bufnr,
       callback = vim.lsp.buf.document_highlight,
     })
@@ -69,9 +69,9 @@ M.on_attach = function(client, bufnr)
 
   if client.server_capabilities.signatureHelpProvider then
     -- NOTE: handled by |noice.nvim|
-    -- vim.api.nvim_create_augroup("lsp_signature", { clear = true })
+    -- local lsp_signature = vim.api.nvim_create_augroup("lsp_signature", { clear = true })
     -- vim.api.nvim_create_autocmd("CursorHoldI", {
-    --   group = "lsp_signature",
+    --   group = lsp_signature,
     --   buffer = bufnr,
     --   callback = vim.lsp.buf.signature_help,
     -- })

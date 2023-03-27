@@ -5,9 +5,9 @@ return {
   dependencies = { "nvim-telescope/telescope.nvim" },
   lazy = false,
   init = function()
-    vim.api.nvim_create_augroup("sessionmgr", { clear = true })
+    local sessionmgr = vim.api.nvim_create_augroup("sessionmgr", { clear = true })
     vim.api.nvim_create_autocmd("User", {
-      group = "sessionmgr",
+      group = sessionmgr,
       pattern = "PersistedTelescopeLoadPre",
       callback = function()
         vim.schedule(function() vim.cmd "%bd" end)

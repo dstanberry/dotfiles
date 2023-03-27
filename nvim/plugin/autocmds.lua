@@ -1,31 +1,31 @@
-vim.api.nvim_create_augroup("cursorline", { clear = true })
+local cursorline = vim.api.nvim_create_augroup("cursorline", { clear = true })
 vim.api.nvim_create_autocmd("WinEnter", {
-  group = "cursorline",
+  group = cursorline,
   callback = function() vim.opt_local.cursorline = true end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  group = "cursorline",
+  group = cursorline,
   pattern = "TelescopePrompt",
   callback = function() vim.opt_local.cursorline = false end,
 })
 vim.api.nvim_create_autocmd("WinLeave", {
-  group = "cursorline",
+  group = cursorline,
   callback = function() vim.opt_local.cursorline = false end,
 })
 
-vim.api.nvim_create_augroup("cmdline", { clear = true })
+local cmdline = vim.api.nvim_create_augroup("cmdline", { clear = true })
 vim.api.nvim_create_autocmd("CmdLineEnter", {
-  group = "cmdline",
+  group = cmdline,
   callback = function() vim.opt.smartcase = false end,
 })
 vim.api.nvim_create_autocmd("CmdLineLeave", {
-  group = "cmdline",
+  group = cmdline,
   callback = function() vim.opt.smartcase = true end,
 })
 
-vim.api.nvim_create_augroup("filesystem", { clear = true })
+local filesytem = vim.api.nvim_create_augroup("filesystem", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
-  group = "filesystem",
+  group = filesystem,
   pattern = "*",
   callback = function()
     local d = vim.fn.expand "<afile>:p:h"
@@ -33,14 +33,14 @@ vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
   end,
 })
 
-vim.api.nvim_create_augroup("ftplugin", { clear = true })
+local ftplugin = vim.api.nvim_create_augroup("ftplugin", { clear = true })
 vim.api.nvim_create_autocmd("Filetype", {
-  group = "ftplugin",
+  group = ftplugin,
   pattern = "*",
   callback = function() vim.bo.formatoptions = "cjlnqr" end,
 })
 vim.api.nvim_create_autocmd("BufEnter", {
-  group = "ftplugin",
+  group = ftplugin,
   pattern = "COMMIT_EDITMSG",
   callback = function()
     vim.fn.setpos(".", { 0, 1, 1, 0 })
@@ -48,7 +48,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  group = "ftplugin",
+  group = ftplugin,
   pattern = { "COMMIT_EDITMSG", "gitcommit", "NeogitCommitMessage" },
   callback = function()
     vim.bo.swapfile = false
@@ -61,7 +61,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 vim.api.nvim_create_autocmd("Filetype", {
-  group = "ftplugin",
+  group = ftplugin,
   pattern = { "asc", "gpg", "pgp" },
   callback = function()
     vim.bo.backup = false
@@ -69,7 +69,7 @@ vim.api.nvim_create_autocmd("Filetype", {
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  group = "ftplugin",
+  group = ftplugin,
   pattern = { "bash", "javascript", "sh", "typescript", "zsh" },
   callback = function()
     vim.bo.expandtab = true
@@ -78,7 +78,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  group = "ftplugin",
+  group = ftplugin,
   pattern = "lua",
   callback = function()
     vim.bo.expandtab = true
@@ -87,7 +87,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  group = "ftplugin",
+  group = ftplugin,
   pattern = "python",
   callback = function()
     vim.bo.expandtab = true
@@ -98,7 +98,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  group = "ftplugin",
+  group = ftplugin,
   pattern = "sql",
   callback = function()
     vim.bo.expandtab = true
@@ -109,7 +109,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  group = "ftplugin",
+  group = ftplugin,
   pattern = "vim",
   callback = function()
     vim.bo.expandtab = true
@@ -119,7 +119,7 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
-  group = "ftplugin",
+  group = ftplugin,
   pattern = {
     "dap-repl",
     "dapui_breakpoints",
@@ -137,7 +137,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("Filetype", {
-  group = "ftplugin",
+  group = ftplugin,
   callback = function()
     vim.opt_local.foldenable = false
     vim.opt_local.foldlevel = 99
@@ -150,9 +150,9 @@ vim.api.nvim_create_autocmd("Filetype", {
   end,
 })
 
-vim.api.nvim_create_augroup("terminal_ui", { clear = true })
+local terminal_ui = vim.api.nvim_create_augroup("terminal_ui", { clear = true })
 vim.api.nvim_create_autocmd("TermOpen", {
-  group = "terminal_ui",
+  group = terminal_ui,
   callback = function()
     vim.wo.relativenumber = false
     vim.wo.number = false
@@ -160,7 +160,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
   end,
 })
 vim.api.nvim_create_autocmd("TermClose", {
-  group = "terminal_ui",
+  group = terminal_ui,
   pattern = "*",
   callback = function()
     local bufnr = vim.api.nvim_get_current_buf()
@@ -169,8 +169,8 @@ vim.api.nvim_create_autocmd("TermClose", {
   end,
 })
 
-vim.api.nvim_create_augroup("yank_highlight", { clear = true })
+local yank_highlight = vim.api.nvim_create_augroup("yank_highlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
-  group = "yank_highlight",
+  group = yank_highlight,
   callback = function() vim.highlight.on_yank() end,
 })

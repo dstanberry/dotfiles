@@ -68,9 +68,9 @@ return {
     separator = pad(icons.misc.ChevronRight, "both"),
   },
   init = function()
-    vim.api.nvim_create_augroup("lsp_navic", { clear = true })
+    local lsp_navic = vim.api.nvim_create_augroup("lsp_navic", { clear = true })
     vim.api.nvim_create_autocmd("LspAttach", {
-      group = "lsp_navic",
+      group = lsp_navic,
       callback = function(args)
         if vim.api.nvim_buf_line_count(0) > 1000 then vim.b.navic_lazy_update_context = true end
         if not (args.data and args.data.client_id) then return end
