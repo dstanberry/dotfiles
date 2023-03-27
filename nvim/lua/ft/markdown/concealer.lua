@@ -18,25 +18,7 @@ local highlight_groups = {
   "@text.title",
   "@text.heading",
   "@variable.builtin",
-  "@variable.builtin",
-  "@variable.builtin",
-  "@variable.builtin",
 }
-
-local set_extmark = function(start_row, end_row, start_col, end_col, hl_group, text)
-  start_col = start_col or 0
-  -- NOTE: custom markdown treesitter query covers this
-  -- vim.api.nvim_buf_set_extmark(0, NAMESPACE, start_row, 0, {
-  --   end_row = end_row + 1,
-  --   hl_group = hl_group,
-  -- })
-  vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_col, {
-    end_col = end_col,
-    virt_text = { { text, hl_group } },
-    virt_text_pos = "overlay",
-    hl_group = hl_group,
-  })
-end
 
 M.disable = function()
   local line = vim.fn.line "."
@@ -56,24 +38,60 @@ M.toggle_on = function()
         local parts = vim.split(text, "\n")
         if #parts >= 2 then
           local top, bottom = parts[1], parts[#parts]
-          set_extmark(start_row, start_row, 0, #top, "@comment", top)
-          set_extmark(end_row - 1, end_row - 1, 0, #bottom, "@comment", bottom)
+          vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, 0, {
+            end_col = #top,
+            virt_text = { { top, "@comment" } },
+            virt_text_pos = "overlay",
+            hl_group = "@comment",
+          })
+          vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, end_row - 1, 0, {
+            end_col = #bottom,
+            virt_text = { { bottom, "@comment" } },
+            virt_text_pos = "overlay",
+            hl_group = "@comment",
+          })
         end
       elseif capture == "heading_marker" then
-        set_extmark(start_row, end_row, 0, #text, highlight_groups[#text], headings[#text])
+        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, 0, {
+          end_col = #text,
+          virt_text = { { headings[#text], highlight_groups[#text] or highlight_groups[#highlight_groups] } },
+          virt_text_pos = "overlay",
+          hl_group = highlight_groups[#text] or highlight_groups[#highlight_groups],
+        })
       elseif capture == "checkbox_unchecked" then
-        set_extmark(start_row, end_row, start_column, start_column + #text, "@text.todo", icons.markdown.Unchecked)
+        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
+          end_col = start_column + #text,
+          virt_text = { { icons.markdown.Unchecked, "@text.todo" } },
+          virt_text_pos = "overlay",
+          hl_group = "@text.todo",
+        })
       elseif capture == "checkbox_checked" then
-        set_extmark(start_row, end_row, start_column, start_column + #text, "@text.todo", icons.markdown.Checked)
+        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
+          end_col = start_column + #text,
+          virt_text = { { icons.markdown.Checked, "@text.todo" } },
+          virt_text_pos = "overlay",
+          hl_group = "@text.todo",
+        })
       elseif capture == "list_marker_minus" then
-        set_extmark(
-          start_row,
-          end_row,
-          start_column,
-          start_column + #text,
-          "@punctuation.special",
-          icons.markdown.ListMinus
-        )
+        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
+          end_col = start_column + #text,
+          virt_text = { { icons.markdown.ListMinus, "@punctuation.special" } },
+          virt_text_pos = "overlay",
+          hl_group = "@punctuation.special",
+        })
+      elseif capture == "dash" then
+        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, 0, {
+          virt_text = { { ("-"):rep(vim.api.nvim_win_get_width(0)), "@text.dash" } },
+          virt_text_pos = "overlay",
+          hl_group = "combine",
+        })
+      elseif capture == "codeblock" then
+        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, 0, {
+          end_col = 0,
+          end_row = end_row,
+          hl_group = "@text.codeblock",
+          hl_eol = true,
+        })
       end
     end
   end

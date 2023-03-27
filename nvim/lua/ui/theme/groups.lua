@@ -1,3 +1,5 @@
+local color = require "util.color"
+
 local M = {}
 
 local hi = setmetatable({}, {
@@ -218,7 +220,6 @@ M.apply = function(c)
   hi["@error"] = { fg = c.red1 }
   hi["@exception"] = { fg = c.red1 }
   hi["@field"] = { fg = c.fg1 }
-  hi["@field.yaml"] = { fg = c.aqua1 }
   hi["@float"] = { link = "Float" }
   hi["@function"] = { link = "Function" }
   hi["@function.call"] = { link = "Function" }
@@ -268,8 +269,6 @@ M.apply = function(c)
   hi["@text.reference"] = { fg = c.cyan1 }
   hi["@text.strike"] = { strikethrough = true }
   hi["@text.strong"] = { bold = true }
-  hi["@text.title"] = { link = "htmlH1" }
-  hi["@text.heading"] = { link = "htmlH2" }
   hi["@text.todo"] = { link = "Todo" }
   hi["@text.underline"] = { link = "Underlined" }
   hi["@text.uri"] = { fg = c.aqua1, underline = true }
@@ -280,6 +279,13 @@ M.apply = function(c)
   hi["@type.definition"] = { link = "TypeDef" }
   hi["@variable"] = { fg = c.fg1 }
   hi["@variable.builtin"] = { fg = c.fg2, bold = true }
+
+  -- custom treesitter extended highlighting
+  hi["@field.yaml"] = { fg = c.aqua1 }
+  hi["@text.dash"] = { fg = c.yellow0, bold = true }
+  hi["@text.codeblock"] = { bg = color.blend(c.grayX, c.bg2, "70") }
+  hi["@text.title"] = { link = "htmlH1" }
+  hi["@text.heading"] = { link = "htmlH2" }
 
   -- statusline highlighting
   hi.StatusLine = { fg = c.fg0, bg = c.gray0 }

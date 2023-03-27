@@ -23,6 +23,8 @@ M.parse_document = function()
       (list_marker_minus) @list_marker_minus
       (task_list_marker_unchecked) @checkbox_unchecked
       (task_list_marker_checked) @checkbox_checked
+      (thematic_break) @dash
+      (fenced_code_block) @codeblock
     ]]
   )
   return root, parsed_query
