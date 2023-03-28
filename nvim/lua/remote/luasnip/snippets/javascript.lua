@@ -45,7 +45,7 @@ return {
     })
   ),
   s(
-    { trig = "re[quire]", regTrig = true },
+    { trig = "req[uire]", regTrig = true },
     fmt(
       [[const {} = require("{}");]],
       { d(2, rutil.repeat_node_segment, { 1 }, { user_args = { "/", "." } }), i(1, "module") }
