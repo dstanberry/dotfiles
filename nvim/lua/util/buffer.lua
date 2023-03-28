@@ -131,8 +131,8 @@ end
 
 ---Captures the currently selected region of text
 ---@param opt? VisualSelectionSpec
----@return table #Table containing each line of the selected range
----or a table containing the row-column of the start and end of the range
+---@return table, table? #Table containing each line of the selected range
+---and/or a table containing the row-column of the start and end of the range
 function M.get_visual_selection(opt)
   opt = vim.F.if_nil(opt, {})
   local bufnr = 0
@@ -172,7 +172,7 @@ function M.get_visual_selection(opt)
     if start[1] ~= finish[1] then
       lines[#lines] = vim.fn.strpart(lines[#lines], region[finish[1]][1], region[finish[1]][2] - region[finish[1]][1])
     end
-    return lines
+    return lines, { start, finish }
   end
   return {}
 end

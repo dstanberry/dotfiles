@@ -1,6 +1,4 @@
 local telescope = require "telescope"
-local telescope_actions = require "telescope.actions"
-local action_state = require "telescope.actions.state"
 local telescope_builtin = require "telescope.builtin"
 local telescope_themes = require "telescope.themes"
 
@@ -38,187 +36,141 @@ pcall(telescope.load_extension, "zk")
 
 local M = {}
 
-M.edit_with = function(opts, picker_options)
-  return function(options)
-    options = vim.tbl_extend("force", opts, options or {})
-    picker_options = vim.tbl_extend("force", picker_options, {
-      telescope = telescope_themes.get_ivy {},
-    })
-    zk.edit(options, picker_options)
-  end
+---Override of zk API |edit(...)|
+---* Opens a `telescope` notes picker, and edits the selected notes
+---@param options? table additional options
+---@param picker_options? table options for the picker
+M.edit = function(options, picker_options)
+  options = options or {}
+  picker_options = vim.tbl_extend("keep", picker_options, {
+    telescope = telescope_themes.get_ivy {},
+  })
+  zk.edit(options, picker_options)
 end
 
-M.find_notes = function()
-  local notebook_path = zku.resolve_notebook_path(0)
-  local notebook_root = zku.notebook_root(notebook_path)
-  local opts
-  opts = {
-    prompt_title = ("Notes (%s)"):format(notebook_root),
-    cwd = notebook_root,
-    attach_mappings = function(bufnr, map)
-      telescope_actions.select_default:replace(function()
-        telescope_actions.close(bufnr)
-        local selection = action_state.get_selected_entry()
-        local file = vim.fn.expand(string.format("%s/%s", notebook_root, selection[1]))
-        vim.cmd.edit(file)
-      end)
-      map("i", "<cr>", function() telescope_actions.select_default(bufnr) end)
-      return true
-    end,
-  }
-  if notebook_root then
-    telescope_builtin.find_files(telescope_themes.get_ivy(opts))
-  else
-    vim.notify("Zk notebook not found!", vim.log.levels.ERROR)
-  end
+---Override of zk API |pick_tags(...)|
+---* Opens a `telescope` tags picker, and calls the callback with the selection
+---@param options? table additional options
+---@param picker_options? table options for the picker
+---@param cb function
+M.pick_tags = function(options, picker_options, cb)
+  options = options or {}
+  picker_options = vim.tbl_extend("keep", picker_options, {
+    telescope = telescope_themes.get_dropdown {},
+  })
+  zk.pick_tags(options, picker_options, cb)
 end
 
-M.create_note = function()
+---Override of zk API |pick_notes(...)|
+---* Opens a `telescope` notes picker, and calls the callback with the selection
+---@param options? table additional options
+---@param picker_options? table options for the picker
+---@param cb function
+M.pick_notes = function(options, picker_options, cb)
+  options = options or {}
+  picker_options = vim.tbl_extend("keep", picker_options, {
+    telescope = telescope_themes.get_ivy {},
+  })
+  zk.pick_notes(options, picker_options, cb)
+end
+
+---Override of zk API |new(...)|
+---* Opens a `telescope` templates picker and creates/edits a new note based on the template chosen
+---@param options? table additional options
+M.new = function(options)
+  options = options or {}
   telescope_pickers.create("dropdown", templates, {
     prompt_title = "Notes (create from template)",
     callback = function(selection)
-      local opts = {}
-      opts.dir = selection.value.directory
-      if selection.value.ask_for_title then
-        opts.title = vim.fn.input "Title: "
-        if opts.title == "" or opts.title == nil then return end
-      else
-        opts.title = selection.value.label
+      options.dir = selection.value.directory
+      if selection.value.ask_for_title and not options.title then
+        options.title = vim.fn.input "Title: "
+        if options.title == "" or options.title == nil then return end
       end
-      zk.new(opts)
+      options.title = vim.F.if_nil(options.title, selection.value.label)
+      zk.new(options)
     end,
   })
 end
 
-M.create_note_with_title = function()
-  local lines = util.buffer.get_visual_selection()
+---Using the current |`text selection`|, opens a `telescope` templates picker
+---and creates/edits a new note based on the template chosen using the
+---|`text selection`| as either the title or body of the note
+---@param options? table additional options
+M.new_from_selection = function(options)
+  options = options or {}
+  if not options.location and (options.location ~= "title" or options.location ~= "content") then
+    error(("Invalid option to create note: '%s'"):format(tostring(options.location)))
+  end
+  local lines, range = util.buffer.get_visual_selection()
   local chunk = table.concat(lines)
-  local location = vim.lsp.util.make_given_range_params()
-  location.uri = location.textDocument.uri
-  location.textDocument = nil
-  location.range = chunk
-  if chunk == nil then error "No selected text" end
-  telescope_pickers.create("dropdown", templates, {
-    prompt_title = "Notes (create from template)",
-    callback = function(selection)
-      local opts = {}
-      opts.dir = selection.value.directory
-      zk.new(vim.tbl_extend("force", { insertLinkAtLocation = location, title = chunk }, opts or {}))
-    end,
-  })
+  if #range == 2 then
+    local params = util.map(function(params, v, k)
+      local row, col = unpack(range[k])
+      col = (vim.o.selection ~= "exclusive" and v == "end") and col + 1 or col
+      params[v] = { line = row, character = col }
+      return params
+    end, { "start", "end" })
+    local location = vim.lsp.util.make_given_range_params()
+    location.uri = location.textDocument.uri
+    location.textDocument = nil
+    location.range = params
+    if chunk == nil then error "Unable to create note: No selected text" end
+    vim.schedule(function() M.new { insertLinkAtLocation = location, [options.location] = chunk } end)
+  end
 end
 
-M.create_note_with_content = function()
-  local lines = util.buffer.get_visual_selection()
-  local chunk = table.concat(lines)
-  local location = vim.lsp.util.make_given_range_params()
-  location.uri = location.textDocument.uri
-  location.textDocument = nil
-  location.range = chunk
-  if chunk == nil then error "No selected text" end
-  telescope_pickers.create("dropdown", templates, {
-    callback = function(selection)
-      local opts = {}
-      opts.prompt_title = "Notes (create from template)"
-      opts.dir = selection.value.directory
-      if selection.value.ask_for_title then
-        opts.title = vim.fn.input "Title: "
-        if opts.title == "" or opts.title == nil then return end
-      else
-        opts.title = selection.value.label
-      end
-      zk.new(vim.tbl_extend("force", { insertLinkAtLocation = location, content = chunk }, opts or {}))
-    end,
-  })
-end
-
-M.find_orphans = function() M.edit_with({ orphan = true }, { title = "Notes (orphaned)" }) end
-
-M.find_recent_notes = function() M.edit_with({ createdAfter = "2 weeks ago" }, { title = "Notes (recent)" }) end
-
-M.find_templated_note = function(template)
-  M.edit_with({ hrefs = { template }, sort = { "created" } }, { title = string.format("Notes (%s)", template) })
-end
-
-M.find_tagged_notes = function()
-  zk.pick_tags({}, { telescope = telescope_themes.get_dropdown {}, title = "Notes (tags)" }, function(tags)
-    tags = vim.tbl_map(function(v) return v.name end, tags)
-    M.edit_with({ tags = tags }, { title = ("Notes (tagged as %s)"):format(vim.inspect(tags)) })()
+---Opens a `telescope` picker and inserts a link to the note
+---in the current document using the title of the selected note
+---@param options? table additional options
+M.insert_link = function(options)
+  options = options or {}
+  M.pick_notes(options, { title = "Notes (insert link to note)", multi_select = false }, function(note)
+    local pos = vim.api.nvim_win_get_cursor(0)[2]
+    local line = vim.api.nvim_get_current_line()
+    local pwd = vim.fn.expand "%:p:h:t"
+    local note_path = note.path
+    if pwd ~= note_path then note_path = ("../%s"):format(note_path) end
+    local updated = ("%s[%s](%s)%s"):format(line:sub(0, pos), note.title, note_path:sub(1, -6), line:sub(pos + 1))
+    vim.api.nvim_set_current_line(updated)
   end)
 end
 
-M.grep_notes = function(opts)
-  opts = vim.F.if_nil(opts, {})
-  local options = opts.fargs and unpack(opts.fargs) or {}
-  local notebook_path = options.notebook_path or zku.resolve_notebook_path(0)
-  local notebook_root = zku.notebook_root(notebook_path)
-  assert(notebook_root ~= nil and #notebook_root > 0, "No notebook found.")
-  telescope_builtin.live_grep { cwd = notebook_root, prompt_title = "Notes (live grep)" }
-end
-
-M.create_note_from_selection = function(opts)
-  opts = vim.F.if_nil(opts, {})
-  local cmd = unpack(opts.fargs)
-  if cmd == "content" then
-    M.create_note_with_title()
-  elseif cmd == "title" then
-    M.create_note_with_content()
-  else
-    error(("Invalid option to create note: '%s'"):format(cmd))
-  end
-end
-
-M.insert_link = function(opts)
-  opts = vim.F.if_nil(opts, {})
-  local options = opts.fargs and unpack(opts.fargs) or {}
-  zk.pick_notes(
-    options,
-    { telescope = telescope_themes.get_ivy {}, title = "Notes (insert link to note)", multi_select = false },
-    function(notes)
-      local pos = vim.api.nvim_win_get_cursor(0)[2]
-      local line = vim.api.nvim_get_current_line()
-      local pwd = vim.fn.expand "%:p:h:t"
-      notes = { notes }
-      for _, note in ipairs(notes) do
-        local npath = note.path
-        if pwd ~= npath then npath = ("../%s"):format(npath) end
-        local updated = ("%s[%s](%s)%s"):format(line:sub(0, pos), note.title, npath:sub(1, -6), line:sub(pos + 1))
-        vim.api.nvim_set_current_line(updated)
-      end
-    end
-  )
-end
-
-M.insert_link_from_selection = function(opts)
-  opts = vim.F.if_nil(opts, {})
-  local options = opts.fargs and unpack(opts.fargs) or {}
+---Opens a `telescope` picker and inserts a link to the note
+---in the current document using the current text selection
+---@param options? table additional options
+M.insert_link_from_selection = function(options)
+  options = options or {}
   local lines = util.buffer.get_visual_selection()
   local selection = table.concat(lines)
-  zk.pick_notes(
+  M.pick_notes(
     options,
-    {
-      telescope = telescope_themes.get_ivy {},
-      title = ("Notes (link '%s' to note)"):format(selection),
-      multi_select = false,
-    },
-    function(notes)
+    { title = ("Notes (link '%s' to note)"):format(selection), multi_select = false },
+    function(note)
       local pos = vim.api.nvim_win_get_cursor(0)[2]
       local line = vim.api.nvim_get_current_line()
       local pwd = vim.fn.expand "%:p:h:t"
-      notes = { notes }
-      for _, note in ipairs(notes) do
-        local npath = note.path
-        if pwd ~= npath then npath = ("../%s"):format(npath) end
-        local updated = ("%s[%s](%s)%s"):format(
-          line:sub(0, pos - #selection),
-          selection,
-          npath:sub(1, -6),
-          line:sub(pos + 1)
-        )
-        vim.api.nvim_set_current_line(updated)
-      end
+      local note_path = note.path
+      if pwd ~= note_path then note_path = ("../%s"):format(note_path) end
+      local updated = ("%s[%s](%s)%s"):format(
+        line:sub(0, pos - #selection),
+        selection,
+        note_path:sub(1, -6),
+        line:sub(pos + 1)
+      )
+      vim.api.nvim_set_current_line(updated)
     end
   )
+end
+
+---Opens a `telescope` picker and edits the selection containing the current |grep| pattern
+---@param options? table additional options
+M.live_grep = function(options)
+  options = options or {}
+  local notebook_path = options.notebook_path and options.notebook_path or zku.resolve_notebook_path(0)
+  local notebook_root = zku.notebook_root(notebook_path)
+  if notebook_root == nil or #notebook_root == 0 then error "No notebook found." end
+  telescope_builtin.live_grep { cwd = notebook_root, prompt_title = "Notes (live grep)" }
 end
 
 return M
