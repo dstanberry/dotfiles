@@ -24,15 +24,11 @@ return {
           local is_group = formatted:match "group"
           local is_offset = formatted:match "offset"
           local is_separator = formatted:match "separator"
-          local is_selected = formatted:match "selected"
-          local is_visible = formatted:match "visible"
           if not is_group or (is_group and is_separator) then attrs.bg = c.bg2 end
           if is_separator and not (is_group or is_offset) then attrs.fg = c.bgX end
-          if is_selected or is_visible then attrs.bg = c.bgX end
           agg[name] = attrs
           return agg
         end, defaults.highlights)
-
         hl.buffer_selected.italic = false
         hl.buffer_visible.bold = true
         hl.buffer_visible.italic = false
