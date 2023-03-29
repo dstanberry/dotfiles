@@ -64,6 +64,7 @@ return {
           use_languagetree = false,
           -- disable = { "markdown" },
         },
+        indent = { enabled = true },
         incremental_selection = {
           enable = true,
           keymaps = {
