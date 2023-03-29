@@ -100,7 +100,7 @@ return {
           items = {
             {
               name = "SQL",
-              icon = icons.groups.Sql,
+              -- icon = icons.groups.Sql,
               auto_close = true,
               highlight = { fg = c.orange0 },
               ---@diagnostic disable-next-line: undefined-field
@@ -111,7 +111,7 @@ return {
             },
             {
               name = "Unit Tests",
-              icon = icons.groups.Lab,
+              -- icon = icons.groups.Lab,
               highlight = { fg = c.yellow0 },
               auto_close = true,
               matcher = function(buf)
@@ -125,7 +125,7 @@ return {
             },
             {
               name = "Zettelkasten Notes",
-              icon = icons.groups.Book,
+              -- icon = icons.groups.Book,
               highlight = { fg = c.cyan1 },
               auto_close = true,
               matcher = function(buf) return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten" end,
