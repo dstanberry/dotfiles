@@ -1,6 +1,7 @@
 local markdown = require "ft.markdown"
 
-local find_orphaned = function() markdown.zk.edit({ orphan = true }, { title = "Notes (orphaned)" }) end
+local find_orphaned =
+  function() markdown.zk.edit({ orphan = true, excludeHrefs = { "resources" } }, { title = "Notes (orphaned)" }) end
 
 local find_recent = function() markdown.zk.edit({ createdAfter = "2 weeks ago" }, { title = "Notes (recent)" }) end
 
