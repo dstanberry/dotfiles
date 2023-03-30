@@ -104,7 +104,7 @@ return {
           { breadcrumbs, color = "Winbar" },
           {
             function() return require("nvim-navic").get_location() end,
-            separator = { left = highlighter.sanitize "Winbar" .. pad(icons.misc.ChevronRight, "right") },
+            separator = { left = highlighter.sanitize "NavicSeparator" .. pad(icons.misc.CaretRight, "right", 2) },
             padding = { left = 0 },
             color = "Winbar",
             cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() and min_width(120) end,

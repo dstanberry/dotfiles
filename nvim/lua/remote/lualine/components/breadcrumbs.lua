@@ -1,6 +1,5 @@
 local devicons_ok, devicons = pcall(require, "nvim-web-devicons")
 
-local icons = require "ui.icons"
 local util = require "util"
 local stl_util = require "remote.lualine.util"
 local filetypes = require "remote.lualine.filetypes"
@@ -8,10 +7,12 @@ local filetypes = require "remote.lualine.filetypes"
 local add = stl_util.add
 local highlighter = stl_util.highlighter
 local separator = has "win32" and [[\]] or "/"
-local text_hl = highlighter.sanitize "Winbar"
+
+local generic_hl = highlighter.sanitize "Winbar"
+local fname_hl = highlighter.sanitize "WinbarFilename"
 
 local default_options = {
-  separator = pad(icons.misc.ChevronRight, "right"),
+  separator = pad("/", "right"),
   maxlen = 60,
 }
 
@@ -37,15 +38,15 @@ local get_sections = function(path, fname, ext, sep)
       local icon, icon_hl = devicons.get_icon(fname, ext, { default = true })
       if #segments == 0 then
         if k == #parts and devicons_ok then
-          section = add(highlighter.sanitize(icon_hl), { pad(icon, "both") }, true) .. add(text_hl, { v })
+          section = add(highlighter.sanitize(icon_hl), { pad(icon, "both") }, true) .. add(fname_hl, { v })
         else
-          section = add(text_hl, { pad(v, "left") })
+          section = add(generic_hl, { pad(v, "left") })
         end
       else
         if k == #parts and devicons_ok then
-          section = add(highlighter.sanitize(icon_hl), { pad(icon, "right") }, true) .. add(text_hl, { v })
+          section = add(highlighter.sanitize(icon_hl), { pad(icon, "right") }, true) .. add(fname_hl, { v })
         else
-          section = add(text_hl, { v })
+          section = add(generic_hl, { v })
         end
       end
       table.insert(segments, section)

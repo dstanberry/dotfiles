@@ -169,7 +169,7 @@ M.apply = function(c)
   hi.DiagnosticUnderlineHint = { undercurl = true, sp = c.magenta1 }
 
   -- lsp semantic tokens
-  hi["@lsp.type.class"] = { fg = c.cyan1 }
+  hi["@lsp.type.class"] = { link = "@class" }
   hi["@lsp.type.decorator"] = { link = "@constant.macro" }
   hi["@lsp.type.enum"] = { link = "@constructor" }
   hi["@lsp.type.enumMember"] = { link = "@constant" }
@@ -206,6 +206,7 @@ M.apply = function(c)
   hi["@boolean"] = { link = "Boolean" }
   hi["@character"] = { link = "Character" }
   hi["@character.special"] = { link = "SpecialChar" }
+  hi["@class"] = { fg = c.cyan1 }
   hi["@comment"] = { link = "Comment" }
   hi["@comment.documentation"] = { link = "SpecialComment" }
   hi["@conceal"] = { link = "Conceal" }
@@ -245,7 +246,7 @@ M.apply = function(c)
   hi["@punctuation.delimiter"] = { fg = c.aqua0 }
   hi["@punctuation.special"] = { fg = c.aqua0 }
   hi["@repeat"] = { link = "Repeat" }
-  hi["@storageclass"] = { link = "Type" }
+  hi["@storageclass"] = { link = "StorageClass" }
   hi["@string"] = { link = "String" }
   hi["@string.documentation"] = { link = "SpecialComment" }
   hi["@string.escape"] = { fg = c.purple0 }
@@ -297,8 +298,11 @@ M.apply = function(c)
   hi.TabLineSel = { fg = c.fg1, bg = c.bg0, bold = true }
 
   -- winbar highlighting
-  hi.Winbar = { fg = c.gray1, bg = c.bg2 }
+  hi.Winbar = { fg = color.lighten(c.gray1, 10), bg = c.bg2 }
   hi.WinbarNC = { bg = c.bg2 }
+
+  hi.WinbarFilename = { fg = color.lighten(c.gray2, 5), bg = c.bg2, bold = true }
+  hi.WinbarContext = { fg = color.lighten(c.gray1, 15), bg = c.bg2 }
 
   -- ensure termguicolors is set (likely redundant)
   vim.opt.termguicolors = true
