@@ -18,10 +18,14 @@ function _G.has(feature) return vim.fn.has(feature) > 0 end
 ---Adds whitespace to the start, end or both start and end of a string
 ---@param s string
 ---@param direction string
+---@param amount? number #Repeat pad `n` times to the left/right of string or both sides
+---@param ramount? number #Repeat pad `n` times to the right of string
 ---@return string result
-function _G.pad(s, direction)
-  local left = (direction == "left" or direction == "both") and " " or ""
-  local right = (direction == "right" or direction == "both") and " " or ""
+function _G.pad(s, direction, amount, ramount)
+  amount = vim.F.if_nil(amount, 1)
+  ramount = vim.F.if_nil(ramount, amount)
+  local left = (direction == "left" or direction == "both") and string.rep(" ", amount) or ""
+  local right = (direction == "right" or direction == "both") and string.rep(" ", ramount) or ""
   return string.format("%s%s%s", left, s, right)
 end
 
