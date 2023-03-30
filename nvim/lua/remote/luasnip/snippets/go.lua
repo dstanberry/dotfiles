@@ -1,8 +1,6 @@
 local ts_locals = require "nvim-treesitter.locals"
 local ts_utils = require "nvim-treesitter.ts_utils"
 
-local get_node_text = vim.treesitter.query.get_node_text
-
 local rutil = require "remote.luasnip.util"
 
 ---@diagnostic disable: undefined-global
@@ -48,13 +46,13 @@ local handlers = {
     for idx = 0, count - 1 do
       local matching_node = node:named_child(idx)
       local type_node = matching_node:field("type")[1]
-      table.insert(result, transform(get_node_text(type_node, 0), info))
+      table.insert(result, transform(vim.treesitter.get_node_text(type_node, 0), info))
       if idx ~= count - 1 then table.insert(result, t { ", " }) end
     end
     return result
   end,
   type_identifier = function(node, info)
-    local text = get_node_text(node, 0)
+    local text = vim.treesitter.get_node_text(node, 0)
     return { transform(text, info) }
   end,
 }
@@ -79,7 +77,7 @@ local return_types = function(info)
     print "Not inside of a function"
     return t ""
   end
-  local query = vim.treesitter.parse_query(
+  local query = vim.treesitter.query.parse(
     "go",
     [[
       [
@@ -107,7 +105,7 @@ end
 
 return {
   s(
-    { trig = "efi" },
+    { trig = "efi", name = "function call", dscr = "Check error after `|func(..)|` call" },
     fmt("{val}, {err1} := {func}({args})\nif {err2} != nil {{\n\treturn {result}\n}}", {
       val = i(1, "val"),
       err1 = i(2, "err"),
@@ -118,7 +116,7 @@ return {
     })
   ),
   s(
-    { trig = "fn" },
+    { trig = "fn", name = "function", dscr = "Declare function" },
     fmt("func {}{}({}) {} {{\n{}\n}}", {
       c(1, {
         t "",
@@ -146,7 +144,7 @@ return {
     })
   ),
 }, {
-  s({ trig = "print" }, fmt([[fmt.Println("{}")]], { i(1) }), {
+  s({ trig = "print", name = "log", dscr = "Print to stdout" }, fmt([[fmt.Println("{}")]], { i(1) }), {
     condition = conds.line_begin,
   }),
 }

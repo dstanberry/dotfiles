@@ -27,11 +27,17 @@ return {
   rutil.autopair.create("'", "'", rutil.autopair.char_matched),
   rutil.autopair.create('"', '"', rutil.autopair.char_matched),
   rutil.autopair.create("`", "`", rutil.autopair.char_matched),
-  s({ trig = "date" }, { p(os.date, "%m-%d-%Y") }),
-  s({ trig = "time" }, { p(os.date, "%H:%M") }),
-  s({ trig = "lorem" }, c(1, generate_lorem(100))),
+  s({ trig = "date", name = "date", dscr = "Current date" }, { p(os.date, "%m-%d-%Y") }),
+  s({ trig = "time", name = "time", dscr = "Current time" }, { p(os.date, "%H:%M") }),
+  s({ trig = "lorem", name = "placeholder", dscr = "Placeholder text" }, c(1, generate_lorem(100))),
   s(
-    { trig = "(%d+)lorem", regTrig = true, wordTrig = false, hidden = true },
+    {
+      trig = "(%d+)lorem",
+      regTrig = true,
+      wordTrig = false,
+      name = "placeholder",
+      dscr = "Placeholder text (`n` lines)",
+    },
     f(function(_, snip)
       local lines = snip.captures[1]
       if not tonumber(lines) then lines = 1 end
@@ -39,7 +45,7 @@ return {
     end)
   ),
 }, {
-  s({ trig = "#!" }, { d(1, shebang, {}) }),
+  s({ trig = "#!", name = "shebang", dscr = "Script interpreter" }, { d(1, shebang, {}) }),
   s(
     { trig = "{;", wordTrig = false, hidden = true },
     fmt(

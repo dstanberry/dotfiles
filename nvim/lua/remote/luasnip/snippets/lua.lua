@@ -4,16 +4,21 @@ local rutil = require "remote.luasnip.util"
 require("remote.luasnip.nodes").setup_snip_env()
 
 return {
-  s({ trig = "ig[nore]", regTrig = true }, { t "-- stylua: ignore" }),
+  s({
+    trig = "ig[nore]",
+    regTrig = true,
+    name = "disable formatting",
+    dscr = "Disable `stylua` formatting for the next region",
+  }, { t "-- stylua: ignore" }),
   s(
-    { trig = "req[uire]", regTrig = true },
+    { trig = "req[uire]", regTrig = true, name = "require statement", dscr = "Require statement" },
     fmt([[local {} = require("{}")]], {
       d(2, rutil.repeat_node_segment, { 1 }, { user_args = { "." } }),
       i(1, "mod"),
     })
   ),
   s(
-    { trig = "fn" },
+    { trig = "fn", name = "function", dscr = "Declare function" },
     fmt("{}\n{}\nend", {
       c(1, {
         sn(nil, fmt("function({})", { i(1) })),
@@ -24,7 +29,7 @@ return {
     })
   ),
   s(
-    { trig = "for" },
+    { trig = "for", name = "for loop", dscr = "For loop (dynamic)" },
     fmt("for {} do\n{}\nend", {
       c(1, {
         sn(
@@ -58,14 +63,14 @@ return {
     })
   ),
   s(
-    { trig = "if" },
+    { trig = "if", name = "if statement", dscr = "If statement" },
     fmt("if {} then\n{}\nend", {
       i(1, "expr"),
       d(2, rutil.saved_text, {}, { user_args = { { indent = true } } }),
     })
   ),
   s(
-    { trig = "ok" },
+    { trig = "ok", name = "require check", dscr = "Check error after `|require(...)|` call" },
     fmt('local {}, {} = pcall(require,"{}")\nif not {} then\n\treturn\nend', {
       i(1, "ok"),
       d(3, rutil.repeat_node_segment, { 2 }, { user_args = { "." } }),
@@ -74,6 +79,6 @@ return {
     })
   ),
 }, {
-  s({ trig = "[[-", wordTrig = false, hidden = true }, fmt("--[[\n\t{}\n]]", i(1))),
-  s({ trig = "[[;", wordTrig = false, hidden = true }, fmt("[[\n\t{}\n]]", i(1))),
+  s({ trig = "[[-", wordTrig = false, hidden = true, name = "multi-line comment", dscr = "Multi-line comment" }, fmt("--[[\n\t{}\n]]", i(1))),
+  s({ trig = "[[;", wordTrig = false, hidden = true, name = "multiline string", dscr = "Multi-line string" }, fmt("[[\n\t{}\n]]", i(1))),
 }

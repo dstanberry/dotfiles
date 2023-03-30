@@ -5,7 +5,7 @@ require("remote.luasnip.nodes").setup_snip_env()
 
 return {
   s(
-    { trig = "fn" },
+    { trig = "fn", name = "function", dscr = "Declare function" },
     fmt("function {}({}) {{\n{}\n}}", {
       i(1, "main"),
       i(2, ""),
@@ -13,7 +13,7 @@ return {
     })
   ),
   s(
-    { trig = "for" },
+    { trig = "for", name = "for loop", dscr = "For loop (dynamic)" },
     fmt("for ({} {}) {{\n{}\n}}", {
       c(1, {
         t "let",
@@ -36,7 +36,7 @@ return {
     })
   ),
   s(
-    { trig = "im[port]", regTrig = true },
+    { trig = "im[port]", regTrig = true, name = "import statement", dscr = "Import statement" },
     fmt([[import {};]], {
       c(1, {
         sn(nil, fmt([["{}"]], { i(1, "module-name") })),
@@ -45,15 +45,15 @@ return {
     })
   ),
   s(
-    { trig = "req[uire]", regTrig = true },
+    { trig = "req[uire]", regTrig = true, name = "require statement", dscr = "Require statement" },
     fmt(
       [[const {} = require("{}");]],
       { d(2, rutil.repeat_node_segment, { 1 }, { user_args = { "/", "." } }), i(1, "module") }
     )
   ),
-  s({ trig = "switch" }, rutil.switch_case_node),
+  s({ trig = "switch", name = "switch statement", dscr = "Switch statement (recursive)" }, rutil.switch_case_node),
   s(
-    { trig = "try" },
+    { trig = "try", name = "try - catch", dscr = "Try - catch block" },
     fmt("try {{\n{}\ncatch ({}) {{\n\t{}\n}}", {
       d(1, rutil.saved_text, {}, { user_args = { { text = "// TODO", indent = true } } }),
       i(2, "err"),
@@ -61,7 +61,7 @@ return {
     })
   ),
   s(
-    { trig = "while" },
+    { trig = "while", name = "while loop", dscr = "While loop" },
     fmt("while({}) {{\n{}\n}}", {
       i(1, "condition"),
       d(2, rutil.saved_text, {}, { user_args = { { text = "// TODO", indent = true } } }),
@@ -69,7 +69,7 @@ return {
   ),
 }, {
   s(
-    { trig = ">>", wordTrig = false, hidden = true },
+    { trig = ">>", wordTrig = false, hidden = true, name = "arrow function", dscr = "Arrow function" },
     fmt("{} => {}", {
       c(1, {
         sn(nil, fmt("({})", { i(1) })),
@@ -86,7 +86,16 @@ return {
       }),
     })
   ),
-  s({ trig = "log" }, fmt([[console.log({});]], i(1)), {
-    condition = conds.line_begin,
-  }),
+  s(
+    { trig = "log", name = "log", dscr = "Print to stdout" },
+    fmt([[console.log({});]], {
+      c(1, {
+        sn(nil, fmt("{}", { i(1) })),
+        sn(nil, fmt([["{}", {}]], { i(1, "description"), i(2, "obj") })),
+      }),
+    }),
+    {
+      condition = conds.line_begin,
+    }
+  ),
 }

@@ -20,7 +20,7 @@ M.autopair.create = function(pair_begin, pair_end, ...)
     return function() return func(unpack(args)) end
   end
   return s(
-    { trig = pair_begin, wordTrig = false, hidden = true },
+    { trig = pair_begin, wordTrig = false, hidden = true, name = "autopair", dscr = "Wrap sequence inside `character`" },
     { t { pair_begin }, i(1), t { pair_end } },
     { condition = part(negate, part(..., pair_begin, pair_end)) }
   )

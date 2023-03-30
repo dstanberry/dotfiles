@@ -3,7 +3,7 @@ require("remote.luasnip.nodes").setup_snip_env()
 
 return {
   s(
-    { trig = "html" },
+    { trig = "html", name = "docgen", dscr = "HTML scaffold" },
     fmt(
       [[
         <!DOCTYPE html>
@@ -25,7 +25,7 @@ return {
     )
   ),
   s(
-    { trig = "script" },
+    { trig = "script", name = "script", dscr = "Script tag" },
     fmt("{}</script>", {
 
       c(1, {
