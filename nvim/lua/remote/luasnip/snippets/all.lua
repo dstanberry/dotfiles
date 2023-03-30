@@ -5,7 +5,7 @@ require("remote.luasnip.nodes").setup_snip_env()
 
 local function shebang(_, _)
   return sn(nil, {
-    t(rutil.comment_string()),
+    t(rutil.comment_string()[1]),
     t "!/usr/bin/env ",
     i(1, vim.bo.filetype),
   })
@@ -54,7 +54,7 @@ return {
         1,
         rutil.saved_text,
         {},
-        { user_args = { { text = ("%s TODO"):format(rutil.comment_string()), indent = true } } }
+        { user_args = { { text = ("%s TODO"):format(rutil.comment_string()[1]), indent = true } } }
       )
     )
   ),

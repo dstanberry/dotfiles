@@ -5,10 +5,20 @@ require("remote.luasnip.nodes").setup_snip_env()
 
 local M = {}
 
-M.comment_string = function()
-  local cstring = vim.split(vim.bo.commentstring, "%s", true)[1]
-  if cstring == "/*" then cstring = "//" end
-  return vim.trim(cstring)
+M.comment_string = function(ctype)
+  ctype = ctype or 1
+  local commentstring = vim.split(vim.bo.commentstring, "%s", true)
+  local cstring = commentstring[1]
+  local left = vim.trim(cstring)
+  local right = commentstring[2] and vim.trim(commentstring[2]) or ""
+  local comment_ok, _ = pcall(require, "Comment")
+  if comment_ok then
+    local calculate_comment_string = require("Comment.ft").calculate
+    local comment_utils = require "Comment.utils"
+    cstring = calculate_comment_string { ctype = ctype, range = comment_utils.get_region() } or vim.bo.commentstring
+    left, right = comment_utils.unwrap_cstr(cstring)
+  end
+  return { left, right }
 end
 
 M.autopair = {}
@@ -53,12 +63,16 @@ local function get_case_node(index)
             2,
             M.saved_text,
             {},
-            { user_args = { { text = ("%s TODO"):format(M.comment_string), indent = false } } }
+            { user_args = { { text = ("%s TODO"):format(M.comment_string()[1]), indent = false } } }
           ),
           continuation = c(3, {
             sn(
               nil,
-              fmta("\ndefault:\n\t<body>\n", { body = i(1, ("%s TODO"):format(M.comment_string)) }, { dedent = false })
+              fmta(
+                "\ndefault:\n\t<body>\n",
+                { body = i(1, ("%s TODO"):format(M.comment_string()[1])) },
+                { dedent = false }
+              )
             ),
             vim.deepcopy(case_node),
           }),
