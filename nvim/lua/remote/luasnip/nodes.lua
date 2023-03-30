@@ -39,6 +39,7 @@ local snip_defs = {
   util = require "luasnip.util.util",
   fmt = require("luasnip.extras.fmt").fmt,
   fmta = require("luasnip.extras.fmt").fmta,
+  postfix = require("luasnip.extras.postfix").postfix,
   ls = ls,
   ins_generate = function(nodes)
     return setmetatable(nodes or {}, {
