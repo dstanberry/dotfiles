@@ -2,8 +2,6 @@ local c = require("ui.theme").colors
 local color = require "util.color"
 local icons = require "ui.icons"
 
-local util = require "remote.lualine.util"
-local highlighter = util.highlighter
 local theme = require "remote.lualine.theme"
 local filetypes = require "remote.lualine.filetypes"
 
@@ -108,13 +106,16 @@ return {
             color = "Winbar",
             cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
           },
-          { breadcrumbs, color = "Winbar" },
           {
-            function() return require("nvim-navic").get_location() end,
-            separator = { left = highlighter.sanitize "NavicSeparator" .. pad(icons.misc.CaretRight, "right", 2) },
+            breadcrumbs,
+            color = "Winbar",
+            padding = { right = 0 },
+          },
+          {
+            require "remote.lualine.components.navic",
             padding = { left = 0 },
             color = "Winbar",
-            cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() and min_width(120) end,
+            cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
           },
         },
         lualine_x = {
@@ -132,7 +133,10 @@ return {
             color = "Winbar",
             cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
           },
-          { breadcrumbs, color = "Winbar" },
+          {
+            breadcrumbs,
+            color = "Winbar",
+          },
         },
         lualine_x = {
           {
