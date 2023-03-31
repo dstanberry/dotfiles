@@ -284,7 +284,7 @@ M.apply = function(c)
   -- custom treesitter extended highlighting
   hi["@field.yaml"] = { fg = c.aqua1 }
   hi["@text.dash"] = { fg = c.yellow0, bold = true }
-  hi["@text.codeblock"] = { bg = color.blend(c.grayX, c.bg2, "70") }
+  hi["@text.codeblock"] = { bg = color.blend(c.grayX, c.bg2, 0.44) }
   hi["@text.title"] = { link = "htmlH1" }
   hi["@text.heading"] = { link = "htmlH2" }
 

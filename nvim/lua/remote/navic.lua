@@ -32,7 +32,7 @@ groups.new("NavicIconsTypeParameter", { link = "@type" })
 groups.new("NavicIconsVariable", { link = "@field.yaml" })
 
 groups.new("NavicText", { link = "WinbarContext" })
-groups.new("NavicSeparator", { fg = color.blend(c.purple1, c.bg2, "60") })
+groups.new("NavicSeparator", { fg = color.blend(c.purple1, c.bg2, 0.38) })
 
 return {
   "SmiteshP/nvim-navic",

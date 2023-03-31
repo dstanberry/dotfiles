@@ -59,11 +59,11 @@ local c = {
 c.black = color.darken(c.bg2, 50)
 c.white = color.darken(c.fg1, 10)
 
-c.bgX = color.blend(c.bg0, c.bg2, "50")
-c.bg_visual = color.blend(c.blue1, c.bg2, "50")
+c.bgX = color.blend(c.bg0, c.bg2, 0.31)
+c.bg_visual = color.blend(c.blue1, c.bg2, 0.31)
 
-c.fg_conceal = color.blend(c.magenta2, c.bg2, "70")
-c.fg_comment = color.blend(c.blue0, c.gray1, "50")
+c.fg_conceal = color.blend(c.magenta2, c.bg2, 0.44)
+c.fg_comment = color.blend(c.blue0, c.gray1, 0.31)
 
 c.grayX = color.darken(c.gray1, 25)
 
@@ -73,8 +73,8 @@ c.diff_change = "#174061"
 c.diff_text = "#1b3956"
 
 c.lsp_fg = color.lighten(c.gray1, 20)
-c.lsp_read = color.blend(color.darken(c.cyan2, 40), c.bg2, "66")
-c.lsp_text = color.blend(c.yellow0, c.bg2, "66")
-c.lsp_write = color.blend(c.orange0, c.bg2, "66")
+c.lsp_read = color.blend(color.darken(c.cyan2, 40), c.bg2, 0.4)
+c.lsp_text = color.blend(c.yellow0, c.bg2, .4)
+c.lsp_write = color.blend(c.orange0, c.bg2, .4)
 
 return c
