@@ -6,9 +6,9 @@ local util = require "util"
 groups.new("NeoTreeNormal", { link = "NormalSB" })
 groups.new("NeoTreeNormalNC", { link = "NormalSB" })
 groups.new("NeoTreeTabActive", { fg = c.fg1, bg = c.bgX })
-groups.new("NeoTreeTabInactive", { fg = c.gray2, bg = c.bg2 })
-groups.new("NeoTreeTabSeparatorActive", { fg = c.fg1, bg = c.bgX })
-groups.new("NeoTreeTabSeparatorInactive", { fg = c.bg1, bg = c.bg2 })
+groups.new("NeoTreeTabInactive", { fg = c.gray1, bg = c.bg2 })
+groups.new("NeoTreeTabSeparatorActive", { fg = c.fg1, bg = c.bg2 })
+groups.new("NeoTreeTabSeparatorInactive", { fg = c.bg2, bg = c.bg2 })
 
 groups.new("NeoTreeRootName", { fg = c.fg1 })
 
