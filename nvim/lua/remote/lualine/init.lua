@@ -1,4 +1,5 @@
 local c = require("ui.theme").colors
+local color = require "util.color"
 local icons = require "ui.icons"
 
 local util = require "remote.lualine.util"
@@ -50,9 +51,9 @@ return {
               removed = pad(icons.git.TextRemoved, "right"),
             },
             diff_color = {
-              added = { fg = c.green2 },
-              modified = { fg = c.yellow2 },
-              removed = { fg = c.red1 },
+              added = { fg = color.blend(c.green2, c.white, 0.6) },
+              modified = { fg = color.blend(c.yellow2, c.white, 0.6) },
+              removed = { fg = color.blend(c.red1, c.white, 0.6) },
             },
           },
         },
@@ -65,6 +66,12 @@ return {
               warn = pad(icons.status.Warn, "right"),
               info = pad(icons.status.Info, "right"),
               hint = pad(icons.status.Hint, "right"),
+            },
+            diagnostics_color = {
+              error = { fg = color.blend(c.red1, c.white, 0.7) },
+              warn = { fg = color.blend(c.yellow2, c.white, 0.7) },
+              info = { fg = color.blend(c.aqua1, c.white, 0.7) },
+              hint = { fg = color.blend(c.magenta1, c.white, 0.7) },
             },
           },
           {
