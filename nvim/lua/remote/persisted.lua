@@ -3,14 +3,29 @@ local util = require "util"
 return {
   "olimorris/persisted.nvim",
   dependencies = { "nvim-telescope/telescope.nvim" },
-  lazy = false,
+  event = "BufReadPre",
   init = function()
+    vim.opt.sessionoptions = { "buffers", "curdir", "help", "tabpages", "winsize" }
     local sessionmgr = vim.api.nvim_create_augroup("sessionmgr", { clear = true })
+    vim.api.nvim_create_autocmd("User", {
+      group = sessionmgr,
+      pattern = "PersistedLoadPre",
+      callback = function()
+        if package.loaded["noice"] then vim.cmd "Noice disable" end
+      end,
+    })
     vim.api.nvim_create_autocmd("User", {
       group = sessionmgr,
       pattern = "PersistedTelescopeLoadPre",
       callback = function()
         vim.schedule(function() vim.cmd "%bd" end)
+      end,
+    })
+    vim.api.nvim_create_autocmd("User", {
+      group = sessionmgr,
+      pattern = "PersistedLoadPost",
+      callback = function()
+        if package.loaded["noice"] then vim.cmd "Noice enable" end
       end,
     })
     vim.api.nvim_create_autocmd("User", {
