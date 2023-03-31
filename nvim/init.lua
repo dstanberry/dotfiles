@@ -28,8 +28,9 @@ vim.filetype.add {
     jenkinsfile = "groovy",
   },
   filename = {
-    ["tmux.conf"] = "tmux",
     [".gitignore"] = "conf",
+    ["tmux.conf"] = "tmux",
+    jenkinsfile = "groovy",
   },
   pattern = {
     [".*/git/config"] = "gitconfig",
