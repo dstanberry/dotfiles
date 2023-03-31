@@ -1,4 +1,7 @@
+local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
+
+groups.new("DiffviewFilePanelTitle", { link = "@text.environment" })
 
 return {
   "sindrets/diffview.nvim",
@@ -20,7 +23,6 @@ return {
     { "<localleader>gh", "<cmd>DiffviewFileHistory<cr>", desc = "diffview: file history" },
   },
   config = function()
-    local actions = require "diffview.actions"
     local diffview = require "diffview"
     local lazy = require "diffview.lazy"
     local lib = lazy.require "diffview.lib"
