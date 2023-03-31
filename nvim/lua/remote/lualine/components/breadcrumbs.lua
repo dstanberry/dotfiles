@@ -6,7 +6,6 @@ local filetypes = require "remote.lualine.filetypes"
 
 local add = stl_util.add
 local highlighter = stl_util.highlighter
-local separator = has "win32" and [[\]] or "/"
 
 local generic_hl = highlighter.sanitize "Winbar"
 local fname_hl = highlighter.sanitize "WinbarFilename"
@@ -16,20 +15,17 @@ local default_options = {
   maxlen = 60,
 }
 
-local get_relpath = function(winid, name, maxlen)
-  local path = vim.fn.fnamemodify(name, ":~:.:h:p")
-  if path == "" or path == "." then
-    return ""
-  else
-    maxlen = math.min(maxlen, math.floor(0.4 * vim.fn.winwidth(winid)))
-    path = path:gsub("/$", "") .. separator
-    if #name > maxlen then return "" end
-    return path
-  end
+local get_relative_path = function(winid, dirpath, maxlen)
+  local cwd = vim.fs.normalize(vim.loop.cwd())
+  local relative = util.replace(dirpath, cwd, "")
+  if relative == "" then return "" end
+  maxlen = math.min(maxlen, math.floor(0.4 * vim.fn.winwidth(winid)))
+  if #relative > maxlen then return "..." end
+  return relative
 end
 
-local get_sections = function(path, fname, ext, sep)
-  local parts = #path > 0 and vim.split(path, separator) or {}
+local format_sections = function(path, fname, ext, sep)
+  local parts = #path > 0 and vim.split(path, "/") or {}
   local segments = {}
   local section
   table.insert(parts, fname)
@@ -63,10 +59,10 @@ return function()
 
   if util.contains(filetypes.wb_suppressed, ft) then return " " end
 
-  local name = vim.fn.expand(vim.fn.bufname(buf))
-  local fname = (name):match(("^.+%s(.+)$"):format(separator))
+  local filepath = vim.fs.normalize(vim.api.nvim_buf_get_name(buf))
+  local dirpath, filename = (filepath):match("^(.+)/(.+)$")
   local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
-  local path = vim.startswith(bufid, "diffview") and "" or get_relpath(winid, name, opts.maxlen)
-  local ext = vim.fn.fnamemodify(fname, ":e")
-  return get_sections(path, fname, ext, opts.separator)
+  local relative_path = vim.startswith(bufid, "diffview") and "" or get_relative_path(winid, dirpath, opts.maxlen)
+  local ext = vim.fn.fnamemodify(filename, ":e")
+  return format_sections(relative_path, filename, ext, opts.separator)
 end
