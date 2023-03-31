@@ -19,22 +19,21 @@ return {
     require("bufferline").setup {
       ---@diagnostic disable-next-line: assign-type-mismatch
       highlights = function(defaults)
-        local hl = util.map(function(agg, attrs, name)
+        local hl = util.map(function(hl, attrs, name)
           local formatted = name:lower()
           local is_group = formatted:match "group"
           local is_offset = formatted:match "offset"
           local is_separator = formatted:match "separator"
           if not is_group or (is_group and is_separator) then attrs.bg = c.bg2 end
-          if is_separator and not (is_group or is_offset) then attrs.fg = c.bgX end
-          agg[name] = attrs
-          return agg
+          if is_separator and not (is_group or is_offset) then attrs.fg = c.bg2 end
+          hl[name] = attrs
+          return hl
         end, defaults.highlights)
         hl.buffer_selected.italic = false
         hl.buffer_visible.bold = true
         hl.buffer_visible.italic = false
         hl.buffer_visible.fg = c.gray1
         hl.tab_selected.fg = c.fg1
-        hl.tab_separator_selected.bg = c.red1
         return hl
       end,
       options = {
