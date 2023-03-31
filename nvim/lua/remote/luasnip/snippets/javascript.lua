@@ -5,6 +5,65 @@ require("remote.luasnip.nodes").setup_snip_env()
 
 return {
   s(
+    { trig = ".fe", name = "for each", dscr = "For each Prototype" },
+    fmt(".forEach({});", {
+      c(1, {
+        i(1),
+        sn(nil, fmt("({}) => {{\n\t{}\n}}", { i(1), i(2) })),
+      }),
+    })
+  ),
+  s(
+    { trig = ".filter", name = "filter", dscr = "Filter Prototype" },
+    fmt(".filter({});", {
+      c(1, {
+        i(1),
+        sn(nil, fmt("({}) => {{\n\t{}\n}}", { i(1), i(2) })),
+      }),
+    })
+  ),
+  s(
+    { trig = ".fi", name = "find", dscr = "Find Prototype" },
+    fmt(".find{}({});", {
+      c(1, {
+        t "",
+        t "Index",
+        t "Last",
+        t "LastIndex",
+      }),
+      c(2, {
+        i(1),
+        sn(nil, fmt("({}) => {{\n\t{}\n}}", { i(1), i(2) })),
+      }),
+    })
+  ),
+  s(
+    { trig = ".map", name = "map", dscr = "Map Prototype" },
+    fmt(".map({});", {
+      c(1, {
+        i(1),
+        sn(nil, fmt("({}) => {{\n\t{}\n}}", { i(1), i(2) })),
+      }),
+    })
+  ),
+  s(
+    { trig = ".re[duce]", regTrig = true, name = "reduce", dscr = "Reduce Prototype" },
+    fmt(".reduce({});", {
+      c(1, {
+        i(1),
+        sn(nil, fmt("({}) => {{\n\t{}\n}}", { i(1), i(2) })),
+      }),
+    })
+  ),
+  s(
+    { trig = "cl", name = "class", dscr = "Class ES6" },
+    fmt("class {} {{\n\tconstructor({}) {{\n\t{}\n\t}}\n}}", {
+      i(1),
+      i(2),
+      i(3),
+    })
+  ),
+  s(
     { trig = "fn", name = "function", dscr = "Declare function" },
     fmt("function {}({}) {{\n{}\n}}", {
       i(1, "main"),
@@ -36,6 +95,15 @@ return {
     })
   ),
   s(
+    { trig = "get", name = "getter", dscr = "Getter ES6" },
+    fmt("get {}({}){} {{\n\t{}\n}}", {
+      i(1),
+      i(2),
+      i(3),
+      i(4),
+    })
+  ),
+  s(
     { trig = "im[port]", regTrig = true, name = "import statement", dscr = "Import statement" },
     fmt([[import {};]], {
       c(1, {
@@ -50,6 +118,15 @@ return {
       [[const {} = require("{}");]],
       { d(2, rutil.repeat_node_segment, { 1 }, { user_args = { "/", "." } }), i(1, "module") }
     )
+  ),
+  s(
+    { trig = "set", name = "setter", dscr = "Setter ES6" },
+    fmt("set {}({}){} {{\n\t{}\n}}", {
+      i(1),
+      i(2),
+      i(3),
+      i(4),
+    })
   ),
   s({ trig = "switch", name = "switch statement", dscr = "Switch statement (recursive)" }, rutil.switch_case_node),
   s(
