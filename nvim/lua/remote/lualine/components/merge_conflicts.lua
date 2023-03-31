@@ -5,7 +5,7 @@ local filetypes = require "remote.lualine.filetypes"
 local add = stl_util.add
 local highlighter = stl_util.highlighter
 
-local label = function(winid, bufnr)
+local format_label = function(winid, bufnr)
   local ret = ""
   local diffview_label = vim.api.nvim_buf_get_var(bufnr, "diffview_label")
   local diffview_view = vim.api.nvim_buf_get_var(bufnr, "diffview_view")
@@ -32,5 +32,5 @@ return function()
   local buf = vim.api.nvim_win_get_buf(winid)
   local ft = vim.api.nvim_buf_get_option(buf, "filetype")
   if util.contains(filetypes.wb_suppressed, ft) then return " " end
-  return string.format("%s%s", label(winid, buf), highlighter.reset)
+  return string.format("%s%s", format_label(winid, buf), highlighter.reset)
 end
