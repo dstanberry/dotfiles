@@ -128,10 +128,14 @@ M.insert_link = function(options)
   M.pick_notes(options, { title = "Notes (insert link to note)", multi_select = false }, function(note)
     local pos = vim.api.nvim_win_get_cursor(0)[2]
     local line = vim.api.nvim_get_current_line()
-    local pwd = vim.fn.expand "%:p:h:t"
-    local note_path = note.path
-    if pwd ~= note_path then note_path = ("../%s"):format(note_path) end
-    local updated = ("%s[%s](%s)%s"):format(line:sub(0, pos), note.title, note_path:sub(1, -6), line:sub(pos + 1))
+    -- HACK: `textDocument/definition` resolves based on current file not notebook root
+    note.path = note.path:match "^(.+)%.md$" or note.path
+    local updated = ("%s[%s](%s)%s"):format(
+      line:sub(0, pos),
+      note.title,
+      ("../%s"):format(note.path),
+      line:sub(pos + 1)
+    )
     vim.api.nvim_set_current_line(updated)
   end)
 end
@@ -149,13 +153,13 @@ M.insert_link_from_selection = function(options)
     function(note)
       local pos = vim.api.nvim_win_get_cursor(0)[2]
       local line = vim.api.nvim_get_current_line()
-      local pwd = vim.fn.expand "%:p:h:t"
-      local note_path = note.path
-      if pwd ~= note_path then note_path = ("../%s"):format(note_path) end
+      -- HACK: `textDocument/definition` resolves based on current file not notebook root
+      note.path = note.path:match "^(.+)%.md$" or note.path
       local updated = ("%s[%s](%s)%s"):format(
         line:sub(0, pos - #selection),
         selection,
-        note_path:sub(1, -6),
+        -- (filename):match "lua\\(.+)%.lua$"
+        ("../%s"):format(note.path),
         line:sub(pos + 1)
       )
       vim.api.nvim_set_current_line(updated)
