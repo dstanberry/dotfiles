@@ -151,6 +151,12 @@ vim.api.nvim_create_autocmd("Filetype", {
   end,
 })
 
+vim.api.nvim_create_autocmd("Filetype", {
+  group = ftplugin,
+  pattern = { "help", "man", "qf" },
+  callback = function(event) vim.keymap.set("n", "q", vim.cmd.close, { buffer = event.buf, silent = true, nowait = true }) end,
+})
+
 local terminal_ui = vim.api.nvim_create_augroup("terminal_ui", { clear = true })
 vim.api.nvim_create_autocmd("TermOpen", {
   group = terminal_ui,
