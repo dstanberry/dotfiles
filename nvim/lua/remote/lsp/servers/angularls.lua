@@ -1,13 +1,12 @@
 local util = require "util"
 
-local path = vim.fn.expand(string.format("%s/mason/packages", vim.fn.stdpath "data"))
+local path = vim.fs.normalize(string.format("%s/mason/packages", vim.fn.stdpath "data"))
 local install_dir =
-  vim.fn.expand(string.format("%s/angular-language-server/node_modules/@angular/language-server", path))
-local sep = has "win32" and "\\" or "/"
+  vim.fs.normalize(string.format("%s/angular-language-server/node_modules/@angular/language-server", path))
 
 local node_modules = function(dirs)
   return util.map(function(agg, dir, i)
-    agg[i] = table.concat({ dir, "node_modules" }, sep)
+    agg[i] = table.concat({ dir, "node_modules" }, "/")
     return agg
   end, dirs)
 end
@@ -21,7 +20,7 @@ local function get_cmd(workspace_dir)
     "--ngProbeLocations",
     table.concat(
       node_modules {
-        table.concat({ install_dir, "node_modules", "@angular", "language-service" }, sep),
+        table.concat({ install_dir, "node_modules", "@angular", "language-service" }, "/"),
         workspace_dir,
       },
       ","

@@ -1,7 +1,7 @@
 local path = string.format("%s/mason/packages", vim.fn.stdpath "data")
-local basedir = vim.fn.expand(("%s/%s"):format(path, "codelldb"))
-local bin = vim.fn.expand(("%s/%s"):format(basedir, "extension/adapter/codelldb"))
-local lib = vim.fn.expand(("%s/%s"):format(basedir, "extension/lldb/lib/liblldb.so"))
+local basedir = vim.fs.normalize(("%s/%s"):format(path, "codelldb"))
+local bin = vim.fs.normalize(("%s/%s"):format(basedir, "extension/adapter/codelldb"))
+local lib = vim.fs.normalize(("%s/%s"):format(basedir, "extension/lldb/lib/liblldb.so"))
 
 local M = {}
 
@@ -30,7 +30,7 @@ M.setup = function()
       type = "codelldb",
       request = "launch",
       program = function()
-        return vim.fn.input("Path to executable: ", vim.fn.expand(vim.fn.getcwd() .. "/target/debug/"), "file")
+        return vim.fn.input("Path to executable: ", vim.fs.normalize(vim.loop.cwd() .. "/target/debug/"), "file")
       end,
       cwd = "${workspaceFolder}",
       args = {},

@@ -18,7 +18,7 @@ function M.load_dirhash(shell)
     return
   end
   local loader = function(rc_dir)
-    local path = vim.fn.expand(("%s/%s/%s/hashes.%s"):format(vim.env.XDG_CONFIG_HOME, shell, rc_dir, shell))
+    local path = vim.fs.normalize(("%s/%s/%s/hashes.%s"):format(vim.env.XDG_CONFIG_HOME, shell, rc_dir, shell))
     local cmd = ([[%s -c "source %s; hash -d"]]):format(shell, path)
     local dirs = vim.fn.system(cmd)
     local lines = vim.split(dirs, "\n")
@@ -62,7 +62,7 @@ end
 
 ---Utility function to read a file on disk
 ---@param filePath string
----@param mode?    openmode
+---@param mode? openmode
 ---@return file*?
 ---@return string? errmsg
 function M.read(filePath, mode)

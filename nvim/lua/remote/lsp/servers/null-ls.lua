@@ -21,7 +21,7 @@ local sources = {
   },
   b.formatting.black,
   b.formatting.cbfmt.with {
-    extra_args = { "--config", vim.fn.expand(("%s/cbfmt.toml"):format(vim.fn.stdpath "config")) },
+    extra_args = { "--config", vim.fs.normalize(("%s/cbfmt.toml"):format(vim.fn.stdpath "config")) },
   },
   b.formatting.eslint_d,
   b.formatting.gofmt,

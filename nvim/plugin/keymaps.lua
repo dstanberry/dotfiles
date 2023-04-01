@@ -143,30 +143,26 @@ vim.keymap.set("n", "<localleader><localleader>c", ":<up>", { silent = false, de
 
 -- create/edit file within the current directory
 vim.keymap.set("n", "<localleader><localleader>e", function()
-  local path = vim.fn.expand "%:p:h"
-  local separator = has "win32" and [[\]] or "/"
-  return (":edit %s%s"):format(path, separator)
+  local path = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
+  return (":edit %s%s"):format(path, "/")
 end, { silent = false, expr = true, replace_keycodes = true, desc = "create/edit file relative to current document" })
 
 -- prepare to call |reload()| on the current lua file
 vim.keymap.set("n", "<localleader><localleader>r", function()
-  local ft = vim.bo.filetype
-  if ft == "lua" then
-    local file = (vim.fn.expand "%:p")
-    local mod = util.get_module_name(file)
-    local shift = ""
-    if #mod == 0 then shift = "<left><left>" end
-    return ([[:lua reload("%s")%s]]):format(mod, shift)
-  end
+  if vim.bo.filetype ~= "lua" then error "reload utility only available for lua modules" end
+  local file = vim.api.nvim_buf_get_name(0)
+  local mod = util.get_module_name(file)
+  local shift = ""
+  if #mod == 0 then shift = "<left><left>" end
+  return ([[:lua reload("%s")%s]]):format(mod, shift)
 end, { silent = false, expr = true, replace_keycodes = true, desc = "reload current lua module" })
 
 -- save as new file within the current directory (with the option to delete the original)
 vim.keymap.set("n", "<localleader><localleader>s", function()
-  local file = vim.fn.expand "%"
-  local path = vim.fn.expand "%:p:h"
-  local sep = has "win32" and [[\]] or "/"
----@diagnostic disable-next-line: redundant-parameter
-  local updated = vim.fn.input("Save as: ", path .. sep)
+  local file = vim.api.nvim_buf_get_name(0)
+  local path = vim.fs.dirname(file)
+  ---@diagnostic disable-next-line: redundant-parameter
+  local updated = vim.fn.input("Save as: ", path .. "/")
   if #updated > 0 and updated ~= file then
     vim.cmd.saveas(updated)
     local move = vim.fn.confirm("Delete original file?", "&Yes\n&No")
@@ -349,23 +345,15 @@ vim.keymap.set("c", "jk", "<c-c>", { desc = "leave command-line mode" })
 vim.keymap.set(
   "c",
   "%H",
-  function() return vim.fn.expand "%:p:h" .. "/" end,
+  function() return vim.fs.dirname(vim.api.nvim_buf_get_name(0)) .. "/" end,
   { silent = false, expr = true, replace_keycodes = true, desc = "insert path to parent directory" }
-)
-
--- populate command line with file name of current buffer
-vim.keymap.set(
-  "c",
-  "%T",
-  function() return vim.fn.expand "%:t" end,
-  { silent = false, expr = true, replace_keycodes = true, desc = "insert filename" }
 )
 
 -- populate command line with path to file of current buffer
 vim.keymap.set(
   "c",
   "%P",
-  function() return vim.fn.expand "%:p" end,
+  function() return vim.fs.normalize(vim.api.nvim_buf_get_name(0)) end,
   { silent = false, expr = true, replace_keycodes = true, desc = "insert filepath" }
 )
 

@@ -166,15 +166,6 @@ vim.api.nvim_create_autocmd("TermOpen", {
     if vim.opt_local.filetype:get() == "" then vim.opt_local.filetype = "term" end
   end,
 })
-vim.api.nvim_create_autocmd("TermClose", {
-  group = terminal_ui,
-  pattern = "*",
-  callback = function()
-    local bufnr = vim.api.nvim_get_current_buf()
-    local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
-    if ft ~= "md_preview" then vim.cmd.bdelete { vim.fn.expand "<abuf>", bang = true } end
-  end,
-})
 
 local yank_highlight = vim.api.nvim_create_augroup("yank_highlight", { clear = true })
 vim.api.nvim_create_autocmd("TextYankPost", {

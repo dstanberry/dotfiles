@@ -43,9 +43,8 @@ vim.api.nvim_create_user_command("Glow", function()
   vim.keymap.set("n", "q", close_win, { buffer = buf, silent = true })
   vim.keymap.set("n", "<esc>", close_win, { buffer = buf, silent = true })
 
-  local path = vim.fn.bufname(bufnr)
-  path = vim.fn.expand(path)
-  path = vim.fn.fnamemodify(path, ":p")
+  local path = vim.api.nvim_buf_get_name(bufnr)
+  path = vim.fs.normalize(path)
   vim.fn.termopen(string.format("glow %s", vim.fn.shellescape(path)))
 end, {})
 

@@ -13,7 +13,7 @@ M.setup = function()
       type = "netcoredbg",
       name = "launch - netcoredbg",
       request = "launch",
-      program = function() return vim.fn.input("Path to dll", vim.fn.expand(vim.fn.getcwd() .. "/bin/Debug/"), "file") end,
+      program = function() return vim.fn.input("Path to dll", vim.fs.normalize(vim.loop.cwd() .. "/bin/Debug/"), "file") end,
       stopAtEntry = true,
     },
   }

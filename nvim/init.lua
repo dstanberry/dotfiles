@@ -73,9 +73,9 @@ vim.cmd.colorscheme "kdark"
 util.filesystem.load_dirhash(vim.env.SHELL)
 util.filesystem.load_settings()
 
-vim.g.dotfiles_dir = vim.fn.expand(("%s/.config"):format(vim.env.HOME))
-vim.g.projects_dir = vim.env.projects_dir and vim.fn.expand(vim.env.projects_dir)
-  or vim.fn.expand(("%s/Projects"):format(vim.env.HOME))
+vim.g.dotfiles_dir = vim.fs.normalize(("%s/.config"):format(vim.env.HOME))
+vim.g.projects_dir = vim.env.projects_dir and vim.fs.normalize(vim.env.projects_dir)
+  or vim.fs.normalize(("%s/Projects"):format(vim.env.HOME))
 
 if setting_enabled "remote_plugins" then
   local lazypath = string.format("%s/lazy/lazy.nvim", vim.fn.stdpath "data")

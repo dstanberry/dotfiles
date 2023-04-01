@@ -15,23 +15,25 @@ end
 ---Unloads a buffer and if the buffer was in a split, the split is preserved.
 ---@param force boolean
 function M.delete_buffer(force)
-  local buflisted = vim.fn.getbufinfo { buflisted = 1 }
-  if #buflisted < 2 then
+  local buffers = M.list_buffers { listed = true }
+  if #buffers < 2 then
     vim.cmd.enew()
     return
   end
-  local winnr = vim.fn.winnr()
-  local bufnr = vim.fn.bufnr()
+  local w_id = vim.api.nvim_get_current_win()
+  local winnr = vim.api.nvim_win_get_number(w_id)
+  local bufnr = vim.api.nvim_win_get_buf(w_id)
+  -- TODO: replace |getbufinfo()| with lua api
   for _, winid in ipairs(vim.fn.getbufinfo(bufnr)[1].windows) do
-    vim.cmd.wincmd { args = { "w" }, range = { vim.fn.win_id2win(winid) } }
-    if bufnr == buflisted[#buflisted].bufnr then
+    vim.cmd.wincmd { args = { "w" }, range = { vim.api.nvim_win_get_number(winid) } }
+    if bufnr == buffers[#buffers] then
       vim.cmd.bprevious()
     else
       vim.cmd.bnext()
     end
   end
   vim.cmd.wincmd { args = { "w" }, range = { winnr } }
-  if force or vim.fn.getbufvar(bufnr, "&buftype") == "terminal" then
+  if force or vim.api.nvim_buf_get_option(bufnr, "buftype") == "terminal" then
     vim.cmd.bdelete { args = { "#" }, bang = true }
   else
     vim.cmd.bdelete { args = { "#" }, mods = { emsg_silent = true, confirm = true } }
@@ -204,18 +206,18 @@ function M.list_buffers(opt)
   else
     bufs = vim.api.nvim_list_bufs()
   end
-  return vim.tbl_filter(function(v)
-    if opt.loaded and not vim.api.nvim_buf_is_loaded(v) then return false end
-    if opt.listed and not vim.bo[v].buflisted then return false end
-    if opt.pattern and not vim.fn.bufname(v):match(opt.pattern) then return false end
+  return vim.tbl_filter(function(bufnr)
+    if opt.loaded and not vim.api.nvim_buf_is_loaded(bufnr) then return false end
+    if opt.listed and not vim.bo[bufnr].buflisted then return false end
+    if opt.pattern and not vim.api.nvim_buf_get_name(bufnr):match(opt.pattern) then return false end
     if opt.options then
       for name, value in pairs(opt.options) do
-        if vim.bo[v][name] ~= value then return false end
+        if vim.bo[bufnr][name] ~= value then return false end
       end
     end
     if opt.vars then
       for name, value in pairs(opt.vars) do
-        if vim.b[v][name] ~= value then return false end
+        if vim.b[bufnr][name] ~= value then return false end
       end
     end
     return true

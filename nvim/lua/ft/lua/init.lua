@@ -13,7 +13,7 @@ local include_paths = function(fname, ext)
   local paths = string.gsub(package.path, "%?", fname)
   paths = string.gmatch(paths, "[^%;]+")
   for path in paths do
-    if vim.fn.filereadable(path) == 1 then return path end
+    if vim.loop.fs_stat(path) then return path end
   end
 end
 
@@ -24,9 +24,9 @@ local include_rtpaths = function(fname, ext)
   local modfile, initfile = string.format("%s.%s", fname, ext), string.format("init.%s", ext)
   for _, path in ipairs(rtpaths) do
     local path1 = table.concat({ path, ext, modfile }, sep)
-    if vim.fn.filereadable(path1) == 1 then return path1 end
+    if vim.loop.fs_stat(path1) then return path1 end
     local path2 = table.concat({ path, ext, fname, initfile }, sep)
-    if vim.fn.filereadable(path2) == 1 then return path2 end
+    if vim.loop.fs_stat(path2) then return path2 end
   end
 end
 

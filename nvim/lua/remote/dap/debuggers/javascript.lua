@@ -1,5 +1,5 @@
-local path = vim.fn.expand(string.format("%s/mason/packages", vim.fn.stdpath "data"))
-local basedir = vim.fn.expand(("%s/%s"):format(path, "node-debug2-adapter"))
+local path = vim.fs.normalize(string.format("%s/mason/packages", vim.fn.stdpath "data"))
+local basedir = vim.fs.normalize(("%s/%s"):format(path, "node-debug2-adapter"))
 
 local M = {}
 
@@ -16,7 +16,7 @@ M.setup = function()
       type = "node2",
       request = "launch",
       program = "${workspaceFolder}/${file}",
-      cwd = vim.fn.getcwd(),
+      cwd = vim.loop.cwd(),
       sourceMaps = true,
       protocol = "inspector",
       console = "integratedTerminal",

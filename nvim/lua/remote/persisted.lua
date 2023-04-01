@@ -35,8 +35,8 @@ return {
         vim.notify("Loaded session " .. session.data.name, vim.log.levels.INFO, { title = "persisted.nvim" })
         local path = session.data.dir_path
         if not has "win32" and string.find(path, "/") ~= 1 then
-          vim.cmd.cd(vim.fn.expand "~" .. "/" .. path)
-          vim.cmd.tcd(vim.fn.expand "~" .. "/" .. path)
+          vim.cmd.cd(vim.fs.normalize "~" .. "/" .. path)
+          vim.cmd.tcd(vim.fs.normalize "~" .. "/" .. path)
         else
           vim.cmd.cd(path)
           vim.cmd.tcd(path)
@@ -59,8 +59,9 @@ return {
     allowed_dirs = { vim.g.dotfiles, vim.env.hash_notes, vim.g.projects_dir },
     ignored_dirs = { vim.fn.stdpath "data" },
     should_autosave = function()
-      local cwd = vim.fn.getcwd()
-      if util.contains({ vim.g.dotfiles_dir, vim.env.hash_notes, vim.g.projects_dir }, cwd) then return true end
+      if util.contains({ vim.g.dotfiles_dir, vim.env.hash_notes, vim.g.projects_dir }, vim.loop.cwd()) then
+        return true
+      end
       return false
     end,
   },

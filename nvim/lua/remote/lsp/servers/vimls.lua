@@ -10,7 +10,7 @@ end
 local M = {}
 
 M.config = {
-  vimruntime = vim.fn.expand "$VIMRUNTIME",
+  vimruntime = vim.fs.normalize "$VIMRUNTIME",
   root_dir = project_root,
 }
 
