@@ -70,6 +70,7 @@ return {
       trig = "(%d+)lorem",
       regTrig = true,
       wordTrig = false,
+      hidden = true,
       name = "placeholder",
       dscr = "Placeholder text (`n` lines)",
     },
