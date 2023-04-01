@@ -23,13 +23,14 @@ vim.api.nvim_create_autocmd("CmdLineLeave", {
   callback = function() vim.opt.smartcase = true end,
 })
 
-local filesytem = vim.api.nvim_create_augroup("filesystem", { clear = true })
+local filesystem = vim.api.nvim_create_augroup("filesystem", { clear = true })
 vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
   group = filesystem,
   pattern = "*",
-  callback = function()
-    local d = vim.fn.expand "<afile>:p:h"
-    if vim.fn.isdirectory(d) == 0 then vim.fn.mkdir(d, "p") end
+  callback = function(event)
+    local name = vim.api.nvim_buf_get_name(event.buf)
+    local dir = vim.fs.dirname(name)
+    if not vim.loop.fs_stat(dir) then vim.fn.mkdir(dir, "p") end
   end,
 })
 
