@@ -106,7 +106,7 @@ return {
     LeftArrow = "",
     LeftArrowCircled = "",
     Lock = "",
-    Magnify = "󰍉",
+    Magnify = " ",
     Orbit = "󰀘 ",
     Pencil = " ",
     Prompt = "❯",
