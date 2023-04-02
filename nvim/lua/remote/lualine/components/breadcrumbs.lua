@@ -1,7 +1,8 @@
 local devicons_ok, devicons = pcall(require, "nvim-web-devicons")
 
+local icons = require "ui.icons"
 local util = require "util"
-local excludes = require("ui.excludes")
+local excludes = require "ui.excludes"
 local stl_util = require "remote.lualine.util"
 
 local add = stl_util.add
@@ -9,6 +10,13 @@ local highlighter = stl_util.highlighter
 
 local generic_hl = highlighter.sanitize "Winbar"
 local fname_hl = highlighter.sanitize "WinbarFilename"
+
+local dap_icons = {
+  ["DAP Breakpoints"] = pad(icons.debug.Breakpoints, "right"),
+  ["DAP Scopes"] = pad(icons.debug.Scopes, "right"),
+  ["DAP Stacks"] = pad(icons.debug.Stacks, "right"),
+  ["DAP Watches"] = pad(icons.debug.Watches, "right"),
+}
 
 local get_relative_path = function(winid, dirpath)
   local cwd = vim.fs.normalize(vim.loop.cwd())
@@ -25,6 +33,7 @@ local format_sections = function(path, fname, ext)
     local section
     if #v > 0 then
       local icon, icon_hl = devicons.get_icon(fname, ext, { default = true })
+      if fname:match "DAP" then icon = dap_icons[fname] or icon end
       if #segments == 0 then
         section = (k == #parts and devicons_ok)
             and add(highlighter.sanitize(icon_hl), { pad(icon, "both") }, true) .. add(fname_hl, { v })

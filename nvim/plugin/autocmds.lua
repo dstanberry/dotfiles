@@ -122,17 +122,11 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
   pattern = {
-    "dap-repl",
-    "dapui_breakpoints",
-    "dapui_scopes",
-    "dapui_stacks",
-    "dapui_watches",
     "dbui",
     "help",
     "NeogitPopup",
     "NeogitStatus",
     "qf",
-    "startuptime",
   },
   callback = function() vim.opt_local.winhighlight = "Normal:NormalSB" end,
 })

@@ -1,5 +1,7 @@
-local util = require "util"
+local c = require("ui.theme").colors
+local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
+local util = require "util"
 
 return {
   "mfussenegger/nvim-dap",
@@ -111,5 +113,25 @@ return {
       local mod = util.get_module_name(file)
       require(mod).setup()
     end
+
+    groups.new("DapUINormal", { link = "NormalSB" })
+    groups.new("DapUIStop", { fg = c.red1 })
+    groups.new("DapUIStopNC", { link = "DapUIStop" })
+    groups.new("DapUIRestart", { fg = c.green1 })
+    groups.new("DapUIRestartNC", { link = "DapUIRestart" })
+    groups.new("DapUIStepOver", { fg = c.blue0 })
+    groups.new("DapUIStepOverNC", { link = "DapUIStepOver" })
+    groups.new("DapUIStepInto", { fg = c.blue0 })
+    groups.new("DapUIStepIntoNC", { link = "DapUIStepInto" })
+    groups.new("DapUIStepOut", { fg = c.blue0 })
+    groups.new("DapUIStepOutNC", { link = "DapUIStepOut" })
+    groups.new("DapUIStepBack", { fg = c.blue0 })
+    groups.new("DapUIStepBackNC", { link = "DapUIStepBack" })
+    groups.new("DapUIPlayPause", { fg = c.blue4 })
+    groups.new("DapUIPlayPauseNC", { link = "DapUIPlayPause" })
+    groups.new("DapUIUnavailable", { fg = c.gray2 })
+    groups.new("DapUIUnavailableNC", { link = "DapUIUnavailable" })
+    groups.new("DapUIThread", { fg = c.green0 })
+    groups.new("DapUIThreadNC", { link = "DapUIThread" })
   end,
 }
