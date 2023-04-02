@@ -12,6 +12,7 @@ return {
     hide_numbers = true,
     autochdir = true,
     highlights = {
+      Normal = { link = "Normal" },
       NormalFloat = { link = "NormalFloat" },
       FloatBorder = { link = "FloatBorder" },
     },
