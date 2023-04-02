@@ -99,6 +99,7 @@ return {
     FilledCircle = "●",
     FoldClosed = "",
     FoldOpened = "",
+    Gears = "",
     HalfBlockLower = "▃",
     HalfBlockUpper = "▀",
     Key = "",

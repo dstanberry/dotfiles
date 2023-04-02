@@ -1,5 +1,3 @@
-local navic = require "nvim-navic"
-
 local icons = require "ui.icons"
 local util = require "util"
 
@@ -17,6 +15,7 @@ local format_context = function(type, icon, name)
 end
 
 return function()
+  local navic = require "nvim-navic"
   local winid = vim.api.nvim_get_current_win()
   local buf = vim.api.nvim_win_get_buf(winid)
   local data = navic.get_data(buf)

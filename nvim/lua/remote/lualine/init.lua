@@ -6,6 +6,8 @@ local theme = require "remote.lualine.theme"
 local excludes = require "ui.excludes"
 
 local breadcrumbs = require "remote.lualine.components.breadcrumbs"
+local languageservers = require "remote.lualine.components.languageservers"
+local navic = require "remote.lualine.components.navic"
 local filediff = require "remote.lualine.components.filediff"
 local git_branch = require "remote.lualine.components.git_branch"
 local git_diff = require "remote.lualine.components.git_diff"
@@ -57,6 +59,13 @@ return {
         },
         lualine_c = {
           {
+            "vim.b.gitsigns_blame_line",
+            padding = { left = 2, right = 2 },
+            cond = function() return min_width(120) end,
+          },
+        },
+        lualine_x = {
+          {
             "diagnostics",
             sources = { "nvim_diagnostic" },
             symbols = {
@@ -73,12 +82,10 @@ return {
             },
           },
           {
-            "vim.b.gitsigns_blame_line",
-            padding = { left = 5, right = 5 },
-            cond = function() return min_width(120) end,
+            languageservers,
           },
         },
-        lualine_x = {
+        lualine_y = {
           {
             function()
               local text = require("noice").api.status.search.get()
@@ -89,8 +96,6 @@ return {
             cond = function() return package.loaded["noice"] and require("noice").api.status.search.has() and min_width(80) end,
             color = { fg = c.gray2, bold = true },
           },
-        },
-        lualine_y = {
           { "location" },
           { indent },
           { "encoding" },
@@ -112,7 +117,7 @@ return {
             padding = { right = 0 },
           },
           {
-            require "remote.lualine.components.navic",
+            navic,
             padding = { left = 0 },
             color = "Winbar",
             cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
