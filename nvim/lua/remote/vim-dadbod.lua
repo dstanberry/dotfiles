@@ -1,3 +1,10 @@
+local ftplugin = vim.api.nvim_create_augroup("hl_dadbod", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = ftplugin,
+  pattern = "dbui",
+  callback = function() vim.opt_local.winhighlight = "Normal:NormalSB" end,
+})
+
 return {
   "kristijanhusak/vim-dadbod-ui",
   dependencies = "tpope/vim-dadbod",

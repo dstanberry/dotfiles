@@ -14,6 +14,13 @@ groups.new("NeogitDiffAddHighlight", { fg = c.green2, bg = c.diff_add })
 groups.new("NeogitDiffDeleteHighlight", { fg = c.red1, bg = c.diff_delete })
 groups.new("NeogitObjectId", { fg = c.yellow2 })
 
+local ftplugin = vim.api.nvim_create_augroup("hl_neogit", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = ftplugin,
+  pattern = { "NeogitPopup", "NeogitStatus" },
+  callback = function() vim.opt_local.winhighlight = "Normal:NormalSB" end,
+})
+
 return {
   "TimUntersberger/neogit",
   dependencies = { "nvim-lua/plenary.nvim" },

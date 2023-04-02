@@ -121,13 +121,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
-  pattern = {
-    "dbui",
-    "help",
-    "NeogitPopup",
-    "NeogitStatus",
-    "qf",
-  },
+  pattern = { "help", "qf" },
   callback = function() vim.opt_local.winhighlight = "Normal:NormalSB" end,
 })
 
