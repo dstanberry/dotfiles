@@ -27,7 +27,7 @@ return {
         border = "single",
         win_options = {
           winblend = 0,
-          winhighlight = "NormalFloat:Normal,FloatBorder:Macro",
+          winhighlight = "NormalFloat:Normal,FloatBorder:DiagnosticInfo",
         },
       },
       select = {
