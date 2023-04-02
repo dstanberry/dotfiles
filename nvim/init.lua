@@ -22,7 +22,6 @@ vim.g.markdown_fenced_languages = {
 
 vim.filetype.add {
   extension = {
-    scm = "query",
     vifm = "vim",
     vifmrc = "vim",
     jenkinsfile = "groovy",
