@@ -1,3 +1,4 @@
+local excludes = require("ui.excludes")
 local icons = require "ui.icons"
 
 return {
@@ -10,7 +11,7 @@ return {
     show_trailing_blankline_indent = false,
     space_char_blankline = " ",
     char_list = { icons.misc.VerticalBarThin, icons.misc.VerticalBarSplit },
-    buftype_exclude = { "terminal", "nofile" },
+    buftype_exclude = excludes.bt.wb_disabled,
     filetype = {
       "go",
       "html",

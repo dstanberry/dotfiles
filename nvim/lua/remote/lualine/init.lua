@@ -3,7 +3,7 @@ local color = require "util.color"
 local icons = require "ui.icons"
 
 local theme = require "remote.lualine.theme"
-local filetypes = require "remote.lualine.filetypes"
+local excludes = require "ui.excludes"
 
 local breadcrumbs = require "remote.lualine.components.breadcrumbs"
 local filediff = require "remote.lualine.components.filediff"
@@ -22,7 +22,7 @@ return {
       options = {
         theme = theme.palette,
         globalstatus = true,
-        disabled_filetypes = { statusline = filetypes.stl_disabled, winbar = filetypes.wb_disabled },
+        disabled_filetypes = { statusline = excludes.ft.stl_disabled, winbar = excludes.ft.wb_disabled },
         component_separators = " ",
         section_separators = " ",
       },
