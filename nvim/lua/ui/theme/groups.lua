@@ -25,7 +25,7 @@ M.apply = function(c)
   hi.Debug = { fg = c.gray2 }
   hi.Directory = { fg = c.blue0 }
   hi.ErrorMsg = { fg = c.red1 }
-  hi.FoldColumn = { fg = c.aqua1, bg = c.bg3 }
+  hi.FoldColumn = { link = "SignColumn" }
   hi.Folded = { fg = c.gray2, bg = c.gray0 }
   hi.LineNr = { fg = c.gray1 }
   hi.MatchParen = { fg = c.red1, bold = true }

@@ -46,6 +46,7 @@ vim.opt.fillchars = {
   eob = " ",
   foldclose = "",
   foldopen = "",
+  foldsep = " ",
 }
 -- grep program to use
 vim.opt.grepprg = "rg --vimgrep --no-heading --smart-case"
