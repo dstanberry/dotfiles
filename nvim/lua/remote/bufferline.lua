@@ -33,7 +33,8 @@ return {
         hl.buffer_visible.bold = true
         hl.buffer_visible.italic = false
         hl.buffer_visible.fg = c.gray1
-        hl.tab_selected.fg = c.fg1
+        hl.tab_selected.bold = true
+        hl.tab_selected.fg = c.red1
         return hl
       end,
       options = {
