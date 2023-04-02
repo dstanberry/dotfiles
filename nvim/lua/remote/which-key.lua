@@ -39,6 +39,7 @@ return {
         h = { name = "+marks" },
         m = { name = "+notes (markdown)" },
         s = { name = "+search" },
+        q = { name = "+session" },
       },
       ["<leader>m"] = {
         mode = "v",
@@ -51,6 +52,7 @@ return {
         f = { name = "+file/find" },
         g = { name = "+git" },
         m = { name = "+notes (markdown)" },
+        q = { name = "+session" },
       },
       ["<localleader>m"] = {
         mode = "v",
