@@ -38,9 +38,7 @@ return {
   "SmiteshP/nvim-navic",
   dependencies = { "neovim/nvim-lspconfig" },
   opts = {
-    depth_limit = 5,
-    depth_limit_indicator = icons.misc.Ellipses,
-    highlight = true,
+    highlight = false,
     icons = {
       Array = pad(icons.type.Array, "right"),
       Boolean = pad(icons.type.Boolean, "right"),
@@ -69,18 +67,18 @@ return {
       TypeParameter = pad(icons.kind.TypeParameter, "right"),
       Variable = pad(icons.kind.Variable, "right"),
     },
+    lsp = {
+      auto_attach = true,
+      preference = { "tsserver" },
+    },
     separator = pad(icons.misc.CaretRight, "both"),
   },
   init = function()
     local lsp_navic = vim.api.nvim_create_augroup("lsp_navic", { clear = true })
-    vim.api.nvim_create_autocmd("LspAttach", {
+    vim.api.nvim_create_autocmd("BufEnter", {
       group = lsp_navic,
-      callback = function(args)
-        if vim.api.nvim_buf_line_count(0) > 500 then vim.b.navic_lazy_update_context = true end
-        if not (args.data and args.data.client_id) then return end
-
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-        if client.server_capabilities.documentSymbolProvider then require("nvim-navic").attach(client, args.buf) end
+      callback = function()
+        if vim.api.nvim_buf_line_count(0) > 1200 then vim.b.navic_lazy_update_context = true end
       end,
     })
   end,
