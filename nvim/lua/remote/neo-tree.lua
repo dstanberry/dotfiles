@@ -1,7 +1,14 @@
 local c = require("ui.theme").colors
+local color = require "util.color"
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 local util = require "util"
+
+local GRAY = color.darken(c.gray0, 10)
+
+groups.new("NeoTreeTitleBar", { fg = c.bg2, bg = c.red1, bold = true })
+groups.new("NeoTreeFloatBorder", { fg = GRAY, bg = GRAY })
+groups.new("NeoTreeFloatNormal", { bg = GRAY })
 
 groups.new("NeoTreeNormal", { link = "NormalSB" })
 groups.new("NeoTreeNormalNC", { link = "NormalSB" })
@@ -46,6 +53,7 @@ return {
       source_selector = { winbar = true, separator_active = " " },
       enable_git_status = true,
       git_status_async = true,
+      use_popups_for_input = true,
       filesystem = {
         bind_to_cwd = false,
         follow_current_file = true,
