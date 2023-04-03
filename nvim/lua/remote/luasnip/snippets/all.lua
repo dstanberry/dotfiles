@@ -89,7 +89,7 @@ return {
       d(1, rutil.saved_text, {}, {
         user_args = {
           {
-            text = "TODO",
+            text = " TODO",
             indent = true,
             prefix = function() return rutil.comment_string(1)[1] end,
           },
