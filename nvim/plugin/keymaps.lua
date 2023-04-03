@@ -301,6 +301,9 @@ vim.keymap.set("v", "H", "^", { desc = "extend selection to start of line" })
 -- move selection to the end of the current line
 vim.keymap.set("v", "L", "g_", { desc = "extend selection to end of line" })
 
+-- preserve register after pasting text over selection
+vim.keymap.set("x", "p", [["_dP]], { desc = "preserve register after pasting" })
+
 -- shift selected text down
 vim.keymap.set("x", "<c-down>", ":move '>+<cr>gv=gv", { desc = "move selection up" })
 -- shift selected text up
