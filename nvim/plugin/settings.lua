@@ -112,6 +112,19 @@ vim.opt.shada = {
   "h",
   string.format("n%s/shada/main.shada", data),
 }
+-- use powershell on windows OS
+if has "win32" then
+  vim.opt.shell = "pwsh"
+  vim.opt.shellcmdflag = table.concat({
+    "-NoLogo",
+    "-ExecutionPolicy RemoteSigned",
+    "-Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
+  }, " ")
+  vim.opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
+  vim.opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+  vim.opt.shellquote = ""
+  vim.opt.shellxquote = ""
+end
 -- space indent width
 vim.opt.shiftwidth = 4
 -- avoid swapfile alert messages
