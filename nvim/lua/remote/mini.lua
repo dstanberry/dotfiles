@@ -108,4 +108,19 @@ return {
       end
     end,
   },
+  {
+    "echasnovski/mini.splitjoin",
+    keys = {
+      { "gJ", desc = "mini.splitjoin: split arguments" },
+      { "gj", desc = "mini.splitjoin: join arguments" },
+    },
+    opts = {
+      mappings = {
+        toggle = "",
+        split = "gJ",
+        join = "gj",
+      },
+    },
+    config = function(_, opts) require("mini.splitjoin").setup(opts) end,
+  },
 }
