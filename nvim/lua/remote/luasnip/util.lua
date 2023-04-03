@@ -51,36 +51,33 @@ end
 
 local case_node
 local function get_case_node(index)
-  return d(
-    index,
-    function()
-      return sn(
-        nil,
-        fmta("<keyword><condition>:\n\t<body>\n\tbreak;\n\n<continuation>", {
-          keyword = t { "case " },
-          condition = i(1, "condition"),
-          body = d(
-            2,
-            M.saved_text,
-            {},
-            { user_args = { { text = ("%s TODO"):format(M.comment_string()[1]), indent = false } } }
+  return d(index, function()
+    return sn(
+      nil,
+      fmta("<keyword><condition>:\n\t<body>\n\tbreak;\n\n<continuation>", {
+        keyword = t { "case " },
+        condition = i(1, "condition"),
+        body = d(2, M.saved_text, {}, {
+          user_args = {
+            {
+              indent = true,
+              text = " TODO",
+              prefix = function() return M.comment_string(1)[1] end,
+            },
+          },
+        }),
+        continuation = c(3, {
+          sn(
+            nil,
+            fmta("\ndefault:\n\t<body>\n", {
+              body = i(1, "break;"),
+            }, { dedent = false })
           ),
-          continuation = c(3, {
-            sn(
-              nil,
-              fmta(
-                "\ndefault:\n\t<body>\n",
-                { body = i(1, ("%s TODO"):format(M.comment_string()[1])) },
-                { dedent = false }
-              )
-            ),
-            vim.deepcopy(case_node),
-          }),
-        })
-      )
-    end,
-    {}
-  )
+          vim.deepcopy(case_node),
+        }),
+      })
+    )
+  end, {})
 end
 case_node = get_case_node(1)
 
@@ -115,6 +112,8 @@ M.saved_text = function(_, snip, old_state, user_args)
   old_state = old_state or {}
   user_args = user_args or {}
   local indent = user_args.indent and "\t" or ""
+  local prefix = user_args.prefix or ""
+  if user_args.prefix and type(user_args.prefix) == "function" then prefix = user_args.prefix() end
   if snip.snippet.env and snip.snippet.env.SELECT_DEDENT and #snip.snippet.env.SELECT_DEDENT > 0 then
     local lines = vim.deepcopy(snip.snippet.env.SELECT_DEDENT)
     for idx = 1, #lines do
@@ -123,7 +122,7 @@ M.saved_text = function(_, snip, old_state, user_args)
       table.insert(nodes, t(node))
     end
   else
-    local text = user_args.text or ""
+    local text = string.format("%s%s", prefix, user_args.text or "")
     if indent ~= "" then table.insert(nodes, t(indent)) end
     table.insert(nodes, i(1, text))
   end

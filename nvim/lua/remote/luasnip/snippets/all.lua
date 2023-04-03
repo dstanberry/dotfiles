@@ -13,7 +13,7 @@ end
 
 local shebang = function(_, _)
   return sn(nil, {
-    t(rutil.comment_string()[1]),
+    f(function() return rutil.comment_string(1)[1] end),
     t "!/usr/bin/env ",
     i(1, vim.bo.filetype),
   })
@@ -86,12 +86,15 @@ return {
     { trig = "{;", wordTrig = false, hidden = true },
     fmt(
       "{{\n{}\n}}",
-      d(
-        1,
-        rutil.saved_text,
-        {},
-        { user_args = { { text = ("%s TODO"):format(rutil.comment_string()[1]), indent = true } } }
-      )
+      d(1, rutil.saved_text, {}, {
+        user_args = {
+          {
+            text = "TODO",
+            indent = true,
+            prefix = function() return rutil.comment_string(1)[1] end,
+          },
+        },
+      })
     )
   ),
 }
