@@ -24,9 +24,9 @@ function M.dump(value, opts)
   if vim.in_fast_event() then return vim.schedule(function() M.dump(value, opts) end) end
   opts.location = vim.fn.fnamemodify(opts.location, ":~:.")
   local msg = vim.inspect(value)
+  local title = vim.F.if_nil(opts.title, "Debug")
   vim.notify(msg, vim.log.levels.INFO, {
-    -- title = ("Debug: %s"):format(opts.location),
-    title = "Debug",
+    title = title,
     on_open = function(win)
       vim.wo[win].conceallevel = 3
       vim.wo[win].concealcursor = ""
