@@ -7,7 +7,7 @@ M.setup = function(cmd)
 
   local dap = require "dap"
 
-  cmd = cmd or "python"
+  cmd = has "win32" and vim.fn.exepath "python" or "python"
   dap.configurations.python = {}
   dap_python.setup(cmd, {
     include_configs = true,

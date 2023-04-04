@@ -8,7 +8,7 @@ M.setup = function()
 
   dap.adapters.node2 = {
     type = "executable",
-    command = "node",
+    command = has "win32" and vim.fn.exepath "node" or "node",
     args = { ("%s/%s"):format(basedir, "out/src/nodeDebug.js") },
   }
   dap.configurations.javascript = {
