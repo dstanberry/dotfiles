@@ -254,7 +254,7 @@ return {
             recurse_submodules = false,
           },
           grep_string = {
-            layout_config = { height = 30, prompt_position = "top" },
+            layout_strategy = "vertical",
           },
           help_tags = {
             theme = "ivy",
@@ -285,7 +285,6 @@ return {
             },
           },
           diagnostics = {
-            layout_config = { height = 20 },
             layout_strategy = "vertical",
             path_display = { "shorten" },
           },
