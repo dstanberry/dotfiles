@@ -2,6 +2,8 @@ local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
 groups.new("NoiceFormatProgressDone", { link = "LspReferenceRead" })
+groups.new("NoiceFormatEvent", { link = "Comment" })
+groups.new("NoiceFormatKind", { link = "Comment" })
 
 return {
   "folke/noice.nvim",
