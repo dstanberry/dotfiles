@@ -1,8 +1,12 @@
 local ftplugin = vim.api.nvim_create_augroup("hl_dadbod", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
-  pattern = "dbui",
-  callback = function() vim.opt_local.winhighlight = "Normal:NormalSB" end,
+  pattern = { "dbout", "dbui" },
+  callback = function()
+    vim.opt_local.winhighlight = "Normal:NormalSB"
+    vim.opt_local.number = false
+    vim.opt_local.relativenumber = false
+  end,
 })
 
 return {
