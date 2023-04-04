@@ -64,7 +64,7 @@ return {
     "lvimuser/lsp-inlayhints.nvim",
     config = function()
       local hints = require "lsp-inlayhints"
-      local lsp_type_hints = vim.api.nvim_create_augroup("lsp_type_hints", {})
+      local lsp_type_hints = vim.api.nvim_create_augroup("lsp_type_hints", { clear = true })
       vim.api.nvim_create_autocmd("LspAttach", {
         group = lsp_type_hints,
         callback = function(args)
