@@ -268,25 +268,45 @@ end, { silent = false, expr = true, replace_keycodes = true, desc = "replace occ
 
 -- execute selected text (for vim/lua files)
 vim.keymap.set("v", "<c-w><c-x>", function()
-  local function eval_chunk(str, ...)
-    local chunk = loadstring(str, "@[evalrangeX]")
-    local c = coroutine.create(chunk)
-    local res = { coroutine.resume(c, ...) }
-    if not res[1] then
-      if debug.getinfo(c, 0, "f").func ~= chunk then res[2] = debug.traceback(c, res[2], 0) end
+  local function eval_chunk(selection, ...)
+    local text = table.concat(selection, "\n")
+    local evalok, eval_result
+    local msg
+    local ok, expr = pcall(loadstring, "return " .. text)
+    if ok and expr then
+      msg = "Execution Context (expr)"
+      evalok, eval_result = pcall(expr)
+      if not evalok then error(msg .. " [FAILED]: " .. eval_result) end
+      dump_with_title(msg, eval_result, selection)
+      return
     end
-    return unpack(res)
+    local lines = vim.deepcopy(selection)
+    lines[#lines] = "return " .. lines[#lines]
+    ok, expr = pcall(loadstring, table.concat(lines, "\n"))
+    if ok and expr then
+      msg = "Execution Context (block-expr)"
+      evalok, eval_result = pcall(expr)
+      if not evalok then error(msg .. " [FAILED]: " .. eval_result) end
+      dump_with_title(msg, eval_result, selection)
+      return
+    end
+    local errmsg
+    ok, expr, errmsg = pcall(loadstring, text)
+    if not ok then error(errmsg) end
+    msg = "Execution Context (block)"
+    evalok, eval_result = pcall(expr)
+    if not evalok then error(msg .. " [FAILED]: " .. eval_result) end
+    dump_with_title(msg, eval_result, selection)
   end
   local lines = util.buffer.get_visual_selection()
   local selection = table.concat(lines)
   local ft = vim.bo.filetype
-  local out = ""
   if ft == "vim" then
-    out = vim.api.nvim_exec(([[%s]]):format(selection), true)
+    local out = vim.api.nvim_exec(([[%s]]):format(selection), true)
+    vim.print(out)
   elseif ft == "lua" then
-    out = eval_chunk(selection)
+    eval_chunk(lines)
   end
-  print(out)
 end, { silent = true, desc = "execute selection" })
 
 -- maintain selection after indentation
