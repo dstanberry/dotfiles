@@ -31,6 +31,7 @@ M.setup = function(cfg)
     group = lsp_zk,
     pattern = "*.md",
     callback = function(args)
+      if not (args.data and args.data.client_id) then return end
       -- HACK: hijack marksman lsp setup to also add zk to the mix
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       if client.name == "marksman" then zkl.buf_add(args.buf) end
