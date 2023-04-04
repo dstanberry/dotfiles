@@ -25,11 +25,11 @@ return {
             { sign = { name = { "GitSigns" }, maxwidth = 1, colwidth = 1, auto = true }, click = "v:lua.ScSa" },
             -- { text = { "%s" }, click = "v:lua.ScSa" },
             {
-              text = { " ", builtin.lnumfunc, " " },
+              text = { " ", builtin.lnumfunc },
               sign = { name = { ".*" }, maxwidth = 3, auto = true },
               click = "v:lua.ScLa",
             },
-            { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" },
+            { text = { " ", builtin.foldfunc, " " }, click = "v:lua.ScFa" },
           },
         }
       end,

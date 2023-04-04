@@ -5,6 +5,7 @@ local telescope_themes = require "telescope.themes"
 local telescope_pickers = require "remote.telescope.custom.pickers"
 
 local zk = require "zk"
+local zka = require "zk.api"
 local zku = require "zk.util"
 
 local util = require "util"
@@ -43,6 +44,7 @@ local M = {}
 M.edit = function(options, picker_options)
   options = options or {}
   picker_options = vim.tbl_extend("keep", picker_options, {
+    picker = "telescope",
     telescope = telescope_themes.get_ivy {},
   })
   zk.edit(options, picker_options)
@@ -56,6 +58,7 @@ end
 M.pick_tags = function(options, picker_options, cb)
   options = options or {}
   picker_options = vim.tbl_extend("keep", picker_options, {
+    picker = "telescope",
     telescope = telescope_themes.get_dropdown {},
   })
   zk.pick_tags(options, picker_options, cb)
@@ -69,6 +72,7 @@ end
 M.pick_notes = function(options, picker_options, cb)
   options = options or {}
   picker_options = vim.tbl_extend("keep", picker_options, {
+    picker = "telescope",
     telescope = telescope_themes.get_ivy {},
   })
   zk.pick_notes(options, picker_options, cb)
@@ -93,6 +97,20 @@ M.new = function(options)
   })
 end
 
+local make_given_range_params = function(range)
+  local params = util.map(function(params, v, k)
+    local row, col = unpack(range[k])
+    col = (vim.o.selection ~= "exclusive" and v == "end") and col + 1 or col
+    params[v] = { line = row, character = col }
+    return params
+  end, { "start", "end" })
+  local location = vim.lsp.util.make_given_range_params()
+  location.uri = location.textDocument.uri
+  location.textDocument = nil
+  location.range = params
+  return location
+end
+
 ---Using the current |`text selection`|, opens a `telescope` templates picker
 ---and creates/edits a new note based on the template chosen using the
 ---|`text selection`| as either the title or body of the note
@@ -104,20 +122,10 @@ M.new_from_selection = function(options)
   end
   local lines, range = util.buffer.get_visual_selection()
   local chunk = table.concat(lines)
-  if #range == 2 then
-    local params = util.map(function(params, v, k)
-      local row, col = unpack(range[k])
-      col = (vim.o.selection ~= "exclusive" and v == "end") and col + 1 or col
-      params[v] = { line = row, character = col }
-      return params
-    end, { "start", "end" })
-    local location = vim.lsp.util.make_given_range_params()
-    location.uri = location.textDocument.uri
-    location.textDocument = nil
-    location.range = params
-    if chunk == nil then error "Unable to create note: No selected text" end
-    vim.schedule(function() M.new { insertLinkAtLocation = location, [options.location] = chunk } end)
-  end
+  if chunk == nil then error "Unable to create note: No selected text" end
+  if not range then error("Invalid text selection. Invalid value for 'range': " .. vim.inspect(range)) end
+  local location = make_given_range_params(range)
+  vim.schedule(function() M.new { insertLinkAtLocation = location, [options.location] = chunk } end)
 end
 
 ---Opens a `telescope` picker and inserts a link to the note
@@ -126,17 +134,9 @@ end
 M.insert_link = function(options)
   options = options or {}
   M.pick_notes(options, { title = "Notes (insert link to note)", multi_select = false }, function(note)
-    local pos = vim.api.nvim_win_get_cursor(0)[2]
-    local line = vim.api.nvim_get_current_line()
-    -- HACK: `textDocument/definition` resolves based on current file not notebook root
-    note.path = note.path:match "^(.+)%.md$" or note.path
-    local updated = ("%s[%s](%s)%s"):format(
-      line:sub(0, pos),
-      note.title,
-      ("../%s"):format(note.path),
-      line:sub(pos + 1)
-    )
-    vim.api.nvim_set_current_line(updated)
+    zka.link(note.path, zku.get_lsp_location_from_caret(), nil, {}, function(err, res)
+      if not res then error(err) end
+    end)
   end)
 end
 
@@ -145,24 +145,18 @@ end
 ---@param options? table additional options
 M.insert_link_from_selection = function(options)
   options = options or {}
-  local lines = util.buffer.get_visual_selection()
+  local lines, range = util.buffer.get_visual_selection()
   local selection = table.concat(lines)
+  if selection == nil then error "Unable to create note: No selected text" end
+  if not range then error("Invalid text selection. Invalid value for 'range': " .. vim.inspect(range)) end
+  local location = make_given_range_params(range)
   M.pick_notes(
     options,
     { title = ("Notes (link '%s' to note)"):format(selection), multi_select = false },
     function(note)
-      local pos = vim.api.nvim_win_get_cursor(0)[2]
-      local line = vim.api.nvim_get_current_line()
-      -- HACK: `textDocument/definition` resolves based on current file not notebook root
-      note.path = note.path:match "^(.+)%.md$" or note.path
-      local updated = ("%s[%s](%s)%s"):format(
-        line:sub(0, pos - #selection),
-        selection,
-        -- (filename):match "lua\\(.+)%.lua$"
-        ("../%s"):format(note.path),
-        line:sub(pos + 1)
-      )
-      vim.api.nvim_set_current_line(updated)
+      zka.link(note.path, location, nil, { title = selection }, function(err, res)
+        if not res then error(err) end
+      end)
     end
   )
 end

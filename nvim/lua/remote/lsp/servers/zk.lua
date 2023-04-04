@@ -10,7 +10,11 @@ end
 
 local M = {}
 
+M.defer_setup = false
+
 M.setup = function(cfg)
+  require "ft.markdown.commands"
+  require "ft.markdown.keymaps"
   zk.setup {
     picker = "telescope",
     lsp = { config = cfg },
@@ -19,9 +23,6 @@ M.setup = function(cfg)
       filetypes = { "markdown" },
     },
   }
-
-  require "ft.markdown.commands"
-  require "ft.markdown.keymaps"
 end
 
 M.config = {
@@ -29,7 +30,5 @@ M.config = {
   on_new_config = function(new_config, _) new_config.cmd = get_cmd() end,
   name = "zk",
 }
-
-M.defer_setup = true
 
 return M
