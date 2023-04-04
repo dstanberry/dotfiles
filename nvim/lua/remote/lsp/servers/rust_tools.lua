@@ -1,9 +1,6 @@
 -- verify rust-tools is available
 local ok, rust_tools = pcall(require, "rust-tools")
-if not ok then
-  dump(ok)
-  dump(rust_tools)
-end
+if not ok then return end
 local rust_analyzer = require "remote.lsp.servers.rust_analyzer"
 local icons = require "ui.icons"
 local paths = require("remote.dap.debuggers.c").get_executable_path()
