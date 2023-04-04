@@ -10,7 +10,7 @@ return function()
     return names
   end, vim.lsp.get_active_clients { bufnr = buf })
 
-  local names = clients and table.concat(clients, ", ") or ""
+  local names = clients and table.concat(clients, pad(icons.misc.CircleDot, "both")) or ""
   return #names == 0 and ""
     or #names < limit and pad(icons.misc.Gears, "right", 2) .. names
     or pad(icons.misc.Gears, "right") .. "LSP"
