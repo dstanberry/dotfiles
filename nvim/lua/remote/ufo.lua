@@ -15,6 +15,7 @@ return {
       event = "UIEnter",
       config = function()
         vim.opt.foldcolumn = "1"
+        vim.opt.signcolumn = "number"
         local builtin = require "statuscol.builtin"
         require("statuscol").setup {
           -- ft_ignore = vim.tbl_deep_extend("keep", excludes.ft.stl_disabled, excludes.ft.wb_disabled),
@@ -23,7 +24,11 @@ return {
           segments = {
             { sign = { name = { "GitSigns" }, maxwidth = 1, colwidth = 1, auto = true }, click = "v:lua.ScSa" },
             -- { text = { "%s" }, click = "v:lua.ScSa" },
-            { text = { " ", builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
+            {
+              text = { " ", builtin.lnumfunc, " " },
+              sign = { name = { ".*" }, maxwidth = 3, auto = true },
+              click = "v:lua.ScLa",
+            },
             { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" },
           },
         }
