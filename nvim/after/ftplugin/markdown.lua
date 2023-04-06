@@ -10,7 +10,7 @@ vim.opt_local.conceallevel = 2
 vim.opt_local.wrap = true
 vim.opt_local.colorcolumn = "80"
 
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "CmdlineLeave", "InsertLeave" }, {
   group = "ftplugin",
   buffer = 0,
   callback = function() markdown.concealer.toggle_on() end,
