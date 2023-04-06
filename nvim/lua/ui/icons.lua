@@ -77,11 +77,11 @@ return {
     Checked = "󰄲  ",
     Unchecked = "󰄱  ",
     H1 = "◉",
-    H2 = " ◎",
-    H3 = "  ○",
-    H4 = "   ✺",
-    H5 = "    ▶",
-    H6 = "     ⤷",
+    H2 = "◉◉",
+    H3 = "◉◉◉",
+    H4 = "◉◉◉◉",
+    H5 = "◉◉◉◉◉",
+    H6 = "◉◉◉◉◉◉",
     ListMinus = "•",
   },
   misc = {
@@ -128,8 +128,8 @@ return {
   status = {
     Error = "",
     Hint = "󰌶",
-    Info = "󰋽 ",
-    Warn = "",
+    Info = "󰋽",
+    Warn = "󰳤",
   },
   type = {
     Array = "",
