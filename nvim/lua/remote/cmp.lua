@@ -12,13 +12,11 @@ return {
   lazy = true,
   dependencies = {
     "hrsh7th/cmp-buffer",
-    "hrsh7th/cmp-cmdline",
     "hrsh7th/cmp-nvim-lsp",
-    "hrsh7th/cmp-nvim-lsp-document-symbol",
-    "hrsh7th/cmp-nvim-lua",
     "hrsh7th/cmp-path",
-    "L3MON4D3/LuaSnip",
     "saadparwaiz1/cmp_luasnip",
+    -- snippets manager
+    "L3MON4D3/LuaSnip",
   },
   config = function()
     local cmp = require "cmp"
@@ -58,7 +56,6 @@ return {
         end,
       },
       sources = cmp.config.sources {
-        { name = "nvim_lua" },
         { name = "nvim_lsp" },
         { name = "luasnip" },
         { name = "path" },
@@ -78,24 +75,6 @@ return {
         },
       },
     }
-
---[[
-    cmp.setup.cmdline({ "/", "?" }, {
-      mapping = cmp.mapping.preset.cmdline(),
-      sources = {
-        { name = "buffer" },
-        { name = "nvim_lsp_document_symbol" },
-      },
-    })
-
-    cmp.setup.cmdline(":", {
-      mapping = cmp.mapping.preset.cmdline(),
-      sources = cmp.config.sources {
-        { name = "cmdline", keyword_pattern = [=[[^[:blank:]\!]*]=] },
-        { name = "path" },
-      },
-    })
-]]
 
     groups.new("CmpItemAbbrDefault", { fg = c.white })
     groups.new("CmpItemAbbrDeprecatedDefault", { fg = c.white })
