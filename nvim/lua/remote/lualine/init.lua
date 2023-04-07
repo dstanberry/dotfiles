@@ -75,10 +75,10 @@ return {
               hint = pad(icons.status.Hint, "right"),
             },
             diagnostics_color = {
-              error = { fg = color.blend(c.red1, c.white, 0.7) },
-              warn = { fg = color.blend(c.yellow2, c.white, 0.7) },
-              info = { fg = color.blend(c.aqua1, c.white, 0.7) },
-              hint = { fg = color.blend(c.magenta1, c.white, 0.7) },
+              error = { fg = color.blend(c.red1, c.white, 0.4) },
+              warn = { fg = color.blend(c.yellow2, c.white, 0.4) },
+              info = { fg = color.blend(c.aqua1, c.white, 0.4) },
+              hint = { fg = color.blend(c.magenta1, c.white, 0.4) },
             },
           },
           {
