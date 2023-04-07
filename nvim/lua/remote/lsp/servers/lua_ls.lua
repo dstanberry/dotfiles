@@ -29,6 +29,7 @@ M.config = {
   settings = {
     Lua = {
       completion = {
+        callSnippet = "Replace",
         showWord = "Disable",
         -- keywordSnippet = "Disable",
       },
