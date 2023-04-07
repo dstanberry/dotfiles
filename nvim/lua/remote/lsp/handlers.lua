@@ -2,10 +2,29 @@ local icons = require "ui.icons"
 
 local M = {}
 
+M.on_init = function(opts)
+  return function(client)
+    local default_request = client.rpc.request
+    function client.rpc.request(method, params, handler, ...)
+      local default_handler = handler
+      opts = vim.F.if_nil(opts, {})
+      for condition, callback in pairs(opts) do
+        if method == condition then
+          handler = function(...)
+            if type(callback) == "function" then callback(...) end
+            return default_handler(...)
+          end
+        end
+      end
+      return default_request(method, params, handler, ...)
+    end
+  end
+end
+
 M.on_attach = function(client, bufnr)
   -- NOTE: "gD" used by |glance.nvim|
   -- if client.server_capabilities.declarationProvider then
-    -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "" })
+  -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "" })
   -- end
 
   if client.server_capabilities.codeActionProvider then
@@ -173,7 +192,7 @@ M.setup = function()
     vim.lsp.handlers["workspace/symbol"] = telescope.lsp_dynamic_workspace_symbols
   end
 
----@diagnostic disable-next-line: duplicate-set-field
+  ---@diagnostic disable-next-line: duplicate-set-field
   vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
     local bufnr = vim.uri_to_bufnr(result.uri)
     if not bufnr then return end
