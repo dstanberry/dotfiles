@@ -12,12 +12,13 @@ groups.new("NeoTreeFloatNormal", { bg = GRAY })
 
 groups.new("NeoTreeNormal", { link = "NormalSB" })
 groups.new("NeoTreeNormalNC", { link = "NormalSB" })
-groups.new("NeoTreeTabActive", { fg = c.fg1, bg = c.bgX })
-groups.new("NeoTreeTabInactive", { fg = c.gray1, bg = c.bg2 })
-groups.new("NeoTreeTabSeparatorActive", { fg = c.fg1, bg = c.bg2 })
-groups.new("NeoTreeTabSeparatorInactive", { fg = c.bg2, bg = c.bg2 })
+groups.new("NeoTreeTabActive", { fg = c.fg0, bg = c.bgX })
+groups.new("NeoTreeTabInactive", { fg = c.gray1, bg = c.bgX })
+groups.new("NeoTreeTabSeparatorActive", { fg = c.bgX, bg = c.bgX })
+groups.new("NeoTreeTabSeparatorInactive", { fg = c.bgX, bg = c.bgX })
 
-groups.new("NeoTreeRootName", { fg = c.fg1 })
+groups.new("NeoTreeFileName", { fg = color.lighten(c.gray2, 30) })
+groups.new("NeoTreeRootName", { link = "Directory" })
 
 return {
   {

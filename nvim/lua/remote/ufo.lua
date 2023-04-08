@@ -14,8 +14,8 @@ return {
       },
       event = "UIEnter",
       config = function()
-        vim.opt.foldcolumn = "1"
-        vim.opt.signcolumn = "number"
+        vim.o.foldcolumn = "1"
+        vim.o.signcolumn = "number"
         local builtin = require "statuscol.builtin"
         require("statuscol").setup {
           -- ft_ignore = vim.tbl_deep_extend("keep", excludes.ft.stl_disabled, excludes.ft.wb_disabled),

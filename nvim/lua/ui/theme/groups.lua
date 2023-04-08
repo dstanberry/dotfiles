@@ -23,7 +23,7 @@ M.apply = function(c)
   hi.CursorLine = { bg = c.bg3 }
   hi.CursorLineNr = { fg = c.aqua1 }
   hi.Debug = { fg = c.gray2 }
-  hi.Directory = { fg = c.blue0 }
+  hi.Directory = { fg = c.blue1 }
   hi.ErrorMsg = { fg = c.red1 }
   hi.FoldColumn = { link = "SignColumn" }
   hi.Folded = { fg = c.gray2, bg = c.gray0 }
@@ -305,7 +305,7 @@ M.apply = function(c)
   hi.WinbarContext = { fg = color.lighten(c.gray1, 15), bg = c.bg2 }
 
   -- ensure termguicolors is set (likely redundant)
-  vim.opt.termguicolors = true
+  vim.o.termguicolors = true
   -- set gui colors
   vim.g.terminal_color_0 = c.bg2
   vim.g.terminal_color_1 = c.red1

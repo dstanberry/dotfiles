@@ -32,16 +32,16 @@ return {
   init = function()
     -- TODO: figure out how to deduplicate this 
     if has "win32" then
-      vim.opt.shell = "pwsh"
-      vim.opt.shellcmdflag = table.concat({
+      vim.o.shell = "pwsh"
+      vim.o.shellcmdflag = table.concat({
         "-NoLogo",
         "-ExecutionPolicy RemoteSigned",
         "-Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
       }, " ")
-      vim.opt.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
-      vim.opt.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
-      vim.opt.shellquote = ""
-      vim.opt.shellxquote = ""
+      vim.o.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
+      vim.o.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+      vim.o.shellquote = ""
+      vim.o.shellxquote = ""
     end
 
     local Terminal = require("toggleterm.terminal").Terminal

@@ -16,11 +16,11 @@ vim.api.nvim_create_autocmd("WinLeave", {
 local cmdline = vim.api.nvim_create_augroup("cmdline", { clear = true })
 vim.api.nvim_create_autocmd("CmdLineEnter", {
   group = cmdline,
-  callback = function() vim.opt.smartcase = false end,
+  callback = function() vim.o.smartcase = false end,
 })
 vim.api.nvim_create_autocmd("CmdLineLeave", {
   group = cmdline,
-  callback = function() vim.opt.smartcase = true end,
+  callback = function() vim.o.smartcase = true end,
 })
 
 local filesystem = vim.api.nvim_create_augroup("filesystem", { clear = true })
