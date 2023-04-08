@@ -8,13 +8,6 @@ local show_buffer_info = function(bufnr)
   end
 end
 
-local show_paste_mode = function()
-  local result = ""
-  local paste = vim.go.paste
-  if paste then result = pad(icons.misc.Clipboard, "right") end
-  return result
-end
-
 return function()
   local buf = vim.api.nvim_win_get_buf(vim.api.nvim_get_current_win())
   local icon = pad(icons.git.Branch, "right")
@@ -29,7 +22,5 @@ return function()
   if not (ok or branch) then
     icon, branch = show_buffer_info(buf)
   end
-  local p = show_paste_mode()
-  if #p > 0 then icon = p end
   return icon .. branch
 end

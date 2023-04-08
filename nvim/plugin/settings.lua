@@ -89,8 +89,6 @@ vim.opt.mouse = "nv"
 vim.opt.mousemodel = "extend"
 -- show line numbers
 vim.opt.number = true
--- toggle paste mode (to be able to accurately paste from external apps)
-vim.opt.pastetoggle = "<F2>"
 -- extend path to include current directory
 vim.opt.path:append "**"
 -- opacity for popup menu
