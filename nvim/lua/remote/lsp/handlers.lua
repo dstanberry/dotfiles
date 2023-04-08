@@ -176,7 +176,7 @@ M.setup = function()
       source = "always",
     },
     underline = {
-      severity = { min = vim.diagnostic.severity.WARN },
+      severity = { min = vim.diagnostic.severity.HINT },
     },
   }
 
@@ -195,42 +195,6 @@ M.setup = function()
     vim.lsp.handlers["textDocument/references"] = telescope.lsp_references
     vim.lsp.handlers["textDocument/typeDefinition"] = telescope.lsp_definitions
     vim.lsp.handlers["workspace/symbol"] = telescope.lsp_dynamic_workspace_symbols
-  end
-
-  ---@diagnostic disable-next-line: duplicate-set-field
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
-    local bufnr = vim.uri_to_bufnr(result.uri)
-    if not bufnr then return end
-
-    local ns = vim.api.nvim_create_namespace "custom_lsp_semantic_modifiers"
-    vim.api.nvim_buf_clear_namespace(bufnr, ns, 0, -1)
-    local real_diags = {}
-    for _, diag in pairs(result.diagnostics) do
-      if diag.tags == nil then diag.tags = {} end
-      if
-        diag.severity == vim.lsp.protocol.DiagnosticSeverity.Hint
-        and vim.tbl_contains(diag.tags, vim.lsp.protocol.DiagnosticTag.Unnecessary)
-      then
-        pcall(vim.api.nvim_buf_set_extmark, bufnr, ns, diag.range.start.line, diag.range.start.character, {
-          end_row = diag.range["end"].line,
-          end_col = diag.range["end"].character,
-          hl_group = "@lsp.mod.unnecessary",
-        })
-      elseif
-        diag.severity == vim.lsp.protocol.DiagnosticSeverity.Hint
-        and vim.tbl_contains(diag.tags, vim.lsp.protocol.DiagnosticTag.Deprecated)
-      then
-        pcall(vim.api.nvim_buf_set_extmark, bufnr, ns, diag.range.start.line, diag.range.start.character, {
-          end_row = diag.range["end"].line,
-          end_col = diag.range["end"].character,
-          hl_group = "@lsp.mod.deprecated",
-        })
-      else
-        table.insert(real_diags, diag)
-      end
-    end
-    result.diagnostics = real_diags
-    vim.lsp.diagnostic.on_publish_diagnostics(_, result, ctx, config)
   end
 end
 

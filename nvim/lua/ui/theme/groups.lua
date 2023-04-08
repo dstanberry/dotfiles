@@ -153,6 +153,9 @@ M.apply = function(c)
   hi.LspReferenceWrite = { bg = c.lsp_write }
 
   -- lsp diagnostic highlighting
+  hi.DiagnosticDeprecated = { link = "@lsp.mod.deprecated" }
+  hi.DiagnosticUnnecessary = { link = "@lsp.mod.unnecessary" }
+
   hi.DiagnosticError = { fg = c.red1 }
   hi.DiagnosticWarn = { fg = c.yellow2 }
   hi.DiagnosticInfo = { fg = c.aqua1 }
@@ -193,7 +196,7 @@ M.apply = function(c)
   -- hi["@lsp.mod.declaration"] = {}
   hi["@lsp.mod.defaultLibrary"] = { italic = true }
   -- hi["@lsp.mod.definition"] = {}
-  hi["@lsp.mod.deprecated"] = { fg = c.red3, italic = true, strikethrough = true }
+  hi["@lsp.mod.deprecated"] = { sp = c.red3, italic = true, strikethrough = true }
   hi["@lsp.mod.documentation"] = { link = "SpecialComment" }
   -- hi["@lsp.mod.modification"] = {}
   hi["@lsp.mod.readonly"] = { italic = true }
