@@ -141,6 +141,7 @@ return {
           {
             breadcrumbs,
             color = "Winbar",
+            padding = { right = 0 },
           },
         },
         lualine_x = {
