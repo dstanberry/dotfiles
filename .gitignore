@@ -53,6 +53,7 @@ plasmarc
 pulse/
 pypoetry/auth.toml
 QtProject.conf
+scoop/
 systemsettingsrc
 tmux/tmux.digests
 Trolltech.conf
