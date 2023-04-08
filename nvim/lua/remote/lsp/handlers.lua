@@ -128,7 +128,7 @@ M.on_attach = function(client, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, "Workspace", function(opts)
     local cmd = unpack(opts.fargs)
     if cmd == "list" then
-      dump(vim.lsp.buf.list_workspace_folders())
+      dump_with_title("LSP Workspace(s)", vim.lsp.buf.list_workspace_folders())
     elseif cmd == "add" then
       vim.lsp.buf.add_workspace_folder()
     elseif cmd == "remove" then
