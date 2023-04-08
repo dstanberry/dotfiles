@@ -66,9 +66,10 @@ zstyle ':vcs_info:*' enable git
   zstyle ':vcs_info:*' stagedstr "%F{green}▪%f"
   zstyle ':vcs_info:*' unstagedstr "%F{red}▪%f"
   zstyle ':vcs_info:*' use-simple true
+  zstyle ':vcs_info:*' get-revision true
   zstyle ':vcs_info:git*+set-message:*' hooks git-untracked git-stash git-compare git-remotebranch
   zstyle ':vcs_info:git*:*' formats '%F{cyan} %b%m%c%u%f '
-  zstyle ':vcs_info:git*:*' actionformats '%B%F{red} %b|%a%m%c%u %f'
+  zstyle ':vcs_info:git*:*' actionformats '%B%F{red} %b|%a %8.8i%c%u %f'
 
   __in_git() {
     [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]]
