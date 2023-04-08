@@ -1,6 +1,6 @@
 # Dotfiles
 
-![image](https://github.com/dstanberry/dotfiles/wiki/assets/vim.png)
+![neovim](https://github.com/dstanberry/dotfiles/wiki/assets/vim.png)
 
 The schema is constructed such that it adheres to the XDG Base Directory
 Specification.
@@ -23,7 +23,7 @@ git worktree add $worktree $(git branch --show-current)
 The glue required to make this possible is to tell the system wide configuration
 file where to look for the user shell profile:
 
-Bash (_Deprecated_): Depending on the distro this file may exist in
+Bash (*Deprecated*): Depending on the distro this file may exist in
 `/etc/bashrc`, `/etc/bash.bashrc` or `/etc/bash/bashrc`.
 
 ```bash
@@ -39,7 +39,7 @@ export XDG_CONFIG_HOME="${HOME}/.config"
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh/"
 ```
 
-_Note on bash/zsh:_
+***Note on bash/zsh:***
 
 Machine specific settings can be defined within {bash,zsh}/rc.private/ if
 desired. The directory will be created automatically if it does not exist. In
@@ -98,7 +98,7 @@ is also checked.
 
 [Patched Font](https://www.nerdfonts.com)
 
-[Vim](https://github.com/vim/vim) (_Deprecated_) can be compiled with support
+[Vim](https://github.com/vim/vim) (*Deprecated*) can be compiled with support
 for Lua, Perl, Python and Ruby.
 
 [Neovim](https://github.com/neovim/neovim) supports remote plugins written in
@@ -142,10 +142,6 @@ that contain unwanted packages before running any of the `load` commands.
     tmp=${XDG_RUNTIME_DIR}/npm
     init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
     ```
-
-- Perl
-
-  - _currently not in use_
 
 - Python
 
