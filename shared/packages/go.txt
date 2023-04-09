@@ -1,5 +1,5 @@
 github.com/charmbracelet/glow@latest
 github.com/go-delve/delve/cmd/dlv@latest
-github.com/itchyny/mmv/cmd/mmv@latest
+github.com/jesseduffield/lazygit@latest
 github.com/maaslalani/slides@latest
 golang.org/x/tools/gopls@latest

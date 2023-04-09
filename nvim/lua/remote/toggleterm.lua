@@ -30,7 +30,7 @@ return {
     close_on_exit = true,
   },
   init = function()
-    -- TODO: figure out how to deduplicate this 
+    -- TODO: figure out how to deduplicate this
     if has "win32" then
       vim.o.shell = "pwsh"
       vim.o.shellcmdflag = table.concat({
@@ -49,15 +49,16 @@ return {
     float = Terminal:new {
       direction = "float",
       on_open = function(term)
+        vim.wo.sidescrolloff = 0
         vim.keymap.set(
           { "i", "n", "t" },
-          "<a-t>",
+          "<a-w><a-t>",
           function() float:toggle() end,
           { buffer = term.bufnr, desc = "toggleterm: toggle float" }
         )
       end,
     }
-    vim.keymap.set({ "i", "n" }, "<a-t>", function() float:toggle() end, { desc = "toggleterm: toggle float" })
+    vim.keymap.set("n", "<a-w><a-t>", function() float:toggle() end, { desc = "toggleterm: toggle float" })
 
     local tab
     tab = Terminal:new {
@@ -65,12 +66,30 @@ return {
       on_open = function(term)
         vim.keymap.set(
           { "i", "n", "t" },
-          "<a-y>",
+          "<a-w><a-y>",
           function() tab:toggle() end,
           { buffer = term.bufnr, desc = "toggleterm: toggle tab" }
         )
       end,
     }
-    vim.keymap.set({ "i", "n" }, "<a-y>", function() tab:toggle() end, { desc = "toggleterm: toggle tab" })
+    vim.keymap.set("n", "<a-w><a-y>", function() tab:toggle() end, { desc = "toggleterm: toggle tab" })
+
+    local lazygit
+    lazygit = Terminal:new {
+      cmd = "lazygit",
+      dir = "git_dir",
+      hidden = true,
+      direction = "tab",
+      on_open = function(term)
+        vim.wo.sidescrolloff = 0
+        vim.keymap.set(
+          { "i", "n", "t" },
+          "<a-w><a-l>",
+          function() lazygit:toggle() end,
+          { buffer = term.bufnr, desc = "toggleterm: toggle float" }
+        )
+      end,
+    }
+    vim.keymap.set("n", "<a-w><a-l>", function() lazygit:toggle() end, { desc = "toggleterm: toggle lazygit" })
   end,
 }
