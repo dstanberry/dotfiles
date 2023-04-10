@@ -15,6 +15,7 @@
 	no-edit = commit --amend --no-edit
 	reword = commit --amend --only -v --
 	staged = diff --cached --ignore-submodules=dirty
+	unstage = restore --staged --patch
 
 	files = !git diff --name-only $(git merge-base HEAD \"$GIT_REVIEW_BASE\")
 	state = !git diff --stat $(git merge-base HEAD \"$GIT_REVIEW_BASE\")
