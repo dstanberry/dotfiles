@@ -1,0 +1,45 @@
+-- Quietly load configuration file
+\set QUIET yes
+
+-- Customize prompt
+\set PROMPT1 '\n%[%033[1;36m%]%n%[%033[34m%]@%[%033[1;36m%]%M:%>%[%033[1;33m%]/%/ %[%033[1;31m%]%x %[%033[K%]%[%033[0m%]\n%[%033[1;33m%]%R%#%[%033[0m%] '
+\set PROMPT2 '%[%033[1;33m%]%R%#%[%033[0m%] '
+
+-- Automatically switch to using expanded table format
+\x auto
+
+-- Use unicode box drawing glyphs
+\pset border 2
+\pset linestyle 'unicode'
+\pset unicode_border_linestyle single
+\pset unicode_column_linestyle single
+\pset unicode_header_linestyle single
+
+-- Show timing info for queries
+\timing
+
+-- Pager settings to support color
+\pset pager always
+
+-- Allow pasting of values to avoid stupid indenting
+\set paste
+
+-- Get rid of duplicates in history
+\set HISTCONTROL ignoredups
+
+-- Protect against results floods
+--\set FETCH_COUNT 1000
+
+-- Automatically upcase keywords
+\set COMP_KEYWORD_CASE upper
+
+-- Show null values as [NULL]
+--\pset null '[NULL]'
+
+-- Error handling/reporting
+\set ON_ERROR_STOP on
+\set ON_ERROR_ROLLBACK interactive
+-- \set VERBOSITY verbose
+
+-- Reset verbosity
+\unset QUIET
