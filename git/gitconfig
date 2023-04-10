@@ -33,6 +33,9 @@
 	rollback = !sh -c 'git reset --merge HEAD~${1-1}' -
 	standup = "!git log --since yesterday  --author `git config user.email` --pretty=oneline"
 
+	; TODO: setting alias to 'jump' doesn't work for some reason
+	hop = !/home/demaro/.config/git/git-jump
+
 [color]
 	ui = auto
 
