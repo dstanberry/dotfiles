@@ -212,7 +212,6 @@ return {
               ["<c-y>"] = set_prompt_to_entry_value,
               ["<c-n>"] = false,
               ["<c-u>"] = false,
-              ["<a-i>"] = function() require("telescope.builtin").find_files { no_ignore = true } end,
               ["jk"] = actions.close,
             },
             n = {
@@ -247,6 +246,8 @@ return {
           find_files = {
             follow = true,
             hidden = true,
+            no_ignore = true,
+            no_ignore_parent = true,
           },
           git_files = {
             use_git_root = true,
