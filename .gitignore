@@ -48,7 +48,9 @@ okularpartrc
 okularrc
 pavucontrol.ini
 pcmanfm/
-pg/
+pg/*
+!pg/psqlrc
+!pg/psqlrc-win
 pip/
 plasmarc
 pulse/
