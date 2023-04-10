@@ -95,6 +95,31 @@ local function file_browser_relative()
   }
 end
 
+local function git_hunks()
+  require("telescope.pickers")
+    .new({
+      finder = require("telescope.finders").new_oneshot_job({ "git", "hop", "--stdout", "diff" }, {
+        entry_maker = function(line)
+          local filename, lnum_string = line:match "([^:]+):(%d+).*"
+          if filename:match "^/dev/null" then return nil end
+          return {
+            value = filename,
+            display = line,
+            ordinal = line,
+            filename = filename,
+            lnum = tonumber(lnum_string),
+          }
+        end,
+      }),
+      sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
+      previewer = require("telescope.config").values.grep_previewer {},
+      results_title = "Git Hunks",
+      prompt_title = "Git Hunks",
+      layout_strategy = "flex",
+    }, {})
+    :find()
+end
+
 return {
   {
     "nvim-telescope/telescope.nvim",
@@ -134,6 +159,7 @@ return {
       { "gW", require("telescope.builtin").diagnostics, desc = "telescope: lsp diagnostics (workspace)" },
     },
     init = function()
+      vim.api.nvim_create_user_command("Hunks", git_hunks, {})
       vim.api.nvim_create_user_command("BCommits", require("telescope.builtin").git_bcommits, {})
       vim.api.nvim_create_user_command("Commits", require("telescope.builtin").git_commits, {})
       vim.api.nvim_create_user_command(
