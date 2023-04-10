@@ -35,7 +35,7 @@
 	standup = "!git log --since yesterday  --author `git config user.email` --pretty=oneline"
 
 	; TODO: setting alias to 'jump' doesn't work for some reason
-	hop = !/home/demaro/.config/git/git-jump
+	hop = !$HOME/.config/git/git-jump
 
 	wt = "!f() { mkdir -p ${PWD}/.worktree; git worktree add -b $1 ${PWD}/.worktree/$1 $(git symbolic-ref --short HEAD); cd ${PWD}/.worktree/$1; }; f"
 	wl = "!f() { git worktree list | fzf --height 40% --reverse; }; f"
