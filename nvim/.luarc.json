@@ -1,8 +1,9 @@
 {
-    "diagnostics.disable": [
-        "cast-local-type",
-        "missing-parameter",
-        "param-type-mismatch",
-        "duplicate-doc-field"
-    ]
+  "$schema": "https://raw.githubusercontent.com/sumneko/vscode-lua/master/setting/schema.json",
+  "diagnostics.disable": [
+    "cast-local-type",
+    "duplicate-doc-field",
+    "missing-parameter",
+    "param-type-mismatch"
+  ]
 }
