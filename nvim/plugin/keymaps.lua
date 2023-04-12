@@ -126,9 +126,6 @@ vim.keymap.set({ "n", "x", "o" }, "N", "'nN'[v:searchforward]", { expr = true, d
 vim.keymap.set("n", "o", "o<esc>", { desc = "insert line below" })
 vim.keymap.set("n", "O", "O<esc>", { desc = "insert line above" })
 
--- disable recording to a register
-vim.keymap.set("n", "q", "<nop>", { desc = "<disabled>" })
-
 -- avoid unintentional switches to Ex mode.
 vim.keymap.set("n", "Q", "<nop>", { desc = "<disabled>" })
 
