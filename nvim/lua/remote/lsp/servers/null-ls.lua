@@ -2,6 +2,8 @@
 local ok, null_ls = pcall(require, "null-ls")
 if not ok then return end
 
+local ts_ok, typescript_code_actions = pcall(require, "typescript.extensions.null-ls.code-actions")
+
 local b = null_ls.builtins
 
 local M = {}
@@ -37,6 +39,8 @@ local sources = {
   b.formatting.sql_formatter,
   b.formatting.stylua,
 }
+
+if ts_ok then table.insert(sources, typescript_code_actions) end
 
 M.setup = function(opts)
   null_ls.setup {
