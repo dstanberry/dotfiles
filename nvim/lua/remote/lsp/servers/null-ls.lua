@@ -25,7 +25,7 @@ local sources = {
   },
   b.formatting.eslint_d,
   b.formatting.gofmt,
-  b.formatting.prettier.with {
+  b.formatting.prettierd.with {
     extra_args = function(params)
       local arguments = {}
       if params.ft == "markdown" then arguments = { "--print-width", "80", "--prose-wrap", "always" } end
