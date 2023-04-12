@@ -13,7 +13,6 @@ return {
         "mfussenegger/nvim-dap",
       },
       event = "UIEnter",
-      commit = "d997bccd601c99bf80b5e011896b57a8525867f0",
       config = function()
         vim.o.foldcolumn = "1"
         vim.o.signcolumn = "number"
