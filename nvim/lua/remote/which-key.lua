@@ -54,6 +54,10 @@ return {
         m = { name = "+notes (markdown)" },
         q = { name = "+session" },
       },
+      ["<localleader>g"] = {
+        mode = "v",
+        name = "+git",
+      },
       ["<localleader>m"] = {
         mode = "v",
         name = "+notes (markdown)",
