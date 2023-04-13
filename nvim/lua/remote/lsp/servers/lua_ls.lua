@@ -28,6 +28,9 @@ M.config = {
   on_new_config = function(new_config, _) new_config.cmd = get_cmd() end,
   settings = {
     Lua = {
+      codeLens = {
+        enable = true,
+      },
       completion = {
         callSnippet = "Replace",
         showWord = "Disable",
