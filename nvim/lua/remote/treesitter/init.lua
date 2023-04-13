@@ -79,6 +79,7 @@ return {
           disable = {},
           highlight_pair_events = {},
           highlight_self = false,
+          fallback_cmd_normal = "normal! %",
           goto_right_end = false,
           keymaps = {
             goto_partner = "%",
