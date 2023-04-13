@@ -41,7 +41,7 @@ M.on_attach = function(client, bufnr)
       callback = require("vim.lsp.codelens").refresh,
     })
 
-    vim.api.nvim_create_autocmd({ "InsertLeave", "CursorHold" }, {
+    vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
       group = lsp_codelens,
       buffer = bufnr,
       callback = require("vim.lsp.codelens").refresh,
