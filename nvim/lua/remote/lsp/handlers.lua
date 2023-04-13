@@ -47,27 +47,20 @@ M.on_attach = function(client, bufnr)
       callback = require("vim.lsp.codelens").refresh,
     })
 
-    vim.api.nvim_buf_create_user_command(bufnr, "Codelens", function(opts)
-      local cmd = unpack(opts.fargs)
-      if cmd == "display" then
-        vim.lsp.codelens.display()
-      elseif cmd == "refresh" then
-        vim.lsp.codelens.refresh()
-      elseif cmd == "run" then
-        vim.lsp.codelens.run()
-      else
-        error(("Invalid codelens operation: '%s'"):format(cmd))
-      end
-    end, {
-      nargs = "*",
-      complete = function(_, line)
-        local l = vim.split(line, "%s+")
-        local n = #l - 2
-        if n == 0 then
-          return vim.tbl_filter(function(val) return vim.startswith(val, l[2]) end, { "display", "refresh", "run" })
+    vim.keymap.set("n", "gl", function()
+      vim.ui.select({ "display", "refresh", "run" }, {
+        prompt = "Code Lens",
+        format_item = function(item) return "Code lens " .. item end,
+      }, function(choice)
+        if choice == "display" then
+          vim.lsp.codelens.display()
+        elseif choice == "refresh" then
+          vim.lsp.codelens.refresh()
+        elseif choice == "run" then
+          vim.lsp.codelens.run()
         end
-      end,
-    })
+      end)
+    end, { buffer = bufnr, desc = "lsp: code lens" })
   end
 
   if client.server_capabilities.documentHighlightProvider then
