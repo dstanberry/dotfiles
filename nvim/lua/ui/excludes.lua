@@ -34,6 +34,7 @@ M.ft.stl_disabled = {
 
 M.ft.wb_disabled = {
   -- builtin filetypes
+  "help",
   "gitcommit",
   "qf",
   "term",
