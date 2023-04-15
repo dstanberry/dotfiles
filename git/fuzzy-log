@@ -1,10 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
-GIT_FZF_DEFAULT_OPTS="
-  $FZF_DEFAULT_OPTS
-  --height=100%
-"
-git-fuzzy-log() {
+git_fuzzy_log() {
   # shellcheck disable=SC2016
   PREVIEW_COMMAND='f() {
     set -- $(echo -- "$@" | grep -o "[a-f0-9]\{7\}")
@@ -18,10 +14,10 @@ git-fuzzy-log() {
 
   # shellcheck disable=SC2086
   # shellcheck disable=SC2068
-  git log --graph --color=always --format='%C(auto)%h %an %C(blue)%s %C(magenta)%cr' $@ \
-    | fzf ${GIT_FZF_DEFAULT_OPTS} --no-sort --tiebreak=index \
-      --preview "${PREVIEW_COMMAND}" --preview-window=top:15 \
-      --bind "enter:execute:${ENTER_COMMAND}"
+  git log --graph --color=always \
+    --format='%C(auto)%h %an %C(blue)%s %C(magenta)%cr' $@ \
+    | fzf --height=100% --no-sort --tiebreak=index --exit-0 \
+      --preview "${PREVIEW_COMMAND}" --bind "enter:execute:${ENTER_COMMAND}"
 }
 
-git-fuzzy-log "@"
+git_fuzzy_log "@"

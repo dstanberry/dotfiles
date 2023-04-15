@@ -23,7 +23,7 @@
 	fixup = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup
 	ri = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git rebase -i
 
-	flog = !sh -c 'git-fuzzy-log'
+	flog = !$HOME/.config/git/fuzzy-log
 	graph = !git --paginate log --graph --pretty=format:'%C(auto)%h%Creset%C(auto)%d%Creset %s %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
 	min-graph = !git --paginate log --graph --all --simplify-by-decoration --pretty=format:'%C(auto)%h%Creset%C(auto)%d%Creset %s %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
 
@@ -39,7 +39,7 @@
 
 	wta = "!f() { mkdir -p ${PWD}/.worktree; git worktree add ${PWD}/.worktree/$1 $1; cd ${PWD}/.worktree/$1; }; f"
 	wtb = "!f() { mkdir -p ${PWD}/.worktree; git worktree add -b $1 ${PWD}/.worktree/$1 $(git symbolic-ref --short HEAD); cd ${PWD}/.worktree/$1; }; f"
-	wtl = "!f() { git worktree list | fzf --height 40% --reverse; }; f"
+	wtl = "!f() { p=$(git worktree list | fzf --exit-0 --no-multi | awk '{print $1}'); [ -d "$p" ] && cd "$p" || return 0; }; f"
 [color]
 	ui = auto
 
