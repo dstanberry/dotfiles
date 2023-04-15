@@ -22,6 +22,8 @@ local prefs = {
   },
 }
 
+M.defer_setup = true
+
 M.setup = function(config)
   typescript.setup {
     disable_commands = false,

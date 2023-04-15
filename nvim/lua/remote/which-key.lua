@@ -5,7 +5,7 @@ local groups = require "ui.theme.groups"
 local BLUE_DARK = color.blend(c.blue2, c.bg0, 0.08)
 
 groups.new("WhichKeyFloat", { bg = BLUE_DARK })
-groups.new("WhichKeySeparator", { fg = c.lsp_fg })
+groups.new("WhichKeySeparator", { fg = color.lighten(c.gray1, 20) })
 groups.new("WhichKeyDesc", { link = "Constant" })
 groups.new("WhichKeyGroup", { link = "Identifier" })
 
@@ -53,6 +53,10 @@ return {
         g = { name = "+git" },
         m = { name = "+notes (markdown)" },
         q = { name = "+session" },
+      },
+      ["<localleader>g"] = {
+        mode = "v",
+        name = "+git",
       },
       ["<localleader>m"] = {
         mode = "v",

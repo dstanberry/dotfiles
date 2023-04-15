@@ -126,9 +126,6 @@ vim.keymap.set({ "n", "x", "o" }, "N", "'nN'[v:searchforward]", { expr = true, d
 vim.keymap.set("n", "o", "o<esc>", { desc = "insert line below" })
 vim.keymap.set("n", "O", "O<esc>", { desc = "insert line above" })
 
--- disable recording to a register
-vim.keymap.set("n", "q", "<nop>", { desc = "<disabled>" })
-
 -- avoid unintentional switches to Ex mode.
 vim.keymap.set("n", "Q", "<nop>", { desc = "<disabled>" })
 
@@ -268,15 +265,15 @@ end, { silent = false, expr = true, replace_keycodes = true, desc = "replace occ
 
 -- execute selected text (for vim/lua files)
 vim.keymap.set("v", "<c-w><c-x>", function()
-  local function eval_chunk(selection, ...)
+  local function eval_chunk(selection)
     local text = table.concat(selection, "\n")
-    local evalok, eval_result
+    local eval_ok, eval_result
     local msg
     local ok, expr = pcall(loadstring, "return " .. text)
     if ok and expr then
       msg = "Execution Context (expr)"
-      evalok, eval_result = pcall(expr)
-      if not evalok then error(msg .. " [FAILED]: " .. eval_result) end
+      eval_ok, eval_result = pcall(expr)
+      if not eval_ok then error(msg .. " [FAILED]: " .. eval_result) end
       dump_with_title(msg, eval_result, selection)
       return
     end
@@ -285,8 +282,8 @@ vim.keymap.set("v", "<c-w><c-x>", function()
     ok, expr = pcall(loadstring, table.concat(lines, "\n"))
     if ok and expr then
       msg = "Execution Context (block-expr)"
-      evalok, eval_result = pcall(expr)
-      if not evalok then error(msg .. " [FAILED]: " .. eval_result) end
+      eval_ok, eval_result = pcall(expr)
+      if not eval_ok then error(msg .. " [FAILED]: " .. eval_result) end
       dump_with_title(msg, eval_result, selection)
       return
     end
@@ -294,8 +291,8 @@ vim.keymap.set("v", "<c-w><c-x>", function()
     ok, expr, errmsg = pcall(loadstring, text)
     if not ok then error(errmsg) end
     msg = "Execution Context (block)"
-    evalok, eval_result = pcall(expr)
-    if not evalok then error(msg .. " [FAILED]: " .. eval_result) end
+    eval_ok, eval_result = pcall(expr)
+    if not eval_ok then error(msg .. " [FAILED]: " .. eval_result) end
     dump_with_title(msg, eval_result, selection)
   end
   local lines = util.buffer.get_visual_selection()

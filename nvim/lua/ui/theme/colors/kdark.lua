@@ -72,9 +72,4 @@ c.diff_delete = "#361f21"
 c.diff_change = "#174061"
 c.diff_text = "#1b3956"
 
-c.lsp_fg = color.lighten(c.gray1, 20)
-c.lsp_read = color.blend(color.darken(c.cyan2, 40), c.bg2, 0.4)
-c.lsp_text = color.blend(c.yellow0, c.bg2, .4)
-c.lsp_write = color.blend(c.orange0, c.bg2, .4)
-
 return c

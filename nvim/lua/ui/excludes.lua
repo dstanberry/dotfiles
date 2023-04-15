@@ -23,6 +23,7 @@ M.ft.stl_disabled = {
   "DiffviewFiles",
   "gitcommit",
   "lazy",
+  "mason",
   "neo-tree",
   "NeogitPopup",
   "NeogitStatus",
@@ -33,6 +34,7 @@ M.ft.stl_disabled = {
 
 M.ft.wb_disabled = {
   -- builtin filetypes
+  "help",
   "gitcommit",
   "qf",
   "term",
@@ -42,6 +44,7 @@ M.ft.wb_disabled = {
   "dap-repl",
   "dbout",
   "lazy",
+  "mason",
   "neo-tree",
   "NeogitCommitMessage",
   "NeogitPopup",

@@ -19,8 +19,8 @@ return {
       end,
       desc = "diffview: toggle diff",
     },
-    { "gh", [[:'<'>DiffviewFileHistory<cr>]], mode = "v", desc = "diffview: file history" },
     { "<localleader>gh", "<cmd>DiffviewFileHistory<cr>", desc = "diffview: file history" },
+    { "<localleader>gH", [[:'<'>DiffviewFileHistory<cr>]], mode = "v", desc = "diffview: file history" },
   },
   config = function()
     local diffview = require "diffview"

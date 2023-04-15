@@ -143,14 +143,14 @@ M.apply = function(c)
   hi.gitcommitSelectedFile = { fg = c.green2, bold = true }
 
   -- lsp codelens highlighting
-  hi.LspCodeLens = { fg = c.lsp_fg }
-  hi.LspCodeLensText = { fg = c.lsp_fg }
-  hi.LspCodeLensSeparator = { fg = c.lsp_fg }
+  hi.LspCodeLens = { fg = color.lighten(c.gray1, 20) }
+  hi.LspCodeLensText = { fg = color.lighten(c.gray1, 20) }
+  hi.LspCodeLensSeparator = { fg = color.lighten(c.gray1, 20) }
 
   -- lsp document highlighting
-  hi.LspReferenceText = { bg = c.lsp_text }
-  hi.LspReferenceRead = { bg = c.lsp_read }
-  hi.LspReferenceWrite = { bg = c.lsp_write }
+  hi.LspReferenceText = { underline = true, sp = c.gray1 }
+  hi.LspReferenceRead = { underline = true, sp = c.gray1 }
+  hi.LspReferenceWrite = { bold = true, italic = true, underline = true, sp = c.gray1 }
 
   -- lsp diagnostic highlighting
   hi.DiagnosticDeprecated = { link = "@lsp.mod.deprecated" }
