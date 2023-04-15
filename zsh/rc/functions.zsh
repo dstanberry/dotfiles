@@ -298,11 +298,9 @@ _npm_config() {
   local _initmod="${XDG_CACHE_HOME}/npm"
   local _notifier="false"
   local _prefix="${XDG_CACHE_HOME}/npm"
-  local _tmp="${XDG_CACHE_HOME}/npm"
   npm config set cache "$_cache"
   npm config set init-module "$_initmod"
   npm config set update-notifier "$_notifier"
-  npm config set tmp "$_tmp"
   if [[ "$EUID" -gt 0 ]]; then
     npm config set prefix "$_prefix"
   fi
