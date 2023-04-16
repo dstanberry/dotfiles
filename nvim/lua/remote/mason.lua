@@ -9,7 +9,12 @@ return {
         "williamboman/mason-lspconfig.nvim",
         opts = { automatic_installation = true },
       },
+      {
+        "jayp0521/mason-null-ls.nvim",
+        opts = { automatic_installation = true },
+      },
     },
+    cmd = "Mason",
     opts = {
       PATH = "append",
       log_level = vim.log.levels.INFO,
@@ -35,9 +40,5 @@ return {
         },
       },
     },
-  },
-  {
-    "jayp0521/mason-null-ls.nvim",
-    opts = { automatic_installation = true },
   },
 }
