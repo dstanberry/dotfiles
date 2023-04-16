@@ -97,6 +97,50 @@ function gem() {
 }
 
 # support custom sub-commands
+function git() {
+  emulate -L zsh
+  if [ "$1" = "fstash" ]; then
+    gstash
+  elif [ "$1" = "wta" ]; then
+    worktree_base="${PWD}/.worktree"
+    worktree_path="$worktree_base/$2"
+    parentdir="${0:A:h}"
+    parentdir="${parentdir%/*}"
+    parentdir="${parentdir##*/}"
+    if [ "$parentdir" = ".worktree" ]; then
+      worktree_path="../$2"
+    else
+      mkdir -p "$worktree_base"
+    fi
+    command git worktree add $worktree_path
+    cd $worktree_path
+  elif [ "$1" = "wtb" ]; then
+    worktree_base="${PWD}/.worktree"
+    worktree_path="$worktree_base/$2"
+    parentdir="${0:A:h}"
+    parentdir="${parentdir%/*}"
+    parentdir="${parentdir##*/}"
+    if [ "$parentdir" = ".worktree" ]; then
+      worktree_path="../$2"
+    else
+      mkdir -p "$worktree_base"
+    fi
+    command git worktree add -b $2 $worktree_path \
+      $(git symbolic-ref --short HEAD)
+    cd $worktree_path
+  elif [ "$1" = "wtl" ]; then
+    worktree_path=$(git worktree list \
+      | fzf --exit-0 --no-multi \
+		--header="Switch worktree" \
+		--preview="git graph -50 --color=always" \
+      | awk '{print $1}')
+    [ -d "$worktree_path" ] && cd $worktree_path
+  else
+    command git "$@"
+  fi
+}
+
+# support custom sub-commands
 function go() {
   local PKG=$CONFIG_HOME/shared/packages/go.txt
   if [ "$1" = "load" ]; then
@@ -119,7 +163,7 @@ function gstash() {
     fzf --ansi --no-sort --query="$q" --print-query \
       --header "alt-b: apply selected, alt-d: see diff, alt-s: drop selected" \
       --preview "git stash show -p {1} --color=always" \
-      --expect=alt-b,alt-d,alt-s,enter);
+    --expect=alt-b,alt-d,alt-s,enter);
   do
     out=(${(f)"$(echo "$stash")"})
     q="${out[1]}"
