@@ -1,4 +1,3 @@
-local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 
 groups.new("qfPosition", { link = "@text.reference" })
