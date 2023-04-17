@@ -373,10 +373,15 @@ return {
           },
         },
       }
-      telescope.load_extension "file_browser"
-      telescope.load_extension "fzf"
-      telescope.load_extension "gh"
-      telescope.load_extension "ui-select"
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          telescope.load_extension "file_browser"
+          telescope.load_extension "fzf"
+          telescope.load_extension "gh"
+          telescope.load_extension "ui-select"
+        end,
+      })
     end,
   },
 }

@@ -40,7 +40,14 @@ return {
     end,
   },
   init = function()
-    vim.notify = require "notify"
-    telescope.load_extension "notify"
+    if require("lazy.core.config").plugins["noice.nvim"] == nil then
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          vim.notify = require "notify"
+          telescope.load_extension "notify"
+        end,
+      })
+    end
   end,
 }
