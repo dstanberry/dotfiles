@@ -19,6 +19,7 @@ return {
       "folke/neodev.nvim",
       "jose-elias-alvarez/null-ls.nvim",
       "jose-elias-alvarez/typescript.nvim",
+      "williamboman/mason.nvim",
       "simrat39/rust-tools.nvim",
       { "mickael-menu/zk-nvim", dependencies = { "nvim-telescope/telescope.nvim" } },
       {
