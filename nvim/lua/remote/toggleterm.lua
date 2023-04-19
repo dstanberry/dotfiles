@@ -28,22 +28,9 @@ return {
     shading_factor = 2,
     start_in_insert = true,
     close_on_exit = true,
+    shell = has "win32" and "pwsh -NoLogo" or vim.o.shell,
   },
   init = function()
-    -- TODO: figure out how to deduplicate this
-    if has "win32" then
-      vim.o.shell = "pwsh"
-      vim.o.shellcmdflag = table.concat({
-        "-NoLogo",
-        "-ExecutionPolicy RemoteSigned",
-        "-Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
-      }, " ")
-      vim.o.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
-      vim.o.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
-      vim.o.shellquote = ""
-      vim.o.shellxquote = ""
-    end
-
     local Terminal = require("toggleterm.terminal").Terminal
     local float
     float = Terminal:new {
