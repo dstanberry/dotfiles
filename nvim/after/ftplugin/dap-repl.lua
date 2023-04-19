@@ -2,14 +2,10 @@ local dap = require "dap"
 
 require("dap.ext.autocompl").attach()
 
--- stylua: ignore
 vim.keymap.set("i", "<c-h>", "<c-w>h", { buffer = vim.api.nvim_get_current_buf(), desc = "dap: goto left window" })
--- stylua: ignore
-vim.keymap.set( "i", "<c-j>", "<c-w>j", { buffer = vim.api.nvim_get_current_buf(), desc = "dap: goto lower window" })
--- stylua: ignore
-vim.keymap.set( "i", "<c-k>", "<c-w>k", { buffer = vim.api.nvim_get_current_buf(), desc = "dap: goto upper window" })
--- stylua: ignore
-vim.keymap.set( "i", "<c-l>", "<c-w>l", { buffer = vim.api.nvim_get_current_buf(), desc = "dap: goto right window" })
+vim.keymap.set("i", "<c-j>", "<c-w>j", { buffer = vim.api.nvim_get_current_buf(), desc = "dap: goto lower window" })
+vim.keymap.set("i", "<c-k>", "<c-w>k", { buffer = vim.api.nvim_get_current_buf(), desc = "dap: goto upper window" })
+vim.keymap.set("i", "<c-l>", "<c-w>l", { buffer = vim.api.nvim_get_current_buf(), desc = "dap: goto right window" })
 
 vim.keymap.set("i", "<f2>", function()
   dap.step_into()
