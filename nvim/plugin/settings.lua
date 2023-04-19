@@ -112,9 +112,10 @@ vim.opt.shada = {
 }
 -- use powershell on windows OS
 if has "win32" then
-  vim.o.shell = "pwsh"
+  vim.o.shell = "pwsh -NoLogo"
   vim.o.shellcmdflag = table.concat({
     "-NoLogo",
+    "-NoProfile",
     "-ExecutionPolicy RemoteSigned",
     "-Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
   }, " ")
