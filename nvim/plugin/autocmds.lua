@@ -52,11 +52,11 @@ vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
   pattern = { "COMMIT_EDITMSG", "gitcommit", "NeogitCommitMessage" },
   callback = function()
-    vim.bo.colorcolumn = "50,72"
     vim.bo.swapfile = false
     vim.bo.textwidth = 72
     vim.bo.undofile = false
     vim.opt_local.backup = false
+    vim.opt_local.colorcolumn = "50,72"
     vim.opt_local.foldenable = false
     vim.opt_local.iskeyword:append "-"
     vim.opt_local.number = false
