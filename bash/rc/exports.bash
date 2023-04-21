@@ -209,6 +209,3 @@ fi
 if [ ! -s "${CONFIG_HOME}/wget/wgetrc" ]; then
   echo hsts-file \= "$XDG_CACHE_HOME"/wget-hsts >> "$XDG_CONFIG_HOME/wget/wgetrc"
 fi
-
-# define configuration path for pyenv
-export PYENV_ROOT="$XDG_DATA_HOME/pyenv"

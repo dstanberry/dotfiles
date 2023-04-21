@@ -96,22 +96,8 @@ elif is_wsl; then
   unset WBEM
 fi
 
-# add pyenv binaries to path
-if [ -d "${PYENV_ROOT}" ]; then
-  PBIN="$PYENV_ROOT/bin"
-  PSHIMS="$PYENV_ROOT/shims"
-  NEWPATH=$PSHIMS:$PBIN:$NEWPATH
-  unset PBIN
-  unset PSHIMS
-fi
-
 export PATH=$NEWPATH
 unset NEWPATH
 
 # ensure no duplicate entries are present in PATH
 dedup_pathvar PATH
-
-# HACK: delay setting up pyenv until after PATH is reset
-if [ -d "${PYENV_ROOT}" ]; then
-  _evalcache pyenv init -
-fi

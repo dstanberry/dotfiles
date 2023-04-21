@@ -70,14 +70,5 @@ elif is_wsl; then
   unset PWSH
 fi
 
-# add pyenv binaries to path
-if [ -d "${PYENV_ROOT}" ]; then
-  PYENVPATH="$PYENV_ROOT/bin"
-  export PATH=$PYENVPATH:$PATH
-  unset PYENVPATH
-  eval "$(pyenv init --path)"
-  eval "$(pyenv init -)"
-fi
-
 # ensure no duplicate entries are present in PATH
 dedup_pathvar PATH
