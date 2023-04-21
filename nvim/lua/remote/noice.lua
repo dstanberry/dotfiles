@@ -1,7 +1,9 @@
+local c = require("ui.theme").colors
+local color = require "util.color"
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
-groups.new("NoiceFormatProgressDone", { link = "LspReferenceRead" })
+groups.new("NoiceFormatProgressDone", { bg = color.blend(c.diff_add, c.bg2, 0.20) })
 groups.new("NoiceFormatEvent", { link = "Comment" })
 groups.new("NoiceFormatKind", { link = "Comment" })
 
