@@ -1,4 +1,3 @@
-local telescope = require "telescope"
 local groups = require "ui.theme.groups"
 
 groups.new("NotifyTRACEBody", { link = "NormalFloat" })
@@ -28,6 +27,7 @@ groups.new("NotifyERRORTitle", { link = "ErrorMsg" })
 
 return {
   "rcarriga/nvim-notify",
+  lazy = true,
   dependencies = { "nvim-telescope/telescope.nvim" },
   opts = {
     stages = "fade_in_slide_out",
@@ -45,7 +45,7 @@ return {
         pattern = "VeryLazy",
         callback = function()
           vim.notify = require "notify"
-          telescope.load_extension "notify"
+          require("telescope").load_extension "notify"
         end,
       })
     end

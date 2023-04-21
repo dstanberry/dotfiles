@@ -5,6 +5,6 @@ groups.new("VirtColumn", { link = "NonText" })
 
 return {
   "lukas-reineke/virt-column.nvim",
-  event = "VimEnter",
+  event = { "BufReadPost", "BufNewFile" },
   opts = { char = icons.misc.VerticalBarVeryThin },
 }

@@ -1,5 +1,6 @@
 return {
   "akinsho/toggleterm.nvim",
+  lazy = true,
   opts = {
     direction = "float",
     size = function(term)

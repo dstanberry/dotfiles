@@ -10,7 +10,7 @@ local ft = {
 
 return {
   "uga-rosa/ccc.nvim",
-  event = "VeryLazy",
+  lazy = true,
   cmd = { "CccHighlighterToggle" },
   ft = ft,
   opts = {

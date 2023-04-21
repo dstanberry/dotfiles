@@ -11,6 +11,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 return {
   "kristijanhusak/vim-dadbod-ui",
+  event = "VeryLazy",
   dependencies = "tpope/vim-dadbod",
   cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection" },
   keys = {
