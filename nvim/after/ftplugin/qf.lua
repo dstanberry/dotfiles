@@ -11,32 +11,32 @@ vim.opt_local.wrap = false
 vim.keymap.set("n", "<cr>", function()
   local linenr = vim.fn.line "."
   vim.cmd.cc { count = linenr }
-end, { buffer = vim.api.nvim_get_current_buf(), desc = "quickfix: goto item" })
+end, { buffer = true, desc = "quickfix: goto item" })
 
 vim.keymap.set(
   "n",
   "dd",
   util.buffer.quickfix_delete,
-  { buffer = vim.api.nvim_get_current_buf(), desc = "quickfix: delete item" }
+  { buffer = true, desc = "quickfix: delete item" }
 )
 vim.keymap.set(
   "v",
   "d",
   util.buffer.quickfix_delete,
-  { buffer = vim.api.nvim_get_current_buf(), desc = "quickfix: delete item" }
+  { buffer = true, desc = "quickfix: delete item" }
 )
 
 vim.keymap.set(
   "n",
   "H",
   function() pcall(vim.cmd.colder) end,
-  { buffer = vim.api.nvim_get_current_buf(), desc = "quickfix: goto older item" }
+  { buffer = true, desc = "quickfix: goto older item" }
 )
 vim.keymap.set(
   "n",
   "L",
   function() pcall(vim.cmd.cnewer) end,
-  { buffer = vim.api.nvim_get_current_buf(), desc = "quickfix: goto newer item" }
+  { buffer = true, desc = "quickfix: goto newer item" }
 )
 
 local adjust_height = function(min_height, max_height)
