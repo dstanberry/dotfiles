@@ -17,7 +17,6 @@ return {
   config = function()
     local bufferline_groups = require "bufferline.groups"
     require("bufferline").setup {
-      ---@diagnostic disable-next-line: assign-type-mismatch
       highlights = function(defaults)
         local hl = util.map(function(hl, attrs, name)
           local formatted = name:lower()
@@ -54,7 +53,6 @@ return {
         color_icons = true,
         show_buffer_close_icons = true,
         show_close_icon = false,
-        show_buffer_default_icon = true,
         show_tab_indicators = true,
         separator_style = "thin",
         always_show_bufferline = true,
@@ -99,8 +97,7 @@ return {
               -- icon = icons.groups.Sql,
               auto_close = true,
               highlight = { fg = c.orange0 },
-              ---@diagnostic disable-next-line: undefined-field
-              matcher = function(buf) return buf.filename:match "%.sql$" end,
+              matcher = function(buf) return buf.name:match "%.sql$" end,
               separator = {
                 style = bufferline_groups.separator.pill,
               },
@@ -111,9 +108,10 @@ return {
               highlight = { fg = c.yellow0 },
               auto_close = true,
               matcher = function(buf)
-                ---@diagnostic disable-next-line: undefined-field
-                local name = buf.filename
-                return name:match "_spec" or name:match ".spec" or name:match "_test" or name:match ".test"
+                return buf.name:match "_spec"
+                  or buf.name:match ".spec"
+                  or buf.name:match "_test"
+                  or buf.name:match ".test"
               end,
               separator = {
                 style = bufferline_groups.separator.pill,
