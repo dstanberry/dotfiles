@@ -9,11 +9,11 @@ local MAGENTA = "#9086a4"
 local MAGENTA_LIGHT = "#bfafc4"
 
 groups.new("TSRainbow1", { fg = CYAN })
-groups.new("TSRainbow2", { fg = CYAN_LIGHT })
+groups.new("TSRainbow2", { fg = ORANGE })
 groups.new("TSRainbow3", { fg = MAGENTA })
-groups.new("TSRainbow4", { fg = MAGENTA_LIGHT })
+groups.new("TSRainbow4", { fg = CYAN_LIGHT })
 groups.new("TSRainbow5", { fg = PINK })
-groups.new("TSRainbow6", { fg = ORANGE })
+groups.new("TSRainbow6", { fg = MAGENTA_LIGHT })
 groups.new("TSRainbow7", { fg = YELLOW })
 
 vim.treesitter.language.register("bash", "zsh")
@@ -112,7 +112,7 @@ return {
           enable = true,
           query = "rainbow-parens",
           disable = { "typescriptreact" },
-          strategy = { require "ts-rainbow.strategy.local" },
+          strategy = { require "ts-rainbow.strategy.global" },
           hlgroups = {
             "TSRainbow1",
             "TSRainbow2",
