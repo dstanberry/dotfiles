@@ -9,6 +9,10 @@
 \x auto
 -- Disable piping output to pager
 \pset pager off
+-- Wrap lines Automatically
+\pset format wrapped
+-- Automatically calculate maximum column width
+\pset columns 0
 
 -- Use unicode box drawing glyphs
 \pset border 2
