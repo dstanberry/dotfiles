@@ -10,6 +10,8 @@
 
 -- Automatically switch to using expanded table format
 \x auto
+-- Disable piping output to pager
+\pset pager off
 
 -- Use unicode box drawing glyphs
 \pset border 2
