@@ -26,100 +26,6 @@ groups.new("TelescopeMultiSelection", { fg = c.magenta1 })
 groups.new("TelescopeSelection", { bg = BLUE, bold = true })
 groups.new("TelescopeSelectionCaret", { fg = c.fg0, bg = BLUE, bold = true })
 
--- builtin.buffers
-local function current_buffer()
-  require("telescope.builtin").current_buffer_fuzzy_find {
-    previewer = false,
-    prompt_title = "Find in Buffer",
-    sorting_strategy = "ascending",
-  }
-end
-
--- builtin.find_files
-local function find_nvim()
-  require("telescope.builtin").find_files {
-    cwd = vim.fn.stdpath "config",
-    prompt_title = "Neovim RC Files",
-  }
-end
-
-local function find_plugins()
-  require("telescope.builtin").find_files {
-    cwd = string.format("%s/lazy", vim.fn.stdpath "data"),
-    layout_strategy = "vertical",
-    prompt_title = "Remote Plugins",
-  }
-end
-
-local function find_project()
-  local git = vim.fs.find ".git"
-  if #git >= 1 then
-    require("telescope.builtin").git_files {
-      prompt_title = "Project Files (Git)",
-      show_untracked = true,
-    }
-  else
-    require("telescope.builtin").find_files { prompt_title = "Project Files" }
-  end
-end
-
--- builtin.grep_string
-local function grep_last_search()
-  local register = vim.fn.getreg("/"):gsub("\\<", ""):gsub("\\>", ""):gsub("\\C", "")
-  require("telescope.builtin").grep_string {
-    path_display = { "shorten" },
-    search = register,
-    word_match = "-w",
-  }
-end
-
--- builtin.oldfiles
-local function oldfiles()
-  require("telescope.builtin").oldfiles {
-    prompt_title = "Recent Files",
-  }
-end
-
--- extensions.live_grep_args
-local function live_grep_args() require("telescope").extensions.live_grep_args.live_grep_args() end
-
--- extensions.file_browser
-local function file_browser()
-  require("telescope").extensions.file_browser.file_browser { prompt_title = "File Browser" }
-end
-
-local function file_browser_relative()
-  require("telescope").extensions.file_browser.file_browser {
-    path = "%:p:h",
-    prompt_title = "File Browser",
-  }
-end
-
-local function git_hunks()
-  require("telescope.pickers")
-    .new({
-      finder = require("telescope.finders").new_oneshot_job({ "git", "hop", "--stdout", "diff" }, {
-        entry_maker = function(line)
-          local filename, lnum_string = line:match "([^:]+):(%d+).*"
-          if filename:match "^/dev/null" then return nil end
-          return {
-            value = filename,
-            display = line,
-            ordinal = line,
-            filename = filename,
-            lnum = tonumber(lnum_string),
-          }
-        end,
-      }),
-      sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
-      previewer = require("telescope.config").values.grep_previewer {},
-      results_title = "Git Hunks",
-      prompt_title = "Git Hunks",
-      layout_strategy = "flex",
-    }, {})
-    :find()
-end
-
 return {
   {
     "nvim-telescope/telescope.nvim",
@@ -139,34 +45,142 @@ return {
           or "make",
       },
     },
-    -- stylua: ignore
-    keys = {
-      { "<leader><leader>", find_project, desc = "telescope: find files (project)" },
-      { "<leader>f/", grep_last_search, desc = "telescope: find word (last searched)" },
-      { "<leader>fb", current_buffer, desc = "telescope: find in buffer" },
-      { "<leader>fe", file_browser, desc = "telescope: browse root directory" },
-      { "<leader>ff", require("telescope.builtin").find_files, desc = "telescope: find files" },
-      { "<leader>fg", require("telescope.builtin").live_grep, desc = "telescope: live grep" },
-      { "<leader>fk", require("telescope.builtin").help_tags, desc = "telescope: help pages" },
-      { "<leader>fp", find_plugins, desc = "telescope: find files (neovim plugins)" },
-      { "<leader>fr", oldfiles, desc = "telescope: find files (recently used)" },
-      -- analagous to `<leader>` maps but with customizations
-      { "<localleader><leader>", find_nvim, desc = "telescope: find files (neovim config)" },
-      { "<localleader>fe", file_browser_relative, desc = "telescope: browse current directory" },
-      { "<localleader>fg", live_grep_args, desc = "telescope: find in files (grep with args)" },
-      -- lsp handlers
-      { "gw", function() require("telescope.builtin").diagnostics { bufnr = 0 } end, desc = "telescope: lsp diagnostics (buffer)" },
-      { "gW", require("telescope.builtin").diagnostics, desc = "telescope: lsp diagnostics (workspace)" },
-    },
+    keys = function()
+      -- builtin.buffers
+      local function current_buffer()
+        require("telescope.builtin").current_buffer_fuzzy_find {
+          previewer = false,
+          prompt_title = "Find in Buffer",
+          sorting_strategy = "ascending",
+        }
+      end
+
+      -- builtin.find_files
+      local function find_nvim()
+        require("telescope.builtin").find_files {
+          cwd = vim.fn.stdpath "config",
+          prompt_title = "Neovim RC Files",
+        }
+      end
+
+      local function find_plugins()
+        require("telescope.builtin").find_files {
+          cwd = string.format("%s/lazy", vim.fn.stdpath "data"),
+          layout_strategy = "vertical",
+          prompt_title = "Remote Plugins",
+        }
+      end
+
+      local function find_project()
+        local git = vim.fs.find ".git"
+        if #git >= 1 then
+          require("telescope.builtin").git_files {
+            prompt_title = "Project Files (Git)",
+            show_untracked = true,
+          }
+        else
+          require("telescope.builtin").find_files { prompt_title = "Project Files" }
+        end
+      end
+
+      -- builtin.grep_string
+      local function grep_last_search()
+        local register = vim.fn.getreg("/"):gsub("\\<", ""):gsub("\\>", ""):gsub("\\C", "")
+        require("telescope.builtin").grep_string {
+          path_display = { "shorten" },
+          search = register,
+          word_match = "-w",
+        }
+      end
+
+      -- builtin.oldfiles
+      local function oldfiles()
+        require("telescope.builtin").oldfiles {
+          prompt_title = "Recent Files",
+        }
+      end
+
+      -- extensions.live_grep_args
+      local function live_grep_args() require("telescope").extensions.live_grep_args.live_grep_args() end
+
+      -- extensions.file_browser
+      local function file_browser()
+        require("telescope").extensions.file_browser.file_browser { prompt_title = "File Browser" }
+      end
+
+      local function file_browser_relative()
+        require("telescope").extensions.file_browser.file_browser {
+          path = "%:p:h",
+          prompt_title = "File Browser",
+        }
+      end
+
+      -- stylua: ignore
+      return {
+        { "<leader><leader>", find_project, desc = "telescope: find files (project)" },
+        { "<leader>f/", grep_last_search, desc = "telescope: find word (last searched)" },
+        { "<leader>fb", current_buffer, desc = "telescope: find in buffer" },
+        { "<leader>fe", file_browser, desc = "telescope: browse root directory" },
+        { "<leader>ff", require("telescope.builtin").find_files, desc = "telescope: find files" },
+        { "<leader>fg", require("telescope.builtin").live_grep, desc = "telescope: live grep" },
+        { "<leader>fk", require("telescope.builtin").help_tags, desc = "telescope: help pages" },
+        { "<leader>fp", find_plugins, desc = "telescope: find files (neovim plugins)" },
+        { "<leader>fr", oldfiles, desc = "telescope: find files (recently used)" },
+        -- analagous to `<leader>` maps but with customizations
+        { "<localleader><leader>", find_nvim, desc = "telescope: find files (neovim config)" },
+        { "<localleader>fe", file_browser_relative, desc = "telescope: browse current directory" },
+        { "<localleader>fg", live_grep_args, desc = "telescope: find in files (grep with args)" },
+        -- lsp handlers
+        { "gw", function() require("telescope.builtin").diagnostics { bufnr = 0 } end, desc = "telescope: lsp diagnostics (buffer)", },
+        { "gW", require("telescope.builtin").diagnostics, desc = "telescope: lsp diagnostics (workspace)" },
+      }
+    end,
     init = function()
-      vim.api.nvim_create_user_command("Hunks", git_hunks, {})
-      vim.api.nvim_create_user_command("BCommits", require("telescope.builtin").git_bcommits, {})
-      vim.api.nvim_create_user_command("Commits", require("telescope.builtin").git_commits, {})
-      vim.api.nvim_create_user_command(
-        "Buffers",
-        function() require("telescope.builtin").buffers { sort_lastused = true } end,
-        {}
-      )
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          local telescope = require "telescope"
+
+          local function git_hunks()
+            require("telescope.pickers")
+              .new({
+                finder = require("telescope.finders").new_oneshot_job({ "git", "hop", "--stdout", "diff" }, {
+                  entry_maker = function(line)
+                    local filename, lnum_string = line:match "([^:]+):(%d+).*"
+                    if filename:match "^/dev/null" then return nil end
+                    return {
+                      value = filename,
+                      display = line,
+                      ordinal = line,
+                      filename = filename,
+                      lnum = tonumber(lnum_string),
+                    }
+                  end,
+                }),
+                sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
+                previewer = require("telescope.config").values.grep_previewer {},
+                results_title = "Git Hunks",
+                prompt_title = "Git Hunks",
+                layout_strategy = "flex",
+              }, {})
+              :find()
+          end
+
+          vim.api.nvim_create_user_command("Hunks", git_hunks, {})
+          vim.api.nvim_create_user_command("BCommits", require("telescope.builtin").git_bcommits, {})
+          vim.api.nvim_create_user_command("Commits", require("telescope.builtin").git_commits, {})
+          vim.api.nvim_create_user_command(
+            "Buffers",
+            function() require("telescope.builtin").buffers { sort_lastused = true } end,
+            {}
+          )
+
+          telescope.load_extension "file_browser"
+          telescope.load_extension "fzf"
+          telescope.load_extension "gh"
+          telescope.load_extension "ui-select"
+        end,
+      })
     end,
     config = function()
       local telescope = require "telescope"
@@ -373,15 +387,6 @@ return {
           },
         },
       }
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "VeryLazy",
-        callback = function()
-          telescope.load_extension "file_browser"
-          telescope.load_extension "fzf"
-          telescope.load_extension "gh"
-          telescope.load_extension "ui-select"
-        end,
-      })
     end,
   },
 }

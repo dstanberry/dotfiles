@@ -12,7 +12,7 @@ return {
         "lewis6991/gitsigns.nvim",
         "mfussenegger/nvim-dap",
       },
-      event = "UIEnter",
+      lazy = true,
       config = function()
         vim.o.foldcolumn = "1"
         vim.o.signcolumn = "number"
