@@ -95,4 +95,9 @@ if setting_enabled "remote_plugins" then
     lockfile = string.format("%s/lua/remote/lazy-lock.json", vim.fn.stdpath "config"),
     ui = { border = "none" },
   })
+
+  _G.lazy_reload = function(name)
+    local plugin = require("lazy.core.config").plugins[name]
+    return require("lazy.core.loader").reload(plugin)
+  end
 end
