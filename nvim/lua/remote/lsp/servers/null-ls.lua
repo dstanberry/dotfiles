@@ -11,6 +11,7 @@ local M = {}
 local sources = {
   b.code_actions.gitrebase,
   b.code_actions.gitsigns,
+  b.diagnostics.eslint_d,
   b.diagnostics.flake8,
   b.diagnostics.markdownlint,
   b.diagnostics.shellcheck.with {
