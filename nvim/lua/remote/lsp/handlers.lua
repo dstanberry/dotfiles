@@ -29,6 +29,12 @@ M.on_attach = function(client, bufnr)
 
   if client.server_capabilities.codeActionProvider then
     vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr, desc = "lsp: code action" })
+    vim.keymap.set(
+      "n",
+      "gA",
+      function() vim.lsp.buf.code_action { context = { only = { "source" }, diagnostics = {} } } end,
+      { buffer = bufnr, desc = "lsp: source action" }
+    )
   end
 
   if client.server_capabilities.codeLensProvider then
