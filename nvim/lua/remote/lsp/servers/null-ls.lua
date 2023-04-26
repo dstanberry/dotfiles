@@ -9,8 +9,10 @@ local b = null_ls.builtins
 local M = {}
 
 local sources = {
+  b.code_actions.eslint_d,
   b.code_actions.gitrebase,
   b.code_actions.gitsigns,
+  b.code_actions.shellcheck,
   b.diagnostics.eslint_d,
   b.diagnostics.flake8,
   b.diagnostics.markdownlint,
