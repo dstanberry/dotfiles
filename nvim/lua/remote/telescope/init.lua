@@ -72,7 +72,7 @@ return {
       end
 
       local function find_project()
-        local git = vim.fs.find ".git"
+        local git = vim.fs.find(".git", { upward = true})
         if #git >= 1 then
           require("telescope.builtin").git_files {
             prompt_title = "Project Files (Git)",
