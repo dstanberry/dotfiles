@@ -198,6 +198,9 @@ if hash psql 2> /dev/null; then
   fi
 fi
 
+# prevent virtualenv from automatically modifying prompt
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
 # define configuration path for wget
 export WGETRC="$CONFIG_HOME/wget/wgetrc"
 if [ ! -d "${CONFIG_HOME}/wget/" ]; then

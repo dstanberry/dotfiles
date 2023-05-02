@@ -140,10 +140,15 @@ function -set-prompt() {
     # or not in a tmux session.
     local LVL=$SHLVL
   fi
+  # check if current context is within python virtual environment
+  local VIRTENV=""
+  if [ -n "$VIRTUAL_ENV" ]; then
+    local VIRTENV="%F{yellow}$(echo '('`basename $VIRTUAL_ENV`')')%f "
+  fi
   if [[ $EUID -eq 0 ]]; then
-    local PREFIX="%F{red}%f "
+    local PREFIX="%F{red}󰒃%f ${VIRTENV}"
   else
-    local PREFIX=""
+    local PREFIX="${VIRTENV}"
   fi
   local mode=$1
   if [[ $mode == insert ]]; then
