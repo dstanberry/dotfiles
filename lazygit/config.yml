@@ -1,8 +1,7 @@
 reporting: "off"
 startuppopupversion: 1
 os:
-  editCommand: "nvim"
-  editCommandTemplate: "{{editor}} +{{line}} -- {{filename}}"
+  editPreset: "nvim"
 git:
   commit:
     signOff: false
@@ -49,7 +48,7 @@ gui:
   mouseEvents: true
   scrollHeight: 2
   scrollPastBottom: true
-  showIcons: true
+  showIcons: false
   skipStashWarning: true
   skipUnstageLineWarning: false
 customCommands:
