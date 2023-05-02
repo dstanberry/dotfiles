@@ -26,8 +26,8 @@ M.setup = function()
   }
   dap.configurations.c = {
     {
-      name = "Launch via codelldb",
       type = "codelldb",
+      name = "Launch - codelldb",
       request = "launch",
       program = function()
         return vim.fn.input("Path to executable: ", vim.fs.normalize(vim.loop.cwd() .. "/target/debug/"), "file")
@@ -35,6 +35,7 @@ M.setup = function()
       cwd = "${workspaceFolder}",
       args = {},
       stopOnEntry = true,
+      console = "integratedTerminal",
     },
   }
   dap.configurations.cpp = dap.configurations.c

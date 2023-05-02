@@ -1,27 +1,34 @@
-local path = vim.fs.normalize(string.format("%s/mason/packages", vim.fn.stdpath "data"))
-local basedir = vim.fs.normalize(("%s/%s"):format(path, "node-debug2-adapter"))
-
 local M = {}
 
 M.setup = function()
   local dap = require "dap"
 
-  dap.adapters.node2 = {
-    type = "executable",
-    command = has "win32" and vim.fn.exepath "node" or "node",
-    args = { ("%s/%s"):format(basedir, "out/src/nodeDebug.js") },
+  dap.adapters["pwa-node"] = {
+    type = "server",
+    host = "localhost",
+    port = "${port}",
+    executable = {
+      command = has "win32" and vim.fn.exepath "js-debug-adapter" or "js-debug-adapter",
+      args = { "${port}" },
+    },
   }
   dap.configurations.javascript = {
     {
-      type = "node2",
+      type = "pwa-node",
+      name = "Launch - node",
       request = "launch",
-      program = "${workspaceFolder}/${file}",
-      cwd = vim.loop.cwd(),
-      sourceMaps = true,
-      protocol = "inspector",
-      console = "integratedTerminal",
+      program = "${file}",
+      cwd = "${workspaceFolder}",
+    },
+    {
+      type = "pwa-node",
+      request = "attach",
+      name = "Attach - node",
+      processId = require("dap.utils").pick_process,
+      cwd = "${workspaceFolder}",
     },
   }
+  dap.configurations.typescript = dap.configurations.javascript
 end
 
 return M

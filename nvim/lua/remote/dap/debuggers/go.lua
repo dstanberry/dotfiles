@@ -14,23 +14,26 @@ M.setup = function()
   dap.configurations.go = {
     {
       type = "delve",
-      name = "Debug",
+      name = "Launch - delve",
       request = "launch",
       program = "${file}",
+      console = "integratedTerminal",
     },
     {
       type = "delve",
-      name = "Debug test",
+      name = "Launch - delve [test]",
       request = "launch",
       mode = "test",
       program = "${file}",
+      console = "integratedTerminal",
     },
     {
       type = "delve",
-      name = "Debug test (go.mod)",
+      name = "Launch - delve [test (go.mod)]",
       request = "launch",
       mode = "test",
       program = "./${relativeFileDirname}",
+      console = "integratedTerminal",
     },
   }
 end
