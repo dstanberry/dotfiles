@@ -89,6 +89,13 @@ return {
             separator = true,
             text_align = "center",
           },
+          {
+            text = pad(icons.groups.StackFrame, "right") .. "DEBUGGER",
+            filetype = "dapui_scopes",
+            highlight = "PanelHeading",
+            separator = true,
+            text_align = "center",
+          },
         },
         groups = {
           items = {

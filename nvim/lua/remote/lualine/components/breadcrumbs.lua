@@ -12,7 +12,8 @@ local generic_hl = highlighter.sanitize "Winbar"
 local fname_hl = highlighter.sanitize "WinbarFilename"
 
 local dap_icons = {
-  ["DAP Breakpoints"] = pad(icons.debug.Breakpoints, "right"),
+  ["DAP Breakpoints"] = pad(icons.debug.Breakpoint, "right"),
+  ["DAP Console"] = pad(icons.debug.REPL, "right"),
   ["DAP Scopes"] = pad(icons.debug.Scopes, "right"),
   ["DAP Stacks"] = pad(icons.debug.Stacks, "right"),
   ["DAP Watches"] = pad(icons.debug.Watches, "right"),

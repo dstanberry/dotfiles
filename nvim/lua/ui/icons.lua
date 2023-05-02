@@ -12,6 +12,8 @@ return {
     Warn = "",
   },
   debug = {
+    Breakpoint = "",
+    BreakpointActive = "",
     Bug = "",
     Continue = "",
     Disconnect = "",
@@ -23,7 +25,6 @@ return {
     StepOver = "",
     StepBack = "",
     Stop = "",
-    Breakpoints = "",
     REPL = "",
     Scopes = "",
     Stacks = "",
@@ -51,6 +52,7 @@ return {
     Lab = "",
     Pinned = "",
     Sql = "",
+    StackFrame = "",
   },
   kind = {
     Class = "",

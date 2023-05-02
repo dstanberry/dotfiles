@@ -1,4 +1,5 @@
 local c = require("ui.theme").colors
+local color = require "util.color"
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 local util = require "util"
@@ -15,30 +16,53 @@ return {
     -- stylua: ignore
   keys = {
     { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "dap: toggle breakpoint" },
-    { "<leader>dh", function() require('dap.ui.widgets').hover() end, desc = "dap: hover" },
     { "<leader>dB", function() require('dap').set_breakpoint(vim.fn.input "Breakpoint condition: ") end, desc = "dap: set conditional breakpoint" },
+    { "<leader>dc", function() require('dap').continue() end, desc = "dap: continue" },
+    { "<leader>de", function() require('dapui').eval() end, desc = "dap: evaluate" },
     { "<leader>dE", function() require("dapui").eval(vim.fn.input "Evaluate expression: ") end, desc = "dap: evaluate expression" },
-    { "<f1>", function() require('dapui').eval() end, desc = "dap: evalutae" },
-    { "<f2>", function() require('dap').step_into() end, desc = "dap: step into" },
-    { "<f3>", function() require('dap').step_out() end, desc = "dap: step out" },
-    { "<f4>", function() require('dap').step_over() end, desc = "dap: step over" },
-    { "<f5>", function() require('dap').continue() end, desc = "dap: continue" },
-    { "<f10>", function() require('dap').terminate() end, desc = "dap: terminate" },
-    { "<f12>", function() require('dap').repl.toggle { height = 15 } end, desc = "dap: toggle repl" },
+    { "<leader>dh", function() require('dap.ui.widgets').hover() end, desc = "dap: hover" },
+    { "<leader>di", function() require('dap').step_into() end, desc = "dap: step into" },
+    { "<leader>do", function() require('dap').step_over() end, desc = "dap: step over" },
+    { "<leader>dO", function() require('dap').step_out() end, desc = "dap: step out" },
+    { "<leader>dt", function() require('dap').repl.toggle { height = 15 } end, desc = "dap: toggle repl" },
+    { "<leader>dT", function() require('dap').terminate() end, desc = "dap: terminate" },
   },
+  init = function()
+    groups.new("DapBreakpointActiveLine", { bg = color.blend(c.yellow2, c.bg3, 0.14) })
+
+    groups.new("DapUINormal", { link = "NormalSB" })
+    groups.new("DapUIStop", { fg = c.red1 })
+    groups.new("DapUIStopNC", { link = "DapUIStop" })
+    groups.new("DapUIRestart", { fg = c.green1 })
+    groups.new("DapUIRestartNC", { link = "DapUIRestart" })
+    groups.new("DapUIStepOver", { fg = c.blue0 })
+    groups.new("DapUIStepOverNC", { link = "DapUIStepOver" })
+    groups.new("DapUIStepInto", { fg = c.blue0 })
+    groups.new("DapUIStepIntoNC", { link = "DapUIStepInto" })
+    groups.new("DapUIStepOut", { fg = c.blue0 })
+    groups.new("DapUIStepOutNC", { link = "DapUIStepOut" })
+    groups.new("DapUIStepBack", { fg = c.blue0 })
+    groups.new("DapUIStepBackNC", { link = "DapUIStepBack" })
+    groups.new("DapUIPlayPause", { fg = c.blue4 })
+    groups.new("DapUIPlayPauseNC", { link = "DapUIPlayPause" })
+    groups.new("DapUIUnavailable", { fg = c.gray2 })
+    groups.new("DapUIUnavailableNC", { link = "DapUIUnavailable" })
+    groups.new("DapUIThread", { fg = c.green0 })
+    groups.new("DapUIThreadNC", { link = "DapUIThread" })
+  end,
   config = function()
     local dap = require "dap"
     dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
     vim.fn.sign_define("DapBreakpoint", {
-      text = icons.debug.Bug,
-      texthl = "DiagnosticSignError",
+      text = icons.debug.Breakpoint,
+      texthl = "DiagnosticSignInfo",
       linehl = "",
       numhl = "",
     })
     vim.fn.sign_define("DapStopped", {
-      text = icons.debug.RightArrow,
+      text = icons.debug.BreakpointActive,
       texthl = "DiagnosticSignWarn",
-      linehl = "IncSearch",
+      linehl = "DapBreakpointActiveLine",
       numhl = "",
     })
     local ok, dapvt = pcall(require, "nvim-dap-virtual-text")
@@ -75,7 +99,7 @@ return {
             position = "left",
           },
           {
-            elements = { "repl" },
+            elements = { "repl", "console" },
             size = 0.20,
             position = "bottom",
           },
@@ -113,25 +137,5 @@ return {
       local mod = util.get_module_name(file)
       require(mod).setup()
     end
-
-    groups.new("DapUINormal", { link = "NormalSB" })
-    groups.new("DapUIStop", { fg = c.red1 })
-    groups.new("DapUIStopNC", { link = "DapUIStop" })
-    groups.new("DapUIRestart", { fg = c.green1 })
-    groups.new("DapUIRestartNC", { link = "DapUIRestart" })
-    groups.new("DapUIStepOver", { fg = c.blue0 })
-    groups.new("DapUIStepOverNC", { link = "DapUIStepOver" })
-    groups.new("DapUIStepInto", { fg = c.blue0 })
-    groups.new("DapUIStepIntoNC", { link = "DapUIStepInto" })
-    groups.new("DapUIStepOut", { fg = c.blue0 })
-    groups.new("DapUIStepOutNC", { link = "DapUIStepOut" })
-    groups.new("DapUIStepBack", { fg = c.blue0 })
-    groups.new("DapUIStepBackNC", { link = "DapUIStepBack" })
-    groups.new("DapUIPlayPause", { fg = c.blue4 })
-    groups.new("DapUIPlayPauseNC", { link = "DapUIPlayPause" })
-    groups.new("DapUIUnavailable", { fg = c.gray2 })
-    groups.new("DapUIUnavailableNC", { link = "DapUIUnavailable" })
-    groups.new("DapUIThread", { fg = c.green0 })
-    groups.new("DapUIThreadNC", { link = "DapUIThread" })
   end,
 }

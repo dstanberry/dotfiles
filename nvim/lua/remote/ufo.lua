@@ -22,11 +22,13 @@ return {
           bt_ignore = excludes.bt.wb_disabled,
           relculright = true,
           segments = {
-            { sign = { name = { "GitSigns" }, maxwidth = 1, colwidth = 1, auto = true }, click = "v:lua.ScSa" },
-            -- { text = { "%s" }, click = "v:lua.ScSa" },
+            {
+              sign = { name = { "GitSigns", "DapBreakpoint", "DapStopped" }, maxwidth = 1, colwidth = 1, auto = true },
+              click = "v:lua.ScSa",
+            },
             {
               text = { " ", builtin.lnumfunc },
-              sign = { name = { ".*" }, maxwidth = 3, auto = true },
+              sign = { name = { ".*" }, maxwidth = 1, colwidth = 1, auto = false, fillchars = "" },
               click = "v:lua.ScLa",
             },
             { text = { " ", builtin.foldfunc, " " }, click = "v:lua.ScFa" },
