@@ -50,7 +50,7 @@ return {
   color_scheme_dirs = { "$HOME/.config/wezterm/colors" },
   color_scheme = "kdark",
   font = wezterm.font_with_fallback {
-    { family = "JetBrainsMono NF", weight = "Regular" },
+    { family = "CartographCF Nerd Font", weight = "Regular" },
   },
   font_shaper = "Harfbuzz",
   font_size = 10,
