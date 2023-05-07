@@ -478,12 +478,12 @@ function rg() {
     eval "$viminit command vim $*"
   }
 
-  # poor man's wget runtime configuration
-  function wget() {
-    command wget --hsts-file "${XDG_CACHE_HOME}/wget/wget-hsts" "$@"
-  }
+# poor man's wget runtime configuration
+function wget() {
+  command wget --hsts-file "${XDG_CACHE_HOME}/wget/wget-hsts" "$@"
+}
 
-  # poor man's yarn runtime configuration
-  function yarn() {
-    command yarn --use-yarnrc "${CONFIG_HOME}/yarn/config" "$@"
-  }
+# poor man's yarn runtime configuration
+function yarn() {
+  command yarn --use-yarnrc "${CONFIG_HOME}/yarn/config" "$@"
+}
