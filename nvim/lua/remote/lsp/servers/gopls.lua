@@ -1,5 +1,3 @@
-local icons = require "ui.icons"
-
 local M = {}
 
 M.config = {
