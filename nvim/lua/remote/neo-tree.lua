@@ -50,8 +50,15 @@ return {
       end
     end,
     opts = {
-      sources = { "filesystem", "buffers", "git_status" },
-      source_selector = { winbar = true, separator_active = " " },
+      sources = { "filesystem", "document_symbols" },
+      source_selector = {
+        winbar = true,
+        separator_active = " ",
+        sources = {
+          { source = "filesystem", display_name = pad(icons.documents.MultipleFolders, "both", 1, 2) .. "Files " },
+          { source = "document_symbols", display_name = pad(icons.kind.Class, "both", 1, 2) .. "Symbols " },
+        },
+      },
       enable_git_status = true,
       git_status_async = true,
       use_popups_for_input = true,
@@ -74,12 +81,28 @@ return {
           ["P"] = { "toggle_preview", config = { use_float = true } },
         },
       },
+      document_symbols = {
+        follow_cursor = true,
+        kinds = util.map(function(kinds, v, k)
+          kinds[k] = { icon = v, hl = ("NavicIcons%s"):format(k) }
+          return kinds
+        end, vim.tbl_deep_extend("keep", icons.kind, icons.type)),
+      },
       default_component_configs = {
+        icon = {
+          folder_closed = icons.documents.FolderClosed,
+          folder_open = icons.documents.FolderOpened,
+          folder_empty = icons.documents.FolderEmpty,
+          folder_empty_open = icons.documents.FolderEmpty,
+        },
         indent = {
           with_expanders = true,
           expander_collapsed = icons.misc.FoldClosed,
           expander_expanded = icons.misc.FoldOpened,
           expander_highlight = "NeoTreeExpander",
+        },
+        name = {
+          highlight_opened_files = true,
         },
       },
     },
