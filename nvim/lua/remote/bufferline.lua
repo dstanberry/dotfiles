@@ -69,7 +69,7 @@ return {
         },
         offsets = {
           {
-            text = pad(icons.documents.FolderClosed, "right") .. "EXPLORER",
+            text = pad(icons.documents.FolderOutlineClosed, "right") .. "EXPLORER",
             filetype = "neo-tree",
             highlight = "PanelHeading",
             separator = true,

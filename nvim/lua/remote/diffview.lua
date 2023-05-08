@@ -36,8 +36,8 @@ return {
       use_icons = true,
       enhanced_diff_hl = true,
       icons = {
-        folder_closed = pad(icons.documents.FolderClosed, "right"),
-        folder_open = pad(icons.documents.FolderClosed, "right"),
+        folder_closed = pad(icons.documents.FolderOutlineClosed, "right"),
+        folder_open = pad(icons.documents.FolderOutlineClosed, "right"),
       },
       signs = {
         fold_closed = icons.misc.FoldClosed,
