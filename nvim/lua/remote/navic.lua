@@ -57,7 +57,7 @@ return {
       Method = pad(icons.kind.Function, "right"),
       Module = pad(icons.kind.Module, "right"),
       Namespace = pad(icons.kind.Class, "right"),
-      Null = pad(icons.type.Boolean, "right"),
+      Null = pad(icons.type.Null, "right"),
       Number = pad(icons.type.Number, "right"),
       Object = pad(icons.type.Object, "right"),
       Operator = pad(icons.kind.Operator, "right"),

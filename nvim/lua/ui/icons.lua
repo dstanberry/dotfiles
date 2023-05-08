@@ -148,6 +148,7 @@ return {
   type = {
     Array = "",
     Boolean = "",
+    Null = "󰟢",
     Number = "",
     Object = "",
     String = "",
