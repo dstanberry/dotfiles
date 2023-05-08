@@ -4,26 +4,22 @@ if not ok then return end
 
 local ts_ok, typescript_code_actions = pcall(require, "typescript.extensions.null-ls.code-actions")
 
-local b = null_ls.builtins
-
 local M = {}
 
+local b = null_ls.builtins
 local sources = {
   b.code_actions.eslint_d,
   b.code_actions.gitrebase,
   b.code_actions.gitsigns,
   b.code_actions.shellcheck,
+
   b.diagnostics.eslint_d,
   b.diagnostics.flake8,
   b.diagnostics.markdownlint,
-  b.diagnostics.shellcheck.with {
-    diagnostics_format = "[#{c}] (#{s}) #{m}",
-  },
+  b.diagnostics.shellcheck.with { diagnostics_format = "[#{c}] (#{s}) #{m}" },
   b.diagnostics.vint,
-  b.formatting.beautysh.with {
-    filetypes = { "zsh" },
-    extra_args = { "--indent-size", "2" },
-  },
+
+  b.formatting.beautysh.with { filetypes = { "zsh" }, extra_args = { "--indent-size", "2" } },
   b.formatting.black,
   b.formatting.cbfmt.with {
     extra_args = { "--config", vim.fs.normalize(("%s/cbfmt.toml"):format(vim.fn.stdpath "config")) },
