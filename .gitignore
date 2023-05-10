@@ -51,6 +51,8 @@ pcmanfm/
 pg/*
 !pg/psqlrc
 !pg/psqlrc-win
+pgcli/*
+!pgcli/config
 pip/
 plasmarc
 pulse/

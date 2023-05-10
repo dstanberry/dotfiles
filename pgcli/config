@@ -1,0 +1,79 @@
+[main]
+less_chatty = True
+vi = True
+timing = True
+keyring = False
+
+prompt="\x1b[36m\u\x1b[34m@\x1b[36m\h:\p\x1b[33m/\d\n\x1b[32m\#\x1b[0m "
+multiline_continuation_char = "‧"
+multi_line = True
+multi_line_mode = psql
+
+smart_completion = True
+wider_completion_menu = False
+min_num_menu_lines = 4
+
+expand = False
+auto_expand = True
+
+generate_aliases = False
+keyword_casing = auto
+casing_file = default
+generate_casing_file = False
+case_column_headers = True
+asterisk_column_order = table_order
+qualify_columns = if_more_than_one_table
+search_path_filter = False
+show_bottom_toolbar = True
+table_format = fancy_grid
+syntax_style = default
+row_limit = 1000
+null_string = <null>
+enable_pager = True
+pager = less -iFMRSX
+
+destructive_warning = all
+on_error = STOP
+
+log_file = default
+log_level = INFO
+history_file = default
+
+[colors]
+Token.Menu.Completions.Completion.Current = "bg:#6f8fb4 #3d3e40 bold"
+Token.Menu.Completions.Completion = "bg:#1f2021 ansiwhite"
+Token.Menu.Completions.Meta.Current = "bg:#6f8fb4 ansiblack"
+Token.Menu.Completions.Meta = "bg:#1f2021 ansiwhite"
+Token.Menu.Completions.MultiColumnMeta = "bg:#1f2021 ansiwhite"
+Token.Menu.Completions.ProgressButton = "bg:ansiblack"
+Token.Menu.Completions.ProgressBar = "bg:ansiblue"
+
+Token.SelectedText = "bg:ansiblue ansiwhite"
+Token.SearchMatch = "bg:ansiblue ansiwhite"
+Token.SearchMatch.Current = "bg:ansired ansiwhite"
+
+Token.Toolbar = "ansiwhite"
+Token.Toolbar.Off = "ansigray"
+Token.Toolbar.On = "ansiwhite"
+Token.Toolbar.Search = noinherit bold
+Token.Toolbar.Search.Text = nobold
+Token.Toolbar.System = noinherit bold
+Token.Toolbar.Arg = noinherit bold
+Token.Toolbar.Arg.Text = nobold
+Token.Toolbar.Transaction.Valid = "bg:ansiblack ansigreen bold"
+Token.Toolbar.Transaction.Failed = "bg:ansiblack ansired bold"
+
+Token.Keyword = "ansigreen bold"
+Token.String = "ansigreen"
+Token.String.Other = "ansigreen"
+Token.Number = "#ffab87"
+Token.Operator = "ansiyellow"
+
+output.header = "#516882 bold"
+output.odd-row = ""
+output.even-row = ""
+output.null = "#808080"
+
+[data_formats]
+decimal = ""
+float = ""
