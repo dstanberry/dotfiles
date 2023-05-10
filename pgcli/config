@@ -54,7 +54,7 @@ Token.SearchMatch.Current = "bg:ansired ansiwhite"
 
 Token.Toolbar = "ansiwhite"
 Token.Toolbar.Off = "ansigray"
-Token.Toolbar.On = "ansiwhite"
+Token.Toolbar.On = "ansiwhite bold"
 Token.Toolbar.Search = noinherit bold
 Token.Toolbar.Search.Text = nobold
 Token.Toolbar.System = noinherit bold
