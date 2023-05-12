@@ -33,7 +33,7 @@ return {
         end
       end,
       experimental = {
-        ghost_text = { enabled = true },
+        ghost_text = true,
       },
       formatting = {
         fields = { "kind", "abbr", "menu" },
