@@ -52,7 +52,7 @@ return {
         f = { name = "+file/find" },
         g = { name = "+git" },
         m = { name = "+notes (markdown)" },
-        q = { name = "+session" },
+        q = { name = "+quickfix (trouble)" },
       },
       ["<localleader>g"] = {
         mode = "v",
