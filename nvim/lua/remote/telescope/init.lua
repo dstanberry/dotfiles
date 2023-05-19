@@ -72,7 +72,7 @@ return {
       end
 
       local function find_project()
-        local git = vim.fs.find(".git", { upward = true})
+        local git = vim.fs.find(".git", { upward = true })
         if #git >= 1 then
           require("telescope.builtin").git_files {
             prompt_title = "Project Files (Git)",
@@ -253,6 +253,22 @@ return {
               ["<c-n>"] = false,
               ["<c-u>"] = false,
               ["jk"] = actions.close,
+
+              -- plugin integrations
+              ["<c-q>"] = function(...)
+                if require("lazy.core.config").plugins["trouble.nvim"] ~= nil then
+                  return require("trouble.providers.telescope").open_with_trouble(...)
+                else
+                  return actions.send_to_qflist(...) + actions.open_qflist(...)
+                end
+              end,
+              ["<a-q>"] = function(...)
+                if require("lazy.core.config").plugins["trouble.nvim"] ~= nil then
+                  return require("trouble.providers.telescope").open_selected_with_trouble(...)
+                else
+                  return actions.send_selected_to_qflist(...) + actions.open_qflist(...)
+                end
+              end,
             },
             n = {
               ["q"] = actions.close,

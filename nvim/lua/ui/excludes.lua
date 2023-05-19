@@ -30,6 +30,7 @@ M.ft.stl_disabled = {
   "noice",
   "TelescopePrompt",
   "toggleterm",
+  "Trouble",
 }
 
 M.ft.wb_disabled = {
@@ -40,7 +41,6 @@ M.ft.wb_disabled = {
   "term",
 
   -- plugin filetypes
-  "Bqf.*",
   "dap-repl",
   "dbout",
   "lazy",
@@ -52,6 +52,7 @@ M.ft.wb_disabled = {
   "noice",
   "TelescopePrompt",
   "toggleterm",
+  "Trouble",
 }
 
 M.ft.wb_empty = {

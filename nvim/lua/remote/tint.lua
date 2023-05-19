@@ -13,12 +13,12 @@ return {
   opts = {
     tint = -10,
     highlight_ignore_patterns = {
-      "Bqf.*",
       "Comment",
       "NeoTree.*",
       "Panel.*",
       "Status.*",
       "Telescope.*",
+      "Trouble.*",
       "WinSeparator",
     },
     window_ignore_function = function(win_id)
