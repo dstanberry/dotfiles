@@ -37,25 +37,6 @@ vim.filetype.add {
   },
 }
 
-vim.g.loaded_2html_plugin = 1
-vim.g.loaded_getscript = 1
-vim.g.loaded_getscriptPlugin = 1
-vim.g.loaded_gzip = 1
-vim.g.loaded_logipat = 1
-vim.g.loaded_matchit = 1
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwFileHandlers = 1
-vim.g.loaded_netrwPlugin = 1
-vim.g.loaded_netrwSettings = 1
-vim.g.loaded_rrhelper = 1
-vim.g.loaded_spellfile_plugin = 1
-vim.g.loaded_tar = 1
-vim.g.loaded_tarPlugin = 1
-vim.g.loaded_vimball = 1
-vim.g.loaded_vimballPlugin = 1
-vim.g.loaded_zip = 1
-vim.g.loaded_zipPlugin = 1
-
 local cache = vim.fn.stdpath "cache"
 local backup = string.format("%s/backup", cache)
 local swap = string.format("%s/swap", cache)
@@ -94,6 +75,22 @@ if setting_enabled "remote_plugins" then
     root = string.format("%s/lazy", vim.fn.stdpath "data"),
     lockfile = string.format("%s/lua/remote/lazy-lock.json", vim.fn.stdpath "config"),
     ui = { border = "none" },
+    performance = {
+      cache = { enabled = true },
+      rtp = {
+        disabled_plugins = {
+          "gzip",
+          "matchit",
+          "matchparen",
+          "netrwPlugin",
+          "rplugin",
+          "tarPlugin",
+          "tohtml",
+          "tutor",
+          "zipPlugin",
+        },
+      },
+    },
   })
 
   _G.lazy_reload = function(name)
