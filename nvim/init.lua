@@ -74,7 +74,14 @@ if setting_enabled "remote_plugins" then
   require("lazy").setup("remote", {
     root = string.format("%s/lazy", vim.fn.stdpath "data"),
     lockfile = string.format("%s/lua/remote/lazy-lock.json", vim.fn.stdpath "config"),
-    ui = { border = "none" },
+    ui = {
+      border = "none",
+      custom_keys = {
+        ["<localleader>d"] = function(plugin) dump(plugin) end,
+      },
+    },
+    install = { missing = true },
+    diff = { "terminal_git" },
     performance = {
       cache = { enabled = true },
       rtp = {
