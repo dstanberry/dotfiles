@@ -29,7 +29,7 @@ link-drop-extension = true
 [tool]
 editor = "nvim"
 pager = "less -iFMRSX"
-fzf-preview = "bat -p --color always {-1}"
+fzf-preview = "bat --style=plain {-1}"
 
 [lsp]
 [lsp.diagnostics]

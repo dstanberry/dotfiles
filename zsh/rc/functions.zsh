@@ -57,11 +57,11 @@ function fd() {
 # fuzzy search for files in the current directory and open in (n)vim
 function fe() {
   IFS=$'\n' files=($(fzf-tmux \
-        --query="$1" \
-        --multi \
-        --select-1 \
-        --exit-0 \
-    --preview '(bat --color ""always"" {} || cat {} || tree -C {}) | head -200'))
+    --query="$1" \
+    --multi \
+    --select-1 \
+    --exit-0 \
+    --preview '(bat --style=plain {} || cat {} || tree -C {}) | head -200'))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
 
