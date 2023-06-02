@@ -42,7 +42,6 @@ return {
     highlight = false,
     icons = vim.tbl_extend(
       "keep",
-      { Folder = "" },
       vim.tbl_map(function(kind) return pad(kind, "right") end, icons.kind),
       vim.tbl_map(function(kind) return pad(kind, "right") end, icons.type)
     ),
