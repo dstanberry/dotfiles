@@ -6,7 +6,7 @@ local stl_util = require "remote.lualine.util"
 local add = stl_util.add
 local highlighter = stl_util.highlighter
 
-local separator = highlighter.sanitize "NavicSeparator" .. pad(icons.misc.CaretRight, "both") .. highlighter.reset
+local separator = highlighter.sanitize "NavicSeparator" .. pad(icons.misc.FoldClosed, "left") .. highlighter.reset
 local format_ellipses = add(highlighter.sanitize "NavicText", { "..." }, true)
 
 local format_context = function(type, icon, name)
@@ -34,5 +34,10 @@ return function()
     end
     return context
   end, data)
-  return #context > 1 and separator .. table.concat(context, separator) or ""
+  return #context > 1
+      and highlighter.sanitize "NavicSeparator" .. icons.misc.FoldClosed .. highlighter.reset .. table.concat(
+        context,
+        separator
+      )
+    or ""
 end
