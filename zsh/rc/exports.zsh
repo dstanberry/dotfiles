@@ -117,7 +117,7 @@ if hash fzf 2> /dev/null; then
   export FZF_CTRL_T_OPTS="
   --select-1
   --exit-0
-  --preview '(bat --style=plain --color \"always\" {} || cat {} || tree -C {}) 2> /dev/null | head -200'"
+  --preview '(bat --style=plain {} || cat {} || tree -C {}) 2> /dev/null | head -200'"
 fi
 
 # define mocOS specific options

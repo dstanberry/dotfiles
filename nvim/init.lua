@@ -81,7 +81,7 @@ if setting_enabled "remote_plugins" then
       },
     },
     install = { missing = true },
-    diff = { "terminal_git" },
+    diff = { cmd = "terminal_git" },
     performance = {
       cache = { enabled = true },
       rtp = {

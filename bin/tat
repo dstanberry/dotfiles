@@ -17,7 +17,7 @@ elif [[ $# -eq 1 ]]; then
     path=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" "${projects_dir[@]}" \
       -mindepth 1 -maxdepth 1 \
       | fzf --height=100% --reverse --header='Create/Open Session' \
-        --preview '(bat --style=plain --color "always" {1}/README.md ||
+        --preview '(bat --style=plain {1}/README.md ||
           cat {1}/README.md ||
           exa -lh --icons {1} ||
           ls -lh {1}) 2> /dev/null')

@@ -64,6 +64,7 @@ return {
   {
     "lvimuser/lsp-inlayhints.nvim",
     event = "LspAttach",
+    branch = "anticonceal",
     config = function()
       local hints = require "lsp-inlayhints"
       local lsp_type_hints = vim.api.nvim_create_augroup("lsp_type_hints", { clear = true })
@@ -81,7 +82,7 @@ return {
       hints.setup {
         inlay_hints = {
           parameter_hints = {
-            show = false,
+            show = true,
             prefix = "",
             separator = ", ",
             remove_colon_start = false,
@@ -99,6 +100,7 @@ return {
           max_len_align = false,
           max_len_align_padding = 1,
           highlight = "Comment",
+          priority = 0,
         },
         enabled_at_startup = true,
         debug_mode = false,

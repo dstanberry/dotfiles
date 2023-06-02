@@ -61,7 +61,7 @@ function fe() {
     --multi \
     --select-1 \
     --exit-0 \
-    --preview '(bat --style=plain --color ""always"" {} || cat {} || tree -C {}) | head -200'))
+    --preview '(bat --style=plain {} || cat {} || tree -C {}) | head -200'))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
 }
 
