@@ -147,6 +147,9 @@ M.apply = function(c)
   hi.LspCodeLensText = { fg = color.lighten(c.gray1, 20) }
   hi.LspCodeLensSeparator = { fg = color.lighten(c.gray1, 20) }
 
+  -- lsp inlay hints
+  hi.LspInlayHint = { link = "Comment" }
+
   -- lsp document highlighting
   hi.LspReferenceText = { underline = true, sp = c.gray1 }
   hi.LspReferenceRead = { underline = true, sp = c.gray1 }
