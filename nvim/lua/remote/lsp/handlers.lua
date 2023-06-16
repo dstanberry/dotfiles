@@ -79,9 +79,29 @@ M.on_attach = function(client, bufnr)
     })
 
     vim.api.nvim_create_autocmd("CursorMoved", {
-      group = "lsp_highlight",
+      group = lsp_highlight,
       buffer = bufnr,
       callback = vim.lsp.buf.clear_references,
+    })
+  end
+
+  if client.server_capabilities.documentFormattingProvider then
+    vim.keymap.set(
+      "n",
+      "ff",
+      function() vim.lsp.buf.format { async = true } end,
+      { buffer = bufnr, desc = "lsp: format document" }
+    )
+  end
+
+  if client.server_capabilities.inlayHintProvider then
+    vim.keymap.set("n", "g<bs>", vim.lsp._inlay_hint.clear, { buffer = bufnr, desc = "lsp: clear inlay hints" })
+
+    local lsp_inlayhints = vim.api.nvim_create_augroup("lsp_inlayhints", { clear = true })
+    vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost" }, {
+      group = lsp_inlayhints,
+      buffer = bufnr,
+      callback = vim.lsp._inlay_hint.refresh,
     })
   end
 
@@ -95,15 +115,6 @@ M.on_attach = function(client, bufnr)
     -- })
     vim.keymap.set("i", "<c-h>", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
     vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
-  end
-
-  if client.server_capabilities.documentFormattingProvider then
-    vim.keymap.set(
-      "n",
-      "ff",
-      function() vim.lsp.buf.format { async = true } end,
-      { buffer = bufnr, desc = "lsp: format document" }
-    )
   end
 
   vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "lsp: goto definition" })
