@@ -5,11 +5,12 @@ local groups = require "ui.theme.groups"
 
 groups.new("TreesitterContext", { link = "Normal" })
 groups.new("TreesitterContextLineNumber", { link = "LineNr" })
+groups.new("TreesitterContextSeparator", { link = "NonText" })
 
 context.setup {
   enable = true,
   multiline_threshold = 4,
-  separator = { "─", "NonText" },
+  separator = "─",
   mode = "topline",
   patterns = {
     lua = {
