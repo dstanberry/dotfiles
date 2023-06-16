@@ -49,8 +49,8 @@ M.config = {
         paramType = true,
         setType = false,
         arrayIndex = "Disable",
-        paramName = "Disable",
-        semicolon = "Disable",
+        -- paramName = "Disable",
+        -- semicolon = "Disable",
       },
       workspace = {
         checkThirdParty = false,
