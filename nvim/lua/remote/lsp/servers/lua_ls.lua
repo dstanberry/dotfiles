@@ -46,6 +46,11 @@ M.config = {
       },
       hint = {
         enable = true,
+        paramType = true,
+        setType = false,
+        arrayIndex = "Disable",
+        paramName = "Disable",
+        semicolon = "Disable",
       },
       workspace = {
         checkThirdParty = false,
