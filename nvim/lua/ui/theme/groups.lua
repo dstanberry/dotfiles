@@ -63,6 +63,7 @@ M.apply = function(c)
   hi.Whitespace = { link = "NonText" }
   hi.WildMenu = { link = "Visual" }
   -- alternate backgrounds
+  hi.FloatBorderSB = { fg = c.gray1, bg = c.bg0 }
   hi.NormalSB = { fg = c.fg1, bg = c.bgX }
 
   -- standard syntax highlighting
