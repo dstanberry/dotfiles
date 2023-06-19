@@ -66,12 +66,12 @@ return {
       },
       window = {
         completion = {
-          border = "single",
-          winhighlight = "Normal:FloatBorder,CursorLine:PmenuSel,Search:None",
+          border = icons.border.ThinBlock,
+          winhighlight = "Normal:FloatBorder,FloatBorder:FloatBorderSB,CursorLine:PmenuSel,Search:None",
         },
         documentation = {
-          border = "single",
-          winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+          border = icons.border.ThinBlock,
+          winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorderSB",
         },
       },
     }
