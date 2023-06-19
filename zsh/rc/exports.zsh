@@ -93,9 +93,10 @@ if hash fzf 2> /dev/null; then
     --border
     --cycle
     --header-first
-    --height=40%
+    --height=50%
+    --margin=1,2,1,2
     --layout=reverse
-    --preview-window border-left
+    --preview-window=border-thinblock
     --scroll-off=3
     --bind=ctrl-d:preview-down
     --bind=ctrl-f:preview-up
@@ -109,7 +110,7 @@ if hash fzf 2> /dev/null; then
     --color=fg:#bebebe,bg:#303033,hl:#93b379
     --color=fg+:#dfe3ec,bg+:#303033,hl+:#93b379
     --color=gutter:#303033,border:#303033,scrollbar:#373737
-    --color=preview-bg:#1f2021,preview-border:#1f2021,preview-scrollbar:#000000
+    --color=preview-bg:#1f2021,preview-border:#59595e,preview-scrollbar:#3e3e33
     --color=info:#5f5f5f,prompt:#93b379,pointer:#bebebe
     --color=marker:#b04b57,spinner:#516882,header:#97b6e5'
 
