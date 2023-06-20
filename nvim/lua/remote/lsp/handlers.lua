@@ -95,14 +95,12 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.inlayHintProvider then
-    vim.keymap.set("n", "g<bs>", vim.lsp._inlay_hint.clear, { buffer = bufnr, desc = "lsp: clear inlay hints" })
-
-    local lsp_inlayhints = vim.api.nvim_create_augroup("lsp_inlayhints", { clear = true })
-    vim.api.nvim_create_autocmd({ "BufEnter", "InsertLeave", "BufWritePost" }, {
-      group = lsp_inlayhints,
-      buffer = bufnr,
-      callback = vim.lsp._inlay_hint.refresh,
-    })
+    vim.keymap.set(
+      "n",
+      "g<bs>",
+      function() vim.lsp.buf.inlay_hint(bufnr) end,
+      { buffer = bufnr, desc = "lsp: toggle inlay hints" }
+    )
   end
 
   if client.server_capabilities.signatureHelpProvider then
