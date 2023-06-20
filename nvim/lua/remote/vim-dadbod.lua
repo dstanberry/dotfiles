@@ -12,7 +12,10 @@ vim.api.nvim_create_autocmd("FileType", {
 return {
   "kristijanhusak/vim-dadbod-ui",
   event = "VeryLazy",
-  dependencies = "tpope/vim-dadbod",
+  dependencies = {
+    "kristijanhusak/vim-dadbod-completion",
+    "tpope/vim-dadbod",
+  },
   cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection" },
   keys = {
     { "<localleader>db", "<cmd>DBUIToggle<cr>", desc = "dadbod: toggle interface" },
@@ -20,5 +23,23 @@ return {
   init = function()
     vim.g.db_ui_use_nerd_fonts = 1
     vim.g.db_ui_show_database_icon = 1
+  end,
+  config = function()
+    if require("lazy.core.config").plugins["nvim-cmp"] ~= nil then
+      vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("db-completion", { clear = true }),
+        pattern = { "sql", "mysql", "plsql" },
+        callback = function()
+          require("cmp").setup.buffer {
+            sources = {
+              { name = "vim-dadbod-completion" },
+              { name = "luasnip" },
+              { name = "path" },
+              { name = "buffer", keyword_length = 5, max_item_count = 5 },
+            },
+          }
+        end,
+      })
+    end
   end,
 }
