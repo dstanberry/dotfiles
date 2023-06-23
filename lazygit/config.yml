@@ -48,7 +48,7 @@ gui:
   mouseEvents: true
   scrollHeight: 2
   scrollPastBottom: true
-  showIcons: false
+  nerdFontsVersion: "3"
   skipStashWarning: true
   skipUnstageLineWarning: false
 customCommands:
