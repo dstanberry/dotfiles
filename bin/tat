@@ -3,7 +3,7 @@
 if [[ $# -eq 0 ]]; then
   path=$PWD
 elif [[ $# -eq 1 ]]; then
-  if [ "$1" == "fzf" ]; then
+  if [ "$1" == "fzf" ] || [ "$1" == "new" ]; then
     projects_dir=""
     for f in "$PROJECTS_DIR"/*; do
       if [ -z "$projects_dir" ]; then
@@ -12,11 +12,12 @@ elif [[ $# -eq 1 ]]; then
         projects_dir="$projects_dir $f"
       fi
     done
+   [[ "$1" == "new" ]] && HEIGHT="100%" || HEIGHT="50%"
     # shellcheck disable=SC2207
     projects_dir=($(echo "$projects_dir" | cut -d " " --output-delimiter=" " -f 1-))
     path=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" "${projects_dir[@]}" \
       -mindepth 1 -maxdepth 1 \
-      | fzf --height=50% --reverse --header='Create/Open Session' \
+      | fzf --height="${HEIGHT}" --reverse --header='Create/Open Session' \
         --preview '(bat --style=plain {1}/README.md ||
           cat {1}/README.md ||
           exa -lh --icons {1} ||
