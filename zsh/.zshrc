@@ -251,19 +251,7 @@ bindkey '^x^x' edit-command-line
 bindkey ' ' magic-space
 
 # tmux session initializer
-tat-widget() {
-  setopt localoptions pipefail no_aliases 2> /dev/null
-  eval "tat fzf"
-  local ret=$?
-  zle reset-prompt
-  return $ret
-}
-
-zle     -N tat-widget
-bindkey -s ^f tat-widget
-bindkey -M emacs '^F' tat-widget
-bindkey -M vicmd '^F' tat-widget
-bindkey -M viins '^F' tat-widget
+bindkey -s ^f "tat fzf\n"
 
 # make (c-z) toggle between bg and fg for processes
 function fg-bg() {
