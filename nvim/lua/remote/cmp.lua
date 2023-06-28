@@ -67,7 +67,7 @@ return {
       window = {
         completion = {
           border = icons.border.ThinBlock,
-          winhighlight = "Normal:FloatBorder,FloatBorder:FloatBorderSB,CursorLine:PmenuSel,Search:None",
+          winhighlight = "Normal:FloatBorder,FloatBorder:FloatBorderSB,CursorLine:PmenuSel",
         },
         documentation = {
           border = icons.border.ThinBlock,
