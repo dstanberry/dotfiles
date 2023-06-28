@@ -40,6 +40,7 @@ M.apply = function(c)
   hi.NormalFloat = { fg = c.white, bg = c.bg0 }
   hi.NvimInternalError = { link = "Error" }
   hi.PMenu = { link = "NormalFloat" }
+  hi.PMenuSbar = { fg = c.gray0, bg = c.bg0 }
   hi.PMenuSel = { fg = c.bg3, bg = c.blue1 }
   hi.Question = { fg = c.blue3 }
   hi.QuickFixLine = { bg = c.bg_visual, bold = true }
