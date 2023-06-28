@@ -25,6 +25,7 @@ M.config = {
   },
   root_dir = function(_) return vim.loop.cwd() end,
   settings = {},
+  on_attach = function() end,
 }
 
 M.register_default_config = true
