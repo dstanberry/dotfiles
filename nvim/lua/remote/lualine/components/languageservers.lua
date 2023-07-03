@@ -13,5 +13,5 @@ return function()
   local names = clients and table.concat(clients, pad(icons.misc.CircleDot, "both")) or ""
   return #names == 0 and ""
     or #names < limit and pad(icons.misc.Gears, "right", 2) .. names
-    or pad(icons.misc.Gears, "right") .. "LSP"
+    or pad(icons.misc.Gears, "right", 2) .. "LSP"
 end
