@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 return {
-  "TimUntersberger/neogit",
+  "NeogitOrg/neogit",
   dependencies = { "nvim-lua/plenary.nvim" },
   -- stylua: ignore
   keys = {
