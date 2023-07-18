@@ -49,14 +49,18 @@ else
 fi
 
 # cache completions
-zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion::complete:*' use-cache on
 
 # enable approximate completions
 # - try exact (case-sensitive) match first.
 # - then fall back to case-insensitive.
 # - accept abbreviations after . or _ or - (ie. f.b -> foo.bar).
 # - substring complete (ie. bar -> foobar).
-zstyle ':completion:*' matcher-list '' '+m:{[:lower:]}={[:upper:]}' '+m:{[:upper:]}={[:lower:]}' '+m:{_-}={-_}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' matcher-list '' \
+  '+m:{[:lower:]}={[:upper:]}' \
+  '+m:{[:upper:]}={[:lower:]}' \
+  '+m:{_-}={-_}' \
+  'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 # allow completion of ..<tab> to ../
 zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(..) ]] && reply=(..)'
@@ -283,6 +287,33 @@ bindkey -v '^O' vi-cmd
 
 # delete the word to the right of the cursor
 bindkey -s '^[w' '^OcW'
+
+# add vi-mode text-objects e.g. da" ca(
+autoload -Uz select-bracketed select-quoted
+zle -N select-quoted
+zle -N select-bracketed
+for km in viopp visual; do
+  bindkey -M $km -- '-' vi-up-line-or-history
+  for c in {a,i}${(s..)^:-\'\"\`\|,./:;=+@}; do
+    bindkey -M $km $c select-quoted
+  done
+  for c in {a,i}${(s..)^:-'()[]{}<>bB'}; do
+    bindkey -M $km $c select-bracketed
+  done
+done
+
+# enable surround text-object motions
+ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(vi-change vi-delete)
+autoload -Uz surround
+zle -N delete-surround surround
+zle -N add-surround surround
+zle -N change-surround surround
+
+# mimic (n)vim behaviour to modify surrounding text-objects
+bindkey -M vicmd cs change-surround
+bindkey -M vicmd ds delete-surround
+bindkey -M vicmd ys add-surround
+bindkey -M visual S add-surround
 
 ###############################################################
 # evalcache

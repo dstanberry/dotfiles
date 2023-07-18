@@ -53,7 +53,7 @@ export HISTFILE="${XDG_CACHE_HOME}/zsh/history"
 export SAVEHIST=$HISTSIZE
 
 # define how long to wait for additional characters
-export KEYTIMEOUT=2
+export KEYTIMEOUT=5
 
 # enable syntax highlighting for less
 export LESS="-iFMRX -x4"
