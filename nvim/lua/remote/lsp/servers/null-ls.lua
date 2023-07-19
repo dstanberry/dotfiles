@@ -27,10 +27,14 @@ local sources = {
   b.formatting.eslint_d,
   b.formatting.gofmt,
   b.formatting.prettierd.with {
-    extra_args = function(params)
-      local arguments = {}
-      if params.ft == "markdown" then arguments = { "--print-width", "80", "--prose-wrap", "always" } end
-      return arguments
+    generator_opts = {
+      command = "prettierd",
+      args = { "$FILENAME" },
+      to_stdin = true,
+    },
+    env = function(_)
+      local conf = ("%s/.prettierrc.json"):format(require("util").buffer.get_root())
+      if vim.loop.fs_realpath(conf) then return { PRETTIERD_DEFAULT_CONFIG = conf } end
     end,
   },
   b.formatting.rustfmt,
