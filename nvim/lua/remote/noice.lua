@@ -66,9 +66,21 @@ return {
       },
     },
     lsp = {
-      documentation = { enabled = true },
+      documentation = {
+        enabled = true,
+        opts = {
+          border = { style = icons.border.ThinBlock },
+          position = { row = 2 },
+          win_options = { winhighlight = { FloatBorder = "FloatBorderSB" } },
+        },
+      },
       hover = { enabled = true },
-      signature = { enabled = true },
+      signature = {
+        enabled = true,
+        opts = {
+          position = { row = 2 },
+        },
+      },
       override = {
         ["cmp.entry.get_documentation"] = true,
         ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
