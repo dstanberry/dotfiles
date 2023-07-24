@@ -22,8 +22,7 @@ groups.new("NeoTreeRootName", { link = "Directory" })
 
 return {
   {
-    -- "nvim-neo-tree/neo-tree.nvim",
-    "dstanberry/neo-tree.nvim",
+    "nvim-neo-tree/neo-tree.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
