@@ -61,46 +61,4 @@ return {
       handlers.setup()
     end,
   },
-  -- {
-  --   "pmizio/typescript-tools.nvim",
-  --   dependencies = {
-  --     "neovim/nvim-lspconfig",
-  --     "nvim-lua/plenary.nvim",
-  --   },
-  --   ft = { "typescript", "typescriptreact" },
-  --   init = function()
-  --     local lsp_tsserver = vim.api.nvim_create_augroup("lsp_typescript", { clear = true })
-  --     vim.api.nvim_create_autocmd("LspAttach", {
-  --       group = lsp_tsserver,
-  --       callback = function(args)
-  --         if not (args.data and args.data.client_id) then return end
-  --         local client = vim.lsp.get_client_by_id(args.data.client_id)
-  --         if client.name ~= "typescript-tools" then return end
-  --         local bufnr = args.buf
-  --         vim.keymap.set("n", "ff", function()
-  --           vim.cmd "TSToolsOrganizeImports"
-  --           vim.lsp.buf.format { async = true }
-  --         end, { buffer = bufnr, desc = "typescript: lsp format document" })
-  --       end,
-  --     })
-  --   end,
-  --   opts = {
-  --     tsserver_file_preferences = {
-  --       includeInlayEnumMemberValueHints = true,
-  --       includeInlayFunctionLikeReturnTypeHints = true,
-  --       includeInlayFunctionParameterTypeHints = true,
-  --       includeInlayParameterNameHints = "all",
-  --       includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-  --       includeInlayPropertyDeclarationTypeHints = true,
-  --       includeInlayVariableTypeHints = true,
-  --       includeInlayVariableTypeHintsWhenTypeMatchesName = false,
-  --     },
-  --     tsserver_format_preferences = {
-  --       convertTabsToSpaces = true,
-  --       indentSize = 2,
-  --       trimTrailingWhitespace = false,
-  --       semicolons = "insert",
-  --     },
-  --   },
-  -- },
 }
