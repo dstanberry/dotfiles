@@ -94,7 +94,7 @@ function M.get_root()
         or {}
       for _, p in ipairs(paths) do
         local r = vim.loop.fs_realpath(p)
-        if path:find(r, 1, true) then roots[#roots + 1] = r end
+        if type(r) == "string" and path:find(r, 1, true) then roots[#roots + 1] = r end
       end
     end
   end
