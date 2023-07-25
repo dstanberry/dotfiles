@@ -15,7 +15,13 @@ local sources = {
 
   b.diagnostics.eslint_d,
   b.diagnostics.flake8,
-  b.diagnostics.markdownlint,
+  b.diagnostics.markdownlint.with {
+    extra_args = function(_)
+      local conf = ("%s/.markdownlint.json"):format(require("util").buffer.get_root())
+      if vim.loop.fs_realpath(conf) then return { "--config", conf } end
+      return { "--disable", "MD013"}
+    end
+  },
   b.diagnostics.shellcheck.with { diagnostics_format = "[#{c}] (#{s}) #{m}" },
   b.diagnostics.vint,
 
