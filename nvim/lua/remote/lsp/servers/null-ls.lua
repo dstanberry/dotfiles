@@ -19,8 +19,8 @@ local sources = {
     extra_args = function(_)
       local conf = ("%s/.markdownlint.json"):format(require("util").buffer.get_root())
       if vim.loop.fs_realpath(conf) then return { "--config", conf } end
-      return { "--disable", "MD013"}
-    end
+      return { "--disable", "MD013" }
+    end,
   },
   b.diagnostics.shellcheck.with { diagnostics_format = "[#{c}] (#{s}) #{m}" },
   b.diagnostics.vint,
@@ -58,7 +58,7 @@ M.setup = function(opts)
     diagnostics_format = "(#{s}) #{m}",
     save_after_format = false,
     sources = sources,
-    on_attach = opts and opts.on_attach and opts.on_attach or {},
+    on_attach = opts and opts.on_attach and opts.on_attach,
   }
 end
 
