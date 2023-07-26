@@ -8,14 +8,14 @@ M.defer_setup = true
 
 M.setup = function(config)
   typescript.setup {
-    capabilities = config.capabilities,
-    flags = config.flags,
+    capabilities = config and config.capabilities and config.capabilities,
+    flags = config and config.flags and config.flags,
     on_attach = function(client, bufnr)
-      config.on_attach(client, bufnr)
+      if config and config.on_attach then config.on_attach(client, bufnr) end
       vim.keymap.set("n", "ff", function()
         vim.cmd "TSToolsOrganizeImports"
         vim.lsp.buf.format { async = true }
-      end, { buffer = bufnr, desc = "typescript: lsp format document" })
+      end, { buffer = bufnr, desc = "typescript: format document" })
     end,
     settings = {
       tsserver_file_preferences = {

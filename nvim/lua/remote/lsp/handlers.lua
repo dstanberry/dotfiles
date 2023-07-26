@@ -86,12 +86,14 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.documentFormattingProvider then
-    vim.keymap.set(
-      "n",
-      "ff",
-      function() vim.lsp.buf.format { async = true } end,
-      { buffer = bufnr, desc = "lsp: format document" }
-    )
+    if vim.fn.maparg "ff" == "" then
+      vim.keymap.set(
+        "n",
+        "ff",
+        function() vim.lsp.buf.format { async = true } end,
+        { buffer = bufnr, desc = "lsp: format document" }
+      )
+    end
   end
 
   if client.server_capabilities.inlayHintProvider then
