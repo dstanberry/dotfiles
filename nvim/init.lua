@@ -78,6 +78,12 @@ if setting_enabled "remote_plugins" then
       border = "none",
       custom_keys = {
         ["<localleader>d"] = function(plugin) dump(plugin) end,
+        ["<localleader>t"] = function(plugin)
+          local cmd = has "win32" and "pwsh"
+          require("lazy.util").float_term(cmd, {
+            cwd = plugin.dir,
+          })
+        end,
       },
     },
     install = { missing = true },
