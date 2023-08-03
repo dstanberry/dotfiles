@@ -27,7 +27,12 @@ gui:
     show: true
   language: "en"
   authorColors:
+    "Demaro Stanberry": "#8ed6ec"
     "*": cyan
+  branchColors:
+    "main": "#b5e4ff"
+    "master": "#b5e4ff"
+    "develop": "#4ed1a1"
   theme:
     lightTheme: false
     defaultFgColor:
@@ -45,6 +50,8 @@ gui:
       - "#48525e"
     unstagedChangesColor:
       - red
+    cherryPickedCommitFgColor:
+      - blue
   mouseEvents: true
   scrollHeight: 2
   scrollPastBottom: true
