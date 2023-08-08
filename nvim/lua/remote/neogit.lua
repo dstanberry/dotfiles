@@ -26,7 +26,7 @@ return {
   dependencies = { "nvim-lua/plenary.nvim" },
   -- stylua: ignore
   keys = {
-    { "<localleader>gs", function() require("neogit").open { kind = "split" } end, desc = "neogit: open" },
+    { "<localleader>gs", function() require("neogit").open { kind = "tab" } end, desc = "neogit: open" },
     { "<localleader>gc", function() require("neogit").open { "commit" } end, desc = "neogit: commit" },
   },
   opts = {
@@ -34,7 +34,7 @@ return {
     disable_context_highlighting = false,
     disable_insert_on_commit = false,
     commit_popup = {
-      kind = "split",
+      kind = "tab",
     },
     signs = {
       hunk = { "", "" },
