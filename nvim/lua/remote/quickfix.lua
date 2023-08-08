@@ -5,7 +5,7 @@ groups.new("TroubleNormal", { link = "NormalSB" })
 
 return {
   {
-    url = "https://gitlab.com/yorickpeterse/nvim-pqf",
+    "yorickpeterse/nvim-pqf",
     event = "VeryLazy",
     config = true,
   },
