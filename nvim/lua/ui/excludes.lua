@@ -61,6 +61,7 @@ M.ft.wb_empty = {
 
   -- plugin filetypes
   "dbui",
+  "DiffviewFileHistory",
   "DiffviewFilePanel",
   "DiffviewFiles",
 }
