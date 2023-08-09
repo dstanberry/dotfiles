@@ -69,7 +69,9 @@ c.grayX = color.darken(c.gray1, 25)
 
 c.diff_add = "#132e1f"
 c.diff_delete = "#361f21"
-c.diff_change = "#174061"
 c.diff_text = "#1b3956"
+c.diff_change = color.blend(c.diff_text, c.bg3, 0.2)
+
+dump(color.blend(c.diff_text, c.bg3, 0.48))
 
 return c
