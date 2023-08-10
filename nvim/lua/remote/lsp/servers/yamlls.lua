@@ -1,11 +1,13 @@
+-- verify schemastore is available
+local ok, schemastore = pcall(require, "schemastore")
+if not ok then return end
+
 local M = {}
 
 M.config = {
   settings = {
     yaml = {
-      schemas = {
-        ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
-      },
+      schemas = schemastore.yaml.schemas(),
     },
   },
 }
