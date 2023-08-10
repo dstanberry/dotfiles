@@ -94,7 +94,7 @@ if setting_enabled "remote_plugins" then
         disabled_plugins = {
           "gzip",
           "matchit",
-          "matchparen",
+          -- "matchparen",
           "netrwPlugin",
           "rplugin",
           "tarPlugin",
