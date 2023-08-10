@@ -32,7 +32,14 @@ local sources = {
   },
   b.formatting.eslint_d,
   b.formatting.gofmt,
+  b.formatting.markdownlint.with {
+    extra_args = function(_)
+      local conf = ("%s/.markdownlint.json"):format(require("util").buffer.get_root())
+      if vim.loop.fs_realpath(conf) then return { "--config", conf } end
+    end,
+  },
   b.formatting.prettierd.with {
+    disabled_filetypes = { "markdown", "markdown.mdx" },
     generator_opts = {
       command = "prettierd",
       args = { "$FILENAME" },
