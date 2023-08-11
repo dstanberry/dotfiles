@@ -144,7 +144,11 @@ function git() {
 function go() {
   local PKG=$CONFIG_HOME/shared/packages/go.txt
   if [ "$1" = "load" ]; then
-    < "$PKG" xargs "go" install
+    # < "$PKG" xargs "go" install
+    while read -r line
+    do
+      go install "$line"
+    done < "$PKG"
   else
     command go "$@"
   fi
