@@ -72,6 +72,4 @@ c.diff_delete = "#361f21"
 c.diff_text = "#1b3956"
 c.diff_change = color.blend(c.diff_text, c.bg3, 0.2)
 
-dump(color.blend(c.diff_text, c.bg3, 0.48))
-
 return c
