@@ -1,5 +1,8 @@
-reporting: "off"
-startuppopupversion: 1
+confirmOnQuit: false
+disableStartupPopups: false
+notARepository: "prompt"
+promptToReturnFromSubprocess: true
+quitOnTopLevelReturn: false
 os:
   editPreset: "nvim"
 git:
@@ -34,7 +37,6 @@ gui:
     "master": "#b5e4ff"
     "develop": "#4ed1a1"
   theme:
-    lightTheme: false
     defaultFgColor:
       - default
     activeBorderColor:
@@ -57,7 +59,7 @@ gui:
   scrollPastBottom: true
   nerdFontsVersion: "3"
   skipStashWarning: true
-  skipUnstageLineWarning: false
+  skipDiscardChangeWarning: false
 customCommands:
   - key: "d"
     command: "git diff {{.SelectedFile.Name}}"
@@ -125,7 +127,6 @@ keybinding:
     diffingMenu-alt: "<c-e>"
     copyToClipboard: "<c-o>"
     submitEditorText: "<enter>"
-    appendNewline: "<a-enter>"
     extrasMenu: "@"
     toggleWhitespaceInDiffView: "<c-w>"
     increaseContextInDiffView: "}"
@@ -187,7 +188,6 @@ keybinding:
   commitFiles:
     checkoutCommitFile: "c"
   main:
-    editSelectHunk: E
     pickBothHunks: "b"
     toggleDragSelect: "v"
     toggleDragSelect-alt: "V"
