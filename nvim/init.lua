@@ -22,9 +22,10 @@ vim.g.markdown_fenced_languages = {
 
 vim.filetype.add {
   extension = {
+    jenkinsfile = "groovy",
+    json = "jsonc",
     vifm = "vim",
     vifmrc = "vim",
-    jenkinsfile = "groovy",
   },
   filename = {
     ["tmux.conf"] = "tmux",
