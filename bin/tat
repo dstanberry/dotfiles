@@ -36,7 +36,7 @@ elif [[ $# -eq 1 ]]; then
       | xargs tmux display-menu -T "Switch session"
     exit 0
   else
-    echo "'fzf' and 'switch' are the only supported arguments at this time"
+    echo "'fzf', 'new' and 'switch' are the only supported arguments at this time"
     exit 1
   fi
 else
