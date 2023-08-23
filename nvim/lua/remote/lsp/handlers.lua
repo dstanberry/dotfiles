@@ -6,16 +6,14 @@ M.on_init = function(opts)
   return function(client)
     local default_request = client.rpc.request
     function client.rpc.request(method, params, handler, ...)
-      local default_handler = handler
       opts = vim.F.if_nil(opts, {})
-      for condition, callback in pairs(opts) do
-        if method == condition then
-          handler = function(...)
-            if type(callback) == "function" then callback(...) end
-            return default_handler(...)
-          end
-        end
-      end
+      local default_handler = handler
+      local preprocessor = opts[method]
+      handler = preprocessor ~= nil
+        and function(...)
+          if type(preprocessor) == "function" then preprocessor(...) end
+          return default_handler(...)
+        end or default_handler
       return default_request(method, params, handler, ...)
     end
   end
