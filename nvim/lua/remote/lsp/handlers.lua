@@ -113,6 +113,39 @@ M.on_attach = function(client, bufnr)
     else
       vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr, desc = "lsp: rename" })
     end
+
+    local prepare_rename = function(data)
+      local buf = vim.fn.bufnr(data.old_name)
+      for _, c in pairs(vim.lsp.get_clients { bufnr = buf }) do
+        local rename_path = { "server_capabilities", "workspace", "fileOperations", "willRename" }
+        if not vim.tbl_get(c, rename_path) then
+          return vim.notify(
+            string.format("%s does not support file rename", c.name),
+            vim.log.levels.INFO,
+            { title = "LSP" }
+          )
+        end
+        local params = {
+          files = { { newUri = "file://" .. data.new_name, oldUri = "file://" .. data.old_name } },
+        }
+        ---@diagnostic disable-next-line: invisible
+        local res = c.request_sync("workspace/willRenameFiles", params, 1000)
+        if res and res.result then vim.lsp.util.apply_workspace_edit(res.result, c.offset_encoding) end
+      end
+    end
+
+    local rename_file = function()
+      vim.ui.input({ prompt = "New filename: " }, function(name)
+        if not name then return end
+        local old_name = vim.api.nvim_buf_get_name(0)
+        local new_name = string.format("%s/%s", vim.fs.dirname(old_name), name)
+        prepare_rename { old_name = old_name, new_name = new_name }
+        vim.lsp.util.rename(old_name, new_name)
+        vim.cmd.edit "%"
+      end)
+    end
+
+    vim.keymap.set("n", "g-", rename_file, { buffer = bufnr, desc = "lsp: rename file" })
   end
 
   if client.server_capabilities.signatureHelpProvider then
