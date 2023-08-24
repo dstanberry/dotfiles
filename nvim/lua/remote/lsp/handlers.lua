@@ -10,10 +10,11 @@ M.on_init = function(opts)
       local default_handler = handler
       local preprocessor = opts[method]
       handler = preprocessor ~= nil
-        and function(...)
-          if type(preprocessor) == "function" then preprocessor(...) end
-          return default_handler(...)
-        end or default_handler
+          and function(...)
+            if type(preprocessor) == "function" then preprocessor(...) end
+            return default_handler(...)
+          end
+        or default_handler
       return default_request(method, params, handler, ...)
     end
   end
@@ -157,18 +158,28 @@ M.on_attach = function(client, bufnr)
 end
 
 M.get_client_capabilities = function()
+  local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
   local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.completion.completionItem.preselectSupport = true
-  capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-  capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-  capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-  capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-  capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = { "documentation", "detail", "additionalTextEdits" },
-  }
-  local has_cmp, cmp = pcall(require, "cmp_nvim_lsp")
-  if has_cmp then return vim.tbl_deep_extend("keep", capabilities, cmp.default_capabilities()) end
+  if ok then capabilities = vim.tbl_deep_extend("keep", capabilities, cmp_nvim_lsp.default_capabilities()) end
+  capabilities = vim.tbl_deep_extend("keep", capabilities, {
+    textDocument = {
+      completion = {
+        completionItem = {
+          commitCharactersSupport = true,
+          deprecatedSupport = true,
+          insertReplaceSupport = true,
+          labelDetailsSupport = true,
+          preselectSupport = true,
+          snippetSupport = true,
+          resolveSupport = {
+            properties = { "documentation", "detail", "additionalTextEdits" },
+          },
+        },
+      },
+      foldingRange = { dynamicRegistration = false, lineFoldingOnly = true },
+    },
+    workspace = { didChangeWatchedFiles = { dynamicRegistration = true } },
+  })
   return capabilities
 end
 
