@@ -27,16 +27,30 @@ M.on_attach = function(client, bufnr)
   -- end
 
   if client.server_capabilities.codeActionProvider then
+    local source_action = function() vim.lsp.buf.code_action { context = { only = { "source" }, diagnostics = {} } } end
+
     vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr, desc = "lsp: code action" })
-    vim.keymap.set(
-      "n",
-      "gA",
-      function() vim.lsp.buf.code_action { context = { only = { "source" }, diagnostics = {} } } end,
-      { buffer = bufnr, desc = "lsp: source action" }
-    )
+    vim.keymap.set("n", "gA", source_action, { buffer = bufnr, desc = "lsp: source action" })
   end
 
   if client.server_capabilities.codeLensProvider then
+    local code_lens = function()
+      vim.ui.select({ "display", "refresh", "run" }, {
+        prompt = "Code Lens",
+        format_item = function(item) return "Code lens " .. item end,
+      }, function(choice)
+        if choice == "display" then
+          vim.lsp.codelens.display()
+        elseif choice == "refresh" then
+          vim.lsp.codelens.refresh()
+        elseif choice == "run" then
+          vim.lsp.codelens.run()
+        end
+      end)
+    end
+
+    vim.keymap.set("n", "gl", code_lens, { buffer = bufnr, desc = "lsp: code lens" })
+
     local lsp_codelens = vim.api.nvim_create_augroup("lsp_codelens", { clear = true })
 
     vim.api.nvim_create_autocmd("BufEnter", {
@@ -51,24 +65,23 @@ M.on_attach = function(client, bufnr)
       buffer = bufnr,
       callback = require("vim.lsp.codelens").refresh,
     })
+  end
 
-    vim.keymap.set("n", "gl", function()
-      vim.ui.select({ "display", "refresh", "run" }, {
-        prompt = "Code Lens",
-        format_item = function(item) return "Code lens " .. item end,
-      }, function(choice)
-        if choice == "display" then
-          vim.lsp.codelens.display()
-        elseif choice == "refresh" then
-          vim.lsp.codelens.refresh()
-        elseif choice == "run" then
-          vim.lsp.codelens.run()
-        end
-      end)
-    end, { buffer = bufnr, desc = "lsp: code lens" })
+  if client.server_capabilities.definitionProvider then
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "lsp: goto definition" })
+    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "lsp: goto type definition" })
+  end
+
+  if client.server_capabilities.documentFormattingProvider then
+    local format_document = function() vim.lsp.buf.format { async = true } end
+    if vim.fn.maparg "ff" == "" then
+      vim.keymap.set("n", "ff", format_document, { buffer = bufnr, desc = "lsp: format document" })
+    end
   end
 
   if client.server_capabilities.documentHighlightProvider then
+    vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "lsp: show references" })
+
     local lsp_highlight = vim.api.nvim_create_augroup("lsp_highlight", { clear = true })
 
     vim.api.nvim_create_autocmd("CursorHold", {
@@ -84,24 +97,22 @@ M.on_attach = function(client, bufnr)
     })
   end
 
-  if client.server_capabilities.documentFormattingProvider then
-    if vim.fn.maparg "ff" == "" then
-      vim.keymap.set(
-        "n",
-        "ff",
-        function() vim.lsp.buf.format { async = true } end,
-        { buffer = bufnr, desc = "lsp: format document" }
-      )
-    end
+  if client.server_capabilities.hoverProvider then
+    vim.keymap.set("n", "gk", vim.lsp.buf.hover, { buffer = bufnr, desc = "lsp: show documentation" })
   end
 
   if client.server_capabilities.inlayHintProvider then
-    vim.keymap.set(
-      "n",
-      "g<bs>",
-      function() vim.lsp.buf.inlay_hint(bufnr) end,
-      { buffer = bufnr, desc = "lsp: toggle inlay hints" }
-    )
+    local toggle_inlay_hint = function() vim.lsp.inlay_hint(bufnr) end
+    vim.keymap.set("n", "g<bs>", toggle_inlay_hint, { buffer = bufnr, desc = "lsp: toggle inlay hints" })
+  end
+
+  if client.server_capabilities.renameProvider then
+    if require("lazy.core.config").plugins["inc-rename.nvim"] ~= nil then
+      local rename_symbol = function() return ":IncRename " .. vim.fn.expand "<cword>" end
+      vim.keymap.set("n", "g<leader>", rename_symbol, { buffer = bufnr, expr = true, desc = "lsp: rename" })
+    else
+      vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr, desc = "lsp: rename" })
+    end
   end
 
   if client.server_capabilities.signatureHelpProvider then
@@ -116,23 +127,12 @@ M.on_attach = function(client, bufnr)
     vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
   end
 
-  vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "lsp: goto definition" })
-  vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "lsp: goto type definition" })
-  vim.keymap.set("n", "gk", vim.lsp.buf.hover, { buffer = bufnr, desc = "lsp: show documentation" })
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "lsp: goto implementation" })
-  vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "lsp: show references" })
   vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "lsp: show documents symbols" })
   vim.keymap.set("n", "gS", vim.lsp.buf.workspace_symbol, { buffer = bufnr, desc = "lsp: show workspace symbols" })
   vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr, desc = "lsp: show line diagnostics" })
   vim.keymap.set("n", "gn", vim.diagnostic.goto_next, { buffer = bufnr, desc = "lsp: next diagnostic" })
   vim.keymap.set("n", "gp", vim.diagnostic.goto_prev, { buffer = bufnr, desc = "lsp: previous diagnostic" })
-
-  if require("lazy.core.config").plugins["inc-rename.nvim"] ~= nil then
-    -- stylua: ignore
-    vim.keymap.set("n", "g<leader>", function() return ":IncRename " .. vim.fn.expand "<cword>" end, { buffer = bufnr, expr = true, desc = "lsp: rename" })
-  else
-    vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr, desc = "lsp: rename" })
-  end
 
   vim.api.nvim_buf_create_user_command(bufnr, "Workspace", function(opts)
     local cmd = unpack(opts.fargs)
