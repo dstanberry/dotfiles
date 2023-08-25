@@ -1,4 +1,5 @@
 local icons = require "ui.icons"
+local util = require "util"
 
 local M = {}
 
@@ -57,12 +58,14 @@ M.on_attach = function(client, bufnr)
       group = lsp_codelens,
       once = true,
       buffer = bufnr,
+      desc = "LSP: Code Lens refresh",
       callback = require("vim.lsp.codelens").refresh,
     })
 
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
       group = lsp_codelens,
       buffer = bufnr,
+      desc = "LSP: Code Lens refresh",
       callback = require("vim.lsp.codelens").refresh,
     })
   end
@@ -87,12 +90,14 @@ M.on_attach = function(client, bufnr)
     vim.api.nvim_create_autocmd("CursorHold", {
       group = lsp_highlight,
       buffer = bufnr,
+      desc = "LSP: Highlight symbol",
       callback = function() vim.lsp.buf.document_highlight() end,
     })
 
     vim.api.nvim_create_autocmd("CursorMoved", {
       group = lsp_highlight,
       buffer = bufnr,
+      desc = "LSP: Clear highlighted symbol",
       callback = function() vim.lsp.buf.clear_references() end,
     })
   end
@@ -153,6 +158,7 @@ M.on_attach = function(client, bufnr)
     -- local lsp_signature = vim.api.nvim_create_augroup("lsp_signature", { clear = true })
     -- vim.api.nvim_create_autocmd("CursorHoldI", {
     --   group = lsp_signature,
+    --   desc = "LSP: Show signature help",
     --   buffer = bufnr,
     --   callback = vim.lsp.buf.signature_help,
     -- })
@@ -223,6 +229,10 @@ M.setup = function()
     update_in_insert = false,
     virtual_text = false,
     float = {
+      border = util.map(function(border, v, k)
+        border[k] = { v, "FloatBorderSB" }
+        return border
+      end, icons.border.ThinBlock),
       focusable = false,
       show_header = true,
       source = "always",
@@ -247,6 +257,29 @@ M.setup = function()
     vim.lsp.handlers["textDocument/references"] = telescope.lsp_references
     vim.lsp.handlers["textDocument/typeDefinition"] = telescope.lsp_definitions
     vim.lsp.handlers["workspace/symbol"] = telescope.lsp_dynamic_workspace_symbols
+  end
+
+  -- TODO: remove after functionality is merged upstream
+  -- https://github.com/neovim/neovim/issues/19649#issuecomment-1327287313
+  -- neovim does not currently correctly report the related locations for diagnostics.
+  local show_related_locations = function(diag)
+    local related_info = diag.relatedInformation
+    if not related_info or #related_info == 0 then return diag end
+    for _, info in ipairs(related_info) do
+      diag.message = ("%s\n%s(%d:%d)%s"):format(
+        diag.message,
+        vim.fn.fnamemodify(vim.uri_to_fname(info.location.uri), ":p:."),
+        info.location.range.start.line + 1,
+        info.location.range.start.character + 1,
+        info.message and info.message ~= "" and (": %s"):format(info.message) or ""
+      )
+    end
+    return diag
+  end
+  local diag_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
+  vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+    result.diagnostics = vim.tbl_map(show_related_locations, result.diagnostics)
+    diag_handler(err, result, ctx, config)
   end
 end
 
