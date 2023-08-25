@@ -30,7 +30,7 @@ return {
   },
   documents = {
     File = "",
-    Files= "",
+    Files = "",
     MultipleFolders = "󰉓",
     FolderClosed = "󰉋",
     FolderEmpty = "󱞞",
