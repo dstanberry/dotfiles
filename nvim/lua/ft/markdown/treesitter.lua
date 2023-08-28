@@ -19,6 +19,7 @@ M.parse_document = function()
         (atx_h5_marker)
         (atx_h6_marker)
       ] @heading_marker)
+      (list_marker_dot) @list_marker_dot
       (list_marker_minus) @list_marker_minus
       (task_list_marker_unchecked) @checkbox_unchecked
       (task_list_marker_checked) @checkbox_checked

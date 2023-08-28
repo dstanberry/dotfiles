@@ -21,6 +21,8 @@ vim.api.nvim_create_autocmd("InsertEnter", {
   callback = function() markdown.concealer.disable() end,
 })
 
+vim.keymap.set("i", "<cr>", markdown.list.handle_return, { buffer = 0, desc = "(optional): insert list marker" })
+
 vim.keymap.set("i", "<c-w><c-c>", markdown.insert_checkbox, { buffer = 0, desc = "insert checkbox" })
 vim.keymap.set("i", "<c-w><c-l>", markdown.insert_link, { buffer = 0, desc = "insert link" })
 
