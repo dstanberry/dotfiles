@@ -1,13 +1,34 @@
 local color = require "util.color"
 
+---@class HLProps
+---@field fg string?
+---@field bg string?
+---@field bold boolean?
+---@field italic boolean?
+---@field undercurl boolean?
+---@field underline boolean?
+---@field underdotted boolean?
+---@field underdashed boolean?
+---@field underdouble boolean?
+---@field strikethrough boolean?
+---@field reverse boolean?
+---@field nocombine boolean?
+---@field link string?
+---@field default boolean?
+
 local M = {}
 
 local hi = setmetatable({}, {
-  __newindex = function(_, hlgroup, args) vim.api.nvim_set_hl(0, hlgroup, args) end,
+  ---@param name string
+  ---@param args? HLProps
+  __newindex = function(_, name, args) vim.api.nvim_set_hl(0, name, args) end,
 })
 
-M.new = function(group, args) hi[group] = args end
+---@param name string
+---@param args? HLProps
+M.new = function(name, args) hi[name] = args end
 
+---@param c ColorPalette
 M.apply = function(c)
   -- vim editor colors
   hi.ColorColumn = { bg = c.bg3 }

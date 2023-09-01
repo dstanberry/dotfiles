@@ -1,5 +1,7 @@
 local color = require "util.color"
 
+---@type ColorPalette
+---@diagnostic disable-next-line: missing-fields
 local c = {
   bg0 = "#1f2021",
   bg1 = "#323233",
