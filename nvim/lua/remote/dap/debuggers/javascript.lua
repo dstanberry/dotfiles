@@ -8,27 +8,34 @@ M.setup = function()
     host = "localhost",
     port = "${port}",
     executable = {
-      command = has "win32" and vim.fn.exepath "js-debug-adapter" or "js-debug-adapter",
-      args = { "${port}" },
+      command = "node",
+      args = {
+        require("mason-registry").get_package("js-debug-adapter"):get_install_path()
+          .. "/js-debug/src/dapDebugServer.js",
+        "${port}",
+      },
     },
   }
-  dap.configurations.javascript = {
-    {
-      type = "pwa-node",
-      name = "Launch - node",
-      request = "launch",
-      program = "${file}",
-      cwd = "${workspaceFolder}",
-    },
-    {
-      type = "pwa-node",
-      request = "attach",
-      name = "Attach - node",
-      processId = require("dap.utils").pick_process,
-      cwd = "${workspaceFolder}",
-    },
-  }
-  dap.configurations.typescript = dap.configurations.javascript
+  for _, language in ipairs { "typescript", "javascript" } do
+    if not dap.configurations[language] then
+      dap.configurations[language] = {
+        {
+          type = "pwa-node",
+          request = "attach",
+          name = "Attach to existing node process",
+          processId = require("dap.utils").pick_process,
+          cwd = "${workspaceFolder}",
+        },
+        language == "javascript" and {
+          type = "pwa-node",
+          name = "Launch file in new node process",
+          request = "launch",
+          program = "${file}",
+          cwd = "${workspaceFolder}",
+        } or nil,
+      }
+    end
+  end
 end
 
 return M
