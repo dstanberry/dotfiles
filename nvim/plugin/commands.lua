@@ -50,16 +50,28 @@ end, {})
 
 vim.api.nvim_create_user_command("ToggleWord", function()
   local lut = {
+    ["on"] = "off",
     ["true"] = "false",
-    ["True"] = "False",
-    ["TRUE"] = "FALSE",
-    ["Yes"] = "No",
-    ["YES"] = "NO",
+    ["yes"] = "no",
+    ["correct"] = "incorrect",
+    ["higher"] = "lower",
+    ["max"] = "min",
+    ["maximum"] = "minimum",
+    ["open"] = "close",
   }
   vim.tbl_add_reverse_lookup(lut)
   local word = vim.fn.expand "<cword>"
   vim.schedule(function()
     local keys = vim.tbl_keys(lut)
-    if vim.tbl_contains(keys, word) then vim.cmd.normal { args = { ("ciw%s"):format(lut[word]) } } end
+    local search = word:lower()
+    if vim.tbl_contains(keys, word:lower()) then
+      local match = lut[search]
+      if word == word:upper() then
+        match = match:upper()
+      elseif word == ("%s%s"):format(word:sub(1, 1):upper(), word:sub(2, -1)) then
+        match = ("%s%s"):format(match:sub(1, 1):upper(), match:sub(2, -1))
+      end
+      vim.cmd.normal { args = { ("ciw%s"):format(match) } }
+    end
   end)
 end, {})
