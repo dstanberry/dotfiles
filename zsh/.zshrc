@@ -340,7 +340,7 @@ select-word-style bash
 
 # load runtime configuration files
 if [ -d "$ZSH_CONFIG_HOME/rc" ]; then
-  for RC_FILE in $(find "$ZSH_CONFIG_HOME"/rc -type f | sort); do
+  for RC_FILE in $(find "$ZSH_CONFIG_HOME"/rc -type f | sort -V); do
     source "$RC_FILE"
   done
 fi
@@ -480,7 +480,7 @@ add-zsh-hook preexec -record-command
 ###############################################################
 # check for machine-specific rc files and source them if available
 if [ -d "$ZSH_CONFIG_HOME/rc.private" ]; then
-  for RC_FILE in $(find "$ZSH_CONFIG_HOME"/rc.private -type f | sort); do
+  for RC_FILE in $(find "$ZSH_CONFIG_HOME"/rc.private -type f | sort -V); do
     source "$RC_FILE"
   done
 fi
