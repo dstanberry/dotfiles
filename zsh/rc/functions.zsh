@@ -228,7 +228,7 @@ function notes() {
       | fzf --exit-0 --no-multi \
         --header 'Create note within:' \
         --bind 'focus:transform-header(echo Create note within {1})' \
-        --preview '(exa -lh --icons $ZK_NOTEBOOK_DIR/{1} ||
+        --preview '(eza -lh --icons $ZK_NOTEBOOK_DIR/{1} ||
         ls -lh $ZK_NOTEBOOK_DIR/{1}) 2> /dev/null')
     if [ "$dir" = "" ]; then
       exit 0

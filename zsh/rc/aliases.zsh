@@ -11,17 +11,17 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
 
-# enable color support for ls (using exa)
-if hash exa 2> /dev/null; then
+# enable color support for ls (using eza)
+if hash eza 2> /dev/null; then
   grouped="--group-directories-first --group"
   if is_wsl; then
-    alias ls="exa --ignore-glob='ntuser.*|NTUSER.*' --all ${grouped}"
-    alias ll="exa --ignore-glob='ntuser.*|NTUSER.*' --long ${grouped} --git-ignore --git --tree"
-    alias lla="exa --ignore-glob='ntuser.*|NTUSER.*' --all --long ${grouped} --git-ignore --git --tree"
+    alias ls="eza --ignore-glob='ntuser.*|NTUSER.*' --all ${grouped}"
+    alias ll="eza --ignore-glob='ntuser.*|NTUSER.*' --long ${grouped} --git-ignore --git --tree"
+    alias lla="eza --ignore-glob='ntuser.*|NTUSER.*' --all --long ${grouped} --git-ignore --git --tree"
   else
-    alias ls="exa --all ${grouped}"
-    alias ll="exa --long ${grouped} --git-ignore --git --tree"
-    alias lla="exa --all --long ${grouped} --git-ignore --git --tree"
+    alias ls="eza --all ${grouped}"
+    alias ll="eza --long ${grouped} --git-ignore --git --tree"
+    alias lla="eza --all --long ${grouped} --git-ignore --git --tree"
   fi
 fi
 
