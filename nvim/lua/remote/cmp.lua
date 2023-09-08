@@ -56,10 +56,10 @@ return {
         end,
       },
       sources = cmp.config.sources {
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-        { name = "path" },
-        { name = "buffer", keyword_length = 5, max_item_count = 5 },
+        { name = "nvim_lsp", priority_weight = 120 },
+        { name = "luasnip", priority_weight = 100 },
+        { name = "path", priority_weight = 90 },
+        { name = "buffer", priority_weight = 50, keyword_length = 5, max_view_entries = 5 },
       },
       view = {
         entries = { name = "custom", selection_order = "near_cursor" },
