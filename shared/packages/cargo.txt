@@ -1,3 +1,4 @@
+eza
 cargo-update
 cbfmt
 tree-sitter-cli
