@@ -1,6 +1,7 @@
 return {
   "akinsho/git-conflict.nvim",
-  event = "VeryLazy",
+  lazy = true,
+  version = "*",
   opts = {
     default_mappings = true,
     disable_diagnostics = false,
