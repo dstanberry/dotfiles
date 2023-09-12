@@ -7,7 +7,7 @@ local ensure_installed = {
   bashls = {},
   cmake = {},
   cssls = {},
-  html = {},
+  html = { init_options = { provideFormatter = false } },
 }
 
 return {
