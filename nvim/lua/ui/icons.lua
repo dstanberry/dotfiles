@@ -107,6 +107,8 @@ return {
     Clipboard = "󰅍",
     Close = "",
     CloseBold = "",
+    DiagonalExpand = "",
+    DiagonalShrink = "󰘕",
     Ellipses = "⋯",
     FilledCircle = "●",
     FoldClosed = "",

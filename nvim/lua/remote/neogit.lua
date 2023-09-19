@@ -39,7 +39,7 @@ return {
     signs = {
       hunk = { "", "" },
       item = { icons.misc.FoldClosed, icons.misc.FoldOpened },
-      section = { icons.misc.FoldClosed, icons.misc.FoldOpened },
+      section = { icons.misc.DiagonalExpand, icons.misc.DiagonalShrink },
     },
     integrations = {
       diffview = true,
