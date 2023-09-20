@@ -29,6 +29,7 @@ vim.filetype.add {
   },
   filename = {
     ["tmux.conf"] = "tmux",
+    Brewfile = "ruby",
     jenkinsfile = "groovy",
   },
   pattern = {
