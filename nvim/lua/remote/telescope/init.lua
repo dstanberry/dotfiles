@@ -121,9 +121,9 @@ return {
         { "<leader>f/", grep_last_search, desc = "telescope: find word (last searched)" },
         { "<leader>fb", current_buffer, desc = "telescope: find in buffer" },
         { "<leader>fe", file_browser, desc = "telescope: browse root directory" },
-        { "<leader>ff", require("telescope.builtin").find_files, desc = "telescope: find files" },
-        { "<leader>fg", require("telescope.builtin").live_grep, desc = "telescope: live grep" },
-        { "<leader>fk", require("telescope.builtin").help_tags, desc = "telescope: help pages" },
+        { "<leader>ff", function() require("telescope.builtin").find_files() end, desc = "telescope: find files" },
+        { "<leader>fg", function() require("telescope.builtin").live_grep() end, desc = "telescope: live grep" },
+        { "<leader>fk", function() require("telescope.builtin").help_tags() end, desc = "telescope: help pages" },
         { "<leader>fp", find_plugins, desc = "telescope: find files (neovim plugins)" },
         { "<leader>fr", oldfiles, desc = "telescope: find files (recently used)" },
         -- analagous to `<leader>` maps but with customizations
@@ -132,7 +132,7 @@ return {
         { "<localleader>fg", live_grep_args, desc = "telescope: find in files (grep with args)" },
         -- lsp handlers
         { "gw", function() require("telescope.builtin").diagnostics { bufnr = 0 } end, desc = "telescope: lsp diagnostics (buffer)", },
-        { "gW", require("telescope.builtin").diagnostics, desc = "telescope: lsp diagnostics (workspace)" },
+        { "gW",function() require("telescope.builtin").diagnostics() end, desc = "telescope: lsp diagnostics (workspace)" },
       }
     end,
     init = function()
