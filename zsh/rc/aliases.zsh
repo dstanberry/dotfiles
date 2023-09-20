@@ -15,13 +15,13 @@ alias grep='grep --color=auto'
 if hash eza 2> /dev/null; then
   grouped="--group-directories-first --group"
   if is_wsl; then
-    alias ls="eza --ignore-glob='ntuser.*|NTUSER.*' --all ${grouped}"
-    alias ll="eza --ignore-glob='ntuser.*|NTUSER.*' --long ${grouped} --git-ignore --git --tree"
-    alias lla="eza --ignore-glob='ntuser.*|NTUSER.*' --all --long ${grouped} --git-ignore --git --tree"
+    alias ls="eza --ignore-glob='ntuser.*|NTUSER.*' --icons --all ${grouped}"
+    alias ll="eza --ignore-glob='ntuser.*|NTUSER.*' --icons --long ${grouped} --git-ignore --git --tree"
+    alias lla="eza --ignore-glob='ntuser.*|NTUSER.*' --icons --all --long ${grouped} --git-ignore --git --tree"
   else
-    alias ls="eza --all ${grouped}"
-    alias ll="eza --long ${grouped} --git-ignore --git --tree"
-    alias lla="eza --all --long ${grouped} --git-ignore --git --tree"
+    alias ls="eza --ignore-glob='.*DS_Store' --icons --all ${grouped}"
+    alias ll="eza --ignore-glob='.*DS_Store' --icons --long ${grouped} --git-ignore --git --tree"
+    alias lla="eza --ignore-glob='ntuser.*|NTUSER.*' --icons --all --long ${grouped} --git-ignore --git --tree"
   fi
 fi
 
