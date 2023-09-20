@@ -70,4 +70,5 @@ wireshark/
 zsh/.zcompcache
 zsh/.zcompdump
 zsh/.zsh-evalcache/
+zsh/.zsh_sessions/
 zsh/rc.private/
