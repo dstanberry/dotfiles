@@ -268,14 +268,16 @@ _npm_config() {
   local _cache="${XDG_CACHE_HOME}/npm"
   local _initmod="${XDG_CACHE_HOME}/npm"
   local _notifier="false"
-  local _prefix="${XDG_CACHE_HOME}/npm"
+  local _prefix="${XDG_DATA_HOME}/npm"
+  local _current=$(npm config get prefix)
   npm config set cache "$_cache"
   npm config set init-module "$_initmod"
   npm config set update-notifier "$_notifier"
-  if [[ "$EUID" -gt 0 ]]; then
+  if [[ "$EUID" -gt 0 ]] && [[ "$_current" != "$prefix" ]]; then
     npm config set prefix "$_prefix"
   fi
 }
+_npm_config
 
 # support custom sub-commands
 function pip() {

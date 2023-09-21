@@ -55,6 +55,13 @@ if hash luarocks 2> /dev/null; then
   _evalcache luarocks path
 fi
 
+# add lua binaries to path if present
+if hash npm 2> /dev/null; then
+  NPM="${XDG_DATA_HOME}/npm/bin"
+  NEWPATH=$NPM:$NEWPATH
+  unset NPM
+fi
+
 # define macOS specific paths
 if is_darwin; then
   # homebrew may install binaries here
