@@ -61,6 +61,7 @@ brew "tree"
 brew "tree-sitter"
 brew "wget"
 brew "xz"
+brew "zk", args: ["HEAD"]
 brew "zlib"
 brew "zsh-completions"
 
