@@ -1,20 +1,22 @@
 require "spaces"
 
+hs.application.enableSpotlightForNameSearches(true)
+
 --  Toggle new/existing processes
 local chord = { "ctrl", "alt" }
 local shortcuts = {
-  ["net.kovidgoyal.kitty"] = "1",
-  ["com.google.Chrome"] = "2",
-  ["com.microsoft.VSCode"] = "3",
-  ["com.microsoft.teams"] = "4",
-  ["com.microsoft.Outlook"] = "5",
+  ["kitty"] = "1",
+  ["Google Chrome"] = "2",
+  ["Visual Studio Code"] = "3",
+  ["Microsoft Teams"] = "4",
+  ["Microsoft Outlook"] = "5",
 }
 local new = {
-  ["net.kovidgoyal.kitty"] = { "kitty", "New OS Window" },
-  ["com.google.Chrome"] = { "File", "New Window" },
-  ["com.microsoft.VSCode"] = { "File", "New Window" },
-  ["com.microsoft.teams"] = nil,
-  ["com.microsoft.Outlook"] = { "File", "New", "Main Window" },
+  ["kitty"] = { "kitty", "New OS Window" },
+  ["Google Chrome"] = { "File", "New Window" },
+  ["Visual Studio Code"] = { "File", "New Window" },
+  ["Microsoft Teams"] = nil,
+  ["Microsoft Outlook"] = { "File", "New", "Main Window" },
 }
 
 local showOrHide = function(appName)
