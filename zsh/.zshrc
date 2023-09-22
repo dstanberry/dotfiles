@@ -257,6 +257,9 @@ bindkey ' ' magic-space
 # tmux session initializer
 bindkey -s ^f "tat fzf\n"
 
+# live grep
+bindkey -s ^p "rf\n"
+
 # make (c-z) toggle between bg and fg for processes
 function fg-bg() {
   if [[ $#BUFFER -eq 0 ]]; then
