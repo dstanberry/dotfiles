@@ -38,14 +38,14 @@ fi
 
 # add cargo binaries to path if present
 if hash cargo 2> /dev/null; then
-  CARGO="${CARGO_HOME}/bin"
+  CARGO="${CARGO_HOME:-$HOME/.local/share/cargo}/bin"
   NEWPATH=$CARGO:$NEWPATH
   unset CARGO
 fi
 
 # add go binaries to path if present
 if hash go 2> /dev/null; then
-  GO="${GOPATH}/bin"
+  GO="${GOPATH:-$HOME/.local/share/go}/bin"
   NEWPATH=$GO:$NEWPATH
   unset GO
 fi
@@ -57,7 +57,7 @@ fi
 
 # add lua binaries to path if present
 if hash npm 2> /dev/null; then
-  NPM="${XDG_DATA_HOME}/npm/bin"
+  NPM="${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin"
   NEWPATH=$NPM:$NEWPATH
   unset NPM
 fi
@@ -75,7 +75,7 @@ if is_darwin; then
   unset FZF
 # define wsl specific paths
 elif is_wsl; then
-  # dirty hack to expose native specific Windows utils
+  # HACK: expose native specific Windows utils
   WIN="/mnt/c/Windows"
   SYS32="/mnt/c/Windows/System32"
   PWSH="/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
@@ -85,8 +85,8 @@ elif is_wsl; then
   unset SYS32
   unset PWSH
 
-  # qmk hacks
-  ARM="$XDG_DATA_HOME/gnu-arm-none-eabi/bin"
+  # HACK: bridge windows utils with qmk build environment
+  ARM="${XDG_DATA_HOME:-$HOME/.local/share}/gnu-arm-none-eabi/bin"
   QMK="$HOME/Git/qmk_distro_wsl/src/usr/bin"
   WBEM="/mnt/c/Windows/System32/Wbem"
   if test -e "$ARM"; then
