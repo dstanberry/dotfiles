@@ -121,21 +121,21 @@ local moveOneSpaceEast = function()
   hs.alert.show(win:title() .. " moved to Desktop " .. nextSpace)
 end
 
-local gotoOneSpaceWest = function()
-  local win = hs.window.focusedWindow()
-  local screen = win:screen()
-  local prevSpace = getPrevSpace(screen)
-  local spaceID = hs.spaces.spacesForScreen(screen)[prevSpace]
-  spaces.gotoSpace(spaceID)
-end
+-- local gotoOneSpaceWest = function()
+--   local win = hs.window.focusedWindow()
+--   local screen = win:screen()
+--   local prevSpace = getPrevSpace(screen)
+--   local spaceID = hs.spaces.spacesForScreen(screen)[prevSpace]
+--   spaces.gotoSpace(spaceID)
+-- end
 
-local gotoOneSpaceEast = function()
-  local win = hs.window.focusedWindow()
-  local screen = win:screen()
-  local nextSpace = getNextSpace(screen)
-  local spaceID = hs.spaces.spacesForScreen(screen)[nextSpace]
-  spaces.gotoSpace(spaceID)
-end
+-- local gotoOneSpaceEast = function()
+--   local win = hs.window.focusedWindow()
+--   local screen = win:screen()
+--   local nextSpace = getNextSpace(screen)
+--   local spaceID = hs.spaces.spacesForScreen(screen)[nextSpace]
+--   spaces.gotoSpace(spaceID)
+-- end
 
 hs.hotkey.bind(PREFIX_ACTION, "=", chain { GRID.fullScreen })
 hs.hotkey.bind(PREFIX_ACTION, "up", chain { GRID.topHalf, GRID.topLeft, GRID.topRight })
@@ -161,8 +161,8 @@ hs.hotkey.bind(HYPER_PREFIX_ACTION, "5", function() moveToSpace(5) end)
 hs.hotkey.bind(HYPER_PREFIX_ACTION, "left", function() hs.window.frontmostWindow():moveOneScreenWest(nil, true) end)
 hs.hotkey.bind(HYPER_PREFIX_ACTION, "right", function() hs.window.frontmostWindow():moveOneScreenEast(nil, true) end)
 
-hs.hotkey.bind(HYPER_PREFIX_ACTION, "e", gotoOneSpaceWest)
-hs.hotkey.bind(HYPER_PREFIX_ACTION, "r", gotoOneSpaceEast)
+-- hs.hotkey.bind(HYPER_PREFIX_ACTION, "e", gotoOneSpaceWest)
+-- hs.hotkey.bind(HYPER_PREFIX_ACTION, "r", gotoOneSpaceEast)
 
 hs.hotkey.bind(HYPER_PREFIX_ACTION, "a", moveOneSpaceWest)
 hs.hotkey.bind(HYPER_PREFIX_ACTION, "g", moveOneSpaceEast)
