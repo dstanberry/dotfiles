@@ -17,7 +17,6 @@ return {
     dependencies = {
       "b0o/schemastore.nvim",
       "folke/neodev.nvim",
-      "jose-elias-alvarez/null-ls.nvim",
       "pmizio/typescript-tools.nvim",
       "simrat39/rust-tools.nvim",
       "williamboman/mason.nvim",

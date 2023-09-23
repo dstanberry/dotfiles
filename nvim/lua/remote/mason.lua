@@ -9,10 +9,6 @@ return {
         "williamboman/mason-lspconfig.nvim",
         opts = { automatic_installation = true },
       },
-      {
-        "jayp0521/mason-null-ls.nvim",
-        opts = { automatic_installation = true },
-      },
     },
     cmd = "Mason",
     opts = {

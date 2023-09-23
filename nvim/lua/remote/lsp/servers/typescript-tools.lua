@@ -14,7 +14,12 @@ M.setup = function(config)
       if config and config.on_attach then config.on_attach(client, bufnr) end
       vim.keymap.set("n", "ff", function()
         vim.cmd "TSToolsOrganizeImports"
-        vim.lsp.buf.format { async = true }
+        local has_conform, conform = pcall(require, "conform")
+        if has_conform then
+          conform.format { async = true, buffer = bufnr, lsp_fallback = false }
+        else
+          vim.lsp.buf.format { async = true }
+        end
       end, { buffer = bufnr, desc = "typescript: format document" })
     end,
     settings = {
