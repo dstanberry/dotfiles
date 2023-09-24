@@ -5,6 +5,7 @@ if [[ $# -eq 0 ]]; then
 elif [[ $# -eq 1 ]]; then
   if [ "$1" == "fzf" ] || [ "$1" == "new" ]; then
     projects_dir=""
+    # shellcheck disable=SC2153
     for f in "$PROJECTS_DIR"/*; do
       if [ -z "$projects_dir" ]; then
         projects_dir="$f"
@@ -12,7 +13,7 @@ elif [[ $# -eq 1 ]]; then
         projects_dir="$projects_dir $f"
       fi
     done
-   [[ "$1" == "new" ]] && HEIGHT="100%" || HEIGHT="50%"
+    [[ $1 == "new" ]] && HEIGHT="100%" || HEIGHT="50%"
     # shellcheck disable=SC2207
     projects_dir=($(echo "$projects_dir" | cut -d " " --output-delimiter=" " -f 1-))
     path=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" "${projects_dir[@]}" \
@@ -35,8 +36,16 @@ elif [[ $# -eq 1 ]]; then
       | awk 'BEGIN {ORS=" "} {print $1, NR, "\"switch-client -t", $1 "\""}' \
       | xargs tmux display-menu -T "Switch session"
     exit 0
+  elif [ "$1" == "float" ]; then
+    current_pane="$(tmux display-message -p -F "#{session_name}")"
+    if [ "$current_pane" == "float-repl" ]; then
+      tmux detach-client
+    else
+      tmux popup -d '#{pane_current_path}' -xC -yC -w80% -h80% \
+        -E "tmux attach -t float-repl || tmux new -s float-repl" || true
+    fi
   else
-    echo "'fzf', 'new' and 'switch' are the only supported arguments at this time"
+    echo "'$1' is not a supported argument at this time"
     exit 1
   fi
 else
