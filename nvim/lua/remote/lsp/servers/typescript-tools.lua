@@ -21,8 +21,16 @@ M.setup = function(config)
           vim.lsp.buf.format { async = true }
         end
       end, { buffer = bufnr, desc = "typescript: format document" })
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "FormatPre",
+        buffer = bufnr,
+        desc = "Typescript: Organize Imports",
+        callback = function() vim.cmd "TSToolsOrganizeImports" end,
+      })
     end,
     settings = {
+      expose_as_code_actions = { "all" },
+      publish_diagnostic_on = "insert_leave",
       tsserver_file_preferences = {
         includeInlayEnumMemberValueHints = true,
         includeInlayFunctionLikeReturnTypeHints = true,
