@@ -53,12 +53,13 @@ return {
       return {
         n_lines = 500,
         custom_textobjects = {
-          o = ai.gen_spec.treesitter({
+          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
+          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+          l = ai.gen_spec.treesitter({
             a = { "@block.outer", "@conditional.outer", "@loop.outer" },
             i = { "@block.inner", "@conditional.inner", "@loop.inner" },
           }, {}),
-          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
-          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
+          ["/"] = ai.gen_spec.treesitter({ a = "@comment.outer", i = "@comment.inner" }, {}),
         },
       }
     end,
@@ -79,12 +80,13 @@ return {
           ["}"] = "mini.ai: balanced } including white-space",
           ["{"] = "mini.ai: balanced {",
           ["?"] = "mini.ai: user prompt",
+          ["/"] = "mini.ai: comment",
           _ = "mini.ai: underscore",
           a = "mini.ai: argument",
           b = "mini.ai: balanced ), ], }",
           c = "mini.ai: class",
           f = "mini.ai: function",
-          o = "mini.ai: block, conditional, loop",
+          l = "mini.ai: block, conditional, loop",
           q = "mini.ai: quote `, \", '",
           t = "mini.ai: tag",
         }
@@ -94,7 +96,7 @@ return {
         end
         local ic = vim.deepcopy(i)
         local ac = vim.deepcopy(a)
-        for key, name in pairs { n = "next", l = "last" } do
+        for key, name in pairs { n = "next", p = "previous" } do
           ---@diagnostic disable-next-line: assign-type-mismatch
           i[key] = vim.tbl_extend("force", { name = "mini.ai: inside " .. name .. " textobject" }, ic)
           ---@diagnostic disable-next-line: assign-type-mismatch
