@@ -17,7 +17,7 @@ return {
       sh = { "shfmt" },
       sql = { "sql_formatter" },
       typescript = { { "prettierd", "prettier" } },
-      zsh = { "beautysh" },
+      zsh = { "shfmt" },
     },
     format_on_save = function(buf)
       if vim.g.formatting_disabled or vim.b[buf].formatting_disabled then return end
@@ -28,7 +28,6 @@ return {
   config = function(_, opts)
     require("conform").setup(opts)
     require("conform.formatters.shfmt").args = { "-i", "2", "-ci", "-sr", "-s", "-bn" }
-    require("conform.formatters.beautysh").args = { "--indent-size", "2" }
 
     local conf = ("%s/.prettierrc.json"):format(require("util").buffer.get_root())
     if vim.loop.fs_realpath(conf) then
