@@ -3,6 +3,7 @@
   "diagnostics.disable": [
     "cast-local-type",
     "duplicate-doc-field",
+    "missing-fields",
     "missing-parameter",
     "param-type-mismatch"
   ]

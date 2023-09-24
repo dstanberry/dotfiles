@@ -16,7 +16,7 @@ M.setup = function(config)
         vim.cmd "TSToolsOrganizeImports"
         local has_conform, conform = pcall(require, "conform")
         if has_conform then
-          conform.format { async = true, buffer = bufnr, lsp_fallback = false }
+          conform.format { async = true, buffer = bufnr, lsp_fallback = true }
         else
           vim.lsp.buf.format { async = true }
         end

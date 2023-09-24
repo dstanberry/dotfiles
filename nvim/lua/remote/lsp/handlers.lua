@@ -79,7 +79,7 @@ M.on_attach = function(client, bufnr)
   local format_document = function()
     local ok, conform = pcall(require, "conform")
     if ok then
-      conform.format { async = true, buffer = bufnr, lsp_fallback = false }
+      conform.format { async = true, bufnr = bufnr, lsp_fallback = true }
     else
       vim.lsp.buf.format { async = true }
     end

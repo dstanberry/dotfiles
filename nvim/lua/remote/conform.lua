@@ -7,6 +7,8 @@ return {
       bash = { "shfmt" },
       go = { "goimports", "gofumpt" },
       javascript = { { "prettierd", "prettier" } },
+      json = { { "prettierd", "prettier" } },
+      jsonc = { { "prettierd", "prettier" } },
       lua = { "stylua" },
       markdown = { "markdownlint" },
       pgsql = { "sql_formatter" },
@@ -28,9 +30,9 @@ return {
     require("conform.formatters.shfmt").args = { "-i", "2", "-ci", "-sr", "-s", "-bn" }
     require("conform.formatters.beautysh").args = { "--indent-size", "2" }
 
-    require("conform.formatters.prettierd").env = function()
-      local conf = ("%s/.prettierrc.json"):format(require("util").buffer.get_root())
-      return vim.loop.fs_realpath(conf) and { PRETTIERD_DEFAULT_CONFIG = conf } or {}
+    local conf = ("%s/.prettierrc.json"):format(require("util").buffer.get_root())
+    if vim.loop.fs_realpath(conf) then
+      require("conform.formatters.prettierd").env = { PRETTIERD_DEFAULT_CONFIG = conf }
     end
 
     vim.api.nvim_create_user_command("FormatDisable", function(args)
