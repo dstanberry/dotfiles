@@ -12,7 +12,7 @@ return {
     opts = {
       modes = {
         char = {
-          enabled = true,
+          enabled = false,
           -- keys = { "f", "F", "t", "T", ";", "," },
           keys = { "f", "F", "t", "T", "," },
         },
