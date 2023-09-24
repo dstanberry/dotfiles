@@ -30,6 +30,7 @@ return {
         group = vim.api.nvim_create_augroup("db-completion", { clear = true }),
         pattern = { "sql", "mysql", "plsql" },
         callback = function()
+          ---@diagnostic disable-next-line: missing-fields
           require("cmp").setup.buffer {
             sources = {
               { name = "vim-dadbod-completion" },
