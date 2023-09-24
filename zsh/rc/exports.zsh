@@ -114,11 +114,14 @@ if hash fzf 2> /dev/null; then
     --color=info:#5f5f5f,prompt:#93b379,pointer:#bebebe
     --color=marker:#b04b57,spinner:#516882,header:#97b6e5'
 
-    # define default behaviour for ctrl-t
+  # define default behaviour for ctrl-t
   export FZF_CTRL_T_OPTS="
   --select-1
   --exit-0
-  --preview '(bat --style=plain {} || cat {} || tree -C {}) 2> /dev/null | head -200'"
+  --preview '(bat --style=numbers {} || cat {} || tree -C {}) 2> /dev/null | head -200'"
+
+  # define default behaviour for fzf-tmux
+  export FZF_TMUX_OPTS="-p -w 80%"
 fi
 
 # define mocOS specific options
