@@ -12,7 +12,7 @@ local shortcuts = {
   ["Microsoft Outlook"] = "5",
 }
 local new = {
-  ["kitty"] = { "kitty", "New OS Window" },
+  ["kitty"] = { "Shell", "New OS Window" },
   ["Google Chrome"] = { "File", "New Window" },
   ["Visual Studio Code"] = { "File", "New Window" },
   ["Microsoft Teams"] = nil,
