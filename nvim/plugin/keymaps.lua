@@ -3,6 +3,10 @@ local util = require "util"
 ---------------------------------------------------------------
 -- => Normal
 ---------------------------------------------------------------
+-- HACK: treat ctrl-i as ctrl-i (... and try to not conflate with <tab>)
+-- https://github.com/neovim/neovim/issues/20126
+vim.keymap.set("n", "<c-i>", "<c-i>", { noremap = true })
+
 -- (spacefn) scroll current buffer
 vim.keymap.set("n", "<up>", "<c-y>", { desc = "scroll up" })
 vim.keymap.set("n", "<down>", "<c-e>", { desc = "scroll down" })
