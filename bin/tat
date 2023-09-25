@@ -3,7 +3,12 @@
 if [[ $# -eq 0 ]]; then
   path=$PWD
 elif [[ $# -eq 1 ]]; then
-  if [ "$1" == "fzf" ] || [ "$1" == "new" ]; then
+  if [ "$1" == "edit" ]; then
+    file=$(mktemp).sh
+    tmux capture-pane -pS -32768 > "$file"
+    tmux new-window -n:mywindow "nvim '+ normal G $' $file"
+    exit 0
+  elif [ "$1" == "fzf" ] || [ "$1" == "new" ]; then
     projects_dir=""
     # shellcheck disable=SC2153
     for f in "$PROJECTS_DIR"/*; do
