@@ -27,6 +27,15 @@ elif [[ $# -eq 1 ]]; then
     if [ "$path" == "" ]; then
       exit 0
     fi
+  elif [ "$1" == "float" ]; then
+    current_pane="$(tmux display-message -p -F "#{session_name}")"
+    if [ "$current_pane" == "float-repl" ]; then
+      tmux detach-client
+    else
+      tmux popup -d '#{pane_current_path}' -xC -yC -w80% -h80% \
+        -E "tmux attach -t float-repl || tmux new -s float-repl" || true
+    fi
+    exit 0
   elif [ "$1" == "switch" ]; then
     if not_in_tmux; then
       echo "command only available within tmux"
@@ -36,14 +45,6 @@ elif [[ $# -eq 1 ]]; then
       | awk 'BEGIN {ORS=" "} {print $1, NR, "\"switch-client -t", $1 "\""}' \
       | xargs tmux display-menu -T "Switch session"
     exit 0
-  elif [ "$1" == "float" ]; then
-    current_pane="$(tmux display-message -p -F "#{session_name}")"
-    if [ "$current_pane" == "float-repl" ]; then
-      tmux detach-client
-    else
-      tmux popup -d '#{pane_current_path}' -xC -yC -w80% -h80% \
-        -E "tmux attach -t float-repl || tmux new -s float-repl" || true
-    fi
   else
     echo "'$1' is not a supported argument at this time"
     exit 1
