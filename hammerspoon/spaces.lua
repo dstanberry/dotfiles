@@ -9,7 +9,7 @@ hs.window.animationDuration = 0
 
 hs.window.switcher.ui.textColor = { 0, 0, 0 }
 hs.window.switcher.ui.textSize = 10
-hs.window.switcher.ui.highlightColor = {0.18,0.204,0.251,0.8}
+hs.window.switcher.ui.highlightColor = { 0.18, 0.204, 0.251, 0.8 }
 hs.window.switcher.ui.backgroundColor = { 0.2, 0.2, 0.2, 0.3 }
 hs.window.switcher.ui.thumbnailSize = 160
 hs.window.switcher.ui.showSelectedThumbnail = false
@@ -20,7 +20,11 @@ hs.window.switcher.ui.showTitles = false
 local switchers = setmetatable({}, {
   __index = function(t, key)
     local switcher =
-      hs.window.switcher.new(hs.window.filter.new({}):setCurrentSpace(true):setScreens(key):setDefaultFilter {})
+      hs.window.switcher.new(hs.window.filter.new({}):setCurrentSpace(true):setScreens(key):setDefaultFilter {
+        rejectTitles = {
+          "Microsoft Teams Notification",
+        },
+      })
     rawset(t, key, switcher)
     return switcher
   end,
