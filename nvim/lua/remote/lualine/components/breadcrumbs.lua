@@ -63,5 +63,5 @@ return function()
   local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
   local relative_path = vim.startswith(bufid, "diffview") and "" or get_relative_path(winid, dirpath)
   local ext = vim.fn.fnamemodify(filename, ":e")
-  return format_sections(relative_path, filename)
+  return format_sections(relative_path, filename, ext)
 end
