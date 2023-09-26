@@ -254,11 +254,11 @@ bindkey '^x^x' edit-command-line
 # do history expansion on space
 bindkey ' ' magic-space
 
-# tmux session initializer
-bindkey -s ^f "tat fzf\n"
-
 # live grep
-bindkey -s ^p "rf\n"
+bindkey -s ^f "rf\n"
+
+# tmux session initializer
+bindkey -s ^p "tat fzf\n"
 
 # make (c-z) toggle between bg and fg for processes
 function fg-bg() {
