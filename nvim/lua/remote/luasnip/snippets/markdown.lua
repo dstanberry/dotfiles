@@ -21,7 +21,7 @@ local make_table = function(_, snip)
   local col = tonumber(snip.captures[1]) or 0
   local row = snip.captures[2] and tonumber(snip.captures[2]) or col
   if row == 0 or col == 0 then
-    error("Cannot create table with 0 column or rows")
+    error "Cannot create table with 0 column or rows"
     return ls.sn(nil, {})
   end
   local nodes = {}
@@ -133,37 +133,53 @@ return {
   ),
   postfix({
     trig = ".link",
+    match_pattern = "%S+$",
     name = "markdown link",
     dscr = "Markdown link `[txt](url)`.\nOptional: select text containing `url`, press |`C-x`|, write the `txt` of link then type `'.link'`",
   }, {
-    d(
-      1,
-      function(_, parent)
-        return sn(nil, {
-          t("[" .. parent.env.POSTFIX_MATCH .. "]"),
-          t "(",
-          d(1, rutil.saved_text, {}, { user_args = { { indent = false } } }),
-          t ")",
-        })
+    d(1, function(_, parent)
+      local capture = parent.snippet.env.POSTFIX_MATCH
+      local link, desc
+      if capture:match "http" or capture:match "//" then
+        link = i(1, capture)
+        desc = d(2, rutil.saved_text, {}, { user_args = { { indent = false } } })
+      else
+        link = d(2, rutil.saved_text, {}, { user_args = { { indent = false } } })
+        desc = i(1, capture)
       end
-    ),
+      return sn(
+        nil,
+        fmt("[{}]({})", {
+          desc,
+          link,
+        })
+      )
+    end),
   }),
   postfix({
     trig = ".img",
+    match_pattern = "%S+$",
     name = "markdown image",
     dscr = "Markdown image `![txt](url)`.\nOptional: select text containing `url`, press |`C-x`|, write the `txt` of image then type `'.img'`",
   }, {
-    d(
-      1,
-      function(_, parent)
-        return sn(nil, {
-          t("![" .. parent.env.POSTFIX_MATCH .. "]"),
-          t "(",
-          d(1, rutil.saved_text, {}, { user_args = { { indent = false } } }),
-          t ")",
-        })
+    d(1, function(_, parent)
+      local capture = parent.snippet.env.POSTFIX_MATCH
+      local link, desc
+      if capture:match "http" or capture:match "//" then
+        link = i(1, capture)
+        desc = d(2, rutil.saved_text, {}, { user_args = { { indent = false } } })
+      else
+        link = d(2, rutil.saved_text, {}, { user_args = { { indent = false } } })
+        desc = i(1, capture)
       end
-    ),
+      return sn(
+        nil,
+        fmt("![{}]({})", {
+          desc,
+          link,
+        })
+      )
+    end),
   }),
 }, {
   s(
