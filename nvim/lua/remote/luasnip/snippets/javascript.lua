@@ -37,6 +37,13 @@ return {
       }),
     })
   ),
+  postfix(
+    { trig = ".log", match_pattern = "%s*(.+)$", name = "log", dscr = "Print to stdout" },
+    d(1, function(_, snippet)
+      local content = snippet.env.POSTFIX_MATCH
+      return sn(nil, t("console.log(" .. content .. ")"))
+    end)
+  ),
   s(
     { trig = ".map", name = "map", dscr = "Map Prototype" },
     fmt(".map({});", {

@@ -86,6 +86,9 @@ return {
       d(1, rutil.saved_text, {}, { user_args = { { text = "# TODO", indent = true } } }),
     })
   ),
+  postfix({ trig = ".print", match_pattern = "[^%s%c]+$", name = "log", dscr = "Print to stdout" }, {
+    f(function(_, parent) return [[print(f"{]] .. parent.snippet.env.POSTFIX_MATCH .. [["})]] end, {}),
+  }),
   s(
     { trig = "try", name = "try - except", dscr = "Try - except block" },
     fmt("try:\n{}\nexcept {}:\n\t{}", {
