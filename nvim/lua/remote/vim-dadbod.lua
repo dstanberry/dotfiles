@@ -18,6 +18,11 @@ return {
   },
   cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection" },
   keys = {
+    {
+      "<localleader>de",
+      function() vim.cmd.edit "~/.local/share/db_ui/connections.json" end,
+      desc = "dadbod: edit database connections",
+    },
     { "<localleader>db", "<cmd>DBUIToggle<cr>", desc = "dadbod: toggle interface" },
   },
   init = function()
