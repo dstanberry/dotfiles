@@ -28,6 +28,15 @@ local showOrHide = function(appName)
       app:hide()
     else
       app:activate()
+      if appName == "Microsoft Teams" then
+        local menu_items = app:getMenuItems()[4] --4th menu item
+        local title = menu_items["AXTitle"]
+        if title == "Window" then
+          local menu_options = menu_items["AXChildren"][1]
+          local target = menu_options[#menu_options]["AXTitle"]
+          if target and string.match(target, "Microsoft Teams Classic") then app:selectMenuItem { title, target } end
+        end
+      end
     end
   else
     hs.application.launchOrFocus(appName)
