@@ -1,69 +1,66 @@
 local M = {}
 
-M.bt = {}
-
-M.bt.stl_disabled = {}
-
-M.bt.wb_disabled = {
-  "terminal",
-  "nofile",
-  "prompt",
+M.bt = {
+  stl_disabled = {},
+  wb_disabled = {
+    "terminal",
+    "nofile",
+    "prompt",
+  },
 }
 
-M.ft = {}
+M.ft = {
+  stl_disabled = {
+    -- builtin filetypes
+    "help",
+    "qf",
+    "term",
 
-M.ft.stl_disabled = {
-  -- builtin filetypes
-  "help",
-  "qf",
-  "term",
+    -- plugin filetypes
+    "dbui",
+    "DiffviewFiles",
+    "gitcommit",
+    "lazy",
+    "mason",
+    "neo-tree",
+    "NeogitPopup",
+    "NeogitStatus",
+    "noice",
+    "TelescopePrompt",
+    "toggleterm",
+    "Trouble",
+  },
+  wb_disabled = {
+    -- builtin filetypes
+    "help",
+    "gitcommit",
+    "qf",
+    "term",
 
-  -- plugin filetypes
-  "dbui",
-  "DiffviewFiles",
-  "gitcommit",
-  "lazy",
-  "mason",
-  "neo-tree",
-  "NeogitPopup",
-  "NeogitStatus",
-  "noice",
-  "TelescopePrompt",
-  "toggleterm",
-  "Trouble",
-}
+    -- plugin filetypes
+    "dap-repl",
+    "dbout",
+    "lazy",
+    "mason",
+    "neo-tree",
+    "NeogitCommitMessage",
+    "NeogitPopup",
+    "NeogitStatus",
+    "noice",
+    "TelescopePrompt",
+    "toggleterm",
+    "Trouble",
+  },
+  wb_empty = {
+    -- builtin filetypes
+    "help",
 
-M.ft.wb_disabled = {
-  -- builtin filetypes
-  "help",
-  "gitcommit",
-  "qf",
-  "term",
-
-  -- plugin filetypes
-  "dap-repl",
-  "dbout",
-  "lazy",
-  "mason",
-  "neo-tree",
-  "NeogitCommitMessage",
-  "NeogitPopup",
-  "NeogitStatus",
-  "noice",
-  "TelescopePrompt",
-  "toggleterm",
-  "Trouble",
-}
-
-M.ft.wb_empty = {
-  -- builtin filetypes
-  "help",
-
-  -- plugin filetypes
-  "dbui",
-  "DiffviewFileHistory",
-  "DiffviewFilePanel",
-  "DiffviewFiles",
+    -- plugin filetypes
+    "dbui",
+    "DiffviewFileHistory",
+    "DiffviewFilePanel",
+    "DiffviewFiles",
+  },
 }
 
 return M
