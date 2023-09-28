@@ -22,7 +22,7 @@ elif [[ $# -eq 1 ]]; then
     # shellcheck disable=SC2207
     projects_dir=($(echo "$projects_dir" | cut -d " " --output-delimiter=" " -f 1-))
     path=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" "${projects_dir[@]}" \
-      -mindepth 1 -maxdepth 1 \
+      -mindepth 1 -maxdepth 1 -type d \
       | fzf --height="${HEIGHT}" --reverse --header='Create/Open Session' \
         --preview '(glow -s dark {1}/README.md ||
           bat --style=plain {1}/README.md ||
