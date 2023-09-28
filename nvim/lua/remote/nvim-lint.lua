@@ -31,7 +31,7 @@ return {
       end,
     })
 
-    vim.api.nvim_create_autocmd("BufWritePost", {
+    vim.api.nvim_create_autocmd("TextChanged", {
       group = ext_diagnostic,
       pattern = { "*" },
       callback = function(opts)
