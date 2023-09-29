@@ -10,6 +10,7 @@ return {
   dependencies = {
     "jbyuki/one-small-step-for-vimkind",
     "mfussenegger/nvim-dap-python",
+    { "mxsdev/nvim-dap-vscode-js", branch = "start-debugging" },
     "rcarriga/nvim-dap-ui",
     "theHamsta/nvim-dap-virtual-text",
   },
