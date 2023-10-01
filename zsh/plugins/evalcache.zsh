@@ -6,9 +6,9 @@
 # Usage: _evalcache <command> <generation args...>
 
 # default cache directory
-export ZSH_EVALCACHE_DIR=${ZSH_EVALCACHE_DIR:-"$HOME/.config/zsh/.zsh-evalcache"}
+export ZSH_EVALCACHE_DIR=${ZSH_EVALCACHE_DIR:-"$XDG_CACHE_HOME/zsh/.zsh-evalcache"}
 
-function _evalcache () {
+function _evalcache() {
   local cacheFile="$ZSH_EVALCACHE_DIR/init-${1##*/}.sh"
 
   if [ "$ZSH_EVALCACHE_DISABLE" = "true" ]; then
@@ -17,7 +17,7 @@ function _evalcache () {
     source "$cacheFile"
   else
     if type "$1" > /dev/null; then
-      (>&2 echo "$1 initialization not cached, caching output of: $*")
+      (echo >&2 "$1 initialization not cached, caching output of: $*")
       mkdir -p "$ZSH_EVALCACHE_DIR"
       "$@" > "$cacheFile"
       source "$cacheFile"
@@ -27,6 +27,6 @@ function _evalcache () {
   fi
 }
 
-function _evalcache_clear () {
+function _evalcache_clear() {
   rm -i "$ZSH_EVALCACHE_DIR"/init-*.sh
 }
