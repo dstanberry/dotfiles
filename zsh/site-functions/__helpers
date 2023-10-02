@@ -18,10 +18,10 @@ dedup_pathvar() {
 
 # determine name of current terminal application
 get_term() {
-  activewindow="$(timeout 1s xdotool getactivewindow 2>/dev/null)"
+  activewindow="$(timeout 1s xdotool getactivewindow 2> /dev/null)"
   RESULT=$?
   if [ $RESULT -eq 0 ]; then
-    windowpid="$(timeout 1s xdotool getwindowpid "$activewindow" 2>/dev/null)"
+    windowpid="$(timeout 1s xdotool getwindowpid "$activewindow" 2> /dev/null)"
     term="$(perl -lpe 's/\0/ /g' "/proc/$windowpid/cmdline")"
     case $term in
       */python* | */perl*)

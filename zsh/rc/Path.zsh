@@ -28,12 +28,12 @@ function _gem_config() {
     fi
   done
   IFS=$OLDIFS
-  echo "export PATH=$P"
+  echo "$P"
 }
 
 # add ruby gems to path if present
 if hash gem 2> /dev/null; then
-  _evalcache _gem_config
+  NEWPATH=$NEWPATH:"$(_gem_config)"
 fi
 
 # add cargo binaries to path if present
@@ -52,7 +52,7 @@ fi
 
 # add lua binaries to path if present
 if hash luarocks 2> /dev/null; then
-  _evalcache luarocks path
+  NEWPATH="$(luarocks path --lr-bin)":$NEWPATH
 fi
 
 # add lua binaries to path if present
@@ -108,3 +108,6 @@ unset NEWPATH
 
 # ensure no duplicate entries are present in PATH
 dedup_pathvar PATH
+
+# print the result so that it can be cached (by |evalcache|)
+echo "export PATH=$PATH"

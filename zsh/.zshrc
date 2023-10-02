@@ -92,11 +92,9 @@ TMUX_CONFIG_HOME="${CONFIG_HOME}/tmux"
 # base directory for vim configuration files
 VIM_CONFIG_HOME="${CONFIG_HOME}/vim"
 
-# include helper functions
-source "${CONFIG_HOME}/scripts/helpers.sh"
-
 # include custom defined functions
-fpath=(${ZSH_CONFIG_HOME}/site-functions $fpath)
+fpath=(${ZSH_CONFIG_HOME}/site-functions "${fpath[@]}")
+autoload __helpers && __helpers
 
 # ensure zsh cache dir exists
 if [ ! -d "${HOME}"/.cache/zsh ]; then
@@ -344,8 +342,11 @@ select-word-style bash
 # load runtime configuration files
 if [ -d "$ZSH_CONFIG_HOME/rc" ]; then
   for RC_FILE in $(find "$ZSH_CONFIG_HOME"/rc -type f | sort -V); do
-    source "$RC_FILE"
-  done
+    case "$(basename $RC_FILE)" in
+      "Path.zsh" ) _evalcache source $RC_FILE;;
+      *) source "$RC_FILE";;
+  esac
+    done
 fi
 
 ###############################################################

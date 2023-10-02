@@ -1,7 +1,7 @@
 # shellcheck disable=SC2148
 
 # poor man's ag runtime configuration
-function ag() {
+ag() {
   emulate -L zsh
   command ag --pager="less -iFMRSX -x4" \
     --color-path=34\;3 \
@@ -10,7 +10,7 @@ function ag() {
 }
 
 # support custom sub-commands
-function cargo() {
+cargo() {
   local PKG=$CONFIG_HOME/shared/packages/cargo.txt
   if [ "$1" = "save" ]; then
     command cargo install --list | grep -E '^\w+' | awk '{ print $1 }' > "$PKG"
@@ -22,7 +22,7 @@ function cargo() {
 }
 
 # interactively delete file(s) by name
-function del() {
+del() {
   emulate -L zsh
   if [ $# -eq 0 ]; then
     echo "error: at least one argument is required"
@@ -40,7 +40,7 @@ function del() {
 }
 
 # use side-by-side diff view if shell width is large enough
-function delta() {
+delta() {
   if [[ -n "$COLUMNS" ]] && [[ "$COLUMNS" -gt 200 ]]; then
     command delta --side-by-side --width "$COLUMNS" $@
   else
@@ -49,13 +49,13 @@ function delta() {
 }
 
 # poor man's fd runtime configuration
-function fd() {
+fd() {
   emulate -L zsh
   command fd -H "$@"
 }
 
 # fuzzy search for files in the current directory and open in (n)vim
-function fe() {
+fe() {
   IFS=$'\n' files=($(fzf-tmux \
     --query="$1" \
     --multi \
@@ -66,7 +66,7 @@ function fe() {
 }
 
 # find in history
-function fh() {
+fh() {
   print -z "$( ([ -n "$ZSH_NAME" ] && fc -l 1) || history \
     | fzf +s --tac \
     | sed -r 's/ *[0-9]*\*? *//' \
@@ -74,7 +74,7 @@ function fh() {
 }
 
 # fix corrupt history file
-function fix_hist() {
+fix_hist() {
   mv "${XDG_CACHE_HOME}"/zsh/history "${XDG_CACHE_HOME}"/zsh/hist_corrupt
   strings "${XDG_CACHE_HOME}"/zsh/hist_corrupt > "${XDG_CACHE_HOME}"/zsh/history
   fc -R "${XDG_CACHE_HOME}"/zsh/history
@@ -82,12 +82,12 @@ function fix_hist() {
 }
 
 # find process by name and highlight
-function fp() {
+fp() {
   ps aux | grep -v grep | grep -i "$@"
 }
 
 # support custom sub-commands
-function gem() {
+gem() {
   local PKG=$CONFIG_HOME/shared/packages/gem.txt
   if [ "$1" = "load" ]; then
     < "$PKG" xargs "gem" install
@@ -97,7 +97,7 @@ function gem() {
 }
 
 # support custom sub-commands
-function git() {
+git() {
   emulate -L zsh
   if [ "$1" = "fstash" ]; then
     gstash
@@ -141,7 +141,7 @@ function git() {
 }
 
 # support custom sub-commands
-function go() {
+go() {
   local PKG=$CONFIG_HOME/shared/packages/go.txt
   if [ "$1" = "load" ]; then
     # < "$PKG" xargs "go" install
@@ -159,7 +159,7 @@ function go() {
 # |alt-b| checks the stash out as a branch, for easier merging
 # |alt-d| shows a diff of the stash against your current HEAD
 # |alt-s| populates the command line with the command to drop the stash
-function gstash() {
+gstash() {
   local out q k ref sha
   while stash=$(
     git stash list \
@@ -194,7 +194,7 @@ function gstash() {
 }
 
 # print response headers, following redirects.
-function headers() {
+headers() {
   if [ $# -ne 1 ]; then
     echo "error: a host argument is required"
     return 1
@@ -204,7 +204,7 @@ function headers() {
 }
 
 # support custom sub-commands
-function luarocks() {
+luarocks() {
   local PKG=$CONFIG_HOME/shared/packages/luarocks.txt
   if [ "$1" = "load" ]; then
     < "$PKG" xargs "luarocks" --tree="${XDG_DATA_HOME}/luarocks" install
@@ -214,7 +214,7 @@ function luarocks() {
 }
 
 # custom |zk| wrapper
-function notes() {
+notes() {
   emulate -L zsh
   if [ $# -eq 0 ] || [ "$1" = "list" ]; then
     zk list
@@ -240,7 +240,7 @@ function notes() {
 }
 
 # support custom sub-commands
-function npm() {
+npm() {
   local PKG=$CONFIG_HOME/shared/packages/npm.txt
   if [ "$1" = "save" ]; then
     if [ "$EUID" -eq 0 ]; then
@@ -276,11 +276,13 @@ _npm_config() {
   if [[ "$EUID" -gt 0 ]] && [[ "$_current" != "$prefix" ]]; then
     npm config set prefix "$_prefix"
   fi
+  # print some arbitrary result so that it can be cached (by |evalcache|)
+  echo "NPM_CONFIG_USERPREFIX=$_prefix"
 }
-_npm_config
+_evalcache _npm_config
 
 # support custom sub-commands
-function pip() {
+pip() {
   local PKG=$CONFIG_HOME/shared/packages/pip.txt
   if [ "$1" = "save" ]; then
     if hash pipdeptree 2>/dev/null; then
@@ -305,7 +307,7 @@ function pip() {
 }
 
 # poor man's rg runtime configuration
-function rg() {
+rg() {
   command rg --colors line:fg:yellow \
     --colors line:style:bold \
     --colors path:fg:blue \
@@ -317,7 +319,7 @@ function rg() {
   }
 
   # display information about a remote ssl certificate
-  function ssl() {
+  ssl() {
     emulate -L zsh
     if [ $# -eq 0 ]; then
       echo "error: a host argument is required"
@@ -337,18 +339,18 @@ function rg() {
   }
 
   # print a pruned version of a tree
-  function subtree() {
+  subtree() {
     tree -a --prune -P "$@"
   }
 
   # shell profiler
-  function profile() {
+  profile() {
     shell=${1-$SHELL}
     for i in $(seq 1 10); do time $shell -i -c exit; done
   }
 
   # try to run tmux with session management
-  function tmux() {
+  tmux() {
     emulate -L zsh
     local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
     if [ -r "$SSH_AUTH_SOCK" ] && [ ! -L "$SSH_AUTH_SOCK" ]; then
@@ -382,7 +384,7 @@ function rg() {
   }
 
   # traverse parent directories in a trivial manner
-  function up() {
+  up() {
     if [[ "$#" == 0 ]]; then
       cd ..
     else
@@ -394,7 +396,7 @@ function rg() {
   }
 
   # define configuration path for vim
-  function vim() {
+  vim() {
     local MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
     local __viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
     __viminit+="${VIM_CONFIG_HOME}/after"
@@ -408,11 +410,11 @@ function rg() {
   }
 
 # poor man's wget runtime configuration
-function wget() {
+wget() {
   command wget --hsts-file "${XDG_CACHE_HOME}/wget/wget-hsts" "$@"
 }
 
 # poor man's yarn runtime configuration
-function yarn() {
+yarn() {
   command yarn --use-yarnrc "${CONFIG_HOME}/yarn/config" "$@"
 }

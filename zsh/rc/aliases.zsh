@@ -38,7 +38,7 @@ alias path='echo -e ${PATH//:/\\n}'
 alias ports='sudo netstat -tulanp'
 
 # define alias to reload zsh configuration
-alias reload='source "${ZSH_CONFIG_HOME}/.zshrc"'
+alias reload='exec zsh'
 
 # dirty hack to expose native specific Windows utils
 if is_wsl; then
