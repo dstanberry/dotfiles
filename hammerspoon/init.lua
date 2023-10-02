@@ -7,14 +7,14 @@ local chord = { "ctrl", "alt" }
 local shortcuts = {
   ["kitty"] = "1",
   ["Google Chrome"] = "2",
-  ["Visual Studio Code"] = "3",
+  ["Code"] = "3",
   ["Microsoft Teams"] = "4",
   ["Microsoft Outlook"] = "5",
 }
 local new = {
   ["kitty"] = { "Shell", "New OS Window" },
   ["Google Chrome"] = { "File", "New Window" },
-  ["Visual Studio Code"] = { "File", "New Window" },
+  ["Code"] = { "File", "New Window" },
   ["Microsoft Teams"] = nil,
   ["Microsoft Outlook"] = { "File", "New", "Main Window" },
 }
