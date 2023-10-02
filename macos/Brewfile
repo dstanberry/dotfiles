@@ -69,7 +69,6 @@ brew "zlib"
 brew "zsh-completions"
 
 cask "alt-tab"
-cask "copyclip"
 cask "dash"
 # cask "docker"
 cask "hammerspoon"
