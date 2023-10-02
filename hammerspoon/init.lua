@@ -5,25 +5,18 @@ hs.application.enableSpotlightForNameSearches(true)
 --  Toggle new/existing processes
 local chord = { "ctrl", "alt" }
 local shortcuts = {
-  ["kitty"] = "1",
-  ["Google Chrome"] = "2",
-  ["Code"] = "3",
-  ["Microsoft Teams"] = "4",
-  ["Microsoft Outlook"] = "5",
-}
-local new = {
-  ["kitty"] = { "Shell", "New OS Window" },
-  ["Google Chrome"] = { "File", "New Window" },
-  ["Code"] = { "File", "New Window" },
-  ["Microsoft Teams"] = nil,
-  ["Microsoft Outlook"] = { "File", "New", "Main Window" },
+  ["kitty"] = { "1", { "Shell", "New OS Window" } },
+  ["Code"] = { "2", { "File", "New Window" } },
+  ["Google Chrome"] = { "3", { "File", "New Window" } },
+  ["Microsoft Teams"] = { "4" },
+  ["Microsoft Outlook"] = { "5", { "File", "New", "Main Window" } },
 }
 
 local showOrHide = function(appName)
   local app = hs.application.get(appName)
   if app then
     if not app:mainWindow() then
-      app:selectMenuItem(new[appName])
+      app:selectMenuItem(shortcuts[appName][2])
     elseif app:isFrontmost() then
       app:hide()
     else
@@ -45,7 +38,7 @@ local showOrHide = function(appName)
 end
 
 for appName, shortcut in pairs(shortcuts) do
-  hs.hotkey.new(chord, shortcut, function() showOrHide(appName) end):enable()
+  hs.hotkey.new(chord, shortcut[1], function() showOrHide(appName) end):enable()
 end
 
 hs.loadSpoon "ReloadConfiguration"
