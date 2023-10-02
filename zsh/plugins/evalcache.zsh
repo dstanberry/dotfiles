@@ -6,7 +6,7 @@
 # Usage: _evalcache <command> <generation args...>
 
 # default cache directory
-export ZSH_EVALCACHE_DIR=${ZSH_EVALCACHE_DIR:-"$XDG_CACHE_HOME/zsh/.zsh-evalcache"}
+export ZSH_EVALCACHE_DIR=${ZSH_EVALCACHE_DIR:-"$HOME/.cache/zsh/.zsh-evalcache"}
 
 function _evalcache() {
   local cacheFile="$ZSH_EVALCACHE_DIR/init-${1##*/}.sh"
