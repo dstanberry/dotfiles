@@ -1,3 +1,11 @@
+--[[
+https://github.com/asmagill/hs._asm.spaces
+
+$ tar -xzf ~/Downloads/spaces-v0.x.tar.gz
+$ cd hs._asm.spaces
+$ HS_APPLICATION=/Applications PREFIX=~/.config/hammerspoon make install
+]]
+
 local spaces = require "hs.spaces"
 
 spaces.setDefaultMCwaitTime(0.5)
