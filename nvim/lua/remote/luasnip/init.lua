@@ -67,7 +67,9 @@ return {
     local types = require "luasnip.util.types"
 
     luasnip.config.setup {
-      history = true,
+      keep_roots = true,
+      link_roots = true,
+      link_children = true,
       enable_autosnippets = true,
       updateevents = "TextChanged,TextChangedI",
       region_check_events = "CursorHold,InsertLeave",
