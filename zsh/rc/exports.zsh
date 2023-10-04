@@ -150,6 +150,11 @@ if hash cargo 2> /dev/null; then
   export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 fi
 
+# define configuration path for dotnet
+if hash dotnet 2> /dev/null; then
+  export DOTNET_ROOT="$XDG_DATA_HOME/dotnet"
+fi
+
 # define configuration path for rubygems
 if hash gem 2> /dev/null; then
   export GEMRC="${CONFIG_HOME}/gem/gemrc"

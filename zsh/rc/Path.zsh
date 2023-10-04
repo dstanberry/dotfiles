@@ -43,6 +43,15 @@ if hash cargo 2> /dev/null; then
   unset CARGO
 fi
 
+# add dotnet to path if present
+if hash dotnet 2> /dev/null; then
+  DOTNET="${DOTNET_ROOT:-$HOME/.local/share/dotnet}"
+  DOTNET_TOOLS="$DOTNET/tools"
+  NEWPATH=$NEWPATH:$DOTNET:$DOTNET_TOOLS
+  unset DOTNET
+  unset DOTNET_TOOLS
+fi
+
 # add go binaries to path if present
 if hash go 2> /dev/null; then
   GO="${GOPATH:-$HOME/.local/share/go}/bin"
