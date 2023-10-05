@@ -21,6 +21,16 @@ cargo() {
   fi
 }
 
+# manually remove duplicate entries in history
+clean_hist() {
+  tempfile=$(mktemp)
+  command cat -n "${XDG_CACHE_HOME}/zsh/history" \
+    | sort -t ';' -uk2 \
+    | sort -nk1 \
+    | cut -f2- > $tempfile
+  mv $tempfile "${XDG_CACHE_HOME}/zsh/history"
+}
+
 # interactively delete file(s) by name
 del() {
   emulate -L zsh
@@ -63,14 +73,6 @@ fe() {
     --exit-0 \
     --preview '(bat --style=numbers {} || cat {} || tree -C {}) | head -200'))
   [[ -n "$files" ]] && ${EDITOR:-vim} "${files[@]}"
-}
-
-# find in history
-fh() {
-  print -z "$( ([ -n "$ZSH_NAME" ] && fc -l 1) || history \
-    | fzf +s --tac \
-    | sed -r 's/ *[0-9]*\*? *//' \
-    | sed -r 's/\\/\\\\/g')"
 }
 
 # fix corrupt history file
