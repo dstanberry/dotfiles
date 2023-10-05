@@ -87,7 +87,7 @@ return {
     })
   ),
   postfix({ trig = ".print", match_pattern = "[^%s%c]+$", name = "log", dscr = "Print to stdout" }, {
-    f(function(_, parent) return [[print(f"{]] .. parent.snippet.env.POSTFIX_MATCH .. [["})]] end, {}),
+    f(function(_, parent) return [[print(f"{]] .. parent.snippet.env.POSTFIX_MATCH .. [[}")]] end, {}),
   }),
   s(
     { trig = "try", name = "try - except", dscr = "Try - except block" },
