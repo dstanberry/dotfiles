@@ -169,6 +169,15 @@ setopt HIST_VERIFY
 # share history across shells
 setopt SHARE_HISTORY
 
+# remove duplicate entries from history before unique ones
+setopt HIST_EXPIRE_DUPS_FIRST
+
+# don't display duplicate entries when searching history
+setopt HIST_FIND_NO_DUPS
+
+# omit older duplicate entries that are duplicates of newer ones
+setopt HIST_SAVE_NO_DUPS
+
 # record each line as it gets issued
 PROMPT_COMMAND='history -a'
 
