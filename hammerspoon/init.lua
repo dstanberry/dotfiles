@@ -32,6 +32,11 @@ local showOrHide = function(appName)
       end
     end
   else
+    if appName == "Code" then
+      local alt_name = "Visual Studio Code"
+      hs.application.launchOrFocus(alt_name)
+      hs.application.get(alt_name)
+    end
     hs.application.launchOrFocus(appName)
     hs.application.get(appName)
   end
