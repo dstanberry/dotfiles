@@ -22,7 +22,7 @@ return {
     format_on_save = function(buf)
       if vim.g.formatting_disabled or vim.b[buf].formatting_disabled then return end
       vim.api.nvim_exec_autocmds("User", { pattern = "FormatPre" })
-      return { timeout_ms = 500, lsp_fallback = true }
+      return { timeout_ms = 750, lsp_fallback = true }
     end,
   },
   config = function(_, opts)
