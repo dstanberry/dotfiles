@@ -424,22 +424,27 @@ function -set-tab-and-window-title() {
   print -Pn "\e]0;$CMD $TERMNAME:q\a"
 }
 
+function -pwd-basename() {
+  emulate -L zsh
+  echo "${PWD##*/}"
+}
+
 # executed before displaying prompt.
 function -update-window-title-precmd() {
   emulate -L zsh
   if [[ HISTCMD_LOCAL -eq 0 ]]; then
     # About to display prompt for the first time; nothing interesting to show in
     # the history. Show $PWD.
-    -set-tab-and-window-title "$(basename "$PWD")"
+    -set-tab-and-window-title "$(-pwd-basename)"
   else
-    local LAST=$(history | tail -1 | awk '{print $2}')
+    local LAST=$(fc -l -1 | awk '{print $2}')
     if [ -n "$TMUX" ]; then
       # inside tmux, just show the last command: tmux will prefix it with the
       # session name (for context).
       -set-tab-and-window-title "$LAST"
     else
       # outside tmux, show $PWD (for context) followed by the last command.
-      -set-tab-and-window-title "$(basename "$PWD") | $LAST"
+      -set-tab-and-window-title "$(-pwd-basename) | $LAST"
     fi
   fi
 }
@@ -463,7 +468,7 @@ function -update-window-title-preexec() {
   	-set-tab-and-window-title "$TRIMMED"
   else
   	# outside tmux, show $PWD (for context) followed by the running command.
-  	-set-tab-and-window-title "$(basename $PWD) > $TRIMMED"
+  	-set-tab-and-window-title "$(-pwd-basename) > $TRIMMED"
   fi
 }
 
