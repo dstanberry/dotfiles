@@ -20,7 +20,7 @@ function M.popup_window(opts)
   local lines, syntax = opts.lines or {}, opts.syntax
   opts.border = opts.border or "rounded"
   local bufnr, winnr = vim.lsp.util.open_floating_preview(lines, syntax, opts)
-  vim.api.nvim_win_set_option(winnr, "winhl", "Normal:Normal")
+  vim.api.nvim_set_option_value("winhl", "Normal:Normal", { win = winnr })
   if opts.enter then
     vim.api.nvim_set_current_win(winnr)
     vim.keymap.set("i", "jk", function()
@@ -38,13 +38,13 @@ function M.popup_window(opts)
     vim.keymap.set("n", "<cr>", function() opts.on_confirm() end, { buffer = bufnr })
   end
   if opts.input then
-    vim.api.nvim_buf_set_option(bufnr, "modifiable", true)
+    vim.api.nvim_set_option_value("modifiable", true, { buf = bufnr })
     vim.cmd.startinsert()
   end
   if opts.prompt and opts.prompt.enable then
-    vim.api.nvim_buf_set_option(bufnr, "buftype", "prompt")
+    vim.api.nvim_set_option_value("buftype", "prompt", { buf = bufnr })
     vim.fn.prompt_setprompt(bufnr, opts.prompt.prefix)
-    vim.api.nvim_buf_set_option(bufnr, "ft", "UIPrompt")
+    vim.api.nvim_set_option_value("ft", "UIPrompt", { buf = bufnr })
     vim.defer_fn(
       function() vim.api.nvim_buf_add_highlight(bufnr, -1, opts.prompt.highlight, #lines, 0, #opts.prompt.prefix) end,
       50

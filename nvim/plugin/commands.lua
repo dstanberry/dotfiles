@@ -8,15 +8,15 @@ vim.api.nvim_create_user_command(
 
 vim.api.nvim_create_user_command("Glow", function()
   local bufnr = vim.api.nvim_get_current_buf()
-  local ft = vim.api.nvim_buf_get_option(bufnr, "filetype")
+  local ft = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
 
   if ft ~= "markdown" then
     error(("Previewer not valid for '%s' files"):format(ft))
     return
   end
 
-  local width = vim.api.nvim_get_option "columns"
-  local height = vim.api.nvim_get_option "lines"
+  local width = vim.api.nvim_get_option_value "columns"
+  local height = vim.api.nvim_get_option_value "lines"
   local win_height = math.ceil(height * 0.8 - 4)
   local win_width = math.ceil(width * 0.8)
   local row = math.ceil((height - win_height) / 2 - 1)
@@ -37,9 +37,9 @@ vim.api.nvim_create_user_command("Glow", function()
 
   local close_win = function() vim.api.nvim_win_close(win, true) end
 
-  vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
-  vim.api.nvim_buf_set_option(buf, "filetype", "md_preview")
-  vim.api.nvim_win_set_option(win, "winblend", 0)
+  vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = buf })
+  vim.api.nvim_set_option_value("filetype", "md_preview", { buf = buf })
+  vim.api.nvim_set_option_value("winblend", 0, { win = win })
   vim.keymap.set("n", "q", close_win, { buffer = buf, silent = true })
   vim.keymap.set("n", "<esc>", close_win, { buffer = buf, silent = true })
 

@@ -33,7 +33,7 @@ function M.delete_buffer(force)
     end
   end
   vim.cmd.wincmd { args = { "w" }, range = { winnr } }
-  if force or vim.api.nvim_buf_get_option(bufnr, "buftype") == "terminal" then
+  if force or vim.api.nvim_get_option_value("buftype", { buf = bufnr }) == "terminal" then
     vim.cmd.bdelete { args = { "#" }, bang = true }
   else
     vim.cmd.bdelete { args = { "#" }, mods = { emsg_silent = true, confirm = true } }
