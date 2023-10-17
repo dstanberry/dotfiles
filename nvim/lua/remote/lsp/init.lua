@@ -15,18 +15,21 @@ return {
     "neovim/nvim-lspconfig",
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
+      -- INFO: utilities
       "b0o/schemastore.nvim",
-      "folke/neodev.nvim",
-      "pmizio/typescript-tools.nvim",
-      "simrat39/rust-tools.nvim",
       "williamboman/mason.nvim",
-      { "mickael-menu/zk-nvim", dependencies = { "nvim-telescope/telescope.nvim" } },
       {
         "folke/neoconf.nvim",
         cmd = { "Neoconf" },
         opts = { local_settings = ".nvim.json", global_settings = "nvim.json" },
         config = true,
       },
+      -- INFO: server configurations
+      "folke/neodev.nvim",
+      "jmederosalvarado/roslyn.nvim",
+      "pmizio/typescript-tools.nvim",
+      "simrat39/rust-tools.nvim",
+      { "mickael-menu/zk-nvim", dependencies = { "nvim-telescope/telescope.nvim" } },
     },
     config = function()
       local handlers = require "remote.lsp.handlers"
