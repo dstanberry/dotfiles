@@ -23,7 +23,14 @@ return {
           relculright = true,
           segments = {
             {
-              sign = { name = { "GitSigns", "DapBreakpoint", "DapStopped" }, maxwidth = 1, colwidth = 1, auto = true },
+              sign = {
+                name = { "DapBreakpoint", "DapStopped" },
+                namespace = { "gitsigns" },
+                maxwidth = 1,
+                colwidth = 1,
+                auto = true,
+              },
+
               click = "v:lua.ScSa",
             },
             {
