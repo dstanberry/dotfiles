@@ -1,0 +1,10 @@
+---@meta
+---@class LocalProcessInfo
+---@field pid number The process id
+---@field ppid number The parent process id
+---@field name string A short name for the process. Due to platform limitations, this may be inaccurate and truncated; you probably should prefer to look at the executable or argv fields instead of this one
+---@field status "Idle" | "Run" | "Sleep" | "Stop" | "Zombie" | "Tracing" | "Dead" | "Wakekill" | "Waking" | "Parked" | "LockBlocked" | "Unknown" A string holding the status of the process.
+---@field argv string[] a table holding the argument array for the process.
+---@field executable string? the full path to the executable image for the process (may be empty)
+---@field cwd string? the current working directory for the process (may be empty)
+---@field children LocalProcessInfo a table keyed by child process id and whose values are themselves LocalProcessInfo objects that describe the child processes

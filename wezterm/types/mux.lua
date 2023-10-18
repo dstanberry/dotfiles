@@ -1,0 +1,52 @@
+---@meta
+---@class MuxDomainObj
+---@field attach fun(self: MuxDomainObj): nil Attempts to attach the domain. Attaching a domain will attempt to import the windows, tabs and panes from the remote system into those of the local GUI. Unlike the AttachDomain key assignment, calling domain:attach() will not implicitly spawn a new pane into the domain if the domain contains no panes. This is to provide flexibility when used in the gui-startup event. If the domain is already attached, calling this method again has no effect.
+---@field detach fun(self: MuxDomainObj): nil Attempts to detach the domain. Detaching a domain causes it to disconnect and remove its set of windows, tabs and panes from the local GUI. Detaching does not cause those panes to close; if or when you later attach to the domain, they'll still be there. Not every domain supports detaching, and will log an error to the error log/debug overlay.
+---@field domain_id fun(self: MuxDomainObj): number Returns the domain id.
+---@field has_any_panes fun(self: MuxDomainObj): boolean Returns true if the mux has any panes that belong to this domain. This can be useful when deciding whether to spawn additional panes after attaching to a domain.
+---@field is_spawnable fun(self: MuxDomainObj): boolean Returns false if this domain will never be able to spawn a new pane/tab/window, true otherwise. Serial ports are represented by a serial domain that is not spawnable.
+---@field label fun(self: MuxDomainObj): string Computes a label describing the name and state of the domain. The label can change depending on the state of the domain.
+---@field name fun(self: MuxDomainObj): string Returns the name of the domain. Domain names are unique; no two domains can have the same name, and the name is fixed for the lifetime of the domain.
+---@field state fun(self: MuxDomainObj): "Attached" | "Detached" Returns whether the domain is attached or not.
+
+---@class MuxTabObj
+---@field activate fun(self: MuxTabObj): nil Activates (focuses) the tab.
+---@field active_pane fun(self): PaneObj A convenience accessor for returning the active pane in the tab.
+---@field get_pane_direction fun(self: MuxTabObj, direction: "Left" | "Right" | "Up" | "Down" | "Prev" | "Next"): MuxTabObj Returns pane adjacent to the active pane in tab in the direction direction.
+---@field get_size fun(self: MuxTabObj): {rows: number, cols: number, pixel_width: number, pixel_height: number, dpi: number} Returns the overall size of the tab, taking into account all of the contained panes.
+---@field get_title fun(self: MuxTabObj): string Returns the tab title as set by `tab:set_title()`.
+---@field panes fun(self: MuxTabObj): PaneObj[] Returns an array table containing the set of Pane objects contained by this tab.
+---@field panes_with_info fun(self: MuxTabObj): {index: number, is_active: boolean, is_zoomed: boolean, left: number, top: number, width: number, height: number, pixel_width: number, pixel_height: number, pane: PaneObj}[] Returns an array table containing an extended info entry for each of the panes contained by this tab.
+---@field rotate_clockwise fun(self: MuxTabObj): nil Rotates the panes in the clockwise direction.
+---@field rotate_counter_clockwise fun(self: MuxTabObj): nil Rotates the panes in the counter-clockwise direction.
+---@field set_title fun(self: MuxTabObj, title: string): nil Sets the tab title to the provided string.
+---@field set_zoomed fun(self: MuxTabObj, state: boolean): boolean Sets the zoomed state for the active pane within this tab. A zoomed pane takes up all available space in the tab, hiding all other panes while it is zoomed. Switching its zoom state off will restore the prior split arrangement. Setting the zoom state to true zooms the pane if it wasn't already zoomed. Setting the zoom state to false un-zooms the pane if it was zoomed. Returns the prior zoom state.
+---@field tab_id fun(self: MuxTabObj): number Returns the tab id.
+---@field window fun(self: MuxTabObj): MuxWindowObj Returns the MuxWindow object that contains this tab.
+
+---@class MuxWindowObj #TODO
+---@field active_pane fun(self: MuxWindowObj): PaneObj A convenience accessor for returning the active pane in the active tab of the window.
+---@field active_tab fun(self: MuxWindowObj): MuxTabObj A convenience accessor for returning the active tab within the window.
+---@field get_title fun(self: MuxWindowObj): string Returns the window title as set by OSC 0, OSC 2 in a contained pane, or through `window:set_title()`.
+---@field get_workspace fun(self: MuxWindowObj) string Returns the name of the workspace to which the window belongs.
+---@field gui_window fun(self: MuxWindowObj): WindowObj Attempts to resolve this mux window to its corresponding Gui Window. This may not succeed for a couple of reasons: If called by the multiplexer daemon, there is no gui, so this will never succeed, If the mux window is part of a workspace that is not the active workspace.
+---@field set_title fun(self: MuxWindowObj): nil Sets the window title to the provided string. Note that applications may subsequently change the title via escape sequences.
+---@field set_workspace fun(self: MuxWindowObj): nil Changes the name of the workspace to which the window belongs.
+---@field spawn_tab fun(self: MuxWindowObj): { tab: MuxTabObj, pane: PaneObj, window: MuxWindowObj } Spawns a program into a new tab within this window, returning the MuxTab, Pane and MuxWindow objects associated with it. When no arguments are passed, the default program is spawned. TODO
+---@field tabs fun(self: MuxWindowObj): MuxTabObj[] Returns an array table holding each of the MuxTab objects contained within this window.
+---@field tabs_with_info fun(self: MuxWindowObj): { index: number, is_active: boolean, tab: MuxTabObj }[] Returns an array table holding an extended info entry for each of the tabs contained within this window.
+---@field window_id fun(self: MuxWindowObj): number Returns the window multiplexer id.
+
+---@class WezTermMux
+---@field all_domains fun(): MuxDomainObj[] Returns an array table holding all of the known MuxDomain objects.
+---@field all_windows fun(): MuxWindowObj[] Returns an array table holding all of the known MuxWindow objects.
+---@field get_active_workspace fun(): string Returns the name of the active workspace.
+---@field get_domain fun(name_or_id: string | number): string Resolves name_or_id to a domain and returns a MuxDomain object representation of it. `name_or_id` can be: A domain name string to resolve the domain by name, A domain id to resolve the domain by id, nil or omitted to return the current default domain, other lua types will generate a lua error
+---@field get_pane fun(id: number): PaneObj Given a pane ID, verifies that the ID is a valid pane known to the mux and returns a Pane object that can be used to operate on the pane. This is useful for situations where you have obtained a pane id from some other source and want to use the various `Pane` methods with it.
+---@field get_tab fun(id: number): MuxTabObj Given a tab ID, verifies that the ID is a valid tab known to the mux and returns a MuxTab object that can be used to operate on the tab. This is useful for situations where you have obtained a tab id from some other source and want to use the various `MuxTab` methods with it.
+---@field get_window fun(id: number): MuxWindowObj Given a window ID, verifies that the ID is a valid window known to the mux and returns a MuxWindow object that can be used to operate on the window. This is useful for situations where you have obtained a window id from some other source and want to use the various `MuxWindow` methods with it.
+---@field get_workspace_names fun(): string[] Returns a table containing the names of the workspaces known to the mux.
+---@field rename_workspace fun(old: string, new: string): nil Renames the workspace old to new.
+---@field set_active_workspace fun(name: string): nil Sets the active workspace name. If the requested name doesn't correspond to an existing workspace, then an error is raised.
+---@field set_default_domain fun(domain: MuxDomainObj): nil Assign a new default domain in the mux. The domain that you assign here will override any configured `default_domain` or the implicit assignment of the default domain that may have happened as a result of starting wezterm via `wezterm connect` or `wezterm serial`.
+---@field spawn_window fun(...: any): {tab: MuxTabObj, pane: PaneObj, window: MuxWindowObj} Spawns a program into a new window, returning the MuxTab, Pane and MuxWindow objects associated with it. When no arguments are passed, the default program is spawned. TODO
