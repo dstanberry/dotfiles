@@ -23,9 +23,10 @@ M.setup = function(config)
       end, { buffer = bufnr, desc = "typescript: format document" })
       vim.api.nvim_create_autocmd("User", {
         pattern = "FormatPre",
-        buffer = bufnr,
         desc = "Typescript: Organize Imports",
-        callback = function() vim.cmd "TSToolsOrganizeImports" end,
+        callback = function()
+          if vim.api.nvim_get_current_buf() == bufnr then vim.cmd "TSToolsOrganizeImports" end
+        end,
       })
     end,
     settings = {
