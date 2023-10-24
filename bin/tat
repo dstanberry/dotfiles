@@ -1,13 +1,23 @@
 #!/bin/bash
 
+###############################################################
+# TMUX Extended Functionality
+###############################################################
+
 if [[ $# -eq 0 ]]; then
   path=$PWD
 elif [[ $# -eq 1 ]]; then
+  #--------------------------------------------------------------
+  # edit scrollback
+  #--------------------------------------------------------------
   if [ "$1" == "edit" ]; then
     file=$(mktemp).sh
     tmux capture-pane -pS -32768 > "$file"
     tmux new-window -n:mywindow "nvim '+ normal G $' $file"
     exit 0
+  #--------------------------------------------------------------
+  # session launcher
+  #--------------------------------------------------------------
   elif [ "$1" == "fzf" ] || [ "$1" == "new" ]; then
     projects_dir=""
     # shellcheck disable=SC2153
@@ -32,6 +42,9 @@ elif [[ $# -eq 1 ]]; then
     if [ "$path" == "" ]; then
       exit 0
     fi
+  #--------------------------------------------------------------
+  # persistent flaating window across all sessions
+  #--------------------------------------------------------------
   elif [ "$1" == "float" ]; then
     current_client="$(tmux display-message -p -F "#{session_name}")"
     if [ "$current_client" == "float-repl" ]; then
@@ -41,6 +54,9 @@ elif [[ $# -eq 1 ]]; then
         -E "tmux attach -t float-repl || tmux new -s float-repl" || true
     fi
     exit 0
+  #--------------------------------------------------------------
+  # session switcher
+  #--------------------------------------------------------------
   elif [ "$1" == "switch" ]; then
     if not_in_tmux; then
       echo "command only available within tmux"
@@ -53,6 +69,9 @@ elif [[ $# -eq 1 ]]; then
       | awk 'BEGIN {ORS=" "} {print $1, NR, "\"switch-client -t", $1 "\""}' \
       | xargs tmux display-menu -T "Switch session"
     exit 0
+  #--------------------------------------------------------------
+  # helper to goto next session
+  #--------------------------------------------------------------
   elif [ "$1" == "switch-client-next" ]; then
     if not_in_tmux; then
       echo "command only available within tmux"
@@ -80,6 +99,9 @@ elif [[ $# -eq 1 ]]; then
       tmux switch-client -t "${available_clients[$next_index]}"
     fi
     exit 0
+  #--------------------------------------------------------------
+  # helper to goto previous session
+  #--------------------------------------------------------------
   elif [ "$1" == "switch-client-previous" ]; then
     if not_in_tmux; then
       echo "command only available within tmux"
