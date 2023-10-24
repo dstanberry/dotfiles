@@ -10,10 +10,10 @@ elif [[ $# -eq 1 ]]; then
   #--------------------------------------------------------------
   # edit scrollback
   #--------------------------------------------------------------
-  if [ "$1" == "edit" ]; then
+  if [ "$1" == "show-scrollback" ]; then
     file=$(mktemp).sh
     tmux capture-pane -pS -32768 > "$file"
-    tmux new-window -n:mywindow "nvim '+ normal G $' $file"
+    tmux new-window -n:scrollback "nvim -c \"lua require('util.window').term_scrollback()\" $file"
     exit 0
   #--------------------------------------------------------------
   # session launcher
