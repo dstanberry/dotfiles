@@ -1,44 +1,53 @@
+---@diagnostic disable: undefined-field
+
 return {
   "mfussenegger/nvim-lint",
-  event = "BufReadPre",
-  config = function()
-    local lint = require "lint"
-    lint.linters_by_ft = {
+  event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+  opts = {
+    events = { "BufWritePost", "BufReadPost", "InsertLeave" },
+    linters_by_ft = {
       javascript = { "eslint_d" },
       typescript = { "eslint_d" },
       markdown = { "markdownlint" },
       python = { "flake8" },
       sh = { "shellcheck" },
-    }
+    },
+  },
+  config = function(_, opts)
+    local lint = require "lint"
+    local M = {}
 
-    local conf = ("%s/.markdownlint.json"):format(require("util").buffer.get_root())
-    lint.linters.markdownlint.args = vim.loop.fs_realpath(conf) and { "--config", conf } or { "--disable", "MD013" }
-
-    local diagnose = function()
-      local diag = vim.diagnostic.get(0, { severity_limit = vim.diagnostic.severity.WARN })
-      if diag and type(diag) == "table" and #diag > 0 then return end
-      lint.try_lint()
+    M.debounce = function(ms, fn)
+      local timer = vim.loop.new_timer()
+      return function(...)
+        local argv = { ... }
+        timer:start(ms, 0, function()
+          timer:stop()
+          vim.schedule_wrap(fn)(unpack(argv))
+        end)
+      end
     end
 
-    local ext_diagnostic = vim.api.nvim_create_augroup("ext_diagnostic", { clear = true })
-    vim.api.nvim_create_autocmd({ "BufEnter", "BufRead" }, {
-      group = ext_diagnostic,
-      pattern = { "*" },
-      callback = function(opts)
-        opts = opts or {}
-        opts.id = nil
-        vim.defer_fn(function() diagnose() end, 300)
-      end,
-    })
+    M.lint = function()
+      local names = lint._resolve_linter_by_ft(vim.bo.filetype)
 
-    vim.api.nvim_create_autocmd("TextChanged", {
-      group = ext_diagnostic,
-      pattern = { "*" },
-      callback = function(opts)
-        opts = opts or {}
-        opts.id = nil
-        diagnose()
-      end,
+      if #names == 0 then vim.list_extend(names, lint.linters_by_ft["_"] or {}) end
+      vim.list_extend(names, lint.linters_by_ft["*"] or {})
+
+      local ctx = { filename = vim.api.nvim_buf_get_name(0) }
+      ctx.dirname = vim.fn.fnamemodify(ctx.filename, ":h")
+      names = vim.tbl_filter(function(name)
+        local linter = lint.linters[name]
+        if not linter then dump("Linter not found: " .. name) end
+        return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
+      end, names)
+
+      if #names > 0 then lint.try_lint(names) end
+    end
+
+    vim.api.nvim_create_autocmd(opts.events, {
+      group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
+      callback = M.debounce(100, M.lint),
     })
   end,
 }
