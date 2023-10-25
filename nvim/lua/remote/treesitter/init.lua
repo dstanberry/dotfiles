@@ -7,7 +7,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "LazyFile", "VeryLazy" },
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-context",
@@ -16,7 +16,7 @@ return {
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
         init = function()
-        -- PERF: no need to load the plugin, if we only need its queries for mini.ai
+          -- PERF: no need to load the plugin, if we only need its queries for mini.ai
           require("lazy.core.loader").disable_rtp_plugin "nvim-treesitter-textobjects"
           load_textobjects = true
         end,

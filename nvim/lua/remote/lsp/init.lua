@@ -13,7 +13,7 @@ local ensure_installed = {
 return {
   {
     "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" },
+    event = "LazyFile",
     dependencies = {
       -- INFO: utilities
       "b0o/schemastore.nvim",

@@ -4,7 +4,7 @@ local color = require "util.color"
 return {
   "folke/todo-comments.nvim",
   cmd = { "TodoQuickFix", "TodoTelescope", "TodoTrouble" },
-  event = { "BufReadPost", "BufNewFile" },
+  event = "LazyFile",
   dependencies = { "nvim-lua/plenary.nvim" },
   opts = {
     signs = false,

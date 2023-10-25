@@ -5,7 +5,7 @@ vim.cmd.doautocmd "BufReadPost"
 
 return {
   "lukas-reineke/indent-blankline.nvim",
-  event = { "BufReadPost", "BufNewFile" },
+  event = "LazyFile",
   opts = {
     indent = {
       -- char = "",

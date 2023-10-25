@@ -36,7 +36,7 @@ groups.new("NavicSeparator", { fg = color.blend(c.purple1, c.bg2, 0.38) })
 
 return {
   "SmiteshP/nvim-navic",
-  event = { "BufReadPre", "BufNewFile" },
+  event = "LazyFile",
   dependencies = { "neovim/nvim-lspconfig" },
   opts = {
     highlight = false,
