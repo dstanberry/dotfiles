@@ -1,7 +1,18 @@
+local slow_formatters = {}
+local prettier_conf = ("%s/.prettierrc.json"):format(require("util").buffer.get_root())
+
 return {
   "stevearc/conform.nvim",
-  event = "BufReadPre",
+  event = "BufWritePre",
+  cmd = { "ConformInfo" },
   enabled = true,
+  keys = {
+    {
+      "ff",
+      function() require("conform").format { async = true, lsp_fallback = true } end,
+      desc = "conform: format document",
+    },
+  },
   opts = {
     formatters_by_ft = {
       bash = { "shfmt" },
@@ -19,21 +30,32 @@ return {
       typescript = { { "prettierd", "prettier" } },
       zsh = { "shfmt" },
     },
+    formatters = {
+      shfmt = {
+        prepend_args = { "-i", "2", "-ci", "-sr", "-s", "-bn" },
+      },
+      prettierd = {
+        env = vim.loop.fs_realpath(prettier_conf) and { PRETTIERD_DEFAULT_CONFIG = prettier_conf } or nil,
+      },
+    },
     format_on_save = function(buf)
       if vim.g.formatting_disabled or vim.b[buf].formatting_disabled then return end
+      if slow_formatters[vim.bo[buf].filetype] then return end
+
+      local on_format = function(err)
+        if err and err:match "timeout$" then slow_formatters[vim.bo[buf].filetype] = true end
+      end
+
       vim.api.nvim_exec_autocmds("User", { pattern = "FormatPre" })
-      return { timeout_ms = 750, lsp_fallback = true }
+
+      return { timeout_ms = 500, lsp_fallback = true }, on_format
+    end,
+    format_after_save = function(buf)
+      if not slow_formatters[vim.bo[buf].filetype] then return end
+      return { lsp_fallback = true }
     end,
   },
-  config = function(_, opts)
-    require("conform").setup(opts)
-    require("conform.formatters.shfmt").args = { "-i", "2", "-ci", "-sr", "-s", "-bn" }
-
-    local conf = ("%s/.prettierrc.json"):format(require("util").buffer.get_root())
-    if vim.loop.fs_realpath(conf) then
-      require("conform.formatters.prettierd").env = { PRETTIERD_DEFAULT_CONFIG = conf }
-    end
-
+  init = function()
     vim.api.nvim_create_user_command("FormatDisable", function(args)
       if args.bang then
         vim.b.formatting_disabled = true
@@ -42,7 +64,7 @@ return {
       end
       dump "Disabled auto-format on save."
     end, {
-      desc = "Conform: Disable auto-format on save",
+      desc = "Conform: Disable auto-format on save for this buffer",
       bang = true,
     })
 
@@ -51,7 +73,7 @@ return {
       vim.g.formatting_disabled = false
       dump "Enabled auto-format on save."
     end, {
-      desc = "Conform: Enable auto-format on save",
+      desc = "Conform: Enable auto-format on save for this buffer",
     })
   end,
 }

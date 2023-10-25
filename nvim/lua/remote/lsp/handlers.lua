@@ -75,19 +75,17 @@ M.on_attach = function(client, bufnr)
     vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "lsp: goto type definition" })
   end
 
-  -- if client.server_capabilities.documentFormattingProvider then
-  local format_document = function()
-    local ok, conform = pcall(require, "conform")
-    if ok then
-      conform.format { async = true, bufnr = bufnr, lsp_fallback = true }
-    else
-      vim.lsp.buf.format { async = true }
+  if client.server_capabilities.documentFormattingProvider then
+    -- NOTE: preserve any existin keymap defined by other plugin(s)
+    if vim.fn.maparg "ff" == "" then
+      vim.keymap.set(
+        "n",
+        "ff",
+        function() vim.lsp.buf.format { async = true } end,
+        { buffer = bufnr, desc = "lsp: format document" }
+      )
     end
   end
-  if vim.fn.maparg "ff" == "" then
-    vim.keymap.set("n", "ff", format_document, { buffer = bufnr, desc = "lsp: format document" })
-  end
-  -- end
 
   if client.server_capabilities.documentHighlightProvider then
     vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "lsp: show references" })

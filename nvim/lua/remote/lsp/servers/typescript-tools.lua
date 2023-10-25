@@ -12,15 +12,6 @@ M.setup = function(config)
     flags = config and config.flags and config.flags,
     on_attach = function(client, bufnr)
       if config and config.on_attach then config.on_attach(client, bufnr) end
-      vim.keymap.set("n", "ff", function()
-        vim.cmd "TSToolsOrganizeImports"
-        local has_conform, conform = pcall(require, "conform")
-        if has_conform then
-          conform.format { async = true, buffer = bufnr, lsp_fallback = true }
-        else
-          vim.lsp.buf.format { async = true }
-        end
-      end, { buffer = bufnr, desc = "typescript: format document" })
       vim.api.nvim_create_autocmd("User", {
         pattern = "FormatPre",
         desc = "Typescript: Organize Imports",
