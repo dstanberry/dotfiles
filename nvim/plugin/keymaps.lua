@@ -109,7 +109,7 @@ vim.keymap.set("n", "C", '"_C', { silent = false, desc = "change to end of line 
 -- trim trailing whitespace
 vim.keymap.set("n", "FF", function()
   for ln, str in ipairs(vim.fn.getline(1, "$")) do
-    local sub = str:match "(.*%S)" or str
+    local sub = str:match "(.*%S)" or str:gsub("\r", "")
     vim.fn.setline(ln, sub)
   end
 end, { silent = false, desc = "trim trailing whitespace" })
