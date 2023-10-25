@@ -28,6 +28,7 @@ vim.filetype.add {
     vifmrc = "vim",
   },
   filename = {
+    [".flake8"] = "toml",
     ["tmux.conf"] = "tmux",
     Brewfile = "ruby",
     jenkinsfile = "groovy",
