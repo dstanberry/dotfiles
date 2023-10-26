@@ -1,7 +1,7 @@
 local c = require("ui.theme").colors
 local color = require "util.color"
 local groups = require "ui.theme.groups"
-local icons = require("ui.icons")
+local icons = require "ui.icons"
 
 local BLUE_DARK = color.blend(c.blue2, c.bg0, 0.08)
 
@@ -35,6 +35,7 @@ return {
       ["["] = { name = "+previous" },
       ["<leader>"] = {
         mode = "n",
+        a = { name = "+plugin (aerial)" },
         d = { name = "+debug" },
         f = { name = "+file/find" },
         g = { name = "+git" },

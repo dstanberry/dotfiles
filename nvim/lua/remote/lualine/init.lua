@@ -7,14 +7,13 @@ local excludes = require "ui.excludes"
 
 local breadcrumbs = require "remote.lualine.components.breadcrumbs"
 local languageservers = require "remote.lualine.components.languageservers"
-local navic = require "remote.lualine.components.navic"
 local filediff = require "remote.lualine.components.filediff"
 local git_branch = require "remote.lualine.components.git_branch"
 local git_diff = require "remote.lualine.components.git_diff"
 local indent = require "remote.lualine.components.indent"
 local merge_conflicts = require "remote.lualine.components.merge_conflicts"
 
-local available_width = function(width) return vim.api.nvim_get_option "columns" >= width end
+local available_width = function(width) return vim.api.nvim_get_option_value("columns", {}) >= width end
 
 return {
   "dstanberry/lualine.nvim",
@@ -93,7 +92,9 @@ return {
               local counter = text:match "%d+%/%d+"
               return string.format("%s %s [%s]", icons.misc.Magnify, query, counter)
             end,
-            cond = function() return package.loaded["noice"] and require("noice").api.status.search.has() and available_width(80) end,
+            cond = function()
+              return package.loaded["noice"] and require("noice").api.status.search.has() and available_width(80)
+            end,
             color = { fg = c.gray2, bold = true },
           },
           { "location" },
@@ -117,10 +118,17 @@ return {
             padding = { right = 0 },
           },
           {
-            navic,
+            "aerial",
             padding = { left = 0 },
+            sep_prefix = icons.misc.FoldClosed,
+            sep = pad(icons.misc.FoldClosed, "both"),
+            sep_highlight = "AerialSeparator",
+            sep_icon = "",
+            depth = 5,
+            dense = false,
+            dense_sep = "...",
+            colored = true,
             color = "Winbar",
-            cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
           },
         },
         lualine_x = {

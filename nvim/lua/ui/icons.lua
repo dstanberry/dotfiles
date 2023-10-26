@@ -120,6 +120,8 @@ return {
     Layer = "",
     LeftArrow = "",
     LeftArrowCircled = "",
+    LightUpAndRight = "└╴",
+    LightVerticalAndRight = "├╴",
     Lock = "",
     Magnify = " ",
     Orbit = "󰀘 ",
