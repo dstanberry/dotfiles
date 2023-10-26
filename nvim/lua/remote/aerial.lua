@@ -31,7 +31,7 @@ groups.new("AerialStructIcon", { link = "@type" })
 groups.new("AerialTypeParameterIcon", { link = "@type" })
 groups.new("AerialVariableIcon", { link = "@field.yaml" })
 
-groups.new("AerialNormal", { link = "WinbarContext" })
+groups.new("AerialNormal", { fg = color.lighten(c.gray1, 15) })
 groups.new("AerialLine", { link = "CursorLine" })
 groups.new("AerialSeparator", { fg = color.blend(c.purple1, c.bg2, 0.38) })
 
