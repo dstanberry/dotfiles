@@ -60,4 +60,4 @@ vim.g.dotfiles_dir = vim.fs.normalize(("%s/.config"):format(vim.env.HOME))
 vim.g.projects_dir = vim.env.projects_dir and vim.fs.normalize(vim.env.projects_dir)
   or vim.fs.normalize(("%s/Projects"):format(vim.env.HOME))
 
-if setting_enabled "remote_plugins" then require "util.lazy" end
+require "util.lazy"

@@ -1,3 +1,5 @@
+if not setting_enabled "remote_plugins" then return end
+
 local lazypath = string.format("%s/lazy/lazy.nvim", vim.fn.stdpath "data")
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system {
