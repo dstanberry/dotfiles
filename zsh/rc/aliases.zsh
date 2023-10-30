@@ -1,7 +1,10 @@
 # shellcheck disable=SC2148
 
 # colorize cat output
-hash bat 2> /dev/null && alias cat=bat
+if hash bat 2> /dev/null; then
+  alias cat="bat"
+  alias lcat="bat --style=plain"
+fi
 
 # wrap diff commands and colorize the output
 hash colordiff 2> /dev/null && alias diff=colordiff
