@@ -1,3 +1,5 @@
+---@diagnostic disable: missing-fields
+
 local c = require("ui.theme").colors
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
@@ -115,10 +117,10 @@ return {
               highlight = { fg = c.yellow0 },
               auto_close = true,
               matcher = function(buf)
-                return buf.name:match "_spec"
-                  or buf.name:match ".spec"
-                  or buf.name:match "_test"
-                  or buf.name:match ".test"
+                return buf.name:match "_spec%."
+                  or buf.name:match "%.spec"
+                  or buf.name:match "_test%."
+                  or buf.name:match "%.test"
               end,
               separator = {
                 style = bufferline_groups.separator.pill,
