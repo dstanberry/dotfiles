@@ -40,7 +40,7 @@ local c = {
   cyan1 = "#79bdaf",
   cyan2 = "#8fbcbb",
 
-  aqua0 = "#5F8F9D",
+  aqua0 = "#5f8f9d",
   aqua1 = "#77b3c5",
   aqua2 = "#8ed6ec",
 
@@ -53,9 +53,9 @@ local c = {
   purple0 = "#94628a",
   purple1 = "#ac72a0",
 
-  magenta0 = "#90718A",
+  magenta0 = "#90718a",
   magenta1 = "#b48ead",
-  magenta2 = "#EAB8E0",
+  magenta2 = "#eab8e0",
 }
 
 c.black = color.darken(c.bg2, 50)
