@@ -1,5 +1,5 @@
 return {
-  "dstanberry/vs-tasks.nvim",
+  "EthanJWright/vs-tasks.nvim",
   name = "vstask",
   dependencies = {
     "nvim-lua/popup.nvim",
