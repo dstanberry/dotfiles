@@ -18,7 +18,7 @@ local available_width = function(width) return vim.api.nvim_get_option_value("co
 return {
   "dstanberry/lualine.nvim",
   event = "VeryLazy",
-  config = {
+  opts = {
     options = {
       theme = theme.palette,
       globalstatus = true,
