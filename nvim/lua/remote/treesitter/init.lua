@@ -21,20 +21,14 @@ return {
           load_textobjects = true
         end,
       },
-      "JoosepAlviste/nvim-ts-context-commentstring",
       "nvim-treesitter/playground",
       "theHamsta/nvim-treesitter-pairs",
     },
     opts = {
       ensure_installed = "all",
-      context_commentstring = {
-        enable = true,
-        enable_autocmd = false,
-      },
       highlight = {
         enable = true,
         use_languagetree = false,
-        -- disable = { "markdown" },
       },
       indent = { enabled = true },
       incremental_selection = {
