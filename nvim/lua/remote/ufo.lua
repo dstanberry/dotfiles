@@ -1,56 +1,23 @@
-local excludes = require "ui.excludes"
 local icons = require "ui.icons"
 
 return {
   "kevinhwang91/nvim-ufo",
-  event = "VeryLazy",
-  dependencies = {
-    "kevinhwang91/promise-async",
-    {
-      "luukvbaal/statuscol.nvim",
-      dependencies = {
-        "lewis6991/gitsigns.nvim",
-        "mfussenegger/nvim-dap",
-      },
-      lazy = true,
-      config = function()
-        vim.o.foldcolumn = "1"
-        vim.o.signcolumn = "number"
-        local builtin = require "statuscol.builtin"
-        require("statuscol").setup {
-          -- ft_ignore = vim.tbl_deep_extend("keep", excludes.ft.stl_disabled, excludes.ft.wb_disabled),
-          bt_ignore = excludes.bt.wb_disabled,
-          relculright = true,
-          segments = {
-            {
-              sign = {
-                name = { "DapBreakpoint", "DapStopped" },
-                namespace = { "gitsigns" },
-                maxwidth = 1,
-                colwidth = 1,
-                auto = true,
-              },
-
-              click = "v:lua.ScSa",
-            },
-            {
-              text = { " ", builtin.lnumfunc },
-              sign = { name = { ".*" }, maxwidth = 1, colwidth = 1, auto = false, fillchars = "" },
-              click = "v:lua.ScLa",
-            },
-            { text = { " ", builtin.foldfunc, " " }, click = "v:lua.ScFa" },
-          },
-        }
-      end,
-    },
-  },
+  event = { "LazyFile", "VeryLazy" },
+  dependencies = { "kevinhwang91/promise-async" },
+  enabled = false,
   keys = {
     { "zR", function() require("ufo").openAllFolds() end, desc = "ufo: open all folds" },
     { "zM", function() require("ufo").closeAllFolds() end, desc = "ufo: close all folds" },
     { "zp", function() require("ufo").peekFoldedLinesUnderCursor() end, desc = "ufo: peek content within fold" },
   },
+  init = function()
+    vim.o.foldcolumn = "1"
+    vim.o.signcolumn = "number"
+    vim.o.foldlevelstart = 99
+    vim.o.foldenable = true
+  end,
   opts = {
-    open_fold_hl_timeout = 0,
+    open_fold_hl_timeout = 150,
     preview = {
       win_config = {
         border = "none",
@@ -91,9 +58,6 @@ return {
       table.insert(result, { padding, "" })
       return result
     end,
-    provider_selector = function(_, filetype)
-      local ufo_ft_map = { dart = { "lsp", "treesitter" } }
-      return ufo_ft_map[filetype] or { "treesitter", "indent" }
-    end,
+    provider_selector = function() return { "treesitter", "indent" } end,
   },
 }
