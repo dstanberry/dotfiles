@@ -129,6 +129,35 @@ return {
     },
   },
   {
+    "echasnovski/mini.surround",
+    keys = function(_, keys)
+      local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
+      local opts = require("lazy.core.plugin").values(plugin, "opts", false)
+      local mappings = {
+        { opts.mappings.add, desc = "mini.surround: add surrounding", mode = { "n", "v" } },
+        { opts.mappings.delete, desc = "mini.surround: delete surrounding" },
+        { opts.mappings.find, desc = "mini.surround: find right surrounding" },
+        { opts.mappings.find_left, desc = "mini.surround: find left surrounding" },
+        { opts.mappings.highlight, desc = "mini.surround: highlight surrounding" },
+        { opts.mappings.replace, desc = "mini.surround: replace surrounding" },
+        { opts.mappings.update_n_lines, desc = "mini.surround: update `MiniSurround.config.n_lines`" },
+      }
+      mappings = vim.tbl_filter(function(m) return m[1] and #m[1] > 0 end, mappings)
+      return vim.list_extend(mappings, keys)
+    end,
+    opts = {
+      mappings = {
+        add = "ysa",
+        delete = "ysd",
+        find = "ysf",
+        find_left = "ysF",
+        highlight = "ysh",
+        replace = "ysr",
+        update_n_lines = "ysn",
+      },
+    },
+  },
+  {
     "echasnovski/mini.splitjoin",
     keys = {
       { "gJ", desc = "mini.splitjoin: split arguments" },
