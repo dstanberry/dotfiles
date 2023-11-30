@@ -17,6 +17,7 @@ return {
     formatters_by_ft = {
       bash = { "shfmt" },
       go = { "goimports", "gofumpt" },
+      html = { { "prettierd", "prettier" } },
       javascript = { { "prettierd", "prettier" } },
       json = { { "prettierd", "prettier" } },
       jsonc = { { "prettierd", "prettier" } },
