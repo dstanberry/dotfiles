@@ -100,7 +100,7 @@ return {
             { event = "msg_show", find = "search hit" },
             { event = "msg_show", find = "written" },
             { event = "msg_show", kind = "search_count" },
-            -- NOTE: temporary suppression of `LanguageTree:for_each_child()` warnings 
+            -- NOTE: temporary suppression of `LanguageTree:for_each_child()` warnings
             { event = "notify", kind = "warn", find = "for_each_child" },
           },
         },
