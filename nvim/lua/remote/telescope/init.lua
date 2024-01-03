@@ -218,6 +218,10 @@ return {
 
       telescope.setup {
         defaults = {
+          set_env = {
+            LESS = "",
+            DELTA_PAGER = "less",
+          },
           prompt_prefix = pad(icons.misc.Prompt, "right"),
           selection_caret = pad(icons.misc.CaretRight, "right"),
           multi_icon = pad(icons.misc.CaretRight, "right"),
@@ -331,6 +335,24 @@ return {
                 ["<c-y>"] = copy_commit,
               },
             },
+            previewer = require("telescope.previewers").new_termopen_previewer {
+              get_command = function(entry)
+                local shell = has "win32" and "pwsh" or "zsh"
+                local flags = has "win32" and "-Command" or "-c"
+                local nullpipe = has "win32" and "Nul" or "/dev/null"
+                return {
+                  shell,
+                  flags,
+                  table.concat({
+                    "git diff",
+                    table.concat { entry.value, "~:", vim.fn.expand "#" },
+                    table.concat { entry.value, ":", vim.fn.expand "#" },
+                    "2> " .. nullpipe .. " || git show",
+                    table.concat { entry.value, ":", vim.fn.expand "#" },
+                  }, " "),
+                }
+              end,
+            },
           },
           git_commits = {
             layout_strategy = "vertical",
@@ -339,6 +361,20 @@ return {
                 ["<c-r>"] = interactive_rebase,
                 ["<c-y>"] = copy_commit,
               },
+            },
+            previewer = require("telescope.previewers").new_termopen_previewer {
+              get_command = function(entry)
+                local shell = has "win32" and "pwsh" or "zsh"
+                local flags = has "win32" and "-Command" or "-c"
+                return {
+                  shell,
+                  flags,
+                  table.concat({
+                    "git diff",
+                    entry.value,
+                  }, " "),
+                }
+              end,
             },
           },
           diagnostics = {
