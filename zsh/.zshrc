@@ -264,9 +264,6 @@ bindkey ' ' magic-space
 # live grep
 bindkey -s ^f "rf\n"
 
-# tmux session initializer
-bindkey -s ^p "tat fzf\n"
-
 # make (c-z) toggle between bg and fg for processes
 function fg-bg() {
   if [[ $#BUFFER -eq 0 ]]; then
@@ -372,6 +369,10 @@ if hash fzf 2> /dev/null; then
   # load fzf keybinds
   test -s "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings.zsh" \
     && source "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings.zsh"
+
+  # load fzf custom keybinds
+  test -s "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings-custom.zsh" \
+    && source "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings-custom.zsh"
 
   # load fzf completion
   test -s "${ZSH_CONFIG_HOME}/plugins/fzf/completion.zsh" \

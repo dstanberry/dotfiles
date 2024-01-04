@@ -5,7 +5,7 @@
 ###############################################################
 
 if [[ $# -eq 0 ]]; then
-  path=$PWD
+  dir=$PWD
 elif [[ $# -eq 1 ]]; then
   #--------------------------------------------------------------
   # edit scrollback
@@ -18,7 +18,7 @@ elif [[ $# -eq 1 ]]; then
   #--------------------------------------------------------------
   # session launcher
   #--------------------------------------------------------------
-  elif [ "$1" == "fzf" ] || [ "$1" == "new" ]; then
+  elif [ "$1" == "session" ]; then
     projects_dir=""
     # shellcheck disable=SC2153
     for f in "$PROJECTS_DIR"/*; do
@@ -28,18 +28,17 @@ elif [[ $# -eq 1 ]]; then
         projects_dir="$projects_dir $f"
       fi
     done
-    [[ $1 == "new" ]] && HEIGHT="100%" || HEIGHT="50%"
     # shellcheck disable=SC2207
     projects_dir=($(echo "$projects_dir" | cut -d " " --output-delimiter=" " -f 1-))
-    path=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" "${projects_dir[@]}" \
+    dir=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" "${projects_dir[@]}" \
       -mindepth 1 -maxdepth 1 -type d \
-      | fzf --height="${HEIGHT}" --reverse --header='Create/Open Session' \
+      | fzf --height="100%" --reverse --header='Create/Open Session' \
         --preview '(glow -s dark {1}/README.md ||
           bat --style=plain {1}/README.md ||
           cat {1}/README.md ||
           eza -lh --icons {1} ||
           ls -lh {1}) 2> /dev/null')
-    if [ "$path" == "" ]; then
+    if [ "$dir" == "" ]; then
       exit 0
     fi
   #--------------------------------------------------------------
@@ -141,7 +140,7 @@ else
   exit 1
 fi
 
-session_name="$(basename "$path" | tr . _)"
+session_name="$(basename "$dir" | tr . _)"
 
 not_in_tmux() {
   [ -z "$TMUX" ]
@@ -152,12 +151,12 @@ session_exists() {
 }
 
 create_detached_session() {
-  (TMUX='' tmux new-session -Ad -s "$session_name" -c "$path")
+  (TMUX='' tmux new-session -Ad -s "$session_name" -c "$dir")
 }
 
 create_if_needed_and_attach() {
   if not_in_tmux; then
-    tmux new-session -As "$session_name" -c "$path"
+    tmux new-session -As "$session_name" -c "$dir"
   else
     if ! session_exists; then
       create_detached_session
