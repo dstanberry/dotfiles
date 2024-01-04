@@ -1,4 +1,4 @@
-local theme = "catpuccin"
+local theme = "catppuccin"
 
 require("util").reload("ui.theme").setup(theme)
 
@@ -11,6 +11,6 @@ if file then
   vim.api.nvim_create_autocmd({ "BufWritePost", "FileWritePost" }, {
     group = vim.api.nvim_create_augroup("colorscheme", { clear = true }),
     pattern = file,
-    callback = function() vim.cmd.colorscheme "catpuccin" end,
+    callback = function() vim.cmd.colorscheme "catppuccin" end,
   })
 end
