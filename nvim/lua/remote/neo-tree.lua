@@ -76,9 +76,6 @@ return {
       window = {
         mappings = {
           ["<space>"] = "none",
-          ["<esc>"] = "revert_preview",
-          ["o"] = "toggle_node",
-          ["P"] = { "toggle_preview", config = { use_float = true } },
         },
       },
       document_symbols = {
