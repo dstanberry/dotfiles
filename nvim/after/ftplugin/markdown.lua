@@ -33,5 +33,6 @@ vim.keymap.set("n", "<c-w><c-o>", markdown.heading.insert_outer, { buffer = 0, d
 vim.keymap.set({ "n", "v" }, "<c-w><c-b>", markdown.toggle_bullet, { buffer = 0, desc = "toggle bullet" })
 vim.keymap.set({ "n", "v" }, "<c-w><c-x>", markdown.toggle_checkbox, { buffer = 0, desc = "toggle checkbox" })
 
-vim.keymap.set("i", "[[", markdown.zk.insert_link, { buffer = 0, desc = "zk: insert link to note" })
+-- NOTE: Completion engine will handle this better
+-- vim.keymap.set("i", "[[", markdown.zk.insert_link, { buffer = 0, desc = "zk: insert link to note" })
 vim.keymap.set("v", "{{", markdown.zk.insert_link_from_selection, { buffer = 0, desc = "zk: insert link to note" })
