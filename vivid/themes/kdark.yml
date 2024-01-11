@@ -1,0 +1,141 @@
+colors:
+  rose0: 'cd8d88'
+  rose1: 'e4c1be'
+  magenta0: '90718a'
+  magenta1: 'b48ead'
+  magenta2: 'eab8e0'
+  purple0: '94628a'
+  purple1: 'ac72a0'
+  red0: 'db4b4b'
+  red1: 'bf616a'
+  red2: 'e5747f'
+  orange0: 'd08770'
+  orange1: 'ffab87'
+  yellow0: 'd3b67d'
+  yellow1: 'e0af68'
+  yellow2: 'ebcb8b'
+  green0: '7f966d'
+  green1: '97b182'
+  cyan0: '5a8d83'
+  cyan1: '79bdaf'
+  aqua0: '5f8f9d'
+  aqua1: '77b3c5'
+  blue0: '516882'
+  blue1: '6f8fb4'
+
+  fg0: 'b8bec9'
+  fg1: 'c9d1d9'
+  fg2: 'd8dee9'
+  overlay0: '6c7086'
+  overlay1: '7f849c'
+  overlay2: '9399b2'
+  gray0: '414145'
+  gray1: '59595e'
+  gray2: '97979f'
+
+  bg0: '1f2021'
+  bg1: '323233'
+  bg2: '373737'
+
+core:
+  normal_text: {}
+  regular_file: {}
+  reset_to_normal: {}
+
+  directory:
+    foreground: blue1
+
+  symlink:
+    foreground: magenta0
+
+  multi_hard_link: {}
+
+  fifo:
+    foreground: blue0
+    font-style: italic
+
+  socket:
+    foreground: yellow2
+    font-style: italic
+
+  door:
+    foreground: yellow2
+    font-style: italic
+
+  block_device:
+    foreground: aqua0
+    font-style: italic
+
+  character_device:
+    foreground: yellow0
+    font-style: italic
+
+  broken_symlink:
+    foreground: red2
+
+  missing_symlink_target:
+    foreground: red2
+
+  setuid: {}
+
+  setgid: {}
+
+  file_with_capability: {}
+
+  sticky_other_writable: {}
+
+  other_writable: {}
+
+  sticky: {}
+
+  executable_file:
+    foreground: green0
+    font-style: bold
+
+text:
+  special:
+    foreground: yellow1
+    font-style: underline
+
+  todo:
+    font-style: bold
+
+  licenses:
+    foreground: overlay2
+
+  configuration:
+    foreground: yellow1
+
+  other:
+    foreground: yellow1
+
+markup:
+  foreground: yellow1
+
+programming:
+  source:
+    foreground: green1
+
+  tooling:
+    foreground: cyan1
+
+    continuous-integration:
+      foreground: green1
+
+media:
+  foreground: rose0
+
+office:
+  foreground: red1
+
+archives:
+  foreground: aqua0
+  font-style: underline
+
+executable:
+  foreground: red1
+  font-style: bold
+
+unimportant:
+  foreground: gray0
+  font-style: italic

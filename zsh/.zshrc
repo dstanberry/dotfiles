@@ -332,7 +332,10 @@ test -s "${ZSH_CONFIG_HOME}/plugins/evalcache.zsh" \
 # Color
 ###############################################################
 # enable dircolors if it is available
-if hash dircolors 2> /dev/null; then
+if hash vivid 2> /dev/null; then
+  test -r "${CONFIG_HOME}"/vivid \
+    && _evalcache echo "LS_COLORS='$(vivid generate kdark)';\nexport LS_COLORS"
+elif hash dircolors 2> /dev/null; then
   test -r "${CONFIG_HOME}"/shared/dircolors \
     && _evalcache dircolors -b "${CONFIG_HOME}"/shared/dircolors \
     || _evalcache dircolors -b
