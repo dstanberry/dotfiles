@@ -17,10 +17,36 @@ return {
     "saadparwaiz1/cmp_luasnip",
     -- snippets manager
     "L3MON4D3/LuaSnip",
+    -- LLM
+    {
+      "zbirenbaum/copilot-cmp",
+      dependencies = {
+        "zbirenbaum/copilot.lua",
+        cmd = "Copilot",
+        build = ":Copilot auth",
+        opts = {
+          suggestion = { enabled = false },
+          panel = { enabled = false },
+          filetypes = { ["*"] = true },
+        },
+      },
+      opts = {},
+      config = function(_, opts)
+        local copilot_cmp = require "copilot_cmp"
+        copilot_cmp.setup(opts)
+        vim.api.nvim_create_autocmd("LspAttach", {
+          callback = function(args)
+            if not (args.data and args.data.client_id) then return end
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+            if client and client.name == "copilot" then copilot_cmp._on_insert_enter {} end
+          end,
+        })
+      end,
+    },
   },
-  config = function()
+  opts = function()
     local cmp = require "cmp"
-    cmp.setup {
+    return {
       enabled = function()
         local context = require "cmp.config.context"
         local buftype = vim.api.nvim_get_option_value("buftype", { buf = 0 })
@@ -58,10 +84,11 @@ return {
         end,
       },
       sources = cmp.config.sources {
-        { name = "nvim_lsp", priority_weight = 120 },
-        { name = "luasnip", priority_weight = 100 },
-        { name = "path", priority_weight = 90 },
-        { name = "buffer", priority_weight = 50, keyword_length = 5, max_view_entries = 5 },
+        { name = "nvim_lsp", priority_weight = 120, group_index = 1 },
+        { name = "luasnip", priority_weight = 100, group_index = 1 },
+        { name = "copilot", priority = 100, group_index = 1 },
+        { name = "path", priority_weight = 90, group_index = 1 },
+        { name = "buffer", priority_weight = 50, keyword_length = 5, max_view_entries = 5, group_index = 2 },
       },
       view = {
         entries = { name = "custom", selection_order = "near_cursor" },
@@ -77,6 +104,9 @@ return {
         },
       },
     }
+  end,
+  config = function(_, opts)
+    require("cmp").setup(opts)
 
     groups.new("CmpItemAbbrDefault", { fg = c.white })
     groups.new("CmpItemAbbrDeprecatedDefault", { fg = c.white })
@@ -87,6 +117,7 @@ return {
     groups.new("CmpItemKindClass", { link = "@lsp.type.class" })
     groups.new("CmpItemKindConstant", { link = "@constant" })
     groups.new("CmpItemKindConstructor", { link = "@constructor" })
+    groups.new("CmpItemKindCopilot", { fg = c.green0 })
     groups.new("CmpItemKindDefault", { fg = c.white })
     groups.new("CmpItemKindEnum", { link = "@lsp.type.enum" })
     groups.new("CmpItemKindEnumMember", { link = "@lsp.type.enumMember" })
