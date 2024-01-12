@@ -54,7 +54,7 @@ end
 return function()
   local winid = vim.api.nvim_get_current_win()
   local buf = vim.api.nvim_win_get_buf(winid)
-  local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+  local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
 
   if util.contains(excludes.ft.wb_empty, ft) then return " " end
 

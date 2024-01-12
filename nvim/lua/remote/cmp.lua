@@ -23,7 +23,7 @@ return {
     cmp.setup {
       enabled = function()
         local context = require "cmp.config.context"
-        local buftype = vim.api.nvim_buf_get_option(0, "buftype")
+        local buftype = vim.api.nvim_get_option_value("buftype", { buf = 0 })
         if vim.api.nvim_get_mode().mode == "c" then
           return true
         elseif buftype == "prompt" then
