@@ -21,12 +21,18 @@ return {
     { trig = "fn", name = "function", dscr = "Declare function" },
     fmt("{}\n{}\nend", {
       c(1, {
-        sn(nil, fmt("function({})", { i(1) })),
-        sn(nil, fmt("local function {}({})", { i(1), i(2) })),
-        sn(nil, fmt("local {} = function({})", { i(1), i(2) })),
+        fmt("local {} = function({})", { r(1, "name"), r(2, "params") }),
+        fmt("local function {}({})", { r(1, "name"), r(2, "params") }),
+        fmt("function {}({})", { r(1, "name"), r(2, "params") }),
       }),
-      d(2, rutil.saved_text, {}, { user_args = { { indent = true } } }),
-    })
+      d(2, rutil.saved_text, {}, { user_args = { { text = "-- TODO", indent = true } } }),
+    }),
+    {
+      stored = {
+        ["name"] = i(nil, "func"),
+        ["params"] = i(nil, "..."),
+      },
+    }
   ),
   s(
     { trig = "for", name = "for loop", dscr = "For loop (dynamic)" },
@@ -79,6 +85,12 @@ return {
     })
   ),
 }, {
-  s({ trig = "[[-", wordTrig = false, hidden = true, name = "multi-line comment", dscr = "Multi-line comment" }, fmt("--[[\n\t{}\n]]", i(1))),
-  s({ trig = "[[;", wordTrig = false, hidden = true, name = "multiline string", dscr = "Multi-line string" }, fmt("[[\n\t{}\n]]", i(1))),
+  s(
+    { trig = "[[-", wordTrig = false, hidden = true, name = "multi-line comment", dscr = "Multi-line comment" },
+    fmt("--[[\n\t{}\n]]", i(1))
+  ),
+  s(
+    { trig = "[[;", wordTrig = false, hidden = true, name = "multiline string", dscr = "Multi-line string" },
+    fmt("[[\n\t{}\n]]", i(1))
+  ),
 }
