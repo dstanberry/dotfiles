@@ -35,6 +35,7 @@ return {
       experimental = {
         ghost_text = true,
       },
+      ---@diagnostic disable-next-line: missing-fields
       formatting = {
         fields = { "kind", "abbr", "menu" },
         format = function(_, item)
@@ -44,6 +45,7 @@ return {
         end,
       },
       mapping = cmp.mapping.preset.insert {
+        -- NOTE: superceded by noice.nvim
         -- ["<c-d>"] = cmp.mapping.scroll_docs(4),
         -- ["<c-f>"] = cmp.mapping.scroll_docs(-4),
         ["<c-space>"] = cmp.mapping.complete(),
