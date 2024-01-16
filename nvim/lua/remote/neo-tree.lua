@@ -40,6 +40,11 @@ return {
         function() require("neo-tree.command").execute { toggle = true, dir = vim.loop.cwd() } end,
         desc = "neotree: browse current directory",
       },
+      {
+        "-",
+        function() require("neo-tree.command").execute { toggle = true, dir = vim.loop.cwd() } end,
+        desc = "neotree: browse current directory",
+      },
     },
     deactivate = function() vim.cmd { cmd = "NeoTree", args = { "close" } } end,
     init = function()
@@ -64,7 +69,7 @@ return {
       use_popups_for_input = true,
       filesystem = {
         bind_to_cwd = false,
-        follow_current_file = true,
+        follow_current_file = { enabled = true },
         use_libuv_file_watcher = true,
         filtered_items = {
           visible = true,
