@@ -84,9 +84,8 @@ return {
           return true
         end, opts.ensure_installed)
       end
-      if opts.rainbow and opts.rainbow.enable then opts.rainbow.strategy = { require "ts-rainbow.strategy.global" } end
 
-      require("nvim-treesitter.configs").setup(opts)
+      pcall(require("nvim-treesitter.configs").setup, opts)
 
       if load_textobjects then
         -- PERF: no need to load the plugin, if we only need its queries for mini.ai
