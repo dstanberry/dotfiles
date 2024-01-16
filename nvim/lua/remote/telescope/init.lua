@@ -241,6 +241,19 @@ return {
             horizontal = { preview_width = 0.6 },
             vertical = { preview_height = 0.7 },
           },
+          file_ignore_patterns = {
+            "%.DAT",
+            "%.db",
+            "%.DS_Store",
+            "%.git",
+            "%.gitattributes",
+            "%.gpg",
+            "%.venv/",
+            "^%.git%-crypt/",
+            "^node_modules/",
+            "^ntuser",
+            "^venv/",
+          },
           mappings = {
             i = {
               ["<c-down>"] = actions.cycle_history_next,
@@ -278,18 +291,6 @@ return {
               ["q"] = actions.close,
             },
           },
-        },
-        file_ignore_patterns = {
-          "%.DAT",
-          "%.db",
-          "%.DS_Store",
-          "%.git",
-          "%.gitattributes",
-          "%.gpg",
-          "%.venv",
-          "^%.git%-crypt/",
-          "^node_modules/",
-          "^ntuser",
         },
         pickers = {
           buffers = {
