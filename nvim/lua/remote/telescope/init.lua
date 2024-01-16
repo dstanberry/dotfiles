@@ -309,6 +309,7 @@ return {
             hidden = true,
             no_ignore = true,
             no_ignore_parent = true,
+            sorting_strategy = "ascending",
           },
           git_files = {
             use_git_root = true,
