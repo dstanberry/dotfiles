@@ -101,43 +101,28 @@ gem() {
 # support custom sub-commands
 git() {
   emulate -L zsh
-  local worktree_base worktree_path parentdir
+  local git_root wt_path
   if [ "$1" = "fstash" ]; then
     gstash
   elif [ "$1" = "wta" ]; then
-    worktree_base="${PWD}/.worktree"
-    worktree_path="$worktree_base/$2"
-    parentdir="${0:A:h}"
-    parentdir="${parentdir%/*}"
-    parentdir="${parentdir##*/}"
-    if [ "$parentdir" = ".worktree" ]; then
-      worktree_path="../$2"
+    local branches=("${(@f)$(git branch | cut -c 3-)}")
+    git_root=$(command git rev-parse --path-format=absolute --git-common-dir)
+    wt_path="$git_root/$2"
+    if (($branches[(Ie)$2])); then
+      echo "$2 is amongst the values of the array"
+      command git worktree add "$wt_path" "$2"
     else
-      mkdir -p "$worktree_base"
+      echo "$2 is not amongst the values of the array"
+      command git worktree add -b "$2" "$wt_path"
     fi
-    command git worktree add $worktree_path
-    cd $worktree_path
-  elif [ "$1" = "wtb" ]; then
-    worktree_base="${PWD}/.worktree"
-    worktree_path="$worktree_base/$2"
-    parentdir="${0:A:h}"
-    parentdir="${parentdir%/*}"
-    parentdir="${parentdir##*/}"
-    if [ "$parentdir" = ".worktree" ]; then
-      worktree_path="../$2"
-    else
-      mkdir -p "$worktree_base"
-    fi
-    command git worktree add -b $2 $worktree_path \
-      $(git symbolic-ref --short HEAD)
-    cd $worktree_path
+    [ -d "$wt_path" ] && cd $wt_path
   elif [ "$1" = "wtl" ]; then
-    worktree_path=$(git worktree list \
+    wt_path=$(git worktree list \
       | fzf --exit-0 --no-multi \
 		--header="Switch worktree" \
 		--preview="git graph -50 --color=always" \
       | awk '{print $1}')
-    [ -d "$worktree_path" ] && cd $worktree_path
+    [ -d "$wt_path" ] && cd $wt_path
   else
     command git "$@"
   fi
