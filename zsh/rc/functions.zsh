@@ -123,6 +123,8 @@ git() {
 		--preview="git graph -50 --color=always" \
       | awk '{print $1}')
     [ -d "$wt_path" ] && cd $wt_path
+  elif [ "$1" = "track-remote" ]; then
+    command git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
   else
     command git "$@"
   fi
