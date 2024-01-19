@@ -23,7 +23,7 @@ cargo() {
 
 # manually remove duplicate entries in history
 clean_hist() {
-  tempfile=$(mktemp)
+  local tempfile=$(mktemp)
   command cat -n "${XDG_CACHE_HOME}/zsh/history" \
     | sort -t ';' -uk2 \
     | sort -nk1 \
@@ -101,6 +101,7 @@ gem() {
 # support custom sub-commands
 git() {
   emulate -L zsh
+  local worktree_base worktree_path parentdir
   if [ "$1" = "fstash" ]; then
     gstash
   elif [ "$1" = "wta" ]; then
@@ -223,7 +224,7 @@ notes() {
   elif [ "$1" = "edit" ]; then
     zk edit --interactive
   elif [ "$1" = "new" ]; then
-    dir=$(fd . "$ZK_NOTEBOOK_DIR" \
+    local dir=$(fd . "$ZK_NOTEBOOK_DIR" \
       --type d \
       --exclude '.zk' \
       -X printf '%s\n' {/} \
@@ -235,7 +236,7 @@ notes() {
     if [ "$dir" = "" ]; then
       exit 0
     fi
-    title=""
+    local title=""
     vared -p 'Note title: ' title
     zk new "${dir}" --title "$title"
   fi
@@ -347,7 +348,7 @@ rg() {
 
   # shell profiler
   profile() {
-    shell=${1-$SHELL}
+    local shell=${1-$SHELL}
     for i in $(seq 1 10); do time $shell -i -c exit; done
   }
 
