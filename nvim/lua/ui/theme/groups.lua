@@ -1,6 +1,6 @@
 local color = require "util.color"
 
----@class HLProps
+---@class HighlighAttrs
 ---@field fg string?
 ---@field bg string?
 ---@field bold boolean?
@@ -20,12 +20,12 @@ local M = {}
 
 local hi = setmetatable({}, {
   ---@param name string
-  ---@param args? HLProps
+  ---@param args? HighlighAttrs
   __newindex = function(_, name, args) vim.api.nvim_set_hl(0, name, args) end,
 })
 
 ---@param name string
----@param args? HLProps
+---@param args? HighlighAttrs
 M.new = function(name, args) hi[name] = args end
 
 ---@param c ColorPalette
@@ -205,12 +205,12 @@ M.apply = function(c)
   hi["@lsp.type.event"] = { link = "Identifier" }
   hi["@lsp.type.function"] = { link = "@function" }
   hi["@lsp.type.interface"] = { link = "@lsp.type.class" }
-  hi["@lsp.type.method"] = { link = "@method" }
+  hi["@lsp.type.method"] = { link = "@function.method" }
   hi["@lsp.type.modifier"] = { link = "Identifier" }
-  hi["@lsp.type.namespace"] = { link = "@namespace" }
-  hi["@lsp.type.parameter"] = { link = "@parameter" }
+  hi["@lsp.type.namespace"] = { link = "@module" }
+  hi["@lsp.type.parameter"] = { link = "@variable.parameter" }
   hi["@lsp.type.property"] = { link = "@property" }
-  hi["@lsp.type.regexp"] = { link = "@string.regex" }
+  hi["@lsp.type.regexp"] = { link = "@string.regexp" }
   hi["@lsp.type.struct"] = { link = "@structure" }
   hi["@lsp.type.type"] = { link = "@type" }
   hi["@lsp.type.typeParameter"] = { link = "@lsp.type.class" }
@@ -238,84 +238,95 @@ M.apply = function(c)
   hi["@class"] = { fg = c.cyan1 }
   hi["@comment"] = { link = "Comment" }
   hi["@comment.documentation"] = { link = "SpecialComment" }
+  hi["@comment.error"] = { link = "Error" }
+  hi["@comment.hint"] = { link = "DiagnosticHint" }
+  hi["@comment.info"] = { link = "DiagnosticInfo" }
+  hi["@comment.todo"] = { link = "Todo" }
+  hi["@comment.warning"] = { link = "WarningMsg" }
   hi["@conceal"] = { link = "Conceal" }
-  hi["@conditional"] = { fg = c.red2 }
   hi["@constant"] = { link = "Constant" }
   hi["@constant.builtin"] = { bold = true }
   hi["@constant.macro"] = { fg = c.cyan0, italic = true }
   hi["@constructor"] = { fg = c.aqua1 }
-  hi["@debug"] = { link = "Debug" }
-  hi["@define"] = { link = "Define" }
   hi["@definition.enum"] = { bold = true }
+  hi["@diff.delta"] = { link = "DiffChange" }
+  hi["@diff.minus"] = { link = "DiffDelete" }
+  hi["@diff.plus"] = { link = "DiffAdd" }
   hi["@error"] = { fg = c.red1 }
-  hi["@exception"] = { fg = c.red1 }
-  hi["@field"] = { fg = c.fg1 }
-  hi["@float"] = { link = "Float" }
   hi["@function"] = { link = "Function" }
-  hi["@function.call"] = { link = "Function" }
   hi["@function.builtin"] = { bold = true }
+  hi["@function.call"] = { link = "Function" }
   hi["@function.macro"] = { fg = c.blue1 }
-  hi["@include"] = { link = "Include" }
+  hi["@function.method"] = { link = "Function" }
+  hi["@function.method.call"] = { link = "Function" }
   hi["@keyword"] = { link = "Keyword" }
+  hi["@keyword.conditional"] = { fg = c.red2 }
+  hi["@keyword.debug"] = { link = "Debug" }
+  hi["@keyword.directive"] = { link = "PreProc" }
+  hi["@keyword.directive.define"] = { link = "Define" }
+  hi["@keyword.exception"] = { fg = c.red1 }
   hi["@keyword.function"] = { fg = c.magenta1 }
+  hi["@keyword.import"] = { link = "Include" }
   hi["@keyword.operator"] = { fg = c.magenta1 }
+  hi["@keyword.repeat"] = { link = "Repeat" }
   hi["@keyword.return"] = { fg = c.red2 }
+  hi["@keyword.storage"] = { link = "StorageClass" }
   hi["@label"] = { link = "Label" }
-  hi["@method"] = { link = "Function" }
-  hi["@method.call"] = { link = "Function" }
-  hi["@namespace"] = { fg = c.blue1 }
+  hi["@markup"] = { fg = c.fg1 }
+  hi["@markup.danger"] = { fg = c.bg2, bg = c.red1 }
+  hi["@markup.diff.add"] = { link = "DiffAdd" }
+  hi["@markup.diff.delete"] = { link = "DiffDelete" }
+  hi["@markup.emphasis"] = { fg = c.yellow2, italic = true }
+  hi["@markup.environment"] = { fg = c.blue4 }
+  hi["@markup.environment.name"] = { fg = c.yellow2 }
+  hi["@markup.link"] = { fg = c.cyan1 }
+  hi["@markup.link.label"] = { link = "Special" }
+  hi["@markup.link.url"] = { fg = c.aqua1, underline = true }
+  hi["@markup.list"] = { fg = c.aqua0 }
+  hi["@markup.math"] = { fg = c.gray2, bg = c.bg0 }
+  hi["@markup.note"] = { fg = c.bg2, bg = c.aqua0 }
+  hi["@markup.raw"] = { fg = c.orange0 }
+  hi["@markup.strikethrough"] = { strikethrough = true }
+  hi["@markup.strong"] = { bold = true }
+  hi["@markup.todo"] = { link = "Todo" }
+  hi["@markup.underline"] = { link = "Underlined" }
+  hi["@markup.warning"] = { fg = c.bg2, bg = c.yellow2 }
+  hi["@module"] = { fg = c.blue1 }
+  hi["@module.builtin"] = { fg = c.blue1, bold = true }
   hi["@none"] = { fg = c.fg1 }
   hi["@number"] = { link = "Number" }
+  hi["@number.float"] = { link = "Float" }
   hi["@operator"] = { link = "Operator" }
-  hi["@parameter"] = { fg = c.rose0 }
-  hi["@parameter.reference"] = { fg = c.rose0 }
-  hi["@preproc"] = { link = "PreProc" }
   hi["@property"] = { fg = c.fg1 }
   hi["@punctuation.bracket"] = { fg = c.aqua0 }
   hi["@punctuation.delimiter"] = { fg = c.aqua0 }
-  hi["@punctuation.special"] = { fg = c.aqua0 }
-  hi["@repeat"] = { link = "Repeat" }
-  hi["@storageclass"] = { link = "StorageClass" }
   hi["@string"] = { link = "String" }
   hi["@string.documentation"] = { link = "SpecialComment" }
   hi["@string.escape"] = { fg = c.purple0 }
-  hi["@string.regex"] = { fg = c.rose1 }
-  hi["@string.special"] = { link = "Special" }
+  hi["@string.regexp"] = { fg = c.rose1 }
+  hi["@string.special"] = { link = "SpecialChar" }
+  hi["@string.special.symbol"] = { fg = c.blue1 }
   hi["@structure"] = { link = "Structure" }
-  hi["@symbol"] = { fg = c.blue1 }
   hi["@tag"] = { link = "tag" }
   hi["@tag.attribute"] = { fg = c.orange0 }
   hi["@tag.delimiter"] = { link = "Delimiter" }
-  hi["@text"] = { fg = c.fg1 }
-  hi["@text.danger"] = { fg = c.bg2, bg = c.red1 }
-  hi["@text.diff.add"] = { bg = c.diff_add }
-  hi["@text.diff.delete"] = { bg = c.diff_delete }
-  hi["@text.emphasis"] = { fg = c.yellow2, italic = true }
-  hi["@text.environment"] = { fg = c.blue4 }
-  hi["@text.environment.name"] = { fg = c.yellow2 }
-  hi["@text.literal"] = { fg = c.orange0 }
-  hi["@text.math"] = { fg = c.gray2, bg = c.bg0 }
-  hi["@text.note"] = { fg = c.bg2, bg = c.aqua0 }
-  hi["@text.reference"] = { fg = c.cyan1 }
-  hi["@text.strike"] = { strikethrough = true }
-  hi["@text.strong"] = { bold = true }
-  hi["@text.todo"] = { link = "Todo" }
-  hi["@text.underline"] = { link = "Underlined" }
-  hi["@text.uri"] = { fg = c.aqua1, underline = true }
-  hi["@text.warning"] = { fg = c.bg2, bg = c.yellow2 }
   hi["@type"] = { link = "Type" }
   hi["@type.builtin"] = { bold = true }
-  hi["@type.qualifier"] = { link = "Type" }
   hi["@type.definition"] = { link = "TypeDef" }
+  hi["@type.qualifier"] = { link = "Type" }
   hi["@variable"] = { fg = c.fg1 }
   hi["@variable.builtin"] = { fg = c.fg2, bold = true }
+  hi["@variable.member"] = { fg = c.fg1 }
+  hi["@variable.parameter"] = { fg = c.rose0 }
+  hi["@variable.parameter.builtin"] = { fg = c.rose0, bold = true }
+  hi["@variable.parameter.reference"] = { fg = c.rose0 }
 
   -- custom treesitter extended highlighting
-  hi["@field.yaml"] = { fg = c.aqua1 }
-  hi["@text.dash"] = { fg = c.yellow0, bold = true }
-  hi["@text.codeblock"] = { bg = color.blend(c.grayX, c.bg2, 0.44) }
-  hi["@text.title"] = { link = "htmlH1" }
-  hi["@text.heading"] = { link = "htmlH2" }
+  hi["@markup.codeblock"] = { bg = color.blend(c.grayX, c.bg2, 0.44) }
+  hi["@markup.dash"] = { fg = c.yellow0, bold = true }
+  hi["@markup.heading"] = { link = "htmlH1" }
+  hi["@markup.heading"] = { link = "htmlH2" }
+  hi["@variable.member.yaml"] = { fg = c.aqua1 }
 
   -- statusline highlighting
   hi.StatusLine = { fg = c.fg0, bg = c.gray0 }

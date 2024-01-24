@@ -2,8 +2,8 @@ local groups = require "ui.theme.groups"
 
 groups.new("NotifyTRACEBody", { link = "NormalFloat" })
 groups.new("NotifyTRACEBorder", { link = "FloatBorder" })
-groups.new("NotifyTRACEIcon", { link = "@text" })
-groups.new("NotifyTRACETitle", { link = "@text" })
+groups.new("NotifyTRACEIcon", { link = "@markup" })
+groups.new("NotifyTRACETitle", { link = "@markup" })
 
 groups.new("NotifyDEBUGBody", { link = "NormalFloat" })
 groups.new("NotifyDEBUGBorder", { link = "FloatBorder" })

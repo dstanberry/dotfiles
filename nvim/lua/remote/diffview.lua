@@ -1,7 +1,7 @@
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
-groups.new("DiffviewFilePanelTitle", { link = "@text.environment" })
+groups.new("DiffviewFilePanelTitle", { link = "@markup.environment" })
 
 return {
   "sindrets/diffview.nvim",

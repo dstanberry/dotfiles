@@ -1,6 +1,6 @@
 local groups = require "ui.theme.groups"
 
-groups.new("qfPosition", { link = "@text.reference" })
+groups.new("qfPosition", { link = "@markup.link" })
 groups.new("TroubleNormal", { link = "NormalSB" })
 
 return {

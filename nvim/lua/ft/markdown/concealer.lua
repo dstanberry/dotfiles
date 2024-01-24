@@ -15,8 +15,8 @@ local headings = {
 }
 
 local highlight_groups = {
-  "@text.title",
-  "@text.heading",
+  "@markup.heading",
+  "@markup.heading",
   "@variable.builtin",
 }
 
@@ -61,27 +61,27 @@ M.toggle_on = function()
       elseif capture == "checkbox_unchecked" then
         vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
           end_col = start_column + #text,
-          virt_text = { { icons.markdown.Unchecked, "@text.todo" } },
+          virt_text = { { icons.markdown.Unchecked, "@markup.todo" } },
           virt_text_pos = "overlay",
-          hl_group = "@text.todo",
+          hl_group = "@markup.todo",
         })
       elseif capture == "checkbox_checked" then
         vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
           end_col = start_column + #text,
-          virt_text = { { icons.markdown.Checked, "@text.todo" } },
+          virt_text = { { icons.markdown.Checked, "@markup.todo" } },
           virt_text_pos = "overlay",
-          hl_group = "@text.todo",
+          hl_group = "@markup.todo",
         })
       elseif capture == "list_marker_minus" then
         vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
           end_col = start_column + #text,
-          virt_text = { { icons.markdown.ListMinus, "@punctuation.special" } },
+          virt_text = { { icons.markdown.ListMinus, "@markup.list" } },
           virt_text_pos = "overlay",
-          hl_group = "@punctuation.special",
+          hl_group = "@markup.list",
         })
       elseif capture == "dash" then
         vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, 0, {
-          virt_text = { { ("-"):rep(vim.api.nvim_win_get_width(0)), "@text.dash" } },
+          virt_text = { { ("-"):rep(vim.api.nvim_win_get_width(0)), "@markup.dash" } },
           virt_text_pos = "overlay",
           hl_group = "combine",
         })
@@ -89,7 +89,7 @@ M.toggle_on = function()
         vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, 0, {
           end_col = 0,
           end_row = end_row,
-          hl_group = "@text.codeblock",
+          hl_group = "@markup.codeblock",
           hl_eol = true,
         })
       end
