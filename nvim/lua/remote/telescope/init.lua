@@ -309,12 +309,13 @@ return {
             hidden = true,
             no_ignore = true,
             no_ignore_parent = true,
-            sorting_strategy = "ascending",
+            sorting_strategy = "descending",
           },
           git_files = {
             use_git_root = true,
             show_untracked = true,
             recurse_submodules = false,
+            sorting_strategy = "descending",
           },
           grep_string = {
             layout_strategy = "vertical",
