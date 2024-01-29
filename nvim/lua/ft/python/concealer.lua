@@ -23,7 +23,7 @@ M.toggle_on = function()
         if pre == "f" then
           vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
             end_col = start_column + 1,
-            hl_group = "@macro",
+            hl_group = "@function.macro",
             hl_eol = false,
           })
         end
