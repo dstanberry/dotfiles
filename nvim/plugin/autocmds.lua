@@ -24,6 +24,12 @@ vim.api.nvim_create_autocmd("CmdLineLeave", {
 })
 
 local filesystem = vim.api.nvim_create_augroup("filesystem", { clear = true })
+vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
+  group = filesystem,
+  callback = function()
+    if vim.o.buftype ~= "nofile" then vim.cmd "checktime" end
+  end,
+})
 vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
   group = filesystem,
   pattern = "*",
