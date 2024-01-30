@@ -24,7 +24,7 @@ return {
       lua = { "stylua" },
       markdown = { "markdownlint" },
       pgsql = { "sql_formatter" },
-      python = { "isort", "black" },
+      python = { "isort", "black", "injected" },
       rust = { "rustfmt" },
       sh = { "shfmt" },
       sql = { "sql_formatter" },
