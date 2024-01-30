@@ -20,11 +20,14 @@ function M.delete_buffer(force)
     vim.cmd.enew()
     return
   end
-  local w_id = vim.api.nvim_get_current_win()
-  local winnr = vim.api.nvim_win_get_number(w_id)
-  local bufnr = vim.api.nvim_win_get_buf(w_id)
-  -- TODO: replace |getbufinfo()| with lua api
-  for _, winid in ipairs(vim.fn.getbufinfo(bufnr)[1].windows) do
+  local win = vim.api.nvim_get_current_win()
+  local winnr = vim.api.nvim_win_get_number(win)
+  local bufnr = vim.api.nvim_win_get_buf(win)
+  local wins = vim.tbl_filter(
+    function(winid) return vim.api.nvim_win_get_buf(winid) == bufnr end,
+    vim.api.nvim_list_wins()
+  )
+  for _, winid in ipairs(wins) do
     vim.cmd.wincmd { args = { "w" }, range = { vim.api.nvim_win_get_number(winid) } }
     if bufnr == buffers[#buffers] then
       vim.cmd.bprevious()
