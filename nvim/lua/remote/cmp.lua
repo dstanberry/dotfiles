@@ -28,6 +28,13 @@ return {
           suggestion = { enabled = false },
           panel = { enabled = false },
           filetypes = { ["*"] = true },
+          server_opts_overrides = {
+            settings = {
+              advanced = {
+                debug = { acceptSelfSignedCertificate = true },
+              },
+            },
+          },
         },
       },
       opts = {},
