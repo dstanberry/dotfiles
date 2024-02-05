@@ -9,7 +9,7 @@ groups.new("PanelHeading", { link = "Title" })
 
 return {
   "akinsho/bufferline.nvim",
-  event = "VeryLazy",
+  event = "UIEnter",
   dependencies = { "tiagovla/scope.nvim", config = true },
   keys = {
     { "<leader>bg", ":BufferLineGroupToggle ", desc = "bufferline: toggle group" },
