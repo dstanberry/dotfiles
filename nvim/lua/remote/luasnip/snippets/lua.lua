@@ -5,13 +5,12 @@ require("remote.luasnip.nodes").setup_snip_env()
 
 return {
   s({
-    trig = "ig[nore]",
-    regTrig = true,
+    trig = "ignore",
     name = "disable formatting",
     dscr = "Disable `stylua` formatting for the next region",
   }, { t "-- stylua: ignore" }),
   s(
-    { trig = "re[quire]", regTrig = true, name = "require statement", dscr = "Require statement" },
+    { trig = "require", name = "require statement", dscr = "Require statement" },
     fmt([[local {} = require("{}")]], {
       d(2, rutil.repeat_node_segment, { 1 }, { user_args = { "." } }),
       i(1, "mod"),

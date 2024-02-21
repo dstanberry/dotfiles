@@ -54,7 +54,7 @@ return {
     })
   ),
   s(
-    { trig = ".re[duce]", regTrig = true, name = "reduce", dscr = "Reduce Prototype" },
+    { trig = ".reduce", name = "reduce", dscr = "Reduce Prototype" },
     fmt(".reduce({});", {
       c(1, {
         i(1),
@@ -111,7 +111,7 @@ return {
     })
   ),
   s(
-    { trig = "im[port]", regTrig = true, name = "import statement", dscr = "Import statement" },
+    { trig = "import", name = "import statement", dscr = "Import statement" },
     fmt([[import {};]], {
       c(1, {
         sn(nil, fmt([["{}"]], { i(1, "module-name") })),
@@ -120,7 +120,7 @@ return {
     })
   ),
   s(
-    { trig = "re[quire]", regTrig = true, name = "require statement", dscr = "Require statement" },
+    { trig = "require", name = "require statement", dscr = "Require statement" },
     fmt(
       [[const {} = require("{}");]],
       { d(2, rutil.repeat_node_segment, { 1 }, { user_args = { "/", "." } }), i(1, "module") }

@@ -144,11 +144,7 @@ return {
     })
   ),
 }, {
-  s(
-    { trig = "print[ln]", regTrig = true, name = "log", dscr = "Print to stdout" },
-    fmt([[fmt.Println("{}")]], { i(1) }),
-    {
-      condition = conds.line_begin,
-    }
-  ),
+  s({ trig = "print", name = "log", dscr = "Print to stdout" }, fmt([[fmt.Println("{}")]], { i(1) }), {
+    condition = conds.line_begin,
+  }),
 }

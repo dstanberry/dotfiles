@@ -35,7 +35,7 @@ local init_params = function(args)
 end
 
 return {
-  s({ trig = "im[port]", regTrig = true, name = "import statement", dscr = "Import statement" }, {
+  s({ trig = "import", name = "import statement", dscr = "Import statement" }, {
     c(1, {
       sn(nil, fmt("import {}", { r(1, "module") })),
       sn(nil, fmt("from {} import {}", { i(1, "namespace"), r(2, "module") })),
@@ -46,7 +46,7 @@ return {
     },
   }),
   s(
-    { trig = "(d?)cl", regTrig = true, name = "(data) class", dscr = "Declare <data>class" },
+    { trig = "dcl", name = "(data) class", dscr = "Declare <data>class" },
     fmt("{}class {}({}):\n\tdef __init__(self{}):{}", {
       d(1, dataclass, {}, {}),
       i(2, "Obj"),

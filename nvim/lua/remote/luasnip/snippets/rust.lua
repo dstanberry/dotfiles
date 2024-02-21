@@ -62,7 +62,7 @@ return {
   ),
 }, {
   s(
-    { trig = "print[ln]", regTrig = true, name = "log", dscr = "Print to stdout" },
+    { trig = "print[ln]", name = "log", dscr = "Print to stdout" },
     fmt([[println!("{}: {{:?}}", {});]], { rep(1), i(1) }),
     {
       condition = conds.line_begin,
