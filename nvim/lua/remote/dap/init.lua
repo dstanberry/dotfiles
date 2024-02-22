@@ -4,15 +4,49 @@ local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 local util = require "util"
 
+---@diagnostic disable: missing-fields
 return {
   "mfussenegger/nvim-dap",
   lazy = true,
   dependencies = {
     "jbyuki/one-small-step-for-vimkind",
     "mfussenegger/nvim-dap-python",
-    { "mxsdev/nvim-dap-vscode-js", branch = "start-debugging" },
     "rcarriga/nvim-dap-ui",
     "theHamsta/nvim-dap-virtual-text",
+    {
+      "mxsdev/nvim-dap-vscode-js",
+      dependencies = {
+        {
+          "Joakker/lua-json5",
+          build = has "win32" and "" or "./install.sh",
+          config = function()
+            if has "mac" then table.insert(vim._so_trails, "/?.dylib") end
+          end,
+        },
+        {
+          "microsoft/vscode-js-debug",
+          branch = "release/1.77",
+          build = has "win32" and ""
+            or "npm install --legacy-peer-deps --no-save && npx gulp vsDebugServerBundle && rm -rf out && mv dist out",
+          version = "1.*",
+        },
+      },
+      config = function()
+        require("dap-vscode-js").setup {
+          debugger_path = vim.fs.normalize(vim.fn.stdpath "data" .. "/lazy/vscode-js-debug"),
+          debugger_executable = vim.fs.normalize(
+            vim.fn.stdpath "data" .. "/lazy/vscode-js-debug/out/src/vsDebugServer.js"
+          ),
+          adapters = {
+            "chrome",
+            "pwa-node",
+            "pwa-chrome",
+            "pwa-extenshionHost",
+            "node-terminal",
+          },
+        }
+      end,
+    },
   },
   -- stylua: ignore
   keys = {
