@@ -72,6 +72,11 @@ export PROJECTS_DIR="${HOME}/Projects"
 # define the default manpager
 export MANPAGER='nvim +Man!'
 
+# (no direct export) load angular completions when available
+if hash ng 2> /dev/null; then
+  _evalcache ng completion script
+fi
+
 # set the default editor
 if hash nvim 2> /dev/null; then
   export EDITOR=nvim
