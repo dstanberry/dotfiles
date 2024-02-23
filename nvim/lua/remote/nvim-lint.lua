@@ -12,11 +12,20 @@ return {
       python = { "flake8" },
       sh = { "shellcheck" },
     },
+    linters = {
+      -- -- Example of using selene only when a selene.toml file is present
+      -- selene = {
+      --   condition = function(ctx)
+      --     return vim.fs.find({ "selene.toml" }, { path = ctx.filename, upward = true })[1]
+      --   end,
+      -- },
+    },
   },
   config = function(_, opts)
     local lint = require "lint"
     local M = {}
 
+    lint.linters_by_ft = opts.linters_by_ft
     M.debounce = function(ms, fn)
       local timer = vim.loop.new_timer()
       return function(...)
