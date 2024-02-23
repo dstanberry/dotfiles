@@ -5,9 +5,21 @@ local M = {}
 M.setup = function()
   local dap = require "dap"
 
-  dap.adapters.chrome = dap.adapters["pwa-chrome"]
-
-  local languages = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" }
+  local adapters = {
+    "chrome",
+    "pwa-chrome",
+    "pwa-extensionHost",
+    "pwa-msedge",
+    "pwa-node",
+    "node-terminal",
+  }
+  local languages = {
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+  }
 
   vim.keymap.set("n", "<leader>da", function()
     local root = util.buffer.get_root()
@@ -20,6 +32,23 @@ M.setup = function()
     end
     require("dap").continue()
   end, { desc = "dap: run with args" })
+
+  local debugger_path = require("mason-registry").get_package("js-debug-adapter"):get_install_path()
+  for _, adapter in ipairs(adapters) do
+    dap.adapters[adapter] = {
+      type = "server",
+      host = "localhost",
+      port = "${port}",
+      executable = {
+        command = "node",
+        args = {
+          debugger_path .. "/js-debug/src/dapDebugServer.js",
+          "${port}",
+          "localhost",
+        },
+      },
+    }
+  end
 
   for _, language in ipairs(languages) do
     if not dap.configurations[language] then
@@ -44,7 +73,7 @@ M.setup = function()
           type = "pwa-chrome",
           name = "Launch in Chrome",
           request = "launch",
-          preLaunchTask = "npm run start",
+          preLaunchTask = "npm start",
           url = function()
             local c = coroutine.running()
             return coroutine.create(function()

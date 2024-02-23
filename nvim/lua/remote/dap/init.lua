@@ -13,35 +13,6 @@ return {
     "mfussenegger/nvim-dap-python",
     "rcarriga/nvim-dap-ui",
     "theHamsta/nvim-dap-virtual-text",
-    {
-      "mxsdev/nvim-dap-vscode-js",
-      dependencies = {
-        {
-          "Joakker/lua-json5",
-          build = has "win32" and "" or "./install.sh",
-          config = function()
-            if has "mac" then table.insert(vim._so_trails, "/?.dylib") end
-          end,
-        },
-      },
-      config = function()
-        local debugger_path = require("mason-registry").get_package("js-debug-adapter"):get_install_path()
-        require("dap-vscode-js").setup {
-          -- debugger_path = debugger_path,
-          debugger_cmd = { "node", debugger_path .. "/js-debug/src/dapDebugServer.js" },
-          log_file_path = vim.fn.stdpath "cache" .. "/dap-vscode-js.log",
-          -- log_file_level = vim.log.levels.TRACE,
-          -- log_console_level = vim.log.levels.TRACE,
-          adapters = {
-            "chrome",
-            "pwa-node",
-            "pwa-chrome",
-            "pwa-extenshionHost",
-            "node-terminal",
-          },
-        }
-      end,
-    },
   },
   -- stylua: ignore
   keys = {
