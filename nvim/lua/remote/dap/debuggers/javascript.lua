@@ -5,18 +5,7 @@ local M = {}
 M.setup = function()
   local dap = require "dap"
 
-  dap.adapters.chrome = {
-    type = "server",
-    host = "localhost",
-    port = "${port}",
-    executable = {
-      command = "node",
-      args = {
-        vim.fs.normalize(vim.fn.stdpath "data" .. "/lazy/vscode-js-debug/out/src/vsDebugServer.js"),
-        "${port}",
-      },
-    },
-  }
+  dap.adapters.chrome = dap.adapters["pwa-chrome"]
 
   local languages = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" }
 
