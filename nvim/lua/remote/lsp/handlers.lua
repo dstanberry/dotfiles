@@ -21,6 +21,31 @@ M.on_init = function(opts)
   end
 end
 
+---@param old_fname string
+---@param new_fname string
+M.on_rename = function(old_fname, new_fname)
+  local buf = vim.fn.bufnr(old_fname)
+  local will_rename = false
+  for _, c in pairs(vim.lsp.get_clients { bufnr = buf }) do
+    if c.supports_method "workspace/willRenameFiles" then
+      ---@diagnostic disable-next-line: invisible
+      local res = c.request_sync("workspace/willRenameFiles", {
+        files = {
+          {
+            oldUri = vim.uri_from_fname(old_fname),
+            newUri = vim.uri_from_fname(new_fname),
+          },
+        },
+      }, 1000, 0)
+      if res and res.result then
+        vim.lsp.util.apply_workspace_edit(res.result, c.offset_encoding)
+        will_rename = true
+      end
+    end
+  end
+  if not will_rename then vim.notify("File Rename not supported", vim.log.levels.WARN, { title = "LSP" }) end
+end
+
 M.on_attach = function(client, bufnr)
   -- NOTE: "gD" used by |glance.nvim|
   -- if client.server_capabilities.declarationProvider then
@@ -123,37 +148,25 @@ M.on_attach = function(client, bufnr)
     else
       vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr, desc = "lsp: rename" })
     end
+  end
 
-    local prepare_rename = function(data)
-      local buf = vim.fn.bufnr(data.old_name)
-      local will_rename = false
-      for _, c in pairs(vim.lsp.get_clients { bufnr = buf }) do
-        if c.supports_method "workspace/willRenameFiles" then
-          ---@diagnostic disable-next-line: invisible
-          local res = c.request_sync("workspace/willRenameFiles", {
-            files = {
-              {
-                oldUri = vim.uri_from_fname(data.old_name),
-                newUri = vim.uri_from_fname(data.new_name),
-              },
-            },
-          }, 1000, 0)
-          if res and res.result then
-            vim.lsp.util.apply_workspace_edit(res.result, c.offset_encoding)
-            will_rename = true
-          end
-        end
-      end
-      if not will_rename then vim.notify("File Rename not supported", vim.log.levels.WARN, { title = "LSP" }) end
-    end
-
+  if client.supports_method "workspace/willRenameFiles" then
     local rename_file = function()
       vim.ui.input({ prompt = "New filename: " }, function(name)
         if not name then return end
-        local old_name = vim.api.nvim_buf_get_name(0)
-        local new_name = string.format("%s/%s", vim.fs.dirname(old_name), name)
-        prepare_rename { old_name = old_name, new_name = new_name }
-        vim.lsp.util.rename(old_name, new_name)
+        local old_fname = vim.api.nvim_buf_get_name(0)
+        local new_fname = string.format("%s/%s", vim.fs.dirname(old_fname), name)
+        ---@diagnostic disable-next-line: invisible
+        local res = client.request_sync("workspace/willRenameFiles", {
+          files = {
+            {
+              oldUri = vim.uri_from_fname(old_fname),
+              newUri = vim.uri_from_fname(new_fname),
+            },
+          },
+        }, 1000, 0)
+        if res and res.result then vim.lsp.util.apply_workspace_edit(res.result, client.offset_encoding) end
+        vim.lsp.util.rename(old_fname, new_fname)
         vim.cmd.edit "%"
       end)
     end
