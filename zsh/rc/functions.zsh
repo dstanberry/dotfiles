@@ -109,10 +109,8 @@ git() {
     git_root=$(command git rev-parse --path-format=absolute --git-common-dir)
     wt_path="$git_root/$2"
     if (($branches[(Ie)$2])); then
-      echo "$2 is amongst the values of the array"
       command git worktree add "$wt_path" "$2"
     else
-      echo "$2 is not amongst the values of the array"
       command git worktree add -b "$2" "$wt_path"
     fi
     [ -d "$wt_path" ] && cd $wt_path
