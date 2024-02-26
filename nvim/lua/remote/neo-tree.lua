@@ -3,6 +3,7 @@ local color = require "util.color"
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 local util = require "util"
+local handlers = require "remote.lsp.handlers"
 
 local GRAY = color.darken(c.gray0, 10)
 
@@ -108,5 +109,22 @@ return {
         },
       },
     },
+    config = function(_, opts)
+      local function on_move(data) handlers.on_rename(data.source, data.destination) end
+
+      local events = require "neo-tree.events"
+      opts.event_handlers = opts.event_handlers or {}
+      vim.list_extend(opts.event_handlers, {
+        { event = events.FILE_MOVED, handler = on_move },
+        { event = events.FILE_RENAMED, handler = on_move },
+      })
+      require("neo-tree").setup(opts)
+      vim.api.nvim_create_autocmd("TermClose", {
+        pattern = "*lazygit",
+        callback = function()
+          if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
+        end,
+      })
+    end,
   },
 }
