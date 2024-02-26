@@ -41,7 +41,7 @@ return {
         cmdline = { title = "" },
         filter = { title = "" },
         help = { title = "" },
-        input = { title = "" },
+        input = { title = "", view = "cmdline_popup", lang = "text" },
         lua = { title = "" },
         search_down = { title = "", view = "cmdline" },
         search_up = { title = "", view = "cmdline" },
@@ -164,14 +164,14 @@ return {
     views = {
       cmdline_popup = {
         border = { style = "single", padding = { 0, 1 } },
-        position = { row = 10, col = "50%" },
+        position = { row = 20, col = "50%" },
         size = { width = 70, height = "auto" },
         filter_options = {},
       },
       popupmenu = {
         relative = "editor",
         border = { style = "single", padding = { 0, 1 } },
-        position = { row = 13, col = "50%" },
+        position = { row = 23, col = "50%" },
         size = { width = 70, height = 10 },
         win_options = {
           winhighlight = { Normal = "Normal", FloatBorder = "NoiceCmdlinePopupBorder" },
