@@ -11,6 +11,45 @@ return {
       },
     },
     cmd = "Mason",
+    ensure_installed = {
+      "angular-language-server",
+      "bash-language-server",
+      "beautysh",
+      "black",
+      "cbfmt",
+      "clangd",
+      "cmake-language-server",
+      "codelldb",
+      "css-lsp",
+      "delve",
+      "eslint-lsp",
+      "eslint_d",
+      "flake8",
+      "gofumpt",
+      "goimports",
+      "gopls",
+      "html-lsp",
+      "isort",
+      "js-debug-adapter",
+      "json-lsp",
+      "lua-language-server",
+      "markdownlint",
+      "marksman",
+      "netcoredbg",
+      "prettier",
+      "prettierd",
+      "pyright",
+      "rust-analyzer",
+      "shellcheck",
+      "shfmt",
+      "sql-formatter",
+      "stylua",
+      "typescript-language-server",
+      "vale",
+      "vim-language-server",
+      "vint",
+      "yaml-language-server",
+    },
     opts = {
       PATH = "append",
       log_level = vim.log.levels.INFO,
@@ -36,5 +75,13 @@ return {
         },
       },
     },
+    config = function(plugin, opts)
+      require("mason").setup(opts)
+      local mason_registry = require "mason-registry"
+      for _, tool in ipairs(plugin.ensure_installed) do
+        local pkg = mason_registry.get_package(tool)
+        if not pkg:is_installed() then pkg:install() end
+      end
+    end,
   },
 }
