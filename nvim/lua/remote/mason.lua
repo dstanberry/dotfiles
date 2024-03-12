@@ -42,6 +42,7 @@ return {
       "rust-analyzer",
       "shellcheck",
       "shfmt",
+      "snyk-ls",
       "sql-formatter",
       "stylua",
       "typescript-language-server",
