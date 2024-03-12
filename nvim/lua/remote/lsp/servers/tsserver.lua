@@ -1,3 +1,4 @@
+---@diagnostic disable: assign-type-mismatch
 local handlers = require "remote.lsp.handlers"
 
 local M = {}
