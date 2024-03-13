@@ -70,6 +70,7 @@ brew "wget"
 brew "xz"
 brew "zk", args: ["HEAD"]
 brew "zlib"
+brew "zoxide"
 brew "zsh-completions"
 
 cask "alt-tab"

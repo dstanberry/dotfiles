@@ -226,3 +226,11 @@ fi
 if [ ! -s "${CONFIG_HOME}/wget/wgetrc" ]; then
   echo hsts-file \= "$XDG_CACHE_HOME"/wget-hsts >> "$XDG_CONFIG_HOME/wget/wgetrc"
 fi
+
+# load zoxide util when available
+if hash zoxide 2> /dev/null; then
+  export _ZO_DATA_DIR="$XDG_DATA_HOME/zoxide"
+  export _ZO_EXCLUDE_DIRS="$HOME:$HOME/Downloads/*:*/.git:/tmp/*"
+  export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS"
+  _evalcache zoxide init --cmd cd zsh
+fi
