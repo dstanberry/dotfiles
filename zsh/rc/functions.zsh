@@ -15,6 +15,10 @@ cargo() {
   if [ "$1" = "save" ]; then
     command cargo install --list | grep -E '^\w+' | awk '{ print $1 }' > "$PKG"
   elif [ "$1" = "load" ]; then
+    if [ "$EUID" -eq 0 ]; then
+      echo "cargo load is not supported for root user"
+      exit 1
+    fi
     < "$PKG" xargs "cargo" install
   else
     command cargo "$@"
@@ -92,6 +96,10 @@ fp() {
 gem() {
   local PKG=$CONFIG_HOME/shared/packages/gem.txt
   if [ "$1" = "load" ]; then
+    if [ "$EUID" -eq 0 ]; then
+      echo "gem load is not supported for root user"
+      exit 1
+    fi
     < "$PKG" xargs "gem" install
   else
     command gem "$@"
@@ -132,6 +140,10 @@ git() {
 go() {
   local PKG=$CONFIG_HOME/shared/packages/go.txt
   if [ "$1" = "load" ]; then
+    if [ "$EUID" -eq 0 ]; then
+      echo "go load is not supported for root user"
+      exit 1
+    fi
     # < "$PKG" xargs "go" install
     while read -r line
     do
@@ -195,6 +207,10 @@ headers() {
 luarocks() {
   local PKG=$CONFIG_HOME/shared/packages/luarocks.txt
   if [ "$1" = "load" ]; then
+    if [ "$EUID" -eq 0 ]; then
+      echo "luarocks load is not supported for root user"
+      exit 1
+    fi
     < "$PKG" xargs "luarocks" --tree="${XDG_DATA_HOME}/luarocks" install
   else
     command luarocks "$@"
@@ -242,10 +258,10 @@ npm() {
     fi
   elif [ "$1" = "load" ]; then
     if [ "$EUID" -eq 0 ]; then
-      < "$PKG" xargs "npm" install -g
-    else
-      < "$PKG" xargs sudo "npm" install -g
+      echo "npm load is not supported for root user"
+      exit 1
     fi
+    < "$PKG" xargs "npm" install -g
   else
     command npm "$@"
   fi
@@ -284,6 +300,10 @@ pip() {
       return 1
     fi
   elif [ "$1" = "load" ]; then
+    if [ "$EUID" -eq 0 ]; then
+      echo "pip load is not supported for root user"
+      exit 1
+    fi
     if [ is_gentoo ]; then
       command pip install --user --requirement "$PKG" --upgrade
     else
