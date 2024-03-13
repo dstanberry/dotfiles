@@ -289,7 +289,7 @@ M.setup = function()
     for _, info in ipairs(related_info) do
       diag.message = ("%s\n%s(%d:%d)%s"):format(
         diag.message,
-        vim.fn.fnamemodify(vim.uri_to_fname(info.location.uri), ":p:."),
+        vim.fs.basename(info.location.uri),
         info.location.range.start.line + 1,
         info.location.range.start.character + 1,
         info.message and info.message ~= "" and (": %s"):format(info.message) or ""

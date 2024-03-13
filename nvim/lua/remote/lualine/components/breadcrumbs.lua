@@ -62,6 +62,6 @@ return function()
   local dirpath, filename = (filepath):match "^(.+)/(.+)$"
   local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
   local relative_path = vim.startswith(bufid, "diffview") and "" or get_relative_path(winid, dirpath)
-  local ext = vim.fn.fnamemodify(filename, ":e")
+  local ext = vim.fs.basename(filename):match "[^.]+$"
   return format_sections(relative_path, filename, ext)
 end

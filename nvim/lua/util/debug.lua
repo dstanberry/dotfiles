@@ -22,8 +22,8 @@ function M.dump(value, opts)
   opts = opts or {}
   opts.location = opts.location or M.get_location()
   if vim.in_fast_event() then return vim.schedule(function() M.dump(value, opts) end) end
-  opts.location = vim.fn.fnamemodify(opts.location, ":~:.")
   local msg = vim.inspect(value)
+  ---@diagnostic disable-next-line: undefined-field
   local title = vim.F.if_nil(opts.title, "Debug")
   vim.notify(msg, vim.log.levels.INFO, {
     title = title,
