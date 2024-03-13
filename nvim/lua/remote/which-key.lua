@@ -48,6 +48,10 @@ return {
         mode = "v",
         name = "+notes (markdown)",
       },
+      ["<leader>s"] = {
+        mode = "v",
+        name = "+selection",
+      },
       ["<localleader>"] = {
         mode = "n",
         ["<localleader>"] = { name = "+command" },
