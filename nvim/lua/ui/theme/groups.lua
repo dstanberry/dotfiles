@@ -179,8 +179,8 @@ M.apply = function(c)
   hi.LspReferenceWrite = { bold = true, italic = true, underline = true, sp = c.gray1 }
 
   -- lsp diagnostic highlighting
-  hi.DiagnosticDeprecated = { link = "@lsp.mod.deprecated" }
-  hi.DiagnosticUnnecessary = { link = "@lsp.mod.unnecessary" }
+  hi.DiagnosticDeprecated = { sp = c.red3, italic = true, strikethrough = true }
+  hi.DiagnosticUnnecessary = { fg = c.gray2, italic = true }
 
   hi.DiagnosticError = { fg = c.red1 }
   hi.DiagnosticWarn = { fg = c.yellow2 }
@@ -198,36 +198,57 @@ M.apply = function(c)
   hi.DiagnosticUnderlineHint = { undercurl = true, sp = c.magenta1 }
 
   -- lsp semantic tokens
+  hi["@lsp.type.boolean"] = { link = "@boolean" }
+  hi["@lsp.type.builtinType"] = { link = "@type.builtin" }
   hi["@lsp.type.class"] = { link = "@class" }
+  hi["@lsp.type.comment"] = { link = "@comment" }
   hi["@lsp.type.decorator"] = { link = "@constant.macro" }
+  hi["@lsp.type.deriveHelper"] = { link = "@attribute" }
   hi["@lsp.type.enum"] = { link = "@constructor" }
   hi["@lsp.type.enumMember"] = { link = "@constant" }
+  hi["@lsp.type.escapeSequence"] = { link = "@string.escape" }
   hi["@lsp.type.event"] = { link = "Identifier" }
+  hi["@lsp.type.formatSpecifier"] = { link = "@markup.list" }
   hi["@lsp.type.function"] = { link = "@function" }
-  hi["@lsp.type.interface"] = { link = "@lsp.type.class" }
+  hi["@lsp.type.generic"] = { link = "@variable" }
+  hi["@lsp.type.interface"] = { fg = color.lighten(c.cyan1, 20) }
+  hi["@lsp.type.lifetime"] = { link = "@keyword.storage" }
   hi["@lsp.type.method"] = { link = "@function.method" }
   hi["@lsp.type.modifier"] = { link = "Identifier" }
   hi["@lsp.type.namespace"] = { link = "@module" }
+  hi["@lsp.type.number"] = { link = "@number" }
+  hi["@lsp.type.operator"] = { link = "@operator" }
   hi["@lsp.type.parameter"] = { link = "@variable.parameter" }
   hi["@lsp.type.property"] = { link = "@property" }
   hi["@lsp.type.regexp"] = { link = "@string.regexp" }
+  hi["@lsp.type.selfKeyword"] = { link = "@variable.builtin" }
+  hi["@lsp.type.selfTypeKeyword"] = { link = "@variable.builtin" }
+  hi["@lsp.type.string"] = { link = "@string" }
   hi["@lsp.type.struct"] = { link = "@structure" }
   hi["@lsp.type.type"] = { link = "@type" }
+  hi["@lsp.type.typeAlias"] = { link = "@type.definition" }
   hi["@lsp.type.typeParameter"] = { link = "@lsp.type.class" }
-  hi["@lsp.type.variable"] = { link = "@variable" }
+  hi["@lsp.type.unresolvedReference"] = { link = "DiagnosticUnderlineError" }
+  hi["@lsp.type.variable"] = {} -- fallback to treesitter
 
   -- lsp semantic modifier tokens
-  -- hi["@lsp.mod.async"] = {}
-  -- hi["@lsp.mod.abstract"] = {}
-  -- hi["@lsp.mod.declaration"] = {}
-  hi["@lsp.mod.defaultLibrary"] = { italic = true }
-  -- hi["@lsp.mod.definition"] = {}
-  hi["@lsp.mod.deprecated"] = { sp = c.red3, italic = true, strikethrough = true }
-  hi["@lsp.mod.documentation"] = { link = "SpecialComment" }
-  -- hi["@lsp.mod.modification"] = {}
-  hi["@lsp.mod.readonly"] = { italic = true }
-  hi["@lsp.mod.static"] = { bold = true }
-  hi["@lsp.mod.unnecessary"] = { fg = c.gray2, italic = true }
+  hi["@lsp.typemod.class.defaultLibrary"] = { link = "@type.builtin" }
+  hi["@lsp.typemod.enum.defaultLibrary"] = { link = "@type.builtin" }
+  hi["@lsp.typemod.enumMember.defaultLibrary"] = { link = "@constant.builtin" }
+  hi["@lsp.typemod.function.defaultLibrary"] = { link = "@function.builtin" }
+  hi["@lsp.typemod.keyword.async"] = { link = "@keyword.coroutine" }
+  hi["@lsp.typemod.keyword.injected"] = { link = "@keyword" }
+  hi["@lsp.typemod.macro.defaultLibrary"] = { link = "@function.builtin" }
+  hi["@lsp.typemod.method.defaultLibrary"] = { link = "@function.builtin" }
+  hi["@lsp.typemod.operator.injected"] = { link = "@operator" }
+  hi["@lsp.typemod.string.injected"] = { link = "@string" }
+  hi["@lsp.typemod.struct.defaultLibrary"] = { link = "@type.builtin" }
+  hi["@lsp.typemod.type.defaultLibrary"] = { link = "@type.builtin" }
+  hi["@lsp.typemod.typeAlias.defaultLibrary"] = { link = "@type.builtin" }
+  hi["@lsp.typemod.variable.callable"] = { link = "@function" }
+  hi["@lsp.typemod.variable.defaultLibrary"] = { link = "@variable.builtin" }
+  hi["@lsp.typemod.variable.injected"] = { link = "@variable" }
+  hi["@lsp.typemod.variable.static"] = { link = "@constant" }
 
   -- treesitter highlighting
   hi["@annotation"] = { fg = c.yellow2 }
@@ -241,6 +262,7 @@ M.apply = function(c)
   hi["@comment.error"] = { link = "Error" }
   hi["@comment.hint"] = { link = "DiagnosticHint" }
   hi["@comment.info"] = { link = "DiagnosticInfo" }
+  hi["@comment.note"] = { link = "DiagnosticInfo" }
   hi["@comment.todo"] = { link = "Todo" }
   hi["@comment.warning"] = { link = "WarningMsg" }
   hi["@conceal"] = { link = "Conceal" }
@@ -260,11 +282,12 @@ M.apply = function(c)
   hi["@function.method"] = { link = "Function" }
   hi["@function.method.call"] = { link = "Function" }
   hi["@keyword"] = { link = "Keyword" }
-  hi["@keyword.conditional"] = { fg = c.red2 }
+  hi["@keyword.coroutine"] = { link = "@keyword" }
+  hi["@keyword.conditional"] = { link = "Conditional" }
   hi["@keyword.debug"] = { link = "Debug" }
   hi["@keyword.directive"] = { link = "PreProc" }
   hi["@keyword.directive.define"] = { link = "Define" }
-  hi["@keyword.exception"] = { fg = c.red1 }
+  hi["@keyword.exception"] = { link = "Exception" }
   hi["@keyword.function"] = { fg = c.magenta1 }
   hi["@keyword.import"] = { link = "Include" }
   hi["@keyword.operator"] = { fg = c.magenta1 }
@@ -293,7 +316,7 @@ M.apply = function(c)
   hi["@markup.warning"] = { fg = c.bg2, bg = c.yellow2 }
   hi["@module"] = { fg = c.blue1 }
   hi["@module.builtin"] = { fg = c.blue1, bold = true }
-  hi["@none"] = { fg = c.fg1 }
+  hi["@none"] = {}
   hi["@number"] = { link = "Number" }
   hi["@number.float"] = { link = "Float" }
   hi["@operator"] = { link = "Operator" }
