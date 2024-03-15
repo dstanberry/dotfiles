@@ -49,7 +49,7 @@ elif [[ $# -eq 1 ]]; then
     if [ "$current_client" == "float-repl" ]; then
       tmux detach-client
     else
-      tmux popup -d '#{pane_current_path}' -xC -yC -w80% -h80% \
+      tmux popup -d '#{pane_current_path}' -xC -yC -w90% -h80% \
         -E "tmux attach -t float-repl || tmux new -s float-repl" || true
     fi
     exit 0
