@@ -182,10 +182,10 @@ if hash mysql 2> /dev/null; then
   export MYSQL_HISTFILE="$XDG_DATA_HOME/mysql_history"
 fi
 
-# define configuration path for ncurses
+# define configuration path for ncurses on linux
 if ! is_darwin; then
-  export TERMINFO="$XDG_DATA_HOME/TERMINFO"
-  export TERMINFO_DIRS="$XDG_DATA_HOME/terminfo:/usr/share/terminfo"
+  export TERMINFO="$XDG_DATA_HOME/terminfo"
+  export TERMINFO_DIRS="$TERMINFO_DIRS:$XDG_DATA_HOME/terminfo"
 fi
 
 # define configuration path for tree-sitter
