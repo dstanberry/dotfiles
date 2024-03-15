@@ -373,13 +373,13 @@ if hash fzf 2> /dev/null; then
   test -s "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings.zsh" \
     && source "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings.zsh"
 
-  # load fzf custom keybinds
-  test -s "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings-custom.zsh" \
-    && source "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings-custom.zsh"
-
   # load fzf completion
   test -s "${ZSH_CONFIG_HOME}/plugins/fzf/completion.zsh" \
     && source "${ZSH_CONFIG_HOME}/plugins/fzf/completion.zsh"
+
+  # load fzf-tmux session switcher
+  test -s "${ZSH_CONFIG_HOME}/plugins/tmux-session.zsh" \
+    && source "${ZSH_CONFIG_HOME}/plugins/tmux-session.zsh"
 
   autoload _fzf
   _fzf
