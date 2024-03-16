@@ -1,5 +1,4 @@
 eza
 cargo-update
-cbfmt
 silicon
 tree-sitter-cli
