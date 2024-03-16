@@ -1,4 +1,5 @@
 local c = require("ui.theme").colors
+local color = require "util.color"
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 
@@ -7,19 +8,14 @@ groups.new("NeogitNotificationWarning", { link = "WarningMsg" })
 groups.new("NeogitNotificationError", { link = "ErrorMsg" })
 
 groups.new("NeogitBranch", { fg = c.green2 })
-groups.new("NeogitRemote", { fg = c.red1 })
-groups.new("NeogitHunkHeader", { bg = c.bg3 })
-groups.new("NeogitHunkHeaderHighlight", { fg = c.blue2, bg = c.bg3 })
+groups.new("NeogitRemote", { fg = c.red2 })
+groups.new("NeogitHunkHeader", { fg = color.blend(c.blue4, c.bg2, 0.44), bg = color.blend(c.blue4, c.bg2, 0.05) })
+groups.new("NeogitHunkHeaderHighlight", { fg = c.blue4, bg = color.blend(c.blue4, c.gray0, 0.1) })
+groups.new("NeogitDiffContextHighlight", { fg = c.fg0, bg = c.gray0 })
+groups.new("NeogitDiffAdd", { fg = c.green2, bg = c.diff_add })
 groups.new("NeogitDiffAddHighlight", { fg = c.green2, bg = c.diff_add })
 groups.new("NeogitDiffDeleteHighlight", { fg = c.red1, bg = c.diff_delete })
-groups.new("NeogitObjectId", { fg = c.yellow2 })
-
-local ftplugin = vim.api.nvim_create_augroup("hl_neogit", { clear = true })
-vim.api.nvim_create_autocmd("FileType", {
-  group = ftplugin,
-  pattern = { "NeogitPopup", "NeogitStatus" },
-  callback = function() vim.opt_local.winhighlight = "Normal:NormalSB" end,
-})
+groups.new("NeogitObjectId", { fg = color.lighten(c.gray1, 20) })
 
 return {
   "NeogitOrg/neogit",
