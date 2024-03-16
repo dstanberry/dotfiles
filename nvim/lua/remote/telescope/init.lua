@@ -142,7 +142,7 @@ return {
           local function git_hunks()
             require("telescope.pickers")
               .new({
-                finder = require("telescope.finders").new_oneshot_job({ "git", "hop", "--stdout", "diff" }, {
+                finder = require("telescope.finders").new_oneshot_job({ "git", "jump", "--stdout", "diff" }, {
                   entry_maker = function(line)
                     local filename, lnum_string = line:match "([^:]+):(%d+).*"
                     if filename:match "^/dev/null" then return nil end

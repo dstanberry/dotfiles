@@ -7,6 +7,10 @@
 	st = status
 	cp = cherry-pick
 
+	tags = tag -l
+	branches = branch --all
+	remotes = remote --verbose
+
 	abbr = !sh -c 'git rev-parse --short ${1-`echo HEAD`}' -
 	ack = grep --break --heading
 	amend = commit --amend -v
@@ -17,25 +21,23 @@
 	staged = diff --cached --ignore-submodules=dirty
 	unstage = restore --staged --patch
 
-	files = !git diff --name-only $(git merge-base HEAD \"$GIT_REVIEW_BASE\")
-	state = !git diff --stat $(git merge-base HEAD \"$GIT_REVIEW_BASE\")
+	files = !git diff --name-only $(git merge-base HEAD "$GIT_REVIEW_BASE")
+	state = !git diff --stat $(git merge-base HEAD "$GIT_REVIEW_BASE")
 
 	fixup = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup
 	ri = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git rebase -i
 
+	jump = !$HOME/.config/git/git-jump
 	flog = !$HOME/.config/git/fuzzy-log
-	graph = !git --paginate log --graph --pretty=format:'%C(auto)%h%Creset%C(auto)%d%Creset %s %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
-	min-graph = !git --paginate log --graph --all --simplify-by-decoration --pretty=format:'%C(auto)%h%Creset%C(auto)%d%Creset %s %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
+	graph = !git --paginate log --graph
+	hist = !git --paginate log
+	min-graph = !git --paginate log --graph --all --simplify-by-decoration
+	prev = !git --paginate log -1
 
-	prev = !git --paginate log -1 --pretty=format:%B
-	hist = !git --paginate log --pretty=format:'%C(auto)%h%Creset %s%C(auto)%d%Creset %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset'
-
-	review = !nvim +\"tabdo DiffviewOpen $GIT_REVIEW_BASE -uno\"
 	rollback = !sh -c 'git reset --merge HEAD~${1-1}' -
-	standup = "!git log --since yesterday  --author `git config user.email` --pretty=oneline"
 
-	; TODO: setting alias to 'jump' doesn't work for some reason
-	hop = !$HOME/.config/git/git-jump
+	review = !nvim +"tabdo DiffviewOpen $GIT_REVIEW_BASE -uno"
+	sprint = "!git log --since=\"1 week ago\"  --author `git config user.email` --pretty=oneline"
 
 [color]
 	ui = auto
@@ -58,7 +60,7 @@
 [delta]
 	colorMoved = default
 	commit-decoration-style = "#bebebe" box ul
-	features = line-numbers decorations
+	features = line-numbers decorationj
 	file-decoration-style = none
 	file-style = omit
 	hunk-header-style = file line-number syntax
@@ -67,8 +69,8 @@
     hunk-header-line-number-style = bold dim
 	line-numbers-left-style = "#5f5f5f"
 	line-numbers-right-style = "#5f5f5f"
-	line-numbers-minus-style = "#F75149" ; "#22151A"
-	line-numbers-plus-style = "#3FB950" ; "#111F1C"
+	line-numbers-minus-style = "#F75149"
+	line-numbers-plus-style = "#3FB950"
 	line-numbers-zero-style = 243
 	plus-style = syntax "#132E1F"
 	minus-style = syntax "#36191C"
@@ -79,6 +81,9 @@
 [diff]
 	algorithm = histogram
 	compactionHeuristic = true
+
+[format]
+	pretty = format:%C(auto)%h%Creset%C(auto)%d%Creset %s %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset
 
 [grep]
 	lineNumber = true
@@ -98,7 +103,7 @@
 	prompt = false
 
 [mergetool "nvim"]
-	cmd = nvim +\"tabdo DiffviewOpen\"
+	cmd = nvim +"tabdo DiffviewOpen"
 
 [pager]
 	diff = delta
@@ -114,3 +119,15 @@
 
 [rebase]
 	autosquash = true
+	autoStash = true
+
+[status]
+	submoduleSummary = true
+
+[url "git@github.com:"]
+	insteadOf = "gh:"
+	pushInsteadOf = "github:"
+	pushInsteadOf = "git://github.com/"
+
+[url "git://github.com/"]
+	insteadOf = "github:"
