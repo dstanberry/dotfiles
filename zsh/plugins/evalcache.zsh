@@ -1,12 +1,13 @@
-# https://github.com/mroth/evalcache
-
 # Caches the output of a binary initialization command, to avoid the time to
 # execute it in the future.
 #
-# Usage: _evalcache <command> <generation args...>
+# Usage: _evalcache [NAME=VALUE]... COMMAND [ARG]...
 
 # default cache directory
-export ZSH_EVALCACHE_DIR=${ZSH_EVALCACHE_DIR:-"$HOME/.cache/zsh/.zsh-evalcache"}
+export ZSH_EVALCACHE_DIR=${ZSH_EVALCACHE_DIR:-"$HOME/.cache/zsh/evalcache"}
+
+# INFO: delete old cache location 
+rm -rdf "$HOME/.cache/zsh/.zsh-evalcache" 2>/dev/null
 
 function _evalcache () {
   local cmdHash="nohash" data="$*" name
