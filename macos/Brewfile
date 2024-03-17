@@ -20,6 +20,7 @@ brew "shared-mime-info"
 brew "terminal-notifier"
 
 brew "bat"
+brew "btop"
 brew "ccls"
 brew "craciuncezar/tap/git-smart-checkout"
 brew "eza"
