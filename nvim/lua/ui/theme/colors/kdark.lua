@@ -20,7 +20,7 @@ local c = {
   rose0 = "#cd8d88",
   rose1 = "#e4c1be",
 
-  red0 = "#db4b4b",
+  red0 = "#a76369",
   red1 = "#bf616a",
   red2 = "#e5747f",
   red3 = "#f7768e",
