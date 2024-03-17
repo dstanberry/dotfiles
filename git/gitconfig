@@ -15,10 +15,12 @@
 	ack = grep --break --heading
 	amend = commit --amend -v
 	count = !git --no-pager log --oneline | wc -l
+	prune-br = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
 	dupes = !git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40
 	no-edit = commit --amend --no-edit
 	reword = commit --amend --only -v --
 	staged = diff --cached --ignore-submodules=dirty
+	uncommit = reset --soft HEAD^
 	unstage = restore --staged --patch
 
 	files = !git diff --name-only $(git merge-base HEAD "$GIT_REVIEW_BASE")
@@ -83,7 +85,7 @@
 	compactionHeuristic = true
 
 [format]
-	pretty = format:%C(auto)%h%Creset%C(auto)%d%Creset %s %C(magenta bold)(%cr)%Creset %C(cyan)<%aN>%Creset
+	pretty = format:%C(yellow)%h%Creset%C(auto)%d%Creset %C(magenta)(%cr) %C(cyan)%aN%Creset %s%Creset
 
 [grep]
 	lineNumber = true
