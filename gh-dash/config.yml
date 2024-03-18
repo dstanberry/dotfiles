@@ -11,11 +11,19 @@ issuesSections:
   - title: Involved
     filters: is:open involves:@me -author:@me
 repoPaths:
+  # templated path.. won't resolve properly
   :owner/:repo: $PROJECTS_DIR/contrib/:owner/:repo
 keybindings:
+  issues:
+    - key: e
+      command: tmux new-window -c {{.RepoPath}} 'nvim +"Octo issue edit {{.IssueNumber}}"'
   prs:
     - key: c
       command: tmux new-window -c {{.RepoPath}} 'gh pr checkout {{.PrNumber}}; nvim'
+    - key: e
+      command: tmux new-window -c {{.RepoPath}} 'nvim +"Octo pr edit {{.PrNumber}}"'
+    - key: r
+      command: tmux new-window -c {{.RepoPath}} 'nvim +"Octo pr review {{.PrNumber}}"'
 pager:
   diff: delta
 theme:
