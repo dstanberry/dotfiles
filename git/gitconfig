@@ -2,23 +2,23 @@
 	aliases = config --get-regexp ^alias
 
 	br = branch
-	ci = commit -v
+	ci = commit --verbose
 	co = checkout
-	st = status
+	st = status --short
 	cp = cherry-pick
 
-	tags = tag -l
+	tags = tag --list
 	branches = branch --all
 	remotes = remote --verbose
 
 	abbr = !sh -c 'git rev-parse --short ${1-`echo HEAD`}' -
 	ack = grep --break --heading
-	amend = commit --amend -v
+	amend = commit --amend --verbose
 	count = !git --no-pager log --oneline | wc -l
-	prune-br = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+	prune-br = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch --delete"
 	dupes = !git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40
 	no-edit = commit --amend --no-edit
-	reword = commit --amend --only -v --
+	reword = commit --amend --only --verbose --
 	staged = diff --cached --ignore-submodules=dirty
 	uncommit = reset --soft HEAD^
 	unstage = restore --staged --patch
@@ -27,7 +27,7 @@
 	state = !git diff --stat $(git merge-base HEAD "$GIT_REVIEW_BASE")
 
 	fixup = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup
-	ri = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git rebase -i
+	ri = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git rebase --interactive
 
 	jump = !$HOME/.config/git/git-jump
 	flog = !$HOME/.config/git/fuzzy-log
