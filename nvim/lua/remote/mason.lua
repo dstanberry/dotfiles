@@ -50,6 +50,7 @@ return {
       "vim-language-server",
       "vint",
       "yaml-language-server",
+      "yamlfmt",
     },
     opts = {
       PATH = "append",
