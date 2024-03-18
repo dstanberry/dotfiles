@@ -1,5 +1,39 @@
 local util = require "util"
 
+-- HACK: ...until the nested string wierdness is resolved in `gh/config.yml'
+-- (G)it(H)ub (E)dit (I)ssue
+vim.api.nvim_create_user_command("GHEI", function()
+  vim.schedule(function()
+    local bufs = util.buffer.list_buffers { listed = true }
+    if #bufs == 1 then
+      local path = vim.api.nvim_buf_get_name(bufs[1])
+      local fname = vim.fs.basename(path)
+      if fname:sub(1, 1) == "#" then
+        local pr = fname:match "#(%d+)"
+        vim.cmd("Octo issue edit " .. pr)
+        vim.api.nvim_buf_delete(bufs[1], { force = true })
+      end
+    end
+  end)
+end, {})
+
+-- HACK: ...until the nested string wierdness is resolved in `gh/config.yml'
+-- (G)it(H)ub (E)dit (P)ull (R)equest
+vim.api.nvim_create_user_command("GHEPR", function()
+  vim.schedule(function()
+    local bufs = util.buffer.list_buffers { listed = true }
+    if #bufs == 1 then
+      local path = vim.api.nvim_buf_get_name(bufs[1])
+      local fname = vim.fs.basename(path)
+      if fname:sub(1, 1) == "#" then
+        local pr = fname:match "#(%d+)"
+        vim.cmd("Octo pr edit " .. pr)
+        vim.api.nvim_buf_delete(bufs[1], { force = true })
+      end
+    end
+  end)
+end, {})
+
 vim.api.nvim_create_user_command(
   "Scratch",
   function(args) util.buffer.create_scratch(args.fargs[1]) end,

@@ -1,3 +1,4 @@
+# depends on dlvhdr/gh-dash and benelan/gh-fzf
 editor:
 git_protocol: ssh
 glamour_style: dark
@@ -46,14 +47,20 @@ aliases:
         }
       }
     ' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' | sort
+  # HACK:...until the nested string wierdness is resolved see `nvim/plugins/commands.lua`
   # benelan/gh-fzf customizations
-  # command: tmux new-window -c {{.RepoPath}} 'nvim +"Octo issue edit {{.IssueNumber}}"'
+  _fzf: |
+    !FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
+        --height=100%
+        --bind='ctrl-i:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEI {1}\"\"\")'
+        --bind='ctrl-p:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEPR {1}\"\"\")'
+        " gh fzf $*
   fi: |
     !FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
-        --bind='ctrl-e:execute(tmux new-window -c \"#{pane_current_path}\" \'nvim +\"Octo issue edit {1}\"\')'
+        --bind='ctrl-e:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEI {1}\"\"\")'
         " gh fzf issue $*
   fp: |
     !FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
-        --bind='ctrl-e:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHPR {1}\"\"\")'
+        --bind='ctrl-e:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEPR {1}\"\"\")'
         " gh fzf pr $*
 version: "1"
