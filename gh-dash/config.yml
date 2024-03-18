@@ -1,0 +1,38 @@
+prSections:
+  - title: My Pull Requests
+    filters: is:open author:@me
+  - title: Needs My Review
+    filters: is:open archived:false sort:updated-desc review-requested:@me
+issuesSections:
+  - title: Created by Me
+    filters: is:open author:@me
+  - title: Assigned to Me
+    filters: is:open assignee:@me
+  - title: Involved
+    filters: is:open involves:@me -author:@me
+repoPaths:
+  :owner/:repo: $PROJECTS_DIR/contrib/:owner/:repo
+keybindings:
+  prs:
+    - key: c
+      command: tmux new-window -c {{.RepoPath}} 'gh pr checkout {{.PrNumber}}; nvim'
+pager:
+  diff: delta
+theme:
+  ui:
+    table:
+      showSeparator: true
+  colors:
+    text:
+      primary: "#f8f8f2"
+      secondary: "#b48ead"
+      inverted: "#1f2021"
+      faint: "#e0af68"
+      warning: "#bf616a"
+      success: "#97b182"
+    background:
+      selected: "#303033"
+    border:
+      primary: "#414145"
+      secondary: "#414145"
+      faint: "#59595e"
