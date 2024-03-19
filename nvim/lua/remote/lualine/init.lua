@@ -5,19 +5,11 @@ local icons = require "ui.icons"
 local theme = require "remote.lualine.theme"
 local excludes = require "ui.excludes"
 
-local breadcrumbs = require "remote.lualine.components.breadcrumbs"
-local languageservers = require "remote.lualine.components.languageservers"
-local filediff = require "remote.lualine.components.filediff"
-local git_branch = require "remote.lualine.components.git_branch"
-local git_diff = require "remote.lualine.components.git_diff"
-local indent = require "remote.lualine.components.indent"
-local merge_conflicts = require "remote.lualine.components.merge_conflicts"
-
 local available_width = function(width) return vim.api.nvim_get_option_value("columns", {}) >= width end
 
 return {
   "dstanberry/lualine.nvim",
-  event = "VeryLazy",
+  event = { "LazyFile", "VeryLazy" },
   init = function()
     vim.g.lualine_laststatus = vim.o.laststatus
     if vim.fn.argc(-1) > 0 then
@@ -29,6 +21,14 @@ return {
     end
   end,
   opts = function()
+    local breadcrumbs = require "remote.lualine.components.breadcrumbs"
+    local languageservers = require "remote.lualine.components.languageservers"
+    local filediff = require "remote.lualine.components.filediff"
+    local git_branch = require "remote.lualine.components.git_branch"
+    local git_diff = require "remote.lualine.components.git_diff"
+    local indent = require "remote.lualine.components.indent"
+    local merge_conflicts = require "remote.lualine.components.merge_conflicts"
+
     -- PERF: disable lualine require
     local lualine_require = require "lualine_require"
     lualine_require.require = require
