@@ -426,3 +426,16 @@ wget() {
 yarn() {
   command yarn --use-yarnrc "${CONFIG_HOME}/yarn/config" "$@"
 }
+
+# hook override: add last executed command to histfile if return code is 0
+precmd() {
+  if [[ $? == 0 && -n $LASTHIST && -n $HISTFILE ]] ; then
+    print -sr -- ${=${LASTHIST%%'\n'}}
+  fi
+}
+
+# hook override: save executed commands to global variable instead of histfile
+zshaddhistory() {
+  LASTHIST=$1
+  return 2
+}

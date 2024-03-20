@@ -31,6 +31,9 @@ fi
 # announce true color support (this is incorrect but required)
 export COLORTERM=truecolor
 
+# suppress spell check on dotfiles
+export CORRECT_IGNORE_FILE='.*'
+
 # define default name of primary upstream git branch
 export GIT_REVIEW_BASE=main
 
@@ -232,5 +235,7 @@ if hash zoxide 2> /dev/null; then
   export _ZO_DATA_DIR="$XDG_DATA_HOME/zoxide"
   export _ZO_EXCLUDE_DIRS="$HOME:$HOME/Downloads/*:*/.git:/tmp/*"
   export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS"
-  _evalcache zoxide init --cmd cd zsh
+  # NOTE: creating an alias for `cd` breaks vcs_info
+  # _evalcache zoxide init --cmd cd zsh
+  _evalcache zoxide init zsh
 fi

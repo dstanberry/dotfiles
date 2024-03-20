@@ -40,13 +40,21 @@ setopt PROMPT_SUBST
 ###############################################################
 # Completions
 ###############################################################
+# enable hook functions
+autoload -U add-zsh-hook
+
 # load completion function
 autoload -U compinit
-if [ is_darwin ] && [ "$(whoami)" = "root" ]; then
-  compinit -i
+# Load and initialize the completion system ignoring insecure directories with a
+# cache time of 20 hours, so it should almost always regenerate the first time a
+# shell is opened each day.
+_comp_files=($XDG_CACHE_HOME/zsh/zcompcache(Nm-20))
+if (( $#_comp_files )); then
+    compinit -i -C -d "$XDG_CACHE_HOME/zsh/zcompcache"
 else
-  compinit
+    compinit -i -d "$XDG_CACHE_HOME/zsh/zcompcache"
 fi
+unset _comp_files
 
 # cache completions
 zstyle ':completion::complete:*' use-cache on
@@ -74,9 +82,40 @@ zstyle ':completion:*' menu select
 # colorize directores and files in completion menu
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
+# define completion cache file location
+zstyle ':completion::complete:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
+
+# define completion menu style
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:corrections' format ' %F{green} %d (errors: %e)%f'
+zstyle ':completion:*:descriptions' format ' %F{yellow} %d%f'
+zstyle ':completion:*:messages' format ' %F{purple} %d%f'
+zstyle ':completion:*:warnings' format ' %F{red} no matches found%f'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' format ' %F{yellow} %d%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
+
+# disable sort for git checkout completions
+zstyle ':completion:*:git-checkout:*' sort false
+
 ###############################################################
 # Directories
 ###############################################################
+# adds `cdr` command for navigating to recent directories
+autoload -Uz chpwd_recent_dirs cdr
+add-zsh-hook chpwd chpwd_recent_dirs
+
+# enable menu-style completion for cdr
+zstyle ':completion:*:*:cdr:*:*' menu select
+
+# fall through to cd if cdr is passed a non-recent dir as an argument
+zstyle ':chpwd:*' recent-dirs-default true
+
+# define recent-dirs cache file location
+zstyle ':chpwd:*' recent-dirs-file "$XDG_CACHE_HOME/zsh/chpwd-recent-dirs"
+
 # base directory for configuration files
 CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 
@@ -160,7 +199,7 @@ setopt NO_HIST_IGNORE_ALL_DUPS
 # filter contiguous duplicates from history
 setopt HIST_IGNORE_DUPS
 
-# don't record  commands that begin with a space
+# don't record commands that begin with a space
 setopt HIST_IGNORE_SPACE
 
 # confirm history expansion
@@ -417,9 +456,6 @@ typeset -A __HTABLE
 
 # track the number of commands local to this shell
 HISTCMD_LOCAL=0
-
-# enable hook functions
-autoload -U add-zsh-hook
 
 function -set-tab-and-window-title() {
   emulate -L zsh
