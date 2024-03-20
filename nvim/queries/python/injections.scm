@@ -15,3 +15,11 @@
 	(#set! injection.include-children)
 	(#set! injection.combined)
 ))
+
+(assignment
+  left: (identifier) @_id (#contains? @_id "html")
+  right: (string (string_content) @injection.content
+	(#set! injection.language "html")
+	(#set! injection.include-children)
+	(#set! injection.combined)
+))
