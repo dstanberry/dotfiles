@@ -10,7 +10,9 @@ local ensure_installed = {
   html = { init_options = { provideFormatter = false } },
 }
 
-local disabled = {}
+local enabled = {
+  basedpyright = false,
+}
 
 return {
   {
@@ -51,7 +53,7 @@ return {
         if mod.register_default_config and not configs[srv] then configs[srv] = { default_config = config } end
         if mod.setup then mod.setup(server_opts) end
         if not mod.defer_setup then
-          ensure_installed = vim.tbl_deep_extend("force", ensure_installed, { [srv] = config }, disabled)
+          ensure_installed = vim.tbl_deep_extend("force", ensure_installed, { [srv] = config }, enabled)
         end
       end
       for server, config in pairs(ensure_installed) do
