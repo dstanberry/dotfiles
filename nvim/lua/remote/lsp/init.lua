@@ -10,6 +10,8 @@ local ensure_installed = {
   html = { init_options = { provideFormatter = false } },
 }
 
+local disabled = {}
+
 return {
   {
     "neovim/nvim-lspconfig",
@@ -49,15 +51,17 @@ return {
         if mod.register_default_config and not configs[srv] then configs[srv] = { default_config = config } end
         if mod.setup then mod.setup(server_opts) end
         if not mod.defer_setup then
-          ensure_installed = vim.tbl_deep_extend("force", ensure_installed, { [srv] = config })
+          ensure_installed = vim.tbl_deep_extend("force", ensure_installed, { [srv] = config }, disabled)
         end
       end
       for server, config in pairs(ensure_installed) do
-        require("lspconfig")[server].setup(vim.tbl_deep_extend("force", {
-          capabilities = client_capabilities,
-          flags = { debounce_text_changes = 150 },
-          on_attach = on_attach_nvim,
-        }, config))
+        if config then
+          require("lspconfig")[server].setup(vim.tbl_deep_extend("force", {
+            capabilities = client_capabilities,
+            flags = { debounce_text_changes = 150 },
+            on_attach = on_attach_nvim,
+          }, config))
+        end
       end
       handlers.setup()
     end,
