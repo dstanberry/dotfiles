@@ -3,10 +3,11 @@ local M = {}
 M.config = {
   settings = {
     python = {
-      autoImportCompletions = true,
-      autoSearchPaths = true,
-      useLibraryCodeForTypes = true,
-      -- extraPaths = { "src", "/src" },
+      analysis = {
+        autoSearchPaths = true,
+        useLibraryCodeForTypes = true,
+        diagnosticMode = "openFilesOnly",
+      },
     },
   },
   on_init = require("remote.lsp.handlers").on_init {
