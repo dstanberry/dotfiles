@@ -136,9 +136,9 @@ if [ -f "$CONFIG_HOME/zsh/site-functions/async" ]; then
   add-zsh-hook precmd -vcs-info-run-in-worker
   add-zsh-hook chpwd -clear-vcs-info-on-chpwd
 
-  RPROMPT_VCS="\${vcs_info_msg_0_}%F{blue}%~%f"
+  RPROMPT_VCS="\${vcs_info_msg_0_}"
 else
-  RPROMPT_VCS="%F{blue}%~%f"
+  RPROMPT_VCS=""
 fi
 
 # (lhs) update the prompt
@@ -241,7 +241,7 @@ function -update-rprompt() {
       SECS="$((~~SECS))s"
     fi
     ELAPSED="${ELAPSED}${SECS}"
-    export RPROMPT="$RPROMPT_VCS $@ %F{244}${ELAPSED}%f"
+    export RPROMPT="$RPROMPT_VCS $@%F{244}${ELAPSED}%f"
     unset ZSH_START_TIME
   else
     export RPROMPT="$RPROMPT_VCS"
