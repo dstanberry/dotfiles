@@ -27,12 +27,14 @@ fi
       # shellcheck disable=SC2153
       for f in "$HOME/Git"/*; do
         if [ -d "$f" ]; then
-          worktree_list=$(git -C "$f" worktree list 2>/dev/null | awk '{print $1}')
-          if [ -n "$worktree_list" ]; then
-            # shellcheck disable=SC2066
-            for w in "$worktree_list"; do
-              worktree_dirs="$worktree_dirs $w"
-            done
+          if [ -d "$f/worktrees" ] || [ -d "$f/.git/worktrees" ]; then
+            worktree_list=$(git -C "$f" worktree list 2> /dev/null | awk '{print $1}')
+            if [ -n "$worktree_list" ]; then
+              # shellcheck disable=SC2066
+              for w in "$worktree_list"; do
+                worktree_dirs="$worktree_dirs $w"
+              done
+            fi
           fi
         fi
       done
@@ -43,12 +45,14 @@ fi
             project_dirs="$f"
           else
             project_dirs="$project_dirs $f"
-            worktree_list=$(git -C "$f" worktree list 2>/dev/null | awk '{print $1}')
-            if [ -n "$worktree_list" ]; then
-              # shellcheck disable=SC2066
-              for w in "$worktree_list"; do
-                worktree_dirs="$worktree_dirs $w"
-              done
+            if [ -d "$f/worktrees" ] || [ -d "$f/.git/worktrees" ]; then
+              worktree_list=$(git -C "$f" worktree list 2> /dev/null | awk '{print $1}')
+              if [ -n "$worktree_list" ]; then
+                # shellcheck disable=SC2066
+                for w in "$worktree_list"; do
+                  worktree_dirs="$worktree_dirs $w"
+                done
+              fi
             fi
           fi
         fi
