@@ -21,22 +21,45 @@ fi
 
   # CTRL-P - start a tmux session at the selected directory
   fzf-session-widget() {
-    local projects_dir=""
-    local session_name dir
+    local project_dirs worktree_dirs worktree_list
+    local res_a res_b selected_dir session_name
     {
       # shellcheck disable=SC2153
-      for f in "$PROJECTS_DIR"/*; do
-        if [ -z "$projects_dir" ]; then
-          projects_dir="$f"
-        else
-          projects_dir="$projects_dir $f"
+      for f in "$HOME/Git"/*; do
+        if [ -d "$f" ]; then
+          worktree_list=$(git -C "$f" worktree list 2>/dev/null | awk '{print $1}')
+          if [ -n "$worktree_list" ]; then
+            for w in "$worktree_list"; do
+              worktree_dirs="$worktree_dirs $w"
+            done
+          fi
+        fi
+      done
+      # shellcheck disable=SC2153
+      for f in "$HOME/Projects"/*/*; do
+        if [ -d "$f" ]; then
+          if [ -z "$project_dirs" ]; then
+            project_dirs="$f"
+          else
+            project_dirs="$project_dirs $f"
+            worktree_list=$(git -C "$f" worktree list 2>/dev/null | awk '{print $1}')
+            if [ -n "$worktree_list" ]; then
+              for w in "$worktree_list"; do
+                worktree_dirs="$worktree_dirs $w"
+              done
+            fi
+          fi
         fi
       done
       # shellcheck disable=SC2207
-      projects_dir=($(echo "$projects_dir" | cut -d " " --output-delimiter=" " -f 1-))
-      dir=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" "${projects_dir[@]}" \
-        -mindepth 1 -maxdepth 1 -type d \
-        | FZF_DEFAULT_OPTS="--height ${FZF_TMUX_HEIGHT:-100%} ${FZF_DEFAULT_OPTS-} \
+      project_dirs=($(echo "$project_dirs" | cut -d " " --output-delimiter=" " -f 1-))
+      worktree_dirs=($(echo "$worktree_dirs" | cut -d " " --output-delimiter=" " -f 1-))
+      res_a=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" \
+        -maxdepth 1 -type d)
+      res_b=$(find -L "${project_dirs[@]}" "${worktree_dirs[@]}" \
+        -maxdepth 0 -type d)
+      selected_dir=$(echo "$res_a\n$res_b" | sort -V | uniq | FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS-} \
+          --height ${FZF_TMUX_HEIGHT:-100%} \
           --reverse --header='Create/Open Session' \
           --preview '(glow -s dark {1}/README.md ||
             bat --style=plain {1}/README.md ||
@@ -44,28 +67,27 @@ fi
             eza -lh --icons {1} ||
             ls -lh {1}) 2> /dev/null'" $(__fzfcmd))
       setopt localoptions pipefail no_aliases 2> /dev/null
-      if [[ -z "$dir" ]]; then
+      if [[ -z "$selected_dir" ]]; then
         zle redisplay
         return 0
       fi
-      session_name="$(basename "$dir" | tr . _)"
-      [ -z "$dir" ] && return 1
+      session_name="$(basename "$selected_dir" | tr . _)"
+      [ -z "$selected_dir" ] && return 1
     } always {
       zle reset-prompt
     }
     (
       exec </dev/tty; exec <&1;
       if [[ -z "$TMUX" ]]; then
-       { tmux new-session -As "$session_name" -c "$dir" } || tmux
+       { tmux new-session -As "$session_name" -c "$selected_dir" } || tmux
       else
         if ! tmux list-sessions | sed -E 's/:.*$//' | grep -q "^$session_name$"; then
-          (TMUX='' tmux new-session -Ad -s "$session_name" -c "$dir")
+          (TMUX='' tmux new-session -Ad -s "$session_name" -c "$selected_dir")
         fi
         tmux switch-client -t "$session_name"
       fi
-      unset projects_dir
-      unset session_name
-      unset dir
+      unset project_dirs worktree_dirs worktree_list
+      unset res_a res_b selected_dir session_name
     )
   }
 
