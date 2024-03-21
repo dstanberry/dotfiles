@@ -29,6 +29,7 @@ fi
         if [ -d "$f" ]; then
           worktree_list=$(git -C "$f" worktree list 2>/dev/null | awk '{print $1}')
           if [ -n "$worktree_list" ]; then
+            # shellcheck disable=SC2066
             for w in "$worktree_list"; do
               worktree_dirs="$worktree_dirs $w"
             done
@@ -44,6 +45,7 @@ fi
             project_dirs="$project_dirs $f"
             worktree_list=$(git -C "$f" worktree list 2>/dev/null | awk '{print $1}')
             if [ -n "$worktree_list" ]; then
+              # shellcheck disable=SC2066
               for w in "$worktree_list"; do
                 worktree_dirs="$worktree_dirs $w"
               done
@@ -56,10 +58,11 @@ fi
       worktree_dirs=($(echo "$worktree_dirs" | cut -d " " --output-delimiter=" " -f 1-))
       res_a=$(find -L "$HOME/Git" "$HOME/Projects" \
         -maxdepth 1 -type d)
-      res_b=$(find -L "$CONFIG_HOME" "${project_dirs[@]}" "${worktree_dirs[@]}" \
+      res_b=$(find -L "$XDG_CONFIG_HOME" "${project_dirs[@]}" "${worktree_dirs[@]}" \
         -maxdepth 0 -type d)
-      selected_dir=$(echo "$res_a\n$res_b" | sort -V | uniq | FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS-} \
-          --height ${FZF_TMUX_HEIGHT:-100%} \
+    # shellcheck disable=SC2059
+      selected_dir=$(printf "$res_a""%s\n""$res_b" | sort -V | uniq | FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS-} \
+          --height=100% \
           --reverse --header='Create/Open Session' \
           --preview '(glow -s dark {1}/README.md ||
             bat --style=plain {1}/README.md ||
