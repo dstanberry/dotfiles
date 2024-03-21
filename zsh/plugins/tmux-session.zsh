@@ -54,9 +54,9 @@ fi
       # shellcheck disable=SC2207
       project_dirs=($(echo "$project_dirs" | cut -d " " --output-delimiter=" " -f 1-))
       worktree_dirs=($(echo "$worktree_dirs" | cut -d " " --output-delimiter=" " -f 1-))
-      res_a=$(find -L "$HOME" "$HOME/Git" "$HOME/Projects" \
+      res_a=$(find -L "$HOME/Git" "$HOME/Projects" \
         -maxdepth 1 -type d)
-      res_b=$(find -L "${project_dirs[@]}" "${worktree_dirs[@]}" \
+      res_b=$(find -L "$CONFIG_HOME" "${project_dirs[@]}" "${worktree_dirs[@]}" \
         -maxdepth 0 -type d)
       selected_dir=$(echo "$res_a\n$res_b" | sort -V | uniq | FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS-} \
           --height ${FZF_TMUX_HEIGHT:-100%} \
