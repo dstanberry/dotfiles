@@ -98,12 +98,12 @@ M.new = function(options)
 end
 
 local make_given_range_params = function(range)
-  local params = util.map(function(params, v, k)
+  local params = util.map({ "start", "end" }, function(params, v, k)
     local row, col = unpack(range[k])
     col = (vim.o.selection ~= "exclusive" and v == "end") and col + 1 or col
     params[v] = { line = row, character = col }
     return params
-  end, { "start", "end" })
+  end)
   local location = vim.lsp.util.make_given_range_params()
   location.uri = location.textDocument.uri
   location.textDocument = nil

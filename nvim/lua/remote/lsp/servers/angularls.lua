@@ -5,10 +5,10 @@ local install_dir =
   vim.fs.normalize(string.format("%s/angular-language-server/node_modules/@angular/language-server", path))
 
 local node_modules = function(dirs)
-  return util.map(function(agg, dir, i)
+  return util.map(dirs, function(agg, dir, i)
     agg[i] = table.concat({ dir, "node_modules" }, "/")
     return agg
-  end, dirs)
+  end)
 end
 
 local function get_cmd(workspace_dir)

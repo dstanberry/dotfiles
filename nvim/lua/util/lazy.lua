@@ -73,10 +73,10 @@ require("lazy").setup("remote", {
   root = string.format("%s/lazy", vim.fn.stdpath "data"),
   lockfile = string.format("%s/lua/remote/lazy-lock.json", vim.fn.stdpath "config"),
   ui = {
-    border = util.map(function(border, v, k)
+    border = util.map(icons.border.ThinBlock, function(border, v, k)
       border[k] = { v, "FloatBorderSB" }
       return border
-    end, icons.border.ThinBlock),
+    end),
     custom_keys = {
       ["<localleader>d"] = function(plugin) dump(plugin) end,
       ["<localleader>t"] = function(plugin)

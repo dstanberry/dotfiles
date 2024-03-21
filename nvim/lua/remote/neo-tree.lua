@@ -86,10 +86,10 @@ return {
       },
       document_symbols = {
         follow_cursor = true,
-        kinds = util.map(function(kinds, v, k)
+        kinds = util.map(vim.tbl_deep_extend("keep", icons.kind, icons.type), function(kinds, v, k)
           kinds[k] = { icon = v, hl = ("NavicIcons%s"):format(k) }
           return kinds
-        end, vim.tbl_deep_extend("keep", icons.kind, icons.type)),
+        end),
       },
       default_component_configs = {
         icon = {

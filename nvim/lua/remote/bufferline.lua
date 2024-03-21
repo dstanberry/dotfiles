@@ -20,7 +20,7 @@ return {
     local bufferline_groups = require "bufferline.groups"
     require("bufferline").setup {
       highlights = function(defaults)
-        local hl = util.map(function(hl, attrs, name)
+        local hl = util.map(defaults.highlights, function(hl, attrs, name)
           local formatted = name:lower()
           local is_group = formatted:match "group"
           local is_offset = formatted:match "offset"
@@ -29,7 +29,7 @@ return {
           if is_separator and not (is_group or is_offset) then attrs.fg = c.bg2 end
           hl[name] = attrs
           return hl
-        end, defaults.highlights)
+        end)
         hl.buffer_selected.italic = false
         hl.buffer_visible.bold = true
         hl.buffer_visible.italic = false
@@ -131,7 +131,9 @@ return {
               -- icon = icons.groups.Book,
               highlight = { fg = c.cyan1 },
               auto_close = true,
-              matcher = function(buf) return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten" end,
+              matcher = function(buf)
+                return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten"
+              end,
               separator = {
                 style = bufferline_groups.separator.pill,
               },

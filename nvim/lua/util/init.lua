@@ -36,19 +36,31 @@ function M.get_module_name(filename)
 end
 
 ---Creates a new table populated with the results of calling a provided function
----on every key-value pair in the calling table.
+---on every key-value pair in the calling table
 ---@generic T : table
----@param callback fun(T, T, key: string | number): T
 ---@param list T[]
----@param newList T?
+---@param callback fun(T, T, key: string | number): T
+---@param acc T?
 ---@return T #A new table with each key-value pair being the result of the callback function
-function M.map(callback, list, newList)
-  newList = newList or {}
+function M.map(list, callback, acc)
+  acc = acc or {}
   for k, v in pairs(list) do
-    newList = callback(newList, v, k)
-    if newList == nil then error "|newList| must be returned on each iteration and cannot be null" end
+    acc = callback(acc, v, k)
+    if acc == nil then error "|acc| must be returned on each iteration and cannot be null" end
   end
-  return newList
+  return acc
+end
+
+---Check if "some" elements in a given table satisfies a provided condition
+---and returns true if the condition is satisfied at least once. Returns false otherwise
+---@generic T: table
+---@param list T[]
+---@param callback fun(value: any, key: string | number)
+function M.some(list, callback)
+  for k, v in pairs(list) do
+    if callback(v, k) then return true end
+  end
+  return false
 end
 
 ---Unloads the provided module from memory and re-requires it
