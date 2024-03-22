@@ -22,7 +22,7 @@ return {
       json = { { "prettierd", "prettier" } },
       jsonc = { { "prettierd", "prettier" } },
       lua = { "stylua" },
-      markdown = { "markdownlint", "cbfmt" },
+      markdown = { { "prettierd", "prettier" }, "markdownlint", "cbfmt" },
       pgsql = { "sql_formatter" },
       python = { "isort", "injected", "black" },
       -- python = { "isort", "black" },
