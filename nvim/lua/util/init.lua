@@ -1,6 +1,6 @@
 local M = {}
 
----Searches for a partial of of |needle| in a |haystack|
+---Searches for a partial match of a string `needle` in a list `haystack`
 ---@param haystack string[]
 ---@param needle string
 ---@return boolean, number # Returns true if found and the position in the list
@@ -19,7 +19,27 @@ function M.contains(haystack, needle)
   return found, pos
 end
 
----Prints lua formatted representation of the given file as a module
+---Limit the rate at which the provided function `callback` will execute
+---by delaying it's execution for `delay` milliseconds
+function M.debounce(callback, delay)
+  local timer = vim.loop.new_timer()
+  return function(...)
+    local argv = { ... }
+    timer:stop()
+    timer:start(delay, 0, function()
+      pcall(
+        vim.schedule_wrap(function(...)
+          callback(...)
+          timer:stop()
+        end),
+        select(1, unpack(argv))
+      )
+    end)
+  end,
+    timer
+end
+
+---Prints lua formatted representation of the given string `filename` as a lua module
 ---@param filename string
 ---@return string modname
 function M.get_module_name(filename)
@@ -35,18 +55,31 @@ function M.get_module_name(filename)
   return modname or ""
 end
 
----Converts a list of items into a value by iterating over each pair and transforming them
+---Converts a list of ordered items into a value by iterating over each pair and transforming them
 ---with a callback function
 ---@generic T : table, S
 ---@param list T[]
----@param callback fun(acc: S, item: T, key: string | number): S
+---@param callback fun(acc: S, item: T, key: number): S
 ---@param acc S?
 ---@return S
-function M.reduce(list, callback, acc)
-  acc = acc or {}
-  for k, v in pairs(list) do
-    acc = callback(acc, v, k)
+function M.ireduce(list, callback, acc)
+  for i, v in ipairs(list) do
+    acc = callback(acc, v, i)
     assert(acc ~= nil, "The accumulator must be returned on each iteration")
+  end
+  return acc
+end
+
+---Converts a list of items into a value by iterating over each pair where the key is a string
+---and transforming them with a callback function
+---@generic T : table, S
+---@param list T[]
+---@param callback fun(acc: S, item: T, key: string): S
+---@param acc S?
+---@return S
+function M.kreduce(list, callback, acc)
+  for k, v in pairs(list) do
+    if type(k) == "string" then acc = callback(acc, v, k) end
   end
   return acc
 end
@@ -64,16 +97,20 @@ function M.map(list, callback)
   end, {})
 end
 
----Check if "some" elements in a given table satisfies a provided condition
----and returns true if the condition is satisfied at least once. Returns false otherwise
----@generic T: table
+---Converts a list of items into a value by iterating over each pair and transforming them
+---with a callback function
+---@generic T : table, S
 ---@param list T[]
----@param callback fun(value: any, key: string | number)
-function M.some(list, callback)
+---@param callback fun(acc: S, item: T, key: string | number): S
+---@param acc S?
+---@return S
+function M.reduce(list, callback, acc)
+  acc = acc or {}
   for k, v in pairs(list) do
-    if callback(v, k) then return true end
+    acc = callback(acc, v, k)
+    assert(acc ~= nil, "The accumulator must be returned on each iteration")
   end
-  return false
+  return acc
 end
 
 ---Unloads the provided module from memory and re-requires it
@@ -95,6 +132,18 @@ function M.replace(str, pattern, repl, n)
   pattern = string.gsub(pattern, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
   repl = string.gsub(repl, "[%%]", "%%%%") -- escape replacement
   return string.gsub(str, pattern, repl, n)
+end
+
+---Check if "some" elements in a given table satisfies a provided condition
+---and returns true if the condition is satisfied at least once. Returns false otherwise
+---@generic T: table
+---@param list T[]
+---@param callback fun(value: any, key: string | number)
+function M.some(list, callback)
+  for k, v in pairs(list) do
+    if callback(v, k) then return true end
+  end
+  return false
 end
 
 ---Trims leading and trailing whitespace from a given string

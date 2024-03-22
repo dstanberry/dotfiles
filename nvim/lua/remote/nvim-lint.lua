@@ -1,4 +1,5 @@
 ---@diagnostic disable: undefined-field
+local util = require "util"
 
 return {
   "mfussenegger/nvim-lint",
@@ -26,16 +27,6 @@ return {
     local M = {}
 
     lint.linters_by_ft = opts.linters_by_ft
-    M.debounce = function(ms, fn)
-      local timer = vim.loop.new_timer()
-      return function(...)
-        local argv = { ... }
-        timer:start(ms, 0, function()
-          timer:stop()
-          vim.schedule_wrap(fn)(unpack(argv))
-        end)
-      end
-    end
 
     M.lint = function()
       local names = lint._resolve_linter_by_ft(vim.bo.filetype)
@@ -56,7 +47,7 @@ return {
 
     vim.api.nvim_create_autocmd(opts.events, {
       group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
-      callback = M.debounce(100, M.lint),
+      callback = util.debounce(M.lint, 100),
     })
   end,
 }
