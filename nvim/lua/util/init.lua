@@ -35,20 +35,33 @@ function M.get_module_name(filename)
   return modname or ""
 end
 
+---Converts a list of items into a value by iterating over each pair and transforming them
+---with a callback function
+---@generic T : table, S
+---@param list T[]
+---@param callback fun(acc: S, item: T, key: string | number): S
+---@param acc S?
+---@return S
+function M.reduce(list, callback, acc)
+  acc = acc or {}
+  for k, v in pairs(list) do
+    acc = callback(acc, v, k)
+    assert(acc ~= nil, "The accumulator must be returned on each iteration")
+  end
+  return acc
+end
+
 ---Creates a new table populated with the results of calling a provided function
 ---on every key-value pair in the calling table
 ---@generic T : table
 ---@param list T[]
----@param callback fun(T, T, key: string | number): T
----@param acc T?
----@return T #A new table with each key-value pair being the result of the callback function
-function M.map(list, callback, acc)
-  acc = acc or {}
-  for k, v in pairs(list) do
-    acc = callback(acc, v, k)
-    if acc == nil then error "|acc| must be returned on each iteration and cannot be null" end
-  end
-  return acc
+---@param callback fun(item: T, key: string | number, list: T[]): T
+---@return T[] #A new table with each key-value pair being the result of the callback function
+function M.map(list, callback)
+  return M.reduce(list, function(acc, v, k)
+    table.insert(acc, callback(v, k))
+    return acc
+  end, {})
 end
 
 ---Check if "some" elements in a given table satisfies a provided condition
@@ -83,6 +96,11 @@ function M.replace(str, pattern, repl, n)
   repl = string.gsub(repl, "[%%]", "%%%%") -- escape replacement
   return string.gsub(str, pattern, repl, n)
 end
+
+---Trims leading and trailing whitespace from a given string
+---@param s string
+---@return string
+function M.trim(s) return (s:gsub("^%s*(.-)%s*$", "%1")) end
 
 return setmetatable({}, {
   __index = function(t, k)

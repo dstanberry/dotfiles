@@ -250,10 +250,7 @@ M.setup = function()
     update_in_insert = false,
     virtual_text = false,
     float = {
-      border = util.map(icons.border.ThinBlock, function(border, v, k)
-        border[k] = { v, "FloatBorderSB" }
-        return border
-      end),
+      border = util.map(icons.border.ThinBlock, function(v) return { v, "FloatBorderSB" } end),
       focusable = false,
       show_header = true,
       source = "always",

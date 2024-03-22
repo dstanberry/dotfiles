@@ -86,9 +86,9 @@ return {
       },
       document_symbols = {
         follow_cursor = true,
-        kinds = util.map(vim.tbl_deep_extend("keep", icons.kind, icons.type), function(kinds, v, k)
-          kinds[k] = { icon = v, hl = ("NavicIcons%s"):format(k) }
-          return kinds
+        kinds = util.reduce(vim.tbl_deep_extend("keep", icons.kind, icons.type), function(acc, v, k)
+          acc[k] = { icon = v, hl = ("Aerial%sIcon"):format(k) }
+          return acc
         end),
       },
       default_component_configs = {

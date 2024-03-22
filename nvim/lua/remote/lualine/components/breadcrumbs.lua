@@ -30,7 +30,7 @@ end
 local format_sections = function(path, fname, ext)
   local parts = path and vim.split(path, "/") or {}
   table.insert(parts, fname)
-  local segments = util.map(parts, function(segments, v, k)
+  local segments = util.reduce(parts, function(segments, v, k)
     local section
     if #v > 0 then
       local icon, icon_hl = devicons.get_icon(fname, ext, { default = true })
