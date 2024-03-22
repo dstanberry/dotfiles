@@ -48,6 +48,14 @@ vim.opt.fillchars = {
   foldopen = "",
   foldsep = " ",
 }
+-- define how the function used to calculate the fold level
+vim.opt.foldexpr = [[v:lua.require("util.buffer").foldexpr()]]
+-- define the fold level
+vim.opt.foldlevel = 99
+-- define how the fold level is calculated
+vim.opt.foldmethod = "expr"
+-- specify the text displayed for a closed fold
+vim.opt.foldtext = ""
 -- grep program to use
 vim.o.grepprg = "rg --vimgrep --no-heading --smart-case"
 -- grep output format

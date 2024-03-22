@@ -15,6 +15,7 @@ end
 ---Unloads a buffer and if the buffer was in a split, the split is preserved.
 ---@param force boolean
 function M.delete_buffer(force)
+  ---@diagnostic disable-next-line: missing-fields
   local buffers = M.list_buffers { listed = true }
   if #buffers < 2 then
     vim.cmd.enew()
@@ -43,38 +44,30 @@ function M.delete_buffer(force)
   end
 end
 
----Customizes the appearance of folded text in a buffer
----@return string
-function M.fold_text()
-  local indent = vim.fn.indent(vim.v.foldstart - 1)
-  local indent_level = vim.fn["repeat"](" ", indent)
-  local line_count = string.format("%s lines", (vim.v.foldend - vim.v.foldstart + 1))
-  local header = vim.api.nvim_buf_get_lines(0, vim.v.foldstart - 1, vim.v.foldstart, true)[1]:gsub(" *", "", 1)
-  local width = vim.fn.winwidth(0) - vim.wo.foldcolumn - (vim.wo.number and 8 or 0)
-  local lhs = string.format("%s%s", indent_level, header)
-  local rhs = string.format("%s  · %s", vim.v.foldlevel, line_count)
-  local separator = vim.fn["repeat"](" ", width - vim.fn.strwidth(lhs) - vim.fn.strwidth(rhs))
-  return string.format("%s %s%s ", lhs, separator, rhs)
-end
+M.skip_foldexpr = {} ---@type table<number,boolean>
+local skip_check = assert(vim.uv.new_check())
 
 ---Defines the conditions that determine how the text at the current cursor position might be folded
 ---@return integer|string fold-level
-function M.fold_expr()
-  if string.find(vim.fn.getline(vim.v.lnum), "%S") == nil then return "-1" end
-  local get_indent_level = function(n) return vim.fn.indent(n) / vim.bo.shiftwidth end
-  local get_next_line_with_content = function()
-    local count = vim.fn.line "$"
-    local line = vim.v.lnum + 1
-    while line <= count do
-      if string.find(vim.fn.getline(line), "%S") ~= nil then return line end
-      line = line + 1
-    end
-    return -2
-  end
-  local current = get_indent_level(vim.v.lnum)
-  local next = get_indent_level(get_next_line_with_content())
-  if next <= current then return current end
-  return ">" .. next
+function M.foldexpr()
+  local buf = vim.api.nvim_get_current_buf()
+  -- still in the same tick and no parser
+  if M.skip_foldexpr[buf] then return "0" end
+  -- don't use treesitter folds for non-file buffers
+  if vim.bo[buf].buftype ~= "" then return "0" end
+  -- as long as we don't have a filetype, don't bother
+  -- checking if treesitter is available (it won't)
+  if vim.bo[buf].filetype == "" then return "0" end
+  local ok = pcall(vim.treesitter.get_parser, buf)
+  if ok then return vim.treesitter.foldexpr() end
+  -- no parser available, so mark it as skip
+  -- in the next tick, all skip marks will be reset
+  M.skip_foldexpr[buf] = true
+  skip_check:start(function()
+    M.skip_foldexpr = {}
+    skip_check:stop()
+  end)
+  return "0"
 end
 
 ---Return the root directory for the current document based on:

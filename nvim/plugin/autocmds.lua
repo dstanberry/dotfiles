@@ -136,22 +136,10 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.api.nvim_create_autocmd("Filetype", {
   group = ftplugin,
-  callback = function()
-    vim.opt_local.foldenable = false
-    vim.opt_local.foldlevel = 99
-    vim.opt_local.foldtext = [[v:lua.require("util.buffer").fold_text()]]
-    if not pcall(vim.treesitter.start) then return end
-    if vim.opt_local.filetype:get() == "typescript" or vim.opt_local.filetype:get() == "tsx" then return end
-    vim.opt_local.foldexpr = [[v:lua.require("util.buffer").fold_expr()]]
-    vim.opt_local.foldmethod = "expr"
-    vim.cmd.normal "zx"
-  end,
-})
-
-vim.api.nvim_create_autocmd("Filetype", {
-  group = ftplugin,
   pattern = { "help", "man", "qf" },
-  callback = function(event) vim.keymap.set("n", "q", vim.cmd.close, { buffer = event.buf, silent = true, nowait = true }) end,
+  callback = function(event)
+    vim.keymap.set("n", "q", vim.cmd.close, { buffer = event.buf, silent = true, nowait = true })
+  end,
 })
 
 local terminal_ui = vim.api.nvim_create_augroup("terminal_ui", { clear = true })
