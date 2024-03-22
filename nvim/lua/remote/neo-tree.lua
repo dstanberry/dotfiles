@@ -82,6 +82,21 @@ return {
       window = {
         mappings = {
           ["<space>"] = "none",
+          ["O"] = {
+            command = function(state)
+              local filepath = state.tree:get_node().path
+              vim.ui.open(filepath)
+            end,
+            desc = "neotree: open file in system UI",
+          },
+          ["Y"] = {
+            function(state)
+              local node = state.tree:get_node()
+              local path = node:get_id()
+              vim.fn.setreg("+", path, "c")
+            end,
+            desc = "neotree: copy path to clipboard",
+          },
         },
       },
       document_symbols = {
