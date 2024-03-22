@@ -23,7 +23,7 @@ M.setup = function()
 
   vim.keymap.set("n", "<leader>da", function()
     local root = util.buffer.get_root()
-    if vim.loop.fs_stat(root .. "/.vscode/launch.json") then
+    if vim.uv.fs_stat(root .. "/.vscode/launch.json") then
       require("dap.ext.vscode").load_launchjs(nil, {
         chrome = languages,
         ["pwa-chrome"] = languages,

@@ -20,7 +20,7 @@ local dap_icons = {
 }
 
 local get_relative_path = function(winid, dirpath)
-  local cwd = vim.fs.normalize(vim.loop.cwd())
+  local cwd = vim.fs.normalize(vim.uv.cwd())
   local path = util.replace(dirpath, cwd, "")
   if path == "" then return "" end
   local limit = math.floor(0.4 * vim.fn.winwidth(winid))

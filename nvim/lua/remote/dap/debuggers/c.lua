@@ -30,7 +30,7 @@ M.setup = function()
       name = "Launch - codelldb",
       request = "launch",
       program = function()
-        return vim.fn.input("Path to executable: ", vim.fs.normalize(vim.loop.cwd() .. "/target/debug/"), "file")
+        return vim.fn.input("Path to executable: ", vim.fs.normalize(vim.uv.cwd() .. "/target/debug/"), "file")
       end,
       cwd = "${workspaceFolder}",
       args = {},

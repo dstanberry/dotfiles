@@ -36,7 +36,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
   callback = function(event)
     local name = vim.api.nvim_buf_get_name(event.buf)
     local dir = vim.fs.dirname(name)
-    if not vim.loop.fs_stat(dir) then vim.fn.mkdir(dir, "p") end
+    if not vim.uv.fs_stat(dir) then vim.fn.mkdir(dir, "p") end
   end,
 })
 

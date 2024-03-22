@@ -41,7 +41,7 @@ end
 ---Limit the rate at which the provided function `callback` will execute
 ---by delaying it's execution for `delay` milliseconds
 function M.debounce(callback, delay)
-  local timer = vim.loop.new_timer()
+  local timer = vim.uv.new_timer()
   return function(...)
     local argv = { ... }
     timer:stop()

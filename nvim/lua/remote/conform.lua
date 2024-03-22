@@ -38,7 +38,7 @@ return {
         prepend_args = { "-i", "2", "-ci", "-sr", "-s", "-bn" },
       },
       prettierd = {
-        env = vim.loop.fs_realpath(prettier_conf) and { PRETTIERD_DEFAULT_CONFIG = prettier_conf } or nil,
+        env = vim.uv.fs_realpath(prettier_conf) and { PRETTIERD_DEFAULT_CONFIG = prettier_conf } or nil,
       },
     },
     format_on_save = function(buf)

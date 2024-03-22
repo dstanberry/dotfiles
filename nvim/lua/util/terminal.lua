@@ -35,7 +35,7 @@ end
 ---@param force boolean
 function M.install_package(name, basedir, path, script, force)
   if force then vim.fn.delete(basedir, "rf") end
-  if not vim.loop.fs_stat(basedir) then
+  if not vim.uv.fs_stat(basedir) then
     print("Installing " .. name)
     vim.fn.mkdir(basedir, "p")
     if has "win32" then script = transform_win_cmd(script) end

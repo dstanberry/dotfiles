@@ -16,7 +16,7 @@ local function open(url)
   local Job = require "plenary.job"
   local command
   local args = { url }
-  if vim.loop.os_uname().sysname == "Darwin" then
+  if vim.uv.os_uname().sysname == "Darwin" then
     command = "open"
   elseif has "win32" or has "wsl" then
     command = "cmd.exe"

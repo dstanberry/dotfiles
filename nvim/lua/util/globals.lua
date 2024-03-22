@@ -49,13 +49,13 @@ function _G.profile(cmd, times)
     args = { cmd }
     cmd = vim.cmd
   end
-  local start = vim.loop.hrtime()
+  local start = vim.uv.hrtime()
   for _ = 1, times, 1 do
     local ok = pcall(cmd, unpack(args))
     if not ok then error("Command failed: " .. tostring(ok) .. " " .. vim.inspect { cmd = cmd, args = args }) end
   end
   ---@diagnostic disable-next-line: discard-returns
-  print(((vim.loop.hrtime() - start) / 1000000 / times) .. "ms")
+  print(((vim.uv.hrtime() - start) / 1000000 / times) .. "ms")
 end
 
 ---Unloads the provided module from memory and re-requires it

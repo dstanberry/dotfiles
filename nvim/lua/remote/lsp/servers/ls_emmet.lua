@@ -23,7 +23,7 @@ M.config = {
     "typescript.tsx",
     "xml",
   },
-  root_dir = function(_) return vim.loop.cwd() end,
+  root_dir = function(_) return vim.uv.cwd() end,
   settings = {},
   on_attach = function() end,
 }
