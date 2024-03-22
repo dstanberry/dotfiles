@@ -1,5 +1,24 @@
 local M = {}
 
+local tbl_keys_numeric = function(list)
+  for k, _ in pairs(list) do
+    if type(k) ~= "number" then return false end
+  end
+  return true
+end
+
+---Check if any of the key-value pairs in a given table satisfies the provided condition
+---and returns true if the condition is satisfied at least once. Returns false otherwise
+---@generic T: table
+---@param list T[]
+---@param callback fun(value: any, key: string | number)
+function M.any(list, callback)
+  for k, v in pairs(list) do
+    if callback(v, k) then return true end
+  end
+  return false
+end
+
 ---Searches for a partial match of a string `needle` in a list `haystack`
 ---@param haystack string[]
 ---@param needle string
@@ -39,6 +58,24 @@ function M.debounce(callback, delay)
     timer
 end
 
+---Iterate over each key-value pair in the provided table and apply the callback function.
+---If the keys in the table are all numeric, it will perform an ordered iteration over each pair.
+---Otherwise the order will not be guaranteed
+---@generic T:table
+---@param callback fun(item: T, key: any)
+---@param list table<any, T>
+function M.foreach(list, callback)
+  if tbl_keys_numeric(list) then
+    for i, v in ipairs(list) do
+      callback(v, i)
+    end
+  else
+    for k, v in pairs(list) do
+      callback(v, k)
+    end
+  end
+end
+
 ---Prints lua formatted representation of the given string `filename` as a lua module
 ---@param filename string
 ---@return string modname
@@ -55,23 +92,22 @@ function M.get_module_name(filename)
   return modname or ""
 end
 
----Converts a list of ordered items into a value by iterating over each pair and transforming them
----with a callback function
+---Creates a new table populated with the results of calling a provided function
+---on every key-value pair in the calling table when the key is a string
 ---@generic T : table, S
 ---@param list T[]
----@param callback fun(acc: S, item: T, key: number): S
+---@param callback fun(acc: S, item: T, key: string): S
 ---@param acc S?
 ---@return S
-function M.ireduce(list, callback, acc)
-  for i, v in ipairs(list) do
-    acc = callback(acc, v, i)
-    assert(acc ~= nil, "The accumulator must be returned on each iteration")
-  end
-  return acc
+function M.kmap(list, callback)
+  return M.kreduce(list, function(acc, v, k)
+    table.insert(acc, callback(v, k))
+    return acc
+  end, {})
 end
 
----Converts a list of items into a value by iterating over each pair where the key is a string
----and transforming them with a callback function
+---Converts a list of items into a value by iterating over each pair and when the key is a string
+---transform the pair with a callback function
 ---@generic T : table, S
 ---@param list T[]
 ---@param callback fun(acc: S, item: T, key: string): S
@@ -98,7 +134,9 @@ function M.map(list, callback)
 end
 
 ---Converts a list of items into a value by iterating over each pair and transforming them
----with a callback function
+---with a callback function.
+---If the keys in the table are all numeric, it will perform an ordered iteration over each pair.
+---Otherwise the order will not be guaranteed
 ---@generic T : table, S
 ---@param list T[]
 ---@param callback fun(acc: S, item: T, key: string | number): S
@@ -106,9 +144,16 @@ end
 ---@return S
 function M.reduce(list, callback, acc)
   acc = acc or {}
-  for k, v in pairs(list) do
-    acc = callback(acc, v, k)
-    assert(acc ~= nil, "The accumulator must be returned on each iteration")
+  if tbl_keys_numeric(list) then
+    for i, v in ipairs(list) do
+      acc = callback(acc, v, i)
+      assert(acc ~= nil, "The accumulator must be returned on each iteration")
+    end
+  else
+    for k, v in pairs(list) do
+      acc = callback(acc, v, k)
+      assert(acc ~= nil, "The accumulator must be returned on each iteration")
+    end
   end
   return acc
 end
@@ -133,23 +178,6 @@ function M.replace(str, pattern, repl, n)
   repl = string.gsub(repl, "[%%]", "%%%%") -- escape replacement
   return string.gsub(str, pattern, repl, n)
 end
-
----Check if "some" elements in a given table satisfies a provided condition
----and returns true if the condition is satisfied at least once. Returns false otherwise
----@generic T: table
----@param list T[]
----@param callback fun(value: any, key: string | number)
-function M.some(list, callback)
-  for k, v in pairs(list) do
-    if callback(v, k) then return true end
-  end
-  return false
-end
-
----Trims leading and trailing whitespace from a given string
----@param s string
----@return string
-function M.trim(s) return (s:gsub("^%s*(.-)%s*$", "%1")) end
 
 return setmetatable({}, {
   __index = function(t, k)
