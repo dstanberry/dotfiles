@@ -383,26 +383,26 @@ return {
             path_display = { "shorten" },
           },
           lsp_definitions = {
-            theme = "dropdown",
+            layout_strategy = "vertical",
             layout_config = { height = 40, prompt_position = "top" },
           },
           lsp_document_symbols = {
-            theme = "dropdown",
+            layout_strategy = "vertical",
             layout_config = { height = 40, prompt_position = "top" },
             path_display = { "hidden" },
           },
           lsp_dynamic_workspace_symbols = {
-            theme = "dropdown",
+            layout_strategy = "vertical",
             layout_config = { height = 40, prompt_position = "top" },
             path_display = { "shorten" },
           },
           lsp_references = {
-            theme = "dropdown",
+            layout_strategy = "vertical",
             layout_config = { height = 40, prompt_position = "top" },
             path_display = { "shorten" },
           },
           lsp_workspace_symbols = {
-            theme = "dropdown",
+            layout_strategy = "vertical",
             layout_config = { height = 40, prompt_position = "top" },
             path_display = { "shorten" },
           },
