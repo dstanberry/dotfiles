@@ -88,8 +88,8 @@ else
 fi
 
 if hash fzf 2> /dev/null; then
-  # setup fzf key bindings and fuzzy completion (>=v0.48.1)
-  _evalcache fzf --zsh
+  # setup fzf key bindings and fuzzy completion (>=v0.48.0)
+  FZF_ALT_C_COMMAND="" _evalcache fzf --zsh
 
   # Use ? as the trigger sequence instead of the default **
   export FZF_COMPLETION_TRIGGER='?'
