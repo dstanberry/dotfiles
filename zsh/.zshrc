@@ -405,26 +405,6 @@ test -s "${ZSH_CONFIG_HOME}/prompt.zsh" \
   && source "${ZSH_CONFIG_HOME}/prompt.zsh"
 
 ###############################################################
-# fzf
-###############################################################
-if hash fzf 2> /dev/null; then
-  # load fzf keybinds
-  test -s "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings.zsh" \
-    && source "${ZSH_CONFIG_HOME}/plugins/fzf/key-bindings.zsh"
-
-  # load fzf completion
-  test -s "${ZSH_CONFIG_HOME}/plugins/fzf/completion.zsh" \
-    && source "${ZSH_CONFIG_HOME}/plugins/fzf/completion.zsh"
-
-  # load fzf-tmux session switcher
-  test -s "${ZSH_CONFIG_HOME}/plugins/tmux-session.zsh" \
-    && source "${ZSH_CONFIG_HOME}/plugins/tmux-session.zsh"
-
-  autoload _fzf
-  _fzf
-fi
-
-###############################################################
 # zsh-autosuggestions
 ###############################################################
 test -s "${ZSH_CONFIG_HOME}/plugins/zsh-autosuggestions.zsh" \

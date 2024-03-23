@@ -88,6 +88,9 @@ else
 fi
 
 if hash fzf 2> /dev/null; then
+  # setup fzf key bindings and fuzzy completion (>=v0.48.1)
+  _evalcache fzf --zsh
+
   # Use ? as the trigger sequence instead of the default **
   export FZF_COMPLETION_TRIGGER='?'
 
@@ -129,7 +132,11 @@ if hash fzf 2> /dev/null; then
   --preview '(bat --style=numbers {} || cat {} || tree -C {}) 2> /dev/null | head -200'"
 
   # define default behaviour for fzf-tmux
-  export FZF_TMUX_OPTS="-p -w 80%"
+  export FZF_TMUX_OPTS="-p 90%"
+
+  # load tmux session manager
+  test -s "${ZSH_CONFIG_HOME}/plugins/tmux-session.zsh" \
+    && source "${ZSH_CONFIG_HOME}/plugins/tmux-session.zsh"
 fi
 
 # define mocOS specific options
