@@ -415,6 +415,7 @@ test -s "${ZSH_CONFIG_HOME}/plugins/zsh-autosuggestions.zsh" \
 # zsh-syntax-highlighting
 ###############################################################
 test -s "${ZSH_CONFIG_HOME}/plugins/zsh-syntax-highlighting.zsh" \
+  && export ZSH_HIGHLIGHT_HIGHLIGHTERS_DIR="${ZSH_CONFIG_HOME}/plugins/highlighters" \
   && source "${ZSH_CONFIG_HOME}/plugins/zsh-syntax-highlighting.zsh"
 
 ###############################################################
