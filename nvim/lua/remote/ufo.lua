@@ -4,15 +4,13 @@ return {
   "kevinhwang91/nvim-ufo",
   event = { "LazyFile", "VeryLazy" },
   dependencies = { "kevinhwang91/promise-async" },
-  enabled = false,
+  enabled = true,
   keys = {
-    { "zR", function() require("ufo").openAllFolds() end, desc = "ufo: open all folds" },
-    { "zM", function() require("ufo").closeAllFolds() end, desc = "ufo: close all folds" },
+    -- { "zR", function() require("ufo").openAllFolds() end, desc = "ufo: open all folds" },
+    -- { "zM", function() require("ufo").closeAllFolds() end, desc = "ufo: close all folds" },
     { "zp", function() require("ufo").peekFoldedLinesUnderCursor() end, desc = "ufo: peek content within fold" },
   },
   init = function()
-    vim.o.foldcolumn = "1"
-    vim.o.signcolumn = "number"
     vim.o.foldlevelstart = 99
     vim.o.foldenable = true
   end,
@@ -27,7 +25,7 @@ return {
       },
     },
     enable_get_fold_virt_text = true,
-    fold_virt_text_handler = function(virt_text, _, end_lnum, width, truncate, ctx)
+    fold_virt_text_handler = function(virt_text, _, end_linenr, width, truncatefn, ctx)
       local result = {}
       local padding = ""
       local cur_width = 0
@@ -40,7 +38,7 @@ return {
         if target_width > cur_width + chunk_width then
           table.insert(result, chunk)
         else
-          chunk_text = truncate(chunk_text, target_width - cur_width)
+          chunk_text = truncatefn(chunk_text, target_width - cur_width)
           local hl_group = chunk[2]
           table.insert(result, { chunk_text, hl_group })
           chunk_width = vim.api.nvim_strwidth(chunk_text)
@@ -51,9 +49,9 @@ return {
         end
         cur_width = cur_width + chunk_width
       end
-      local end_text = ctx.get_fold_virt_text(end_lnum)
+      local end_text = ctx.get_fold_virt_text(end_linenr)
       if end_text[1] and end_text[1][1] then end_text[1][1] = end_text[1][1]:gsub("[%s\t]+", "") end
-      table.insert(result, { pad(icons.misc.Ellipses, "both"), "UfoFoldedEllipsis" })
+      table.insert(result, { pad(icons.misc.Ellipses, "both"), "Comment" })
       vim.list_extend(result, end_text)
       table.insert(result, { padding, "" })
       return result
