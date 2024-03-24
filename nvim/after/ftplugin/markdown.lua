@@ -10,27 +10,28 @@ vim.opt_local.conceallevel = 2
 vim.opt_local.wrap = true
 vim.opt_local.colorcolumn = "80"
 
+local md_extmarks = vim.api.nvim_create_augroup("md_extmarks", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "CmdlineLeave", "InsertLeave" }, {
-  group = "ftplugin",
+  group = md_extmarks,
   buffer = 0,
   callback = function()
-    if package.loaded["nvim-treesitter"] then markdown.concealer.toggle_on() end
+    if package.loaded["nvim-treesitter"] then markdown.set_extmarks() end
   end,
 })
 vim.api.nvim_create_autocmd("InsertEnter", {
-  group = "ftplugin",
+  group = md_extmarks,
   buffer = 0,
-  callback = function() markdown.concealer.disable() end,
+  callback = function() markdown.disable_extmarks() end,
 })
 
-vim.keymap.set("i", "<cr>", markdown.list.handle_return, { buffer = 0, desc = "(optional): insert list marker" })
+vim.keymap.set("i", "<cr>", markdown.insert_list_marker, { buffer = 0, desc = "insert list marker" })
 
 vim.keymap.set("i", "<c-w><c-c>", markdown.insert_checkbox, { buffer = 0, desc = "insert checkbox" })
 vim.keymap.set("i", "<c-w><c-l>", markdown.insert_link, { buffer = 0, desc = "insert link" })
 
-vim.keymap.set("n", "<c-w><c-a>", markdown.heading.insert_adjacent, { buffer = 0, desc = "insert adjacent heading" })
-vim.keymap.set("n", "<c-w><c-i>", markdown.heading.insert_inner, { buffer = 0, desc = "insert inner heading" })
-vim.keymap.set("n", "<c-w><c-o>", markdown.heading.insert_outer, { buffer = 0, desc = "insert outer heading" })
+vim.keymap.set("n", "<c-w><c-a>", markdown.insert_adjacent_heading, { buffer = 0, desc = "insert adjacent heading" })
+vim.keymap.set("n", "<c-w><c-i>", markdown.insert_inner_heading, { buffer = 0, desc = "insert inner heading" })
+vim.keymap.set("n", "<c-w><c-o>", markdown.insert_outer_heading, { buffer = 0, desc = "insert outer heading" })
 
 vim.keymap.set({ "n", "v" }, "<c-w><c-b>", markdown.toggle_bullet, { buffer = 0, desc = "toggle bullet" })
 vim.keymap.set({ "n", "v" }, "<c-w><c-x>", markdown.toggle_checkbox, { buffer = 0, desc = "toggle checkbox" })
