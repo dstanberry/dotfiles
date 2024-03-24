@@ -1,17 +1,17 @@
-local python_treesitter = require "ft.python.treesitter"
-
-local NAMESPACE_ID = vim.api.nvim_create_namespace "python_conceal"
+local python = require "ft.python"
 
 local M = {}
 
-M.disable = function()
+local NAMESPACE_ID = vim.api.nvim_create_namespace "python_ns_extmarks"
+
+M.disable_extmarks = function()
   local line = vim.fn.line "."
   pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, line - 1, line + 1)
 end
 
-M.toggle_on = function()
+M.set_extmarks = function()
   vim.api.nvim_buf_clear_namespace(0, NAMESPACE_ID, 0, -1)
-  local root, parsed_query = python_treesitter.parse_document()
+  local root, parsed_query = python.parse_document()
   for _, captures, metadata in parsed_query:iter_matches(root, 0) do
     for id, node in pairs(captures) do
       local capture = parsed_query.captures[id]
