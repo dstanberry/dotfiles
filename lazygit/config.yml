@@ -25,9 +25,13 @@ git:
   disableForcePushing: false
   skipHookPrefix: WIP
 gui:
-  border: "single"
+  border: "rounded"
+  commit:
+    autoWrapCommitMessage: true
+    autoWrapWidth: 72
   commitLength:
     show: true
+  enlargedSideViewLocation: 'top'
   language: "en"
   authorColors:
     "Demaro Stanberry": "#8ed6ec"
@@ -57,6 +61,8 @@ gui:
   mouseEvents: true
   scrollHeight: 2
   scrollPastBottom: true
+  showBottomLine: false
+  showCommandLog: false
   nerdFontsVersion: "3"
   skipStashWarning: true
   skipDiscardChangeWarning: false
@@ -66,136 +72,8 @@ customCommands:
     description: "Open diff"
     context: "global"
     subprocess: true
-  - key: "G"
-    command: "git reset --soft HEAD^"
-    description: "Revert last commit"
-    context: "commits"
 keybinding:
   universal:
-    quit: "q"
-    quit-alt1: "<c-c>"
-    return: "<esc>"
-    quitWithoutChangingDirectory: "Q"
-    togglePanel: "<tab>"
-    prevItem: "<up>"
-    nextItem: "<down>"
-    prevItem-alt: "k"
-    nextItem-alt: "j"
-    prevPage: ","
-    nextPage: "."
-    gotoTop: "<"
-    gotoBottom: ">"
-    scrollLeft: "H"
-    scrollRight: "L"
-    prevBlock: "<left>"
-    nextBlock: "<right>"
-    prevBlock-alt: "h"
-    nextBlock-alt: "l"
-    jumpToBlock: ["1", "2", "3", "4", "5"]
-    nextMatch: "n"
-    prevMatch: "N"
-    optionMenu: null
-    optionMenu-alt1: "?"
-    select: "<space>"
-    goInto: "<enter>"
-    openRecentRepos: "<c-r>"
-    confirm: "<enter>"
-    remove: "x"
-    new: "n"
-    edit: "e"
-    openFile: "o"
-    scrollUpMain: "<c-f>"
-    scrollDownMain: "<c-d>"
-    scrollUpMain-alt1: null
-    scrollDownMain-alt1: null
-    scrollUpMain-alt2: null
-    scrollDownMain-alt2: null
-    executeCustomCommand: ":"
     createRebaseOptionsMenu: "X"
-    pushFiles: "P"
-    pullFiles: "p"
-    refresh: "R"
-    createPatchOptionsMenu: "<c-p>"
-    nextTab: "]"
-    prevTab: "["
-    nextScreenMode: "+"
-    prevScreenMode: "_"
-    undo: "z"
-    redo: "<c-z>"
-    filteringMenu: "<c-s>"
-    diffingMenu: "W"
-    diffingMenu-alt: "<c-e>"
-    copyToClipboard: "<c-o>"
-    submitEditorText: "<enter>"
-    extrasMenu: "@"
-    toggleWhitespaceInDiffView: "<c-w>"
-    increaseContextInDiffView: "}"
-    decreaseContextInDiffView: "{"
-  status:
-    checkForUpdate: "u"
-    recentRepos: "<enter>"
   files:
-    commitChanges: "c"
-    commitChangesWithoutHook: "w"
-    amendLastCommit: "A"
-    commitChangesWithEditor: "C"
-    ignoreFile: "i"
-    refreshFiles: "r"
-    stashAllChanges: "s"
-    viewStashOptions: "S"
-    toggleStagedAll: "a"
-    viewResetOptions: "X"
-    fetch: "f"
-    toggleTreeView: "`"
-    openMergeTool: "M"
-    openStatusFilter: "<c-b>"
-  branches:
-    createPullRequest: "o"
-    viewPullRequestOptions: "O"
-    checkoutBranchByName: "c"
-    forceCheckoutBranch: "F"
-    rebaseBranch: "r"
-    renameBranch: "R"
-    mergeIntoCurrentBranch: "M"
-    viewGitFlowOptions: "i"
-    fastForward: "f"
-    createTag: "T"
-    pushTag: "P"
-    setUpstream: "u"
-    fetchRemote: "f"
-  commits:
-    squashDown: "s"
-    renameCommit: "r"
-    renameCommitWithEditor: "R"
-    viewResetOptions: "g"
-    markCommitAsFixup: "f"
-    createFixupCommit: "F"
-    squashAboveCommits: "S"
-    moveDownCommit: "J"
-    moveUpCommit: "K"
-    amendToCommit: "A"
-    pickCommit: "p"
-    revertCommit: "t"
-    cherryPickCopy: "c"
-    cherryPickCopyRange: "C"
-    pasteCommits: "v"
-    tagCommit: "T"
-    checkoutCommit: "<space>"
-    resetCherryPick: "<c-R>"
-    copyCommitMessageToClipboard: "<c-y>"
-    openLogMenu: "<c-l>"
-    viewBisectOptions: "b"
-  commitFiles:
-    checkoutCommitFile: "c"
-  main:
-    pickBothHunks: "b"
-    toggleDragSelect: "v"
-    toggleDragSelect-alt: "V"
-    toggleSelectHunk: "a"
-  stash:
-    popStash: "g"
-    renameStash: "r"
-  submodules:
-    bulkMenu: "b"
-    init: "i"
-    update: "u"
+    toggleTreeView: "-"
