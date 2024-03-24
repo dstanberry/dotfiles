@@ -20,6 +20,9 @@ return {
     local bufferline_groups = require "bufferline.groups"
     local bufferline = require "bufferline"
     bufferline.setup {
+      highlights = {
+        tab_selected = { fg = c.red1 },
+      },
       options = {
         style_preset = { bufferline.style_preset.minimal },
         mode = "buffers",
