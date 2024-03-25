@@ -20,9 +20,25 @@ return {
     local bufferline_groups = require "bufferline.groups"
     local bufferline = require "bufferline"
     bufferline.setup {
-      highlights = {
-        tab_selected = { fg = c.red1 },
-      },
+      highlights = function(defaults)
+        local hl = util.reduce(defaults.highlights, function(highlight, attrs, name)
+          local formatted = name:lower()
+          local is_group = formatted:match "group"
+          local is_offset = formatted:match "offset"
+          local is_separator = formatted:match "separator"
+          if not is_group or (is_group and is_separator) then attrs.bg = c.bg2 end
+          if is_separator and not (is_group or is_offset) then attrs.fg = c.bg2 end
+          highlight[name] = attrs
+          return highlight
+        end)
+        hl.buffer_selected.italic = false
+        hl.buffer_visible.bold = true
+        hl.buffer_visible.italic = false
+        hl.buffer_visible.fg = c.gray1
+        hl.tab_selected.bold = true
+        hl.tab_selected.fg = c.red1
+        return hl
+      end,
       options = {
         style_preset = { bufferline.style_preset.minimal },
         mode = "buffers",
