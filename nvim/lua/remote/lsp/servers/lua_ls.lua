@@ -54,7 +54,7 @@ M.config = {
       },
       workspace = {
         checkThirdParty = false,
-        library = { require("neodev.config").types() },
+        library = {},
       },
     },
   },
