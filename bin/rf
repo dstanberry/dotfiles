@@ -15,4 +15,4 @@ INITIAL_QUERY="${*:-}"
   --delimiter : \
   --header '╱ CTRL-R (ripgrep mode) ╱ CTRL-F (fzf mode) ╱' \
   --preview 'bat --style=numbers {1} --highlight-line {2}' \
-  --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+  --preview-window 'up,60%,border-bottom,+{2}+3/3,~3'
