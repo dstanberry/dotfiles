@@ -15,7 +15,7 @@ M.config = {
       local err, result = ...
       if not err and result then
         local items = result.items or result
-        items = require("util").map(function(acc, item)
+        items = require("util").map(items, function(item)
           if
             (item.data and item.data.funcParensDisabled)
             and (
@@ -27,9 +27,8 @@ M.config = {
             item.insertText = item.label .. "($1)$0"
             item.insertTextFormat = vim.lsp.protocol.InsertTextFormat.Snippet
           end
-          table.insert(acc, item)
-          return acc
-        end, items)
+          return item
+        end)
       end
     end,
   },
