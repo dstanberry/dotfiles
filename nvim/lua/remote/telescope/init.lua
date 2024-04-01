@@ -129,8 +129,8 @@ return {
         { "<localleader>fe", file_browser_relative, desc = "telescope: browse current directory" },
         { "<localleader>fg", live_grep_args, desc = "telescope: find in files (grep with args)" },
         -- lsp handlers
-        { "gw", function() require("telescope.builtin").diagnostics { bufnr = 0 } end, desc = "telescope: lsp diagnostics (buffer)", },
-        { "gW",function() require("telescope.builtin").diagnostics() end, desc = "telescope: lsp diagnostics (workspace)" },
+        { "<leader>fw", function() require("telescope.builtin").diagnostics { bufnr = 0 } end, desc = "telescope: lsp diagnostics (buffer)", },
+        { "<leader>fW",function() require("telescope.builtin").diagnostics() end, desc = "telescope: lsp diagnostics (workspace)" },
       }
     end,
     init = function()

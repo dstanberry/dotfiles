@@ -499,13 +499,49 @@ return {
   },
   {
     "folke/trouble.nvim",
-    cmd = { "Trouble", "TroubleToggle" },
-    init = function() groups.new("TroubleNormal", { link = "NormalSB" }) end,
+    branch = "dev",
+    cmd = { "Trouble" },
     keys = {
-      { "<localleader>qw", "<cmd>TroubleToggle document_diagnostics<cr>", desc = "trouble: document diagnostics" },
-      { "<localleader>qW", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "trouble: workspace diagnostics" },
-      { "<localleader>ql", "<cmd>TroubleToggle loclist<cr>", desc = "trouble: location list" },
-      { "<localleader>qq", "<cmd>TroubleToggle quickfix<cr>", desc = "trouble: quickfix list" },
+      {
+        "gD",
+        function() vim.cmd { cmd = "Trouble", args = { "lsp_definitions_float", "toggle" } } end,
+        desc = "trouble: lsp definitions",
+      },
+      {
+        "gI",
+        function() vim.cmd { cmd = "Trouble", args = { "lsp_implementations", "toggle", "preview.type=float" } } end,
+        desc = "trouble: lsp implementations",
+      },
+      {
+        "gR",
+        function() vim.cmd { cmd = "Trouble", args = { "lsp_references", "toggle", "preview.type=float" } } end,
+        desc = "trouble: lsp references",
+      },
+      {
+        "gT",
+        function() vim.cmd { cmd = "Trouble", args = { "lsp_type_definitions", "toggle", "preview.type=float" } } end,
+        desc = "trouble: lsp type definitions",
+      },
+      {
+        "gw",
+        function() vim.cmd { cmd = "Trouble", args = { "diagnostics", "toggle", "filter.buf=0" } } end,
+        desc = "trouble: document diagnostics",
+      },
+      {
+        "gW",
+        function() vim.cmd { cmd = "Trouble", args = { "diagnostics_float", "toggle" } } end,
+        desc = "trouble: workspace diagnostics",
+      },
+      {
+        "<localleader>ql",
+        function() vim.cmd { cmd = "Trouble", args = { "loclist", "toggle" } } end,
+        desc = "trouble: location list",
+      },
+      {
+        "<localleader>qq",
+        function() vim.cmd { cmd = "Trouble", args = { "qflist", "toggle" } } end,
+        desc = "trouble: quickfix list",
+      },
       {
         "<c-up>",
         function()
@@ -530,8 +566,28 @@ return {
       },
     },
     opts = {
-      position = "bottom",
-      use_diagnostic_signs = true,
+      modes = {
+        lsp_definitions_float = {
+          mode = "lsp_definitions",
+          preview = {
+            type = "float",
+            relative = "editor",
+            position = { 0, -2 },
+            size = { width = 0.4, height = 0.3 },
+            zindex = 200,
+          },
+        },
+        diagnostics_float = {
+          mode = "diagnostics",
+          preview = {
+            type = "float",
+            relative = "editor",
+            position = { 0, -2 },
+            size = { width = 0.3, height = 0.3 },
+            zindex = 200,
+          },
+        },
+      },
     },
   },
 }
