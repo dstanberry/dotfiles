@@ -271,7 +271,8 @@ return {
       },
     },
     init = function()
-      groups.new("NoiceFormatProgressDone", { bg = color.blend(c.diff_add, c.bg2, 0.20) })
+      groups.new("NoiceFormatProgressTodo", { bg = color.blend(c.blue1, c.grayX, 0.20) })
+      groups.new("NoiceFormatProgressDone", { bg = c.blue0 })
       groups.new("NoiceFormatEvent", { link = "Comment" })
       groups.new("NoiceFormatKind", { link = "Comment" })
     end,
@@ -340,8 +341,6 @@ return {
               { event = "msg_show", find = "search hit" },
               { event = "msg_show", find = "written" },
               { event = "msg_show", kind = "search_count" },
-              -- NOTE: temporary suppression of `LanguageTree:for_each_child()` warnings
-              { event = "notify", kind = "warn", find = "for_each_child" },
             },
           },
         },
@@ -415,6 +414,15 @@ return {
           size = { width = 70, height = 10 },
           win_options = {
             winhighlight = { Normal = "Normal", FloatBorder = "NoiceCmdlinePopupBorder" },
+          },
+        },
+        mini = {
+          timeout = 1000,
+          position = { row = -2 },
+          border = { style = "rounded" },
+          win_options = {
+            winblend = vim.api.nvim_get_option_value("winblend", { scope = "global" }),
+            winhighlight = { FloatBorder = "Comment" },
           },
         },
         split = {
