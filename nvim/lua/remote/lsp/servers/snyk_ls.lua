@@ -11,7 +11,7 @@ M.config = {
     organization = vim.g.config_snyk_org,
     token = vim.g.config_snyk_token,
     enableTrustedFoldersFeature = "true",
-    trustedFolders = { vim.g.projects_dir },
+    trustedFolders = { vim.env.XDG_CONFIG_HOME, vim.g.projects_dir },
     sendErrorReports = "false",
     enableTelemetry = "false",
   },
