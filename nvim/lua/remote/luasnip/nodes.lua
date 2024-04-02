@@ -40,6 +40,7 @@ local snip_defs = {
   fmt = require("luasnip.extras.fmt").fmt,
   fmta = require("luasnip.extras.fmt").fmta,
   postfix = require("luasnip.extras.postfix").postfix,
+  ts_postfix = require("luasnip.extras.treesitter_postfix").treesitter_postfix,
   ls = ls,
   ins_generate = function(nodes)
     return setmetatable(nodes or {}, {

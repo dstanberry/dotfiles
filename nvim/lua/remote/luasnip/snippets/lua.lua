@@ -3,6 +3,16 @@ local rutil = require "remote.luasnip.util"
 ---@diagnostic disable: undefined-global
 require("remote.luasnip.nodes").setup_snip_env()
 
+local expr_query = [[
+[
+  (function_call)
+  (identifier)
+  (expression_list)
+  (dot_index_expression)
+  (bracket_index_expression)
+] @prefix
+]]
+
 return {
   s({
     trig = "ignore",
@@ -10,7 +20,7 @@ return {
     dscr = "Disable `stylua` formatting for the next region",
   }, { t "-- stylua: ignore" }),
   s(
-    { trig = "require", name = "require statement", dscr = "Require statement" },
+    { trig = "req", name = "require statement", dscr = "Require statement" },
     fmt([[local {} = require("{}")]], {
       d(2, rutil.repeat_node_segment, { 1 }, { user_args = { "." } }),
       i(1, "mod"),
@@ -20,9 +30,10 @@ return {
     { trig = "fn", name = "function", dscr = "Declare function" },
     fmt("{}\n{}\nend", {
       c(1, {
+        fmt("function({})", { r(1, "params") }),
+        fmt("function {}({})", { r(1, "name"), r(2, "params") }),
         fmt("local {} = function({})", { r(1, "name"), r(2, "params") }),
         fmt("local function {}({})", { r(1, "name"), r(2, "params") }),
-        fmt("function {}({})", { r(1, "name"), r(2, "params") }),
       }),
       d(2, rutil.saved_text, {}, { user_args = { { text = "-- TODO", indent = true } } }),
     }),
@@ -81,6 +92,24 @@ return {
       d(3, rutil.repeat_node_segment, { 2 }, { user_args = { "." } }),
       i(2, "mod"),
       rutil.repeat_node(1),
+    })
+  ),
+  ts_postfix(
+    {
+      trig = ".pair",
+      name = "for loop |(i)pairs|",
+      dscr = "For loop (treesitter postfix)",
+      wordTrig = false,
+      reparseBuffer = "live",
+      matchTSNode = { query = expr_query, query_lang = "lua" },
+    },
+    fmt("for k, v in {}({}) do\n\t{}\nend", {
+      c(1, { t "pairs", t "ipairs" }),
+      f(function(_, parent)
+        local match = parent.snippet.env.LS_TSMATCH
+        return match
+      end, {}),
+      i(0),
     })
   ),
 }, {
