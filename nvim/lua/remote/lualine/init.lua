@@ -1,16 +1,19 @@
 local c = require("ui.theme").colors
 local color = require "util.color"
+local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
-
-local theme = require "remote.lualine.theme"
 local excludes = require "ui.excludes"
 
-local available_width = function(width) return vim.api.nvim_get_option_value("columns", {}) >= width end
+local theme = require "remote.lualine.theme"
+local stl_util = require "remote.lualine.util"
 
 return {
   "dstanberry/lualine.nvim",
   event = { "LazyFile", "VeryLazy" },
   init = function()
+    groups.new("NoiceSymbolNormal", { fg = color.lighten(c.gray1, 15) })
+    groups.new("NoiceSymbolSeparator", { fg = color.blend(c.purple1, c.bg2, 0.38) })
+
     vim.g.lualine_laststatus = vim.o.laststatus
     if vim.fn.argc(-1) > 0 then
       -- set an empty statusline till lualine loads
@@ -28,6 +31,26 @@ return {
     local git_diff = require "remote.lualine.components.git_diff"
     local indent = require "remote.lualine.components.indent"
     local merge_conflicts = require "remote.lualine.components.merge_conflicts"
+
+    local available_width = function(width) return vim.api.nvim_get_option_value("columns", {}) >= width end
+
+    local lsp_symbols = require("trouble").statusline {
+      mode = "lsp_document_symbols",
+      groups = {},
+      title = false,
+      filter = { range = true },
+      format = string.format(
+        "%s%s{kind_icon}{symbol.name:NoiceSymbolNormal}",
+        stl_util.highlighter.sanitize "NoiceSymbolSeparator",
+        pad(icons.misc.FoldClosed, "right", 2)
+      ),
+    }
+
+    local lsp_symbols_section = function()
+      local default = string.format("%s%s", stl_util.highlighter.sanitize "Winbar", "%=")
+      local data = lsp_symbols.get()
+      return data ~= "%#StatusLine#" and data or default
+    end
 
     -- PERF: disable lualine require
     local lualine_require = require "lualine_require"
@@ -47,12 +70,10 @@ return {
         lualine_a = {
           {
             function() return icons.misc.VerticalBarBold end,
-            -- color = function() return { fg = theme.modes[vim.api.nvim_get_mode().mode], bg = c.gray0 } end,
             padding = { left = 0, right = 0 },
           },
           {
             git_branch,
-            -- color = function() return { fg = theme.modes[vim.api.nvim_get_mode().mode], bg = c.gray0 } end,
             padding = { right = 3 },
           },
         },
@@ -134,16 +155,9 @@ return {
             padding = { right = 0 },
           },
           {
-            "aerial",
+            lsp_symbols_section,
+            cond = lsp_symbols.has,
             padding = { left = 0 },
-            sep_prefix = icons.misc.FoldClosed,
-            sep = pad(icons.misc.FoldClosed, "both"),
-            sep_highlight = "AerialSeparator",
-            sep_icon = "",
-            depth = 5,
-            dense = false,
-            dense_sep = "...",
-            colored = true,
             color = "Winbar",
           },
         },

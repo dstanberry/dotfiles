@@ -276,7 +276,7 @@ return {
       document_symbols = {
         follow_cursor = true,
         kinds = util.reduce(vim.tbl_deep_extend("keep", icons.kind, icons.type), function(acc, v, k)
-          acc[k] = { icon = v, hl = ("Aerial%sIcon"):format(k) }
+          acc[k] = { icon = v, hl = ("TroubleIcon%s"):format(k) }
           return acc
         end),
       },
@@ -566,6 +566,13 @@ return {
       },
     },
     opts = {
+      icons = {
+        kinds = vim.tbl_extend(
+          "keep",
+          vim.tbl_map(function(kind) return pad(kind, "right") end, icons.kind),
+          vim.tbl_map(function(kind) return pad(kind, "right") end, icons.type)
+        ),
+      },
       modes = {
         lsp_definitions_float = {
           mode = "lsp_definitions",

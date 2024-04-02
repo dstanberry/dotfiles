@@ -662,7 +662,6 @@ return {
         ["["] = { name = "+previous" },
         ["<leader>"] = {
           mode = "n",
-          a = { name = "+plugin (aerial)" },
           d = { name = "+debug" },
           f = { name = "+file/find" },
           g = { name = "+git" },
