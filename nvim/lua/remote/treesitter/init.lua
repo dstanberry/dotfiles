@@ -56,8 +56,8 @@ return {
     },
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     keys = {
-      { "<c-a>", desc = "treesitter: increment selection" },
-      { "<bs", desc = "treesitter: decrement selection", mode = "x" },
+      { "=", desc = "treesitter: increment selection" },
+      { "<bs>", desc = "treesitter: decrement selection", mode = "x" },
     },
     opts = {
       ensure_installed = "all",
