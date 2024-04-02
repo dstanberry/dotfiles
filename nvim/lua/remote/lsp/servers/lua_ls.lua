@@ -16,10 +16,8 @@ M.setup = function()
       enabled = true,
       runtime = true,
       types = true,
-      plugins = true,
+      plugins = false,
     },
-    -- setup_jsonls = true,
-    -- override = function(root_dir, options) end,
   }
 end
 
