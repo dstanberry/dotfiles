@@ -272,14 +272,14 @@ return {
               -- plugin integrations
               ["<c-q>"] = function(...)
                 if require("lazy.core.config").plugins["trouble.nvim"] ~= nil then
-                  return require("trouble.providers.telescope").open_with_trouble(...)
+                  return require("trouble.sources.telescope").open(...)
                 else
                   return actions.send_to_qflist(...) + actions.open_qflist(...)
                 end
               end,
               ["<a-q>"] = function(...)
                 if require("lazy.core.config").plugins["trouble.nvim"] ~= nil then
-                  return require("trouble.providers.telescope").open_selected_with_trouble(...)
+                  return require("trouble.sources.telescope").open(...)
                 else
                   return actions.send_selected_to_qflist(...) + actions.open_qflist(...)
                 end
