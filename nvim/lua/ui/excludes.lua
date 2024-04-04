@@ -28,7 +28,7 @@ M.ft = {
     "noice",
     "TelescopePrompt",
     "toggleterm",
-    "Trouble",
+    "trouble",
   },
   wb_disabled = {
     -- builtin filetypes
@@ -49,7 +49,7 @@ M.ft = {
     "noice",
     "TelescopePrompt",
     "toggleterm",
-    "Trouble",
+    "trouble",
   },
   wb_empty = {
     -- builtin filetypes

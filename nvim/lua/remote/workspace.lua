@@ -101,6 +101,13 @@ return {
               separator = true,
               text_align = "center",
             },
+            {
+              text = pad(icons.groups.Tree, "right") .. "SYMBOLS",
+              filetype = "trouble",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
           },
           groups = {
             items = {
@@ -516,6 +523,11 @@ return {
         "gR",
         function() vim.cmd { cmd = "Trouble", args = { "lsp_references", "toggle", "preview.type=float" } } end,
         desc = "trouble: lsp references",
+      },
+      {
+        "gS",
+        function() vim.cmd { cmd = "Trouble", args = { "symbols", "toggle" } } end,
+        desc = "trouble: lsp document symbols",
       },
       {
         "gT",

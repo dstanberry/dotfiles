@@ -56,6 +56,7 @@ return {
     Pinned = "",
     Sql = "",
     StackFrame = "",
+    Tree = "󰙅",
   },
   kind = {
     Class = "",
