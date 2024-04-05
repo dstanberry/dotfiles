@@ -254,7 +254,7 @@ M.setup = function()
       border = util.map(icons.border.ThinBlock, function(v) return { v, "FloatBorderSB" } end),
       focusable = false,
       show_header = true,
-      source = "always",
+      source = true,
     },
     underline = {
       severity = { min = vim.diagnostic.severity.HINT },
