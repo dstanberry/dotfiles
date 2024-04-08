@@ -324,6 +324,9 @@ return {
           },
           live_grep = {
             layout_strategy = "vertical",
+            mappings = {
+              i = { ["<c-f>"] = actions.to_fuzzy_refine },
+            },
           },
           git_branches = {
             theme = "dropdown",
@@ -428,8 +431,9 @@ return {
             layout_strategy = "vertical",
             mappings = {
               i = {
-                ["<c-k>"] = lga_actions.quote_prompt(),
+                ["<c-f>"] = actions.to_fuzzy_refine,
                 ["<c-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
+                ["<c-k>"] = lga_actions.quote_prompt(),
               },
             },
           },
