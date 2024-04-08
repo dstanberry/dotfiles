@@ -160,7 +160,7 @@ if hash bat 2> /dev/null; then
 fi
 
 # define configuration path for rust-cargo
-if hash cargo 2> /dev/null; then
+if test -d "$XDG_DATA_HOME/cargo" || hash cargo 2> /dev/null; then
   export CARGO_HOME="$XDG_DATA_HOME/cargo"
   export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
 fi

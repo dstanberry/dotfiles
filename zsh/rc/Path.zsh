@@ -37,11 +37,11 @@ if hash gem 2> /dev/null; then
 fi
 
 # add cargo binaries to path if present
-if hash cargo 2> /dev/null; then
-  CARGO="${CARGO_HOME:-$HOME/.local/share/cargo}/bin"
+CARGO="${CARGO_HOME:-$HOME/.local/share/cargo}/bin"
+if test -d "$CARGO" || hash cargo 2> /dev/null; then
   NEWPATH=$CARGO:$NEWPATH
-  unset CARGO
 fi
+unset CARGO
 
 # add dotnet to path if present
 if hash dotnet 2> /dev/null; then
