@@ -375,7 +375,6 @@ return {
     name = "vstask",
     dependencies = {
       "nvim-lua/popup.nvim",
-      "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",
     },
     event = "LazyFile",
