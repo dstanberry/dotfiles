@@ -157,34 +157,53 @@ return {
     end,
   },
   {
-    "dstanberry/harpoon",
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    event = "VeryLazy",
-    config = function()
-      local mark = require "harpoon.mark"
-      local ui = require "harpoon.ui"
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    keys = function()
+      local has_telescope, telescope = pcall(require, "telescope.pickers")
+      local telescope_picker
+      if has_telescope then
+        telescope_picker = function(files)
+          local file_paths = {}
+          for _, item in ipairs(files.items) do
+            table.insert(file_paths, item.value)
+          end
+          telescope
+            .new({}, {
+              prompt_title = "Harpoon (marks)",
+              finder = require("telescope.finders").new_table { results = file_paths },
+              previewer = require("telescope.config").values.file_previewer {},
+              sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
+              layout_strategy = "ivy",
+            })
+            :find()
+        end
+      end
 
-      local has_telescope, telescope = pcall(require, "telescope")
-      if not has_telescope then return end
+      local keys = {
+        { "<leader>ha", function() require("harpoon"):list():add() end, desc = "harpoon: mark file" },
+        {
+          "<leader>hf",
+          function()
+            local harpoon = require "harpoon"
+            if has_telescope then
+              telescope_picker(harpoon:list())
+            else
+              harpoon.ui:toggle_quick_menu(harpoon:list())
+            end
+          end,
+          desc = "harpoon: find marks",
+        },
+      }
 
-      local themes = require "telescope.themes"
-
-      telescope.load_extension "harpoon"
-      vim.keymap.set(
-        "n",
-        "<leader>hf",
-        function()
-          telescope.extensions.harpoon.marks(themes.get_dropdown {
-            previewer = false,
-            prompt_title = "Harpoon (marks)",
-          })
-        end,
-        { desc = "harpoon: find marks" }
-      )
-
-      vim.keymap.set("n", "<leader>ha", mark.add_file, { desc = "harpoon: mark file" })
-      vim.keymap.set("n", "<leader>hh", ui.nav_next, { desc = "harpoon: next file" })
-      vim.keymap.set("n", "<leader>hl", ui.nav_prev, { desc = "harpoon: previous file" })
+      for i = 1, 5 do
+        table.insert(keys, {
+          "<leader>h" .. i,
+          function() require("harpoon"):list():select(i) end,
+          desc = "harpoon: goto " .. i,
+        })
+      end
+      return keys
     end,
   },
   {
