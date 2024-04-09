@@ -3,6 +3,7 @@ local color = require "util.color"
 local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 local excludes = require "ui.excludes"
+local util = require "util"
 
 local theme = require "remote.lualine.theme"
 local stl_util = require "remote.lualine.util"
@@ -47,9 +48,38 @@ return {
     }
 
     local lsp_symbols_section = function()
+      local calculate_data = function(symbols)
+        local bc = breadcrumbs():gsub("%%#.-#", "")
+        local sep = pad(icons.misc.FoldClosed, "right", 2)
+        local parts = vim.split(symbols, sep)
+        local raw_symbols = symbols:gsub("%%#.-#", ""):gsub("%%*", ""):gsub("*", "")
+        local margin = 10
+        if available_width(#bc + #raw_symbols + margin) then return symbols end
+        local raw_parts = vim.split(raw_symbols, sep)
+        local trimmed_parts = util.reduce(raw_parts, function(acc, part)
+          table.insert(acc, part)
+          local new_s = table.concat(acc, sep)
+          if not available_width(#bc + #new_s + margin) then
+            if acc[#acc] == part then table.remove(acc, #acc) end
+          end
+          return acc
+        end)
+        local result = vim.list_slice(parts, 1, #trimmed_parts)
+        if parts[#result + 1] then
+          local etc = string.format("%s...", stl_util.highlighter.sanitize "Winbar")
+          table.insert(trimmed_parts, etc)
+          if available_width(#bc + #table.concat(trimmed_parts, sep) + margin) then
+            table.insert(result, etc)
+          else
+            result[#result] = etc
+          end
+        end
+        return table.concat(result, sep)
+      end
+
       local default = string.format("%s%s", stl_util.highlighter.sanitize "Winbar", "%=")
       local data = lsp_symbols.get()
-      return data ~= "%#StatusLine#" and data or default
+      return data ~= "%#StatusLine#" and calculate_data(data) or default
     end
 
     -- PERF: disable lualine require
