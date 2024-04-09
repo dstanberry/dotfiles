@@ -169,12 +169,12 @@ return {
             table.insert(file_paths, item.value)
           end
           telescope
-            .new({}, {
+            .new(require("telescope.themes").get_ivy {}, {
               prompt_title = "Harpoon (marks)",
               finder = require("telescope.finders").new_table { results = file_paths },
               previewer = require("telescope.config").values.file_previewer {},
               sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
-              layout_strategy = "ivy",
+              layout_config = { height = 30, prompt_position = "top" },
             })
             :find()
         end
