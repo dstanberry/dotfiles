@@ -151,25 +151,29 @@ return {
   {
     "folke/flash.nvim",
     event = "VeryLazy",
-    -- stylua: ignore
     keys = {
       { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "flash: search" },
-      { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "flash: search w/ treesitter" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "flash: replace" },
-      { "R", mode = { "n", "o", "x" }, function() require("flash").treesitter_search() end, desc = "flash: replace w/ treesitter" },
+      {
+        "S",
+        mode = { "n", "o", "x" },
+        function() require("flash").treesitter() end,
+        desc = "flash: treesitter search",
+      },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "flash: remote op" },
+      {
+        "R",
+        mode = { "n", "o", "x" },
+        function() require("flash").treesitter_search() end,
+        desc = "flash: treesitter remote op",
+      },
     },
     opts = {
       modes = {
         char = {
-          enabled = false,
-          -- keys = { "f", "F", "t", "T", ";", "," },
-          keys = { "f", "F", "t", "T", "," },
+          enabled = true,
+          keys = { "f", "F", "t", "T", [";"] = "<right>", [","] = "<left>" },
         },
-        treesitter_search = {
-          label = {
-            rainbow = { enabled = true },
-          },
-        },
+        search = { enabled = false },
       },
     },
   },
