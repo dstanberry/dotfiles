@@ -171,7 +171,7 @@ return {
       modes = {
         char = {
           enabled = true,
-          keys = { "f", "F", "t", "T", [";"] = "<right>", [","] = "<left>" },
+          keys = { "f", "F", "t", "T", [";"] = "<c-right>", [","] = "<c-left>" },
         },
         search = { enabled = false },
       },
