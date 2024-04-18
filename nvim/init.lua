@@ -52,7 +52,7 @@ vim.fn.mkdir(undo, "p")
 vim.fn.mkdir(shada, "p")
 
 vim.cmd.colorscheme "kdark"
--- vim.cmd.colorscheme "catppuccin"
+-- vim.cmd.colorscheme "catppuccin-frappe"
 
 util.filesystem.load_dirhash(vim.env.SHELL)
 util.filesystem.load_settings()

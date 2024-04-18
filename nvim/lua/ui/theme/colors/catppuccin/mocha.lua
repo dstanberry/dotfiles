@@ -2,7 +2,7 @@ local color = require "util.color"
 
 ---@type ColorPalette
 ---@diagnostic disable-next-line: missing-fields
-local mocha = {
+local c = {
   bg0 = "#11111b", --crust
   bg1 = "#181825", --mantle
   bg2 = "#1e1e2e", --base
@@ -61,20 +61,20 @@ local mocha = {
   -- c.overlay1 = "#7f849c"
 }
 
-mocha.black = color.darken(mocha.bg2, 50)
-mocha.white = color.darken(mocha.fg1, 10)
+c.black = color.darken(c.bg2, 50)
+c.white = color.darken(c.fg1, 10)
 
-mocha.bgX = color.blend(mocha.bg0, mocha.bg2, 0.31)
-mocha.bg_visual = "#585b70"
+c.bgX = color.blend(c.bg0, c.bg2, 0.31)
+c.bg_visual = "#585b70"
 
-mocha.fg_conceal = color.blend(mocha.magenta2, mocha.bg2, 0.44)
-mocha.fg_comment = "#9399b2"
+c.fg_conceal = color.blend(c.magenta2, c.bg2, 0.44)
+c.fg_comment = "#9399b2"
 
-mocha.grayX = color.darken(mocha.gray1, 25)
+c.grayX = color.darken(c.gray1, 25)
 
-mocha.diff_add = "#a5e2a0"
-mocha.diff_delete = "#f38ba8"
-mocha.diff_text = "#87b2f9"
-mocha.diff_change = color.blend(mocha.diff_text, mocha.bg3, 0.2)
+c.diff_add = "#a5e2a0"
+c.diff_delete = "#f38ba8"
+c.diff_text = "#87b2f9"
+c.diff_change = color.blend(c.diff_text, c.bg3, 0.2)
 
-return mocha
+return c

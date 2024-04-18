@@ -59,7 +59,8 @@ local M = {}
 M.colors = {}
 
 M.themes = {
-  catppuccin = require "ui.theme.colors.catppuccin",
+  ["catppuccin-frappe"] = require "ui.theme.colors.catppuccin.frappe",
+  ["catppuccin-mocha"] = require "ui.theme.colors.catppuccin.mocha",
   kdark = require "ui.theme.colors.kdark",
 }
 

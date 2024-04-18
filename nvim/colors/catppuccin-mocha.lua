@@ -1,4 +1,4 @@
-local theme = "kdark"
+local theme = "catppuccin-mocha"
 
 require("util").reload("ui.theme").setup(theme)
 
