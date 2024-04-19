@@ -3,11 +3,6 @@ vim.api.nvim_create_autocmd("WinEnter", {
   group = cursorline,
   callback = function() vim.opt_local.cursorline = true end,
 })
-vim.api.nvim_create_autocmd("FileType", {
-  group = cursorline,
-  pattern = "TelescopePrompt",
-  callback = function() vim.opt_local.cursorline = false end,
-})
 vim.api.nvim_create_autocmd("WinLeave", {
   group = cursorline,
   callback = function() vim.opt_local.cursorline = false end,
