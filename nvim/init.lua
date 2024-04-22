@@ -28,12 +28,14 @@ vim.filetype.add {
     vifmrc = "vim",
   },
   filename = {
+    [".env"] = "dotenv",
     [".flake8"] = "toml",
     ["tmux.conf"] = "tmux",
     Brewfile = "ruby",
     jenkinsfile = "groovy",
   },
   pattern = {
+    ["%.env%.[%w_.-]+"] = "dotenv",
     [".*/git/config"] = "gitconfig",
     [".*/git/gitconfig"] = "gitconfig",
     [".*/git/ignore"] = "gitignore",
