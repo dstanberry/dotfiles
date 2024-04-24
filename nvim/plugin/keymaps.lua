@@ -137,6 +137,14 @@ vim.keymap.set("n", "Q", "<nop>", { desc = "<disabled>" })
 vim.keymap.set("n", "Y", "y$", { desc = "copy to end of line" })
 
 ---------------------------------------------------------------
+-- => Normal | Operator-Pending
+---------------------------------------------------------------
+-- perform motion to beginning of the current line
+vim.keymap.set("o", "H", "^", { desc = "to start of line" })
+-- perform motion to end of the current line
+vim.keymap.set("o", "L", "g_", { desc = "to end of line" })
+
+---------------------------------------------------------------
 -- => Normal | LocalLeader
 ---------------------------------------------------------------
 -- prepare to run most recent ex-command
