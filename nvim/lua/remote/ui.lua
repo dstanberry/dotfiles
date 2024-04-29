@@ -30,7 +30,7 @@ return {
   },
   {
     "sindrets/diffview.nvim",
-    cmd = "DiffviewOpen",
+    cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     keys = {
       {
         "<localleader>gd",
