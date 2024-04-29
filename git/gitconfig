@@ -38,7 +38,8 @@
 
 	rollback = !sh -c 'git reset --merge HEAD~${1-1}' -
 
-	review = !nvim +"tabdo DiffviewOpen $GIT_REVIEW_BASE -uno"
+	review = "!nvim -c \"DiffviewOpen origin/HEAD...HEAD --imply-local\""
+	review-big = "!nvim -c \"DiffviewFileHistory --range=origin/HEAD...HEAD --right-only --no-merges\""
 	sprint = "!git log --since=\"1 week ago\"  --author `git config user.email` --pretty=oneline"
 
 [color]
