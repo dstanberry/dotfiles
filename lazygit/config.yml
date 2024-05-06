@@ -75,5 +75,6 @@ customCommands:
 keybinding:
   universal:
     createRebaseOptionsMenu: "X"
+    remove: "x"
   files:
     toggleTreeView: "-"
