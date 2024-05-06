@@ -313,7 +313,7 @@ return {
     keys = {
       {
         "<localleader>de",
-        function() vim.cmd.edit "~/.local/share/db_ui/connections.json" end,
+        function() vim.cmd.edit(string.format("%s/db/connections.json", vim.fn.stdpath "data")) end,
         desc = "dadbod: edit database connections",
       },
       { "<localleader>db", "<cmd>DBUIToggle<cr>", desc = "dadbod: toggle interface" },
@@ -321,6 +321,7 @@ return {
     init = function()
       vim.g.db_ui_use_nerd_fonts = 1
       vim.g.db_ui_show_database_icon = 1
+      vim.g.db_ui_save_location = vim.fn.stdpath "data" .. "/db"
 
       local ftplugin = vim.api.nvim_create_augroup("hl_dadbod", { clear = true })
       vim.api.nvim_create_autocmd("FileType", {
