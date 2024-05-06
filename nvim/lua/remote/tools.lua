@@ -305,6 +305,7 @@ return {
   {
     "kristijanhusak/vim-dadbod-ui",
     event = "VeryLazy",
+    enabled = false,
     dependencies = {
       "kristijanhusak/vim-dadbod-completion",
       "tpope/vim-dadbod",
@@ -338,12 +339,49 @@ return {
       if require("lazy.core.config").plugins["nvim-cmp"] ~= nil then
         vim.api.nvim_create_autocmd("FileType", {
           group = vim.api.nvim_create_augroup("db-completion", { clear = true }),
-          pattern = { "sql", "mysql", "plsql" },
+          pattern = "sql",
           callback = function()
             ---@diagnostic disable-next-line: missing-fields
             require("cmp").setup.buffer {
               sources = {
                 { name = "vim-dadbod-completion" },
+                { name = "luasnip" },
+                { name = "path" },
+                { name = "buffer", keyword_length = 5, max_item_count = 5 },
+              },
+            }
+          end,
+        })
+      end
+    end,
+  },
+  {
+    "kndndrj/nvim-dbee",
+    event = "VeryLazy",
+    dependencies = {
+      "MattiasMTS/cmp-dbee",
+      "MunifTanjim/nui.nvim",
+    },
+    cmd = { "Dbee" },
+    keys = {
+      { "<localleader>db", "<cmd>Dbee toggle<cr>", desc = "dbee: toggle interface" },
+    },
+    build = function() require("dbee").install() end,
+    config = function()
+      require("dbee").setup {
+        sources = {
+          require("dbee.sources").FileSource:new(string.format("%s/db/connections.json", vim.fn.stdpath "data")),
+        },
+      }
+      if require("lazy.core.config").plugins["nvim-cmp"] ~= nil then
+        vim.api.nvim_create_autocmd("FileType", {
+          group = vim.api.nvim_create_augroup("db-completion", { clear = true }),
+          pattern = "sql",
+          callback = function()
+            ---@diagnostic disable-next-line: missing-fields
+            require("cmp").setup.buffer {
+              sources = {
+                { name = "cmp-dbee" },
                 { name = "luasnip" },
                 { name = "path" },
                 { name = "buffer", keyword_length = 5, max_item_count = 5 },

@@ -82,6 +82,13 @@ return {
             },
             {
               text = pad(icons.groups.Sql, "right") .. "DATABASE VIEWER",
+              filetype = "dbee",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+            {
+              text = pad(icons.groups.Sql, "right") .. "DATABASE VIEWER",
               filetype = "dbui",
               highlight = "PanelHeading",
               separator = true,

@@ -39,6 +39,8 @@ M.ft = {
 
     -- plugin filetypes
     "dap-repl",
+    "dbee",
+    "dbui",
     "dbout",
     "lazy",
     "mason",
@@ -56,7 +58,6 @@ M.ft = {
     "help",
 
     -- plugin filetypes
-    "dbui",
     "DiffviewFileHistory",
     "DiffviewFilePanel",
     "DiffviewFiles",
