@@ -662,6 +662,7 @@ return {
         ["["] = { name = "+previous" },
         ["<leader>"] = {
           mode = "n",
+          b = { name = "+buffer" },
           d = { name = "+debug" },
           f = { name = "+file/find" },
           g = { name = "+git" },
@@ -686,6 +687,7 @@ return {
           g = { name = "+git" },
           m = { name = "+notes (markdown)" },
           q = { name = "+quickfix (trouble)" },
+          s = { name = "+search" },
         },
         ["<localleader>g"] = {
           mode = "v",
