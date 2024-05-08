@@ -473,6 +473,11 @@ return {
       groups.new("NotifyERRORIcon", { link = "ErrorMsg" })
       groups.new("NotifyERRORTitle", { link = "ErrorMsg" })
 
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "notify",
+        callback = function() vim.opt_local.cursorline = false end,
+      })
+
       if require("lazy.core.config").plugins["noice.nvim"] == nil then
         vim.api.nvim_create_autocmd("User", {
           pattern = "VeryLazy",
