@@ -305,7 +305,7 @@ return {
   {
     "kristijanhusak/vim-dadbod-ui",
     event = "VeryLazy",
-    enabled = false,
+    enabled = true,
     dependencies = {
       "kristijanhusak/vim-dadbod-completion",
       "tpope/vim-dadbod",
@@ -358,6 +358,7 @@ return {
   {
     "kndndrj/nvim-dbee",
     event = "VeryLazy",
+    enabled = false,
     dependencies = {
       "MattiasMTS/cmp-dbee",
       "MunifTanjim/nui.nvim",
@@ -366,7 +367,7 @@ return {
     keys = {
       { "<localleader>db", "<cmd>Dbee toggle<cr>", desc = "dbee: toggle interface" },
     },
-    build = function() require("dbee").install() end,
+    build = function() require("dbee").install "go" end,
     config = function()
       require("dbee").setup {
         sources = {
