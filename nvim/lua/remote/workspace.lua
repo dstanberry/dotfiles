@@ -257,10 +257,19 @@ return {
       groups.new("NeoTreeRootName", { link = "Directory" })
 
       vim.g.neo_tree_remove_legacy_commands = 1
-      if vim.fn.argc() == 1 then
-        local stat = vim.uv.fs_stat(vim.fn.argv(0))
-        if stat and stat.type == "directory" then require "neo-tree" end
-      end
+      vim.api.nvim_create_autocmd("BufEnter", {
+        group = vim.api.nvim_create_augroup("neotree_lazy_load", { clear = true }),
+        desc = "Start Neo-tree with directory",
+        once = true,
+        callback = function()
+          if package.loaded["neo-tree"] then
+            return
+          else
+            local stats = vim.uv.fs_stat(vim.fn.argv(0))
+            if stats and stats.type == "directory" then require "neo-tree" end
+          end
+        end,
+      })
     end,
     opts = {
       sources = { "filesystem", "document_symbols" },
