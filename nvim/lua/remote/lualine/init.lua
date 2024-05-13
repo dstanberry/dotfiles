@@ -49,6 +49,7 @@ return {
 
     local lsp_symbols_section = function()
       local calculate_data = function(symbols)
+        symbols = symbols:gsub("%%#StatusLine#", ""):gsub("%%%%", "%%")
         local bc = breadcrumbs():gsub("%%#.-#", "")
         local sep = pad(icons.misc.FoldClosed, "right", 2)
         local parts = vim.split(symbols, sep)
