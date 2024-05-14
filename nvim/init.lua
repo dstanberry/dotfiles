@@ -43,15 +43,10 @@ vim.filetype.add {
 }
 
 local cache = vim.fn.stdpath "cache"
-local backup = string.format("%s/backup", cache)
-local swap = string.format("%s/swap", cache)
-local undo = string.format("%s/undo", cache)
-local shada = string.format("%s/shada", cache)
-
-vim.fn.mkdir(backup, "p")
-vim.fn.mkdir(swap, "p")
-vim.fn.mkdir(undo, "p")
-vim.fn.mkdir(shada, "p")
+vim.fn.mkdir(vim.fs.joinpath(cache, "backup"), "p")
+vim.fn.mkdir(vim.fs.joinpath(cache, "swap"), "p")
+vim.fn.mkdir(vim.fs.joinpath(cache, "undo"), "p")
+vim.fn.mkdir(vim.fs.joinpath(cache, "shada"), "p")
 
 vim.cmd.colorscheme "kdark"
 -- vim.cmd.colorscheme "catppuccin-frappe"
@@ -59,8 +54,8 @@ vim.cmd.colorscheme "kdark"
 util.filesystem.load_dirhash(vim.env.SHELL)
 util.filesystem.load_settings()
 
-vim.g.dotfiles_dir = vim.fs.normalize(("%s/.config"):format(vim.env.HOME))
+vim.g.dotfiles_dir = vim.fs.joinpath(vim.env.HOME, ".config")
 vim.g.projects_dir = vim.env.projects_dir and vim.fs.normalize(vim.env.projects_dir)
-  or vim.fs.normalize(("%s/Projects"):format(vim.env.HOME))
+  or vim.fs.joinpath(vim.env.HOME, "Projects")
 
 require "util.lazy"

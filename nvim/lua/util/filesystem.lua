@@ -18,7 +18,7 @@ function M.load_dirhash(shell)
     return
   end
   local loader = function(rc_dir)
-    local path = vim.fs.normalize(("%s/%s/%s/hashes.%s"):format(vim.env.XDG_CONFIG_HOME, shell, rc_dir, shell))
+    local path = vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, shell, rc_dir, ("hashes.%s"):format(shell))
     local cmd = ([[%s -c "source %s; hash -d"]]):format(shell, path)
     local dirs = vim.fn.system(cmd)
     local lines = vim.split(dirs, "\n")
@@ -37,7 +37,7 @@ end
 
 ---Utility function to load machine-specific overrides that can disable various configuration options/settings
 function M.load_settings()
-  local file = M.read(vim.fn.stdpath "config" .. "/settings.json", "r")
+  local file = M.read(vim.fs.joinpath(vim.fn.stdpath "config", "settings.json"), "r")
   if file then
     local options = vim.json.decode(file)
     for k, v in pairs(options) do

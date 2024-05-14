@@ -3,7 +3,7 @@ if not setting_enabled "remote_plugins" then return end
 local icons = require "ui.icons"
 local util = require "util"
 
-local lazypath = string.format("%s/lazy/lazy.nvim", vim.fn.stdpath "data")
+local lazypath = vim.fs.joinpath(vim.fn.stdpath "data", "lazy", "lazy.nvim")
 if not vim.uv.fs_stat(lazypath) then
   vim.fn.system {
     "git",
@@ -70,8 +70,8 @@ end
 lazy_file()
 
 require("lazy").setup("remote", {
-  root = string.format("%s/lazy", vim.fn.stdpath "data"),
-  lockfile = string.format("%s/lua/remote/lazy-lock.json", vim.fn.stdpath "config"),
+  root = vim.fs.joinpath(vim.fn.stdpath "data", "lazy"),
+  lockfile = vim.fs.joinpath(vim.fn.stdpath "config", "lua", "remote", "lazy-lock.json"),
   ui = {
     border = util.map(icons.border.ThinBlock, function(v) return { v, "FloatBorder" } end),
     backdrop = 95,
