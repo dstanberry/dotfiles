@@ -103,6 +103,7 @@ return {
     ensure_installed = {
       "angular-language-server",
       "bash-language-server",
+      "basedpyright",
       "beautysh",
       "black",
       "cbfmt",

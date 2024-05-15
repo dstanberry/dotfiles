@@ -11,7 +11,7 @@ local ensure_installed = {
 }
 
 local enabled = {
-  basedpyright = false,
+  pyright = false,
 }
 
 return {
