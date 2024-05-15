@@ -256,7 +256,7 @@ M.apply = function(c)
   hi["@boolean"] = { link = "Boolean" }
   hi["@character"] = { link = "Character" }
   hi["@character.special"] = { link = "SpecialChar" }
-  hi["@class"] = { fg = c.cyan1 }
+  hi["@class"] = { fg = c.blue4 }
   hi["@comment"] = { link = "Comment" }
   hi["@comment.documentation"] = { link = "SpecialComment" }
   hi["@comment.error"] = { link = "Error" }
