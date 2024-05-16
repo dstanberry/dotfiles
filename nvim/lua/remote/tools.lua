@@ -174,6 +174,11 @@ return {
         local pkg = mason_registry.get_package(tool)
         if not pkg:is_installed() then pkg:install() end
       end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "mason",
+        callback = function() vim.opt_local.cursorline = false end,
+      })
     end,
   },
   {
