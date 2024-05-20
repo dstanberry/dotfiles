@@ -342,7 +342,7 @@ return {
       "L3MON4D3/LuaSnip",
       -- LLM
       {
-        "zbirenbaum/copilot-cmp",
+        "dstanberry/copilot-cmp",
         dependencies = {
           "zbirenbaum/copilot.lua",
           cmd = "Copilot",
