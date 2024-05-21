@@ -137,7 +137,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.inlayHintProvider then
-    local toggle_inlay_hint = function() vim.lsp.inlay_hint.enable(bufnr, not vim.lsp.inlay_hint.is_enabled()) end
+    local toggle_inlay_hint = function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end
     vim.keymap.set("n", "g<bs>", toggle_inlay_hint, { buffer = bufnr, desc = "lsp: toggle inlay hints" })
   end
 
