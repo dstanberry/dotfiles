@@ -47,11 +47,6 @@ M.on_rename = function(old_fname, new_fname)
 end
 
 M.on_attach = function(client, bufnr)
-  -- NOTE: "gD" used by |glance.nvim|
-  -- if client.server_capabilities.declarationProvider then
-  -- vim.keymap.set("n", "gD", vim.lsp.buf.declaration, { buffer = bufnr, desc = "" })
-  -- end
-
   if client.server_capabilities.codeActionProvider then
     local source_action = function() vim.lsp.buf.code_action { context = { only = { "source" }, diagnostics = {} } } end
 
