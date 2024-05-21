@@ -3,16 +3,6 @@ local rutil = require "remote.luasnip.util"
 ---@diagnostic disable: undefined-global
 require("remote.luasnip.nodes").setup_snip_env()
 
-local expr_query = [[
-[
-  (function_call)
-  (identifier)
-  (expression_list)
-  (dot_index_expression)
-  (bracket_index_expression)
-] @prefix
-]]
-
 return {
   s({
     trig = "ignore",
@@ -101,14 +91,17 @@ return {
       dscr = "For loop (treesitter postfix)",
       wordTrig = false,
       reparseBuffer = "live",
-      matchTSNode = { query = expr_query, query_lang = "lua" },
+      matchTSNode = ts_postfix_builtin.tsnode_matcher.find_topmost_types {
+        "function_call",
+        "identifier",
+        "expression_list",
+        "dot_index_expression",
+        "bracket_index_expression",
+      },
     },
     fmt("for k, v in {}({}) do\n\t{}\nend", {
       c(1, { t "pairs", t "ipairs" }),
-      f(function(_, parent)
-        local match = parent.snippet.env.LS_TSMATCH
-        return match
-      end, {}),
+      l(l.LS_TSMATCH),
       i(0),
     })
   ),

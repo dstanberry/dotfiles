@@ -87,9 +87,6 @@ return {
       d(1, rutil.saved_text, {}, { user_args = { { text = "# TODO", indent = true } } }),
     })
   ),
-  postfix({ trig = ".print", match_pattern = "[^%s%c]+$", name = "log", dscr = "Print to stdout" }, {
-    f(function(_, parent) return [[print(f"{]] .. parent.snippet.env.POSTFIX_MATCH .. [[}")]] end, {}),
-  }),
   s(
     { trig = "try", name = "try - except", dscr = "Try - except block" },
     fmt("try:\n{}\nexcept {}:\n\t{}", {
@@ -105,8 +102,30 @@ return {
       d(2, rutil.saved_text, {}, { user_args = { { text = "# TODO", indent = true } } }),
     })
   ),
+  ts_postfix({
+    trig = ".print",
+    name = "log",
+    dscr = "Print to stdout",
+    reparseBuffer = "live",
+    matchTSNode = ts_postfix_builtin.tsnode_matcher.find_topmost_types {
+      "call_expression",
+      "identifier",
+      "expression_list",
+      "expression_statement",
+    },
+  }, {
+    c(1, {
+      sn(nil, fmt([[print({}{})]], { i(1), l(l.LS_TSMATCH) })),
+      sn(nil, fmta([[print(f"<>{<>}")]], { i(1), l(l.LS_TSMATCH) })),
+    }),
+  }),
 }, {
-  s({ trig = "print", name = "log", dscr = "Print to stdout" }, fmt([[print(f"{}")]], { i(1) }), {
+  s({ trig = "print", name = "log", dscr = "Print to stdout" }, {
+    c(1, {
+      sn(nil, fmt([[print({})]], { i(1) })),
+      sn(nil, fmta([[print(f"<>{<>}")]], { i(1), i(2) })),
+    }),
+  }, {
     condition = conds.line_begin,
   }),
 }

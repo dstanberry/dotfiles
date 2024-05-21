@@ -37,13 +37,6 @@ return {
       }),
     })
   ),
-  postfix(
-    { trig = ".log", match_pattern = "%s*(.+)$", name = "log", dscr = "Print to stdout" },
-    d(1, function(_, snippet)
-      local content = snippet.env.POSTFIX_MATCH
-      return sn(nil, t("console.log(" .. content .. ")"))
-    end)
-  ),
   s(
     { trig = ".map", name = "map", dscr = "Map Prototype" },
     fmt(".map({});", {
@@ -151,6 +144,21 @@ return {
       d(2, rutil.saved_text, {}, { user_args = { { text = "// TODO", indent = true } } }),
     })
   ),
+  ts_postfix({
+    trig = ".log",
+    name = "log",
+    dscr = "Print to stdout",
+    reparseBuffer = "live",
+    matchTSNode = ts_postfix_builtin.tsnode_matcher.find_topmost_types {
+      "call_expression",
+      "identifier",
+      "expression_list",
+      "expression_statement",
+      "subscript_expression",
+      "field_expression",
+      "user_defined_literal",
+    },
+  }, fmt("console.log({})", { l(l.LS_TSMATCH) })),
 }, {
   s(
     { trig = ">>", wordTrig = false, hidden = true, name = "arrow function", dscr = "Arrow function" },
