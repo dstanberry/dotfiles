@@ -180,7 +180,7 @@ return {
   ),
   s(
     { trig = "log", name = "log", dscr = "Print to stdout" },
-    fmt([[console.log({});]], {
+    fmt("console.log({});", {
       c(1, {
         sn(nil, fmt("{}", { i(1) })),
         sn(nil, fmt([["{}", {}]], { i(1, "description"), i(2, "obj") })),

@@ -115,14 +115,14 @@ return {
     },
   }, {
     c(1, {
-      sn(nil, fmt([[print({}{})]], { i(1), l(l.LS_TSMATCH) })),
+      sn(nil, fmt("print({}{})", { i(1), l(l.LS_TSMATCH) })),
       sn(nil, fmta([[print(f"<>{<>}")]], { i(1), l(l.LS_TSMATCH) })),
     }),
   }),
 }, {
   s({ trig = "print", name = "log", dscr = "Print to stdout" }, {
     c(1, {
-      sn(nil, fmt([[print({})]], { i(1) })),
+      sn(nil, fmt("print({})", { i(1) })),
       sn(nil, fmta([[print(f"<>{<>}")]], { i(1), i(2) })),
     }),
   }, {
