@@ -48,11 +48,11 @@ autoload -U compinit
 # Load and initialize the completion system ignoring insecure directories with a
 # cache time of 20 hours, so it should almost always regenerate the first time a
 # shell is opened each day.
-_comp_files=($XDG_CACHE_HOME/zsh/zcompcache(Nm-20))
+_comp_files=(${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache(Nm-20))
 if (( $#_comp_files )); then
-    compinit -i -C -d "$XDG_CACHE_HOME/zsh/zcompcache"
+    compinit -i -C -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
 else
-    compinit -i -d "$XDG_CACHE_HOME/zsh/zcompcache"
+    compinit -i -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
 fi
 unset _comp_files
 
@@ -83,7 +83,7 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
 
 # define completion cache file location
-zstyle ':completion::complete:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
+zstyle ':completion::complete:*' cache-path "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
 
 # define completion menu style
 zstyle ':completion:*:options' description 'yes'
@@ -114,7 +114,7 @@ zstyle ':completion:*:*:cdr:*:*' menu select
 zstyle ':chpwd:*' recent-dirs-default true
 
 # define recent-dirs cache file location
-zstyle ':chpwd:*' recent-dirs-file "$XDG_CACHE_HOME/zsh/chpwd-recent-dirs"
+zstyle ':chpwd:*' recent-dirs-file "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/chpwd-recent-dirs"
 
 # base directory for configuration files
 CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
