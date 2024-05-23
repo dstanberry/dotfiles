@@ -16,7 +16,22 @@ vim.o.belloff = "all"
 -- emphasis on wrapped lines
 vim.o.breakindentopt = "shift:2"
 -- setup clipboard
-vim.o.clipboard = "unnamedplus"
+if has "wsl" then
+  vim.g.clipboard = {
+    name = "WslClipboard",
+    copy = {
+      ["+"] = "clip.exe",
+      ["*"] = "clip.exe",
+    },
+    paste = {
+      ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+      ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+    },
+    cache_enabled = 0,
+  }
+else
+  vim.o.clipboard = "unnamedplus"
+end
 -- define line-height for command-line
 vim.o.cmdheight = 1
 -- include dictionary in completion matches
