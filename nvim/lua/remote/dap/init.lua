@@ -74,7 +74,15 @@ return {
         enabled_commands = true,
         commented = false,
         show_stop_reason = true,
-        virt_text_pos = "eol",
+        -- virt_text_pos = "eol",
+        virt_text_pos = "inline",
+        display_callback = function(variable, buf, stackframe, node, options)
+          if options.virt_text_pos == "inline" then
+            return string.format(" = %s", variable.value)
+          else
+            return string.format("%s = %s", variable.name, variable.value)
+          end
+        end,
       }
       vim.g.dap_virtual_text = true
     end

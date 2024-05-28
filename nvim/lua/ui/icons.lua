@@ -137,6 +137,7 @@ return {
     Square = "■",
     Table = "",
     Tag = "",
+    User = "",
     VerticalBar = "▎",
     VerticalBarBold = "▊",
     VerticalBarSemi = "▍",

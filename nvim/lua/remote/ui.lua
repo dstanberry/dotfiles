@@ -668,6 +668,7 @@ return {
         ["<leader>"] = {
           mode = "n",
           b = { name = "+buffer" },
+          c = { name = "+copilot" },
           d = { name = "+debug" },
           f = { name = "+file/find" },
           g = { name = "+git" },
@@ -675,6 +676,10 @@ return {
           m = { name = "+notes (markdown)" },
           s = { name = "+search" },
           q = { name = "+session" },
+        },
+        ["<leader>c"] = {
+          mode = "v",
+          name = "+copilot",
         },
         ["<leader>m"] = {
           mode = "v",
