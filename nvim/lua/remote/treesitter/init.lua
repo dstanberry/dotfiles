@@ -134,6 +134,8 @@ return {
   },
   {
     "HiPhish/rainbow-delimiters.nvim",
+    url = "https://github.com/Danielkonge/rainbow-delimiters.nvim",
+    branch = "cleanup",
     event = { "LazyFile", "VeryLazy" },
     init = function()
       local CYAN = "#73c1b9"
