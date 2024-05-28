@@ -242,7 +242,14 @@ end
 M.setup = function()
   vim.diagnostic.config {
     severity_sort = true,
-    signs = true,
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = icons.diagnostics.Error,
+        [vim.diagnostic.severity.WARN] = icons.diagnostics.Warn,
+        [vim.diagnostic.severity.HINT] = icons.diagnostics.Hint,
+        [vim.diagnostic.severity.INFO] = icons.diagnostics.Info,
+      },
+    },
     update_in_insert = false,
     virtual_text = false,
     float = {
@@ -255,12 +262,6 @@ M.setup = function()
       severity = { min = vim.diagnostic.severity.HINT },
     },
   }
-
-  local signs = icons.diagnostics
-  for type, icon in pairs(signs) do
-    local hl = string.format("DiagnosticSign%s", type)
-    vim.fn.sign_define(hl, { text = icon, texthl = hl })
-  end
 
   local has_tele, telescope = pcall(require, "telescope.builtin")
   if has_tele then
