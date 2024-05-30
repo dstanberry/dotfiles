@@ -339,8 +339,8 @@ return {
         model = "gpt-4",
         auto_insert_mode = true,
         show_help = true,
-        question_header = string.format("%s %s ", icons.misc.User, user),
-        answer_header = string.format("%s %s ", icons.kind.Copilot, "Copilot"),
+        question_header = string.format(" %s %s ", icons.misc.User, user),
+        answer_header = string.format(" %s %s ", icons.kind.Copilot, "Copilot"),
         window = {
           width = 0.4,
         },

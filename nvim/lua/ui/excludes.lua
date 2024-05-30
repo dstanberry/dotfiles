@@ -17,6 +17,7 @@ M.ft = {
     "term",
 
     -- plugin filetypes
+    "copilot-chat",
     "dbui",
     "DiffviewFiles",
     "gitcommit",
@@ -38,6 +39,7 @@ M.ft = {
     "term",
 
     -- plugin filetypes
+    "copilot-chat",
     "dap-repl",
     "dbee",
     "dbui",
