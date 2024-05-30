@@ -16,6 +16,8 @@ vim.o.belloff = "all"
 -- emphasis on wrapped lines
 vim.o.breakindentopt = "shift:2"
 -- setup clipboard
+vim.o.clipboard = "unnamedplus"
+-- use win32 native clipboard tool on WSL
 if has "wsl" then
   vim.g.clipboard = {
     name = "WslClipboard",
@@ -29,8 +31,6 @@ if has "wsl" then
     },
     cache_enabled = 0,
   }
-else
-  vim.o.clipboard = "unnamedplus"
 end
 -- define line-height for command-line
 vim.o.cmdheight = 1
