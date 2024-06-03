@@ -178,6 +178,20 @@ return {
     },
   },
   {
+    "folke/lazydev.nvim",
+    dependencies = {
+      { "Bilal2453/luvit-meta", lazy = true },
+    },
+    ft = "lua",
+    opts = function()
+      return {
+        library = {
+          uv = vim.fs.joinpath(vim.fn.stdpath "data", "lazy", "luvit-meta", "library"),
+        },
+      }
+    end,
+  },
+  {
     "echasnovski/mini.ai",
     event = "VeryLazy",
     opts = function()
@@ -327,92 +341,6 @@ return {
       },
     },
     config = function(_, opts) require("mini.splitjoin").setup(opts) end,
-  },
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
-    cmd = "CopilotChat",
-    opts = function()
-      local user = vim.env.USER or "User"
-      user = user:sub(1, 1):upper() .. user:sub(2)
-      return {
-        model = "gpt-4",
-        auto_insert_mode = true,
-        show_help = true,
-        question_header = string.format(" %s %s ", icons.misc.User, user),
-        answer_header = string.format(" %s %s ", icons.kind.Copilot, "Copilot"),
-        window = {
-          width = 0.4,
-        },
-        selection = function(source)
-          local select = require "CopilotChat.select"
-          return select.visual(source) or select.buffer(source)
-        end,
-      }
-    end,
-    keys = function()
-      local keys = {
-        {
-          "<leader>cc",
-          mode = { "n", "v" },
-          function() return require("CopilotChat").toggle() end,
-          desc = "copilot: toggle chat",
-        },
-        {
-          "<leader>ca",
-          mode = { "n", "v" },
-          function()
-            local input = vim.fn.input "Ask Copilot: "
-            if input ~= "" then require("CopilotChat").ask(input) end
-          end,
-          desc = "copilot: quick chat",
-        },
-        {
-          "<leader>cx",
-          mode = { "n", "v" },
-          function() return require("CopilotChat").reset() end,
-          desc = "copilot: clear history",
-        },
-      }
-
-      if package.loaded["telescope"] then
-        table.insert(keys, {
-          "<leader>cd",
-          mode = { "n", "v" },
-          function()
-            local actions = require "CopilotChat.actions"
-            local help = actions.help_actions()
-            if not help then
-              print "No diagnostics found on the current line"
-              return
-            end
-            require("CopilotChat.integrations.telescope").pick(help)
-          end,
-          desc = "copilot: show diagnostics help",
-        })
-        table.insert(keys, {
-          "<leader>cp",
-          mode = { "n", "v" },
-          function()
-            local actions = require "CopilotChat.actions"
-            require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
-          end,
-          desc = "copilot: show available actions",
-        })
-      end
-      return keys
-    end,
-    config = function(_, opts)
-      require("CopilotChat").setup(opts)
-      require("CopilotChat.integrations.cmp").setup()
-      vim.api.nvim_create_autocmd("BufEnter", {
-        pattern = "copilot-chat",
-        callback = function()
-          vim.opt_local.relativenumber = false
-          vim.opt_local.number = false
-        end,
-      })
-    end,
   },
   {
     "hrsh7th/nvim-cmp",

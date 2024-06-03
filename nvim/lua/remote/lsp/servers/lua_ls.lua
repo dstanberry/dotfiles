@@ -1,25 +1,11 @@
--- verify neodev is available
-local ok, neodev = pcall(require, "neodev")
-if not ok then return end
-
 local cmd = { "lua-language-server" }
+
 local function get_cmd()
   if has "win32" then cmd[1] = vim.fn.exepath(cmd[1]) end
   return cmd
 end
 
 local M = {}
-
-M.setup = function()
-  neodev.setup {
-    library = {
-      enabled = true,
-      runtime = true,
-      types = true,
-      plugins = false,
-    },
-  }
-end
 
 M.config = {
   cmd = cmd,

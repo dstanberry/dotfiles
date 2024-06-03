@@ -29,7 +29,6 @@ return {
         config = true,
       },
       -- INFO: server configurations
-      "folke/neodev.nvim",
       "jmederosalvarado/roslyn.nvim",
       "simrat39/rust-tools.nvim",
       { "mickael-menu/zk-nvim", dependencies = { "nvim-telescope/telescope.nvim" } },
