@@ -5,95 +5,82 @@ local icons = require "ui.icons"
 
 return {
   {
-    "akinsho/git-conflict.nvim",
-    lazy = true,
-    version = "*",
-    opts = {
-      default_mappings = true,
-      disable_diagnostics = false,
-      highlights = {
-        incoming = "DiffText",
-        current = "DiffAdd",
-      },
-    },
-    {
-      "ruifm/gitlinker.nvim",
-      dependencies = { "nvim-lua/plenary.nvim" },
-      keys = function()
-        local function open(url)
-          local Job = require "plenary.job"
-          local command
-          local args = { url }
-          if has "mac" then
-            command = "open"
-          elseif has "win32" or has "wsl" then
-            command = "cmd.exe"
-            args = { "/c", "start", url }
-          else
-            command = "xdg-open"
-          end
-          Job:new({ command = command, args = args }):start()
+    "ruifm/gitlinker.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    keys = function()
+      local function open(url)
+        local Job = require "plenary.job"
+        local command
+        local args = { url }
+        if has "mac" then
+          command = "open"
+        elseif has "win32" or has "wsl" then
+          command = "cmd.exe"
+          args = { "/c", "start", url }
+        else
+          command = "xdg-open"
         end
+        Job:new({ command = command, args = args }):start()
+      end
 
-        local function browser() return { action_callback = open } end
+      local function browser() return { action_callback = open } end
 
-        return {
-          {
-            "<localleader>gy",
-            function() require("gitlinker").get_buf_range_url "n" end,
-            desc = "gitlinker: copy line",
-          },
-          {
-            "<localleader>go",
-            function() require("gitlinker").get_buf_range_url("n", browser()) end,
-            desc = "gitlinker: open line in browser",
-          },
-          {
-            "<localleader>gy",
-            function() require("gitlinker").get_buf_range_url "v" end,
-            mode = "v",
-            desc = "neogit: copy selection",
-          },
-          {
-            "<localleader>go",
-            function() require("gitlinker").get_buf_range_url("v", browser()) end,
-            mode = "v",
-            desc = "gitlinker: open selection in browser",
-          },
-        }
-      end,
-      opts = function()
-        local function get_relative_filepath(url_data)
-          if has "win32" then
-            local git_root = require("gitlinker.git").get_git_root()
-            -- use forward slashes only (browser urls don't use backslash char)
-            git_root = git_root:gsub("\\", "/")
-            url_data.file = url_data.file:gsub("\\", "/")
-            -- HACK: trim git root from file to get relative path.. YMMV
-            url_data.file = url_data.file:gsub(git_root, "")
-            -- trim leading slash
-            if url_data.file:sub(1, 1) == "/" then url_data.file = url_data.file:sub(2) end
-          end
-          return url_data
+      return {
+        {
+          "<localleader>gy",
+          function() require("gitlinker").get_buf_range_url "n" end,
+          desc = "gitlinker: copy line",
+        },
+        {
+          "<localleader>gx",
+          function() require("gitlinker").get_buf_range_url("n", browser()) end,
+          desc = "gitlinker: open line in browser",
+        },
+        {
+          "<localleader>gy",
+          function() require("gitlinker").get_buf_range_url "v" end,
+          mode = "v",
+          desc = "neogit: copy selection",
+        },
+        {
+          "<localleader>gx",
+          function() require("gitlinker").get_buf_range_url("v", browser()) end,
+          mode = "v",
+          desc = "gitlinker: open selection in browser",
+        },
+      }
+    end,
+    opts = function()
+      local function get_relative_filepath(url_data)
+        if has "win32" then
+          local git_root = require("gitlinker.git").get_git_root()
+          -- use forward slashes only (browser urls don't use backslash char)
+          git_root = git_root:gsub("\\", "/")
+          url_data.file = url_data.file:gsub("\\", "/")
+          -- HACK: trim git root from file to get relative path.. YMMV
+          url_data.file = url_data.file:gsub(git_root, "")
+          -- trim leading slash
+          if url_data.file:sub(1, 1) == "/" then url_data.file = url_data.file:sub(2) end
         end
-        local options = {
-          mappings = nil,
-          callbacks = {
-            ["github.com"] = function(url_data)
-              url_data = get_relative_filepath(url_data)
-              return require("gitlinker.hosts").get_github_type_url(url_data)
-            end,
-          },
-        }
-        if vim.g.config_github_enterprise_hostname then
-          options.callbacks[vim.g.config_github_enterprise_hostname] = function(url_data)
+        return url_data
+      end
+      local options = {
+        mappings = nil,
+        callbacks = {
+          ["github.com"] = function(url_data)
             url_data = get_relative_filepath(url_data)
             return require("gitlinker.hosts").get_github_type_url(url_data)
-          end
+          end,
+        },
+      }
+      if vim.g.config_github_enterprise_hostname then
+        options.callbacks[vim.g.config_github_enterprise_hostname] = function(url_data)
+          url_data = get_relative_filepath(url_data)
+          return require("gitlinker.hosts").get_github_type_url(url_data)
         end
-        return options
-      end,
-    },
+      end
+      return options
+    end,
   },
   {
     "lewis6991/gitsigns.nvim",
@@ -159,82 +146,6 @@ return {
         end,
       }
     end,
-  },
-  {
-    "polarmutex/git-worktree.nvim",
-    event = "VeryLazy",
-    config = function()
-      local has_telescope, telescope = pcall(require, "telescope")
-      if not has_telescope then return end
-
-      local themes = require "telescope.themes"
-
-      require("git-worktree").setup {}
-      telescope.load_extension "git_worktree"
-
-      vim.keymap.set(
-        "n",
-        "<leader>gl",
-        function()
-          telescope.extensions.git_worktree.git_worktree(themes.get_dropdown {
-            previewer = false,
-            prompt_title = "Switch to a Git Working Tree",
-          })
-        end,
-        { desc = "git-worktree: switch to a worktree" }
-      )
-
-      vim.keymap.set(
-        "n",
-        "<leader>ga",
-        function()
-          telescope.extensions.git_worktree.create_git_worktree(themes.get_dropdown {
-            previewer = false,
-            prompt_title = "Create a Git Working Tree",
-          })
-        end,
-        { desc = "git-worktree: create a worktree" }
-      )
-    end,
-  },
-  {
-    "NeogitOrg/neogit",
-    dependencies = { "nvim-lua/plenary.nvim" },
-    keys = {
-      { "<localleader>gs", function() require("neogit").open { kind = "tab" } end, desc = "neogit: open" },
-      { "<localleader>gc", function() require("neogit").open { "commit" } end, desc = "neogit: commit" },
-    },
-    init = function()
-      groups.new("NeogitNotificationInfo", { link = "String" })
-      groups.new("NeogitNotificationWarning", { link = "WarningMsg" })
-      groups.new("NeogitNotificationError", { link = "ErrorMsg" })
-
-      groups.new("NeogitBranch", { fg = c.green2 })
-      groups.new("NeogitRemote", { fg = c.red2 })
-      groups.new("NeogitHunkHeader", { fg = color.blend(c.blue4, c.bg2, 0.44), bg = color.blend(c.blue4, c.bg2, 0.05) })
-      groups.new("NeogitHunkHeaderHighlight", { fg = c.blue4, bg = color.blend(c.blue4, c.gray0, 0.1) })
-      groups.new("NeogitDiffContextHighlight", { fg = c.fg0, bg = c.gray0 })
-      groups.new("NeogitDiffAdd", { fg = c.green2, bg = c.diff_add })
-      groups.new("NeogitDiffAddHighlight", { fg = c.green2, bg = c.diff_add })
-      groups.new("NeogitDiffDeleteHighlight", { fg = c.red1, bg = c.diff_delete })
-      groups.new("NeogitObjectId", { fg = color.lighten(c.gray1, 20) })
-    end,
-    opts = {
-      disable_commit_confirmation = true,
-      disable_context_highlighting = false,
-      disable_insert_on_commit = false,
-      commit_popup = {
-        kind = "tab",
-      },
-      signs = {
-        hunk = { "", "" },
-        item = { icons.misc.FoldClosed, icons.misc.FoldOpened },
-        section = { icons.misc.DiagonalExpand, icons.misc.DiagonalShrink },
-      },
-      integrations = {
-        diffview = true,
-      },
-    },
   },
   {
     "pwntester/octo.nvim",

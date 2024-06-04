@@ -5,29 +5,6 @@ local icons = require "ui.icons"
 
 return {
   {
-    "numToStr/Comment.nvim",
-    event = "LazyFile",
-    opts = function(_, opts)
-      local ok, ts_context_commentstring = pcall(require, "ts_context_commentstring.integrations.comment_nvim")
-      if ok then opts.pre_hook = ts_context_commentstring.create_pre_hook() end
-      opts.padding = true
-      opts.padding = true
-      opts.sticky = true
-      opts.mappings = {
-        basic = true,
-        extra = true,
-      }
-      opts.opleader = {
-        line = "gc",
-        block = "gb",
-      }
-      opts.toggler = {
-        line = "gcc",
-        block = "gbc",
-      }
-    end,
-  },
-  {
     "monaqa/dial.nvim",
     keys = {
       { "<c-a>", function() return require("dial.map").inc_normal() end, expr = true, desc = "dial: increment" },
@@ -179,9 +156,6 @@ return {
   },
   {
     "folke/lazydev.nvim",
-    dependencies = {
-      { "Bilal2453/luvit-meta", lazy = true },
-    },
     ft = "lua",
     opts = function()
       return {
@@ -191,9 +165,11 @@ return {
       }
     end,
   },
+  -- Plugin will never be loaded
+  { "Bilal2453/luvit-meta", lazy = true },
   {
     "echasnovski/mini.ai",
-    event = "VeryLazy",
+    event = "LazyFile",
     opts = function()
       local ai = require "mini.ai"
 
@@ -282,21 +258,8 @@ return {
     end,
   },
   {
-    "echasnovski/mini.comment",
-    event = "VeryLazy",
-    dependencies = {
-      {
-        "JoosepAlviste/nvim-ts-context-commentstring",
-        opts = { enable_autocmd = false },
-      },
-    },
-    opts = {
-      options = {
-        custom_commentstring = function()
-          return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
-        end,
-      },
-    },
+    "folke/ts-comments.nvim",
+    event = "LazyFile",
   },
   {
     "echasnovski/mini.surround",

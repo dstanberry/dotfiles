@@ -359,11 +359,6 @@ return {
     end,
   },
   {
-    "yorickpeterse/nvim-pqf",
-    event = "VeryLazy",
-    init = function() groups.new("qfPosition", { link = "@markup.link" }) end,
-  },
-  {
     "folke/persistence.nvim",
     event = "LazyFile",
     opts = {
@@ -389,8 +384,9 @@ return {
     keys = {
       { "<leader>sr", function() require("spectre").open() end, desc = "spectre: replace in files" },
     },
-    config = function()
-      require("spectre").setup()
+    opts = { open_cmd = "noswapfile vnew" },
+    config = function(_, opts)
+      require("spectre").setup(opts)
 
       groups.new("SpectreSearch", { fg = c.bg0, bg = c.rose0, bold = true })
       groups.new("SpectreReplace", { fg = c.bg0, bg = c.green0, bold = true })
@@ -452,7 +448,7 @@ return {
   },
   {
     "akinsho/toggleterm.nvim",
-    event = "VeryLazy",
+    cmd = "ToggleTerm",
     opts = {
       direction = "float",
       size = function(term)
@@ -610,6 +606,11 @@ return {
         desc = "trouble: next item",
       },
     },
+    init = function()
+      vim.api.nvim_create_autocmd("QuickFixCmdPost", {
+        callback = function() vim.cmd "Trouble qflist open" end,
+      })
+    end,
     opts = {
       icons = {
         kinds = vim.tbl_extend(

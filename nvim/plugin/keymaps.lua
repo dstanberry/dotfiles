@@ -348,11 +348,14 @@ vim.keymap.set("c", "<c-e>", "<end>", { silent = false, desc = "goto end of line
 
 -- navigate completion menu using up key
 vim.keymap.set("c", "<up>", function()
-  local ok, cmp = pcall(require, "cmp")
-  local visible = false
-  if ok then visible = cmp.visible() end
-  if vim.fn.pumvisible() == 1 or visible then
-    return "<c-p>"
+  if package.loaded["cmp"] then
+    local ok, cmp = pcall(require, "cmp")
+    local visible = ok and cmp.visible() or false
+    if vim.fn.pumvisible() == 1 or visible then
+      return "<c-p>"
+    else
+      return "<up>"
+    end
   else
     return "<up>"
   end
@@ -360,11 +363,14 @@ end, { silent = false, expr = true, replace_keycodes = true })
 
 -- navigate completion menu using down key
 vim.keymap.set("c", "<down>", function()
-  local ok, cmp = pcall(require, "cmp")
-  local visible = false
-  if ok then visible = cmp.visible() end
-  if vim.fn.pumvisible() == 1 or visible then
-    return "<c-n>"
+  if package.loaded["cmp"] then
+    local ok, cmp = pcall(require, "cmp")
+    local visible = ok and cmp.visible() or false
+    if vim.fn.pumvisible() == 1 or visible then
+      return "<c-n>"
+    else
+      return "<down>"
+    end
   else
     return "<down>"
   end

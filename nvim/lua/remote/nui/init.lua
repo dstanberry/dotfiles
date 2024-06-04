@@ -16,16 +16,15 @@ groups.new("NuiComponentsCheckboxLabel", { link = "NuiComponentsCheckboxIcon" })
 groups.new("NuiComponentsCheckboxLabelChecked", { link = "NuiComponentsCheckboxIconChecked" })
 
 return {
-  "grapp-dev/nui-components.nvim",
-  dependencies = {
-    "MunifTanjim/nui.nvim",
-  },
-  event = { "LazyFile", "VeryLazy" },
-  keys = {
-    {
-      "<localleader>sr",
-      function() require("remote.nui.pickers.spectre").toggle() end,
-      desc = "spectre: replace in files",
+  {
+    "grapp-dev/nui-components.nvim",
+    keys = {
+      {
+        "<localleader>sr",
+        function() require("remote.nui.pickers.spectre").toggle() end,
+        desc = "spectre: replace in files",
+      },
     },
   },
+  { "MunifTanjim/nui.nvim", lazy = true },
 }

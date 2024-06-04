@@ -133,53 +133,6 @@ return {
         { "<leader>fW",function() require("telescope.builtin").diagnostics() end, desc = "telescope: lsp diagnostics (workspace)" },
       }
     end,
-    init = function()
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "VeryLazy",
-        callback = function()
-          local telescope = require "telescope"
-
-          local function git_hunks()
-            require("telescope.pickers")
-              .new({
-                finder = require("telescope.finders").new_oneshot_job({ "git", "jump", "--stdout", "diff" }, {
-                  entry_maker = function(line)
-                    local filename, lnum_string = line:match "([^:]+):(%d+).*"
-                    if filename:match "^/dev/null" then return nil end
-                    return {
-                      value = filename,
-                      display = line,
-                      ordinal = line,
-                      filename = filename,
-                      lnum = tonumber(lnum_string),
-                    }
-                  end,
-                }),
-                sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
-                previewer = require("telescope.config").values.grep_previewer {},
-                results_title = "Git Hunks",
-                prompt_title = "Git Hunks",
-                layout_strategy = "flex",
-              }, {})
-              :find()
-          end
-
-          vim.api.nvim_create_user_command("Hunks", git_hunks, {})
-          vim.api.nvim_create_user_command("BCommits", require("telescope.builtin").git_bcommits, {})
-          vim.api.nvim_create_user_command("Commits", require("telescope.builtin").git_commits, {})
-          vim.api.nvim_create_user_command(
-            "Buffers",
-            function() require("telescope.builtin").buffers { sort_lastused = true } end,
-            {}
-          )
-
-          telescope.load_extension "file_browser"
-          telescope.load_extension "fzf"
-          telescope.load_extension "gh"
-          telescope.load_extension "ui-select"
-        end,
-      })
-    end,
     config = function()
       local telescope = require "telescope"
       local actions = require "telescope.actions"
@@ -203,15 +156,6 @@ return {
           function() vim.notify(("'%s' copied to clipboard"):format(commit), nil, { timeout = 500 }) end,
           500
         )
-      end
-
-      local interactive_rebase = function(prompt_bufnr)
-        local commit = state.get_selected_entry().value
-        actions.close(prompt_bufnr)
-        vim.api.nvim_exec("tabnew | terminal", false)
-        local term_channel = vim.opt_local.channel:get()
-        vim.api.nvim_chan_send(term_channel, ("git rebase --interactive %s\r"):format(commit))
-        vim.cmd.normal "a"
       end
 
       telescope.setup {
@@ -335,7 +279,6 @@ return {
             layout_strategy = "vertical",
             mappings = {
               i = {
-                ["<c-r>"] = interactive_rebase,
                 ["<c-y>"] = copy_commit,
               },
             },
@@ -362,7 +305,6 @@ return {
             layout_strategy = "vertical",
             mappings = {
               i = {
-                ["<c-r>"] = interactive_rebase,
                 ["<c-y>"] = copy_commit,
               },
             },
@@ -448,6 +390,50 @@ return {
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "TelescopePrompt",
         callback = function() vim.opt_local.cursorline = false end,
+      })
+
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          local function git_hunks()
+            require("telescope.pickers")
+              .new({
+                finder = require("telescope.finders").new_oneshot_job({ "git", "jump", "--stdout", "diff" }, {
+                  entry_maker = function(line)
+                    local filename, lnum_string = line:match "([^:]+):(%d+).*"
+                    if filename:match "^/dev/null" then return nil end
+                    return {
+                      value = filename,
+                      display = line,
+                      ordinal = line,
+                      filename = filename,
+                      lnum = tonumber(lnum_string),
+                    }
+                  end,
+                }),
+                sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
+                previewer = require("telescope.config").values.grep_previewer {},
+                results_title = "Git Hunks",
+                prompt_title = "Git Hunks",
+                layout_strategy = "flex",
+              }, {})
+              :find()
+          end
+
+          vim.api.nvim_create_user_command("Hunks", git_hunks, {})
+          vim.api.nvim_create_user_command("BCommits", require("telescope.builtin").git_bcommits, {})
+          vim.api.nvim_create_user_command("Commits", require("telescope.builtin").git_commits, {})
+          vim.api.nvim_create_user_command(
+            "Buffers",
+            function() require("telescope.builtin").buffers { sort_lastused = true } end,
+            {}
+          )
+
+          telescope.load_extension "file_browser"
+          telescope.load_extension "fzf"
+          telescope.load_extension "gh"
+          telescope.load_extension "ui-select"
+        end,
       })
     end,
   },

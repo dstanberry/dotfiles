@@ -138,7 +138,10 @@ M.on_attach = function(client, bufnr)
 
   if client.server_capabilities.renameProvider then
     if require("lazy.core.config").plugins["inc-rename.nvim"] ~= nil then
-      local rename_symbol = function() return ":IncRename " .. vim.fn.expand "<cword>" end
+      local rename_symbol = function()
+        local inc_rename = require "inc_rename"
+        return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand "<cword>"
+      end
       vim.keymap.set("n", "g<leader>", rename_symbol, { buffer = bufnr, expr = true, desc = "lsp: rename" })
     else
       vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr, desc = "lsp: rename" })

@@ -198,7 +198,7 @@ return {
   },
   {
     "smjonas/inc-rename.nvim",
-    event = "VeryLazy",
+    cmd = "IncRename",
     opts = { hl_group = "Substitute" },
   },
   {
@@ -242,14 +242,10 @@ return {
       hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_tab_indent_level)
     end,
   },
+  { "MunifTanjim/nui.nvim", lazy = true },
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    enabled = true,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "rcarriga/nvim-notify",
-    },
     keys = {
       {
         "<c-d>",
@@ -436,7 +432,6 @@ return {
   {
     "rcarriga/nvim-notify",
     lazy = true,
-    dependencies = { "nvim-telescope/telescope.nvim" },
     opts = {
       stages = "fade_in_slide_out",
       timeout = 3000,
@@ -481,10 +476,7 @@ return {
       if require("lazy.core.config").plugins["noice.nvim"] == nil then
         vim.api.nvim_create_autocmd("User", {
           pattern = "VeryLazy",
-          callback = function()
-            vim.notify = require "notify"
-            require("telescope").load_extension "notify"
-          end,
+          callback = function() vim.notify = require "notify" end,
         })
       end
     end,
@@ -526,7 +518,7 @@ return {
   },
   {
     "levouh/tint.nvim",
-    event = "WinNew",
+    event = "LazyFile",
     opts = function()
       return {
         tint = -10,

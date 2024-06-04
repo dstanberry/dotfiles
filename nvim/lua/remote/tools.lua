@@ -9,8 +9,8 @@ return {
   {
     "stevearc/conform.nvim",
     event = "BufWritePre",
-    cmd = { "ConformInfo" },
     enabled = true,
+    cmd = "ConformInfo",
     keys = {
       {
         "ff",
@@ -233,7 +233,6 @@ return {
   },
   {
     "michaelrommel/nvim-silicon",
-    lazy = true,
     cmd = "Silicon",
     keys = {
       {
@@ -310,7 +309,6 @@ return {
   },
   {
     "kristijanhusak/vim-dadbod-ui",
-    event = "VeryLazy",
     enabled = true,
     dependencies = {
       "kristijanhusak/vim-dadbod-completion",
@@ -320,15 +318,18 @@ return {
     keys = {
       {
         "<localleader>de",
-        function() vim.cmd.edit(string.format("%s/db/connections.json", vim.fn.stdpath "data")) end,
+        function() vim.cmd.edit(vim.fs.joinpath(vim.fn.stdpath "data", "db", "connections.json")) end,
         desc = "dadbod: edit database connections",
       },
       { "<localleader>db", "<cmd>DBUIToggle<cr>", desc = "dadbod: toggle interface" },
     },
     init = function()
+      vim.g.db_ui_save_location = vim.fs.joinpath(vim.fn.stdpath "data", "db")
+      vim.g.db_ui_tmp_query_location = vim.fs.joinpath(vim.fn.stdpath "data", "db", "tmp")
       vim.g.db_ui_use_nerd_fonts = 1
       vim.g.db_ui_show_database_icon = 1
-      vim.g.db_ui_save_location = vim.fn.stdpath "data" .. "/db"
+      vim.g.db_ui_use_nvim_notify = true
+      vim.g.db_ui_execute_on_save = false
 
       local ftplugin = vim.api.nvim_create_augroup("hl_dadbod", { clear = true })
       vim.api.nvim_create_autocmd("FileType", {
@@ -363,12 +364,8 @@ return {
   },
   {
     "kndndrj/nvim-dbee",
-    event = "VeryLazy",
     enabled = false,
-    dependencies = {
-      "MattiasMTS/cmp-dbee",
-      "MunifTanjim/nui.nvim",
-    },
+    dependencies = { "MattiasMTS/cmp-dbee" },
     cmd = { "Dbee" },
     keys = {
       { "<localleader>db", "<cmd>Dbee toggle<cr>", desc = "dbee: toggle interface" },
@@ -377,7 +374,7 @@ return {
     config = function()
       require("dbee").setup {
         sources = {
-          require("dbee.sources").FileSource:new(string.format("%s/db/connections.json", vim.fn.stdpath "data")),
+          require("dbee.sources").FileSource:new(vim.fs.joinpath(vim.fn.stdpath "data", "db", "connections.json")),
         },
       }
       if require("lazy.core.config").plugins["nvim-cmp"] ~= nil then
