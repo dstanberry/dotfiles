@@ -43,7 +43,7 @@ local function lazy_file()
         data = event.data,
         buf = event.buf,
       }
-      if vim.bo[event.buf].filetype then
+      if vim.tbl_contains(vim.api.nvim_list_bufs(), event.buf) and vim.bo[event.buf].filetype then
         Event.trigger {
           event = "FileType",
           buf = event.buf,
