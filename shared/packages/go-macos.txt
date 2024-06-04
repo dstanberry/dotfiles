@@ -1,0 +1,2 @@
+github.com/charmbracelet/glow@latest
+github.com/maaslalani/slides@latest

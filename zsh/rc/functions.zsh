@@ -12,6 +12,9 @@ ag() {
 # support custom sub-commands
 cargo() {
   local PKG=$CONFIG_HOME/shared/packages/cargo.txt
+  if is_darwin; then
+    PKG=$CONFIG_HOME/shared/packages/cargo-macos.txt
+  fi
   if [ "$1" = "save" ]; then
     command cargo install --list | grep -E '^\w+' | awk '{ print $1 }' > "$PKG"
   elif [ "$1" = "load" ]; then
@@ -139,6 +142,9 @@ git() {
 # support custom sub-commands
 go() {
   local PKG=$CONFIG_HOME/shared/packages/go.txt
+  if is_darwin; then
+    PKG=$CONFIG_HOME/shared/packages/go-macos.txt
+  fi
   if [ "$1" = "load" ]; then
     if [ "$EUID" -eq 0 ]; then
       echo "go load is not supported for root user"
