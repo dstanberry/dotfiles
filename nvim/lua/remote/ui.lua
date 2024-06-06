@@ -620,10 +620,10 @@ return {
       local wk = require "which-key"
       wk.setup(opts)
       wk.register {
+        mode = "n",
         ["]"] = { name = "+next" },
         ["["] = { name = "+previous" },
         ["<leader>"] = {
-          mode = "n",
           b = { name = "+buffer" },
           c = { name = "+copilot" },
           d = { name = "+debug" },
@@ -634,20 +634,7 @@ return {
           s = { name = "+search" },
           q = { name = "+session" },
         },
-        ["<leader>c"] = {
-          mode = "v",
-          name = "+copilot",
-        },
-        ["<leader>m"] = {
-          mode = "v",
-          name = "+notes (markdown)",
-        },
-        ["<leader>s"] = {
-          mode = "v",
-          name = "+selection",
-        },
         ["<localleader>"] = {
-          mode = "n",
           ["<localleader>"] = { name = "+command" },
           d = { name = "+database" },
           f = { name = "+file/find" },
@@ -656,13 +643,17 @@ return {
           q = { name = "+quickfix (trouble)" },
           s = { name = "+search" },
         },
-        ["<localleader>g"] = {
-          mode = "v",
-          name = "+git",
+      }
+      wk.register {
+        mode = "v",
+        ["<leader>"] = {
+          c = { name = "+copilot" },
+          m = { name = "+notes (markdown)" },
+          s = { name = "+selection" },
         },
-        ["<localleader>m"] = {
-          mode = "v",
-          name = "+notes (markdown)",
+        ["<localleader>g"] = {
+          g = { name = "+git" },
+          m = { name = "+notes (markdown)" },
         },
       }
     end,
