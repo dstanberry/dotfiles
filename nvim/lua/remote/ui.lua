@@ -625,7 +625,7 @@ return {
         ["["] = { name = "+previous" },
         ["<leader>"] = {
           b = { name = "+buffer" },
-          c = { name = "+copilot" },
+          c = { name = "+code assistant" },
           d = { name = "+debug" },
           f = { name = "+file/find" },
           g = { name = "+git" },
@@ -647,11 +647,11 @@ return {
       wk.register {
         mode = "v",
         ["<leader>"] = {
-          c = { name = "+copilot" },
+          c = { name = "+code assistant" },
           m = { name = "+notes (markdown)" },
           s = { name = "+selection" },
         },
-        ["<localleader>g"] = {
+        ["<localleader>"] = {
           g = { name = "+git" },
           m = { name = "+notes (markdown)" },
         },
