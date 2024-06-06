@@ -127,7 +127,7 @@ return {
   },
   {
     "folke/flash.nvim",
-    event = "VeryLazy",
+    event = "LazyFile",
     keys = {
       { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "flash: search" },
       {

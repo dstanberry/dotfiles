@@ -479,59 +479,52 @@ return {
       close_on_exit = true,
       shell = has "win32" and "pwsh -NoLogo" or vim.o.shell,
     },
-    init = function()
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "VeryLazy",
-        callback = function()
-          local Terminal = require("toggleterm.terminal").Terminal
-          local float
-          float = Terminal:new {
-            direction = "float",
-            on_open = function(term)
-              vim.wo.sidescrolloff = 0
-              vim.keymap.set(
-                { "i", "n", "t" },
-                "<a-w><a-t>",
-                function() float:toggle() end,
-                { buffer = term.bufnr, desc = "toggleterm: toggle float" }
-              )
-            end,
-          }
-          vim.keymap.set("n", "<a-w><a-t>", function() float:toggle() end, { desc = "toggleterm: toggle float" })
-
-          local tab
-          tab = Terminal:new {
-            direction = "tab",
-            on_open = function(term)
-              vim.keymap.set(
-                { "i", "n", "t" },
-                "<a-w><a-y>",
-                function() tab:toggle() end,
-                { buffer = term.bufnr, desc = "toggleterm: toggle tab" }
-              )
-            end,
-          }
-          vim.keymap.set("n", "<a-w><a-y>", function() tab:toggle() end, { desc = "toggleterm: toggle tab" })
-
-          local lazygit
-          lazygit = Terminal:new {
-            cmd = "lazygit",
-            dir = "git_dir",
-            hidden = true,
-            direction = "tab",
-            on_open = function(term)
-              vim.wo.sidescrolloff = 0
-              vim.keymap.set(
-                { "i", "n", "t" },
-                "<a-w><a-l>",
-                function() lazygit:toggle() end,
-                { buffer = term.bufnr, desc = "toggleterm: toggle float" }
-              )
-            end,
-          }
-          vim.keymap.set("n", "<a-w><a-l>", function() lazygit:toggle() end, { desc = "toggleterm: toggle lazygit" })
+    keys = function()
+      local terminal = function() return require("toggleterm.terminal").Terminal end
+      local float, tab, lazygit
+      float = terminal():new {
+        direction = "float",
+        on_open = function(term)
+          vim.wo.sidescrolloff = 0
+          vim.keymap.set(
+            { "i", "n", "t" },
+            "<a-w><a-t>",
+            function() float:toggle() end,
+            { buffer = term.bufnr, desc = "toggleterm: toggle float" }
+          )
         end,
-      })
+      }
+      tab = terminal():new {
+        direction = "tab",
+        on_open = function(term)
+          vim.keymap.set(
+            { "i", "n", "t" },
+            "<a-w><a-y>",
+            function() tab:toggle() end,
+            { buffer = term.bufnr, desc = "toggleterm: toggle tab" }
+          )
+        end,
+      }
+      lazygit = terminal():new {
+        cmd = "lazygit",
+        dir = "git_dir",
+        hidden = true,
+        direction = "tab",
+        on_open = function(term)
+          vim.wo.sidescrolloff = 0
+          vim.keymap.set(
+            { "i", "n", "t" },
+            "<a-w><a-l>",
+            function() lazygit:toggle() end,
+            { buffer = term.bufnr, desc = "toggleterm: toggle float" }
+          )
+        end,
+      }
+      return {
+        { "<a-w><a-t>", function() float:toggle() end, desc = "toggleterm: toggle float" },
+        { "<a-w><a-y>", function() tab:toggle() end, desc = "toggleterm: toggle tab" },
+        { "<a-w><a-l>", function() lazygit:toggle() end, desc = "toggleterm: toggle lazygit" },
+      }
     end,
   },
   {

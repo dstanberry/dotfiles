@@ -9,8 +9,9 @@ local theme = require "remote.lualine.theme"
 local stl_util = require "remote.lualine.util"
 
 return {
-  "dstanberry/lualine.nvim",
-  event = { "LazyFile", "VeryLazy" },
+  "nvim-lualine/lualine.nvim",
+  url = "https://github.com/dstanberry/lualine.nvim",
+  event = "VeryLazy",
   init = function()
     groups.new("NoiceSymbolNormal", { fg = color.lighten(c.gray1, 15) })
     groups.new("NoiceSymbolSeparator", { fg = color.blend(c.purple1, c.bg2, 0.38) })

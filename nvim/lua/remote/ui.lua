@@ -528,7 +528,7 @@ return {
   },
   {
     "kevinhwang91/nvim-ufo",
-    event = { "LazyFile", "VeryLazy" },
+    event = "LazyFile",
     dependencies = { "kevinhwang91/promise-async" },
     enabled = true,
     keys = {
@@ -587,7 +587,7 @@ return {
   },
   {
     "lukas-reineke/virt-column.nvim",
-    event = { "BufReadPost", "BufNewFile" },
+    event = "LazyFile",
     init = function() groups.new("VirtColumn", { link = "NonText" }) end,
     opts = { char = icons.misc.VerticalBarVeryThin },
   },
