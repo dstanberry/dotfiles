@@ -1,4 +1,6 @@
 local util = require "util"
+local lazy = require "util.lazy"
+
 require "util.globals"
 
 vim.g.mapleader = " "
@@ -58,4 +60,4 @@ vim.g.dotfiles_dir = vim.fs.joinpath(vim.env.HOME, ".config")
 vim.g.projects_dir = vim.env.projects_dir and vim.fs.normalize(vim.env.projects_dir)
   or vim.fs.joinpath(vim.env.HOME, "Projects")
 
-require "util.lazy"
+lazy.setup()
