@@ -1,3 +1,4 @@
+local buffer = require "util.buffer"
 local c = require("ui.theme").colors
 local color = require "util.color"
 local groups = require "ui.theme.groups"
@@ -154,20 +155,96 @@ return {
       "nvim-telescope/telescope.nvim",
     },
     cmd = "Octo",
+    event = { { event = "BufReadCmd", pattern = "octo://*" } },
     keys = {
       { "<leader>go", function() vim.cmd "Octo" end, desc = "octo: manage github issues and pull requests " },
+      -- prefix
+      { "<leader>a", "", desc = "octo: +assignee", ft = "octo" },
+      { "<leader>c", "", desc = "octo: +comment/code", ft = "octo" },
+      { "<leader>l", "", desc = "octo: +label", ft = "octo" },
+      { "<leader>i", "", desc = "octo: +issue", ft = "octo" },
+      { "<leader>r", "", desc = "octo: +react", ft = "octo" },
+      { "<leader>p", "", desc = "octo: +pr", ft = "octo" },
+      { "<leader>v", "", desc = "octo: +review", ft = "octo" },
+      -- trigger completion menu
+      { "@", "@<c-x><c-o>", mode = "i", ft = "octo", silent = true },
+      { "#", "#<c-x><c-o>", mode = "i", ft = "octo", silent = true },
     },
     init = function()
       groups.new("OctoBubble", { link = "Normal" })
       groups.new("OctoEditable", { fg = c.white, bg = color.darken(c.gray0, 10) })
+
+      vim.treesitter.language.register("markdown", "octo")
+
+      if require("lazy.core.config").plugins["nvim-cmp"] ~= nil then
+        vim.api.nvim_create_autocmd("FileType", {
+          group = vim.api.nvim_create_augroup("git-completion", { clear = true }),
+          pattern = "octo",
+          callback = function()
+            ---@diagnostic disable-next-line: missing-fields
+            require("cmp").setup.buffer {
+              sources = {
+                { name = "buffer", keyword_length = 5, max_item_count = 5 },
+                { name = "git" },
+                { name = "luasnip" },
+              },
+            }
+          end,
+        })
+      end
     end,
-    opts = {
-      use_local_fs = false,
-      enable_builtin = true,
-      default_to_projects_v2 = false,
-      ssh_aliases = {},
-      github_hostname = vim.g.config_github_enterprise_hostname or "github.com",
-      picker = "telescope",
-    },
+    opts = function()
+      local Signs = require "octo.ui.signs"
+      local signs = {}
+
+      local unplace = Signs.unplace
+      ---@diagnostic disable-next-line: duplicate-set-field
+      function Signs.unplace(bufnr)
+        signs = vim.tbl_filter(function(s) return s.buf ~= bufnr end, signs)
+        return unplace(bufnr)
+      end
+
+      ---@diagnostic disable-next-line: duplicate-set-field
+      function Signs.place_signs(bufnr, start_line, end_line, is_dirty)
+        signs[#signs + 1] = { buf = bufnr, from = start_line, to = end_line, dirty = is_dirty }
+      end
+
+      -- stylua: ignore
+      local corners = {
+        top    = "┌╴",
+        middle = "│ ",
+        last   = "└╴",
+        single = "[ ",
+      }
+
+      table.insert(buffer.statuscolumn_signs, function(buf, lnum, vnum, win)
+        lnum = lnum - 1
+        for _, s in ipairs(signs) do
+          if buf == s.buf and lnum >= s.from and lnum <= s.to then
+            local height = vim.api.nvim_win_text_height(win, { start_row = s.from, end_row = s.to }).all
+            local height_end = vim.api.nvim_win_text_height(win, { start_row = s.to, end_row = s.to }).all
+            local corner = corners.middle
+            if height == 1 then
+              corner = corners.single
+            elseif lnum == s.from and vnum == 0 then
+              corner = corners.top
+            elseif lnum == s.to and vnum == height_end - 1 then
+              corner = corners.last
+            end
+            return { { text = corner, texthl = s.dirty and "OctoDirty" or "IblScope" } }
+          end
+        end
+      end)
+
+      return {
+        use_local_fs = false,
+        enable_builtin = true,
+        default_to_projects_v2 = false,
+        default_merge_method = "squash",
+        github_hostname = vim.g.config_github_enterprise_hostname or "github.com",
+        picker = "telescope",
+        ssh_aliases = {},
+      }
+    end,
   },
 }
