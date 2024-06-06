@@ -4,6 +4,16 @@ local groups = require "ui.theme.groups"
 local icons = require "ui.icons"
 local util = require "util"
 
+local get_args = function(config)
+  local args = type(config.args) == "function" and (config.args() or {}) or config.args or {}
+  config = vim.deepcopy(config)
+  config.args = function()
+    local new_args = vim.fn.input("Run with args: ", table.concat(args, " "))
+    return vim.split(vim.fn.expand(new_args), " ")
+  end
+  return config
+end
+
 ---@diagnostic disable: missing-fields
 return {
   "mfussenegger/nvim-dap",
@@ -12,13 +22,15 @@ return {
     "jbyuki/one-small-step-for-vimkind",
     "mfussenegger/nvim-dap-python",
     "rcarriga/nvim-dap-ui",
+    "nvim-neotest/nvim-nio",
     "theHamsta/nvim-dap-virtual-text",
   },
   -- stylua: ignore
   keys = {
     { "<leader>db", function() require("dap").toggle_breakpoint() end, desc = "dap: toggle breakpoint" },
     { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input "Breakpoint condition: ") end, desc = "dap: set conditional breakpoint" },
-    { "<leader>dc", function() require("dap").continue() end, desc = "dap: continue" },
+    { "<leader>da", function() require("dap").continue({before = get_args}) end, desc = "dap: run with args" },
+    { "<leader>dc", function() require("dap").continue() end, desc = "dap: run / continue" },
     { "<leader>dC", function() require("dapui").float_element("console", { enter = true, width = 200, position = "center" }) end, desc = "dap: show console output" },
     { "<leader>de", function() require("dapui").eval() end, desc = "dap: evaluate" },
     { "<leader>dE", function() require("dapui").eval(vim.fn.input "Evaluate expression: ") end, desc = "dap: evaluate expression" },
@@ -67,82 +79,95 @@ return {
       linehl = "DapBreakpointActiveLine",
       numhl = "",
     })
-    local ok, dapvt = pcall(require, "nvim-dap-virtual-text")
-    if ok then
-      dapvt.setup {
+
+    vim.g.dap_virtual_text = true
+    require("nvim-dap-virtual-text").setup {
+      enabled = true,
+      enabled_commands = true,
+      commented = false,
+      show_stop_reason = true,
+      -- virt_text_pos = "eol",
+      virt_text_pos = "inline",
+      display_callback = function(variable, buf, stackframe, node, options)
+        if options.virt_text_pos == "inline" then
+          return string.format(" = %s", variable.value)
+        else
+          return string.format("%s = %s", variable.name, variable.value)
+        end
+      end,
+    }
+
+    local dapui = require "dapui"
+    dapui.setup {
+      mappings = {
+        expand = { "<cr>" },
+        open = "o",
+        remove = "d",
+        edit = "e",
+        repl = "r",
+        toggle = "t",
+      },
+      layouts = {
+        {
+          elements = {
+            { id = "scopes", size = 0.30 },
+            { id = "breakpoints", size = 0.30 },
+            { id = "stacks", size = 0.20 },
+            { id = "watches", size = 0.15 },
+          },
+          size = 50,
+          position = "left",
+        },
+        {
+          elements = { "repl" },
+          size = 0.15,
+          position = "bottom",
+        },
+      },
+      controls = {
         enabled = true,
-        enabled_commands = true,
-        commented = false,
-        show_stop_reason = true,
-        -- virt_text_pos = "eol",
-        virt_text_pos = "inline",
-        display_callback = function(variable, buf, stackframe, node, options)
-          if options.virt_text_pos == "inline" then
-            return string.format(" = %s", variable.value)
-          else
-            return string.format("%s = %s", variable.name, variable.value)
-          end
-        end,
-      }
-      vim.g.dap_virtual_text = true
-    end
-    local dapui
-    ok, dapui = pcall(require, "dapui")
-    if ok then
-      dapui.setup {
+        element = "repl",
+        icons = {
+          pause = icons.debug.Pause,
+          play = icons.debug.Continue,
+          step_into = icons.debug.StepInto,
+          step_over = icons.debug.StepOver,
+          step_out = icons.debug.StepOut,
+          step_back = icons.debug.StepBack,
+          run_last = icons.debug.Restart,
+          terminate = icons.debug.Stop,
+        },
+      },
+      floating = {
+        boder = "single",
+        max_height = nil,
+        max_width = nil,
         mappings = {
-          expand = { "<cr>" },
-          open = "o",
-          remove = "d",
-          edit = "e",
-          repl = "r",
-          toggle = "t",
+          close = { "q", "<esc>" },
         },
-        layouts = {
-          {
-            elements = {
-              { id = "scopes", size = 0.30 },
-              { id = "breakpoints", size = 0.30 },
-              { id = "stacks", size = 0.20 },
-              { id = "watches", size = 0.15 },
-            },
-            size = 50,
-            position = "left",
-          },
-          {
-            elements = { "repl" },
-            size = 0.15,
-            position = "bottom",
-          },
-        },
-        controls = {
-          enabled = true,
-          element = "repl",
-          icons = {
-            pause = icons.debug.Pause,
-            play = icons.debug.Continue,
-            step_into = icons.debug.StepInto,
-            step_over = icons.debug.StepOver,
-            step_out = icons.debug.StepOut,
-            step_back = icons.debug.StepBack,
-            run_last = icons.debug.Restart,
-            terminate = icons.debug.Stop,
-          },
-        },
-        floating = {
-          boder = "single",
-          max_height = nil,
-          max_width = nil,
-          mappings = {
-            close = { "q", "<esc>" },
-          },
-        },
-        windows = { indent = 1 },
-      }
-      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
-      dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
-      dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
-    end
+      },
+      windows = { indent = 1 },
+    }
+    dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open() end
+    dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
+    dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
+
+    local json = require "plenary.json"
+    local vscode = require "dap.ext.vscode"
+    local filetypes = {
+      ["chrome"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" },
+      ["node"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" },
+      ["node2"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" },
+      ["pwa-chrome"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" },
+      ["pwa-node"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" },
+      ["codelldb"] = { "c", "cpp", "rust" },
+      ["delve"] = { "go" },
+      ["python"] = { "python" },
+    }
+    ---@diagnostic disable-next-line: duplicate-set-field
+    vscode.json_decode = function(str) return vim.json.decode(json.json_strip_comments(str)) end
+    vscode.load_launchjs(nil, filetypes)
+
     local debuggers = vim.api.nvim_get_runtime_file("lua/remote/dap/debuggers/*.lua", true)
     for _, file in ipairs(debuggers) do
       local mod = util.get_module_name(file)

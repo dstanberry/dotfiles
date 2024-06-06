@@ -1,37 +1,10 @@
-local util = require "util"
-
 local M = {}
 
 M.setup = function()
   local dap = require "dap"
 
-  local adapters = {
-    "chrome",
-    "pwa-chrome",
-    "pwa-extensionHost",
-    "pwa-msedge",
-    "pwa-node",
-    "node-terminal",
-  }
-  local languages = {
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue",
-  }
-
-  vim.keymap.set("n", "<leader>da", function()
-    local root = util.buffer.get_root()
-    if vim.uv.fs_stat(root .. "/.vscode/launch.json") then
-      require("dap.ext.vscode").load_launchjs(nil, {
-        chrome = languages,
-        ["pwa-chrome"] = languages,
-        ["pwa-node"] = languages,
-      })
-    end
-    require("dap").continue()
-  end, { desc = "dap: run with args" })
+  local adapters = { "chrome", "node", "pwa-chrome", "pwa-node" }
+  local languages = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
 
   local debugger_path = require("mason-registry").get_package("js-debug-adapter"):get_install_path()
   for _, adapter in ipairs(adapters) do
