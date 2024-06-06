@@ -73,7 +73,8 @@ fd() {
 
 # fuzzy search for files in the current directory and open in (n)vim
 fe() {
-  IFS=$'\n' files=($(fzf-tmux \
+  IFS=$'\n' files=($(fzf \
+    --tmux=90%\
     --query="$1" \
     --multi \
     --select-1 \
