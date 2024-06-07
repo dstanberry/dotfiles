@@ -1,7 +1,9 @@
+require "util.globals"
+
 local util = require "util"
 local lazy = require "util.lazy"
 
-require "util.globals"
+_G.ds = vim.tbl_deep_extend("keep", _G.ds, lazy.globals)
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","

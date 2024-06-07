@@ -16,8 +16,14 @@ groups.new("NuiComponentsCheckboxLabel", { link = "NuiComponentsCheckboxIcon" })
 groups.new("NuiComponentsCheckboxLabelChecked", { link = "NuiComponentsCheckboxIconChecked" })
 
 return {
+  { "MunifTanjim/nui.nvim", lazy = true },
   {
     "grapp-dev/nui-components.nvim",
+    dependecies = {
+      "windwp/nvim-spectre",
+      dependencies = { "nvim-lua/plenary.nvim" },
+      opts = { open_cmd = "noswapfile vnew" },
+    },
     keys = {
       {
         "<localleader>sr",
@@ -26,5 +32,4 @@ return {
       },
     },
   },
-  { "MunifTanjim/nui.nvim", lazy = true },
 }

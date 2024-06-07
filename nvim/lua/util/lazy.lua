@@ -26,9 +26,9 @@ local init = function()
       border = util.map(icons.border.ThinBlock, function(v) return { v, "FloatBorder" } end),
       backdrop = 95,
       custom_keys = {
-        ["<localleader>d"] = function(plugin) dump(plugin) end,
+        ["<localleader>d"] = function(plugin) print(plugin) end,
         ["<localleader>t"] = function(plugin)
-          local cmd = has "win32" and "pwsh"
+          local cmd = ds.has "win32" and "pwsh"
           require("lazy.util").float_term(cmd, {
             cwd = plugin.dir,
           })
@@ -80,6 +80,31 @@ end
 
 M.initialized = false
 
+---@param name string
+M.is_loaded = function(name)
+  local ok, Config = pcall(require, "lazy.core.config")
+  if not ok then return false end
+  return Config.plugins[name] and Config.plugins[name]._.loaded
+end
+
+---@param name string
+---@param fn fun(name:string)
+function M.on_load(name, fn)
+  if M.is_loaded(name) then
+    fn(name)
+  else
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "LazyLoad",
+      callback = function(event)
+        if event.data == name then
+          fn(name)
+          return true
+        end
+      end,
+    })
+  end
+end
+
 M.lazy_notify = function()
   local notifications = {}
   local function temp(...) table.insert(notifications, vim.F.pack_len(...)) end
@@ -112,7 +137,7 @@ M.lazy_notify = function()
 end
 
 M.setup = function()
-  if not setting_enabled "remote_plugins" then return end
+  if not ds.setting_enabled "remote_plugins" then return end
   if M.initialized then return end
   M.initialized = true
   bootstrap()
@@ -120,5 +145,10 @@ M.setup = function()
   init()
   M.lazy_notify()
 end
+
+M.globals = {
+  is_loaded = M.is_loaded,
+  on_load = M.on_load,
+}
 
 return M

@@ -12,11 +12,11 @@ local generic_hl = highlighter.sanitize "Winbar"
 local fname_hl = highlighter.sanitize "WinbarFilename"
 
 local dap_icons = {
-  ["DAP Breakpoints"] = pad(icons.debug.Breakpoint, "right"),
-  ["DAP Console"] = pad(icons.debug.REPL, "right"),
-  ["DAP Scopes"] = pad(icons.debug.Scopes, "right"),
-  ["DAP Stacks"] = pad(icons.debug.Stacks, "right"),
-  ["DAP Watches"] = pad(icons.debug.Watches, "right"),
+  ["DAP Breakpoints"] = ds.pad(icons.debug.Breakpoint, "right"),
+  ["DAP Console"] = ds.pad(icons.debug.REPL, "right"),
+  ["DAP Scopes"] = ds.pad(icons.debug.Scopes, "right"),
+  ["DAP Stacks"] = ds.pad(icons.debug.Stacks, "right"),
+  ["DAP Watches"] = ds.pad(icons.debug.Watches, "right"),
 }
 
 local get_relative_path = function(winid, dirpath)
@@ -37,18 +37,18 @@ local format_sections = function(path, fname, ext)
       if fname:match "DAP" then icon = dap_icons[fname] or icon end
       if #segments == 0 then
         section = (k == #parts and devicons_ok)
-            and add(highlighter.sanitize(icon_hl), { pad(icon, "both") }, true) .. add(fname_hl, { v })
-          or add(generic_hl, { pad(v, "left") })
+            and add(highlighter.sanitize(icon_hl), { ds.pad(icon, "both") }, true) .. add(fname_hl, { v })
+          or add(generic_hl, { ds.pad(v, "left") })
       else
         section = (k == #parts and devicons_ok)
-            and add(highlighter.sanitize(icon_hl), { pad(icon, "right") }, true) .. add(fname_hl, { v })
+            and add(highlighter.sanitize(icon_hl), { ds.pad(icon, "right") }, true) .. add(fname_hl, { v })
           or add(generic_hl, { v })
       end
       table.insert(segments, section)
     end
     return segments
   end)
-  return table.concat(segments, pad("/", "right"))
+  return table.concat(segments, ds.pad("/", "right"))
 end
 
 return function()

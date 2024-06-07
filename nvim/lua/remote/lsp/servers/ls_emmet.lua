@@ -1,6 +1,6 @@
 local cmd = { "ls_emmet", "--stdio" }
 local function get_cmd()
-  if has "win32" then cmd[1] = vim.fn.exepath(cmd[1]) end
+  if ds.has "win32" then cmd[1] = vim.fn.exepath(cmd[1]) end
   return cmd
 end
 

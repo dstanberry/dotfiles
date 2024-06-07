@@ -9,7 +9,7 @@ require "ft.markdown.keymaps"
 -- local cmd = { "zk", "lsp", "--log", "/tmp/zk-lsp.log" }
 local cmd = { "zk", "lsp" }
 local function get_cmd()
-  if has "win32" then cmd[1] = vim.fn.exepath(cmd[1]) end
+  if ds.has "win32" then cmd[1] = vim.fn.exepath(cmd[1]) end
   return cmd
 end
 

@@ -38,7 +38,7 @@ function M.install_package(name, basedir, path, script, force)
   if not vim.uv.fs_stat(basedir) then
     print("Installing " .. name)
     vim.fn.mkdir(basedir, "p")
-    if has "win32" then script = transform_win_cmd(script) end
+    if ds.has "win32" then script = transform_win_cmd(script) end
     launch_term(script, {
       cwd = path,
       ["on_exit"] = function(_, code)

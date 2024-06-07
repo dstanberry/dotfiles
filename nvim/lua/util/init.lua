@@ -81,7 +81,7 @@ end
 ---@return string modname
 function M.get_module_name(filename)
   local modname
-  if has "win32" then
+  if ds.has "win32" then
     modname = (filename):match "lua\\(.+)%.lua$"
     if modname ~= nil then modname = (modname):gsub("\\", ".") end
   else

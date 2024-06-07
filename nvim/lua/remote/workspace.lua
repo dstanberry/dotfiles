@@ -7,10 +7,10 @@ local icons = require "ui.icons"
 local util = require "util"
 
 return {
+  { "tiagovla/scope.nvim", lazy = true },
   {
     "akinsho/bufferline.nvim",
     event = "VeryLazy",
-    dependencies = { "tiagovla/scope.nvim", config = true },
     keys = {
       { "<leader>bg", ":BufferLineGroupToggle ", desc = "bufferline: toggle group" },
       { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = "bufferline: toggle pin" },
@@ -66,50 +66,50 @@ return {
           diagnostics_update_in_insert = false,
           diagnostics_indicator = function(_, _, _, ctx)
             if ctx.buffer:current() then return "" end
-            return pad(icons.diagnostics.Warn, "left")
+            return ds.pad(icons.diagnostics.Warn, "left")
           end,
           indicator = {
-            icon = pad(icons.misc.VerticalBarThin, "right"),
+            icon = ds.pad(icons.misc.VerticalBarThin, "right"),
             style = "none",
           },
           offsets = {
             {
-              text = pad(icons.documents.FolderOutlineClosed, "right") .. "EXPLORER",
+              text = ds.pad(icons.documents.FolderOutlineClosed, "right") .. "EXPLORER",
               filetype = "neo-tree",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
             },
             {
-              text = pad(icons.groups.Sql, "right") .. "DATABASE VIEWER",
+              text = ds.pad(icons.groups.Sql, "right") .. "DATABASE VIEWER",
               filetype = "dbee",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
             },
             {
-              text = pad(icons.groups.Sql, "right") .. "DATABASE VIEWER",
+              text = ds.pad(icons.groups.Sql, "right") .. "DATABASE VIEWER",
               filetype = "dbui",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
             },
             {
-              text = pad(icons.groups.Diff, "right") .. "DIFF VIEW",
+              text = ds.pad(icons.groups.Diff, "right") .. "DIFF VIEW",
               filetype = "DiffviewFiles",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
             },
             {
-              text = pad(icons.groups.StackFrame, "right") .. "DEBUGGER",
+              text = ds.pad(icons.groups.StackFrame, "right") .. "DEBUGGER",
               filetype = "dapui_scopes",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
             },
             {
-              text = pad(icons.groups.Tree, "right") .. "SYMBOLS",
+              text = ds.pad(icons.groups.Tree, "right") .. "SYMBOLS",
               filetype = "trouble",
               highlight = "PanelHeading",
               separator = true,
@@ -277,8 +277,8 @@ return {
         winbar = true,
         separator_active = " ",
         sources = {
-          { source = "filesystem", display_name = pad(icons.documents.MultipleFolders, "both", 1, 2) .. "Files " },
-          { source = "document_symbols", display_name = pad(icons.kind.Class, "both", 1, 2) .. "Symbols " },
+          { source = "filesystem", display_name = ds.pad(icons.documents.MultipleFolders, "both", 1, 2) .. "Files " },
+          { source = "document_symbols", display_name = ds.pad(icons.kind.Class, "both", 1, 2) .. "Symbols " },
         },
       },
       enable_git_status = true,
@@ -477,7 +477,7 @@ return {
       shading_factor = 2,
       start_in_insert = true,
       close_on_exit = true,
-      shell = has "win32" and "pwsh -NoLogo" or vim.o.shell,
+      shell = ds.has "win32" and "pwsh -NoLogo" or vim.o.shell,
     },
     keys = function()
       local terminal = function() return require("toggleterm.terminal").Terminal end
@@ -529,6 +529,7 @@ return {
   },
   {
     "folke/trouble.nvim",
+    event = "LazyFile",
     cmd = { "Trouble" },
     keys = {
       {
@@ -608,8 +609,8 @@ return {
       icons = {
         kinds = vim.tbl_extend(
           "keep",
-          vim.tbl_map(function(kind) return pad(kind, "right") end, icons.kind),
-          vim.tbl_map(function(kind) return pad(kind, "right") end, icons.type)
+          vim.tbl_map(function(kind) return ds.pad(kind, "right") end, icons.kind),
+          vim.tbl_map(function(kind) return ds.pad(kind, "right") end, icons.type)
         ),
       },
       modes = {

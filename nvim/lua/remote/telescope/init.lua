@@ -164,9 +164,9 @@ return {
             LESS = "",
             DELTA_PAGER = "less",
           },
-          prompt_prefix = pad(icons.misc.Prompt, "right"),
-          selection_caret = pad(icons.misc.CaretRight, "right"),
-          multi_icon = pad(icons.misc.CaretRight, "right"),
+          prompt_prefix = ds.pad(icons.misc.Prompt, "right"),
+          selection_caret = ds.pad(icons.misc.CaretRight, "right"),
+          multi_icon = ds.pad(icons.misc.CaretRight, "right"),
           sorting_strategy = "descending",
           results_title = false,
           scroll_strategy = "cycle",
@@ -215,14 +215,14 @@ return {
 
               -- plugin integrations
               ["<c-q>"] = function(...)
-                if require("lazy.core.config").plugins["trouble.nvim"] ~= nil then
+                if package.loaded["trouble"] then
                   return require("trouble.sources.telescope").open(...)
                 else
                   return actions.send_to_qflist(...) + actions.open_qflist(...)
                 end
               end,
               ["<a-q>"] = function(...)
-                if require("lazy.core.config").plugins["trouble.nvim"] ~= nil then
+                if package.loaded["trouble"] then
                   return require("trouble.sources.telescope").open(...)
                 else
                   return actions.send_selected_to_qflist(...) + actions.open_qflist(...)
@@ -284,9 +284,9 @@ return {
             },
             previewer = require("telescope.previewers").new_termopen_previewer {
               get_command = function(entry)
-                local shell = has "win32" and "pwsh" or "zsh"
-                local flags = has "win32" and "-Command" or "-c"
-                local nullpipe = has "win32" and "Nul" or "/dev/null"
+                local shell = ds.has "win32" and "pwsh" or "zsh"
+                local flags = ds.has "win32" and "-Command" or "-c"
+                local nullpipe = ds.has "win32" and "Nul" or "/dev/null"
                 return {
                   shell,
                   flags,
@@ -310,8 +310,8 @@ return {
             },
             previewer = require("telescope.previewers").new_termopen_previewer {
               get_command = function(entry)
-                local shell = has "win32" and "pwsh" or "zsh"
-                local flags = has "win32" and "-Command" or "-c"
+                local shell = ds.has "win32" and "pwsh" or "zsh"
+                local flags = ds.has "win32" and "-Command" or "-c"
                 return {
                   shell,
                   flags,

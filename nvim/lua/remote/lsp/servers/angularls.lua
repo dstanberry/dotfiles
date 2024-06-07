@@ -26,7 +26,7 @@ local get_cmd = function(workspace_dir)
       ","
     ),
   }
-  if has "win32" then
+  if ds.has "win32" then
     local exec = vim.fn.exepath(cmd[1])
     cmd[1] = exec ~= "" and exec or "ngserver"
   end

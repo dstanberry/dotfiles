@@ -137,7 +137,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.renameProvider then
-    if require("lazy.core.config").plugins["inc-rename.nvim"] ~= nil then
+    if ds.is_loaded "inc-rename.nvim" then
       local rename_symbol = function()
         local inc_rename = require "inc_rename"
         return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand "<cword>"
@@ -196,7 +196,7 @@ M.on_attach = function(client, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, "Workspace", function(opts)
     local cmd = unpack(opts.fargs)
     if cmd == "list" then
-      dump_with_title("LSP Workspace(s)", vim.lsp.buf.list_workspace_folders())
+      ds.pprint("LSP Workspace(s)", vim.lsp.buf.list_workspace_folders())
     elseif cmd == "add" then
       vim.lsp.buf.add_workspace_folder()
     elseif cmd == "remove" then

@@ -3,7 +3,7 @@ local M = {}
 ---Utility to load linux directory hashes (if defined) into the current runtime
 ---@param shell any
 function M.load_dirhash(shell)
-  if has "win32" then return end
+  if ds.has "win32" then return end
   if shell == nil then
     print "cannot load hashes without specifying shell"
     return

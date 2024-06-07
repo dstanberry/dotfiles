@@ -8,8 +8,8 @@ return function()
   local clients = util.map(vim.lsp.get_clients { bufnr = buf }, function(client)
     if client and client.name then return client.name end
   end)
-  local names = clients and table.concat(clients, pad(icons.misc.CircleDot, "both")) or ""
+  local names = clients and table.concat(clients, ds.pad(icons.misc.CircleDot, "both")) or ""
   return #names == 0 and ""
-    or #names < limit and pad(icons.misc.Gears, "right", 2) .. names
-    or pad(icons.misc.Gears, "right", 2) .. "LSP"
+    or #names < limit and ds.pad(icons.misc.Gears, "right", 2) .. names
+    or ds.pad(icons.misc.Gears, "right", 2) .. "LSP"
 end

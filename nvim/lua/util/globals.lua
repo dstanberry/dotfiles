@@ -1,30 +1,33 @@
+---@diagnostic disable-next-line: lowercase-global
+_G.ds = {}
+
 ---Displays a notification containing a human-readable representation of the object(s) provided
 ---@param title string
 ---@param ...? any
-function _G.dump_with_title(title, ...)
+function _G.ds.pprint(title, ...)
   local get_value = function(...)
     local value = { ... }
     return vim.islist(value) and vim.tbl_count(value) <= 1 and value[1] or value
   end
-  require("util.debug").dump(get_value(...), { title = title })
+  require("util.debug").print(get_value(...), { title = title })
 end
 
 ---Displays a notification containing a human-readable representation of the object(s) provided
 ---@param ...? any
-function _G.dump(...)
+function _G.ds.print(...)
   local get_value = function(...)
     local value = { ... }
     return vim.islist(value) and vim.tbl_count(value) <= 1 and value[1] or value
   end
-  require("util.debug").dump(get_value(...))
+  require("util.debug").print(get_value(...))
 end
 
-vim.print = _G.dump
+vim.print = _G.ds.print
 
 ---Wrapper for Vim's `|has|`feature detection function
 ---@param feature string
 ---@return boolean
-function _G.has(feature) return vim.fn.has(feature) > 0 end
+function _G.ds.has(feature) return vim.fn.has(feature) > 0 end
 
 ---Adds whitespace to the start, end or both start and end of a string
 ---@param s string
@@ -32,7 +35,7 @@ function _G.has(feature) return vim.fn.has(feature) > 0 end
 ---@param amount? number #Repeat pad `n` times to the left/right of string or both sides
 ---@param ramount? number #Repeat pad `n` times to the right of string
 ---@return string result
-function _G.pad(s, direction, amount, ramount)
+function _G.ds.pad(s, direction, amount, ramount)
   amount = vim.F.if_nil(amount, 1)
   ramount = vim.F.if_nil(ramount, amount)
   local left = (direction == "left" or direction == "both") and string.rep(" ", amount) or ""
@@ -42,7 +45,7 @@ end
 
 ---Perform a benchmark of a given command
 ---@param cmd string|function
-function _G.profile(cmd, times)
+function _G.ds.profile(cmd, times)
   times = times or 100
   local args = {}
   if type(cmd) == "string" then
@@ -60,12 +63,12 @@ end
 
 ---Unloads the provided module from memory and re-requires it
 ---@param modname string
-function _G.reload(modname) return require("util").reload(modname) end
+function _G.ds.reload(modname) return require("util").reload(modname) end
 
 ---Provides a machine-local way of disabling various custom configuration options/settings
 ---@param setting string
 ---@return boolean enabled
-function _G.setting_enabled(setting)
+function _G.ds.setting_enabled(setting)
   local var = "config_" .. setting
   if vim.g[var] == nil then return true end
   return vim.g[var] == true

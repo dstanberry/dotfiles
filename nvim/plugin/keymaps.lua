@@ -156,14 +156,14 @@ vim.keymap.set("n", "<localleader><localleader>e", function()
   return (":edit %s%s"):format(path, "/")
 end, { silent = false, expr = true, replace_keycodes = true, desc = "create/edit file relative to current document" })
 
--- prepare to call |reload()| on the current lua file
+-- prepare to call |ds.reload()| on the current lua file
 vim.keymap.set("n", "<localleader><localleader>r", function()
   if vim.bo.filetype ~= "lua" then error "reload utility only available for lua modules" end
   local file = vim.api.nvim_buf_get_name(0)
   local mod = util.get_module_name(file)
   local shift = ""
   if #mod == 0 then shift = "<left><left>" end
-  return ([[:lua reload("%s")%s]]):format(mod, shift)
+  return ([[:lua ds.reload("%s")%s]]):format(mod, shift)
 end, { silent = false, expr = true, replace_keycodes = true, desc = "reload current lua module" })
 
 -- save as new file within the current directory (with the option to delete the original)
@@ -286,7 +286,7 @@ vim.keymap.set("v", "<c-w><c-x>", function()
       msg = "Execution Context (expr)"
       eval_ok, eval_result = pcall(expr)
       if not eval_ok then error(msg .. " [FAILED]: " .. eval_result) end
-      dump_with_title(msg, eval_result, selection)
+      ds.pprint(msg, eval_result, selection)
       return
     end
     local lines = vim.deepcopy(selection)
@@ -296,7 +296,7 @@ vim.keymap.set("v", "<c-w><c-x>", function()
       msg = "Execution Context (block-expr)"
       eval_ok, eval_result = pcall(expr)
       if not eval_ok then error(msg .. " [FAILED]: " .. eval_result) end
-      dump_with_title(msg, eval_result, selection)
+      ds.pprint(msg, eval_result, selection)
       return
     end
     local errmsg
@@ -305,7 +305,7 @@ vim.keymap.set("v", "<c-w><c-x>", function()
     msg = "Execution Context (block)"
     eval_ok, eval_result = pcall(expr)
     if not eval_ok then error(msg .. " [FAILED]: " .. eval_result) end
-    dump_with_title(msg, eval_result, selection)
+    ds.pprint(msg, eval_result, selection)
   end
   local lines = util.buffer.get_visual_selection()
   local selection = table.concat(lines)
@@ -349,9 +349,7 @@ vim.keymap.set("c", "<c-e>", "<end>", { silent = false, desc = "goto end of line
 -- navigate completion menu using up key
 vim.keymap.set("c", "<up>", function()
   if package.loaded["cmp"] then
-    local ok, cmp = pcall(require, "cmp")
-    local visible = ok and cmp.visible() or false
-    if vim.fn.pumvisible() == 1 or visible then
+    if vim.fn.pumvisible() == 1 or require("cmp").visible() then
       return "<c-p>"
     else
       return "<up>"
@@ -364,9 +362,7 @@ end, { silent = false, expr = true, replace_keycodes = true })
 -- navigate completion menu using down key
 vim.keymap.set("c", "<down>", function()
   if package.loaded["cmp"] then
-    local ok, cmp = pcall(require, "cmp")
-    local visible = ok and cmp.visible() or false
-    if vim.fn.pumvisible() == 1 or visible then
+    if vim.fn.pumvisible() == 1 or require("cmp").visible() then
       return "<c-n>"
     else
       return "<down>"

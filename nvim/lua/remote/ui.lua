@@ -62,8 +62,8 @@ return {
         use_icons = true,
         enhanced_diff_hl = true,
         icons = {
-          folder_closed = pad(icons.documents.FolderOutlineClosed, "right"),
-          folder_open = pad(icons.documents.FolderOutlineClosed, "right"),
+          folder_closed = ds.pad(icons.documents.FolderOutlineClosed, "right"),
+          folder_open = ds.pad(icons.documents.FolderOutlineClosed, "right"),
         },
         signs = {
           fold_closed = icons.misc.FoldClosed,
@@ -577,7 +577,7 @@ return {
         end
         local end_text = ctx.get_fold_virt_text(end_linenr)
         if end_text[1] and end_text[1][1] then end_text[1][1] = end_text[1][1]:gsub("[%s\t]+", "") end
-        table.insert(result, { pad(icons.misc.Ellipses, "both"), "Comment" })
+        table.insert(result, { ds.pad(icons.misc.Ellipses, "both"), "Comment" })
         vim.list_extend(result, end_text)
         table.insert(result, { padding, "" })
         return result

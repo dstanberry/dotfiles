@@ -1,7 +1,7 @@
 local dir_separator = function()
   if package.config then
     return string.match(package.config, "^[^\n]")
-  elseif has "win32" then
+  elseif ds.has "win32" then
     return "\\"
   else
     return "/"

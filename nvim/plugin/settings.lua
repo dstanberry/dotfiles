@@ -18,7 +18,7 @@ vim.o.breakindentopt = "shift:2"
 -- setup clipboard
 vim.o.clipboard = "unnamedplus"
 -- use win32 native clipboard tool on WSL
-if has "wsl" then
+if ds.has "wsl" then
   vim.g.clipboard = {
     name = "WslClipboard",
     copy = {
@@ -134,7 +134,7 @@ vim.opt.shada = {
   string.format("n%s/shada/main.shada", data),
 }
 -- use powershell on windows OS
-if has "win32" then
+if ds.has "win32" then
   vim.o.shell = "pwsh -NoLogo"
   vim.o.shellcmdflag = table.concat({
     "-NoLogo",

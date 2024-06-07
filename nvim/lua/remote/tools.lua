@@ -26,7 +26,7 @@ return {
         else
           vim.g.conform_formatting_disabled = true
         end
-        dump "Disabled auto-format on save."
+        print "Disabled auto-format on save."
       end, {
         desc = "Conform: Disable auto-format on save for this buffer",
         bang = true,
@@ -35,7 +35,7 @@ return {
       vim.api.nvim_create_user_command("FormatEnable", function()
         vim.b.conform_formatting_disabled = false
         vim.g.conform_formatting_disabled = false
-        dump "Enabled auto-format on save."
+        print "Enabled auto-format on save."
       end, {
         desc = "Conform: Enable auto-format on save for this buffer",
       })
@@ -218,7 +218,7 @@ return {
         ctx.dirname = vim.fs.dirname(ctx.filename)
         names = vim.tbl_filter(function(name)
           local linter = lint.linters[name]
-          if not linter then dump("Linter not found: " .. name) end
+          if not linter then print("Linter not found: " .. name) end
           return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
         end, names)
 
@@ -343,7 +343,7 @@ return {
       })
     end,
     config = function()
-      if require("lazy.core.config").plugins["nvim-cmp"] ~= nil then
+      ds.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
           group = vim.api.nvim_create_augroup("db-completion", { clear = true }),
           pattern = "sql",
@@ -359,7 +359,7 @@ return {
             }
           end,
         })
-      end
+      end)
     end,
   },
   {
@@ -377,7 +377,7 @@ return {
           require("dbee.sources").FileSource:new(vim.fs.joinpath(vim.fn.stdpath "data", "db", "connections.json")),
         },
       }
-      if require("lazy.core.config").plugins["nvim-cmp"] ~= nil then
+      ds.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
           group = vim.api.nvim_create_augroup("db-completion", { clear = true }),
           pattern = "sql",
@@ -393,7 +393,7 @@ return {
             }
           end,
         })
-      end
+      end)
     end,
   },
 }

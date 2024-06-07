@@ -13,9 +13,9 @@ return {
         local Job = require "plenary.job"
         local command
         local args = { url }
-        if has "mac" then
+        if ds.has "mac" then
           command = "open"
-        elseif has "win32" or has "wsl" then
+        elseif ds.has "win32" or ds.has "wsl" then
           command = "cmd.exe"
           args = { "/c", "start", url }
         else
@@ -53,7 +53,7 @@ return {
     end,
     opts = function()
       local function get_relative_filepath(url_data)
-        if has "win32" then
+        if ds.has "win32" then
           local git_root = require("gitlinker.git").get_git_root()
           -- use forward slashes only (browser urls don't use backslash char)
           git_root = git_root:gsub("\\", "/")
@@ -109,12 +109,12 @@ return {
           local added = ""
           local changed = ""
           local removed = ""
-          if status.added and status.added > 0 then added = pad(icons.git.TextAdded, "right") .. status.added end
+          if status.added and status.added > 0 then added = ds.pad(icons.git.TextAdded, "right") .. status.added end
           if status.changed and status.changed > 0 then
-            changed = pad(icons.git.TextChanged, "both") .. status.changed
+            changed = ds.pad(icons.git.TextChanged, "both") .. status.changed
           end
           if status.removed and status.removed > 0 then
-            removed = pad(icons.git.TextRemoved, "both") .. status.removed
+            removed = ds.pad(icons.git.TextRemoved, "both") .. status.removed
           end
           return added .. changed .. removed
         end,
@@ -176,7 +176,7 @@ return {
 
       vim.treesitter.language.register("markdown", "octo")
 
-      if require("lazy.core.config").plugins["nvim-cmp"] ~= nil then
+      ds.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
           group = vim.api.nvim_create_augroup("git-completion", { clear = true }),
           pattern = "octo",
@@ -191,7 +191,7 @@ return {
             }
           end,
         })
-      end
+      end)
     end,
     opts = function()
       local Signs = require "octo.ui.signs"

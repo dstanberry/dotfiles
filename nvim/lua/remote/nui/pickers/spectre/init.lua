@@ -21,8 +21,6 @@ local M = {}
 function M.toggle()
   if M.renderer then return M.renderer:focus() end
 
-  if require("lazy.core.config").plugins["nvim-spectre"] ~= nil then require("spectre").setup() end
-
   local win_width = vim.api.nvim_win_get_width(0)
   local win_height = vim.api.nvim_win_get_height(0)
   local width = math.min(math.max(50, win_width / 3), win_width / 2)

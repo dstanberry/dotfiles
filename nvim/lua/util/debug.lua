@@ -18,10 +18,10 @@ end
 ---Displays a notification containing a human-readable representation of the object provided
 ---@param value any
 ---@param opts? { location:string }
-function M.dump(value, opts)
+function M.print(value, opts)
   opts = opts or {}
   opts.location = opts.location or M.get_location()
-  if vim.in_fast_event() then return vim.schedule(function() M.dump(value, opts) end) end
+  if vim.in_fast_event() then return vim.schedule(function() M.print(value, opts) end) end
   local msg = vim.inspect(value)
   ---@diagnostic disable-next-line: undefined-field
   local title = vim.F.if_nil(opts.title, "Debug")

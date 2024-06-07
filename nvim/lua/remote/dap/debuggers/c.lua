@@ -21,7 +21,7 @@ M.setup = function()
     executable = {
       command = bin,
       args = { "--port", "${port}" },
-      detached = has "win32" and false or nil,
+      detached = ds.has "win32" and false or nil,
     },
   }
   dap.configurations.c = {

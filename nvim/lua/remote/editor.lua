@@ -208,53 +208,56 @@ return {
     end,
     config = function(_, opts)
       require("mini.ai").setup(opts)
-      if require("lazy.core.config").plugins["which-key.nvim"] ~= nil then
-        local i = {
-          [" "] = "mini.ai: whitespace",
-          ['"'] = 'mini.ai: balanced "',
-          ["'"] = "mini.ai: balanced '",
-          ["`"] = "mini.ai: balanced `",
-          ["("] = "mini.ai: balanced (",
-          [")"] = "mini.ai: balanced ) including white-space",
-          [">"] = "mini.ai: balanced > including white-space",
-          ["<lt>"] = "mini.ai: balanced <",
-          ["]"] = "mini.ai: balanced ] including white-space",
-          ["["] = "mini.ai: balanced [",
-          ["}"] = "mini.ai: balanced } including white-space",
-          ["{"] = "mini.ai: balanced {",
-          ["?"] = "mini.ai: user prompt",
-          _ = "mini.ai: underscore",
-          a = "mini.ai: argument",
-          b = "mini.ai: balanced ), ], }",
-          c = "mini.ai: class",
-          d = "mini.ai: digit(s)",
-          e = "mini.ai: word with (camel/snake) case",
-          f = "mini.ai: function",
-          g = "mini.ai: entire buffer",
-          o = "mini.ai: block, conditional, loop",
-          q = "mini.ai: quote `, \", '",
-          t = "mini.ai: tag",
-          u = "mini.ai: use/call function and method",
-          U = "mini.ai: use/call without dot in function name",
-        }
-        local a = vim.deepcopy(i)
-        for k, v in pairs(a) do
-          a[k] = v:gsub(" including.*", "")
+      ds.on_load("which-key.nvim", function()
+        local mini_motions = function()
+          local i = {
+            [" "] = "mini.ai: whitespace",
+            ['"'] = 'mini.ai: balanced "',
+            ["'"] = "mini.ai: balanced '",
+            ["`"] = "mini.ai: balanced `",
+            ["("] = "mini.ai: balanced (",
+            [")"] = "mini.ai: balanced ) including white-space",
+            [">"] = "mini.ai: balanced > including white-space",
+            ["<lt>"] = "mini.ai: balanced <",
+            ["]"] = "mini.ai: balanced ] including white-space",
+            ["["] = "mini.ai: balanced [",
+            ["}"] = "mini.ai: balanced } including white-space",
+            ["{"] = "mini.ai: balanced {",
+            ["?"] = "mini.ai: user prompt",
+            _ = "mini.ai: underscore",
+            a = "mini.ai: argument",
+            b = "mini.ai: balanced ), ], }",
+            c = "mini.ai: class",
+            d = "mini.ai: digit(s)",
+            e = "mini.ai: word with (camel/snake) case",
+            f = "mini.ai: function",
+            g = "mini.ai: entire buffer",
+            o = "mini.ai: block, conditional, loop",
+            q = "mini.ai: quote `, \", '",
+            t = "mini.ai: tag",
+            u = "mini.ai: use/call function and method",
+            U = "mini.ai: use/call without dot in function name",
+          }
+          local a = vim.deepcopy(i)
+          for k, v in pairs(a) do
+            a[k] = v:gsub(" including.*", "")
+          end
+          local ic = vim.deepcopy(i)
+          local ac = vim.deepcopy(a)
+          for key, name in pairs { n = "next", p = "previous" } do
+            ---@diagnostic disable-next-line: assign-type-mismatch
+            i[key] = vim.tbl_extend("force", { name = "mini.ai: inside " .. name .. " textobject" }, ic)
+            ---@diagnostic disable-next-line: assign-type-mismatch
+            a[key] = vim.tbl_extend("force", { name = "mini.ai: around " .. name .. " textobject" }, ac)
+          end
+          require("which-key").register {
+            mode = { "o", "x" },
+            i = i,
+            a = a,
+          }
         end
-        local ic = vim.deepcopy(i)
-        local ac = vim.deepcopy(a)
-        for key, name in pairs { n = "next", p = "previous" } do
-          ---@diagnostic disable-next-line: assign-type-mismatch
-          i[key] = vim.tbl_extend("force", { name = "mini.ai: inside " .. name .. " textobject" }, ic)
-          ---@diagnostic disable-next-line: assign-type-mismatch
-          a[key] = vim.tbl_extend("force", { name = "mini.ai: around " .. name .. " textobject" }, ac)
-        end
-        require("which-key").register {
-          mode = { "o", "x" },
-          i = i,
-          a = a,
-        }
-      end
+        vim.schedule(mini_motions)
+      end)
     end,
   },
   {
@@ -351,32 +354,6 @@ return {
           desc = "copilot: clear history",
         },
       }
-
-      if package.loaded["telescope"] then
-        table.insert(keys, {
-          "<leader>cd",
-          mode = { "n", "v" },
-          function()
-            local actions = require "CopilotChat.actions"
-            local help = actions.help_actions()
-            if not help then
-              print "No diagnostics found on the current line"
-              return
-            end
-            require("CopilotChat.integrations.telescope").pick(help)
-          end,
-          desc = "copilot: show diagnostics help",
-        })
-        table.insert(keys, {
-          "<leader>cp",
-          mode = { "n", "v" },
-          function()
-            local actions = require "CopilotChat.actions"
-            require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
-          end,
-          desc = "copilot: show available actions",
-        })
-      end
       return keys
     end,
     config = function(_, opts)
@@ -388,6 +365,21 @@ return {
           vim.opt_local.number = false
         end,
       })
+      ds.on_load("telescope.nvim", function()
+        vim.keymap.set({ "n", "v" }, "<leader>cd", function()
+          local actions = require "CopilotChat.actions"
+          local help = actions.help_actions()
+          if not help then
+            print "no diagnostics found on the current line"
+            return
+          end
+          require("CopilotChat.integrations.telescope").pick(help)
+        end, { desc = "copilot: show diagnostics help" })
+        vim.keymap.set({ "n", "v" }, "<leader>cp", function()
+          local actions = require "CopilotChat.actions"
+          require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+        end, { desc = "copilot: show available actions" })
+      end)
     end,
   },
   {
@@ -417,7 +409,7 @@ return {
             server_opts_overrides = {
               settings = {
                 advanced = {
-                  debug = { acceptSelfSignedCertificate = true },
+                  debug = { acceptselfSignedCertificate = true },
                 },
               },
             },
@@ -458,8 +450,8 @@ return {
         formatting = {
           fields = { "kind", "abbr", "menu" },
           format = function(_, item)
-            item.menu = pad(item.kind, "both")
-            item.kind = pad(icons.kind[item.kind], "both")
+            item.menu = ds.pad(item.kind, "both")
+            item.kind = ds.pad(icons.kind[item.kind], "both")
             return item
           end,
         },

@@ -78,7 +78,7 @@ return {
       ext_opts = {
         [types.choiceNode] = {
           active = {
-            virt_text = { { pad(icons.misc.Layer, "both"), "Constant" } },
+            virt_text = { { ds.pad(icons.misc.Layer, "both"), "Constant" } },
           },
         },
       },

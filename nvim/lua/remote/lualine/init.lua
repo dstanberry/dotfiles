@@ -36,23 +36,33 @@ return {
 
     local available_width = function(width) return vim.api.nvim_get_option_value("columns", {}) >= width end
 
-    local lsp_symbols = require("trouble").statusline {
-      mode = "lsp_document_symbols",
-      groups = {},
-      title = false,
-      filter = { range = true },
-      format = string.format(
-        "%s%s{kind_icon}{symbol.name:NoiceSymbolNormal}",
-        stl_util.highlighter.sanitize "NoiceSymbolSeparator",
-        pad(icons.misc.FoldClosed, "right", 2)
-      ),
+    ds.lsp_symbols = {
+      has = function() return false end,
+      get = function() return "" end,
     }
+
+    ds.on_load(
+      "trouble.nvim",
+      function()
+        ds.lsp_symbols = require("trouble").statusline {
+          mode = "lsp_document_symbols",
+          groups = {},
+          title = false,
+          filter = { range = true },
+          format = string.format(
+            "%s%s{kind_icon}{symbol.name:NoiceSymbolNormal}",
+            stl_util.highlighter.sanitize "NoiceSymbolSeparator",
+            ds.pad(icons.misc.FoldClosed, "right", 2)
+          ),
+        }
+      end
+    )
 
     local lsp_symbols_section = function()
       local calculate_data = function(symbols)
         symbols = symbols:gsub("%%#StatusLine#", ""):gsub("%%%%", "%%")
         local bc = breadcrumbs():gsub("%%#.-#", "")
-        local sep = pad(icons.misc.FoldClosed, "right", 2)
+        local sep = ds.pad(icons.misc.FoldClosed, "right", 2)
         local parts = vim.split(symbols, sep)
         local raw_symbols = symbols:gsub("%%#.-#", ""):gsub("%%*", ""):gsub("*", "")
         local margin = 10
@@ -80,7 +90,7 @@ return {
       end
 
       local default = string.format("%s%s", stl_util.highlighter.sanitize "Winbar", "%=")
-      local data = lsp_symbols.get()
+      local data = ds.lsp_symbols.get()
       return data ~= "%#StatusLine#" and calculate_data(data) or default
     end
 
@@ -114,9 +124,9 @@ return {
             "diff",
             source = git_diff,
             symbols = {
-              added = pad(icons.git.TextAdded, "right"),
-              modified = pad(icons.git.TextChanged, "right"),
-              removed = pad(icons.git.TextRemoved, "right"),
+              added = ds.pad(icons.git.TextAdded, "right"),
+              modified = ds.pad(icons.git.TextChanged, "right"),
+              removed = ds.pad(icons.git.TextRemoved, "right"),
             },
             diff_color = {
               added = { fg = color.blend(c.green2, c.white, 0.6) },
@@ -137,10 +147,10 @@ return {
             "diagnostics",
             sources = { "nvim_diagnostic" },
             symbols = {
-              error = pad(icons.status.Error, "right"),
-              warn = pad(icons.status.Warn, "right"),
-              info = pad(icons.status.Info, "right"),
-              hint = pad(icons.status.Hint, "right"),
+              error = ds.pad(icons.status.Error, "right"),
+              warn = ds.pad(icons.status.Warn, "right"),
+              info = ds.pad(icons.status.Info, "right"),
+              hint = ds.pad(icons.status.Hint, "right"),
             },
             diagnostics_color = {
               error = { fg = color.blend(c.red1, c.white, 0.4) },
@@ -188,7 +198,7 @@ return {
           },
           {
             lsp_symbols_section,
-            cond = lsp_symbols.has,
+            -- cond = ds.lsp_symbols.has,
             padding = { left = 0 },
             color = "Winbar",
           },
