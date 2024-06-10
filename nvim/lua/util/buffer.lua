@@ -295,9 +295,6 @@ local get_mark = function(buf, lnum)
   end
 end
 
----@type (fun(buf:number, lnum:number, vnum:number, win:number):Sign[]?)[]
-M.statuscolumn_signs = {}
-
 ---Determine what content is shown on the side of a window, e.g. sign, fold and number
 function M.statuscolumn()
   local win = vim.g.statusline_winid
@@ -307,19 +304,9 @@ function M.statuscolumn()
   local components = { "", "", "" } -- left, middle, right
   if show_signs then
     local signs = M.get_signs(buf, vim.v.lnum)
-    local has_signs = false
-    for _, fn in ipairs(M.statuscolumn_signs) do
-      local virtual = fn(buf, vim.v.lnum, vim.v.virtnum, win)
-      if virtual then
-        has_signs = true
-        vim.list_extend(signs, virtual)
-      end
-    end
     ---@type Sign?,Sign?,Sign?
     local left, right, fold, githl
     for _, s in ipairs(signs) do
-      -- NOTE: octo.nvim
-      if s.name and s.name:lower():find "^octo_clean" then s.texthl = "IblScope" end
       -- NOTE: gitsigns.nvim
       if s.name and (s.name:find "GitSign") then
         right = s
@@ -328,7 +315,6 @@ function M.statuscolumn()
         left = s
       end
     end
-    if vim.v.virtnum ~= 0 and not has_signs then left = nil end
     vim.api.nvim_win_call(win, function()
       if vim.fn.foldclosed(vim.v.lnum) >= 0 then
         fold = { text = vim.opt.fillchars:get().foldclose or "", texthl = githl or "Folded" }
