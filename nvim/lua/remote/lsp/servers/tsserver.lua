@@ -1,6 +1,3 @@
----@diagnostic disable: assign-type-mismatch
-local handlers = require "remote.lsp.handlers"
-
 local M = {}
 
 local ts_settings = {
@@ -34,30 +31,6 @@ M.config = {
     ["javascript.jsx"] = ts_settings,
     ["typescript.tsx"] = ts_settings,
   },
-  on_attach = function(client, bufnr)
-    handlers.on_attach(client, bufnr)
-    vim.keymap.set(
-      "n",
-      "gA",
-      function()
-        vim.lsp.buf.code_action {
-          apply = true,
-          context = {
-            only = {
-              "source.addMissingImports.ts",
-              "source.removeUnusedImports.ts",
-              "source.organizeImports.ts",
-              "source.sortImports.ts",
-              "source.fixAll.ts",
-              "source.removeUnused.ts",
-            },
-            diagnostics = {},
-          },
-        }
-      end,
-      { buffer = bufnr, desc = "typescript: source actions" }
-    )
-  end,
 }
 
 return M
