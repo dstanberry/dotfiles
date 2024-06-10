@@ -3,6 +3,52 @@ local util = require "util"
 
 local M = {}
 
+---@class LspCommand: lsp.ExecuteCommandParams
+---@field open? boolean
+---@field handler? lsp.Handler
+
+---@param opts LspCommand
+function M.execute_command(opts)
+  local params = {
+    command = opts.command,
+    arguments = opts.arguments,
+  }
+  if require("lazy.core.config").plugins["trouble.nvim"] == nil and opts.open then
+    require("trouble").open {
+      mode = "lsp_command",
+      params = params,
+    }
+  else
+    return vim.lsp.buf_request(0, "workspace/executeCommand", params, opts.handler)
+  end
+end
+
+M.get_client_capabilities = function()
+  local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  if ok then capabilities = vim.tbl_deep_extend("keep", capabilities, cmp_nvim_lsp.default_capabilities()) end
+  capabilities = vim.tbl_deep_extend("keep", capabilities, {
+    textDocument = {
+      completion = {
+        completionItem = {
+          commitCharactersSupport = true,
+          deprecatedSupport = true,
+          insertReplaceSupport = true,
+          labelDetailsSupport = true,
+          preselectSupport = true,
+          snippetSupport = true,
+          resolveSupport = {
+            properties = { "documentation", "detail", "additionalTextEdits" },
+          },
+        },
+      },
+      foldingRange = { dynamicRegistration = false, lineFoldingOnly = true },
+    },
+    workspace = { didChangeWatchedFiles = { dynamicRegistration = true } },
+  })
+  return capabilities
+end
+
 M.on_init = function(opts)
   return function(client)
     local default_request = client.rpc.request
@@ -96,7 +142,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.documentFormattingProvider then
-    -- NOTE: preserve any existin keymap defined by other plugin(s)
+    -- INFO: skip keymap assignment if already defined
     if vim.fn.maparg "ff" == "" then
       vim.keymap.set(
         "n",
@@ -190,8 +236,18 @@ M.on_attach = function(client, bufnr)
   -- NOTE: used by |trouble.nvim| as alternative display of document symbols
   -- vim.keymap.set("n", "gS", vim.lsp.buf.workspace_symbol, { buffer = bufnr, desc = "lsp: show workspace symbols" })
   vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr, desc = "lsp: show line diagnostics" })
-  vim.keymap.set("n", "gn", vim.diagnostic.goto_next, { buffer = bufnr, desc = "lsp: next diagnostic" })
-  vim.keymap.set("n", "gp", vim.diagnostic.goto_prev, { buffer = bufnr, desc = "lsp: previous diagnostic" })
+  vim.keymap.set(
+    "n",
+    "gn",
+    function() vim.diagnostic.jump { count = 1 } end,
+    { buffer = bufnr, desc = "lsp: next diagnostic" }
+  )
+  vim.keymap.set(
+    "n",
+    "gp",
+    function() vim.diagnostic.jump { count = -1 } end,
+    { buffer = bufnr, desc = "lsp: previous diagnostic" }
+  )
 
   vim.api.nvim_buf_create_user_command(bufnr, "Workspace", function(opts)
     local cmd = unpack(opts.fargs)
@@ -216,31 +272,19 @@ M.on_attach = function(client, bufnr)
   })
 end
 
-M.get_client_capabilities = function()
-  local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  if ok then capabilities = vim.tbl_deep_extend("keep", capabilities, cmp_nvim_lsp.default_capabilities()) end
-  capabilities = vim.tbl_deep_extend("keep", capabilities, {
-    textDocument = {
-      completion = {
-        completionItem = {
-          commitCharactersSupport = true,
-          deprecatedSupport = true,
-          insertReplaceSupport = true,
-          labelDetailsSupport = true,
-          preselectSupport = true,
-          snippetSupport = true,
-          resolveSupport = {
-            properties = { "documentation", "detail", "additionalTextEdits" },
-          },
+M.run_code_action = setmetatable({}, {
+  __index = function(_, action)
+    return function()
+      vim.lsp.buf.code_action {
+        apply = true,
+        context = {
+          only = { action },
+          diagnostics = {},
         },
-      },
-      foldingRange = { dynamicRegistration = false, lineFoldingOnly = true },
-    },
-    workspace = { didChangeWatchedFiles = { dynamicRegistration = true } },
-  })
-  return capabilities
-end
+      }
+    end
+  end,
+})
 
 M.setup = function()
   vim.diagnostic.config {
