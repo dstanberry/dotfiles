@@ -14,9 +14,9 @@ return {
     color = "#519aba",
     name = "Mdx",
   },
-  svg = {
-    icon = "",
-    color = "#FFB13B",
-    name = "Svg",
+  octo = {
+    icon = "",
+    color = "#c5d1de",
+    name = "Github",
   },
 }

@@ -72,6 +72,9 @@ return {
             icon = ds.pad(icons.misc.VerticalBarThin, "right"),
             style = "none",
           },
+          get_element_icon = function(element)
+            return require("nvim-web-devicons").get_icon(element.filetype, { default = false })
+          end,
           offsets = {
             {
               text = ds.pad(icons.documents.FolderOutlineClosed, "right") .. "EXPLORER",
