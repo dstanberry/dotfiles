@@ -6,6 +6,9 @@ M.setup = function()
   if not ok then return end
 
   local dap = require "dap"
+  local vscode = require "dap.ext.vscode"
+
+  vscode.type_to_filetypes["python"] = { "python" }
 
   local cmd = ds.has "win32" and vim.fn.exepath "python" or "python"
   dap.configurations.python = {}

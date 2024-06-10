@@ -2,6 +2,9 @@ local M = {}
 
 M.setup = function()
   local dap = require "dap"
+  local vscode = require "dap.ext.vscode"
+
+  vscode.type_to_filetypes["delve"] = { "go" }
 
   dap.adapters.delve = {
     type = "server",

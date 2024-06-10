@@ -154,19 +154,9 @@ return {
 
     local json = require "plenary.json"
     local vscode = require "dap.ext.vscode"
-    local filetypes = {
-      ["chrome"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" },
-      ["node"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" },
-      ["node2"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" },
-      ["pwa-chrome"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" },
-      ["pwa-node"] = { "javascriptreact", "typescriptreact", "typescript", "javascript" },
-      ["codelldb"] = { "c", "cpp", "rust" },
-      ["delve"] = { "go" },
-      ["python"] = { "python" },
-    }
+
     ---@diagnostic disable-next-line: duplicate-set-field
     vscode.json_decode = function(str) return vim.json.decode(json.json_strip_comments(str)) end
-    vscode.load_launchjs(nil, filetypes)
 
     local debuggers = vim.api.nvim_get_runtime_file("lua/remote/dap/debuggers/*.lua", true)
     for _, file in ipairs(debuggers) do

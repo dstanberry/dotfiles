@@ -2,9 +2,15 @@ local M = {}
 
 M.setup = function()
   local dap = require "dap"
+  local vscode = require "dap.ext.vscode"
 
   local adapters = { "chrome", "node", "pwa-chrome", "pwa-node" }
-  local languages = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
+  local filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
+
+  vscode.type_to_filetypes["chrome"] = filetypes
+  vscode.type_to_filetypes["node"] = filetypes
+  vscode.type_to_filetypes["pwa-chrome"] = filetypes
+  vscode.type_to_filetypes["pwa-node"] = filetypes
 
   local debugger_path = require("mason-registry").get_package("js-debug-adapter"):get_install_path()
   for _, adapter in ipairs(adapters) do
@@ -23,7 +29,7 @@ M.setup = function()
     }
   end
 
-  for _, language in ipairs(languages) do
+  for _, language in ipairs(filetypes) do
     if not dap.configurations[language] then
       dap.configurations[language] = {
         {

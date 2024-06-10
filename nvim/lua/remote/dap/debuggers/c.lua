@@ -14,6 +14,9 @@ end
 
 M.setup = function()
   local dap = require "dap"
+  local vscode = require "dap.ext.vscode"
+
+  vscode.type_to_filetypes["codelldb"] = { "c", "cpp", "rust" }
 
   dap.adapters.codelldb = {
     type = "server",
