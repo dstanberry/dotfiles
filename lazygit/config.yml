@@ -4,7 +4,7 @@ notARepository: "prompt"
 promptToReturnFromSubprocess: true
 quitOnTopLevelReturn: false
 os:
-  editPreset: "nvim"
+  edit: "nvim --server $NVIM --remote-tab {{filename}}"
 git:
   commit:
     signOff: false
