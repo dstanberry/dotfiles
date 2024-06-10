@@ -48,7 +48,7 @@ M.config = {
               "source.removeUnusedImports.ts",
               "source.organizeImports.ts",
               "source.sortImports.ts",
-              "source.fixAll.tslint",
+              "source.fixAll.ts",
               "source.removeUnused.ts",
             },
             diagnostics = {},
