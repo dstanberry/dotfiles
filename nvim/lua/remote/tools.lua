@@ -102,8 +102,8 @@ return {
     cmd = "Mason",
     ensure_installed = {
       "angular-language-server",
-      "bash-language-server",
       "basedpyright",
+      "bash-language-server",
       "beautysh",
       "black",
       "cbfmt",
@@ -139,6 +139,7 @@ return {
       "vale",
       "vim-language-server",
       "vint",
+      "vtsls",
       "yaml-language-server",
       "yamlfmt",
     },

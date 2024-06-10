@@ -12,6 +12,7 @@ local ensure_installed = {
 
 local enabled = {
   pyright = false,
+  tsserver = false,
 }
 
 return {
