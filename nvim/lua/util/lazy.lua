@@ -80,29 +80,30 @@ end
 
 M.initialized = false
 
+---@param pkg string
+---@param path? string
+---@param opts? { warn?: boolean }
+M.get_pkg_path = function(pkg, path, opts)
+  local root = vim.fs.joinpath(vim.fn.stdpath "data", "mason")
+  opts = opts or {}
+  opts.warn = opts.warn == nil and true or opts.warn
+  path = path or ""
+  local ret = vim.fs.joinpath(root, "packages", pkg, path)
+  if opts.warn and not vim.loop.fs_stat(ret) then
+    vim.notify(
+      ("Package path not found for **%s**:\n- `%s`\nYou may need to force update the package."):format(pkg, path),
+      vim.log.levels.WARN,
+      { title = "Mason" }
+    )
+  end
+  return ret
+end
+
 ---@param name string
 M.is_loaded = function(name)
   local ok, Config = pcall(require, "lazy.core.config")
   if not ok then return false end
   return Config.plugins[name] and Config.plugins[name]._.loaded
-end
-
----@param name string
----@param fn fun(name:string)
-function M.on_load(name, fn)
-  if M.is_loaded(name) then
-    fn(name)
-  else
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "LazyLoad",
-      callback = function(event)
-        if event.data == name then
-          fn(name)
-          return true
-        end
-      end,
-    })
-  end
 end
 
 M.lazy_notify = function()
@@ -136,6 +137,24 @@ M.lazy_notify = function()
   timer:start(500, 0, replay)
 end
 
+---@param name string
+---@param fn fun(name:string)
+M.on_load = function(name, fn)
+  if M.is_loaded(name) then
+    fn(name)
+  else
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "LazyLoad",
+      callback = function(event)
+        if event.data == name then
+          fn(name)
+          return true
+        end
+      end,
+    })
+  end
+end
+
 M.setup = function()
   if not ds.setting_enabled "remote_plugins" then return end
   if M.initialized then return end
@@ -147,6 +166,7 @@ M.setup = function()
 end
 
 M.globals = {
+  get_pkg_path = M.get_pkg_path,
   is_loaded = M.is_loaded,
   on_load = M.on_load,
 }

@@ -12,7 +12,6 @@ M.setup = function()
   vscode.type_to_filetypes["pwa-chrome"] = filetypes
   vscode.type_to_filetypes["pwa-node"] = filetypes
 
-  local debugger_path = require("mason-registry").get_package("js-debug-adapter"):get_install_path()
   for _, adapter in ipairs(adapters) do
     dap.adapters[adapter] = {
       type = "server",
@@ -21,7 +20,7 @@ M.setup = function()
       executable = {
         command = "node",
         args = {
-          debugger_path .. "/js-debug/src/dapDebugServer.js",
+          ds.get_pkg_path("js-debug-adapter", "/js-debug/src/dapDebugServer.js"),
           "${port}",
           "localhost",
         },

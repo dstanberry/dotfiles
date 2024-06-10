@@ -1,17 +1,11 @@
 local util = require "util"
 
-local angularls_path = vim.fs.normalize(
-  string.format(
-    "%s/angular-language-server/node_modules/@angular/language-server",
-    vim.fs.normalize(string.format("%s/mason/packages", vim.fn.stdpath "data"))
-  )
-)
-
 local node_modules = function(dirs)
   return util.map(dirs, function(dir) return table.concat({ dir, "node_modules" }, "/") end)
 end
 
 local get_cmd = function(workspace_dir)
+  local angularls_path = ds.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server")
   local cmd = {
     "ngserver",
     "--stdio",
