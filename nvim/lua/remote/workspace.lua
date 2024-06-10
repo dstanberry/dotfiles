@@ -47,8 +47,8 @@ return {
           left_mouse_command = "buffer %d",
           ---@diagnostic disable-next-line: assign-type-mismatch
           right_mouse_command = nil,
-          middle_mouse_command = "bdelete! %d",
-          close_command = "bdelete! %d",
+          middle_mouse_command = function(buf) util.buffer.delete_buffer(buf) end,
+          close_command = function(buf) util.buffer.delete_buffer(buf) end,
           buffer_close_icon = icons.misc.Close,
           close_icon = icons.misc.CloseBold,
           hover = { enabled = true, reveal = { "close" } },

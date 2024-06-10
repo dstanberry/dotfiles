@@ -210,21 +210,8 @@ vim.keymap.set("n", "<bs>q", function() vim.cmd.quit { bang = true } end, { desc
 -- discard all file modifications and close instance
 vim.keymap.set("n", "<bs>Q", function() vim.cmd.quitall { bang = true } end, { desc = "close application" })
 
--- close the current buffer
-vim.keymap.set(
-  "n",
-  "<bs>z",
-  function() util.buffer.delete_buffer(false) end,
-  { silent = false, desc = "close current buffer" }
-)
-
--- discard changes to current buffer and close it
-vim.keymap.set(
-  "n",
-  "<bs>Z",
-  function() util.buffer.delete_buffer(true) end,
-  { silent = false, desc = "discard changes and close current buffer" }
-)
+-- delete the current buffer
+vim.keymap.set("n", "<bs>z", util.buffer.delete_buffer, { silent = false, desc = "delete current buffer" })
 
 ---------------------------------------------------------------
 -- => Insert

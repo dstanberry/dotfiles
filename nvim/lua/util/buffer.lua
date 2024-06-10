@@ -3,45 +3,48 @@ local M = {}
 ---Creates a sandboxed buffer that cannot be saved but has highlighting enabled for the filetype
 ---@param filetype string
 function M.create_scratch(filetype)
-  if not filetype or filetype == "" then filetype = vim.fn.input "scratch buffer filetype: " end
-  vim.cmd.new { args = { "[Scratch]" }, range = { 20 } }
-  vim.bo.bufhidden = "wipe"
-  vim.bo.buflisted = false
-  vim.bo.buftype = "nofile"
-  vim.bo.swapfile = false
-  if filetype then vim.bo.filetype = filetype end
+  local create_buf = function(ft)
+    vim.cmd.new { args = { "[Scratch]" }, range = { 20 } }
+    vim.bo.bufhidden = "wipe"
+    vim.bo.buflisted = false
+    vim.bo.buftype = "nofile"
+    vim.bo.swapfile = false
+    vim.bo.filetype = ft or vim.bo.filetype
+  end
+  if filetype then return create_buf(filetype) end
+  vim.ui.input({
+    prompt = "scratch buffer filetype: ",
+    default = vim.bo.filetype,
+    completion = "filetype",
+  }, function(ft) return create_buf(ft) end)
 end
 
----Unloads a buffer and if the buffer was in a split, the split is preserved.
----@param force boolean
-function M.delete_buffer(force)
-  ---@diagnostic disable-next-line: missing-fields
-  local buffers = M.list_buffers { listed = true }
-  if #buffers < 2 then
-    vim.cmd.enew()
-    return
+---Unloads a buffer
+---@param buf number?
+function M.delete_buffer(buf)
+  buf = buf or 0
+  buf = buf == 0 and vim.api.nvim_get_current_buf() or buf
+  if vim.bo.modified then
+    local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+    if choice == 0 then return end
+    if choice == 1 then vim.cmd.write() end
   end
-  local win = vim.api.nvim_get_current_win()
-  local winnr = vim.api.nvim_win_get_number(win)
-  local bufnr = vim.api.nvim_win_get_buf(win)
-  local wins = vim.tbl_filter(
-    function(winid) return vim.api.nvim_win_get_buf(winid) == bufnr end,
-    vim.api.nvim_list_wins()
-  )
-  for _, winid in ipairs(wins) do
-    vim.cmd.wincmd { args = { "w" }, range = { vim.api.nvim_win_get_number(winid) } }
-    if bufnr == buffers[#buffers] then
-      vim.cmd.bprevious()
-    else
-      vim.cmd.bnext()
-    end
+  local wins = vim.tbl_filter(function(win) return vim.api.nvim_win_get_buf(win) == buf end, vim.api.nvim_list_wins())
+  for _, win in ipairs(wins) do
+    vim.api.nvim_win_call(win, function()
+      if not vim.api.nvim_win_is_valid(win) or vim.api.nvim_win_get_buf(win) ~= buf then return end
+      local alt = vim.fn.bufnr "#"
+      if alt ~= buf and vim.bo[alt].buflisted then
+        vim.api.nvim_win_set_buf(win, alt)
+        return
+      end
+      local has_previous = pcall(vim.cmd, "bprevious")
+      if has_previous and buf ~= vim.api.nvim_win_get_buf(win) then return end
+      local new_buf = vim.api.nvim_create_buf(true, false)
+      vim.api.nvim_win_set_buf(win, new_buf)
+    end)
   end
-  vim.cmd.wincmd { args = { "w" }, range = { winnr } }
-  if force or vim.api.nvim_get_option_value("buftype", { buf = bufnr }) == "terminal" then
-    vim.cmd.bdelete { args = { "#" }, bang = true }
-  else
-    vim.cmd.bdelete { args = { "#" }, mods = { emsg_silent = true, confirm = true } }
-  end
+  if vim.api.nvim_buf_is_valid(buf) then pcall(vim.cmd, "bdelete! " .. buf) end
 end
 
 M.skip_foldexpr = {} ---@type table<number,boolean>
