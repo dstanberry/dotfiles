@@ -52,15 +52,17 @@ aliases:
   _fzf: |
     !FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
         --height=100%
-        --bind='ctrl-i:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEI {1}\"\"\")'
-        --bind='ctrl-p:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEPR {1}\"\"\")'
+        --bind='ctrl-i:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEI {1}\"\"\")+abort'
+        --bind='ctrl-p:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEPR {1}\"\"\")+abort'
         " gh fzf $*
   fi: |
     !FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
-        --bind='ctrl-e:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEI {1}\"\"\")'
+        --height=100%
+        --bind='ctrl-e:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEI {1}\"\"\")+abort'
         " gh fzf issue $*
   fp: |
     !FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
-        --bind='ctrl-e:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEPR {1}\"\"\")'
+        --height=100%
+        --bind='ctrl-e:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEPR {1}\"\"\")+abort'
         " gh fzf pr $*
 version: "1"
