@@ -34,7 +34,16 @@ local format_sections = function(path, fname, ext)
     local section
     if #v > 0 then
       local icon, icon_hl = devicons.get_icon(fname, ext, { default = true })
-      if fname:match "DAP" then icon = dap_icons[fname] or icon end
+      -- NOTE: octo.nvim
+      if parts[1] and parts[1]:match "octo:" then
+        if parts[#parts - 1] == "pull" then
+          icon = icons.git.PullRequest
+        else
+          icon = icons.debug.Bug
+        end
+      end
+      -- NOTE: nvim-dap
+      if fname and fname:match "DAP" then icon = dap_icons[fname] or icon end
       if #segments == 0 then
         section = (k == #parts and devicons_ok)
             and add(highlighter.sanitize(icon_hl), { ds.pad(icon, "both") }, true) .. add(fname_hl, { v })
