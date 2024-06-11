@@ -99,6 +99,13 @@ M.get_pkg_path = function(pkg, path, opts)
   return ret
 end
 
+---@param plugin string
+M.is_installed = function(plugin)
+  local ok, Config = pcall(require, "lazy.core.config")
+  if not ok then return false end
+  return Config.spec.plugins[plugin] ~= nil
+end
+
 ---@param name string
 M.is_loaded = function(name)
   local ok, Config = pcall(require, "lazy.core.config")
@@ -167,6 +174,7 @@ end
 
 M.globals = {
   get_pkg_path = M.get_pkg_path,
+  is_installed = M.is_installed,
   is_loaded = M.is_loaded,
   on_load = M.on_load,
 }

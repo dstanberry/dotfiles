@@ -476,7 +476,7 @@ return {
         callback = function() vim.opt_local.cursorline = false end,
       })
 
-      if require("lazy.core.config").plugins["noice.nvim"] == nil then
+      if not ds.is_installed "noice.nvim" then
         vim.api.nvim_create_autocmd("User", {
           pattern = "VeryLazy",
           callback = function() vim.notify = require "notify" end,

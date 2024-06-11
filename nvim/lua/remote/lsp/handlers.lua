@@ -13,7 +13,7 @@ function M.execute_command(opts)
     command = opts.command,
     arguments = opts.arguments,
   }
-  if require("lazy.core.config").plugins["trouble.nvim"] == nil and opts.open then
+  if not ds.is_installed "trouble.nvim" and opts.open then
     require("trouble").open {
       mode = "lsp_command",
       params = params,
