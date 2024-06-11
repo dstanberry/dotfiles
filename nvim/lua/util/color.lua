@@ -65,6 +65,24 @@ function M.darken(hex, amount)
   return rgb_to_hex(rgb)
 end
 
+---@param name string
+---@param bg? boolean
+---@return string?
+function M.get_color(name, bg)
+  local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
+  local color = nil
+  if hl then
+    if bg then
+      ---@diagnostic disable-next-line: undefined-field
+      color = hl.bg or hl.background
+    else
+      ---@diagnostic disable-next-line: undefined-field
+      color = hl.fg or hl.foreground
+    end
+  end
+  return color and string.format("#%06x", color) or nil
+end
+
 ---@param hex string
 ---@param amount integer
 ---@return string color
