@@ -58,17 +58,20 @@ return {
           python = { "isort", "black" },
           rust = { "rustfmt" },
           sh = { "shfmt" },
-          sql = { "sql_formatter" },
+          sql = { { "sqlfluff", "sql_formatter" } },
           typescript = { { "prettierd", "prettier" } },
           yaml = { "yamlfmt" },
           zsh = { "shfmt" },
         },
         formatters = {
+          prettierd = {
+            env = vim.uv.fs_realpath(prettier_conf) and { PRETTIERD_DEFAULT_CONFIG = prettier_conf } or nil,
+          },
           shfmt = {
             prepend_args = { "-i", "2", "-ci", "-sr", "-s", "-bn" },
           },
-          prettierd = {
-            env = vim.uv.fs_realpath(prettier_conf) and { PRETTIERD_DEFAULT_CONFIG = prettier_conf } or nil,
+          sqlfluff = {
+            args = { "format", "--dialect=ansi", "-" },
           },
         },
         format_on_save = function(buf)
@@ -134,6 +137,7 @@ return {
       "shfmt",
       "snyk-ls",
       "sql-formatter",
+      "sqlfluff",
       "stylua",
       "typescript-language-server",
       "vale",
@@ -193,6 +197,7 @@ return {
         markdown = { "markdownlint" },
         python = { "flake8" },
         sh = { "shellcheck" },
+        sql = { "sqlfluff" },
       },
       linters = {
         -- -- Example of using selene only when a selene.toml file is present
