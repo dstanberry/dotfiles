@@ -47,7 +47,11 @@ return {
       { "<localleader>gh", "<cmd>DiffviewFileHistory<cr>", desc = "diffview: file history" },
       { "<localleader>gH", [[:'<'>DiffviewFileHistory<cr>]], mode = "v", desc = "diffview: file history" },
     },
-    init = function() groups.new("DiffviewFilePanelTitle", { link = "@markup.environment" }) end,
+    init = function()
+      groups.new("DiffviewFilePanelTitle", { link = "@markup.environment" })
+      groups.new("DiffviewFilePanelCounter", { link = "Normal" })
+      groups.new("DiffviewHash", { link = "Boolean" })
+    end,
     config = function()
       local diffview = require "diffview"
       local lazy = require "diffview.lazy"
