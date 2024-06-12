@@ -198,7 +198,11 @@ return {
           },
           {
             lsp_symbols_section,
-            -- cond = ds.lsp_symbols.has,
+            cond = function()
+              local buf = vim.api.nvim_get_current_buf()
+              local fname = vim.api.nvim_buf_get_name(buf)
+              return not fname:match "%[Scratch%]$"
+            end,
             padding = { left = 0 },
             color = "Winbar",
           },

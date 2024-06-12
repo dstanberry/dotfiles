@@ -43,6 +43,7 @@ M.ft = {
     "dap-repl",
     "dbee",
     "dbui",
+    "DiffviewFileHistory",
     "dbout",
     "lazy",
     "mason",
@@ -51,6 +52,7 @@ M.ft = {
     "NeogitPopup",
     "NeogitStatus",
     "noice",
+    "octo_panel",
     "TelescopePrompt",
     "toggleterm",
     "trouble",
@@ -60,7 +62,6 @@ M.ft = {
     "help",
 
     -- plugin filetypes
-    "DiffviewFileHistory",
     "DiffviewFilePanel",
     "DiffviewFiles",
   },
