@@ -1,5 +1,4 @@
 ---@diagnostic disable: missing-fields
-
 local c = require("ui.theme").colors
 local color = require "util.color"
 local groups = require "ui.theme.groups"
@@ -537,17 +536,17 @@ return {
     keys = {
       {
         "gD",
-        function() vim.cmd { cmd = "Trouble", args = { "lsp_definitions_float", "toggle" } } end,
+        function() vim.cmd { cmd = "Trouble", args = { "lsp_def", "toggle" } } end,
         desc = "trouble: lsp definitions",
       },
       {
         "gI",
-        function() vim.cmd { cmd = "Trouble", args = { "lsp_implementations", "toggle", "preview.type=float" } } end,
+        function() vim.cmd { cmd = "Trouble", args = { "lsp_impl", "toggle" } } end,
         desc = "trouble: lsp implementations",
       },
       {
         "gR",
-        function() vim.cmd { cmd = "Trouble", args = { "lsp_references", "toggle", "preview.type=float" } } end,
+        function() vim.cmd { cmd = "Trouble", args = { "lsp_ref", "toggle" } } end,
         desc = "trouble: lsp references",
       },
       {
@@ -557,7 +556,7 @@ return {
       },
       {
         "gT",
-        function() vim.cmd { cmd = "Trouble", args = { "lsp_type_definitions", "toggle", "preview.type=float" } } end,
+        function() vim.cmd { cmd = "Trouble", args = { "lsp_type_def", "toggle" } } end,
         desc = "trouble: lsp type definitions",
       },
       {
@@ -567,7 +566,7 @@ return {
       },
       {
         "gW",
-        function() vim.cmd { cmd = "Trouble", args = { "diagnostics_float", "toggle" } } end,
+        function() vim.cmd { cmd = "Trouble", args = { "lsp_diag", "toggle" } } end,
         desc = "trouble: workspace diagnostics",
       },
       {
@@ -608,36 +607,31 @@ return {
         callback = function() vim.cmd "Trouble qflist open" end,
       })
     end,
-    opts = {
-      icons = {
-        kinds = vim.tbl_extend(
-          "keep",
-          vim.tbl_map(function(kind) return ds.pad(kind, "right") end, icons.kind),
-          vim.tbl_map(function(kind) return ds.pad(kind, "right") end, icons.type)
-        ),
-      },
-      modes = {
-        lsp_definitions_float = {
-          mode = "lsp_definitions",
-          preview = {
-            type = "float",
-            relative = "editor",
-            position = { 0, -2 },
-            size = { width = 0.4, height = 0.3 },
-            zindex = 200,
-          },
+    opts = function()
+      local preview_opts = {
+        type = "float",
+        relative = "editor",
+        border = util.map(icons.border.ThinBlock, function(v) return { v, "FloatBorderSB" } end),
+        position = { 0.5, 0.5 },
+        size = { width = 0.6, height = 0.5 },
+        zindex = 200,
+      }
+      return {
+        icons = {
+          kinds = vim.tbl_extend(
+            "keep",
+            vim.tbl_map(function(kind) return ds.pad(kind, "right") end, icons.kind),
+            vim.tbl_map(function(kind) return ds.pad(kind, "right") end, icons.type)
+          ),
         },
-        diagnostics_float = {
-          mode = "diagnostics",
-          preview = {
-            type = "float",
-            relative = "editor",
-            position = { 0, -2 },
-            size = { width = 0.3, height = 0.3 },
-            zindex = 200,
-          },
+        modes = {
+          lsp_def = { mode = "lsp_definitions", preview = preview_opts },
+          lsp_diag = { mode = "diagnostics", preview = preview_opts },
+          lsp_impl = { mode = "lsp_implementations", preview = preview_opts },
+          lsp_ref = { mode = "lsp_references", preview = preview_opts },
+          lsp_type_def = { mode = "lsp_type_definitions", preview = preview_opts },
         },
-      },
-    },
+      }
+    end,
   },
 }
