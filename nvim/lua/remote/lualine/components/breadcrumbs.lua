@@ -38,8 +38,8 @@ local format_sections = function(path, fname, ext)
       if parts[1] and parts[1]:match "^octo:" then
         if parts[#parts - 1] == "pull" then
           icon = icons.git.PullRequest
-        else
-          icon = icons.debug.Bug
+        elseif parts[#parts - 1] == "issue" then
+          icon = icons.git.Issue
         end
       end
       -- NOTE: nvim-dap

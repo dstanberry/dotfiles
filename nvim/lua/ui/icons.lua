@@ -43,6 +43,7 @@ return {
     Commit = "",
     Compare = "",
     Development = "󰊢",
+    Issue = "",
     Merge = "",
     PullRequest = "",
     TextAdded = "",
