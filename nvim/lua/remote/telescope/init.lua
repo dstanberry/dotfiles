@@ -63,9 +63,27 @@ return {
 
       local function find_plugins()
         require("telescope.builtin").find_files {
-          cwd = string.format("%s/lazy", vim.fn.stdpath "data"),
+          cwd = require("lazy.core.config").options.root,
           layout_strategy = "vertical",
           prompt_title = "Remote Plugins",
+        }
+      end
+
+      local function find_plugin_configs()
+        local files = {}
+        for _, plugin in pairs(require("lazy.core.config").plugins) do
+          repeat
+            if plugin._.module then
+              local info = vim.loader.find(plugin._.module)[1]
+              if info then files[info.modpath] = info.modpath end
+            end
+            plugin = plugin._.super
+          until not plugin
+        end
+        require("telescope.builtin").live_grep {
+          default_text = "/",
+          search_dirs = vim.tbl_values(files),
+          prompt_title = "Remote Plugin Configurations",
         }
       end
 
@@ -122,6 +140,7 @@ return {
         { "<leader>ff", function() require("telescope.builtin").find_files() end, desc = "telescope: find files" },
         { "<leader>fg", function() require("telescope.builtin").live_grep() end, desc = "telescope: live grep" },
         { "<leader>fk", function() require("telescope.builtin").help_tags() end, desc = "telescope: help pages" },
+        { "<leader>fl", find_plugin_configs, desc = "telescope: find files (remote plugin configurations)" },
         { "<leader>fp", find_plugins, desc = "telescope: find files (neovim plugins)" },
         { "<leader>fr", oldfiles, desc = "telescope: find files (recently used)" },
         -- analagous to `<leader>` maps but with customizations
@@ -230,6 +249,8 @@ return {
               end,
             },
             n = {
+              ["<c-d>"] = actions.preview_scrolling_down,
+              ["<c-f>"] = actions.preview_scrolling_up,
               ["q"] = actions.close,
             },
           },
@@ -270,6 +291,7 @@ return {
             layout_strategy = "vertical",
             mappings = {
               i = { ["<c-f>"] = actions.to_fuzzy_refine },
+              n = { ["<c-f>"] = actions.to_fuzzy_refine },
             },
           },
           git_branches = {
@@ -278,9 +300,7 @@ return {
           git_bcommits = {
             layout_strategy = "vertical",
             mappings = {
-              i = {
-                ["<c-y>"] = copy_commit,
-              },
+              i = { ["<c-y>"] = copy_commit },
             },
             previewer = require("telescope.previewers").new_termopen_previewer {
               get_command = function(entry)
@@ -304,9 +324,7 @@ return {
           git_commits = {
             layout_strategy = "vertical",
             mappings = {
-              i = {
-                ["<c-y>"] = copy_commit,
-              },
+              i = { ["<c-y>"] = copy_commit },
             },
             previewer = require("telescope.previewers").new_termopen_previewer {
               get_command = function(entry)
@@ -373,6 +391,11 @@ return {
             layout_strategy = "vertical",
             mappings = {
               i = {
+                ["<c-f>"] = actions.to_fuzzy_refine,
+                ["<c-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
+                ["<c-k>"] = lga_actions.quote_prompt(),
+              },
+              n = {
                 ["<c-f>"] = actions.to_fuzzy_refine,
                 ["<c-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
                 ["<c-k>"] = lga_actions.quote_prompt(),
