@@ -295,13 +295,12 @@ _evalcache _npm_config
 # support custom sub-commands
 pip() {
   local PKG=$CONFIG_HOME/shared/packages/pip.txt
+  if is_darwin; then
+    PKG=$CONFIG_HOME/shared/packages/pip-macos.txt
+  fi
   if [ "$1" = "save" ]; then
     if hash pipdeptree 2>/dev/null; then
-      if [ is_gentoo ]; then
-        command pipdeptree --user --warn silence | grep -E '^\w+' > "$PKG"
-      else
-        command pipdeptree --warn silence | grep -E '^\w+' > "$PKG"
-      fi
+      command pipdeptree --user --warn silence | grep -E '^\w+' > "$PKG"
     else
       echo "unable to find pipdeptree. try running 'pip install pipdeptree'"
       return 1
@@ -311,11 +310,7 @@ pip() {
       echo "pip load is not supported for root user"
       exit 1
     fi
-    if [ is_gentoo ]; then
-      command pip install --user --requirement "$PKG" --upgrade
-    else
-      command pip install --requirement "$PKG" --upgrade
-    fi
+    command pip install --user --requirement "$PKG" --upgrade
   else
     command pip "$@"
   fi
