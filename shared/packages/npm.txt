@@ -1,4 +1,4 @@
-corepack@0.15.3
-ls_emmet@1.0.9
-neovim@4.10.1
-yarn@1.22.19
+corepack
+ls_emmet
+neovim
+yarn
