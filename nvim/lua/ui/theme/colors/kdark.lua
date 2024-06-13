@@ -56,6 +56,9 @@ local c = {
   magenta0 = "#90718a",
   magenta1 = "#b48ead",
   magenta2 = "#eab8e0",
+
+  overlay0 = "#6c7086",
+  overlay1 = "#7f849c",
 }
 
 c.black = color.darken(c.bg2, 50)
