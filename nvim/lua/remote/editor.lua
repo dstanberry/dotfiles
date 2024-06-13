@@ -332,6 +332,7 @@ return {
     end,
     keys = function()
       local keys = {
+        { "<leader>c", mode = { "n", "v" }, "", desc = "+copilot" },
         {
           "<leader>cc",
           mode = { "n", "v" },
