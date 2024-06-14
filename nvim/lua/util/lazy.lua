@@ -20,6 +20,7 @@ end
 
 local init = function()
   require("lazy").setup("remote", {
+    defaults = { lazy = true },
     root = vim.fs.joinpath(vim.fn.stdpath "data", "lazy"),
     lockfile = vim.fs.joinpath(vim.fn.stdpath "config", "lua", "remote", "lazy-lock.json"),
     ui = {
