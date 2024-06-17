@@ -485,7 +485,6 @@ return {
       -- LLM
       {
         "zbirenbaum/copilot-cmp",
-        url = "https://github.com/dstanberry/copilot-cmp",
         dependencies = {
           "zbirenbaum/copilot.lua",
           cmd = "Copilot",
