@@ -298,7 +298,7 @@ vim.keymap.set("v", "<c-w><c-x>", function()
   local selection = table.concat(lines)
   local ft = vim.bo.filetype
   if ft == "vim" then
-    local out = vim.api.nvim_exec(([[%s]]):format(selection), true)
+    local out = vim.api.nvim_exec2(([[%s]]):format(selection), true)
     vim.print(out)
   elseif ft == "lua" then
     eval_chunk(lines)
