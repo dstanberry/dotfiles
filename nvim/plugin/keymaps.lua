@@ -78,13 +78,14 @@ vim.keymap.set(
   { silent = false, desc = "substitute word under cursor with antonym" }
 )
 
--- -- switch to left window
+-- NOTE: handled by |smart-splits.nvim|
+-- switch to left window
 -- vim.keymap.set("n", "<c-h>", "<c-w><c-h>")
--- -- switch to bottom window
+-- switch to bottom window
 -- vim.keymap.set("n", "<c-j>", "<c-w><c-j>")
--- -- switch to top window
+-- switch to top window
 -- vim.keymap.set("n", "<c-k>", "<c-w><c-k>")
--- -- switch to right window
+-- switch to right window
 -- vim.keymap.set("n", "<c-l>", "<c-w><c-l>")
 
 -- decrease active split horizontal size
