@@ -14,7 +14,7 @@ return {
     keys = {
       {
         "ff",
-        function() require("conform").format { async = true, lsp_fallback = true } end,
+        function() require("conform").format { async = true, lsp_format = "fallback" } end,
         desc = "conform: format document",
       },
     },
@@ -28,7 +28,7 @@ return {
         end
         print "Disabled auto-format on save."
       end, {
-        desc = "Conform: Disable auto-format on save for this buffer",
+        desc = "conform: disable auto-format on save for this buffer",
         bang = true,
       })
 
@@ -37,7 +37,7 @@ return {
         vim.g.conform_formatting_disabled = false
         print "Enabled auto-format on save."
       end, {
-        desc = "Conform: Enable auto-format on save for this buffer",
+        desc = "conform: enable auto-format on save for this buffer",
       })
     end,
     opts = function()
@@ -84,11 +84,11 @@ return {
 
           vim.api.nvim_exec_autocmds("User", { pattern = "FormatPre" })
 
-          return { timeout_ms = 500, lsp_fallback = true }, on_format
+          return { timeout_ms = 500, lsp_format = "fallback" }, on_format
         end,
         format_after_save = function(buf)
           if not vim.g.conform_slow_formatters[vim.bo[buf].filetype] then return end
-          return { lsp_fallback = true }
+          return { lsp_format = "fallback" }
         end,
       }
     end,
