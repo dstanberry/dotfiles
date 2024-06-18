@@ -76,5 +76,7 @@ keybinding:
   universal:
     createRebaseOptionsMenu: "X"
     remove: "x"
+    scrollDownMain: "<c-d>"
+    scrollUpMain: "<c-f>"
   files:
     toggleTreeView: "-"
