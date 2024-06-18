@@ -547,6 +547,7 @@ return {
           -- ["<c-d>"] = cmp.mapping.scroll_docs(4),
           -- ["<c-f>"] = cmp.mapping.scroll_docs(-4),
           ["<c-space>"] = cmp.mapping.complete(),
+          ["<c-@>"] = cmp.mapping.complete(),
           ["<c-c>"] = cmp.mapping.close(),
           ["<cr>"] = cmp.mapping.confirm { select = true },
         },
