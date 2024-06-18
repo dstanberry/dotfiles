@@ -171,6 +171,43 @@ M.setup = function()
   lazy_file()
   init()
   M.lazy_notify()
+  local browse = function()
+    local lines = require("lazy.manage.process").exec { "git", "remote", "-v" }
+    local remotes = {}
+    for _, line in ipairs(lines) do
+      local name, url = line:match "(%S+)%s+(%S+)%s+%(fetch%)"
+      if name and url then
+        if
+          (
+            vim.g.config_github_enterprise_hostname
+            and url:find(("git@%s"):format(vim.g.config_github_enterprise_hostname))
+          )
+          or url:find "git@github.com"
+          or url:find "git@bitbucket.org"
+          or url:find "git@gitlab.com"
+        then
+          url = url:gsub("git@(%S+):", "https://%1/"):gsub(".git$", "")
+        end
+        table.insert(remotes, { name = name, url = url })
+      end
+    end
+    local open = function(remote)
+      if remote then
+        print(("Opening [%s](%s)"):format(remote.name, remote.url))
+        vim.ui.open(remote.url)
+      end
+    end
+    if #remotes == 0 then
+      return print "No git remotes found"
+    elseif #remotes == 1 then
+      return open(remotes[1])
+    end
+    vim.ui.select(remotes, {
+      prompt = "Select remote to browse",
+      format_item = function(item) return item.name .. (" "):rep(8 - #item.name) .. " 🔗 " .. item.url end,
+    }, open)
+  end
+  vim.keymap.set("n", "<localleader>gb", browse, { noremap = true, silent = true, desc = "git: browse remote" })
 end
 
 M.globals = {
