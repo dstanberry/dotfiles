@@ -490,7 +490,7 @@ return {
           vim.wo.sidescrolloff = 0
           vim.keymap.set(
             { "i", "n", "t" },
-            "<a-w><a-t>",
+            "<a-w><a-f>",
             function() float:toggle() end,
             { buffer = term.bufnr, desc = "toggleterm: toggle float" }
           )
@@ -501,7 +501,7 @@ return {
         on_open = function(term)
           vim.keymap.set(
             { "i", "n", "t" },
-            "<a-w><a-y>",
+            "<a-w><a-t>",
             function() tab:toggle() end,
             { buffer = term.bufnr, desc = "toggleterm: toggle tab" }
           )
@@ -516,16 +516,16 @@ return {
           vim.wo.sidescrolloff = 0
           vim.keymap.set(
             { "i", "n", "t" },
-            "<a-w><a-l>",
+            "<a-w><a-g>",
             function() lazygit:toggle() end,
-            { buffer = term.bufnr, desc = "toggleterm: toggle float" }
+            { buffer = term.bufnr, desc = "toggleterm: toggle lazygit" }
           )
         end,
       }
       return {
-        { "<a-w><a-t>", function() float:toggle() end, desc = "toggleterm: toggle float" },
-        { "<a-w><a-y>", function() tab:toggle() end, desc = "toggleterm: toggle tab" },
-        { "<a-w><a-l>", function() lazygit:toggle() end, desc = "toggleterm: toggle lazygit" },
+        { "<a-w><a-f>", function() float:toggle() end, desc = "toggleterm: toggle float" },
+        { "<a-w><a-t>", function() tab:toggle() end, desc = "toggleterm: toggle tab" },
+        { "<a-w><a-g>", function() lazygit:toggle() end, desc = "toggleterm: toggle lazygit" },
       }
     end,
   },
