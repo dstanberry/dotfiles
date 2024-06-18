@@ -522,10 +522,27 @@ return {
           )
         end,
       }
+      local lazygit_with_args = function(git_args)
+        terminal()
+          :new({
+            cmd = git_args and ("lazygit %s"):format(table.concat(git_args, " ")) or "lazygit",
+            dir = "git_dir",
+            hidden = true,
+            direction = "tab",
+            on_open = function() vim.wo.sidescrolloff = 0 end,
+          })
+          :open()
+      end
       return {
         { "<a-w><a-f>", function() float:toggle() end, desc = "toggleterm: toggle float" },
         { "<a-w><a-t>", function() tab:toggle() end, desc = "toggleterm: toggle tab" },
         { "<a-w><a-g>", function() lazygit:toggle() end, desc = "toggleterm: toggle lazygit" },
+        -- lazygit extras
+        {
+          "<leader>gl",
+          function() lazygit_with_args { "-f", vim.trim(vim.api.nvim_buf_get_name(0)) } end,
+          desc = "git: show log for current file",
+        },
       }
     end,
   },
