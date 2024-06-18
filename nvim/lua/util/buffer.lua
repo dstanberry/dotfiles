@@ -332,14 +332,7 @@ function M.statuscolumn()
   end
   local is_num = vim.wo[win].number
   local is_relnum = vim.wo[win].relativenumber
-  if (is_num or is_relnum) and vim.v.virtnum == 0 then
-    if vim.v.relnum == 0 then
-      components[2] = is_num and "%l" or "%r" -- the current line
-    else
-      components[2] = is_relnum and "%r" or "%l" -- other lines
-    end
-    components[2] = "%=" .. components[2] .. " " -- right align
-  end
+  if (is_num or is_relnum) and vim.v.virtnum == 0 then components[2] = "%=%l " end
   if vim.v.virtnum ~= 0 then components[2] = "%= " end
   return table.concat(components, "")
 end
