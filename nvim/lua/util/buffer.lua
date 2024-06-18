@@ -34,7 +34,7 @@ function M.delete_buffer(buf)
     vim.api.nvim_win_call(win, function()
       if not vim.api.nvim_win_is_valid(win) or vim.api.nvim_win_get_buf(win) ~= buf then return end
       local alt = vim.fn.bufnr "#"
-      if alt ~= buf and vim.bo[alt].buflisted then
+      if alt >= 0 and alt ~= buf and vim.bo[alt].buflisted then
         vim.api.nvim_win_set_buf(win, alt)
         return
       end
