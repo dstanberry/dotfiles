@@ -581,12 +581,12 @@ return {
       },
       {
         "gw",
-        function() vim.cmd { cmd = "Trouble", args = { "diagnostics", "toggle", "filter.buf=0" } } end,
+        function() vim.cmd { cmd = "Trouble", args = { "lsp_diag", "toggle" } } end,
         desc = "trouble: document diagnostics",
       },
       {
         "gW",
-        function() vim.cmd { cmd = "Trouble", args = { "lsp_diag", "toggle" } } end,
+        function() vim.cmd { cmd = "Trouble", args = { "w_diag", "toggle" } } end,
         desc = "trouble: workspace diagnostics",
       },
       {
@@ -614,6 +614,7 @@ return {
         "<c-down>",
         function()
           if require("trouble").is_open() then
+            ---@diagnostic disable-next-line: missing-fields
             require("trouble").next { skip_groups = true, jump = true }
           else
             pcall(vim.cmd.cnext)
@@ -650,6 +651,18 @@ return {
           lsp_impl = { mode = "lsp_implementations", preview = preview_opts },
           lsp_ref = { mode = "lsp_references", preview = preview_opts },
           lsp_type_def = { mode = "lsp_type_definitions", preview = preview_opts },
+          w_diag = {
+            mode = "diagnostics",
+            filter = {
+              any = {
+                buf = 0,
+                {
+                  severity = vim.diagnostic.severity.WARN,
+                  function(item) return item.filename:find((vim.loop or vim.uv).cwd(), 1, true) end,
+                },
+              },
+            },
+          },
         },
       }
     end,
