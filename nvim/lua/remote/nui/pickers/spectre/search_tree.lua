@@ -1,8 +1,5 @@
 local n = require "nui-components"
 
-local util = require "util"
-local icons = require "ui.icons"
-
 local function replace_handler(tree, node)
   return {
     on_done = function(result)
@@ -64,7 +61,8 @@ local function prepare_node(node, line, component)
     local icon, icon_highlight = devicons.get_icon(node.text, string.match(node.text, "%a+$"), { default = true })
 
     line:append(
-      node:is_expanded() and ds.pad(icons.misc.FoldOpened, "right") or ds.pad(icons.misc.FoldClosed, "right"),
+      node:is_expanded() and ds.pad(vim.g.ds_icons.misc.FoldOpened, "right")
+        or ds.pad(vim.g.ds_icons.misc.FoldClosed, "right"),
       component:hl_group "SpectreIcon"
     )
     line:append(icon .. " ", icon_highlight)
@@ -85,7 +83,7 @@ local function prepare_node(node, line, component)
   if #node.diff.search > 0 then
     local code_text = vim.trim(node.diff.text)
 
-    util.foreach(node.diff.search, function(value, index)
+    ds.foreach(node.diff.search, function(value, index)
       local start = value[1] - empty_spaces
       local end_ = value[2] - empty_spaces
 

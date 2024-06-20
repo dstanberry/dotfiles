@@ -1,5 +1,3 @@
-local groups = require "ui.theme.groups"
-
 ---@class ColorPalette
 ---@field aqua0 string
 ---@field aqua1 string
@@ -56,18 +54,16 @@ local groups = require "ui.theme.groups"
 
 local M = {}
 
-M.colors = {}
-
 M.themes = {
   ["catppuccin-frappe"] = require "ui.theme.colors.catppuccin.frappe",
   ["catppuccin-mocha"] = require "ui.theme.colors.catppuccin.mocha",
-  kdark = require "ui.theme.colors.kdark",
+  ["kdark"] = require "ui.theme.colors.kdark",
 }
 
 M.setup = function(t)
   if type(t) == "string" then t = M.themes[t] end
-  M.colors = vim.F.if_nil(t, M.themes.kdark)
-  groups.apply(M.colors)
+  vim.g.ds_colors = vim.F.if_nil(t, M.themes.kdark)
+  ds.hl.apply(vim.g.ds_colors)
 end
 
 return M

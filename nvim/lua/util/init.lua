@@ -1,4 +1,19 @@
+---@class util
+---@field buffer util.buffer
+---@field callback util.callback
+---@field color util.color
+---@field fs util.fs
+---@field hl util.hl
+---@field lazy util.lazy
+---@field terminal util.terminal
 local M = {}
+
+setmetatable(M, {
+  __index = function(t, k)
+    t[k] = require(string.format("util.%s", k))
+    return t[k]
+  end,
+})
 
 local tbl_keys_numeric = function(list)
   for k, _ in pairs(list) do
@@ -10,7 +25,7 @@ end
 ---Check if any of the key-value pairs in a given table satisfies the provided condition
 ---and returns true if the condition is satisfied at least once. Returns false otherwise
 ---@generic T: table
----@param list T[]
+---@param list T[] | table
 ---@param callback fun(value: any, key: string | number)
 function M.any(list, callback)
   for k, v in pairs(list) do
@@ -76,6 +91,21 @@ function M.foreach(list, callback)
   end
 end
 
+---Prints the location and line number of the current stack level
+function M.get_location()
+  local me = debug.getinfo(1, "S")
+  local level = 2
+  local info = debug.getinfo(level, "S")
+  while info and info.source == me.source do
+    level = level + 1
+    info = debug.getinfo(level, "S")
+  end
+  info = info or me
+  local source = info.source:sub(2)
+  source = vim.uv.fs_realpath(source) or source
+  return ("%s:%s"):format(source, info.linedefined)
+end
+
 ---Prints lua formatted representation of the given string `filename` as a lua module
 ---@param filename string
 ---@return string modname
@@ -92,12 +122,16 @@ function M.get_module_name(filename)
   return modname or ""
 end
 
+---Wrapper for Vim's `|has|`feature detection function
+---@param feature string
+---@return boolean
+function M.has(feature) return vim.fn.has(feature) > 0 end
+
 ---Creates a new table populated with the results of calling a provided function
 ---on every key-value pair in the calling table when the key is a string
----@generic T : table, S
----@param list T[]
+---@generic T: table, S
+---@param list T[] | table
 ---@param callback fun(acc: S, item: T, key: string): S
----@param acc S?
 ---@return S
 function M.kmap(list, callback)
   return M.kreduce(list, function(acc, v, k)
@@ -108,8 +142,8 @@ end
 
 ---Converts a list of items into a value by iterating over each pair and when the key is a string
 ---transform the pair with a callback function
----@generic T : table, S
----@param list T[]
+---@generic T: table, S
+---@param list T[] | table
 ---@param callback fun(acc: S, item: T, key: string): S
 ---@param acc S?
 ---@return S
@@ -122,9 +156,9 @@ end
 
 ---Creates a new table populated with the results of calling a provided function
 ---on every key-value pair in the calling table
----@generic T : table
----@param list T[]
----@param callback fun(item: T, key: string | number, list: T[]): T
+---@generic T: table
+---@param list T[] | table
+---@param callback fun(item: T, key: string | number, list): T
 ---@return T[] #A new table with each key-value pair being the result of the callback function
 function M.map(list, callback)
   return M.reduce(list, function(acc, v, k)
@@ -133,12 +167,88 @@ function M.map(list, callback)
   end, {})
 end
 
+---Adds whitespace to the start, end or both start and end of a string
+---@param s string
+---@param direction string
+---@param amount? number #Repeat pad `n` times to the left/right of string or both sides
+---@param ramount? number #Repeat pad `n` times to the right of string
+---@return string result
+function M.pad(s, direction, amount, ramount)
+  amount = vim.F.if_nil(amount, 1)
+  ramount = vim.F.if_nil(ramount, amount)
+  local left = (direction == "left" or direction == "both") and string.rep(" ", amount) or ""
+  local right = (direction == "right" or direction == "both") and string.rep(" ", ramount) or ""
+  return string.format("%s%s%s", left, s, right)
+end
+
+---@param value any
+---@param opts? { location:string }
+local pretty_print = function(value, opts)
+  opts = opts or {}
+  opts.location = opts.location or M.get_location()
+  if vim.in_fast_event() then return vim.schedule(function() M.print(value, opts) end) end
+  local msg = vim.inspect(value)
+  ---@diagnostic disable-next-line: undefined-field
+  local title = vim.F.if_nil(opts.title, "Debug")
+  vim.notify(msg, vim.log.levels.INFO, {
+    title = title,
+    on_open = function(win)
+      vim.wo[win].conceallevel = 3
+      vim.wo[win].concealcursor = ""
+      vim.wo[win].spell = false
+      local buf = vim.api.nvim_win_get_buf(win)
+      if not pcall(vim.treesitter.start, buf, "lua") then vim.bo[buf].filetype = "lua" end
+    end,
+  })
+end
+
+---Displays a notification containing a human-readable representation of the object(s) provided
+---@param title string
+---@param ...? any
+function M.pprint(title, ...)
+  local get_value = function(...)
+    local value = { ... }
+    return vim.islist(value) and vim.tbl_count(value) <= 1 and value[1] or value
+  end
+  pretty_print(get_value(...), { title = title })
+end
+
+---Displays a notification containing a human-readable representation of the object(s) provided
+---@param ...? any
+function M.print(...)
+  local get_value = function(...)
+    local value = { ... }
+    return vim.islist(value) and vim.tbl_count(value) <= 1 and value[1] or value
+  end
+  pretty_print(get_value(...))
+end
+
+vim.print = M.print
+
+---Perform a benchmark of a given command
+---@param cmd string|function
+function M.profile(cmd, times)
+  times = times or 100
+  local args = {}
+  if type(cmd) == "string" then
+    args = { cmd }
+    cmd = vim.cmd
+  end
+  local start = vim.uv.hrtime()
+  for _ = 1, times, 1 do
+    local ok = pcall(cmd, unpack(args))
+    if not ok then error("Command failed: " .. tostring(ok) .. " " .. vim.inspect { cmd = cmd, args = args }) end
+  end
+  ---@diagnostic disable-next-line: discard-returns
+  print(((vim.uv.hrtime() - start) / 1000000 / times) .. "ms")
+end
+
 ---Converts a list of items into a value by iterating over each pair and transforming them
 ---with a callback function.
 ---If the keys in the table are all numeric, it will perform an ordered iteration over each pair.
 ---Otherwise the order will not be guaranteed
----@generic T : table, S
----@param list T[]
+---@generic T: table, S
+---@param list T[] | table
 ---@param callback fun(acc: S, item: T, key: string | number): S
 ---@param acc S?
 ---@return S
@@ -179,16 +289,13 @@ function M.replace(str, pattern, repl, n)
   return string.gsub(str, pattern, repl, n)
 end
 
-return setmetatable({}, {
-  __index = function(t, k)
-    if M[k] then
-      return M[k]
-    else
-      local ok, val = pcall(require, string.format("util.%s", k))
-      if ok then
-        rawset(t, k, val)
-        return val
-      end
-    end
-  end,
-})
+---Provides a machine-local way of disabling various custom configuration options/settings
+---@param setting string
+---@return boolean enabled
+function M.setting_enabled(setting)
+  local var = "config_" .. setting
+  if vim.g[var] == nil then return true end
+  return vim.g[var] == true
+end
+
+return M

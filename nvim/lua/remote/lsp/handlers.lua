@@ -1,6 +1,3 @@
-local icons = require "ui.icons"
-local util = require "util"
-
 local M = {}
 
 ---@class LspCommand: lsp.ExecuteCommandParams
@@ -13,7 +10,7 @@ function M.execute_command(opts)
     command = opts.command,
     arguments = opts.arguments,
   }
-  if not ds.is_installed "trouble.nvim" and opts.open then
+  if not ds.lazy.is_installed "trouble.nvim" and opts.open then
     require("trouble").open {
       mode = "lsp_command",
       params = params,
@@ -183,7 +180,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.renameProvider then
-    if ds.is_loaded "inc-rename.nvim" then
+    if ds.lazy.is_loaded "inc-rename.nvim" then
       local rename_symbol = function()
         local inc_rename = require "inc_rename"
         return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand "<cword>"
@@ -239,13 +236,13 @@ M.on_attach = function(client, bufnr)
   vim.keymap.set(
     "n",
     "gn",
-    function() vim.diagnostic.jump { count = 1 } end,
+    function() vim.diagnostic.jump { count = 1, float = true } end,
     { buffer = bufnr, desc = "lsp: next diagnostic" }
   )
   vim.keymap.set(
     "n",
     "gp",
-    function() vim.diagnostic.jump { count = -1 } end,
+    function() vim.diagnostic.jump { count = -1, float = true } end,
     { buffer = bufnr, desc = "lsp: previous diagnostic" }
   )
 
@@ -291,16 +288,18 @@ M.setup = function()
     severity_sort = true,
     signs = {
       text = {
-        [vim.diagnostic.severity.ERROR] = icons.diagnostics.Error,
-        [vim.diagnostic.severity.WARN] = icons.diagnostics.Warn,
-        [vim.diagnostic.severity.HINT] = icons.diagnostics.Hint,
-        [vim.diagnostic.severity.INFO] = icons.diagnostics.Info,
+        [vim.diagnostic.severity.ERROR] = vim.g.ds_icons.diagnostics.Error,
+        [vim.diagnostic.severity.WARN] = vim.g.ds_icons.diagnostics.Warn,
+        [vim.diagnostic.severity.HINT] = vim.g.ds_icons.diagnostics.Hint,
+        [vim.diagnostic.severity.INFO] = vim.g.ds_icons.diagnostics.Info,
       },
     },
     update_in_insert = false,
     virtual_text = false,
+    --- @class vim.diagnostic.Opts.Float
+    ---@field border? string | table[]
     float = {
-      border = util.map(icons.border.ThinBlock, function(v) return { v, "FloatBorderSB" } end),
+      border = ds.map(vim.g.ds_icons.border.ThinBlock, function(v) return { v, "FloatBorderSB" } end),
       focusable = false,
       show_header = true,
       source = true,

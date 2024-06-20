@@ -5,15 +5,13 @@ local spectre_utils = require "spectre.utils"
 
 local Tree = require "nui.tree"
 
-local util = require "util"
-
 local M = {}
 
 function M.process(options)
   options = options or {}
 
-  return util.kmap(spectre_state.groups, function(group, filename)
-    local children = util.map(group, function(entry)
+  return ds.kmap(spectre_state.groups, function(group, filename)
+    local children = ds.map(group, function(entry)
       local id = tostring(math.random())
 
       local diff = spectre_utils.get_hl_line_text({

@@ -1,20 +1,23 @@
 local n = require "nui-components"
-
-local c = require("ui.theme").colors
-local groups = require "ui.theme.groups"
-local icons = require "ui.icons"
-local util = require "util"
-
 local engine = require "remote.nui.pickers.spectre.engine"
 local search_tree = require "remote.nui.pickers.spectre.search_tree"
 
-groups.new("NuiComponentsTreeSpectreCodeLine", { fg = c.gray2 })
-groups.new("NuiComponentsTreeSpectreIcon", { bold = true })
-groups.new("NuiComponentsTreeSpectreFileName", { bold = true })
-groups.new("NuiComponentsTreeSpectreSearchOldValue", { fg = c.bg0, bg = c.orange1, strikethrough = true })
-groups.new("NuiComponentsTreeSpectreSearchValue", { fg = c.bg0, bg = c.rose0, bold = true })
-groups.new("NuiComponentsTreeSpectreSearchNewValue", { fg = c.bg0, bg = c.green1, bold = true })
-groups.new("NuiComponentsTreeSpectreReplaceSuccess", { fg = c.bg0, bg = c.green0, bold = true })
+ds.hl.new("NuiComponentsTreeSpectreCodeLine", { fg = vim.g.ds_colors.gray2 })
+ds.hl.new("NuiComponentsTreeSpectreIcon", { bold = true })
+ds.hl.new("NuiComponentsTreeSpectreFileName", { bold = true })
+ds.hl.new(
+  "NuiComponentsTreeSpectreSearchOldValue",
+  { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.orange1, strikethrough = true }
+)
+ds.hl.new("NuiComponentsTreeSpectreSearchValue", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.rose0, bold = true })
+ds.hl.new(
+  "NuiComponentsTreeSpectreSearchNewValue",
+  { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.green1, bold = true }
+)
+ds.hl.new(
+  "NuiComponentsTreeSpectreReplaceSuccess",
+  { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.green0, bold = true }
+)
 
 local M = {}
 
@@ -47,7 +50,7 @@ function M.toggle()
   }
 
   local subscription = signal:observe(function(prev, curr)
-    local diff = util.any(
+    local diff = ds.any(
       { "search_query", "is_case_insensitive_checked", "search_paths" },
       function(key) return not vim.deep_equal(prev[key], curr[key]) end
     )
@@ -88,8 +91,8 @@ function M.toggle()
 
   local body = n.rows(n.columns(
     n.checkbox {
-      default_sign = icons.misc.RightArrow,
-      checked_sign = icons.misc.DownArrow,
+      default_sign = vim.g.ds_icons.misc.RightArrow,
+      checked_sign = vim.g.ds_icons.misc.DownArrow,
       padding = {
         top = 1,
         left = 1,
@@ -120,7 +123,7 @@ function M.toggle()
           flex = 1,
           max_lines = 1,
           border_label = "Search",
-          on_change = util.debounce(function(value) signal.search_query = value end, 400),
+          on_change = ds.debounce(function(value) signal.search_query = value end, 400),
           window = {
             highlight = {
               CursorLine = "NuiCursorLine",
@@ -152,7 +155,7 @@ function M.toggle()
         max_lines = 1,
         id = "replace_query",
         border_label = "Replace",
-        on_change = util.debounce(function(value) signal.replace_query = value end, 400),
+        on_change = ds.debounce(function(value) signal.replace_query = value end, 400),
         hidden = signal.is_replace_field_visible:map(function(value) return not value end),
         window = {
           highlight = {
@@ -168,10 +171,10 @@ function M.toggle()
         max_lines = 1,
         border_label = "Files to include",
         value = signal.search_paths:map(function(paths) return table.concat(paths, ",") end),
-        on_change = util.debounce(function(value)
+        on_change = ds.debounce(function(value)
           signal.search_paths = vim.tbl_filter(
             function(path) return path ~= "" end,
-            util.map(vim.split(value, ","), vim.trim)
+            ds.map(vim.split(value, ","), vim.trim)
           )
         end, 400),
         window = {

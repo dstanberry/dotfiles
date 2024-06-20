@@ -1,9 +1,3 @@
----@diagnostic disable: undefined-field
-local c = require("ui.theme").colors
-local color = require "util.color"
-local icons = require "ui.icons"
-local util = require "util"
-
 return {
   { "gennaro-tedesco/nvim-jqx", ft = "json" },
   {
@@ -41,7 +35,7 @@ return {
       })
     end,
     opts = function()
-      local prettier_conf = ("%s/.prettierrc.json"):format(require("util").buffer.get_root())
+      local prettier_conf = ("%s/.prettierrc.json"):format(ds.buffer.get_root())
 
       return {
         formatters_by_ft = {
@@ -155,9 +149,9 @@ return {
         check_outdated_packages_on_open = true,
         border = "none",
         icons = {
-          package_installed = icons.misc.CheckFilled,
-          package_pending = icons.misc.RightArrowCircled,
-          package_uninstalled = icons.misc.Circle,
+          package_installed = vim.g.ds_icons.misc.CheckFilled,
+          package_pending = vim.g.ds_icons.misc.RightArrowCircled,
+          package_uninstalled = vim.g.ds_icons.misc.Circle,
         },
         keymaps = {
           toggle_package_expand = "<cr>",
@@ -233,7 +227,7 @@ return {
 
       vim.api.nvim_create_autocmd(opts.events, {
         group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
-        callback = util.debounce(M.lint, 100),
+        callback = ds.debounce(M.lint, 100),
       })
     end,
   },
@@ -244,7 +238,7 @@ return {
       {
         "<leader>sc",
         function()
-          local _, range = util.buffer.get_visual_selection()
+          local _, range = ds.buffer.get_visual_selection()
           local left = range[1][1] or 1
           local right = range[2][1] or 1
           vim.cmd { cmd = "Silicon", range = { left + 1, right + 1 } }
@@ -258,7 +252,7 @@ return {
       debug = false,
       command = "silicon",
       font = "CartographCF Nerd Font=30",
-      background = color.blend(c.purple1, c.bg2, 0.44),
+      background = ds.color.blend(vim.g.ds_colors.purple1, vim.g.ds_colors.bg2, 0.44),
       theme = "kdark",
       line_offset = function(args) return args.line1 end,
       window_title = function() return vim.fs.basename(vim.api.nvim_buf_get_name(0)) end,
@@ -349,7 +343,7 @@ return {
       })
     end,
     config = function()
-      ds.on_load("nvim-cmp", function()
+      ds.lazy.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
           group = vim.api.nvim_create_augroup("db-completion", { clear = true }),
           pattern = "sql",
@@ -383,7 +377,7 @@ return {
           require("dbee.sources").FileSource:new(vim.fs.joinpath(vim.fn.stdpath "data", "db", "connections.json")),
         },
       }
-      ds.on_load("nvim-cmp", function()
+      ds.lazy.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
           group = vim.api.nvim_create_augroup("db-completion", { clear = true }),
           pattern = "sql",

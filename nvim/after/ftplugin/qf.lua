@@ -1,5 +1,3 @@
-local util = require "util"
-
 vim.opt_local.buflisted = false
 vim.opt_local.colorcolumn = ""
 vim.opt_local.number = false
@@ -13,31 +11,11 @@ vim.keymap.set("n", "<cr>", function()
   vim.cmd.cc { count = linenr }
 end, { buffer = 0, desc = "quickfix: goto item" })
 
-vim.keymap.set(
-  "n",
-  "dd",
-  util.buffer.quickfix_delete,
-  { buffer = 0, desc = "quickfix: delete item" }
-)
-vim.keymap.set(
-  "v",
-  "d",
-  util.buffer.quickfix_delete,
-  { buffer = 0, desc = "quickfix: delete item" }
-)
+vim.keymap.set("n", "dd", ds.buffer.quickfix_delete, { buffer = 0, desc = "quickfix: delete item" })
+vim.keymap.set("v", "d", ds.buffer.quickfix_delete, { buffer = 0, desc = "quickfix: delete item" })
 
-vim.keymap.set(
-  "n",
-  "H",
-  function() pcall(vim.cmd.colder) end,
-  { buffer = 0, desc = "quickfix: goto older item" }
-)
-vim.keymap.set(
-  "n",
-  "L",
-  function() pcall(vim.cmd.cnewer) end,
-  { buffer = 0, desc = "quickfix: goto newer item" }
-)
+vim.keymap.set("n", "H", function() pcall(vim.cmd.colder) end, { buffer = 0, desc = "quickfix: goto older item" })
+vim.keymap.set("n", "L", function() pcall(vim.cmd.cnewer) end, { buffer = 0, desc = "quickfix: goto newer item" })
 
 local adjust_height = function(min_height, max_height)
   local line_end = vim.fn.line "$" + 1

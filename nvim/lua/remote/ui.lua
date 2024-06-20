@@ -1,10 +1,3 @@
-local c = require("ui.theme").colors
-local color = require "util.color"
-local groups = require "ui.theme.groups"
-local excludes = require "ui.excludes"
-local icons = require "ui.icons"
-local util = require "util"
-
 return {
   {
     "uga-rosa/ccc.nvim",
@@ -48,9 +41,9 @@ return {
       { "<localleader>gH", [[:'<'>DiffviewFileHistory<cr>]], mode = "v", desc = "diffview: file history" },
     },
     init = function()
-      groups.new("DiffviewFilePanelTitle", { link = "@markup.environment" })
-      groups.new("DiffviewFilePanelCounter", { link = "Normal" })
-      groups.new("DiffviewHash", { link = "Boolean" })
+      ds.hl.new("DiffviewFilePanelTitle", { link = "@markup.environment" })
+      ds.hl.new("DiffviewFilePanelCounter", { link = "Normal" })
+      ds.hl.new("DiffviewHash", { link = "Boolean" })
     end,
     config = function()
       local diffview = require "diffview"
@@ -66,12 +59,12 @@ return {
         use_icons = true,
         enhanced_diff_hl = true,
         icons = {
-          folder_closed = ds.pad(icons.documents.FolderOutlineClosed, "right"),
-          folder_open = ds.pad(icons.documents.FolderOutlineClosed, "right"),
+          folder_closed = ds.pad(vim.g.ds_icons.documents.FolderOutlineClosed, "right"),
+          folder_open = ds.pad(vim.g.ds_icons.documents.FolderOutlineClosed, "right"),
         },
         signs = {
-          fold_closed = icons.misc.FoldClosed,
-          fold_open = icons.misc.FoldOpened,
+          fold_closed = vim.g.ds_icons.misc.FoldClosed,
+          fold_open = vim.g.ds_icons.misc.FoldOpened,
         },
         view = {
           default = { layout = "diff2_horizontal" },
@@ -211,12 +204,12 @@ return {
     opts = {
       indent = {
         -- char = "",
-        char = icons.misc.VerticalBarThin,
-        -- tab_char = icons.misc.VerticalBarThin,
+        char = vim.g.ds_icons.misc.VerticalBarThin,
+        -- tab_char =vim.g.ds_icons.misc.VerticalBarThin,
       },
       scope = {
         enabled = true,
-        char = icons.misc.VerticalBar,
+        char = vim.g.ds_icons.misc.VerticalBar,
         highlight = {
           "TSRainbow1",
           "TSRainbow2",
@@ -230,9 +223,9 @@ return {
       exclude = {
         filetypes = vim.tbl_deep_extend(
           "keep",
-          excludes.ft.stl_disabled,
-          excludes.ft.wb_disabled,
-          excludes.ft.wb_empty,
+          vim.g.ds_excludes.ft.stl_disabled,
+          vim.g.ds_excludes.ft.wb_disabled,
+          vim.g.ds_excludes.ft.wb_empty,
           { "checkhealth", "diff", "git" },
           { "log", "markdown", "txt" }
         ),
@@ -271,10 +264,10 @@ return {
       },
     },
     init = function()
-      groups.new("NoiceFormatProgressTodo", { bg = color.blend(c.blue1, c.grayX, 0.20) })
-      groups.new("NoiceFormatProgressDone", { bg = c.blue0 })
-      groups.new("NoiceFormatEvent", { link = "Comment" })
-      groups.new("NoiceFormatKind", { link = "Comment" })
+      ds.hl.new("NoiceFormatProgressTodo", { bg = ds.color.blend(vim.g.ds_colors.blue1, vim.g.ds_colors.grayX, 0.20) })
+      ds.hl.new("NoiceFormatProgressDone", { bg = vim.g.ds_colors.blue0 })
+      ds.hl.new("NoiceFormatEvent", { link = "Comment" })
+      ds.hl.new("NoiceFormatKind", { link = "Comment" })
     end,
     opts = {
       cmdline = {
@@ -289,7 +282,7 @@ return {
           IncRename = {
             title = "",
             pattern = "^:%s*IncRename%s+",
-            icon = icons.misc.Pencil,
+            icon = vim.g.ds_icons.misc.Pencil,
             conceal = true,
             opts = {
               relative = "cursor",
@@ -299,7 +292,7 @@ return {
           },
           substitute = {
             pattern = "^:%%?s/",
-            icon = icons.misc.ArrowSwap,
+            icon = vim.g.ds_icons.misc.ArrowSwap,
             ft = "regex",
             kind = "search",
             title = "",
@@ -310,7 +303,7 @@ return {
         documentation = {
           enabled = true,
           opts = {
-            border = { style = icons.border.ThinBlock },
+            border = { style = vim.g.ds_icons.border.ThinBlock },
             position = { row = 2 },
             win_options = { winhighlight = { FloatBorder = "FloatBorderSB" } },
           },
@@ -450,37 +443,37 @@ return {
       max_width = function() return math.floor(vim.o.columns * 0.75) end,
     },
     init = function()
-      groups.new("NotifyTRACEBody", { link = "NormalFloat" })
-      groups.new("NotifyTRACEBorder", { link = "FloatBorder" })
-      groups.new("NotifyTRACEIcon", { link = "@markup" })
-      groups.new("NotifyTRACETitle", { link = "@markup" })
+      ds.hl.new("NotifyTRACEBody", { link = "NormalFloat" })
+      ds.hl.new("NotifyTRACEBorder", { link = "FloatBorder" })
+      ds.hl.new("NotifyTRACEIcon", { link = "@markup" })
+      ds.hl.new("NotifyTRACETitle", { link = "@markup" })
 
-      groups.new("NotifyDEBUGBody", { link = "NormalFloat" })
-      groups.new("NotifyDEBUGBorder", { link = "FloatBorder" })
-      groups.new("NotifyDEBUGIcon", { link = "Debug" })
-      groups.new("NotifyDEBUGTitle", { link = "Debug" })
+      ds.hl.new("NotifyDEBUGBody", { link = "NormalFloat" })
+      ds.hl.new("NotifyDEBUGBorder", { link = "FloatBorder" })
+      ds.hl.new("NotifyDEBUGIcon", { link = "Debug" })
+      ds.hl.new("NotifyDEBUGTitle", { link = "Debug" })
 
-      groups.new("NotifyINFOBody", { link = "NormalFloat" })
-      groups.new("NotifyINFOBorder", { link = "FloatBorder" })
-      groups.new("NotifyINFOIcon", { link = "String" })
-      groups.new("NotifyINFOTitle", { link = "String" })
+      ds.hl.new("NotifyINFOBody", { link = "NormalFloat" })
+      ds.hl.new("NotifyINFOBorder", { link = "FloatBorder" })
+      ds.hl.new("NotifyINFOIcon", { link = "String" })
+      ds.hl.new("NotifyINFOTitle", { link = "String" })
 
-      groups.new("NotifyWARNBody", { link = "NormalFloat" })
-      groups.new("NotifyWARNBorder", { link = "FloatBorder" })
-      groups.new("NotifyWARNIcon", { link = "WarningMsg" })
-      groups.new("NotifyWARNTitle", { link = "WarningMsg" })
+      ds.hl.new("NotifyWARNBody", { link = "NormalFloat" })
+      ds.hl.new("NotifyWARNBorder", { link = "FloatBorder" })
+      ds.hl.new("NotifyWARNIcon", { link = "WarningMsg" })
+      ds.hl.new("NotifyWARNTitle", { link = "WarningMsg" })
 
-      groups.new("NotifyERRORBody", { link = "NormalFloat" })
-      groups.new("NotifyERRORBorder", { link = "FloatBorder" })
-      groups.new("NotifyERRORIcon", { link = "ErrorMsg" })
-      groups.new("NotifyERRORTitle", { link = "ErrorMsg" })
+      ds.hl.new("NotifyERRORBody", { link = "NormalFloat" })
+      ds.hl.new("NotifyERRORBorder", { link = "FloatBorder" })
+      ds.hl.new("NotifyERRORIcon", { link = "ErrorMsg" })
+      ds.hl.new("NotifyERRORTitle", { link = "ErrorMsg" })
 
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "notify",
         callback = function() vim.opt_local.cursorline = false end,
       })
 
-      if not ds.is_installed "noice.nvim" then
+      if not ds.lazy.is_installed "noice.nvim" then
         vim.api.nvim_create_autocmd("User", {
           pattern = "VeryLazy",
           callback = function() vim.notify = require "notify" end,
@@ -507,10 +500,11 @@ return {
           if vim.wo[win_id].diff or vim.fn.win_gettype(win_id) ~= "" then return true end
           local buf = vim.api.nvim_win_get_buf(win_id)
           local b = vim.bo[buf]
-          local ignore_bt = excludes.bt.wb_disabled
-          local ignore_ft = vim.tbl_deep_extend("keep", excludes.ft.stl_disabled, excludes.ft.wb_disabled)
-          return util.any(ignore_bt, function(item) return b.bt:match(item) end)
-            or util.any(ignore_ft, function(item) return b.ft:match(item) end)
+          local ignore_bt = vim.g.ds_excludes.bt.wb_disabled
+          local ignore_ft =
+            vim.tbl_deep_extend("keep", vim.g.ds_excludes.ft.stl_disabled, vim.g.ds_excludes.ft.wb_disabled)
+          return ds.any(ignore_bt, function(item) return b.bt:match(item) end)
+            or ds.any(ignore_ft, function(item) return b.ft:match(item) end)
         end,
       }
     end,
@@ -524,12 +518,12 @@ return {
       signs = false,
       sign_priority = 0,
       colors = {
-        error = { color.blend(c.red1, c.gray1, 0.31) },
-        warning = { color.blend(c.rose0, c.gray1, 0.31) },
-        info = { color.blend(c.aqua1, c.gray1, 0.31) },
-        hint = { color.blend(c.magenta1, c.gray1, 0.31) },
-        default = { color.blend(c.blue0, c.gray1, 0.31) },
-        test = { color.blend(c.green0, c.gray1, 0.31) },
+        error = { ds.color.blend(vim.g.ds_colors.red1, vim.g.ds_colors.gray1, 0.31) },
+        warning = { ds.color.blend(vim.g.ds_colors.rose0, vim.g.ds_colors.gray1, 0.31) },
+        info = { ds.color.blend(vim.g.ds_colors.aqua1, vim.g.ds_colors.gray1, 0.31) },
+        hint = { ds.color.blend(vim.g.ds_colors.magenta1, vim.g.ds_colors.gray1, 0.31) },
+        default = { ds.color.blend(vim.g.ds_colors.blue0, vim.g.ds_colors.gray1, 0.31) },
+        test = { ds.color.blend(vim.g.ds_colors.green0, vim.g.ds_colors.gray1, 0.31) },
       },
     },
   },
@@ -584,7 +578,7 @@ return {
         end
         local end_text = ctx.get_fold_virt_text(end_linenr)
         if end_text[1] and end_text[1][1] then end_text[1][1] = end_text[1][1]:gsub("[%s\t]+", "") end
-        table.insert(result, { ds.pad(icons.misc.Ellipses, "both"), "Comment" })
+        table.insert(result, { ds.pad(vim.g.ds_icons.misc.Ellipses, "both"), "Comment" })
         vim.list_extend(result, end_text)
         table.insert(result, { padding, "" })
         return result
@@ -595,8 +589,8 @@ return {
   {
     "lukas-reineke/virt-column.nvim",
     event = "LazyFile",
-    init = function() groups.new("VirtColumn", { link = "NonText" }) end,
-    opts = { char = icons.misc.VerticalBarVeryThin },
+    init = function() ds.hl.new("VirtColumn", { link = "NonText" }) end,
+    opts = { char = vim.g.ds_icons.misc.VerticalBarVeryThin },
   },
   {
     "folke/which-key.nvim",
@@ -611,17 +605,17 @@ return {
         },
       },
       window = {
-        border = icons.border.ThinBlock,
+        border = vim.g.ds_icons.border.ThinBlock,
       },
     },
     init = function()
-      local BLUE_DARK = color.blend(c.blue2, c.bg0, 0.08)
+      local BLUE_DARK = ds.color.blend(vim.g.ds_colors.blue2, vim.g.ds_colors.bg0, 0.08)
 
-      groups.new("WhichKeyFloat", { bg = BLUE_DARK })
-      groups.new("WhichKeyBorder", { fg = c.gray0, bg = BLUE_DARK })
-      groups.new("WhichKeySeparator", { fg = color.lighten(c.gray1, 20) })
-      groups.new("WhichKeyDesc", { link = "Constant" })
-      groups.new("WhichKeyGroup", { link = "Identifier" })
+      ds.hl.new("WhichKeyFloat", { bg = BLUE_DARK })
+      ds.hl.new("WhichKeyBorder", { fg = vim.g.ds_colors.gray0, bg = BLUE_DARK })
+      ds.hl.new("WhichKeySeparator", { fg = ds.color.lighten(vim.g.ds_colors.gray1, 20) })
+      ds.hl.new("WhichKeyDesc", { link = "Constant" })
+      ds.hl.new("WhichKeyGroup", { link = "Identifier" })
     end,
     config = function(_, opts)
       local wk = require "which-key"

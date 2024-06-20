@@ -1,10 +1,8 @@
-local util = require "util"
-
 -- HACK: ...until the nested string wierdness is resolved in `gh/config.yml'
 -- (G)it(H)ub (E)dit (I)ssue
 vim.api.nvim_create_user_command("GHEI", function()
   vim.schedule(function()
-    local bufs = util.buffer.list_buffers { listed = true }
+    local bufs = ds.buffer.list_buffers { listed = true }
     if #bufs == 1 then
       local path = vim.api.nvim_buf_get_name(bufs[1])
       local fname = vim.fs.basename(path)
@@ -21,7 +19,7 @@ end, {})
 -- (G)it(H)ub (E)dit (P)ull (R)equest
 vim.api.nvim_create_user_command("GHEPR", function()
   vim.schedule(function()
-    local bufs = util.buffer.list_buffers { listed = true }
+    local bufs = ds.buffer.list_buffers { listed = true }
     if #bufs == 1 then
       local path = vim.api.nvim_buf_get_name(bufs[1])
       local fname = vim.fs.basename(path)
@@ -36,7 +34,7 @@ end, {})
 
 vim.api.nvim_create_user_command(
   "Scratch",
-  function(args) util.buffer.create_scratch(args.fargs[1]) end,
+  function(args) ds.buffer.create_scratch(args.fargs[1]) end,
   { nargs = "?", complete = "filetype" }
 )
 

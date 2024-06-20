@@ -1,5 +1,3 @@
-local util = require "util"
-
 ---------------------------------------------------------------
 -- => Normal
 ---------------------------------------------------------------
@@ -161,7 +159,7 @@ end, { silent = false, expr = true, replace_keycodes = true, desc = "create/edit
 vim.keymap.set("n", "<localleader><localleader>r", function()
   if vim.bo.filetype ~= "lua" then error "reload utility only available for lua modules" end
   local file = vim.api.nvim_buf_get_name(0)
-  local mod = util.get_module_name(file)
+  local mod = ds.get_module_name(file)
   local shift = ""
   if #mod == 0 then shift = "<left><left>" end
   return ([[:lua ds.reload("%s")%s]]):format(mod, shift)
@@ -212,7 +210,7 @@ vim.keymap.set("n", "<bs>q", function() vim.cmd.quit { bang = true } end, { desc
 vim.keymap.set("n", "<bs>Q", function() vim.cmd.quitall { bang = true } end, { desc = "close application" })
 
 -- delete the current buffer
-vim.keymap.set("n", "<bs>z", util.buffer.delete_buffer, { silent = false, desc = "delete current buffer" })
+vim.keymap.set("n", "<bs>z", ds.buffer.delete_buffer, { silent = false, desc = "delete current buffer" })
 
 ---------------------------------------------------------------
 -- => Insert
@@ -258,7 +256,7 @@ vim.keymap.set("v", "<c-l>", "<c-w>l", { desc = "goto right window" })
 
 -- begin substitution in buffer for visual selection
 vim.keymap.set("v", "<c-w><c-r>", function()
-  local lines = util.buffer.get_visual_selection()
+  local lines = ds.buffer.get_visual_selection()
   local selection = table.concat(lines)
   return (":<c-u>%%s/%s/"):format(selection)
 end, { silent = false, expr = true, replace_keycodes = true, desc = "replace occurences of selection" })
@@ -295,7 +293,7 @@ vim.keymap.set("v", "<c-w><c-x>", function()
     if not eval_ok then error(msg .. " [FAILED]: " .. eval_result) end
     ds.pprint(msg, eval_result, selection)
   end
-  local lines = util.buffer.get_visual_selection()
+  local lines = ds.buffer.get_visual_selection()
   local selection = table.concat(lines)
   local ft = vim.bo.filetype
   if ft == "vim" then

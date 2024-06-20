@@ -1,6 +1,4 @@
-local icons = require "ui.icons"
-local util = require "util"
-
+---@class util.lazy
 local M = {}
 
 local bootstrap = function()
@@ -24,7 +22,7 @@ local init = function()
     root = vim.fs.joinpath(vim.fn.stdpath "data", "lazy"),
     lockfile = vim.fs.joinpath(vim.fn.stdpath "config", "lua", "remote", "lazy-lock.json"),
     ui = {
-      border = util.map(icons.border.ThinBlock, function(v) return { v, "FloatBorder" } end),
+      border = ds.map(vim.g.ds_icons.border.ThinBlock, function(v) return { v, "FloatBorder" } end),
       backdrop = 95,
       custom_keys = {
         ["<localleader>d"] = function(plugin) print(plugin) end,
@@ -209,12 +207,5 @@ M.setup = function()
   end
   vim.keymap.set("n", "<localleader>gb", browse, { noremap = true, silent = true, desc = "git: browse remote" })
 end
-
-M.globals = {
-  get_pkg_path = M.get_pkg_path,
-  is_installed = M.is_installed,
-  is_loaded = M.is_loaded,
-  on_load = M.on_load,
-}
 
 return M

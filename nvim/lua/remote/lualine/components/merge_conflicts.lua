@@ -1,9 +1,7 @@
-local util = require "util"
-local excludes = require "ui.excludes"
-local stl_util = require "remote.lualine.util"
+local util = require "remote.lualine.util"
 
-local add = stl_util.add
-local highlighter = stl_util.highlighter
+local add = util.add
+local highlighter = util.highlighter
 
 local format_label = function(winid, bufnr)
   local ret = ""
@@ -17,9 +15,9 @@ local format_label = function(winid, bufnr)
       local count = #conflicts or 0
       ret = count == 1 and "1 remaining conflict" or ("%s remaining conflicts"):format(count)
     else
-      diffview_info = util.replace(diffview_info, "OURS (Current changes)", "")
-      diffview_info = util.replace(diffview_info, "THEIRS (Incoming changes)", "")
-      diffview_info = util.replace(diffview_info, "BASE (Common ancestor)", "")
+      diffview_info = ds.replace(diffview_info, "OURS (Current changes)", "")
+      diffview_info = ds.replace(diffview_info, "THEIRS (Incoming changes)", "")
+      diffview_info = ds.replace(diffview_info, "BASE (Common ancestor)", "")
       diffview_info = vim.trim(diffview_info)
       ret = diffview_info
     end
@@ -32,7 +30,7 @@ return function()
   local buf = vim.api.nvim_win_get_buf(winid)
   local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
 
-  if util.contains(excludes.ft.wb_empty, ft) then return " " end
+  if ds.contains(vim.g.ds_excludes.ft.wb_empty, ft) then return " " end
 
   return string.format("%s%s", format_label(winid, buf), highlighter.reset)
 end

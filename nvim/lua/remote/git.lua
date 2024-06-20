@@ -1,9 +1,3 @@
-local buffer = require "util.buffer"
-local c = require("ui.theme").colors
-local color = require "util.color"
-local groups = require "ui.theme.groups"
-local icons = require "ui.icons"
-
 return {
   {
     "ruifm/gitlinker.nvim",
@@ -88,40 +82,42 @@ return {
     event = "LazyFile",
     dependencies = { "nvim-lua/plenary.nvim" },
     init = function()
-      groups.new("GitSignsAdd", { fg = c.green2 })
-      groups.new("GitSignsChange", { fg = c.yellow2 })
-      groups.new("GitSignsDelete", { fg = c.red1 })
-      groups.new("GitSignsChangeDelete", { fg = c.orange0 })
-      groups.new("GitSignsCurrentLineBlame", { fg = c.gray1, italic = true })
+      ds.hl.new("GitSignsAdd", { fg = vim.g.ds_colors.green2 })
+      ds.hl.new("GitSignsChange", { fg = vim.g.ds_colors.yellow2 })
+      ds.hl.new("GitSignsDelete", { fg = vim.g.ds_colors.red1 })
+      ds.hl.new("GitSignsChangeDelete", { fg = vim.g.ds_colors.orange0 })
+      ds.hl.new("GitSignsCurrentLineBlame", { fg = vim.g.ds_colors.gray1, italic = true })
     end,
     config = function()
       local signs = require "gitsigns"
       signs.setup {
         signs = {
-          add = { hl = "GitSignsAdd", text = icons.misc.VerticalBarThin },
-          change = { hl = "GitSignsChange", text = icons.misc.VerticalBarThin },
-          delete = { hl = "GitSignsDelete", text = icons.misc.CaretRight },
-          topdelete = { hl = "GitSignsDelete", text = icons.misc.CaretRight },
-          changedelete = { hl = "GitSignsDelete", text = icons.misc.VerticalBarSemi },
-          untracked = { hl = "GitSignsUntracked", text = icons.misc.VerticalBarSplit },
+          add = { text = vim.g.ds_icons.misc.VerticalBarThin },
+          change = { text = vim.g.ds_icons.misc.VerticalBarThin },
+          delete = { text = vim.g.ds_icons.misc.CaretRight },
+          topdelete = { text = vim.g.ds_icons.misc.CaretRight },
+          changedelete = { text = vim.g.ds_icons.misc.VerticalBarSemi },
+          untracked = { text = vim.g.ds_icons.misc.VerticalBarSplit },
         },
         status_formatter = function(status)
           local added = ""
           local changed = ""
           local removed = ""
-          if status.added and status.added > 0 then added = ds.pad(icons.git.TextAdded, "right") .. status.added end
+          if status.added and status.added > 0 then
+            added = ds.pad(vim.g.ds_icons.git.TextAdded, "right") .. status.added
+          end
           if status.changed and status.changed > 0 then
-            changed = ds.pad(icons.git.TextChanged, "both") .. status.changed
+            changed = ds.pad(vim.g.ds_icons.git.TextChanged, "both") .. status.changed
           end
           if status.removed and status.removed > 0 then
-            removed = ds.pad(icons.git.TextRemoved, "both") .. status.removed
+            removed = ds.pad(vim.g.ds_icons.git.TextRemoved, "both") .. status.removed
           end
           return added .. changed .. removed
         end,
         numhl = false,
         update_debounce = 1000,
         current_line_blame = true,
-        current_line_blame_formatter = icons.git.Commit .. " <author>, <author_time:%R>",
+        current_line_blame_formatter = vim.g.ds_icons.git.Commit .. " <author>, <author_time:%R>",
         current_line_blame_opts = {
           virt_text = false,
           virt_text_pos = "eol",
@@ -171,12 +167,12 @@ return {
       { "#", "#<c-x><c-o>", mode = "i", ft = "octo", silent = true },
     },
     init = function()
-      groups.new("OctoBubble", { link = "Normal" })
-      groups.new("OctoEditable", { fg = c.white, bg = color.darken(c.gray0, 10) })
+      ds.hl.new("OctoBubble", { link = "Normal" })
+      ds.hl.new("OctoEditable", { fg = vim.g.ds_colors.white, bg = ds.color.darken(vim.g.ds_colors.gray0, 10) })
 
       vim.treesitter.language.register("markdown", "octo")
 
-      ds.on_load("nvim-cmp", function()
+      ds.lazy.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
           group = vim.api.nvim_create_augroup("git-completion", { clear = true }),
           pattern = "octo",

@@ -1,6 +1,4 @@
-local color = require "util.color"
-
----@class HighlighAttrs
+---@class HighlightGroupAttrs
 ---@field fg string?
 ---@field bg string?
 ---@field bold boolean?
@@ -16,20 +14,25 @@ local color = require "util.color"
 ---@field link string?
 ---@field default boolean?
 
+---@class util.hl
 local M = {}
 
 local hi = setmetatable({}, {
   ---@param name string
-  ---@param args? HighlighAttrs
+  ---@param args? HighlightGroupAttrs
   __newindex = function(_, name, args) vim.api.nvim_set_hl(0, name, args) end,
 })
 
 ---@param name string
----@param args? HighlighAttrs
+---@param args? HighlightGroupAttrs
 M.new = function(name, args) hi[name] = args end
 
 ---@param c ColorPalette
 M.apply = function(c)
+  -- reapply previously defined highlight groups
+  for k, v in pairs(hi) do
+    vim.api.nvim_set_hl(0, k, v)
+  end
   -- vim editor colors
   hi.ColorColumn = { bg = c.bg3 }
   hi.Conceal = { fg = c.fg_conceal }
@@ -166,12 +169,12 @@ M.apply = function(c)
   hi.gitcommitSelectedFile = { fg = c.green2, bold = true }
 
   -- lsp codelens highlighting
-  hi.LspCodeLens = { fg = color.lighten(c.gray1, 20) }
-  hi.LspCodeLensText = { fg = color.lighten(c.gray1, 20) }
-  hi.LspCodeLensSeparator = { fg = color.lighten(c.gray1, 20) }
+  hi.LspCodeLens = { fg = ds.color.lighten(c.gray1, 20) }
+  hi.LspCodeLensText = { fg = ds.color.lighten(c.gray1, 20) }
+  hi.LspCodeLensSeparator = { fg = ds.color.lighten(c.gray1, 20) }
 
   -- lsp inlay hints
-  hi.LspInlayHint = { fg = c.gray1, bg = color.blend(c.gray1, c.bg2, 0.2), italic = true }
+  hi.LspInlayHint = { fg = c.gray1, bg = ds.color.blend(c.gray1, c.bg2, 0.2), italic = true }
 
   -- lsp document highlighting
   hi.LspReferenceText = { underline = true, sp = c.gray1 }
@@ -211,7 +214,7 @@ M.apply = function(c)
   hi["@lsp.type.formatSpecifier"] = { link = "@markup.list" }
   hi["@lsp.type.function"] = { link = "@function" }
   hi["@lsp.type.generic"] = { link = "@variable" }
-  hi["@lsp.type.interface"] = { fg = color.lighten(c.cyan1, 20) }
+  hi["@lsp.type.interface"] = { fg = ds.color.lighten(c.cyan1, 20) }
   hi["@lsp.type.lifetime"] = { link = "@keyword.storage" }
   hi["@lsp.type.method"] = { link = "@function.method" }
   hi["@lsp.type.modifier"] = { link = "Identifier" }
@@ -345,7 +348,7 @@ M.apply = function(c)
   hi["@variable.parameter.reference"] = { fg = c.rose0 }
 
   -- custom treesitter extended highlighting
-  hi["@markup.codeblock"] = { bg = color.blend(c.grayX, c.bg2, 0.44) }
+  hi["@markup.codeblock"] = { bg = ds.color.blend(c.grayX, c.bg2, 0.44) }
   hi["@markup.dash"] = { fg = c.yellow0, bold = true }
   hi["@markup.heading"] = { link = "htmlH1" }
   hi["@markup.heading"] = { link = "htmlH2" }
@@ -361,11 +364,11 @@ M.apply = function(c)
   hi.TabLineSel = { fg = c.fg1, bg = c.bg0, bold = true }
 
   -- winbar highlighting
-  hi.Winbar = { fg = color.lighten(c.gray1, 10), bg = c.bg2 }
+  hi.Winbar = { fg = ds.color.lighten(c.gray1, 10), bg = c.bg2 }
   hi.WinbarNC = { bg = c.bg2 }
 
-  hi.WinbarFilename = { fg = color.lighten(c.gray2, 5), bg = c.bg2, bold = true }
-  hi.WinbarContext = { fg = color.lighten(c.gray1, 15), bg = c.bg2 }
+  hi.WinbarFilename = { fg = ds.color.lighten(c.gray2, 5), bg = c.bg2, bold = true }
+  hi.WinbarContext = { fg = ds.color.lighten(c.gray1, 15), bg = c.bg2 }
 
   -- ensure termguicolors is set (likely redundant)
   vim.o.termguicolors = true

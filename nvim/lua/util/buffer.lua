@@ -1,3 +1,4 @@
+---@class util.buffer
 local M = {}
 
 ---Creates a sandboxed buffer that cannot be saved but has highlighting enabled for the filetype
@@ -208,13 +209,13 @@ function M.get_visual_selection(opt)
 end
 
 ---@class ListBufsSpec
----@field loaded boolean Filter out buffers that aren't loaded.
----@field listed boolean Filter out buffers that aren't listed.
----@field no_hidden boolean Filter out buffers that are hidden.
----@field tabpage integer Filter out buffers that are not displayed in a given tabpage.
----@field pattern string Filter out buffers whose name does not match a given lua pattern.
----@field options table<string, any> Filter out buffers that don't match a given map of options.
----@field vars table<string, any> Filter out buffers that don't match a given map of variables.
+---@field loaded? boolean Filter out buffers that aren't loaded.
+---@field listed? boolean Filter out buffers that aren't listed.
+---@field no_hidden? boolean Filter out buffers that are hidden.
+---@field tabpage? integer Filter out buffers that are not displayed in a given tabpage.
+---@field pattern? string Filter out buffers whose name does not match a given lua pattern.
+---@field options? table<string, any> Filter out buffers that don't match a given map of options.
+---@field vars? table<string, any> Filter out buffers that don't match a given map of variables.
 
 ---@param opt? ListBufsSpec
 ---@return integer[] #Buffer numbers of matched buffers.
@@ -321,8 +322,11 @@ function M.statuscolumn()
     vim.api.nvim_win_call(win, function()
       if vim.fn.foldclosed(vim.v.lnum) >= 0 then
         fold = { text = vim.opt.fillchars:get().foldclose or "", texthl = githl or "Folded" }
-      elseif not M.skip_foldexpr[buf] and vim.treesitter.foldexpr(vim.v.lnum):sub(1, 1) == ">" then
-        fold = { text = vim.opt.fillchars:get().foldopen or "", texthl = githl }
+      elseif not M.skip_foldexpr[buf] then
+        local expr = vim.treesitter.foldexpr(vim.v.lnum)
+        if expr and type(expr) == "string" and expr:sub(1, 1) == ">" then
+          fold = { text = vim.opt.fillchars:get().foldopen or "", texthl = githl }
+        end
       end
     end)
     -- Left: mark or non-git sign

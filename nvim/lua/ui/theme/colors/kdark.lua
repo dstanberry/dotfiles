@@ -1,5 +1,3 @@
-local color = require "util.color"
-
 ---@type ColorPalette
 ---@diagnostic disable-next-line: missing-fields
 local c = {
@@ -61,20 +59,20 @@ local c = {
   overlay1 = "#7f849c",
 }
 
-c.black = color.darken(c.bg2, 50)
-c.white = color.darken(c.fg1, 10)
+c.black = ds.color.darken(c.bg2, 50)
+c.white = ds.color.darken(c.fg1, 10)
 
-c.bgX = color.blend(c.bg0, c.bg2, 0.31)
-c.bg_visual = color.blend(c.blue1, c.bg2, 0.31)
+c.bgX = ds.color.blend(c.bg0, c.bg2, 0.31)
+c.bg_visual = ds.color.blend(c.blue1, c.bg2, 0.31)
 
-c.fg_conceal = color.blend(c.magenta2, c.bg2, 0.44)
-c.fg_comment = color.blend(c.blue0, c.gray1, 0.31)
+c.fg_conceal = ds.color.blend(c.magenta2, c.bg2, 0.44)
+c.fg_comment = ds.color.blend(c.blue0, c.gray1, 0.31)
 
-c.grayX = color.darken(c.gray1, 25)
+c.grayX = ds.color.darken(c.gray1, 25)
 
 c.diff_add = "#132e1f"
 c.diff_delete = "#361f21"
 c.diff_text = "#1b3956"
-c.diff_change = color.blend(c.diff_text, c.bg3, 0.2)
+c.diff_change = ds.color.blend(c.diff_text, c.bg3, 0.2)
 
 return c

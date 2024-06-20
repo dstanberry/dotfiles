@@ -1,3 +1,4 @@
+---@class util.fs
 local M = {}
 
 ---Utility to load linux directory hashes (if defined) into the current runtime

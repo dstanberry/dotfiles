@@ -1,8 +1,3 @@
-local groups = require "ui.theme.groups"
-local icons = require "ui.icons"
-
-groups.new("LuasnipChoiceNodePassive", { bold = true })
-
 return {
   "L3MON4D3/LuaSnip",
   event = "InsertEnter",
@@ -66,6 +61,8 @@ return {
     local luasnip = require "luasnip"
     local types = require "luasnip.util.types"
 
+    ds.hl.new("LuasnipChoiceNodePassive", { bold = true })
+
     luasnip.config.setup {
       keep_roots = true,
       link_roots = true,
@@ -78,7 +75,7 @@ return {
       ext_opts = {
         [types.choiceNode] = {
           active = {
-            virt_text = { { ds.pad(icons.misc.Layer, "both"), "Constant" } },
+            virt_text = { { ds.pad(vim.g.ds_icons.misc.Layer, "both"), "Constant" } },
           },
         },
       },

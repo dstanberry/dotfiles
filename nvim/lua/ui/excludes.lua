@@ -53,6 +53,7 @@ M.ft = {
     "NeogitStatus",
     "noice",
     "octo_panel",
+    "spectre_panel",
     "TelescopePrompt",
     "toggleterm",
     "trouble",

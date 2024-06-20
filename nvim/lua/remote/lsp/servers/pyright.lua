@@ -15,7 +15,7 @@ M.config = {
       local err, result = ...
       if not err and result then
         local items = result.items or result
-        items = require("util").map(items, function(item)
+        items = ds.map(items, function(item)
           if
             (item.data and item.data.funcParensDisabled)
             and (

@@ -1,19 +1,15 @@
-local c = require("ui.theme").colors
-local color = require "util.color"
-local groups = require "ui.theme.groups"
-
-groups.new("NuiCursorLine", {})
-groups.new("NuiLabel", { fg = c.white })
-groups.new("NuiNormalFloat", { fg = c.white })
-groups.new("NuiGapFloat", {})
-groups.new("NuiResultsFloat", {})
-groups.new("NuiFloatBorder", { fg = color.blend(c.gray1, c.blue0, 0.44) })
-groups.new("NuiComponentsButton", { link = "NormalSB" })
-groups.new("NuiComponentsButtonActive", { link = "PMenuSel" })
-groups.new("NuiComponentsCheckboxIcon", { fg = c.fg0 })
-groups.new("NuiComponentsCheckboxIconChecked", { fg = c.magenta2, bold = true })
-groups.new("NuiComponentsCheckboxLabel", { link = "NuiComponentsCheckboxIcon" })
-groups.new("NuiComponentsCheckboxLabelChecked", { link = "NuiComponentsCheckboxIconChecked" })
+ds.hl.new("NuiCursorLine", {})
+ds.hl.new("NuiLabel", { fg = vim.g.ds_colors.white })
+ds.hl.new("NuiNormalFloat", { fg = vim.g.ds_colors.white })
+ds.hl.new("NuiGapFloat", {})
+ds.hl.new("NuiResultsFloat", {})
+ds.hl.new("NuiFloatBorder", { fg = ds.color.blend(vim.g.ds_colors.gray1, vim.g.ds_colors.blue0, 0.44) })
+ds.hl.new("NuiComponentsButton", { link = "NormalSB" })
+ds.hl.new("NuiComponentsButtonActive", { link = "PMenuSel" })
+ds.hl.new("NuiComponentsCheckboxIcon", { fg = vim.g.ds_colors.fg0 })
+ds.hl.new("NuiComponentsCheckboxIconChecked", { fg = vim.g.ds_colors.magenta2, bold = true })
+ds.hl.new("NuiComponentsCheckboxLabel", { link = "NuiComponentsCheckboxIcon" })
+ds.hl.new("NuiComponentsCheckboxLabelChecked", { link = "NuiComponentsCheckboxIconChecked" })
 
 return {
   { "MunifTanjim/nui.nvim", lazy = true },

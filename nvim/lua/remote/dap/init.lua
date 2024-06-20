@@ -1,9 +1,3 @@
-local c = require("ui.theme").colors
-local color = require "util.color"
-local groups = require "ui.theme.groups"
-local icons = require "ui.icons"
-local util = require "util"
-
 local get_args = function(config)
   local args = type(config.args) == "function" and (config.args() or {}) or config.args or {}
   config = vim.deepcopy(config)
@@ -14,7 +8,6 @@ local get_args = function(config)
   return config
 end
 
----@diagnostic disable: missing-fields
 return {
   "mfussenegger/nvim-dap",
   lazy = true,
@@ -31,6 +24,7 @@ return {
     { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input "Breakpoint condition: ") end, desc = "dap: set conditional breakpoint" },
     { "<leader>da", function() require("dap").continue({before = get_args}) end, desc = "dap: run with args" },
     { "<leader>dc", function() require("dap").continue() end, desc = "dap: run / continue" },
+    ---@diagnostic disable-next-line: missing-fields
     { "<leader>dC", function() require("dapui").float_element("console", { enter = true, width = 200, position = "center" }) end, desc = "dap: show console output" },
     { "<leader>de", function() require("dapui").eval() end, desc = "dap: evaluate" },
     { "<leader>dE", function() require("dapui").eval(vim.fn.input "Evaluate expression: ") end, desc = "dap: evaluate expression" },
@@ -42,39 +36,39 @@ return {
     { "<leader>dT", function() require("dap").terminate() end, desc = "dap: terminate" },
   },
   init = function()
-    groups.new("DapBreakpointActiveLine", { bg = color.blend(c.yellow2, c.bg3, 0.14) })
+    ds.hl.new("DapBreakpointActiveLine", { bg = ds.color.blend(vim.g.ds_colors.yellow2, vim.g.ds_colors.bg3, 0.14) })
 
-    groups.new("DapUINormal", { link = "NormalSB" })
-    groups.new("DapUIStop", { fg = c.red1 })
-    groups.new("DapUIStopNC", { link = "DapUIStop" })
-    groups.new("DapUIRestart", { fg = c.green1 })
-    groups.new("DapUIRestartNC", { link = "DapUIRestart" })
-    groups.new("DapUIStepOver", { fg = c.blue0 })
-    groups.new("DapUIStepOverNC", { link = "DapUIStepOver" })
-    groups.new("DapUIStepInto", { fg = c.blue0 })
-    groups.new("DapUIStepIntoNC", { link = "DapUIStepInto" })
-    groups.new("DapUIStepOut", { fg = c.blue0 })
-    groups.new("DapUIStepOutNC", { link = "DapUIStepOut" })
-    groups.new("DapUIStepBack", { fg = c.blue0 })
-    groups.new("DapUIStepBackNC", { link = "DapUIStepBack" })
-    groups.new("DapUIPlayPause", { fg = c.blue4 })
-    groups.new("DapUIPlayPauseNC", { link = "DapUIPlayPause" })
-    groups.new("DapUIUnavailable", { fg = c.gray2 })
-    groups.new("DapUIUnavailableNC", { link = "DapUIUnavailable" })
-    groups.new("DapUIThread", { fg = c.green0 })
-    groups.new("DapUIThreadNC", { link = "DapUIThread" })
+    ds.hl.new("DapUINormal", { link = "NormalSB" })
+    ds.hl.new("DapUIStop", { fg = vim.g.ds_colors.red1 })
+    ds.hl.new("DapUIStopNC", { link = "DapUIStop" })
+    ds.hl.new("DapUIRestart", { fg = vim.g.ds_colors.green1 })
+    ds.hl.new("DapUIRestartNC", { link = "DapUIRestart" })
+    ds.hl.new("DapUIStepOver", { fg = vim.g.ds_colors.blue0 })
+    ds.hl.new("DapUIStepOverNC", { link = "DapUIStepOver" })
+    ds.hl.new("DapUIStepInto", { fg = vim.g.ds_colors.blue0 })
+    ds.hl.new("DapUIStepIntoNC", { link = "DapUIStepInto" })
+    ds.hl.new("DapUIStepOut", { fg = vim.g.ds_colors.blue0 })
+    ds.hl.new("DapUIStepOutNC", { link = "DapUIStepOut" })
+    ds.hl.new("DapUIStepBack", { fg = vim.g.ds_colors.blue0 })
+    ds.hl.new("DapUIStepBackNC", { link = "DapUIStepBack" })
+    ds.hl.new("DapUIPlayPause", { fg = vim.g.ds_colors.blue4 })
+    ds.hl.new("DapUIPlayPauseNC", { link = "DapUIPlayPause" })
+    ds.hl.new("DapUIUnavailable", { fg = vim.g.ds_colors.gray2 })
+    ds.hl.new("DapUIUnavailableNC", { link = "DapUIUnavailable" })
+    ds.hl.new("DapUIThread", { fg = vim.g.ds_colors.green0 })
+    ds.hl.new("DapUIThreadNC", { link = "DapUIThread" })
   end,
   config = function()
     local dap = require "dap"
     dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
     vim.fn.sign_define("DapBreakpoint", {
-      text = icons.debug.Breakpoint,
+      text = vim.g.ds_icons.debug.Breakpoint,
       texthl = "DiagnosticSignInfo",
       linehl = "",
       numhl = "",
     })
     vim.fn.sign_define("DapStopped", {
-      text = icons.debug.BreakpointActive,
+      text = vim.g.ds_icons.debug.BreakpointActive,
       texthl = "DiagnosticSignWarn",
       linehl = "DapBreakpointActiveLine",
       numhl = "",
@@ -98,6 +92,7 @@ return {
     }
 
     local dapui = require "dapui"
+    ---@diagnostic disable-next-line: missing-fields
     dapui.setup {
       mappings = {
         expand = { "<cr>" },
@@ -128,16 +123,17 @@ return {
         enabled = true,
         element = "repl",
         icons = {
-          pause = icons.debug.Pause,
-          play = icons.debug.Continue,
-          step_into = icons.debug.StepInto,
-          step_over = icons.debug.StepOver,
-          step_out = icons.debug.StepOut,
-          step_back = icons.debug.StepBack,
-          run_last = icons.debug.Restart,
-          terminate = icons.debug.Stop,
+          pause = vim.g.ds_icons.debug.Pause,
+          play = vim.g.ds_icons.debug.Continue,
+          step_into = vim.g.ds_icons.debug.StepInto,
+          step_over = vim.g.ds_icons.debug.StepOver,
+          step_out = vim.g.ds_icons.debug.StepOut,
+          step_back = vim.g.ds_icons.debug.StepBack,
+          run_last = vim.g.ds_icons.debug.Restart,
+          terminate = vim.g.ds_icons.debug.Stop,
         },
       },
+      ---@diagnostic disable-next-line: missing-fields
       floating = {
         boder = "single",
         max_height = nil,
@@ -160,7 +156,7 @@ return {
 
     local debuggers = vim.api.nvim_get_runtime_file("lua/remote/dap/debuggers/*.lua", true)
     for _, file in ipairs(debuggers) do
-      local mod = util.get_module_name(file)
+      local mod = ds.get_module_name(file)
       require(mod).setup()
     end
   end,

@@ -1,20 +1,13 @@
-local c = require("ui.theme").colors
-local color = require "util.color"
-local groups = require "ui.theme.groups"
-local icons = require "ui.icons"
-local excludes = require "ui.excludes"
-local util = require "util"
-
 local theme = require "remote.lualine.theme"
-local stl_util = require "remote.lualine.util"
+local util = require "remote.lualine.util"
 
 return {
   "nvim-lualine/lualine.nvim",
   url = "https://github.com/dstanberry/lualine.nvim",
   event = "VeryLazy",
   init = function()
-    groups.new("NoiceSymbolNormal", { fg = color.lighten(c.gray1, 15) })
-    groups.new("NoiceSymbolSeparator", { fg = color.blend(c.purple1, c.bg2, 0.38) })
+    ds.hl.new("NoiceSymbolNormal", { fg = ds.color.lighten(vim.g.ds_colors.gray1, 15) })
+    ds.hl.new("NoiceSymbolSeparator", { fg = ds.color.blend(vim.g.ds_colors.purple1, vim.g.ds_colors.bg2, 0.38) })
 
     vim.g.lualine_laststatus = vim.o.laststatus
     if vim.fn.argc(-1) > 0 then
@@ -41,7 +34,7 @@ return {
       get = function() return "" end,
     }
 
-    ds.on_load(
+    ds.lazy.on_load(
       "trouble.nvim",
       function()
         ds.lsp_symbols = require("trouble").statusline {
@@ -51,8 +44,8 @@ return {
           filter = { range = true },
           format = string.format(
             "%s%s{kind_icon}{symbol.name:NoiceSymbolNormal}",
-            stl_util.highlighter.sanitize "NoiceSymbolSeparator",
-            ds.pad(icons.misc.FoldClosed, "right", 2)
+            util.highlighter.sanitize "NoiceSymbolSeparator",
+            ds.pad(vim.g.ds_icons.misc.FoldClosed, "right", 2)
           ),
         }
       end
@@ -62,13 +55,13 @@ return {
       local calculate_data = function(symbols)
         symbols = symbols:gsub("%%#StatusLine#", ""):gsub("%%%%", "%%")
         local bc = breadcrumbs():gsub("%%#.-#", "")
-        local sep = ds.pad(icons.misc.FoldClosed, "right", 2)
+        local sep = ds.pad(vim.g.ds_icons.misc.FoldClosed, "right", 2)
         local parts = vim.split(symbols, sep)
         local raw_symbols = symbols:gsub("%%#.-#", ""):gsub("%%*", ""):gsub("*", "")
         local margin = 10
         if available_width(#bc + #raw_symbols + margin) then return symbols end
         local raw_parts = vim.split(raw_symbols, sep)
-        local trimmed_parts = util.reduce(raw_parts, function(acc, part)
+        local trimmed_parts = ds.reduce(raw_parts, function(acc, part)
           table.insert(acc, part)
           local new_s = table.concat(acc, sep)
           if not available_width(#bc + #new_s + margin) then
@@ -78,7 +71,7 @@ return {
         end)
         local result = vim.list_slice(parts, 1, #trimmed_parts)
         if parts[#result + 1] then
-          local etc = string.format("%s...", stl_util.highlighter.sanitize "Winbar")
+          local etc = string.format("%s...", util.highlighter.sanitize "Winbar")
           table.insert(trimmed_parts, etc)
           if available_width(#bc + #table.concat(trimmed_parts, sep) + margin) then
             table.insert(result, etc)
@@ -89,7 +82,7 @@ return {
         return table.concat(result, sep)
       end
 
-      local default = string.format("%s%s", stl_util.highlighter.sanitize "Winbar", "%=")
+      local default = string.format("%s%s", util.highlighter.sanitize "Winbar", "%=")
       local data = ds.lsp_symbols.get()
       return data ~= "%#StatusLine#" and calculate_data(data) or default
     end
@@ -104,14 +97,17 @@ return {
       options = {
         theme = theme.palette,
         globalstatus = true,
-        disabled_filetypes = { statusline = excludes.ft.stl_disabled, winbar = excludes.ft.wb_disabled },
+        disabled_filetypes = {
+          statusline = vim.g.ds_excludes.ft.stl_disabled,
+          winbar = vim.g.ds_excludes.ft.wb_disabled,
+        },
         component_separators = " ",
         section_separators = " ",
       },
       sections = {
         lualine_a = {
           {
-            function() return icons.misc.VerticalBarBold end,
+            function() return vim.g.ds_icons.misc.VerticalBarBold end,
             padding = { left = 0, right = 0 },
           },
           {
@@ -124,14 +120,14 @@ return {
             "diff",
             source = git_diff,
             symbols = {
-              added = ds.pad(icons.git.TextAdded, "right"),
-              modified = ds.pad(icons.git.TextChanged, "right"),
-              removed = ds.pad(icons.git.TextRemoved, "right"),
+              added = ds.pad(vim.g.ds_icons.git.TextAdded, "right"),
+              modified = ds.pad(vim.g.ds_icons.git.TextChanged, "right"),
+              removed = ds.pad(vim.g.ds_icons.git.TextRemoved, "right"),
             },
             diff_color = {
-              added = { fg = color.blend(c.green2, c.white, 0.6) },
-              modified = { fg = color.blend(c.yellow2, c.white, 0.6) },
-              removed = { fg = color.blend(c.red1, c.white, 0.6) },
+              added = { fg = ds.color.blend(vim.g.ds_colors.green2, vim.g.ds_colors.white, 0.6) },
+              modified = { fg = ds.color.blend(vim.g.ds_colors.yellow2, vim.g.ds_colors.white, 0.6) },
+              removed = { fg = ds.color.blend(vim.g.ds_colors.red1, vim.g.ds_colors.white, 0.6) },
             },
           },
         },
@@ -147,16 +143,16 @@ return {
             "diagnostics",
             sources = { "nvim_diagnostic" },
             symbols = {
-              error = ds.pad(icons.status.Error, "right"),
-              warn = ds.pad(icons.status.Warn, "right"),
-              info = ds.pad(icons.status.Info, "right"),
-              hint = ds.pad(icons.status.Hint, "right"),
+              error = ds.pad(vim.g.ds_icons.status.Error, "right"),
+              warn = ds.pad(vim.g.ds_icons.status.Warn, "right"),
+              info = ds.pad(vim.g.ds_icons.status.Info, "right"),
+              hint = ds.pad(vim.g.ds_icons.status.Hint, "right"),
             },
             diagnostics_color = {
-              error = { fg = color.blend(c.red1, c.white, 0.4) },
-              warn = { fg = color.blend(c.yellow2, c.white, 0.4) },
-              info = { fg = color.blend(c.aqua1, c.white, 0.4) },
-              hint = { fg = color.blend(c.magenta1, c.white, 0.4) },
+              error = { fg = ds.color.blend(vim.g.ds_colors.red1, vim.g.ds_colors.white, 0.4) },
+              warn = { fg = ds.color.blend(vim.g.ds_colors.yellow2, vim.g.ds_colors.white, 0.4) },
+              info = { fg = ds.color.blend(vim.g.ds_colors.aqua1, vim.g.ds_colors.white, 0.4) },
+              hint = { fg = ds.color.blend(vim.g.ds_colors.magenta1, vim.g.ds_colors.white, 0.4) },
             },
           },
           {
@@ -169,12 +165,12 @@ return {
               local text = require("noice").api.status.search.get()
               local query = vim.F.if_nil(text:match "%/(.-)%s", text:match "%?(.-)%s")
               local counter = text:match "%d+%/%d+"
-              return string.format("%s %s [%s]", icons.misc.Magnify, query, counter)
+              return string.format("%s %s [%s]", vim.g.ds_icons.misc.Magnify, query, counter)
             end,
             cond = function()
               return package.loaded["noice"] and require("noice").api.status.search.has() and available_width(80)
             end,
-            color = { fg = c.gray2, bold = true },
+            color = { fg = vim.g.ds_colors.gray2, bold = true },
           },
           { "location" },
           { indent },

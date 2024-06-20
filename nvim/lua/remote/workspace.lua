@@ -1,10 +1,3 @@
----@diagnostic disable: missing-fields
-local c = require("ui.theme").colors
-local color = require "util.color"
-local groups = require "ui.theme.groups"
-local icons = require "ui.icons"
-local util = require "util"
-
 return {
   { "tiagovla/scope.nvim", lazy = true },
   {
@@ -15,28 +8,28 @@ return {
       { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = "bufferline: toggle pin" },
       { "<leader>bP", "<cmd>BufferLineGroupClose ungrouped<cr>", desc = "bufferline: delete all non-pinned buffers" },
     },
-    init = function() groups.new("PanelHeading", { link = "Title" }) end,
+    init = function() ds.hl.new("PanelHeading", { link = "Title" }) end,
     config = function()
       local bufferline_groups = require "bufferline.groups"
       local bufferline = require "bufferline"
       bufferline.setup {
         highlights = function(defaults)
-          local hl = util.reduce(defaults.highlights, function(highlight, attrs, name)
+          local hl = ds.reduce(defaults.highlights, function(highlight, attrs, name)
             local formatted = name:lower()
             local is_group = formatted:match "group"
             local is_offset = formatted:match "offset"
             local is_separator = formatted:match "separator"
-            if not is_group or (is_group and is_separator) then attrs.bg = c.bg2 end
-            if is_separator and not (is_group or is_offset) then attrs.fg = c.bg2 end
+            if not is_group or (is_group and is_separator) then attrs.bg = vim.g.ds_colors.bg2 end
+            if is_separator and not (is_group or is_offset) then attrs.fg = vim.g.ds_colors.bg2 end
             highlight[name] = attrs
             return highlight
           end)
           hl.buffer_selected.italic = false
           hl.buffer_visible.bold = true
           hl.buffer_visible.italic = false
-          hl.buffer_visible.fg = c.gray1
+          hl.buffer_visible.fg = vim.g.ds_colors.gray1
           hl.tab_selected.bold = true
-          hl.tab_selected.fg = c.red1
+          hl.tab_selected.fg = vim.g.ds_colors.red1
           return hl
         end,
         options = {
@@ -46,13 +39,13 @@ return {
           left_mouse_command = "buffer %d",
           ---@diagnostic disable-next-line: assign-type-mismatch
           right_mouse_command = nil,
-          middle_mouse_command = function(buf) util.buffer.delete_buffer(buf) end,
-          close_command = function(buf) util.buffer.delete_buffer(buf) end,
-          buffer_close_icon = icons.misc.Close,
-          close_icon = icons.misc.CloseBold,
+          middle_mouse_command = function(buf) ds.buffer.delete_buffer(buf) end,
+          close_command = function(buf) ds.buffer.delete_buffer(buf) end,
+          buffer_close_icon = vim.g.ds_icons.misc.Close,
+          close_icon = vim.g.ds_icons.misc.CloseBold,
           hover = { enabled = true, reveal = { "close" } },
-          left_trunc_marker = icons.misc.LeftArrowCircled,
-          right_trunc_marker = icons.misc.RightArrowCircled,
+          left_trunc_marker = vim.g.ds_icons.misc.LeftArrowCircled,
+          right_trunc_marker = vim.g.ds_icons.misc.RightArrowCircled,
           max_name_length = 20,
           color_icons = true,
           show_buffer_close_icons = true,
@@ -65,10 +58,10 @@ return {
           diagnostics_update_in_insert = false,
           diagnostics_indicator = function(_, _, _, ctx)
             if ctx.buffer:current() then return "" end
-            return ds.pad(icons.diagnostics.Warn, "left")
+            return ds.pad(vim.g.ds_icons.diagnostics.Warn, "left")
           end,
           indicator = {
-            icon = ds.pad(icons.misc.VerticalBarThin, "right"),
+            icon = ds.pad(vim.g.ds_icons.misc.VerticalBarThin, "right"),
             style = "none",
           },
           get_element_icon = function(element)
@@ -76,42 +69,49 @@ return {
           end,
           offsets = {
             {
-              text = ds.pad(icons.documents.FolderOutlineClosed, "right") .. "EXPLORER",
-              filetype = "neo-tree",
-              highlight = "PanelHeading",
-              separator = true,
-              text_align = "center",
-            },
-            {
-              text = ds.pad(icons.groups.Sql, "right") .. "DATABASE VIEWER",
-              filetype = "dbee",
-              highlight = "PanelHeading",
-              separator = true,
-              text_align = "center",
-            },
-            {
-              text = ds.pad(icons.groups.Sql, "right") .. "DATABASE VIEWER",
-              filetype = "dbui",
-              highlight = "PanelHeading",
-              separator = true,
-              text_align = "center",
-            },
-            {
-              text = ds.pad(icons.groups.Diff, "right") .. "DIFF VIEW",
-              filetype = "DiffviewFiles",
-              highlight = "PanelHeading",
-              separator = true,
-              text_align = "center",
-            },
-            {
-              text = ds.pad(icons.groups.StackFrame, "right") .. "DEBUGGER",
+              text = ds.pad(vim.g.ds_icons.groups.StackFrame, "right") .. "DEBUGGER",
               filetype = "dapui_scopes",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
             },
             {
-              text = ds.pad(icons.groups.Tree, "right") .. "SYMBOLS",
+              text = ds.pad(vim.g.ds_icons.groups.Sql, "right") .. "DATABASE VIEWER",
+              filetype = "dbee",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+            {
+              text = ds.pad(vim.g.ds_icons.groups.Sql, "right") .. "DATABASE VIEWER",
+              filetype = "dbui",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+            {
+              text = ds.pad(vim.g.ds_icons.groups.Diff, "right") .. "DIFF VIEW",
+              filetype = "DiffviewFiles",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+            {
+              text = ds.pad(vim.g.ds_icons.documents.FolderOutlineClosed, "right") .. "EXPLORER",
+              filetype = "neo-tree",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+            {
+              text = ds.pad(vim.g.ds_icons.misc.Magnify, "right") .. "Find | Replace",
+              filetype = "spectre_panel",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+            {
+              text = ds.pad(vim.g.ds_icons.groups.Tree, "right") .. "SYMBOLS",
               filetype = "trouble",
               highlight = "PanelHeading",
               separator = true,
@@ -122,9 +122,9 @@ return {
             items = {
               {
                 name = "SQL",
-                -- icon = icons.groups.Sql,
+                -- icon =vim.g.ds_icons.groups.Sql,
                 auto_close = true,
-                highlight = { fg = c.orange0 },
+                highlight = { fg = vim.g.ds_colors.orange0 },
                 matcher = function(buf) return buf.name:match "%.sql$" end,
                 separator = {
                   style = bufferline_groups.separator.pill,
@@ -132,8 +132,8 @@ return {
               },
               {
                 name = "Unit Tests",
-                -- icon = icons.groups.Lab,
-                highlight = { fg = c.yellow0 },
+                -- icon =vim.g.ds_icons.groups.Lab,
+                highlight = { fg = vim.g.ds_colors.yellow0 },
                 auto_close = true,
                 matcher = function(buf)
                   return buf.name:match "_spec%."
@@ -147,8 +147,8 @@ return {
               },
               {
                 name = "Zettelkasten Notes",
-                -- icon = icons.groups.Book,
-                highlight = { fg = c.cyan1 },
+                -- icon =vim.g.ds_icons.groups.Book,
+                highlight = { fg = vim.g.ds_colors.cyan1 },
                 auto_close = true,
                 matcher = function(buf)
                   return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten"
@@ -157,7 +157,7 @@ return {
                   style = bufferline_groups.separator.pill,
                 },
               },
-              bufferline_groups.builtin.pinned:with { icon = icons.groups.Pinned },
+              bufferline_groups.builtin.pinned:with { icon = vim.g.ds_icons.groups.Pinned },
               bufferline_groups.builtin.ungrouped,
             },
           },
@@ -226,7 +226,7 @@ return {
     keys = {
       {
         "<leader>fE",
-        function() require("neo-tree.command").execute { toggle = true, dir = util.buffer.get_root() } end,
+        function() require("neo-tree.command").execute { toggle = true, dir = ds.buffer.get_root() } end,
         desc = "neotree: browse root directory",
       },
       {
@@ -242,21 +242,21 @@ return {
     },
     deactivate = function() vim.cmd { cmd = "NeoTree", args = { "close" } } end,
     init = function()
-      local GRAY = color.darken(c.gray0, 10)
+      local GRAY = ds.color.darken(vim.g.ds_colors.gray0, 10)
 
-      groups.new("NeoTreeTitleBar", { fg = c.bg2, bg = c.red1, bold = true })
-      groups.new("NeoTreeFloatBorder", { fg = GRAY, bg = GRAY })
-      groups.new("NeoTreeFloatNormal", { bg = GRAY })
+      ds.hl.new("NeoTreeTitleBar", { fg = vim.g.ds_colors.bg2, bg = vim.g.ds_colors.red1, bold = true })
+      ds.hl.new("NeoTreeFloatBorder", { fg = GRAY, bg = GRAY })
+      ds.hl.new("NeoTreeFloatNormal", { bg = GRAY })
 
-      groups.new("NeoTreeNormal", { link = "NormalSB" })
-      groups.new("NeoTreeNormalNC", { link = "NormalSB" })
-      groups.new("NeoTreeTabActive", { fg = c.fg0, bg = c.bgX })
-      groups.new("NeoTreeTabInactive", { fg = c.gray1, bg = c.bgX })
-      groups.new("NeoTreeTabSeparatorActive", { fg = c.bgX, bg = c.bgX })
-      groups.new("NeoTreeTabSeparatorInactive", { fg = c.bgX, bg = c.bgX })
+      ds.hl.new("NeoTreeNormal", { link = "NormalSB" })
+      ds.hl.new("NeoTreeNormalNC", { link = "NormalSB" })
+      ds.hl.new("NeoTreeTabActive", { fg = vim.g.ds_colors.fg0, bg = vim.g.ds_colors.bgX })
+      ds.hl.new("NeoTreeTabInactive", { fg = vim.g.ds_colors.gray1, bg = vim.g.ds_colors.bgX })
+      ds.hl.new("NeoTreeTabSeparatorActive", { fg = vim.g.ds_colors.bgX, bg = vim.g.ds_colors.bgX })
+      ds.hl.new("NeoTreeTabSeparatorInactive", { fg = vim.g.ds_colors.bgX, bg = vim.g.ds_colors.bgX })
 
-      groups.new("NeoTreeFileName", { fg = color.lighten(c.gray2, 30) })
-      groups.new("NeoTreeRootName", { link = "Directory" })
+      ds.hl.new("NeoTreeFileName", { fg = ds.color.lighten(vim.g.ds_colors.gray2, 30) })
+      ds.hl.new("NeoTreeRootName", { link = "Directory" })
 
       vim.g.neo_tree_remove_legacy_commands = 1
       vim.api.nvim_create_autocmd("BufEnter", {
@@ -279,8 +279,11 @@ return {
         winbar = true,
         separator_active = " ",
         sources = {
-          { source = "filesystem", display_name = ds.pad(icons.documents.MultipleFolders, "both", 1, 2) .. "Files " },
-          { source = "document_symbols", display_name = ds.pad(icons.kind.Class, "both", 1, 2) .. "Symbols " },
+          {
+            source = "filesystem",
+            display_name = ds.pad(vim.g.ds_icons.documents.MultipleFolders, "both", 1, 2) .. "Files ",
+          },
+          { source = "document_symbols", display_name = ds.pad(vim.g.ds_icons.kind.Class, "both", 1, 2) .. "Symbols " },
         },
       },
       enable_git_status = true,
@@ -319,22 +322,22 @@ return {
       },
       document_symbols = {
         follow_cursor = true,
-        kinds = util.reduce(vim.tbl_deep_extend("keep", icons.kind, icons.type), function(acc, v, k)
+        kinds = ds.reduce(vim.tbl_deep_extend("keep", vim.g.ds_icons.kind, vim.g.ds_icons.type), function(acc, v, k)
           acc[k] = { icon = v, hl = ("TroubleIcon%s"):format(k) }
           return acc
         end),
       },
       default_component_configs = {
         icon = {
-          folder_closed = icons.documents.FolderClosed,
-          folder_open = icons.documents.FolderOpened,
-          folder_empty = icons.documents.FolderEmpty,
-          folder_empty_open = icons.documents.FolderEmpty,
+          folder_closed = vim.g.ds_icons.documents.FolderClosed,
+          folder_open = vim.g.ds_icons.documents.FolderOpened,
+          folder_empty = vim.g.ds_icons.documents.FolderEmpty,
+          folder_empty_open = vim.g.ds_icons.documents.FolderEmpty,
         },
         indent = {
           with_expanders = true,
-          expander_collapsed = icons.misc.FoldClosed,
-          expander_expanded = icons.misc.FoldOpened,
+          expander_collapsed = vim.g.ds_icons.misc.FoldClosed,
+          expander_expanded = vim.g.ds_icons.misc.FoldOpened,
           expander_highlight = "NeoTreeExpander",
         },
         name = {
@@ -390,8 +393,8 @@ return {
     config = function(_, opts)
       require("spectre").setup(opts)
 
-      groups.new("SpectreSearch", { fg = c.bg0, bg = c.rose0, bold = true })
-      groups.new("SpectreReplace", { fg = c.bg0, bg = c.green0, bold = true })
+      ds.hl.new("SpectreSearch", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.rose0, bold = true })
+      ds.hl.new("SpectreReplace", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.green0, bold = true })
 
       vim.api.nvim_create_autocmd("FileType", {
         group = vim.api.nvim_create_augroup("cursorline", { clear = true }),
@@ -628,7 +631,7 @@ return {
       local preview_opts = {
         type = "float",
         relative = "editor",
-        border = util.map(icons.border.ThinBlock, function(v) return { v, "FloatBorderSB" } end),
+        border = ds.map(vim.g.ds_icons.border.ThinBlock, function(v) return { v, "FloatBorderSB" } end),
         position = { 0.5, 0.5 },
         size = { width = 0.6, height = 0.5 },
         zindex = 200,
@@ -637,8 +640,8 @@ return {
         icons = {
           kinds = vim.tbl_extend(
             "keep",
-            vim.tbl_map(function(kind) return ds.pad(kind, "right") end, icons.kind),
-            vim.tbl_map(function(kind) return ds.pad(kind, "right") end, icons.type)
+            vim.tbl_map(function(kind) return ds.pad(kind, "right") end, vim.g.ds_icons.kind),
+            vim.tbl_map(function(kind) return ds.pad(kind, "right") end, vim.g.ds_icons.type)
           ),
         },
         modes = {

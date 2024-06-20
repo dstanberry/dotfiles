@@ -1,6 +1,7 @@
+---@class util.terminal
 local M = {}
 
-local launch_term = function(task, opts)
+local launch = function(task, opts)
   vim.cmd.new { range = { 5 }, mods = { split = "belowright" } }
   vim.bo.bufhidden = "wipe"
   vim.bo.buflisted = false
@@ -39,7 +40,7 @@ function M.install_package(name, basedir, path, script, force)
     print("Installing " .. name)
     vim.fn.mkdir(basedir, "p")
     if ds.has "win32" then script = transform_win_cmd(script) end
-    launch_term(script, {
+    launch(script, {
       cwd = path,
       ["on_exit"] = function(_, code)
         if code ~= 0 then error("Failed to install " .. name) end

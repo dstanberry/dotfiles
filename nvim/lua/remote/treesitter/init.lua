@@ -1,8 +1,6 @@
-local groups = require "ui.theme.groups"
-
-groups.new("TreesitterContext", { link = "Normal" })
-groups.new("TreesitterContextLineNumber", { link = "LineNr" })
-groups.new("TreesitterContextSeparator", { link = "NonText" })
+ds.hl.new("TreesitterContext", { link = "Normal" })
+ds.hl.new("TreesitterContextLineNumber", { link = "LineNr" })
+ds.hl.new("TreesitterContextSeparator", { link = "NonText" })
 
 -- vim.treesitter.language.register("bash", "zsh")
 vim.treesitter.language.register("typescript", "typescriptreact")
@@ -145,13 +143,13 @@ return {
       local MAGENTA = "#9086a4"
       local MAGENTA_LIGHT = "#bfafc4"
 
-      groups.new("TSRainbow1", { fg = CYAN })
-      groups.new("TSRainbow2", { fg = ORANGE })
-      groups.new("TSRainbow3", { fg = MAGENTA })
-      groups.new("TSRainbow4", { fg = CYAN_LIGHT })
-      groups.new("TSRainbow5", { fg = PINK })
-      groups.new("TSRainbow6", { fg = MAGENTA_LIGHT })
-      groups.new("TSRainbow7", { fg = YELLOW })
+      ds.hl.new("TSRainbow1", { fg = CYAN })
+      ds.hl.new("TSRainbow2", { fg = ORANGE })
+      ds.hl.new("TSRainbow3", { fg = MAGENTA })
+      ds.hl.new("TSRainbow4", { fg = CYAN_LIGHT })
+      ds.hl.new("TSRainbow5", { fg = PINK })
+      ds.hl.new("TSRainbow6", { fg = MAGENTA_LIGHT })
+      ds.hl.new("TSRainbow7", { fg = YELLOW })
     end,
     config = function()
       local rainbow_delimiters = require "rainbow-delimiters"

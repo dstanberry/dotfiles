@@ -1,8 +1,3 @@
-local c = require("ui.theme").colors
-local color = require "util.color"
-local groups = require "ui.theme.groups"
-local icons = require "ui.icons"
-
 return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
@@ -15,8 +10,8 @@ return {
         model = "gpt-4",
         auto_insert_mode = true,
         show_help = true,
-        question_header = string.format("%s %s ", icons.misc.User, user),
-        answer_header = string.format("%s %s ", icons.kind.Copilot, "Copilot"),
+        question_header = string.format("%s %s ", vim.g.ds_icons.misc.User, user),
+        answer_header = string.format("%s %s ", vim.g.ds_icons.kind.Copilot, "Copilot"),
         window = {
           width = 0.4,
         },
@@ -62,7 +57,7 @@ return {
           vim.opt_local.number = false
         end,
       })
-      ds.on_load("telescope.nvim", function()
+      ds.lazy.on_load("telescope.nvim", function()
         vim.keymap.set({ "n", "v" }, "<leader>cd", function()
           local actions = require "CopilotChat.actions"
           local help = actions.help_actions()
@@ -316,7 +311,7 @@ return {
     end,
     config = function(_, opts)
       require("mini.ai").setup(opts)
-      ds.on_load("which-key.nvim", function()
+      ds.lazy.on_load("which-key.nvim", function()
         local mini_motions = function()
           local i = {
             [" "] = "mini.ai: whitespace",
@@ -382,6 +377,7 @@ return {
       local pairs = require "mini.pairs"
       pairs.setup(opts)
       local open = pairs.open
+      ---@diagnostic disable-next-line: duplicate-set-field
       pairs.open = function(pair, neigh_pattern)
         if vim.fn.getcmdline() ~= "" then return open(pair, neigh_pattern) end
         local _o, _c = pair:sub(1, 1), pair:sub(2, 2)
@@ -538,7 +534,7 @@ return {
           fields = { "kind", "abbr", "menu" },
           format = function(_, item)
             item.menu = ds.pad(item.kind, "both")
-            item.kind = ds.pad(icons.kind[item.kind], "both")
+            item.kind = ds.pad(vim.g.ds_icons.kind[item.kind], "both")
             return item
           end,
         },
@@ -568,11 +564,11 @@ return {
         },
         window = {
           completion = {
-            border = icons.border.ThinBlock,
+            border = vim.g.ds_icons.border.ThinBlock,
             winhighlight = "Normal:FloatBorder,FloatBorder:FloatBorderSB,CursorLine:PmenuSel",
           },
           documentation = {
-            border = icons.border.ThinBlock,
+            border = vim.g.ds_icons.border.ThinBlock,
             winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorderSB",
           },
         },
@@ -581,41 +577,41 @@ return {
     config = function(_, opts)
       require("cmp").setup(opts)
 
-      local BLUE = color.lighten(c.blue2, 15)
-      local BLUE_DARK = color.darken(c.blue2, 35)
+      local BLUE = ds.color.lighten(vim.g.ds_colors.blue2, 15)
+      local BLUE_DARK = ds.color.darken(vim.g.ds_colors.blue2, 35)
 
-      groups.new("CmpItemAbbrDefault", { fg = c.white })
-      groups.new("CmpItemAbbrDeprecatedDefault", { fg = c.white })
-      groups.new("CmpItemAbbrMatchDefault", { fg = BLUE, bold = true })
-      groups.new("CmpItemAbbrMatchFuzzyDefault", { fg = c.orange0, bold = true })
-      groups.new("CmpItemMenu", { fg = BLUE_DARK })
+      ds.hl.new("CmpItemAbbrDefault", { fg = vim.g.ds_colors.white })
+      ds.hl.new("CmpItemAbbrDeprecatedDefault", { fg = vim.g.ds_colors.white })
+      ds.hl.new("CmpItemAbbrMatchDefault", { fg = BLUE, bold = true })
+      ds.hl.new("CmpItemAbbrMatchFuzzyDefault", { fg = vim.g.ds_colors.orange0, bold = true })
+      ds.hl.new("CmpItemMenu", { fg = BLUE_DARK })
 
-      groups.new("CmpItemKindClass", { link = "@lsp.type.class" })
-      groups.new("CmpItemKindConstant", { link = "@constant" })
-      groups.new("CmpItemKindConstructor", { link = "@constructor" })
-      groups.new("CmpItemKindCopilot", { fg = c.green0 })
-      groups.new("CmpItemKindDefault", { fg = c.white })
-      groups.new("CmpItemKindEnum", { link = "@lsp.type.enum" })
-      groups.new("CmpItemKindEnumMember", { link = "@lsp.type.enumMember" })
-      groups.new("CmpItemKindEvent", { link = "@boolean" })
-      groups.new("CmpItemKindField", { link = "@variable.member" })
-      groups.new("CmpItemKindFile", { link = "Directory" })
-      groups.new("CmpItemKindFolder", { link = "Directory" })
-      groups.new("CmpItemKindFunction", { link = "@lsp.type.function" })
-      groups.new("CmpItemKindInterface", { link = "@lsp.type.interface" })
-      groups.new("CmpItemKindKeyword", { link = "@keyword" })
-      groups.new("CmpItemKindMethod", { link = "@lsp.type.method" })
-      groups.new("CmpItemKindModule", { link = "@module" })
-      groups.new("CmpItemKindOperator", { link = "@operator" })
-      groups.new("CmpItemKindProperty", { link = "@property" })
-      groups.new("CmpItemKindReference", { link = "@markup.link" })
-      groups.new("CmpItemKindSnippet", { fg = c.purple0 })
-      groups.new("CmpItemKindStruct", { link = "@lsp.type.struct" })
-      groups.new("CmpItemKindText", { link = "@markup" })
-      groups.new("CmpItemKindTypeParameter", { link = "@lsp.type.parameter" })
-      groups.new("CmpItemKindUnit", { link = "SpecialChar" })
-      groups.new("CmpItemKindValue", { link = "@markup" })
-      groups.new("CmpItemKindVariable", { link = "@variable" })
+      ds.hl.new("CmpItemKindClass", { link = "@lsp.type.class" })
+      ds.hl.new("CmpItemKindConstant", { link = "@constant" })
+      ds.hl.new("CmpItemKindConstructor", { link = "@constructor" })
+      ds.hl.new("CmpItemKindCopilot", { fg = vim.g.ds_colors.green0 })
+      ds.hl.new("CmpItemKindDefault", { fg = vim.g.ds_colors.white })
+      ds.hl.new("CmpItemKindEnum", { link = "@lsp.type.enum" })
+      ds.hl.new("CmpItemKindEnumMember", { link = "@lsp.type.enumMember" })
+      ds.hl.new("CmpItemKindEvent", { link = "@boolean" })
+      ds.hl.new("CmpItemKindField", { link = "@variable.member" })
+      ds.hl.new("CmpItemKindFile", { link = "Directory" })
+      ds.hl.new("CmpItemKindFolder", { link = "Directory" })
+      ds.hl.new("CmpItemKindFunction", { link = "@lsp.type.function" })
+      ds.hl.new("CmpItemKindInterface", { link = "@lsp.type.interface" })
+      ds.hl.new("CmpItemKindKeyword", { link = "@keyword" })
+      ds.hl.new("CmpItemKindMethod", { link = "@lsp.type.method" })
+      ds.hl.new("CmpItemKindModule", { link = "@module" })
+      ds.hl.new("CmpItemKindOperator", { link = "@operator" })
+      ds.hl.new("CmpItemKindProperty", { link = "@property" })
+      ds.hl.new("CmpItemKindReference", { link = "@markup.link" })
+      ds.hl.new("CmpItemKindSnippet", { fg = vim.g.ds_colors.purple0 })
+      ds.hl.new("CmpItemKindStruct", { link = "@lsp.type.struct" })
+      ds.hl.new("CmpItemKindText", { link = "@markup" })
+      ds.hl.new("CmpItemKindTypeParameter", { link = "@lsp.type.parameter" })
+      ds.hl.new("CmpItemKindUnit", { link = "SpecialChar" })
+      ds.hl.new("CmpItemKindValue", { link = "@markup" })
+      ds.hl.new("CmpItemKindVariable", { link = "@variable" })
     end,
   },
   {

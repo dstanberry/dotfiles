@@ -2,7 +2,6 @@
 local ok, rust_tools = pcall(require, "rust-tools")
 if not ok then return end
 local rust_analyzer = require "remote.lsp.servers.rust_analyzer"
-local icons = require "ui.icons"
 local paths = require("remote.dap.debuggers.c").get_executable_path()
 
 local M = {}
@@ -22,7 +21,7 @@ M.setup = function()
         only_current_line_autocmd = "CursorHold",
         show_parameter_hints = true,
         parameter_hints_prefix = ":",
-        other_hints_prefix = icons.misc.RightArrow,
+        other_hints_prefix = vim.g.ds_icons.misc.RightArrow,
         max_len_align = false,
         max_len_align_padding = 1,
         right_align = false,

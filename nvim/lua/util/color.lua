@@ -1,3 +1,4 @@
+---@class util.color
 local M = {}
 
 -- return value within range boundary

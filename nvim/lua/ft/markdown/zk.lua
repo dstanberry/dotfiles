@@ -8,8 +8,6 @@ local zk = require "zk"
 local zka = require "zk.api"
 local zku = require "zk.util"
 
-local util = require "util"
-
 local templates = {
   {
     label = "Team sync meeting",
@@ -98,7 +96,7 @@ M.new = function(options)
 end
 
 local make_given_range_params = function(range)
-  local params = util.reduce({ "start", "end" }, function(v, k)
+  local params = ds.reduce({ "start", "end" }, function(v, k)
     local row, col = unpack(range[k])
     col = (vim.o.selection ~= "exclusive" and v == "end") and col + 1 or col
     params[v] = { line = row, character = col }
@@ -120,7 +118,7 @@ M.new_from_selection = function(options)
   if not options.location and (options.location ~= "title" or options.location ~= "content") then
     error(("Invalid option to create note: '%s'"):format(tostring(options.location)))
   end
-  local lines, range = util.buffer.get_visual_selection()
+  local lines, range = ds.buffer.get_visual_selection()
   local chunk = table.concat(lines)
   if chunk == nil then error "Unable to create note: No selected text" end
   if not range then error("Invalid text selection. Invalid value for 'range': " .. vim.inspect(range)) end
@@ -145,7 +143,7 @@ end
 ---@param options? table additional options
 M.insert_link_from_selection = function(options)
   options = options or {}
-  local lines, range = util.buffer.get_visual_selection()
+  local lines, range = ds.buffer.get_visual_selection()
   local selection = table.concat(lines)
   if selection == nil then error "Unable to create note: No selected text" end
   if not range then error("Invalid text selection. Invalid value for 'range': " .. vim.inspect(range)) end

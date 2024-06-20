@@ -1,30 +1,25 @@
-local c = require("ui.theme").colors
-local color = require "util.color"
-local groups = require "ui.theme.groups"
-local icons = require "ui.icons"
+local GRAY = ds.color.darken(vim.g.ds_colors.gray0, 10)
+local GRAY_DARK = ds.color.darken(vim.g.ds_colors.gray0, 25)
+local BLUE = ds.color.darken(vim.g.ds_colors.blue1, 43)
 
-local GRAY = color.darken(c.gray0, 10)
-local GRAY_DARK = color.darken(c.gray0, 25)
-local BLUE = color.darken(c.blue1, 43)
+ds.hl.new("TelescopePromptBorder", { fg = GRAY, bg = GRAY })
+ds.hl.new("TelescopePreviewBorder", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.bg0 })
+ds.hl.new("TelescopeResultsBorder", { fg = GRAY_DARK, bg = GRAY_DARK })
 
-groups.new("TelescopePromptBorder", { fg = GRAY, bg = GRAY })
-groups.new("TelescopePreviewBorder", { fg = c.bg0, bg = c.bg0 })
-groups.new("TelescopeResultsBorder", { fg = GRAY_DARK, bg = GRAY_DARK })
+ds.hl.new("TelescopePromptTitle", { fg = vim.g.ds_colors.bg2, bg = vim.g.ds_colors.red1, bold = true })
+ds.hl.new("TelescopePreviewTitle", { fg = vim.g.ds_colors.bg0 })
+ds.hl.new("TelescopeResultsTitle", { fg = GRAY_DARK })
 
-groups.new("TelescopePromptTitle", { fg = c.bg2, bg = c.red1, bold = true })
-groups.new("TelescopePreviewTitle", { fg = c.bg0 })
-groups.new("TelescopeResultsTitle", { fg = GRAY_DARK })
+ds.hl.new("TelescopePromptCounter", { fg = vim.g.ds_colors.gray1 })
+ds.hl.new("TelescopePromptPrefix", { fg = vim.g.ds_colors.green2 })
+ds.hl.new("TelescopePromptNormal", { bg = GRAY })
+ds.hl.new("TelescopePreviewNormal", { fg = vim.g.ds_colors.green2, bg = vim.g.ds_colors.bg0 })
+ds.hl.new("TelescopeResultsNormal", { bg = GRAY_DARK })
 
-groups.new("TelescopePromptCounter", { fg = c.gray1 })
-groups.new("TelescopePromptPrefix", { fg = c.green2 })
-groups.new("TelescopePromptNormal", { bg = GRAY })
-groups.new("TelescopePreviewNormal", { fg = c.green2, bg = c.bg0 })
-groups.new("TelescopeResultsNormal", { bg = GRAY_DARK })
-
-groups.new("TelescopeMatching", { fg = c.orange0, bold = true })
-groups.new("TelescopeMultiSelection", { fg = c.magenta1 })
-groups.new("TelescopeSelection", { bg = BLUE, bold = true })
-groups.new("TelescopeSelectionCaret", { fg = c.fg0, bg = BLUE, bold = true })
+ds.hl.new("TelescopeMatching", { fg = vim.g.ds_colors.orange0, bold = true })
+ds.hl.new("TelescopeMultiSelection", { fg = vim.g.ds_colors.magenta1 })
+ds.hl.new("TelescopeSelection", { bg = BLUE, bold = true })
+ds.hl.new("TelescopeSelectionCaret", { fg = vim.g.ds_colors.fg0, bg = BLUE, bold = true })
 
 return {
   {
@@ -183,9 +178,9 @@ return {
             LESS = "",
             DELTA_PAGER = "less",
           },
-          prompt_prefix = ds.pad(icons.misc.Prompt, "right"),
-          selection_caret = ds.pad(icons.misc.CaretRight, "right"),
-          multi_icon = ds.pad(icons.misc.CaretRight, "right"),
+          prompt_prefix = ds.pad(vim.g.ds_icons.misc.Prompt, "right"),
+          selection_caret = ds.pad(vim.g.ds_icons.misc.CaretRight, "right"),
+          multi_icon = ds.pad(vim.g.ds_icons.misc.CaretRight, "right"),
           sorting_strategy = "descending",
           results_title = false,
           scroll_strategy = "cycle",

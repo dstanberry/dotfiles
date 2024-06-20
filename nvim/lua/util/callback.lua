@@ -1,8 +1,9 @@
 ---Global callback store to prevent loss of information if this file is reloaded
-_G.__UtilCallbackStore = _G.__UtilCallbackStore or {}
+_G.ds.__UtilCallbackStore = _G.ds.__UtilCallbackStore or {}
 
+---@class util.callback
 local M = {
-  _callbackStore = _G.__UtilCallbackStore,
+  _callbackStore = _G.ds.__UtilCallbackStore,
 }
 
 ---Execute a callback stored at the id provided

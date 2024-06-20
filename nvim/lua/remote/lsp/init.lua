@@ -1,5 +1,3 @@
-local util = require "util"
-
 -- vim.lsp.set_log_level "trace"
 -- vim.cmd.edit(vim.lsp.get_log_path())
 
@@ -40,7 +38,7 @@ return {
       local client_capabilities = handlers.get_client_capabilities()
       local configurations = vim.api.nvim_get_runtime_file("lua/remote/lsp/servers/*.lua", true)
       for _, file in ipairs(configurations) do
-        local modname = util.get_module_name(file)
+        local modname = ds.get_module_name(file)
         local mod = require(modname)
         local srv = (modname):match "[^%.]*$"
         local config = vim.F.if_nil(mod.config, {})

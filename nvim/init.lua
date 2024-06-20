@@ -1,14 +1,12 @@
 if vim.loader then vim.loader.enable() end
 
-require "util.globals"
-
-local util = require "util"
-local lazy = require "util.lazy"
-
-_G.ds = vim.tbl_deep_extend("keep", _G.ds, lazy.globals)
-
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
+
+_G.ds = require "util"
+
+vim.g.ds_icons = require "ui.icons"
+vim.g.ds_excludes = require "ui.excludes"
 
 vim.g.markdown_fenced_languages = {
   "bash=sh",
@@ -57,11 +55,11 @@ vim.fn.mkdir(vim.fs.joinpath(cache, "shada"), "p")
 vim.cmd.colorscheme "kdark"
 -- vim.cmd.colorscheme "catppuccin-frappe"
 
-util.filesystem.load_dirhash(vim.env.SHELL)
-util.filesystem.load_settings()
+ds.fs.load_dirhash(vim.env.SHELL)
+ds.fs.load_settings()
 
 vim.g.dotfiles_dir = vim.fs.joinpath(vim.env.HOME, ".config")
 vim.g.projects_dir = vim.env.projects_dir and vim.fs.normalize(vim.env.projects_dir)
   or vim.fs.joinpath(vim.env.HOME, "Projects")
 
-lazy.setup()
+ds.lazy.setup()
