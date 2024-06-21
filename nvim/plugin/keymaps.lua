@@ -159,7 +159,7 @@ end, { silent = false, expr = true, replace_keycodes = true, desc = "create/edit
 vim.keymap.set("n", "<localleader><localleader>r", function()
   if vim.bo.filetype ~= "lua" then error "reload utility only available for lua modules" end
   local file = vim.api.nvim_buf_get_name(0)
-  local mod = ds.get_module_name(file)
+  local mod = ds.get_module(file)
   local shift = ""
   if #mod == 0 then shift = "<left><left>" end
   return ([[:lua ds.reload("%s")%s]]):format(mod, shift)

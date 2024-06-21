@@ -106,20 +106,14 @@ function M.get_location()
   return ("%s:%s"):format(source, info.linedefined)
 end
 
----Prints lua formatted representation of the given string `filename` as a lua module
----@param filename string
+---Prints the lua formatted representation of `filepath` as a module
+---@param filepath string
 ---@return string modname
-function M.get_module_name(filename)
-  local modname
-  if ds.has "win32" then
-    modname = (filename):match "lua\\(.+)%.lua$"
-    if modname ~= nil then modname = (modname):gsub("\\", ".") end
-  else
-    modname = (filename):match "lua/(.+)%.lua$"
-    if modname ~= nil then modname = (modname):gsub("/", ".") end
-  end
-  modname = (modname):gsub(".init", "")
-  return modname or ""
+function M.get_module(filepath)
+  local mod, sep
+  sep = ds.has "win32" and "\\" or "/"
+  mod = filepath:match(("lua%s(.+)%.lua$"):format(sep)):gsub(sep, "."):gsub("%.init", "")
+  return mod or ""
 end
 
 ---Wrapper for Vim's `|has|`feature detection function
