@@ -167,6 +167,31 @@ function M.map(list, callback)
   end, {})
 end
 
+---Converts a list of items into a value by iterating over each pair and transforming them
+---with a callback function.
+---If the keys in the table are all numeric, it will perform an ordered iteration over each pair.
+---Otherwise the order will not be guaranteed
+---@generic T: table, S
+---@param list T[] | table
+---@param callback fun(acc: S, item: T, key: string | number): S
+---@param acc S?
+---@return S
+function M.reduce(list, callback, acc)
+  acc = acc or {}
+  if tbl_keys_numeric(list) then
+    for i, v in ipairs(list) do
+      acc = callback(acc, v, i)
+      assert(acc ~= nil, "The accumulator must be returned on each iteration")
+    end
+  else
+    for k, v in pairs(list) do
+      acc = callback(acc, v, k)
+      assert(acc ~= nil, "The accumulator must be returned on each iteration")
+    end
+  end
+  return acc
+end
+
 ---Adds whitespace to the start, end or both start and end of a string
 ---@param s string
 ---@param direction string
@@ -241,31 +266,6 @@ function M.profile(cmd, times)
   end
   ---@diagnostic disable-next-line: discard-returns
   print(((vim.uv.hrtime() - start) / 1000000 / times) .. "ms")
-end
-
----Converts a list of items into a value by iterating over each pair and transforming them
----with a callback function.
----If the keys in the table are all numeric, it will perform an ordered iteration over each pair.
----Otherwise the order will not be guaranteed
----@generic T: table, S
----@param list T[] | table
----@param callback fun(acc: S, item: T, key: string | number): S
----@param acc S?
----@return S
-function M.reduce(list, callback, acc)
-  acc = acc or {}
-  if tbl_keys_numeric(list) then
-    for i, v in ipairs(list) do
-      acc = callback(acc, v, i)
-      assert(acc ~= nil, "The accumulator must be returned on each iteration")
-    end
-  else
-    for k, v in pairs(list) do
-      acc = callback(acc, v, k)
-      assert(acc ~= nil, "The accumulator must be returned on each iteration")
-    end
-  end
-  return acc
 end
 
 ---Unloads the provided module from memory and re-requires it
