@@ -441,8 +441,7 @@ HISTCMD_LOCAL=0
 function -set-tab-and-window-title() {
   emulate -L zsh
   local CMD="${1:gs/$/\\$}"
-  local TERMNAME="―― terminal"
-  print -Pn "\e]0;$CMD $TERMNAME:q\a"
+  print -Pn "\e]0;$CMD:q\a"
 }
 
 function -pwd-basename() {
