@@ -1,3 +1,5 @@
+local defaults = require "ui.theme.defaults"
+
 ---@class ColorPalette
 ---@field aqua0 string
 ---@field aqua1 string
@@ -52,18 +54,41 @@
 ---@field yellow1 string
 ---@field yellow2 string
 
+---@alias Colorscheme "kdark"|"catppuccin-frappe"|"catppuccin-mocha"
+---@alias Background "light"|"dark"
+---@alias Theme table<Colorscheme,ColorPalette>
+
 local M = {}
 
-M.themes = {
-  ["catppuccin-frappe"] = require "ui.theme.colors.catppuccin.frappe",
-  ["catppuccin-mocha"] = require "ui.theme.colors.catppuccin.mocha",
-  ["kdark"] = require "ui.theme.colors.kdark",
-}
+local extras = { base = "nvim/lua/", root = "ui/theme/palette" }
+local start = extras.base .. extras.root
 
-M.setup = function(t)
-  if type(t) == "string" then t = M.themes[t] end
-  vim.g.ds_colors = vim.F.if_nil(t, M.themes.kdark)
-  ds.hl.apply(vim.g.ds_colors)
+---@class Colorschemes table<Colorscheme,Theme>
+M.themes = {}
+
+M._initialized = false
+
+---Sets the active neovim theme based on the provided `colorscheme`
+---@param t Colorscheme
+---@param b? Background
+M.load = function(t, b)
+  b = b or "dark"
+  if not M._initialized then
+    M._initialized = true
+    ds.walk(start, function(path, name, type)
+      if (type == "file" or type == "link") and name:match "%.lua$" then
+        name = path:sub(#start + 2, -5):gsub("/", ".") ---@type Colorscheme
+        local mod = require(extras.root:gsub("/", ".") .. "." .. name) ---@type ColorPalette
+        M.themes[name] = mod
+      end
+    end)
+  end
+  if t and M.themes[t] then
+    vim.o.background = "dark"
+    vim.g.colors_name = t
+    vim.g.ds_colors = M.themes[t]
+    ds.hl.apply(vim.g.ds_colors, defaults)
+  end
 end
 
 return M
