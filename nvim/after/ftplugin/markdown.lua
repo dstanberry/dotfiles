@@ -24,7 +24,7 @@ vim.api.nvim_create_autocmd("InsertEnter", {
   callback = function() markdown.disable_extmarks() end,
 })
 
-vim.keymap.set("i", "<cr>", markdown.insert_list_marker, { buffer = 0, desc = "insert list marker" })
+vim.keymap.set("i", "<s-cr>", markdown.insert_list_marker, { buffer = 0, desc = "insert list marker" })
 
 vim.keymap.set("i", "<c-w><c-c>", markdown.insert_checkbox, { buffer = 0, desc = "insert checkbox" })
 vim.keymap.set("i", "<c-w><c-l>", markdown.insert_link, { buffer = 0, desc = "insert link" })
