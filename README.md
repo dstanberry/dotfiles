@@ -53,7 +53,7 @@ hash -d proj=/home/<user>/Projects/foo/bar
 ...
 ```
 
-Git (Optional): Have the global `.gitconfig` file include the configurations
+Git: Have the global `.gitconfig` file include the configurations
 maintained here.
 
 ```gitconfig
@@ -85,19 +85,22 @@ is also checked.
 
 ## Dependencies
 
-[Delta](https://github.com/dandavison/delta)
+[Patched Font](https://www.nerdfonts.com)
+
+[Bat](https://github.com/sharkdp/bat)
 
 [RipGrep](https://github.com/BurntSushi/ripgrep)
 
 [FZF](https://github.com/junegunn/fzf)
 
-[Bat](https://github.com/sharkdp/bat)
+[Delta](https://github.com/dandavison/delta)
 
-[Patched Font](https://www.nerdfonts.com)
+[Lazygit](https://github.com/jesseduffield/lazygit)
 
 [Neovim](https://github.com/neovim/neovim)
 
 ## Extras
 
-`shared/packages` contains text files in the format `<tool>.txt` whose contents
-are a lists of packages that can be installed by executing `<tool> load`.
+[shared/packages](https://github.com/dstanberry/dotfiles/blob/main/shared/packages)
+contains text files in the format `<tool>.txt` whose contents are a lists of
+packages that can be installed by executing `<tool> load`.
