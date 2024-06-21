@@ -154,10 +154,13 @@ return {
     ---@diagnostic disable-next-line: duplicate-set-field
     vscode.json_decode = function(str) return vim.json.decode(json.json_strip_comments(str)) end
 
-    local debuggers = vim.api.nvim_get_runtime_file("lua/remote/dap/debuggers/*.lua", true)
-    for _, file in ipairs(debuggers) do
-      local mod = ds.get_module_name(file)
-      require(mod).setup()
-    end
+    local extras = { base = "nvim/lua/", root = "remote/dap/debuggers" }
+    local start = extras.base .. extras.root
+    ds.walk(start, function(path, name, type)
+      if (type == "file" or type == "link") and name:match "%.lua$" then
+        name = path:sub(#start + 2, -5):gsub("/", ".")
+        require(extras.root:gsub("/", ".") .. "." .. name).setup()
+      end
+    end)
   end,
 }
