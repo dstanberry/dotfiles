@@ -23,6 +23,7 @@ git:
   autoRefresh: true
   diffContextSize: 3
   disableForcePushing: false
+  overrideGpg: true
   skipHookPrefix: WIP
 gui:
   border: "rounded"
