@@ -60,6 +60,9 @@
 [core]
 	editor = nvim
 
+[commit]
+	gpgsign = true
+
 [delta]
 	colorMoved = default
 	commit-decoration-style = "#bebebe" box ul
@@ -87,6 +90,9 @@
 
 [format]
 	pretty = format:%C(yellow)%h%Creset%C(auto)%d%Creset %C(magenta)(%cr) %C(cyan)%aN%Creset %s%Creset
+
+[gpg]
+	format = ssh
 
 [grep]
 	lineNumber = true
