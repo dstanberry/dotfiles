@@ -298,4 +298,31 @@ function M.setting_enabled(setting)
   return vim.g[var] == true
 end
 
+---Recursive filesystem walker that traverses `path` and
+---applies a provided function `fn` to each file or directory it encounters
+---@param path string
+---@param fn fun(path: string, name:string, type:FileType)
+function M.walk(path, fn)
+  M.walker(path, function(child, name, type)
+    if type == "directory" then M.walk(child, fn) end
+    fn(child, name, type)
+  end)
+end
+
+---@diagnostic disable-next-line: duplicate-doc-alias
+---@alias FileType "file"|"directory"|"link"
+---Filesystem walker that iterates over each file or directory in a given `path`,
+---applying the function `fn` to each, and stops if `fn` returns `false`.
+---@param path string
+---@param fn fun(path: string, name:string, type:FileType):boolean?
+function M.walker(path, fn)
+  local handle = vim.uv.fs_scandir(path)
+  while handle do
+    local name, t = vim.uv.fs_scandir_next(handle)
+    if not name then break end
+    local fname = path .. "/" .. name
+    if fn(fname, name, t or vim.uv.fs_stat(fname).type) == false then break end
+  end
+end
+
 return M
