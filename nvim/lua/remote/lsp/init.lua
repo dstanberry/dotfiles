@@ -37,12 +37,12 @@ return {
         pyright = false,
         tsserver = false,
       }
-      local extras = { base = "nvim/lua/", root = "remote/lsp/servers" }
-      local start = extras.base .. extras.root
-      ds.walk(start, function(path, name, type)
+      local root = "remote/lsp/servers"
+      ds.walk(root, function(path, name, type)
         if (type == "file" or type == "link") and name:match "%.lua$" then
-          name = path:sub(#start + 2, -5):gsub("/", ".")
-          local mod = require(extras.root:gsub("/", ".") .. "." .. name)
+          local m = path:match(root .. "/(.*)"):sub(1, -5):gsub("/", ".")
+          name = name:sub(1, -5)
+          local mod = require(root:gsub("/", ".") .. "." .. m)
           local config = vim.F.if_nil(mod.config, {})
           local server_opts = vim.tbl_deep_extend("force", {
             capabilities = client_capabilities,

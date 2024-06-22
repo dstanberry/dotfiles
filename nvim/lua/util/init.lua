@@ -310,6 +310,18 @@ end
 ---@param path string
 ---@param fn fun(path: string, name:string, type:FileType):boolean?
 function M.walker(path, fn)
+  if not vim.uv.fs_stat(path) then
+    local rtpaths = vim.api.nvim_list_runtime_paths()
+    for _, rtp in ipairs(rtpaths) do
+      local check = rtp .. "/" .. path
+      if vim.uv.fs_stat(check) then
+        path = check
+        break
+      elseif vim.uv.fs_stat(rtp .. "/lua/" .. path) then
+        path = rtp .. "/lua/" .. path
+      end
+    end
+  end
   local handle = vim.uv.fs_scandir(path)
   while handle do
     local name, t = vim.uv.fs_scandir_next(handle)

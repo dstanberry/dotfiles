@@ -60,9 +60,6 @@ local defaults = require "ui.theme.defaults"
 
 local M = {}
 
-local extras = { base = "nvim/lua/", root = "ui/theme/palette" }
-local start = extras.base .. extras.root
-
 ---@class Colorschemes table<Colorscheme,Theme>
 M.themes = {}
 
@@ -75,11 +72,13 @@ M.load = function(t, b)
   b = b or "dark"
   if not M._initialized then
     M._initialized = true
-    ds.walk(start, function(path, name, type)
+    local root = "ui/theme/palette"
+    ds.walk(root, function(path, name, type)
       if (type == "file" or type == "link") and name:match "%.lua$" then
-        name = path:sub(#start + 2, -5):gsub("/", ".") ---@type Colorscheme
-        local mod = require(extras.root:gsub("/", ".") .. "." .. name) ---@type ColorPalette
-        M.themes[name] = mod
+        local mod = path:match(root .. "/(.*)"):sub(1, -5):gsub("/", ".")
+        name = name:sub(1, -5)
+        if mod:match "%." then name = mod:gsub("%.", "_") end
+        M.themes[name] = require(root:gsub("/", ".") .. "." .. mod)
       end
     end)
   end
