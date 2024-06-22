@@ -1,7 +1,9 @@
 ---Global callback store to prevent loss of information if this file is reloaded
+---@diagnostic disable-next-line: inject-field
 _G.ds.__UtilCallbackStore = _G.ds.__UtilCallbackStore or {}
 
 ---@class util.callback
+---@field _callbackStore table<string,function|table>
 local M = {
   _callbackStore = _G.ds.__UtilCallbackStore,
 }
