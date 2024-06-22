@@ -29,27 +29,26 @@ return {
 
     local available_width = function(width) return vim.api.nvim_get_option_value("columns", {}) >= width end
 
+    ---@diagnostic disable-next-line: inject-field
     ds.lsp_symbols = {
       has = function() return false end,
       get = function() return "" end,
     }
 
-    ds.lazy.on_load(
-      "trouble.nvim",
-      function()
-        ds.lsp_symbols = require("trouble").statusline {
-          mode = "lsp_document_symbols",
-          groups = {},
-          title = false,
-          filter = { range = true },
-          format = string.format(
-            "%s%s{kind_icon}{symbol.name:NoiceSymbolNormal}",
-            util.highlighter.sanitize "NoiceSymbolSeparator",
-            ds.pad(vim.g.ds_icons.misc.FoldClosed, "right", 2)
-          ),
-        }
-      end
-    )
+    ds.lazy.on_load("trouble.nvim", function()
+      ---@diagnostic disable-next-line: inject-field
+      ds.lsp_symbols = require("trouble").statusline {
+        mode = "lsp_document_symbols",
+        groups = {},
+        title = false,
+        filter = { range = true },
+        format = string.format(
+          "%s%s{kind_icon}{symbol.name:NoiceSymbolNormal}",
+          util.highlighter.sanitize "NoiceSymbolSeparator",
+          ds.pad(vim.g.ds_icons.misc.FoldClosed, "right", 2)
+        ),
+      }
+    end)
 
     local lsp_symbols_section = function()
       local calculate_data = function(symbols)
