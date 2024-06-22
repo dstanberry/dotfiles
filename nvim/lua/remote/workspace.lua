@@ -632,7 +632,7 @@ return {
       local preview_opts = {
         type = "float",
         relative = "editor",
-        border = ds.map(vim.g.ds_icons.border.ThinBlock, function(v) return { v, "FloatBorderSB" } end),
+        border = ds.map(vim.g.ds_icons.border.Default, function(v) return { v, "FloatBorderSB" } end),
         position = { 0.5, 0.5 },
         size = { width = 0.6, height = 0.5 },
         zindex = 200,

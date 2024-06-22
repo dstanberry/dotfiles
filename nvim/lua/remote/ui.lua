@@ -303,7 +303,7 @@ return {
         documentation = {
           enabled = true,
           opts = {
-            border = { style = vim.g.ds_icons.border.ThinBlock },
+            border = { style = vim.g.ds_icons.border.Default },
             position = { row = 2 },
             win_options = { winhighlight = { FloatBorder = "FloatBorderSB" } },
           },
@@ -605,7 +605,7 @@ return {
         },
       },
       window = {
-        border = vim.g.ds_icons.border.ThinBlock,
+        border = vim.g.ds_icons.border.Default,
       },
     },
     init = function()

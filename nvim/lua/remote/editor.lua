@@ -564,11 +564,11 @@ return {
         },
         window = {
           completion = {
-            border = vim.g.ds_icons.border.ThinBlock,
+            border = vim.g.ds_icons.border.Default,
             winhighlight = "Normal:FloatBorder,FloatBorder:FloatBorderSB,CursorLine:PmenuSel",
           },
           documentation = {
-            border = vim.g.ds_icons.border.ThinBlock,
+            border = vim.g.ds_icons.border.Default,
             winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorderSB",
           },
         },
