@@ -322,11 +322,8 @@ function M.statuscolumn()
     vim.api.nvim_win_call(win, function()
       if vim.fn.foldclosed(vim.v.lnum) >= 0 then
         fold = { text = vim.opt.fillchars:get().foldclose or "", texthl = githl or "Folded" }
-      elseif not M.skip_foldexpr[buf] then
-        local expr = vim.treesitter.foldexpr(vim.v.lnum)
-        if expr and type(expr) == "string" and expr:sub(1, 1) == ">" then
-          fold = { text = vim.opt.fillchars:get().foldopen or "", texthl = githl }
-        end
+      elseif not M.skip_foldexpr[buf] and tostring(vim.treesitter.foldexpr(vim.v.lnum)):sub(1, 1) == ">" then
+        fold = { text = vim.opt.fillchars:get().foldopen or "", texthl = githl }
       end
     end)
     -- Left: mark or non-git sign
