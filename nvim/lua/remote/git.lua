@@ -130,16 +130,30 @@ return {
             vim.keymap.set(mode, l, r, opts)
           end
 
-          map("n", "]h", signs.next_hunk, { desc = "gitsigns: next hunk" })
-          map("n", "[h", signs.prev_hunk, { desc = "gitsigns: previous hunk" })
-          map("n", "<leader>gs", signs.stage_hunk, { desc = "gitsigns: stage hunk" })
-          map("n", "<leader>gS", signs.stage_buffer, { desc = "gitsigns: stage buffer" })
-          map("n", "<leader>gu", signs.undo_stage_hunk, { desc = "gitsigns: unstage Hunk" })
-          map("n", "<leader>gr", signs.reset_hunk, { desc = "gitsigns: reset hunk" })
-          map("n", "<leader>gR", signs.reset_buffer, { desc = "gitsigns: reset buffer" })
-          map("n", "<leader>gp", signs.preview_hunk, { desc = "gitsigns: preview Hunk" })
-          map("n", "<leader>gb", signs.toggle_current_line_blame, { desc = "gitsigns: toggle blame line" })
+          map("n", "]h", function()
+            if vim.wo.diff then
+              vim.cmd.normal { "]c", bang = true }
+            else
+              signs.nav_hunk "next"
+            end
+          end, { desc = "gitsigns: next hunk" })
+          map("n", "[h", function()
+            if vim.wo.diff then
+              vim.cmd.normal { "[c", bang = true }
+            else
+              signs.nav_hunk "prev"
+            end
+          end, { desc = "gitsigns: previous hunk" })
+          map("n", "]H", function() signs.nav_hunk "last" end, { desc = "gitsigns: goto last hunk" })
+          map("n", "[H", function() signs.nav_hunk "first" end, { desc = "gitsigns: goto first hunk" })
           map("n", "<leader>gB", function() signs.blame_line { full = true } end, { desc = "gitsigns: blame line" })
+          map("n", "<leader>gb", signs.toggle_current_line_blame, { desc = "gitsigns: toggle blame line" })
+          map("n", "<leader>gp", signs.preview_hunk, { desc = "gitsigns: preview Hunk" })
+          map("n", "<leader>gR", signs.reset_buffer, { desc = "gitsigns: reset buffer" })
+          map("n", "<leader>gr", signs.reset_hunk, { desc = "gitsigns: reset hunk" })
+          map("n", "<leader>gS", signs.stage_buffer, { desc = "gitsigns: stage buffer" })
+          map("n", "<leader>gs", signs.stage_hunk, { desc = "gitsigns: stage hunk" })
+          map("n", "<leader>gu", signs.undo_stage_hunk, { desc = "gitsigns: unstage Hunk" })
         end,
       }
     end,
