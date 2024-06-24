@@ -147,7 +147,7 @@ return {
       max_concurrent_installers = 4,
       ui = {
         check_outdated_packages_on_open = true,
-        border = "none",
+        border = ds.map(vim.g.ds_icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
         icons = {
           package_installed = vim.g.ds_icons.misc.CheckFilled,
           package_pending = vim.g.ds_icons.misc.RightArrowCircled,
