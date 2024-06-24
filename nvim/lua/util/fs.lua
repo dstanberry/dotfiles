@@ -47,32 +47,31 @@ function M.load_settings()
   end
 end
 
----@alias openmode
----|>"r"   # Read mode.
----| "w"   # Write mode.
----| "a"   # Append mode.
----| "r+"  # Update mode, all previous data is preserved.
----| "w+"  # Update mode, all previous data is erased.
----| "a+"  # Append update mode, previous data is preserved, writing is only allowed at the end of file.
----| "rb"  # Read mode. (in binary mode.)
----| "wb"  # Write mode. (in binary mode.)
----| "ab"  # Append mode. (in binary mode.)
----| "r+b" # Update mode, all previous data is preserved. (in binary mode.)
----| "w+b" # Update mode, all previous data is erased. (in binary mode.)
----| "a+b" # Append update mode, previous data is preserved, writing is only allowed at the end of file. (in binary mode.)
-
 ---Utility function to read a file on disk
----@param filePath string
+---@param file string
 ---@param mode? openmode
 ---@return file*?
 ---@return string? errmsg
-function M.read(filePath, mode)
+function M.read(file, mode)
   mode = vim.F.if_nil(mode, "r")
-  local file = io.open(filePath, "r")
-  if file then
-    local data = file:read "*a"
-    file.close()
+  local fd = io.open(file, "r")
+  if not fd then vim.notify(("Could not open file (%s)"):format(file), vim.log.levels.ERROR) end
+  if fd then
+    local data = fd:read "*a"
+    fd.close()
     return data
+  end
+end
+
+---Utility function to write to a file on disk
+---@param file string
+---@param data string|number
+function M.write(file, data)
+  local fd = io.open(file, "w")
+  if not fd then vim.notify(("Could not open file (%s)"):format(file), vim.log.levels.ERROR) end
+  if fd then
+    fd:write(data)
+    fd:close()
   end
 end
 
