@@ -55,22 +55,18 @@ end
 
 ---Limit the rate at which the provided function `callback` will execute
 ---by delaying it's execution for `delay` milliseconds
+---@param callback fun(...)
+---@param delay number
+---@return function
 function M.debounce(callback, delay)
   local timer = vim.uv.new_timer()
   return function(...)
-    local argv = { ... }
-    timer:stop()
+    local argv = vim.F.pack_len(...)
     timer:start(delay, 0, function()
-      pcall(
-        vim.schedule_wrap(function(...)
-          callback(...)
-          timer:stop()
-        end),
-        select(1, unpack(argv))
-      )
+      timer:stop()
+      vim.schedule_wrap(callback)(vim.F.unpack_len(argv))
     end)
-  end,
-    timer
+  end
 end
 
 ---Iterate over each key-value pair in the provided table and apply the callback function.
