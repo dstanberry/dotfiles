@@ -368,7 +368,6 @@ return {
         },
         {
           view = "notify",
-          opts = { title = "Warning", level = vim.log.levels.WARN, merge = true, replace = true },
           filter = {
             any = {
               { warning = true },
@@ -380,7 +379,6 @@ return {
         },
         {
           view = "notify",
-          opts = { title = "Error", level = vim.log.levels.ERROR, merge = true, replace = true },
           filter = {
             any = {
               { error = true },
