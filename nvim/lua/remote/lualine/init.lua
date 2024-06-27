@@ -196,7 +196,12 @@ return {
             cond = function()
               local buf = vim.api.nvim_get_current_buf()
               local fname = vim.api.nvim_buf_get_name(buf)
-              return not fname:match "%[Scratch%]$"
+              return not (
+                fname:match "%[Scratch%]$"
+                or vim.bo[buf].ft:match "dapui_"
+                or vim.tbl_contains(vim.g.ds_excludes.ft.wb_empty, vim.bo[buf].ft)
+                or vim.tbl_contains(vim.g.ds_excludes.ft.wb_disabled, vim.bo[buf].ft)
+              )
             end,
             padding = { left = 0 },
             color = "Winbar",
