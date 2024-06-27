@@ -17,14 +17,14 @@ M.setup = function()
   dap.configurations.go = {
     {
       type = "delve",
-      name = "Launch - delve",
+      name = "Launch new process",
       request = "launch",
       program = "${file}",
       console = "integratedTerminal",
     },
     {
       type = "delve",
-      name = "Launch - delve [test]",
+      name = "Launch new process [test(s)]",
       request = "launch",
       mode = "test",
       program = "${file}",
@@ -32,7 +32,7 @@ M.setup = function()
     },
     {
       type = "delve",
-      name = "Launch - delve [test (go.mod)]",
+      name = "Launch new process [test go.mod]",
       request = "launch",
       mode = "test",
       program = "./${relativeFileDirname}",

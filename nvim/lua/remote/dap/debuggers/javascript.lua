@@ -33,7 +33,7 @@ M.setup = function()
       dap.configurations[language] = {
         {
           type = "pwa-node",
-          name = "Launch file in new node process",
+          name = "Launch new process (node)",
           request = "launch",
           program = "${file}",
           cwd = "${workspaceFolder}",
@@ -41,30 +41,35 @@ M.setup = function()
         },
         {
           type = "pwa-node",
-          name = "Attach to existing node process",
+          name = "Attach to existing process (node)",
           request = "attach",
-          processId = require("dap.utils").pick_process,
+          processId = function(opts)
+            opts = opts or {}
+            local procs = require("dap.utils").get_processes()
+            return coroutine.create(function(_c)
+              vim.ui.select(
+                procs,
+                { prompt = "Select process:", format_item = function(item) return item.name end },
+                function(choice)
+                  coroutine.resume(_c, (choice and choice.pid and choice.pid > 0) and choice.pid or dap.ABORT)
+                end
+              )
+            end)
+          end,
           cwd = "${workspaceFolder}",
           sourceMaps = true,
         },
         {
           type = "pwa-chrome",
-          name = "Launch in Chrome",
+          name = "Launch new process (chrome)",
           request = "launch",
           preLaunchTask = "npm start",
           url = function()
-            local c = coroutine.running()
-            return coroutine.create(function()
+            return coroutine.create(function(_c)
               vim.ui.input({
                 prompt = "Enter URL: ",
                 default = "http://localhost:4200",
-              }, function(url)
-                if url == nil or url == "" then
-                  return
-                else
-                  coroutine.resume(c, url)
-                end
-              end)
+              }, function(url) coroutine.resume(_c, (url and url ~= "") and url or dap.ABORT) end)
             end)
           end,
           webRoot = "${workspaceFolder}",

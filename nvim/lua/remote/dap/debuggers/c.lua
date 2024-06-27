@@ -30,10 +30,21 @@ M.setup = function()
   dap.configurations.c = {
     {
       type = "codelldb",
-      name = "Launch - codelldb",
+      name = "Launch new process",
       request = "launch",
       program = function()
-        return vim.fn.input("Path to executable: ", vim.fs.normalize(vim.uv.cwd() .. "/target/debug/"), "file")
+        return coroutine.create(function(_c)
+          local root = ds.buffer.get_root()
+          local files = {}
+          ds.walk(root, function(_path, _, type)
+            if (type == "file" or type == "link") and _path:match "/target/debug/" then table.insert(files, _path) end
+          end)
+          vim.ui.select(
+            files,
+            { prompt = "Select executable target:", format_item = function(item) return item:match ".*/(.-)$" end },
+            function(choice) coroutine.resume(_c, (choice and choice ~= "") and choice or dap.ABORT) end
+          )
+        end)
       end,
       cwd = "${workspaceFolder}",
       args = {},
