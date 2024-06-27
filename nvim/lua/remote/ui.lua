@@ -156,12 +156,6 @@ return {
         require("lazy").load { plugins = { "dressing.nvim" } }
         return vim.ui.select(...)
       end
-      -- NOTE: handled by |noice.nvim|
-      -- ---@diagnostic disable-next-line: duplicate-set-field
-      -- vim.ui.input = function(...)
-      --   require("lazy").load { plugins = { "dressing.nvim" } }
-      --   return vim.ui.input(...)
-      -- end
     end,
     config = function()
       local function get_height(self, _, max_lines)
@@ -187,7 +181,8 @@ return {
         select = {
           backend = "telescope",
           telescope = require("telescope.themes").get_dropdown {
-            layout_config = { height = get_height },
+            layout_config = { height = get_height, prompt_position = "top" },
+            previewer = false,
           },
         },
       }

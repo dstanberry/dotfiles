@@ -398,7 +398,16 @@ return {
             },
           },
           ["ui-select"] = {
-            themes.get_cursor {
+            themes.get_dropdown {
+              layout_config = {
+                height = function(self, _, max_lines)
+                  local results = #self.finder.results
+                  local PADDING = 4
+                  local LIMIT = math.floor(max_lines / 2)
+                  return (results <= (LIMIT - PADDING) and results + PADDING or LIMIT)
+                end,
+                prompt_position = "top",
+              },
               previewer = false,
             },
           },
