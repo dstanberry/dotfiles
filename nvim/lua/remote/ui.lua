@@ -439,7 +439,7 @@ return {
       background_colour = "Normal",
       render = function(...)
         local n = select(2, ...)
-        local style = n.title[1] == "" and "minimal" or "default"
+        local style = n.title[1] == "" and "minimal" or "wrapped-compact"
         require("notify.render")[style](...)
       end,
       on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
@@ -471,11 +471,6 @@ return {
       ds.hl.new("NotifyERRORBorder", { link = "FloatBorder" })
       ds.hl.new("NotifyERRORIcon", { link = "ErrorMsg" })
       ds.hl.new("NotifyERRORTitle", { link = "ErrorMsg" })
-
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "notify",
-        callback = function() vim.opt_local.cursorline = false end,
-      })
 
       if not ds.lazy.is_installed "noice.nvim" then
         vim.api.nvim_create_autocmd("User", {
