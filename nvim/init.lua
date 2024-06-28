@@ -8,22 +8,6 @@ _G.ds = require "util"
 vim.g.ds_icons = require "ui.icons"
 vim.g.ds_excludes = require "ui.excludes"
 
-vim.g.markdown_fenced_languages = {
-  "bash=sh",
-  "console=sh",
-  "javascript",
-  "js=javascript",
-  "json",
-  "lua",
-  "python",
-  "sh",
-  "shell=sh",
-  "ts=typescript",
-  "typescript",
-  "vim",
-  "zsh=sh",
-}
-
 vim.filetype.add {
   extension = {
     jenkinsfile = "groovy",
