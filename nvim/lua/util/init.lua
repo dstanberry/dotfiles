@@ -196,46 +196,75 @@ function M.pad(s, direction, amount, ramount)
   return string.format("%s%s%s", left, s, right)
 end
 
----@param value any
----@param opts? { location:string }
-local pretty_print = function(value, opts)
+---@alias util.notifyOpts {lang?:string, title?:string, level?:number, merge?: boolean, location?: string}
+---Displays a notification containing a human-readable representation of the object(s) provided
+---@param msg string|string[]
+---@param opts? util.notifyOpts
+function M.notify(msg, opts)
   opts = opts or {}
   opts.location = opts.location or M.get_location()
-  if vim.in_fast_event() then return vim.schedule(function() M.print(value, opts) end) end
-  local msg = vim.inspect(value)
-  ---@diagnostic disable-next-line: undefined-field
-  local title = vim.F.if_nil(opts.title, "Debug")
-  vim.notify(msg, vim.log.levels.INFO, {
-    title = title,
-    on_open = function(win)
-      vim.wo[win].conceallevel = 3
-      vim.wo[win].concealcursor = ""
-      vim.wo[win].spell = false
-      local buf = vim.api.nvim_win_get_buf(win)
-      if not pcall(vim.treesitter.start, buf, "lua") then vim.bo[buf].filetype = "lua" end
-    end,
-  })
-end
-
----Displays a notification containing a human-readable representation of the object(s) provided
----@param title string
----@param ...? any
-function M.pprint(title, ...)
-  local get_value = function(...)
-    local value = { ... }
-    return vim.islist(value) and vim.tbl_count(value) <= 1 and value[1] or value
+  opts.title = opts.title or "Debug"
+  opts.level = opts.level or vim.log.levels.DEBUG
+  if type(msg) == "table" and opts.merge then
+    ---@diagnostic disable-next-line: return-type-mismatch
+    msg = vim.tbl_filter(function(line) return line or false end, msg)
+    for k, v in pairs(msg) do
+      if type(v) == "table" then msg[k] = vim.inspect(v) end
+    end
+    msg = table.concat(msg, "\n")
   end
-  pretty_print(get_value(...), { title = title })
+  if vim.in_fast_event() then return vim.schedule(function() M.print(msg, opts) end) end
+  vim.notify(
+    opts.merge and msg or vim.inspect(msg),
+    opts.level,
+    vim.tbl_deep_extend("force", {
+      on_open = function(win)
+        vim.wo[win].conceallevel = 3
+        vim.wo[win].concealcursor = ""
+        vim.wo[win].cursorline = false
+        vim.wo[win].spell = false
+        local buf = vim.api.nvim_win_get_buf(win)
+        if not pcall(vim.treesitter.start, buf, "lua") then vim.bo[buf].filetype = "lua" end
+      end,
+    }, opts)
+  )
 end
 
----Displays a notification containing a human-readable representation of the object(s) provided
+---Display an informational notification
+---@param msg string|string[]
+---@param opts? util.notifyOpts
+function M.info(msg, opts)
+  opts = opts or {}
+  opts.level = opts.level or vim.log.levels.INFO
+  M.notify(msg, opts)
+end
+
+---Display a warning notification
+---@param msg string|string[]
+---@param opts? util.notifyOpts
+function M.warn(msg, opts)
+  opts = opts or {}
+  opts.level = opts.level or vim.log.levels.WARN
+  M.notify(msg, opts)
+end
+
+---Display an error notification
+---@param msg string|string[]
+---@param opts? util.notifyOpts
+function M.error(msg, opts)
+  opts = opts or {}
+  opts.level = opts.level or vim.log.levels.ERROR
+  M.notify(msg, opts)
+end
+
+---"Pretty prints" the given arguments and returns them unmodified. The result is shown as a notification
 ---@param ...? any
 function M.print(...)
   local get_value = function(...)
     local value = { ... }
     return vim.islist(value) and vim.tbl_count(value) <= 1 and value[1] or value
   end
-  pretty_print(get_value(...))
+  M.notify(get_value(...))
 end
 
 vim.print = M.print

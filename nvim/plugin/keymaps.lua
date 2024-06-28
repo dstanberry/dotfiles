@@ -261,37 +261,39 @@ vim.keymap.set("v", "<c-w><c-r>", function()
   return (":<c-u>%%s/%s/"):format(selection)
 end, { silent = false, expr = true, replace_keycodes = true, desc = "replace occurences of selection" })
 
+-- ds.info(vim.lsp.buf.list_workspace_folders(), { title = "LSP Workspace(s)" })
+
 -- execute selected text (for vim/lua files)
 vim.keymap.set("v", "<c-w><c-x>", function()
   local function eval_chunk(selection)
     local text = table.concat(selection, "\n")
     local eval_ok, eval_result
-    local msg
+    local title
     local ok, expr = pcall(loadstring, "return " .. text)
     if ok and expr then
-      msg = "Execution Context (expr)"
+      title = "Execution Context (expr)"
       eval_ok, eval_result = pcall(expr)
-      if not eval_ok then error(msg .. " [FAILED]: " .. eval_result) end
-      ds.pprint(msg, eval_result, selection)
+      if not eval_ok then ds.error({ "Chunk executed:", text, "Result", eval_result }, { title = title }) end
+      ds.info({ "Chunk executed:", text, "Result", eval_result or "<No output>" }, { title = title, merge = true })
       return
     end
     local lines = vim.deepcopy(selection)
     lines[#lines] = "return " .. lines[#lines]
     ok, expr = pcall(loadstring, table.concat(lines, "\n"))
     if ok and expr then
-      msg = "Execution Context (block-expr)"
+      title = "Execution Context (block-expr)"
       eval_ok, eval_result = pcall(expr)
-      if not eval_ok then error(msg .. " [FAILED]: " .. eval_result) end
-      ds.pprint(msg, eval_result, selection)
+      if not eval_ok then ds.error({ "Chunk executed:", text, "Result", eval_result }, { title = title }) end
+      ds.info({ "Chunk executed:", text, "Result", eval_result or "<No output>" }, { title = title, merge = true })
       return
     end
     local errmsg
     ok, expr, errmsg = pcall(loadstring, text)
     if not ok then error(errmsg) end
-    msg = "Execution Context (block)"
+    title = "Execution Context (block)"
     eval_ok, eval_result = pcall(expr)
-    if not eval_ok then error(msg .. " [FAILED]: " .. eval_result) end
-    ds.pprint(msg, eval_result, selection)
+    if not eval_ok then ds.error({ "Chunk executed:", text, "Result", eval_result }, { title = title }) end
+    ds.info({ "Chunk executed:", text, "Result", eval_result or "<No output>" }, { title = title, merge = true })
   end
   local lines = ds.buffer.get_visual_selection()
   local selection = table.concat(lines)

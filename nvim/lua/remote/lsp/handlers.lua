@@ -249,13 +249,13 @@ M.on_attach = function(client, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, "Workspace", function(opts)
     local cmd = unpack(opts.fargs)
     if cmd == "list" then
-      ds.pprint("LSP Workspace(s)", vim.lsp.buf.list_workspace_folders())
+      ds.info(vim.lsp.buf.list_workspace_folders(), { title = "LSP Workspace(s)" })
     elseif cmd == "add" then
       vim.lsp.buf.add_workspace_folder()
     elseif cmd == "remove" then
       vim.lsp.buf.remove_workspace_folder()
     else
-      error(("Invalid workspace operation: '%s'"):format(cmd))
+      ds.error(("Invalid workspace operation: '%s'"):format(cmd))
     end
   end, {
     nargs = "*",
