@@ -1,4 +1,3 @@
---git https://github.com/loichyan/nerdfix.git
 eza
 cargo-update
 git-delta
