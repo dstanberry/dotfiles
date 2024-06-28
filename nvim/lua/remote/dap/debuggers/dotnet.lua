@@ -18,7 +18,12 @@ M.setup = function()
           local root = ds.buffer.get_root()
           local dlls = {}
           ds.walk(root, function(path, name, type)
-            if (type == "file" or type == "link") and path:match "/bin/Debug/" and name:match "%.dll$" then
+            if
+              (type == "file" or type == "link")
+              and path:match "/bin/Debug/"
+              and name:match "%.dll$"
+              and path:match(name:match "^(.-)%.dll$" .. "/.*")
+            then
               table.insert(dlls, path)
             end
           end)

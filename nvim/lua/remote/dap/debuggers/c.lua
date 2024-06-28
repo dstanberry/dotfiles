@@ -35,12 +35,13 @@ M.setup = function()
       program = function()
         return coroutine.create(function(_c)
           local root = ds.buffer.get_root()
-          local files = {}
+          local targets = {}
           ds.walk(root, function(_path, _, type)
-            if (type == "file" or type == "link") and _path:match "/target/debug/" then table.insert(files, _path) end
+            if (type == "file" or type == "link") and _path:match "/target/debug/" then table.insert(targets, _path) end
           end)
+          if #targets == 1 then return coroutine.resume(_c, targets[1]) end
           vim.ui.select(
-            files,
+            targets,
             { prompt = "Select executable target:", format_item = function(item) return item:match ".*/(.-)$" end },
             function(choice) coroutine.resume(_c, (choice and choice ~= "") and choice or dap.ABORT) end
           )
