@@ -2,8 +2,10 @@ local M = {}
 
 local NAMESPACE_ID = vim.api.nvim_create_namespace "python_ns_extmarks"
 
-M.disable_extmarks = function()
+---@param clear_buf? boolean
+M.disable_extmarks = function(clear_buf)
   local line = vim.fn.line "."
+  if clear_buf then return pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, 0, -1) end
   pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, line - 1, line + 1)
 end
 

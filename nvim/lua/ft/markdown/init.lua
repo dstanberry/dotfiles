@@ -19,8 +19,10 @@ local highlight_groups = {
   "@variable.builtin",
 }
 
-M.disable_extmarks = function()
+---@param clear_buf? boolean
+M.disable_extmarks = function(clear_buf)
   local line = vim.fn.line "."
+  if clear_buf then return pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, 0, -1) end
   pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, line - 1, line + 1)
 end
 

@@ -23,6 +23,11 @@ vim.api.nvim_create_autocmd("InsertEnter", {
   buffer = 0,
   callback = function() markdown.disable_extmarks() end,
 })
+vim.api.nvim_create_autocmd("BufLeave", {
+  group = md_extmarks,
+  buffer = 0,
+  callback = function() markdown.disable_extmarks(true) end,
+})
 
 vim.keymap.set("i", "<s-cr>", markdown.insert_list_marker, { buffer = 0, desc = "insert list marker" })
 

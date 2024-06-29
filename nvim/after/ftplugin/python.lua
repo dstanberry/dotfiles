@@ -8,3 +8,8 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "CmdlineLeave", "Inser
     if package.loaded["nvim-treesitter"] then python.set_extmarks() end
   end,
 })
+vim.api.nvim_create_autocmd("BufLeave", {
+  group = py_extmarks,
+  buffer = 0,
+  callback = function() python.disable_extmarks(true) end,
+})
