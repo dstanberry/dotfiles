@@ -182,6 +182,82 @@ function M.reduce(list, callback, acc)
   return acc
 end
 
+---@alias util.notifyOpts {lang?:string, title?:string, level?:number, merge?: boolean, location?: string}
+---Displays a notification containing a human-readable representation of the object(s) provided
+---@param msg string|string[]
+---@param opts? util.notifyOpts
+function M.notify(msg, opts)
+  opts = opts or {}
+  opts.level = opts.level or vim.log.levels.INFO
+  opts.location = opts.location or M.get_location()
+  opts.title = opts.title or ("Debug: " .. opts.location)
+  if vim.in_fast_event() then return vim.schedule(function() M.notify(msg, opts) end) end
+  opts.location = vim.fn.fnamemodify(opts.location, ":~:.")
+  if type(msg) == "table" and opts.merge then
+    ---@diagnostic disable-next-line: return-type-mismatch
+    msg = vim.tbl_filter(function(line) return line or false end, msg)
+    for k, v in pairs(msg) do
+      if type(v) == "table" then msg[k] = vim.inspect(v) end
+    end
+    msg = table.concat(msg, "\n")
+  end
+  if not opts.merge then msg = vim.inspect(msg) end
+  vim.notify(msg, tonumber(opts.level), {
+    on_open = function(win)
+      vim.wo[win].conceallevel = 3
+      vim.wo[win].concealcursor = ""
+      vim.wo[win].cursorline = false
+      vim.wo[win].spell = false
+      local buf = vim.api.nvim_win_get_buf(win)
+      if not pcall(vim.treesitter.start, buf, "lua") then vim.bo[buf].filetype = "lua" end
+    end,
+  })
+end
+
+---Display an informational notification
+---@param msg string|string[]
+---@param opts? util.notifyOpts
+function M.info(msg, opts)
+  opts = opts or {}
+  opts.title = opts.title or "Info"
+  opts.level = vim.log.levels.INFO
+  M.notify(msg, opts)
+end
+
+---Display a warning notification
+---@param msg string|string[]
+---@param opts? util.notifyOpts
+function M.warn(msg, opts)
+  opts = opts or {}
+  opts.title = opts.title or "Warning"
+  opts.level = vim.log.levels.WARN
+  M.notify(msg, opts)
+end
+
+---Display an error notification
+---@param msg string|string[]
+---@param opts? util.notifyOpts
+function M.error(msg, opts)
+  opts = opts or {}
+  opts.title = opts.title or "Error"
+  opts.level = vim.log.levels.ERROR
+  M.notify(msg, opts)
+end
+
+---"Pretty prints" the given arguments and returns them unmodified. The result is shown as a notification
+---@param ...? any
+function M.print(...)
+  local value = { ... }
+  if vim.tbl_isempty(value) then
+    value = nil
+  else
+    value = (vim.islist or vim.islist)(value) and vim.tbl_count(value) <= 1 and value[1] or value
+  end
+  M.notify(value, { title = "Debug", location = M.get_location() })
+end
+
+vim.print = M.print
+
 ---Adds whitespace to the start, end or both start and end of a string
 ---@param s string
 ---@param direction string
@@ -195,79 +271,6 @@ function M.pad(s, direction, amount, ramount)
   local right = (direction == "right" or direction == "both") and string.rep(" ", ramount) or ""
   return string.format("%s%s%s", left, s, right)
 end
-
----@alias util.notifyOpts {lang?:string, title?:string, level?:number, merge?: boolean, location?: string}
----Displays a notification containing a human-readable representation of the object(s) provided
----@param msg string|string[]
----@param opts? util.notifyOpts
-function M.notify(msg, opts)
-  opts = opts or {}
-  opts.location = opts.location or M.get_location()
-  opts.title = opts.title or "Debug"
-  opts.level = opts.level or vim.log.levels.DEBUG
-  if type(msg) == "table" and opts.merge then
-    ---@diagnostic disable-next-line: return-type-mismatch
-    msg = vim.tbl_filter(function(line) return line or false end, msg)
-    for k, v in pairs(msg) do
-      if type(v) == "table" then msg[k] = vim.inspect(v) end
-    end
-    msg = table.concat(msg, "\n")
-  end
-  if vim.in_fast_event() then return vim.schedule(function() M.print(msg, opts) end) end
-  vim.notify(
-    opts.merge and msg or vim.inspect(msg),
-    opts.level,
-    vim.tbl_deep_extend("force", {
-      on_open = function(win)
-        vim.wo[win].conceallevel = 3
-        vim.wo[win].concealcursor = ""
-        vim.wo[win].cursorline = false
-        vim.wo[win].spell = false
-        local buf = vim.api.nvim_win_get_buf(win)
-        if not pcall(vim.treesitter.start, buf, "lua") then vim.bo[buf].filetype = "lua" end
-      end,
-    }, opts)
-  )
-end
-
----Display an informational notification
----@param msg string|string[]
----@param opts? util.notifyOpts
-function M.info(msg, opts)
-  opts = opts or {}
-  opts.level = opts.level or vim.log.levels.INFO
-  M.notify(msg, opts)
-end
-
----Display a warning notification
----@param msg string|string[]
----@param opts? util.notifyOpts
-function M.warn(msg, opts)
-  opts = opts or {}
-  opts.level = opts.level or vim.log.levels.WARN
-  M.notify(msg, opts)
-end
-
----Display an error notification
----@param msg string|string[]
----@param opts? util.notifyOpts
-function M.error(msg, opts)
-  opts = opts or {}
-  opts.level = opts.level or vim.log.levels.ERROR
-  M.notify(msg, opts)
-end
-
----"Pretty prints" the given arguments and returns them unmodified. The result is shown as a notification
----@param ...? any
-function M.print(...)
-  local get_value = function(...)
-    local value = { ... }
-    return vim.islist(value) and vim.tbl_count(value) <= 1 and value[1] or value
-  end
-  M.notify(get_value(...))
-end
-
-vim.print = M.print
 
 ---Perform a benchmark of a given command
 ---@param cmd string|function
@@ -306,6 +309,11 @@ function M.replace(str, pattern, repl, n)
   pattern = string.gsub(pattern, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
   repl = string.gsub(repl, "[%%]", "%%%%") -- escape replacement
   return string.gsub(str, pattern, repl, n)
+end
+
+function M.match(str, pattern, init)
+  pattern = string.gsub(pattern, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
+  return string.match(str, pattern, init)
 end
 
 ---Provides a machine-local way of disabling various custom configuration options/settings
