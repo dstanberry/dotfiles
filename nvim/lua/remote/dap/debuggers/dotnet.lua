@@ -18,15 +18,17 @@ M.setup = function()
           local root = ds.buffer.get_root()
           local dlls = {}
           ds.walk(root, function(path, name, type)
+            local escaped_name = name:sub(1, -5):gsub("[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1")
             if
               (type == "file" or type == "link")
               and path:match "/bin/Debug/"
               and name:match "%.dll$"
-              and path:match(name:match "^(.-)%.dll$" .. "/.*")
+              and path:sub(1, -(#name + 2)):match(escaped_name)
             then
               table.insert(dlls, path)
             end
           end)
+          if #dlls == 1 then return coroutine.resume(_c, dlls[1]) end
           vim.ui.select(
             dlls,
             { prompt = "Select .NET target:", format_item = function(item) return item:match ".*/(.-)%.dll$" end },
