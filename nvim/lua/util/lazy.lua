@@ -175,17 +175,7 @@ M.setup = function()
     for _, line in ipairs(lines) do
       local name, url = line:match "(%S+)%s+(%S+)%s+%(fetch%)"
       if name and url then
-        if
-          (
-            vim.g.config_github_enterprise_hostname
-            and url:find(("git@%s"):format(vim.g.config_github_enterprise_hostname))
-          )
-          or url:find "git@github.com"
-          or url:find "git@bitbucket.org"
-          or url:find "git@gitlab.com"
-        then
-          url = url:gsub("git@(%S+):", "https://%1/"):gsub(".git$", "")
-        end
+        if url:find "git@" == 1 then url = url:gsub("git@(%S+):", "https://%1/"):gsub(".git$", "") end
         table.insert(remotes, { name = name, url = url })
       end
     end
