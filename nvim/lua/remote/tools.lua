@@ -46,7 +46,8 @@ return {
           json = { { "prettierd", "prettier" } },
           jsonc = { { "prettierd", "prettier" } },
           lua = { "stylua" },
-          markdown = { { "prettierd", "prettier" }, "markdownlint", "cbfmt" },
+          markdown = { { "prettierd", "prettier" }, "markdownlint-cli2", "markdown-toc", "cbfmt" },
+          ["markdown.mdx"] = { { "prettierd", "prettier" }, "markdownlint-cli2", "markdown-toc", "cbfmt" },
           psql = { { "sql_formatter", "sqlfluff" } },
           -- python = { "isort", "injected", "black" },
           python = { "isort", "black" },
@@ -58,6 +59,22 @@ return {
           zsh = { "shfmt" },
         },
         formatters = {
+          ["markdown-toc"] = {
+            condition = function(_, ctx)
+              for _, line in ipairs(vim.api.nvim_buf_get_lines(ctx.buf, 0, -1, false)) do
+                if line:find "<!%-%- toc %-%->" then return true end
+              end
+            end,
+          },
+          ["markdownlint-cli2"] = {
+            condition = function(_, ctx)
+              local diag = vim.tbl_filter(
+                function(d) return d.source == "markdownlint" end,
+                vim.diagnostic.get(ctx.buf)
+              )
+              return #diag > 0
+            end,
+          },
           prettierd = {
             env = vim.uv.fs_realpath(prettier_conf) and { PRETTIERD_DEFAULT_CONFIG = prettier_conf } or nil,
           },
@@ -120,7 +137,8 @@ return {
       "js-debug-adapter",
       "json-lsp",
       "lua-language-server",
-      "markdownlint",
+      "markdownlint-cli2",
+      "markdown-toc",
       "marksman",
       "netcoredbg",
       "prettier",
@@ -188,7 +206,7 @@ return {
       linters_by_ft = {
         javascript = { "eslint_d" },
         typescript = { "eslint_d" },
-        markdown = { "markdownlint" },
+        markdown = { "markdownlint-cli2" },
         python = { "flake8" },
         sh = { "shellcheck" },
         sql = { "sqlfluff" },

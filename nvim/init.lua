@@ -12,6 +12,7 @@ vim.filetype.add {
   extension = {
     jenkinsfile = "groovy",
     json = "jsonc",
+    mdx = "markdown.mdx",
     vifm = "vim",
     vifmrc = "vim",
   },
