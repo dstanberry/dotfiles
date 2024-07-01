@@ -7,7 +7,6 @@
 ---@field hl util.hl
 ---@field icons util.icons
 ---@field lazy util.lazy
----@field terminal util.terminal
 ---@field ui util.ui
 local M = {}
 
