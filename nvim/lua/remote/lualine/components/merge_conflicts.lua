@@ -30,7 +30,7 @@ return function()
   local buf = vim.api.nvim_win_get_buf(winid)
   local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
 
-  if ds.contains(vim.g.ds_excludes.ft.wb_empty, ft) then return " " end
+  if ds.contains(ds.excludes.ft.wb_empty, ft) then return " " end
 
   return string.format("%s%s", format_label(winid, buf), highlighter.reset)
 end

@@ -1,3 +1,4 @@
+---@class util.excludes
 local M = {}
 
 M.bt = {

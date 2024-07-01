@@ -59,12 +59,12 @@ return {
         use_icons = true,
         enhanced_diff_hl = true,
         icons = {
-          folder_closed = ds.pad(vim.g.ds_icons.documents.FolderOutlineClosed, "right"),
-          folder_open = ds.pad(vim.g.ds_icons.documents.FolderOutlineClosed, "right"),
+          folder_closed = ds.pad(ds.icons.documents.FolderOutlineClosed, "right"),
+          folder_open = ds.pad(ds.icons.documents.FolderOutlineClosed, "right"),
         },
         signs = {
-          fold_closed = vim.g.ds_icons.misc.FoldClosed,
-          fold_open = vim.g.ds_icons.misc.FoldOpened,
+          fold_closed = ds.icons.misc.FoldClosed,
+          fold_open = ds.icons.misc.FoldOpened,
         },
         view = {
           default = { layout = "diff2_horizontal" },
@@ -199,12 +199,12 @@ return {
     opts = {
       indent = {
         -- char = "",
-        char = vim.g.ds_icons.misc.VerticalBarThin,
-        -- tab_char =vim.g.ds_icons.misc.VerticalBarThin,
+        char = ds.icons.misc.VerticalBarThin,
+        -- tab_char =ds.icons.misc.VerticalBarThin,
       },
       scope = {
         enabled = true,
-        char = vim.g.ds_icons.misc.VerticalBar,
+        char = ds.icons.misc.VerticalBar,
         highlight = {
           "TSRainbow1",
           "TSRainbow2",
@@ -218,9 +218,9 @@ return {
       exclude = {
         filetypes = vim.tbl_deep_extend(
           "keep",
-          vim.g.ds_excludes.ft.stl_disabled,
-          vim.g.ds_excludes.ft.wb_disabled,
-          vim.g.ds_excludes.ft.wb_empty,
+          ds.excludes.ft.stl_disabled,
+          ds.excludes.ft.wb_disabled,
+          ds.excludes.ft.wb_empty,
           { "checkhealth", "diff", "git" },
           { "log", "markdown", "txt" }
         ),
@@ -278,7 +278,7 @@ return {
           IncRename = {
             title = "",
             pattern = "^:%s*IncRename%s+",
-            icon = vim.g.ds_icons.misc.Pencil,
+            icon = ds.icons.misc.Pencil,
             conceal = true,
             opts = {
               relative = "cursor",
@@ -288,7 +288,7 @@ return {
           },
           substitute = {
             pattern = "^:%%?s/",
-            icon = vim.g.ds_icons.misc.ArrowSwap,
+            icon = ds.icons.misc.ArrowSwap,
             ft = "regex",
             kind = "search",
             title = "",
@@ -299,7 +299,7 @@ return {
         documentation = {
           enabled = true,
           opts = {
-            border = { style = vim.g.ds_icons.border.Default },
+            border = { style = ds.icons.border.Default },
             position = { row = 2 },
             win_options = { winhighlight = { FloatBorder = "FloatBorderSB" } },
           },
@@ -499,9 +499,9 @@ return {
           if vim.wo[win_id].diff or vim.fn.win_gettype(win_id) ~= "" then return true end
           local buf = vim.api.nvim_win_get_buf(win_id)
           local b = vim.bo[buf]
-          local ignore_bt = vim.g.ds_excludes.bt.wb_disabled
+          local ignore_bt = ds.excludes.bt.wb_disabled
           local ignore_ft =
-            vim.tbl_deep_extend("keep", vim.g.ds_excludes.ft.stl_disabled, vim.g.ds_excludes.ft.wb_disabled)
+            vim.tbl_deep_extend("keep", ds.excludes.ft.stl_disabled, ds.excludes.ft.wb_disabled)
           return ds.any(ignore_bt, function(item) return b.bt:match(item) end)
             or ds.any(ignore_ft, function(item) return b.ft:match(item) end)
         end,
@@ -577,7 +577,7 @@ return {
         end
         local end_text = ctx.get_fold_virt_text(end_linenr)
         if end_text[1] and end_text[1][1] then end_text[1][1] = end_text[1][1]:gsub("[%s\t]+", "") end
-        table.insert(result, { ds.pad(vim.g.ds_icons.misc.Ellipses, "both"), "Comment" })
+        table.insert(result, { ds.pad(ds.icons.misc.Ellipses, "both"), "Comment" })
         vim.list_extend(result, end_text)
         table.insert(result, { padding, "" })
         return result
@@ -589,7 +589,7 @@ return {
     "lukas-reineke/virt-column.nvim",
     event = "LazyFile",
     init = function() ds.hl.new("VirtColumn", { link = "NonText" }) end,
-    opts = { char = vim.g.ds_icons.misc.VerticalBarVeryThin },
+    opts = { char = ds.icons.misc.VerticalBarVeryThin },
   },
   {
     "folke/which-key.nvim",
@@ -604,7 +604,7 @@ return {
         },
       },
       window = {
-        border = vim.g.ds_icons.border.Default,
+        border = ds.icons.border.Default,
       },
     },
     init = function()

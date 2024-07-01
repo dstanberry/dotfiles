@@ -75,7 +75,7 @@ return {
       ext_opts = {
         [types.choiceNode] = {
           active = {
-            virt_text = { { ds.pad(vim.g.ds_icons.misc.Layer, "both"), "Constant" } },
+            virt_text = { { ds.pad(ds.icons.misc.Layer, "both"), "Constant" } },
           },
         },
       },

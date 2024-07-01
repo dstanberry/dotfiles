@@ -64,7 +64,7 @@ vim.opt.fillchars = {
   foldsep = " ",
 }
 -- define the function used to calculate the fold level
-vim.opt.foldexpr = [[v:lua.require("util.buffer").foldexpr()]]
+vim.opt.foldexpr = [[v:lua.require("util.ui").foldexpr()]]
 -- define the fold level
 vim.opt.foldlevel = 99
 -- define how the fold level is calculated
@@ -182,7 +182,7 @@ vim.o.splitbelow = true
 -- default behaviour when creating vertical splits
 vim.o.splitright = true
 -- define the function used to show items in the statuscolumn
-vim.opt.statuscolumn = [[%!v:lua.require'util.buffer'.statuscolumn()]]
+vim.opt.statuscolumn = [[%!v:lua.require'util.ui'.statuscolumn()]]
 --reuse windows/tabs if possible
 vim.o.switchbuf = "usetab"
 -- tab visible width

@@ -9,7 +9,7 @@ return {
       -- this currently won't work because `loaded` cannot be reset
       override = mine,
     }
-    devicons.set_default_icon(vim.g.ds_icons.documents.File, "#6d8086")
+    devicons.set_default_icon(ds.icons.documents.File, "#6d8086")
     for key, value in pairs(mine) do
       devicons.set_icon { [key] = value }
     end

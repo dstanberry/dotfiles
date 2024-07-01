@@ -45,7 +45,7 @@ return {
         format = string.format(
           "%s%s{kind_icon}{symbol.name:NoiceSymbolNormal}",
           util.highlighter.sanitize "NoiceSymbolSeparator",
-          ds.pad(vim.g.ds_icons.misc.FoldClosed, "right", 2)
+          ds.pad(ds.icons.misc.FoldClosed, "right", 2)
         ),
       }
     end)
@@ -54,7 +54,7 @@ return {
       local calculate_data = function(symbols)
         symbols = symbols:gsub("%%#StatusLine#", ""):gsub("%%%%", "%%")
         local bc = breadcrumbs():gsub("%%#.-#", "")
-        local sep = ds.pad(vim.g.ds_icons.misc.FoldClosed, "right", 2)
+        local sep = ds.pad(ds.icons.misc.FoldClosed, "right", 2)
         local parts = vim.split(symbols, sep)
         local raw_symbols = symbols:gsub("%%#.-#", ""):gsub("%%*", ""):gsub("*", "")
         local margin = 10
@@ -97,8 +97,8 @@ return {
         theme = theme.palette,
         globalstatus = true,
         disabled_filetypes = {
-          statusline = vim.g.ds_excludes.ft.stl_disabled,
-          winbar = vim.g.ds_excludes.ft.wb_disabled,
+          statusline = ds.excludes.ft.stl_disabled,
+          winbar = ds.excludes.ft.wb_disabled,
         },
         component_separators = " ",
         section_separators = " ",
@@ -106,7 +106,7 @@ return {
       sections = {
         lualine_a = {
           {
-            function() return vim.g.ds_icons.misc.VerticalBarBold end,
+            function() return ds.icons.misc.VerticalBarBold end,
             padding = { left = 0, right = 0 },
           },
           {
@@ -119,9 +119,9 @@ return {
             "diff",
             source = git_diff,
             symbols = {
-              added = ds.pad(vim.g.ds_icons.git.TextAdded, "right"),
-              modified = ds.pad(vim.g.ds_icons.git.TextChanged, "right"),
-              removed = ds.pad(vim.g.ds_icons.git.TextRemoved, "right"),
+              added = ds.pad(ds.icons.git.TextAdded, "right"),
+              modified = ds.pad(ds.icons.git.TextChanged, "right"),
+              removed = ds.pad(ds.icons.git.TextRemoved, "right"),
             },
             diff_color = {
               added = { fg = ds.color.blend(vim.g.ds_colors.green2, vim.g.ds_colors.white, 0.6) },
@@ -142,10 +142,10 @@ return {
             "diagnostics",
             sources = { "nvim_diagnostic" },
             symbols = {
-              error = ds.pad(vim.g.ds_icons.status.Error, "right"),
-              warn = ds.pad(vim.g.ds_icons.status.Warn, "right"),
-              info = ds.pad(vim.g.ds_icons.status.Info, "right"),
-              hint = ds.pad(vim.g.ds_icons.status.Hint, "right"),
+              error = ds.pad(ds.icons.status.Error, "right"),
+              warn = ds.pad(ds.icons.status.Warn, "right"),
+              info = ds.pad(ds.icons.status.Info, "right"),
+              hint = ds.pad(ds.icons.status.Hint, "right"),
             },
             diagnostics_color = {
               error = { fg = ds.color.blend(vim.g.ds_colors.red1, vim.g.ds_colors.white, 0.4) },
@@ -164,7 +164,7 @@ return {
               local text = require("noice").api.status.search.get()
               local query = vim.F.if_nil(text:match "%/(.-)%s", text:match "%?(.-)%s")
               local counter = text:match "%d+%/%d+"
-              return string.format("%s %s [%s]", vim.g.ds_icons.misc.Magnify, query, counter)
+              return string.format("%s %s [%s]", ds.icons.misc.Magnify, query, counter)
             end,
             cond = function()
               return package.loaded["noice"] and require("noice").api.status.search.has() and available_width(80)
@@ -199,8 +199,8 @@ return {
               return not (
                 fname:match "%[Scratch%]$"
                 or vim.bo[buf].ft:match "dapui_"
-                or vim.tbl_contains(vim.g.ds_excludes.ft.wb_empty, vim.bo[buf].ft)
-                or vim.tbl_contains(vim.g.ds_excludes.ft.wb_disabled, vim.bo[buf].ft)
+                or vim.tbl_contains(ds.excludes.ft.wb_empty, vim.bo[buf].ft)
+                or vim.tbl_contains(ds.excludes.ft.wb_disabled, vim.bo[buf].ft)
               )
             end,
             padding = { left = 0 },

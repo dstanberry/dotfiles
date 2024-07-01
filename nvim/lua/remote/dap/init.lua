@@ -62,13 +62,13 @@ return {
     local dap = require "dap"
     dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
     vim.fn.sign_define("DapBreakpoint", {
-      text = vim.g.ds_icons.debug.Breakpoint,
+      text = ds.icons.debug.Breakpoint,
       texthl = "DiagnosticSignInfo",
       linehl = "",
       numhl = "",
     })
     vim.fn.sign_define("DapStopped", {
-      text = vim.g.ds_icons.debug.BreakpointActive,
+      text = ds.icons.debug.BreakpointActive,
       texthl = "DiagnosticSignWarn",
       linehl = "DapBreakpointActiveLine",
       numhl = "",
@@ -123,14 +123,14 @@ return {
         enabled = true,
         element = "repl",
         icons = {
-          pause = vim.g.ds_icons.debug.Pause,
-          play = vim.g.ds_icons.debug.Continue,
-          step_into = vim.g.ds_icons.debug.StepInto,
-          step_over = vim.g.ds_icons.debug.StepOver,
-          step_out = vim.g.ds_icons.debug.StepOut,
-          step_back = vim.g.ds_icons.debug.StepBack,
-          run_last = vim.g.ds_icons.debug.Restart,
-          terminate = vim.g.ds_icons.debug.Stop,
+          pause = ds.icons.debug.Pause,
+          play = ds.icons.debug.Continue,
+          step_into = ds.icons.debug.StepInto,
+          step_over = ds.icons.debug.StepOver,
+          step_out = ds.icons.debug.StepOut,
+          step_back = ds.icons.debug.StepBack,
+          run_last = ds.icons.debug.Restart,
+          terminate = ds.icons.debug.Stop,
         },
       },
       ---@diagnostic disable-next-line: missing-fields

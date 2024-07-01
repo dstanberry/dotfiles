@@ -165,11 +165,11 @@ return {
       max_concurrent_installers = 4,
       ui = {
         check_outdated_packages_on_open = true,
-        border = ds.map(vim.g.ds_icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+        border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
         icons = {
-          package_installed = vim.g.ds_icons.misc.CheckFilled,
-          package_pending = vim.g.ds_icons.misc.RightArrowCircled,
-          package_uninstalled = vim.g.ds_icons.misc.Circle,
+          package_installed = ds.icons.misc.CheckFilled,
+          package_pending = ds.icons.misc.RightArrowCircled,
+          package_uninstalled = ds.icons.misc.Circle,
         },
         keymaps = {
           toggle_package_expand = "<cr>",

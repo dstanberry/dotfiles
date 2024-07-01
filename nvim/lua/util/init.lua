@@ -2,10 +2,13 @@
 ---@field buffer util.buffer
 ---@field callback util.callback
 ---@field color util.color
+---@field excludes util.excludes
 ---@field fs util.fs
 ---@field hl util.hl
+---@field icons util.icons
 ---@field lazy util.lazy
 ---@field terminal util.terminal
+---@field ui util.ui
 local M = {}
 
 setmetatable(M, {
@@ -260,7 +263,7 @@ vim.print = M.print
 
 ---Adds whitespace to the start, end or both start and end of a string
 ---@param s string
----@param direction string
+---@param direction "left"|"right"|"both"
 ---@param amount? number #Repeat pad `n` times to the left/right of string or both sides
 ---@param ramount? number #Repeat pad `n` times to the right of string
 ---@return string result

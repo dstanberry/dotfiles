@@ -5,9 +5,6 @@ vim.g.maplocalleader = ","
 
 _G.ds = require "util"
 
-vim.g.ds_icons = require "ui.icons"
-vim.g.ds_excludes = require "ui.excludes"
-
 vim.filetype.add {
   extension = {
     jenkinsfile = "groovy",

@@ -288,10 +288,10 @@ M.setup = function()
     severity_sort = true,
     signs = {
       text = {
-        [vim.diagnostic.severity.ERROR] = vim.g.ds_icons.diagnostics.Error,
-        [vim.diagnostic.severity.WARN] = vim.g.ds_icons.diagnostics.Warn,
-        [vim.diagnostic.severity.HINT] = vim.g.ds_icons.diagnostics.Hint,
-        [vim.diagnostic.severity.INFO] = vim.g.ds_icons.diagnostics.Info,
+        [vim.diagnostic.severity.ERROR] = ds.icons.diagnostics.Error,
+        [vim.diagnostic.severity.WARN] = ds.icons.diagnostics.Warn,
+        [vim.diagnostic.severity.HINT] = ds.icons.diagnostics.Hint,
+        [vim.diagnostic.severity.INFO] = ds.icons.diagnostics.Info,
       },
     },
     update_in_insert = false,
@@ -299,7 +299,7 @@ M.setup = function()
     --- @class vim.diagnostic.Opts.Float
     ---@field border? string | table[]
     float = {
-      border = ds.map(vim.g.ds_icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+      border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
       focusable = false,
       show_header = true,
       source = true,

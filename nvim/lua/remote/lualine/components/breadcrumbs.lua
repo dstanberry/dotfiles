@@ -9,11 +9,11 @@ local generic_hl = highlighter.sanitize "Winbar"
 local fname_hl = highlighter.sanitize "WinbarFilename"
 
 local dap_icons = {
-  ["DAP Breakpoints"] = ds.pad(vim.g.ds_icons.debug.Breakpoint, "right"),
-  ["DAP Console"] = ds.pad(vim.g.ds_icons.debug.REPL, "right"),
-  ["DAP Scopes"] = ds.pad(vim.g.ds_icons.debug.Scopes, "right"),
-  ["DAP Stacks"] = ds.pad(vim.g.ds_icons.debug.Stacks, "right"),
-  ["DAP Watches"] = ds.pad(vim.g.ds_icons.debug.Watches, "right"),
+  ["DAP Breakpoints"] = ds.pad(ds.icons.debug.Breakpoint, "right"),
+  ["DAP Console"] = ds.pad(ds.icons.debug.REPL, "right"),
+  ["DAP Scopes"] = ds.pad(ds.icons.debug.Scopes, "right"),
+  ["DAP Stacks"] = ds.pad(ds.icons.debug.Stacks, "right"),
+  ["DAP Watches"] = ds.pad(ds.icons.debug.Watches, "right"),
 }
 
 local get_relative_path = function(winid, dirpath)
@@ -34,9 +34,9 @@ local format_sections = function(path, fname, ext)
       -- NOTE: octo.nvim
       if parts[1] and parts[1]:match "^octo:" then
         if parts[#parts - 1] == "pull" then
-          icon = vim.g.ds_icons.git.PullRequest
+          icon = ds.icons.git.PullRequest
         elseif parts[#parts - 1] == "issue" then
-          icon = vim.g.ds_icons.git.Issue
+          icon = ds.icons.git.Issue
         end
       end
       -- NOTE: nvim-dap
@@ -62,7 +62,7 @@ return function()
   local buf = vim.api.nvim_win_get_buf(winid)
   local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
 
-  if ds.contains(vim.g.ds_excludes.ft.wb_empty, ft) then return " " end
+  if ds.contains(ds.excludes.ft.wb_empty, ft) then return " " end
 
   local filepath = vim.fs.normalize(vim.api.nvim_buf_get_name(buf))
   local dirpath, filename = (filepath):match "^(.+)/(.+)$"

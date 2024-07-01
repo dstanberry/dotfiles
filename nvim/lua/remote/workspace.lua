@@ -41,11 +41,11 @@ return {
           right_mouse_command = nil,
           middle_mouse_command = function(buf) ds.buffer.delete_buffer(buf) end,
           close_command = function(buf) ds.buffer.delete_buffer(buf) end,
-          buffer_close_icon = vim.g.ds_icons.misc.Close,
-          close_icon = vim.g.ds_icons.misc.CloseBold,
+          buffer_close_icon = ds.icons.misc.Close,
+          close_icon = ds.icons.misc.CloseBold,
           hover = { enabled = true, reveal = { "close" } },
-          left_trunc_marker = vim.g.ds_icons.misc.LeftArrowCircled,
-          right_trunc_marker = vim.g.ds_icons.misc.RightArrowCircled,
+          left_trunc_marker = ds.icons.misc.LeftArrowCircled,
+          right_trunc_marker = ds.icons.misc.RightArrowCircled,
           max_name_length = 20,
           color_icons = true,
           show_buffer_close_icons = true,
@@ -58,10 +58,10 @@ return {
           diagnostics_update_in_insert = false,
           diagnostics_indicator = function(_, _, _, ctx)
             if ctx.buffer:current() then return "" end
-            return ds.pad(vim.g.ds_icons.diagnostics.Warn, "left")
+            return ds.pad(ds.icons.diagnostics.Warn, "left")
           end,
           indicator = {
-            icon = ds.pad(vim.g.ds_icons.misc.VerticalBarThin, "right"),
+            icon = ds.pad(ds.icons.misc.VerticalBarThin, "right"),
             style = "none",
           },
           get_element_icon = function(element)
@@ -69,49 +69,49 @@ return {
           end,
           offsets = {
             {
-              text = ds.pad(vim.g.ds_icons.groups.StackFrame, "right") .. "DEBUGGER",
+              text = ds.pad(ds.icons.groups.StackFrame, "right") .. "DEBUGGER",
               filetype = "dapui_scopes",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
             },
             {
-              text = ds.pad(vim.g.ds_icons.groups.Sql, "right") .. "DATABASE VIEWER",
+              text = ds.pad(ds.icons.groups.Sql, "right") .. "DATABASE VIEWER",
               filetype = "dbee",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
             },
             {
-              text = ds.pad(vim.g.ds_icons.groups.Sql, "right") .. "DATABASE VIEWER",
+              text = ds.pad(ds.icons.groups.Sql, "right") .. "DATABASE VIEWER",
               filetype = "dbui",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
             },
             {
-              text = ds.pad(vim.g.ds_icons.groups.Diff, "right") .. "DIFF VIEW",
+              text = ds.pad(ds.icons.groups.Diff, "right") .. "DIFF VIEW",
               filetype = "DiffviewFiles",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
             },
             {
-              text = ds.pad(vim.g.ds_icons.documents.FolderOutlineClosed, "right") .. "EXPLORER",
+              text = ds.pad(ds.icons.documents.FolderOutlineClosed, "right") .. "EXPLORER",
               filetype = "neo-tree",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
             },
             {
-              text = ds.pad(vim.g.ds_icons.misc.Magnify, "right") .. "Find | Replace",
+              text = ds.pad(ds.icons.misc.Magnify, "right") .. "Find | Replace",
               filetype = "spectre_panel",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
             },
             {
-              text = ds.pad(vim.g.ds_icons.groups.Tree, "right") .. "SYMBOLS",
+              text = ds.pad(ds.icons.groups.Tree, "right") .. "SYMBOLS",
               filetype = "trouble",
               highlight = "PanelHeading",
               separator = true,
@@ -122,7 +122,7 @@ return {
             items = {
               {
                 name = "SQL",
-                -- icon =vim.g.ds_icons.groups.Sql,
+                -- icon =ds.icons.groups.Sql,
                 auto_close = true,
                 highlight = { fg = vim.g.ds_colors.orange0 },
                 matcher = function(buf) return buf.name:match "%.sql$" end,
@@ -132,7 +132,7 @@ return {
               },
               {
                 name = "Unit Tests",
-                -- icon =vim.g.ds_icons.groups.Lab,
+                -- icon =ds.icons.groups.Lab,
                 highlight = { fg = vim.g.ds_colors.yellow0 },
                 auto_close = true,
                 matcher = function(buf)
@@ -147,7 +147,7 @@ return {
               },
               {
                 name = "Notes",
-                -- icon =vim.g.ds_icons.groups.Book,
+                -- icon =ds.icons.groups.Book,
                 highlight = { fg = vim.g.ds_colors.overlay1 },
                 auto_close = true,
                 matcher = function(buf)
@@ -157,7 +157,7 @@ return {
                   style = bufferline_groups.separator.pill,
                 },
               },
-              bufferline_groups.builtin.pinned:with { icon = vim.g.ds_icons.groups.Pinned },
+              bufferline_groups.builtin.pinned:with { icon = ds.icons.groups.Pinned },
               bufferline_groups.builtin.ungrouped,
             },
           },
@@ -281,9 +281,9 @@ return {
         sources = {
           {
             source = "filesystem",
-            display_name = ds.pad(vim.g.ds_icons.documents.MultipleFolders, "both", 1, 2) .. "Files ",
+            display_name = ds.pad(ds.icons.documents.MultipleFolders, "both", 1, 2) .. "Files ",
           },
-          { source = "document_symbols", display_name = ds.pad(vim.g.ds_icons.kind.Class, "both", 1, 2) .. "Symbols " },
+          { source = "document_symbols", display_name = ds.pad(ds.icons.kind.Class, "both", 1, 2) .. "Symbols " },
         },
       },
       enable_git_status = true,
@@ -322,22 +322,22 @@ return {
       },
       document_symbols = {
         follow_cursor = true,
-        kinds = ds.reduce(vim.tbl_deep_extend("keep", vim.g.ds_icons.kind, vim.g.ds_icons.type), function(acc, v, k)
+        kinds = ds.reduce(vim.tbl_deep_extend("keep", ds.icons.kind, ds.icons.type), function(acc, v, k)
           acc[k] = { icon = v, hl = ("TroubleIcon%s"):format(k) }
           return acc
         end),
       },
       default_component_configs = {
         icon = {
-          folder_closed = vim.g.ds_icons.documents.FolderClosed,
-          folder_open = vim.g.ds_icons.documents.FolderOpened,
-          folder_empty = vim.g.ds_icons.documents.FolderEmpty,
-          folder_empty_open = vim.g.ds_icons.documents.FolderEmpty,
+          folder_closed = ds.icons.documents.FolderClosed,
+          folder_open = ds.icons.documents.FolderOpened,
+          folder_empty = ds.icons.documents.FolderEmpty,
+          folder_empty_open = ds.icons.documents.FolderEmpty,
         },
         indent = {
           with_expanders = true,
-          expander_collapsed = vim.g.ds_icons.misc.FoldClosed,
-          expander_expanded = vim.g.ds_icons.misc.FoldOpened,
+          expander_collapsed = ds.icons.misc.FoldClosed,
+          expander_expanded = ds.icons.misc.FoldOpened,
           expander_highlight = "NeoTreeExpander",
         },
         name = {
@@ -632,7 +632,7 @@ return {
       local preview_opts = {
         type = "float",
         relative = "editor",
-        border = ds.map(vim.g.ds_icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+        border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
         position = { 0.5, 0.5 },
         size = { width = 0.6, height = 0.5 },
         zindex = 200,
@@ -641,8 +641,8 @@ return {
         icons = {
           kinds = vim.tbl_extend(
             "keep",
-            vim.tbl_map(function(kind) return ds.pad(kind, "right") end, vim.g.ds_icons.kind),
-            vim.tbl_map(function(kind) return ds.pad(kind, "right") end, vim.g.ds_icons.type)
+            vim.tbl_map(function(kind) return ds.pad(kind, "right") end, ds.icons.kind),
+            vim.tbl_map(function(kind) return ds.pad(kind, "right") end, ds.icons.type)
           ),
         },
         modes = {

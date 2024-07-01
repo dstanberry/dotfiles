@@ -91,8 +91,8 @@ function M.toggle()
 
   local body = n.rows(n.columns(
     n.checkbox {
-      default_sign = vim.g.ds_icons.misc.RightArrow,
-      checked_sign = vim.g.ds_icons.misc.DownArrow,
+      default_sign = ds.icons.misc.RightArrow,
+      checked_sign = ds.icons.misc.DownArrow,
       padding = {
         top = 1,
         left = 1,

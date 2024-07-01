@@ -5,12 +5,12 @@ local M = {
 local NAMESPACE_ID = vim.api.nvim_create_namespace "markdown_ns_extmarks"
 
 local headings = {
-  vim.g.ds_icons.markdown.H1,
-  vim.g.ds_icons.markdown.H2,
-  vim.g.ds_icons.markdown.H3,
-  vim.g.ds_icons.markdown.H4,
-  vim.g.ds_icons.markdown.H5,
-  vim.g.ds_icons.markdown.H6,
+  ds.icons.markdown.H1,
+  ds.icons.markdown.H2,
+  ds.icons.markdown.H3,
+  ds.icons.markdown.H4,
+  ds.icons.markdown.H5,
+  ds.icons.markdown.H6,
 }
 
 local highlight_groups = {
@@ -257,21 +257,21 @@ M.set_extmarks = function()
       elseif capture == "checkbox_unchecked" then
         vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
           end_col = start_column + #text,
-          virt_text = { { vim.g.ds_icons.markdown.Unchecked, "@markup.todo" } },
+          virt_text = { { ds.icons.markdown.Unchecked, "@markup.todo" } },
           virt_text_pos = "overlay",
           hl_group = "@markup.todo",
         })
       elseif capture == "checkbox_checked" then
         vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
           end_col = start_column + #text,
-          virt_text = { { vim.g.ds_icons.markdown.Checked, "@markup.todo" } },
+          virt_text = { { ds.icons.markdown.Checked, "@markup.todo" } },
           virt_text_pos = "overlay",
           hl_group = "@markup.todo",
         })
       elseif capture == "list_marker_minus" then
         vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
           end_col = start_column + #text,
-          virt_text = { { vim.g.ds_icons.markdown.ListMinus, "@markup.list" } },
+          virt_text = { { ds.icons.markdown.ListMinus, "@markup.list" } },
           virt_text_pos = "overlay",
           hl_group = "@markup.list",
         })

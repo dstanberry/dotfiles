@@ -1,1 +1,1 @@
-require("util").reload("ui.theme").load "kdark"
+require("util").reload("theme").load "kdark"

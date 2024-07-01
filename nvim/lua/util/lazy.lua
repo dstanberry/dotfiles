@@ -22,7 +22,7 @@ local init = function()
     root = vim.fs.joinpath(vim.fn.stdpath "data", "lazy"),
     lockfile = vim.fs.joinpath(vim.fn.stdpath "config", "lua", "remote", "lazy-lock.json"),
     ui = {
-      border = ds.map(vim.g.ds_icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+      border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
       backdrop = 95,
       custom_keys = {
         ["<localleader>d"] = function(plugin) print(plugin) end,
@@ -192,7 +192,9 @@ M.setup = function()
     end
     vim.ui.select(remotes, {
       prompt = "Select remote to browse",
-      format_item = function(item) return item.name .. (" "):rep(8 - #item.name) .. " 🔗 " .. item.url end,
+      format_item = function(item)
+        return item.name .. (" "):rep(8 - #item.name) .. ds.pad(ds.icons.misc.Link, "both") .. item.url
+      end,
     }, open)
   end
   vim.keymap.set("n", "<localleader>gb", browse, { noremap = true, silent = true, desc = "git: browse remote" })

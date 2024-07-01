@@ -10,8 +10,8 @@ return {
         model = "gpt-4",
         auto_insert_mode = true,
         show_help = true,
-        question_header = string.format("%s %s ", vim.g.ds_icons.misc.User, user),
-        answer_header = string.format("%s %s ", vim.g.ds_icons.kind.Copilot, "Copilot"),
+        question_header = string.format("%s %s ", ds.icons.misc.User, user),
+        answer_header = string.format("%s %s ", ds.icons.kind.Copilot, "Copilot"),
         window = {
           width = 0.4,
         },
@@ -534,7 +534,7 @@ return {
           fields = { "kind", "abbr", "menu" },
           format = function(_, item)
             item.menu = ds.pad(item.kind, "both")
-            item.kind = ds.pad(vim.g.ds_icons.kind[item.kind], "both")
+            item.kind = ds.pad(ds.icons.kind[item.kind], "both")
             return item
           end,
         },
@@ -564,11 +564,11 @@ return {
         },
         window = {
           completion = {
-            border = vim.g.ds_icons.border.Default,
+            border = ds.icons.border.Default,
             winhighlight = "Normal:FloatBorder,FloatBorder:FloatBorderSB,CursorLine:PmenuSel",
           },
           documentation = {
-            border = vim.g.ds_icons.border.Default,
+            border = ds.icons.border.Default,
             winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorderSB",
           },
         },

@@ -92,32 +92,32 @@ return {
       local signs = require "gitsigns"
       signs.setup {
         signs = {
-          add = { text = vim.g.ds_icons.misc.VerticalBarThin },
-          change = { text = vim.g.ds_icons.misc.VerticalBarThin },
-          delete = { text = vim.g.ds_icons.misc.CaretRight },
-          topdelete = { text = vim.g.ds_icons.misc.CaretRight },
-          changedelete = { text = vim.g.ds_icons.misc.VerticalBarSemi },
-          untracked = { text = vim.g.ds_icons.misc.VerticalBarSplit },
+          add = { text = ds.icons.misc.VerticalBarThin },
+          change = { text = ds.icons.misc.VerticalBarThin },
+          delete = { text = ds.icons.misc.CaretRight },
+          topdelete = { text = ds.icons.misc.CaretRight },
+          changedelete = { text = ds.icons.misc.VerticalBarSemi },
+          untracked = { text = ds.icons.misc.VerticalBarSplit },
         },
         status_formatter = function(status)
           local added = ""
           local changed = ""
           local removed = ""
           if status.added and status.added > 0 then
-            added = ds.pad(vim.g.ds_icons.git.TextAdded, "right") .. status.added
+            added = ds.pad(ds.icons.git.TextAdded, "right") .. status.added
           end
           if status.changed and status.changed > 0 then
-            changed = ds.pad(vim.g.ds_icons.git.TextChanged, "both") .. status.changed
+            changed = ds.pad(ds.icons.git.TextChanged, "both") .. status.changed
           end
           if status.removed and status.removed > 0 then
-            removed = ds.pad(vim.g.ds_icons.git.TextRemoved, "both") .. status.removed
+            removed = ds.pad(ds.icons.git.TextRemoved, "both") .. status.removed
           end
           return added .. changed .. removed
         end,
         numhl = false,
         update_debounce = 1000,
         current_line_blame = true,
-        current_line_blame_formatter = vim.g.ds_icons.git.Commit .. " <author>, <author_time:%R>",
+        current_line_blame_formatter = ds.icons.git.Commit .. " <author>, <author_time:%R>",
         current_line_blame_opts = {
           virt_text = false,
           virt_text_pos = "eol",
