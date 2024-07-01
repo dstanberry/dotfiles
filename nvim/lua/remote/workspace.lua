@@ -146,9 +146,9 @@ return {
                 },
               },
               {
-                name = "Zettelkasten Notes",
+                name = "Notes",
                 -- icon =vim.g.ds_icons.groups.Book,
-                highlight = { fg = vim.g.ds_colors.cyan1 },
+                highlight = { fg = vim.g.ds_colors.overlay1 },
                 auto_close = true,
                 matcher = function(buf)
                   return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten"
