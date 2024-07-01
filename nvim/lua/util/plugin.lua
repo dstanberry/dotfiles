@@ -1,4 +1,4 @@
----@class util.lazy
+---@class util.plugin
 local M = {}
 
 local bootstrap = function()

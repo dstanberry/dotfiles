@@ -57,7 +57,7 @@ return {
           vim.opt_local.number = false
         end,
       })
-      ds.lazy.on_load("telescope.nvim", function()
+      ds.plugin.on_load("telescope.nvim", function()
         vim.keymap.set({ "n", "v" }, "<leader>cd", function()
           local actions = require "CopilotChat.actions"
           local help = actions.help_actions()
@@ -311,7 +311,7 @@ return {
     end,
     config = function(_, opts)
       require("mini.ai").setup(opts)
-      ds.lazy.on_load("which-key.nvim", function()
+      ds.plugin.on_load("which-key.nvim", function()
         local mini_motions = function()
           local i = {
             [" "] = "mini.ai: whitespace",

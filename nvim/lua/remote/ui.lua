@@ -472,7 +472,7 @@ return {
       ds.hl.new("NotifyERRORIcon", { link = "ErrorMsg" })
       ds.hl.new("NotifyERRORTitle", { link = "ErrorMsg" })
 
-      if not ds.lazy.is_installed "noice.nvim" then
+      if not ds.plugin.is_installed "noice.nvim" then
         vim.api.nvim_create_autocmd("User", {
           pattern = "VeryLazy",
           callback = function() vim.notify = require "notify" end,

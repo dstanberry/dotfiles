@@ -186,7 +186,7 @@ return {
 
       vim.treesitter.language.register("markdown", "octo")
 
-      ds.lazy.on_load("nvim-cmp", function()
+      ds.plugin.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
           group = vim.api.nvim_create_augroup("git-completion", { clear = true }),
           pattern = "octo",

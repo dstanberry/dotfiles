@@ -20,7 +20,7 @@ M.setup = function()
       executable = {
         command = "node",
         args = {
-          ds.lazy.get_pkg_path("js-debug-adapter", "/js-debug/src/dapDebugServer.js"),
+          ds.plugin.get_pkg_path("js-debug-adapter", "/js-debug/src/dapDebugServer.js"),
           "${port}",
           "localhost",
         },

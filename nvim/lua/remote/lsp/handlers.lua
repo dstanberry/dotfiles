@@ -10,7 +10,7 @@ function M.execute_command(opts)
     command = opts.command,
     arguments = opts.arguments,
   }
-  if not ds.lazy.is_installed "trouble.nvim" and opts.open then
+  if not ds.plugin.is_installed "trouble.nvim" and opts.open then
     require("trouble").open {
       mode = "lsp_command",
       params = params,
@@ -180,7 +180,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.renameProvider then
-    if ds.lazy.is_loaded "inc-rename.nvim" then
+    if ds.plugin.is_loaded "inc-rename.nvim" then
       local rename_symbol = function()
         local inc_rename = require "inc_rename"
         return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand "<cword>"

@@ -3,7 +3,7 @@ local node_modules = function(dirs)
 end
 
 local get_cmd = function(workspace_dir)
-  local angularls_path = ds.lazy.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server")
+  local angularls_path = ds.plugin.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server")
   local cmd = {
     "ngserver",
     "--stdio",

@@ -6,7 +6,7 @@
 ---@field fs util.fs
 ---@field hl util.hl
 ---@field icons util.icons
----@field lazy util.lazy
+---@field plugin util.plugin
 ---@field ui util.ui
 local M = {}
 

@@ -35,7 +35,7 @@ return {
       get = function() return "" end,
     }
 
-    ds.lazy.on_load("trouble.nvim", function()
+    ds.plugin.on_load("trouble.nvim", function()
       ---@diagnostic disable-next-line: inject-field
       ds.lsp_symbols = require("trouble").statusline {
         mode = "lsp_document_symbols",

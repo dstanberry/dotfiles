@@ -361,7 +361,7 @@ return {
       })
     end,
     config = function()
-      ds.lazy.on_load("nvim-cmp", function()
+      ds.plugin.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
           group = vim.api.nvim_create_augroup("db-completion", { clear = true }),
           pattern = "sql",
@@ -395,7 +395,7 @@ return {
           require("dbee.sources").FileSource:new(vim.fs.joinpath(vim.fn.stdpath "data", "db", "connections.json")),
         },
       }
-      ds.lazy.on_load("nvim-cmp", function()
+      ds.plugin.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
           group = vim.api.nvim_create_augroup("db-completion", { clear = true }),
           pattern = "sql",
