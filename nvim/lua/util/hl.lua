@@ -4,12 +4,12 @@ local M = {}
 ---@type HighlightGroups
 local hi = setmetatable({}, {
   ---@param name string
-  ---@param args? HighlightGroupAttrs
+  ---@param args? vim.api.keyset.highlight
   __newindex = function(_, name, args) vim.api.nvim_set_hl(0, name, args) end,
 })
 
 ---@param name string
----@param args? HighlightGroupAttrs
+---@param args? vim.api.keyset.highlight
 M.new = function(name, args) hi[name] = args end
 
 ---@param c ColorPalette

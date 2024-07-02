@@ -63,23 +63,7 @@ M.themes = {}
 
 M._initialized = false
 
----@class HighlightGroupAttrs
----@field fg string?
----@field bg string?
----@field bold boolean?
----@field italic boolean?
----@field undercurl boolean?
----@field underline boolean?
----@field underdotted boolean?
----@field underdashed boolean?
----@field underdouble boolean?
----@field strikethrough boolean?
----@field reverse boolean?
----@field nocombine boolean?
----@field link string?
----@field default boolean?
-
----@alias HighlightGroups table<string,HighlightGroupAttrs>
+---@alias HighlightGroups table<string,vim.api.keyset.highlight>
 
 ---@param c ColorPalette
 ---@return HighlightGroups
