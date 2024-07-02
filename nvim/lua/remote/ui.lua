@@ -1,27 +1,5 @@
 return {
   {
-    "uga-rosa/ccc.nvim",
-    lazy = true,
-    cmd = { "CccHighlighterToggle" },
-    ft = {
-      "css",
-      "html",
-      "javascript",
-      "javascriptreact",
-      "lua",
-      "typescript",
-      "typescriptreact",
-    },
-    opts = function(plugin)
-      return {
-        highlighter = {
-          auto_enable = true,
-          filetypes = plugin.ft,
-        },
-      }
-    end,
-  },
-  {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     keys = {
@@ -500,8 +478,7 @@ return {
           local buf = vim.api.nvim_win_get_buf(win_id)
           local b = vim.bo[buf]
           local ignore_bt = ds.excludes.bt.wb_disabled
-          local ignore_ft =
-            vim.tbl_deep_extend("keep", ds.excludes.ft.stl_disabled, ds.excludes.ft.wb_disabled)
+          local ignore_ft = vim.tbl_deep_extend("keep", ds.excludes.ft.stl_disabled, ds.excludes.ft.wb_disabled)
           return ds.any(ignore_bt, function(item) return b.bt:match(item) end)
             or ds.any(ignore_ft, function(item) return b.ft:match(item) end)
         end,
