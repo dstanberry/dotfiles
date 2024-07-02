@@ -124,6 +124,7 @@ M.misc = {
   DownArrow = "↓",
   Ellipses = "⋯",
   FilledCircle = "●",
+  FilledCircleLarge = "⬤",
   FoldClosed = "",
   FoldOpened = "",
   Gears = "",
