@@ -423,7 +423,7 @@ M.load = function(t, b)
       if (type == "file" or type == "link") and name:match "%.lua$" then
         local mod = path:match(root .. "/(.*)"):sub(1, -5):gsub("/", ".")
         name = name:sub(1, -5)
-        if mod:match "%." then name = mod:gsub("%.", "_") end
+        if mod:match "%." then name = mod:gsub("%.", "-") end
         M.themes[name] = require(root:gsub("/", ".") .. "." .. mod)
       end
     end)
