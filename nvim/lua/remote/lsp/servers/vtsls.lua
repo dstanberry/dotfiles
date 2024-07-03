@@ -1,13 +1,6 @@
-local handlers = require "remote.lsp.handlers"
-
 local M = {}
 
-local cmd = { "vtsls", "--stdio" }
-
-local function get_cmd()
-  if ds.has "win32" then cmd[1] = vim.fn.exepath(cmd[1]) end
-  return cmd
-end
+local handlers = require "remote.lsp.handlers"
 
 local ts_settings = {
   updateImportsOnFileMove = { enabled = "always" },
@@ -25,8 +18,6 @@ local ts_settings = {
 }
 
 M.config = {
-  cmd = cmd,
-  on_new_config = function(new_config, _) new_config.cmd = get_cmd() end,
   settings = {
     complete_function_calls = true,
     vtsls = {
@@ -52,21 +43,21 @@ M.config = {
   },
   on_attach = function(client, bufnr)
     handlers.on_attach(client, bufnr)
-    client.commands["_typescript.movetofilerefactoring"] = function(command, _)
+    client.commands["_typescript.moveToFileRefactoring"] = function(command, _)
       local action, uri, range = unpack(command.arguments)
 
       local function move(new_fname)
-        client.request("workspace/executecommand", {
+        client.request("workspace/executeCommand", {
           command = command.command,
           arguments = { action, uri, range, new_fname },
         })
       end
 
       local fname = vim.uri_to_fname(uri)
-      client.request("workspace/executecommand", {
-        command = "typescript.tsserverrequest",
+      client.request("workspace/executeCommand", {
+        command = "typescript.tsserverRequest",
         arguments = {
-          "getmovetorefactoringfilesuggestions",
+          "getMoveToRefactoringFileSuggestions",
           {
             file = fname,
             startline = range.start.line + 1,
@@ -78,14 +69,14 @@ M.config = {
       }, function(_, result)
         ---@type string[]
         local files = result.body.files
-        table.insert(files, 1, "enter new path...")
+        table.insert(files, 1, "Enter new path...")
         vim.ui.select(files, {
-          prompt = "select move destination:",
+          prompt = "Select move destination:",
           format_item = function(f) return vim.fn.fnamemodify(f, ":~:.") end,
         }, function(f)
           if f and f:find "^enter new path" then
             vim.ui.input({
-              prompt = "enter move destination:",
+              prompt = "Enter move destination:",
               default = vim.fn.fnamemodify(fname, ":h") .. "/",
               completion = "file",
             }, function(new_fname) return new_fname and move(new_fname) end)

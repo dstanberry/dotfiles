@@ -1,3 +1,5 @@
+local M = {}
+
 local node_modules = function(dirs)
   return ds.map(dirs, function(dir) return table.concat({ dir, "node_modules" }, "/") end)
 end
@@ -48,8 +50,6 @@ local goto_component = function()
     end
   end)
 end
-
-local M = {}
 
 M.config = {
   cmd = get_cmd(vim.uv.cwd()),

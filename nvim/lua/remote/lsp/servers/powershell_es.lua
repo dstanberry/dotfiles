@@ -1,3 +1,5 @@
+local M = {}
+
 local basedir = vim.fs.normalize(string.format("%s/mason/packages/powershell-editor-services", vim.fn.stdpath "data"))
 -- stylua: ignore
 local command_fmt = {
@@ -14,8 +16,6 @@ local command_fmt = {
   "-LogLevel","Normal",
 }
 local command = table.concat(command_fmt, " "):format(basedir, basedir, vim.fn.stdpath "cache", vim.fn.stdpath "cache")
-
-local M = {}
 
 M.config = {
   bundle_path = basedir,

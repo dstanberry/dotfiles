@@ -6,15 +6,9 @@ local M = {}
 
 ---@param opts LspCommand
 function M.execute_command(opts)
-  local params = {
-    command = opts.command,
-    arguments = opts.arguments,
-  }
-  if not ds.plugin.is_installed "trouble.nvim" and opts.open then
-    require("trouble").open {
-      mode = "lsp_command",
-      params = params,
-    }
+  local params = { command = opts.command, arguments = opts.arguments }
+  if ds.plugin.is_installed "trouble.nvim" and opts.open then
+    require("trouble").open { mode = "lsp_command", params = params }
   else
     return vim.lsp.buf_request(0, "workspace/executeCommand", params, opts.handler)
   end
@@ -68,37 +62,31 @@ end
 ---@param new_fname string
 M.on_rename = function(old_fname, new_fname)
   local buf = vim.fn.bufnr(old_fname)
-  local will_rename = false
+  local renamed = false
   for _, c in pairs(vim.lsp.get_clients { bufnr = buf }) do
     if c.supports_method "workspace/willRenameFiles" then
       ---@diagnostic disable-next-line: invisible
       local res = c.request_sync("workspace/willRenameFiles", {
-        files = {
-          {
-            oldUri = vim.uri_from_fname(old_fname),
-            newUri = vim.uri_from_fname(new_fname),
-          },
-        },
+        files = { { oldUri = vim.uri_from_fname(old_fname), newUri = vim.uri_from_fname(new_fname) } },
       }, 1000, 0)
       if res and res.result then
+        renamed = true
         vim.lsp.util.apply_workspace_edit(res.result, c.offset_encoding)
-        will_rename = true
       end
     end
   end
-  if not will_rename then vim.notify("File Rename not supported", vim.log.levels.WARN, { title = "LSP" }) end
+  if not renamed then ds.warn("File Rename not supported", { title = "LSP" }) end
 end
 
 M.on_attach = function(client, bufnr)
   if client.server_capabilities.codeActionProvider then
-    local source_action = function() vim.lsp.buf.code_action { context = { only = { "source" }, diagnostics = {} } } end
-
+    local _action = function() vim.lsp.buf.code_action { context = { only = { "source" }, diagnostics = {} } } end
     vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr, desc = "lsp: code action" })
-    vim.keymap.set("n", "gA", source_action, { buffer = bufnr, desc = "lsp: source action" })
+    vim.keymap.set("n", "gA", _action, { buffer = bufnr, desc = "lsp: source action" })
   end
 
   if client.server_capabilities.codeLensProvider then
-    local code_lens = function()
+    local _lens = function()
       vim.ui.select({ "display", "refresh", "run" }, {
         prompt = "Code Lens",
         format_item = function(item) return "Code lens " .. item end,
@@ -112,11 +100,9 @@ M.on_attach = function(client, bufnr)
         end
       end)
     end
-
-    vim.keymap.set("n", "gl", code_lens, { buffer = bufnr, desc = "lsp: code lens" })
+    vim.keymap.set("n", "gl", _lens, { buffer = bufnr, desc = "lsp: code lens" })
 
     local lsp_codelens = vim.api.nvim_create_augroup("lsp_codelens", { clear = true })
-
     vim.api.nvim_create_autocmd("BufEnter", {
       group = lsp_codelens,
       once = true,
@@ -140,13 +126,9 @@ M.on_attach = function(client, bufnr)
 
   if client.server_capabilities.documentFormattingProvider then
     -- INFO: skip keymap assignment if already defined
+    local _format = function() vim.lsp.buf.format { async = true } end
     if vim.fn.maparg "ff" == "" then
-      vim.keymap.set(
-        "n",
-        "ff",
-        function() vim.lsp.buf.format { async = true } end,
-        { buffer = bufnr, desc = "lsp: format document" }
-      )
+      vim.keymap.set("n", "ff", _format, { buffer = bufnr, desc = "lsp: format document" })
     end
   end
 
@@ -175,24 +157,24 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.inlayHintProvider then
-    local toggle_inlay_hint = function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end
-    vim.keymap.set("n", "g<bs>", toggle_inlay_hint, { buffer = bufnr, desc = "lsp: toggle inlay hints" })
+    local _inlay_hints = function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end
+    vim.keymap.set("n", "g<bs>", _inlay_hints, { buffer = bufnr, desc = "lsp: toggle inlay hints" })
   end
 
   if client.server_capabilities.renameProvider then
     if ds.plugin.is_loaded "inc-rename.nvim" then
-      local rename_symbol = function()
+      local _rename = function()
         local inc_rename = require "inc_rename"
         return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand "<cword>"
       end
-      vim.keymap.set("n", "g<leader>", rename_symbol, { buffer = bufnr, expr = true, desc = "lsp: rename" })
+      vim.keymap.set("n", "g<leader>", _rename, { buffer = bufnr, expr = true, desc = "lsp: rename" })
     else
       vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr, desc = "lsp: rename" })
     end
   end
 
   if client.supports_method "workspace/willRenameFiles" then
-    local rename_file = function()
+    local _rename = function()
       vim.ui.input({ prompt = "New filename: " }, function(name)
         if not name then return end
         local old_fname = vim.api.nvim_buf_get_name(0)
@@ -211,8 +193,7 @@ M.on_attach = function(client, bufnr)
         vim.cmd.edit "%"
       end)
     end
-
-    vim.keymap.set("n", "g-", rename_file, { buffer = bufnr, desc = "lsp: rename file" })
+    vim.keymap.set("n", "g-", _rename, { buffer = bufnr, desc = "lsp: rename file" })
   end
 
   if client.server_capabilities.signatureHelpProvider then
@@ -228,28 +209,16 @@ M.on_attach = function(client, bufnr)
     vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
   end
 
+  local _symbols = function() vim.lsp.buf.workspace_symbol "" end
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "lsp: goto implementation" })
   vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "lsp: show documents symbols" })
-  vim.keymap.set(
-    "n",
-    "gw",
-    function() vim.lsp.buf.workspace_symbol "" end,
-    { buffer = bufnr, desc = "lsp: show workspace symbols" }
-  ) -- NOTE: used by |trouble.nvim| as alternative display of document symbols
-  -- vim.keymap.set("n", "gS", vim.lsp.buf.workspace_symbol, { buffer = bufnr, desc = "lsp: show workspace symbols" })
+  vim.keymap.set("n", "gw", _symbols, { buffer = bufnr, desc = "lsp: show workspace symbols" })
+
+  local _previous = function() vim.diagnostic.jump { count = 1, float = true } end
+  local _next = function() vim.diagnostic.jump { count = 1, float = true } end
   vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr, desc = "lsp: show line diagnostics" })
-  vim.keymap.set(
-    "n",
-    "gn",
-    function() vim.diagnostic.jump { count = 1, float = true } end,
-    { buffer = bufnr, desc = "lsp: next diagnostic" }
-  )
-  vim.keymap.set(
-    "n",
-    "gp",
-    function() vim.diagnostic.jump { count = -1, float = true } end,
-    { buffer = bufnr, desc = "lsp: previous diagnostic" }
-  )
+  vim.keymap.set("n", "gn", _next, { buffer = bufnr, desc = "lsp: next diagnostic" })
+  vim.keymap.set("n", "gp", _previous, { buffer = bufnr, desc = "lsp: previous diagnostic" })
 
   vim.api.nvim_buf_create_user_command(bufnr, "Workspace", function(opts)
     local cmd = unpack(opts.fargs)
@@ -260,7 +229,7 @@ M.on_attach = function(client, bufnr)
     elseif cmd == "remove" then
       vim.lsp.buf.remove_workspace_folder()
     else
-      ds.error(("Invalid workspace operation: '%s'"):format(cmd))
+      ds.error(("Invalid workspace operation: '%s'"):format(cmd), { title = "LSP" })
     end
   end, {
     nargs = "*",
