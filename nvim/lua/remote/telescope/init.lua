@@ -372,6 +372,10 @@ return {
             layout_strategy = "vertical",
             layout_config = { height = 40, prompt_position = "top" },
             path_display = { "shorten" },
+            mappings = {
+              i = { ["<c-f>"] = actions.to_fuzzy_refine },
+              n = { ["<c-f>"] = actions.to_fuzzy_refine },
+            },
           },
           lsp_references = {
             layout_strategy = "vertical",

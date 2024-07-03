@@ -230,7 +230,12 @@ M.on_attach = function(client, bufnr)
 
   vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "lsp: goto implementation" })
   vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "lsp: show documents symbols" })
-  -- NOTE: used by |trouble.nvim| as alternative display of document symbols
+  vim.keymap.set(
+    "n",
+    "gw",
+    function() vim.lsp.buf.workspace_symbol "" end,
+    { buffer = bufnr, desc = "lsp: show workspace symbols" }
+  ) -- NOTE: used by |trouble.nvim| as alternative display of document symbols
   -- vim.keymap.set("n", "gS", vim.lsp.buf.workspace_symbol, { buffer = bufnr, desc = "lsp: show workspace symbols" })
   vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr, desc = "lsp: show line diagnostics" })
   vim.keymap.set(
