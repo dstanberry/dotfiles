@@ -156,6 +156,26 @@ return {
 
       local lga_actions = require "telescope-live-grep-args.actions"
 
+      local switch_focus = function(prompt_bufnr)
+        local picker = state.get_current_picker(prompt_bufnr)
+        local prompt_win = picker.prompt_win
+        local previewer = picker.previewer
+        local winid = previewer.state.winid
+        local bufnr = previewer.state.bufnr
+        vim.keymap.set(
+          { "i", "n" },
+          "<a-t>",
+          function()
+            vim.cmd.lua {
+              args = { ("vim.api.nvim_set_current_win(%s)"):format(prompt_win) },
+              mods = { noautocmd = true },
+            }
+          end,
+          { buffer = bufnr }
+        )
+        vim.cmd.lua { args = { ("vim.api.nvim_set_current_win(%s)"):format(winid) }, mods = { noautocmd = true } }
+      end
+
       local set_prompt_to_entry_value = function(prompt_bufnr)
         local entry = state.get_selected_entry()
         if not entry or not type(entry) == "table" then return end
@@ -166,10 +186,7 @@ return {
         local commit = state.get_selected_entry().value
         actions.close(prompt_bufnr)
         vim.fn.setreg("+", commit)
-        vim.defer_fn(
-          function() vim.notify(("'%s' copied to clipboard"):format(commit), nil, { timeout = 500 }) end,
-          500
-        )
+        vim.defer_fn(function() ds.info(("'%s' copied to clipboard"):format(commit), { title = "Telescope" }) end, 500)
       end
 
       telescope.setup {
@@ -212,6 +229,8 @@ return {
           },
           mappings = {
             i = {
+              ["<a-t>"] = switch_focus,
+              ["<a-y>"] = set_prompt_to_entry_value,
               ["<c-down>"] = actions.cycle_history_next,
               ["<c-up>"] = actions.cycle_history_prev,
               ["<c-/>"] = actions.which_key,
@@ -222,19 +241,10 @@ return {
               ["<c-t>"] = actions.select_tab,
               ["<c-v>"] = actions.select_vertical,
               ["<c-x>"] = actions.select_horizontal,
-              ["<c-y>"] = set_prompt_to_entry_value,
               ["<c-n>"] = false,
               ["<c-u>"] = false,
               ["jk"] = actions.close,
-
               -- plugin integrations
-              ["<c-q>"] = function(...)
-                if package.loaded["trouble"] then
-                  return require("trouble.sources.telescope").open(...)
-                else
-                  return actions.send_to_qflist(...) + actions.open_qflist(...)
-                end
-              end,
               ["<a-q>"] = function(...)
                 if package.loaded["trouble"] then
                   return require("trouble.sources.telescope").open(...)
@@ -242,10 +252,19 @@ return {
                   return actions.send_selected_to_qflist(...) + actions.open_qflist(...)
                 end
               end,
+              ["<c-q>"] = function(...)
+                if package.loaded["trouble"] then
+                  return require("trouble.sources.telescope").open(...)
+                else
+                  return actions.send_to_qflist(...) + actions.open_qflist(...)
+                end
+              end,
             },
             n = {
+              ["<a-t>"] = switch_focus,
               ["<c-d>"] = actions.preview_scrolling_down,
               ["<c-f>"] = actions.preview_scrolling_up,
+              ["yy"] = set_prompt_to_entry_value,
               ["q"] = actions.close,
             },
           },
