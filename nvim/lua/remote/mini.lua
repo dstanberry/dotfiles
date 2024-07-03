@@ -146,7 +146,7 @@ return {
 
       local vtext = ds.pad(ds.icons.misc.FilledCircleLarge, "right")
       local style = "full" -- "full" | "compact"
-      local tailwind_colors = require("ft.css").tailwind_colors
+      local tailwind_colors = require("ft.css.colors").tailwind
       local filetypes = { "css", "html", "javascript", "javascriptreact", "typescript", "typescriptreact" }
 
       local colors ---@type ColorPalette
