@@ -86,6 +86,39 @@ M.config = {
         end)
       end)
     end
+
+    vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (typescript)" })
+
+    local _source = function()
+      local params = vim.lsp.util.make_range_params()
+      handlers.execute_command {
+        command = "typescript.goToSourceDefinition",
+        arguments = { params.textDocument.uri, params.position },
+        open = true,
+      }
+    end
+    vim.keymap.set("n", "<leader>ld", _source, { buffer = bufnr, desc = "typescript: goto source definition" })
+
+    local _refs = function()
+      handlers.execute_command {
+        command = "typescript.findAllReferences",
+        arguments = { vim.uri_from_bufnr(0) },
+        open = true,
+      }
+    end
+    vim.keymap.set("n", "<leader>lr", _refs, { buffer = bufnr, desc = "typescript: show file references" })
+
+    local _organize = handlers.run_code_action["source.organizeImports"]
+    vim.keymap.set("n", "<leader>lo", _organize, { buffer = bufnr, desc = "typescript: organize imports" })
+
+    local _missing = handlers.run_code_action["source.addMissingImports.ts"]
+    vim.keymap.set("n", "<leader>lm", _missing, { buffer = bufnr, desc = "typescript: add missing imports" })
+
+    local _unused = handlers.run_code_action["source.removeUnused.ts"]
+    vim.keymap.set("n", "<leader>lu", _unused, { buffer = bufnr, desc = "typescript: remove unused imports" })
+
+    local _fix = handlers.run_code_action["source.fixAll.ts"]
+    vim.keymap.set("n", "<leader>lf", _fix, { buffer = bufnr, desc = "typescript: fix all problems" })
   end,
 }
 
