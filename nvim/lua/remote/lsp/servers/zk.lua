@@ -16,9 +16,8 @@ M.setup = function(opts)
       filetypes = { "markdown" },
     },
   }
-  local lsp_zk = vim.api.nvim_create_augroup("lsp_zk", { clear = true })
   vim.api.nvim_create_autocmd("LspAttach", {
-    group = lsp_zk,
+    group = vim.api.nvim_create_augroup("lsp_zk", { clear = true }),
     pattern = "*.md",
     callback = function(args)
       if not (args.data and args.data.client_id) then return end
