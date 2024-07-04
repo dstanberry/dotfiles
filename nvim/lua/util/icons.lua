@@ -7,14 +7,17 @@ M.border = {
 
 M.diagnostics = {
   Error = "",
-  Hint = "",
-  Info = "",
-  Warn = "",
+  Warn = "",
+  Hint = "",
+  Info = "",
 }
 
 M.debug = {
   Breakpoint = "",
   BreakpointActive = "",
+  BreakpointConditional = "",
+  BreakpointLog = "󰗽",
+  BreakpointRejected = "",
   Bug = "",
   Continue = "",
   Disconnect = "",
