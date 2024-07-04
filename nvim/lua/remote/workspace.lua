@@ -407,51 +407,6 @@ return {
     end,
   },
   {
-    "EthanJWright/vs-tasks.nvim",
-    name = "vstask",
-    dependencies = {
-      "nvim-lua/popup.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-    event = "LazyFile",
-    keys = function()
-      local has_telescope, telescope = pcall(require, "telescope")
-      if not has_telescope then return {} end
-
-      local themes = require "telescope.themes"
-
-      local show_tasks = function()
-        telescope.extensions.vstask.tasks(themes.get_dropdown {
-          previewer = false,
-          prompt_title = "Launch Task",
-        })
-      end
-
-      return {
-        { "<leader>ft", show_tasks, desc = "telescope: show vscode tasks" },
-      }
-    end,
-    opts = {
-      config_dir = ".vscode",
-      -- json_parser = vim.json.decode,
-      cache_json_conf = true,
-      cache_strategy = "last",
-      terminal = "toggleterm",
-      term_opts = {
-        current = {
-          direction = "float",
-        },
-        tab = {
-          direction = "tab",
-        },
-      },
-      telescope_keys = {
-        tab = "<c-t>",
-        current = "<cr>",
-      },
-    },
-  },
-  {
     "akinsho/toggleterm.nvim",
     cmd = "ToggleTerm",
     opts = {
@@ -580,11 +535,6 @@ return {
         desc = "trouble: lsp type definitions",
       },
       {
-        "gw",
-        function() vim.cmd { cmd = "Trouble", args = { "lsp_diag", "toggle" } } end,
-        desc = "trouble: document diagnostics",
-      },
-      {
         "gW",
         function() vim.cmd { cmd = "Trouble", args = { "w_diag", "toggle" } } end,
         desc = "trouble: workspace diagnostics",
@@ -647,18 +597,17 @@ return {
         },
         modes = {
           lsp_def = { mode = "lsp_definitions", preview = preview_opts },
-          lsp_diag = { mode = "diagnostics", preview = preview_opts },
           lsp_impl = { mode = "lsp_implementations", preview = preview_opts },
           lsp_ref = { mode = "lsp_references", preview = preview_opts },
           lsp_type_def = { mode = "lsp_type_definitions", preview = preview_opts },
-          w_diag = {
+          lsp_diag = {
             mode = "diagnostics",
             filter = {
               any = {
                 buf = 0,
                 {
                   severity = vim.diagnostic.severity.WARN,
-                  function(item) return item.filename:find((vim.loop or vim.uv).cwd(), 1, true) end,
+                  function(item) return item.filename:find(vim.uv.cwd(), 1, true) end,
                 },
               },
             },

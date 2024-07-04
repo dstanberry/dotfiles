@@ -107,13 +107,13 @@ return {
   {
     "williamboman/mason.nvim",
     dependencies = {
-      "neovim/nvim-lspconfig",
       {
         "williamboman/mason-lspconfig.nvim",
         opts = { automatic_installation = true },
       },
     },
     cmd = "Mason",
+    build = ":MasonUpdate",
     ensure_installed = {
       "angular-language-server",
       "basedpyright",

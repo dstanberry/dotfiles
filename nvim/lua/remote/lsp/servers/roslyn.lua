@@ -1,17 +1,19 @@
--- verify rust-tools is available
-local ok, roslyn = pcall(require, "roslyn")
-if not ok then return end
-
 local M = {}
 
 M.defer_setup = true
 
-M.setup = function(config)
-  roslyn.setup {
-    dotnet_cmd = "dotnet",
-    capabilities = config and config.capabilities and config.capabilities,
-    on_attach = config and config.on_attach and config.on_attach,
-  }
+M.setup = function(opts)
+  vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("lsp_dotnet", { clear = true }),
+    pattern = { "cs", "vb" },
+    callback = function()
+      require("roslyn").setup {
+        dotnet_cmd = "dotnet",
+        capabilities = opts and opts.capabilities and opts.capabilities,
+        on_attach = opts and opts.on_attach and opts.on_attach,
+      }
+    end,
+  })
 end
 
 return M

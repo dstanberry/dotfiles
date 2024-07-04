@@ -2,23 +2,21 @@
 -- vim.cmd.edit(vim.lsp.get_log_path())
 
 return {
+  { "b0o/schemastore.nvim", lazy = true, version = false },
+  { "jmederosalvarado/roslyn.nvim", lazy = true },
+  { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
+  { "mickael-menu/zk-nvim", lazy = true },
   {
     "neovim/nvim-lspconfig",
     event = "LazyFile",
     dependencies = {
-      -- INFO: utilities
-      "b0o/schemastore.nvim",
       "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
       {
         "folke/neoconf.nvim",
         cmd = { "Neoconf" },
         opts = { local_settings = ".nvim.json", global_settings = "nvim.json" },
-        config = true,
       },
-      -- INFO: server configurations
-      "jmederosalvarado/roslyn.nvim",
-      "simrat39/rust-tools.nvim",
-      { "mickael-menu/zk-nvim", dependencies = { "nvim-telescope/telescope.nvim" } },
     },
     config = function()
       local lspconfig = require "lspconfig"
@@ -33,10 +31,8 @@ return {
         cssls = {},
         html = { init_options = { provideFormatter = false } },
       }
-      local enabled = {
-        pyright = false,
-        tsserver = false,
-      }
+      local enabled = {}
+
       local root = "remote/lsp/servers"
       ds.walk(root, function(path, name, type)
         if (type == "file" or type == "link") and name:match "%.lua$" then

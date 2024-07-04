@@ -4,7 +4,7 @@ M.config = {
   settings = {
     ["rust-analyzer"] = {
       assist = { importGranularity = "module", importPrefix = "by_self" },
-      cargo = { loadOutDirsFromCheck = true, allFeatures = true },
+      cargo = { allFeatures = true, loadOutDirsFromCheck = true, buildScripts = { enable = true } },
       checkOnSave = { enable = true, command = "clippy" },
       experimental = { procAttrMacros = true },
       hoverActions = { references = true },

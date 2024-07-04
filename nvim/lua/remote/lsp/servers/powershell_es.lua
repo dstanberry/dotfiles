@@ -1,6 +1,5 @@
 local M = {}
 
-local basedir = vim.fs.normalize(string.format("%s/mason/packages/powershell-editor-services", vim.fn.stdpath "data"))
 -- stylua: ignore
 local command_fmt = {
   "%s/PowerShellEditorServices/Start-EditorServices.ps1",
@@ -15,6 +14,7 @@ local command_fmt = {
   "-Stdio",
   "-LogLevel","Normal",
 }
+local basedir = ds.plugin.get_pkg_path("powershell-editor-services"):sub(1, -2)
 local command = table.concat(command_fmt, " "):format(basedir, basedir, vim.fn.stdpath "cache", vim.fn.stdpath "cache")
 
 M.config = {
