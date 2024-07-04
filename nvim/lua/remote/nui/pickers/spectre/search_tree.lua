@@ -52,7 +52,7 @@ local function mappings(search_query, replace_query)
 end
 
 local function prepare_node(node, line, component)
-  local _, devicons = pcall(require, "nvim-web-devicons")
+  local devicons = require "nvim-web-devicons"
   local has_children = node:has_children()
 
   line:append(string.rep("  ", node:get_depth() - 1))
@@ -61,8 +61,7 @@ local function prepare_node(node, line, component)
     local icon, icon_highlight = devicons.get_icon(node.text, string.match(node.text, "%a+$"), { default = true })
 
     line:append(
-      node:is_expanded() and ds.pad(ds.icons.misc.FoldOpened, "right")
-        or ds.pad(ds.icons.misc.FoldClosed, "right"),
+      node:is_expanded() and ds.pad(ds.icons.misc.FoldOpened, "right") or ds.pad(ds.icons.misc.FoldClosed, "right"),
       component:hl_group "SpectreIcon"
     )
     line:append(icon .. " ", icon_highlight)

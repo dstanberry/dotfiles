@@ -65,7 +65,7 @@ return {
             style = "none",
           },
           get_element_icon = function(element)
-            return require("nvim-web-devicons").get_icon(element.filetype, { default = false })
+            return require("nvim-web-devicons").get_icon(element.path, element.filetype, { default = false })
           end,
           offsets = {
             {
@@ -220,7 +220,6 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
       "MunifTanjim/nui.nvim",
-      "nvim-tree/nvim-web-devicons",
     },
     cmd = "Neotree",
     keys = {

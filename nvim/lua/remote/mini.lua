@@ -284,6 +284,24 @@ return {
     end,
   },
   {
+    "echasnovski/mini.icons",
+    lazy = true,
+    opts = {
+      style = "glyph",
+      extension = {
+        md = { glyph = "", hl = "MiniIconsYellow" },
+        mdx = { glyph = "", hl = "MiniIconsYellow" },
+        octo = { glyph = "", hl = "MiniIconsAzure" },
+      },
+    },
+    init = function()
+      package.preload["nvim-web-devicons"] = function()
+        require("mini.icons").mock_nvim_web_devicons()
+        return package.loaded["nvim-web-devicons"]
+      end
+    end,
+  },
+  {
     "echasnovski/mini.pairs",
     event = "LazyFile",
     opts = {

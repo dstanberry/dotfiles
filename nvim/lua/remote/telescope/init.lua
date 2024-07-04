@@ -22,11 +22,11 @@ ds.hl.new("TelescopeSelection", { bg = BLUE, bold = true })
 ds.hl.new("TelescopeSelectionCaret", { fg = vim.g.ds_colors.fg0, bg = BLUE, bold = true })
 
 return {
+  { "nvim-tree/nvim-web-devicons", lazy = true },
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
     dependencies = {
-      "nvim-tree/nvim-web-devicons",
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-file-browser.nvim",
       "nvim-telescope/telescope-github.nvim",

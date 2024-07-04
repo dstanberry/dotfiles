@@ -1,5 +1,3 @@
-local devicons_ok, devicons = pcall(require, "nvim-web-devicons")
-
 local util = require "remote.lualine.util"
 
 local add = util.add
@@ -25,6 +23,7 @@ local get_relative_path = function(winid, dirpath)
 end
 
 local format_sections = function(path, fname, ext)
+  local devicons = require "nvim-web-devicons"
   local parts = path and vim.split(path, "/") or {}
   table.insert(parts, fname)
   local segments = ds.reduce(parts, function(segments, v, k)
@@ -42,11 +41,11 @@ local format_sections = function(path, fname, ext)
       -- NOTE: nvim-dap
       if fname and fname:match "^DAP" then icon = dap_icons[fname] or icon end
       if #segments == 0 then
-        section = (k == #parts and devicons_ok)
+        section = k == #parts
             and add(highlighter.sanitize(icon_hl), { ds.pad(icon, "both") }, true) .. add(fname_hl, { v })
           or add(generic_hl, { ds.pad(v, "left") })
       else
-        section = (k == #parts and devicons_ok)
+        section = k == #parts
             and add(highlighter.sanitize(icon_hl), { ds.pad(icon, "right") }, true) .. add(fname_hl, { v })
           or add(generic_hl, { v })
       end
