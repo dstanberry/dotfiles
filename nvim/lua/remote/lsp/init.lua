@@ -2,9 +2,9 @@
 -- vim.cmd.edit(vim.lsp.get_log_path())
 
 return {
-  { "b0o/schemastore.nvim", lazy = true, version = false },
-  { "jmederosalvarado/roslyn.nvim", lazy = true },
+  { "Decodetalkers/csharpls-extended-lsp.nvim", lazy = true },
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
+  { "b0o/schemastore.nvim", lazy = true, version = false },
   { "mickael-menu/zk-nvim", lazy = true },
   {
     "neovim/nvim-lspconfig",

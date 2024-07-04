@@ -40,6 +40,7 @@ return {
       return {
         formatters_by_ft = {
           bash = { "shfmt" },
+          cs = { "csharpier" },
           go = { "goimports", "gofumpt" },
           html = { { "prettierd", "prettier" } },
           javascript = { { "prettierd", "prettier" } },
@@ -59,6 +60,10 @@ return {
           zsh = { "shfmt" },
         },
         formatters = {
+          csharpier = {
+            command = "dotnet-csharpier",
+            args = { "--write-stdout" },
+          },
           ["markdown-toc"] = {
             condition = function(_, ctx)
               for _, line in ipairs(vim.api.nvim_buf_get_lines(ctx.buf, 0, -1, false)) do
@@ -121,6 +126,8 @@ return {
       "clangd",
       "cmake-language-server",
       "codelldb",
+      "csharp-language-server",
+      "csharpier",
       "css-lsp",
       "delve",
       "eslint-lsp",
@@ -134,8 +141,8 @@ return {
       "js-debug-adapter",
       "json-lsp",
       "lua-language-server",
-      "markdownlint-cli2",
       "markdown-toc",
+      "markdownlint-cli2",
       "marksman",
       "netcoredbg",
       "prettier",
