@@ -1,5 +1,18 @@
 return {
-  { "mfussenegger/nvim-dap-python", lazy = true },
+  {
+    "mfussenegger/nvim-dap-python",
+    lazy = true,
+    keys = function()
+      local _method = function() require("dap-python").test_method() end
+      local _class = function() require("dap-python").test_class() end
+
+      return {
+        { "<leader>dp", "", desc = "+dap: python" },
+        { "<leader>dpm", _method, desc = "python: debug method" },
+        { "<leader>dpc", _class, desc = "python: debug class" },
+      }
+    end,
+  },
   {
     "mfussenegger/nvim-dap",
     lazy = true,
@@ -104,7 +117,7 @@ return {
         commented = false,
         show_stop_reason = true,
         virt_text_pos = "inline",
-        display_callback = function(variable, buf, stackframe, node, options)
+        display_callback = function(variable, _, _, _, options)
           if options.virt_text_pos == "inline" then
             return string.format(" = %s", variable.value)
           else
