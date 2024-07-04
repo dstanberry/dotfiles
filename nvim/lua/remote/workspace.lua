@@ -217,10 +217,6 @@ return {
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "MunifTanjim/nui.nvim",
-    },
     cmd = "Neotree",
     keys = {
       {
@@ -382,9 +378,6 @@ return {
   },
   {
     "windwp/nvim-spectre",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
     keys = {
       { "<leader>sr", function() require("spectre").open() end, desc = "spectre: replace in files" },
     },

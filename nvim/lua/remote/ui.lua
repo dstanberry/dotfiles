@@ -487,9 +487,8 @@ return {
   },
   {
     "folke/todo-comments.nvim",
-    cmd = { "TodoQuickFix", "TodoTelescope", "TodoTrouble" },
     event = "LazyFile",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    cmd = { "TodoQuickFix", "TodoTelescope", "TodoTrouble" },
     opts = {
       signs = false,
       sign_priority = 0,
@@ -507,7 +506,6 @@ return {
     "kevinhwang91/nvim-ufo",
     event = "LazyFile",
     dependencies = { "kevinhwang91/promise-async" },
-    enabled = true,
     keys = {
       -- { "zR", function() require("ufo").openAllFolds() end, desc = "ufo: open all folds" },
       -- { "zM", function() require("ufo").closeAllFolds() end, desc = "ufo: close all folds" },
@@ -635,9 +633,9 @@ return {
   },
   {
     "folke/zen-mode.nvim",
-    cmd = "ZenMode",
     lazy = true,
     dependencies = { "folke/twilight.nvim" },
+    cmd = "ZenMode",
     opts = {
       window = {
         options = {

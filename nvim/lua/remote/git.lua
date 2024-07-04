@@ -1,7 +1,6 @@
 return {
   {
     "ruifm/gitlinker.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
     keys = function()
       local function open(url)
         local Job = require "plenary.job"
@@ -80,7 +79,6 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = "LazyFile",
-    dependencies = { "nvim-lua/plenary.nvim" },
     init = function()
       ds.hl.new("GitSignsAdd", { fg = vim.g.ds_colors.green2 })
       ds.hl.new("GitSignsChange", { fg = vim.g.ds_colors.yellow2 })
@@ -103,9 +101,7 @@ return {
           local added = ""
           local changed = ""
           local removed = ""
-          if status.added and status.added > 0 then
-            added = ds.pad(ds.icons.git.TextAdded, "right") .. status.added
-          end
+          if status.added and status.added > 0 then added = ds.pad(ds.icons.git.TextAdded, "right") .. status.added end
           if status.changed and status.changed > 0 then
             changed = ds.pad(ds.icons.git.TextChanged, "both") .. status.changed
           end
@@ -160,12 +156,8 @@ return {
   },
   {
     "pwntester/octo.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-    cmd = "Octo",
     event = { { event = "BufReadCmd", pattern = "octo://*" } },
+    cmd = "Octo",
     keys = {
       { "<leader>go", function() vim.cmd "Octo" end, desc = "octo: manage github issues and pull requests " },
       -- prefix

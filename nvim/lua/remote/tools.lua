@@ -1,9 +1,9 @@
 return {
+  { "nvim-lua/plenary.nvim", lazy = true },
   { "gennaro-tedesco/nvim-jqx", ft = "json" },
   {
     "stevearc/conform.nvim",
     event = "BufWritePre",
-    enabled = true,
     cmd = "ConformInfo",
     keys = {
       {
@@ -107,13 +107,10 @@ return {
   {
     "williamboman/mason.nvim",
     dependencies = {
-      {
-        "williamboman/mason-lspconfig.nvim",
-        opts = { automatic_installation = true },
-      },
+      { "williamboman/mason-lspconfig.nvim", opts = { automatic_installation = true } },
     },
-    cmd = "Mason",
     build = ":MasonUpdate",
+    cmd = "Mason",
     ensure_installed = {
       "angular-language-server",
       "basedpyright",
@@ -211,14 +208,6 @@ return {
         sh = { "shellcheck" },
         sql = { "sqlfluff" },
       },
-      linters = {
-        -- -- Example of using selene only when a selene.toml file is present
-        -- selene = {
-        --   condition = function(ctx)
-        --     return vim.fs.find({ "selene.toml" }, { path = ctx.filename, upward = true })[1]
-        --   end,
-        -- },
-      },
     },
     config = function(_, opts)
       local lint = require "lint"
@@ -278,52 +267,35 @@ return {
     config = function(_, opts) require("silicon").setup(opts) end,
   },
   {
-    -- seamless navigation between tmux | neovim splits
     "mrjones2014/smart-splits.nvim",
-    keys = {
-      { "<a-h>", function() require("smart-splits").resize_left(1) end, desc = "smart-splits: resize left" },
-      { "<a-j>", function() require("smart-splits").resize_down(1) end, desc = "smart-splits: resize down" },
-      { "<a-k>", function() require("smart-splits").resize_up(1) end, desc = "smart-splits: resize up" },
-      { "<a-l>", function() require("smart-splits").resize_right(1) end, desc = "smart-splits: resize right" },
-      -- moving between splits
-      {
-        "<c-h>",
-        function() require("smart-splits").move_cursor_left() end,
-        desc = "smart-splits: move to left window",
-      },
-      {
-        "<c-j>",
-        function() require("smart-splits").move_cursor_down() end,
-        desc = "smart-splits: move to lower window",
-      },
-      { "<c-k>", function() require("smart-splits").move_cursor_up() end, desc = "smart-splits: move to upper window" },
-      {
-        "<c-l>",
-        function() require("smart-splits").move_cursor_right() end,
-        desc = "smart-splits: move to right window",
-      },
-      -- swapping buffers between windows
-      {
-        "<localleader><localleader>h",
-        function() require("smart-splits").swap_buf_left() end,
-        desc = "smart-splits: swap with left window",
-      },
-      {
-        "<localleader><localleader>j",
-        function() require("smart-splits").swap_buf_down() end,
-        desc = "smart-splits: swap with lower window",
-      },
-      {
-        "<localleader><localleader>k",
-        function() require("smart-splits").swap_buf_up() end,
-        desc = "smart-splits: swap with upper window",
-      },
-      {
-        "<localleader><localleader>l",
-        function() require("smart-splits").swap_buf_right() end,
-        desc = "smart-splits: swap with right window",
-      },
-    },
+    keys = function()
+      local _resize_left = function() require("smart-splits").resize_left(1) end
+      local _resize_down = function() require("smart-splits").resize_down(1) end
+      local _resize_up = function() require("smart-splits").resize_up(1) end
+      local _resize_right = function() require("smart-splits").resize_right(1) end
+      local _move_left = function() require("smart-splits").move_cursor_left() end
+      local _move_down = function() require("smart-splits").move_cursor_down() end
+      local _move_up = function() require("smart-splits").move_cursor_up() end
+      local _move_right = function() require("smart-splits").move_cursor_right() end
+      local _swap_left = function() require("smart-splits").swap_buf_left() end
+      local _swap_down = function() require("smart-splits").swap_buf_down() end
+      local _swap_up = function() require("smart-splits").swap_buf_up() end
+      local _swap_right = function() require("smart-splits").swap_buf_right() end
+      return {
+        { "<a-h>", _resize_left, desc = "smart-splits: resize left" },
+        { "<a-j>", _resize_down, desc = "smart-splits: resize down" },
+        { "<a-k>", _resize_up, desc = "smart-splits: resize up" },
+        { "<a-l>", _resize_right, desc = "smart-splits: resize right" },
+        { "<c-h>", _move_left, desc = "smart-splits: move to left window" },
+        { "<c-j>", _move_down, desc = "smart-splits: move to lower window" },
+        { "<c-k>", _move_up, desc = "smart-splits: move to upper window" },
+        { "<c-l>", _move_right, desc = "smart-splits: move to right window" },
+        { "<localleader><localleader>h", _swap_left, desc = "smart-splits: swap with left window" },
+        { "<localleader><localleader>j", _swap_down, desc = "smart-splits: swap with lower window" },
+        { "<localleader><localleader>k", _swap_up, desc = "smart-splits: swap with upper window" },
+        { "<localleader><localleader>l", _swap_right, desc = "smart-splits: swap with right window" },
+      }
+    end,
   },
   {
     "kristijanhusak/vim-dadbod-ui",

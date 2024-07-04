@@ -13,13 +13,9 @@ ds.hl.new("NuiComponentsCheckboxLabelChecked", { link = "NuiComponentsCheckboxIc
 
 return {
   { "MunifTanjim/nui.nvim", lazy = true },
+  { "windwp/nvim-spectre", lazy = true, opts = { open_cmd = "noswapfile vnew" } },
   {
     "grapp-dev/nui-components.nvim",
-    dependecies = {
-      "windwp/nvim-spectre",
-      dependencies = { "nvim-lua/plenary.nvim" },
-      opts = { open_cmd = "noswapfile vnew" },
-    },
     keys = {
       {
         "<localleader>sr",

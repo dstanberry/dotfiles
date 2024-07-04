@@ -8,10 +8,6 @@ vim.treesitter.language.register("typescript", "typescriptreact")
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    version = false,
-    build = ":TSUpdate",
-    event = { "LazyFile", "VeryLazy" },
-    lazy = vim.fn.argc(-1) == 0,
     dependencies = {
       {
         "nvim-treesitter/nvim-treesitter-context",
@@ -53,6 +49,10 @@ return {
       "nvim-treesitter/playground",
       "theHamsta/nvim-treesitter-pairs",
     },
+    build = ":TSUpdate",
+    lazy = vim.fn.argc(-1) == 0,
+    version = false,
+    event = { "LazyFile", "VeryLazy" },
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     keys = {
       { "=", desc = "treesitter: increment selection" },

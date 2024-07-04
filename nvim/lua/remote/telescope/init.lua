@@ -22,22 +22,17 @@ ds.hl.new("TelescopeSelection", { bg = BLUE, bold = true })
 ds.hl.new("TelescopeSelectionCaret", { fg = vim.g.ds_colors.fg0, bg = BLUE, bold = true })
 
 return {
-  { "nvim-tree/nvim-web-devicons", lazy = true },
   {
     "nvim-telescope/telescope.nvim",
-    cmd = "Telescope",
     dependencies = {
-      "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-file-browser.nvim",
       "nvim-telescope/telescope-github.nvim",
       "nvim-telescope/telescope-live-grep-args.nvim",
       "nvim-telescope/telescope-symbols.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
-      {
-        "nvim-telescope/telescope-fzf-native.nvim",
-        build = "make",
-      },
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     },
+    cmd = "Telescope",
     keys = function()
       -- builtin.buffers
       local function current_buffer()

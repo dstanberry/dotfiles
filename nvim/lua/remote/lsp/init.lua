@@ -14,7 +14,7 @@ return {
       "williamboman/mason-lspconfig.nvim",
       {
         "folke/neoconf.nvim",
-        cmd = { "Neoconf" },
+        cmd = "Neoconf",
         opts = { local_settings = ".nvim.json", global_settings = "nvim.json" },
       },
     },

@@ -247,25 +247,19 @@ return {
       "hrsh7th/cmp-path",
       "petertriho/cmp-git",
       "saadparwaiz1/cmp_luasnip",
-      -- snippets manager
       "L3MON4D3/LuaSnip",
-      -- LLM
       {
         "zbirenbaum/copilot-cmp",
         dependencies = {
           "zbirenbaum/copilot.lua",
-          cmd = "Copilot",
           build = ":Copilot auth",
+          cmd = "Copilot",
           opts = {
             suggestion = { enabled = false },
             panel = { enabled = false },
             filetypes = { ["*"] = true },
             server_opts_overrides = {
-              settings = {
-                advanced = {
-                  debug = { acceptselfSignedCertificate = true },
-                },
-              },
+              settings = { advanced = { debug = { acceptselfSignedCertificate = true } } },
             },
           },
         },
