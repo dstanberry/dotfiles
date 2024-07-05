@@ -1,9 +1,7 @@
 local telescope = require "telescope"
-local telescope_builtin = require "telescope.builtin"
-local telescope_themes = require "telescope.themes"
-
-local telescope_pickers = require "remote.telescope.custom.pickers"
-
+local tb = require "telescope.builtin"
+local tt = require "telescope.themes"
+local tu = require "remote.telescope.util"
 local zk = require "zk"
 local zka = require "zk.api"
 local zku = require "zk.util"
@@ -43,7 +41,7 @@ M.edit = function(options, picker_options)
   options = options or {}
   picker_options = vim.tbl_extend("keep", picker_options, {
     picker = "telescope",
-    telescope = telescope_themes.get_ivy {},
+    telescope = tt.get_ivy {},
   })
   zk.edit(options, picker_options)
 end
@@ -57,7 +55,7 @@ M.pick_tags = function(options, picker_options, cb)
   options = options or {}
   picker_options = vim.tbl_extend("keep", picker_options, {
     picker = "telescope",
-    telescope = telescope_themes.get_dropdown {},
+    telescope = tt.get_dropdown {},
   })
   zk.pick_tags(options, picker_options, cb)
 end
@@ -71,7 +69,7 @@ M.pick_notes = function(options, picker_options, cb)
   options = options or {}
   picker_options = vim.tbl_extend("keep", picker_options, {
     picker = "telescope",
-    telescope = telescope_themes.get_ivy {},
+    telescope = tt.get_ivy {},
   })
   zk.pick_notes(options, picker_options, cb)
 end
@@ -81,7 +79,7 @@ end
 ---@param options? table additional options
 M.new = function(options)
   options = options or {}
-  telescope_pickers.create("dropdown", templates, {
+  tu.picker.create("dropdown", templates, {
     prompt_title = "Notes (create from template)",
     callback = function(selection)
       options.dir = selection.value.directory
@@ -96,7 +94,8 @@ M.new = function(options)
 end
 
 local make_given_range_params = function(range)
-  local params = ds.reduce({ "start", "end" }, function(v, k)
+  local params
+  params = ds.reduce({ "start", "end" }, function(v, k)
     local row, col = unpack(range[k])
     col = (vim.o.selection ~= "exclusive" and v == "end") and col + 1 or col
     params[v] = { line = row, character = col }
@@ -166,7 +165,7 @@ M.live_grep = function(options)
   local notebook_path = options.notebook_path and options.notebook_path or zku.resolve_notebook_path(0)
   local notebook_root = zku.notebook_root(notebook_path)
   if notebook_root == nil or #notebook_root == 0 then error "No notebook found." end
-  telescope_builtin.live_grep { cwd = notebook_root, prompt_title = "Notes (live grep)" }
+  tb.live_grep { cwd = notebook_root, prompt_title = "Notes (live grep)" }
 end
 
 return M

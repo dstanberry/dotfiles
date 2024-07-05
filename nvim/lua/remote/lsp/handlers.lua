@@ -283,16 +283,17 @@ M.setup = function()
     },
   }
 
-  local has_tele, telescope = pcall(require, "telescope.builtin")
-  if has_tele then
-    vim.lsp.handlers["textDocument/declaration"] = telescope.lsp_definitions
-    vim.lsp.handlers["textDocument/definition"] = telescope.lsp_definitions
-    vim.lsp.handlers["textDocument/documentSymbol"] = telescope.lsp_document_symbols
-    vim.lsp.handlers["textDocument/implementation"] = telescope.lsp_implementations
-    vim.lsp.handlers["textDocument/references"] = telescope.lsp_references
-    vim.lsp.handlers["textDocument/typeDefinition"] = telescope.lsp_definitions
-    vim.lsp.handlers["workspace/symbol"] = telescope.lsp_dynamic_workspace_symbols
-  end
+  local _definitions = function() require("telescope.builtin").lsp_definitions() end
+  local _type_definitions = function() require("telescope.builtin").lsp_type_definitions() end
+  local _references = function() require("telescope.builtin").lsp_references() end
+  local _document_symbols = function() require("telescope.builtin").lsp_document_symbols() end
+  local _workspace_symbols = function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end
+  vim.lsp.handlers["textDocument/declaration"] = _definitions
+  vim.lsp.handlers["textDocument/definition"] = _definitions
+  vim.lsp.handlers["textDocument/documentSymbol"] = _document_symbols
+  vim.lsp.handlers["textDocument/references"] = _references
+  vim.lsp.handlers["textDocument/typeDefinition"] = _type_definitions
+  vim.lsp.handlers["workspace/symbol"] = _workspace_symbols
 
   -- TODO: remove after functionality is merged upstream
   -- https://github.com/neovim/neovim/issues/19649#issuecomment-1327287313

@@ -1,37 +1,32 @@
-local finders = require "telescope.finders"
-local pickers = require "telescope.pickers"
-local actions = require "telescope.actions"
-local action_utils = require "telescope.actions.utils"
-local action_state = require "telescope.actions.state"
-local conf = require("telescope.config").values
-
+---@class remote.telescope.util.picker
 local M = {}
 
-local default_entry_maker = function(entry)
-  return {
-    ordinal = entry.label,
-    display = entry.label,
-    value = entry,
-  }
-end
-
+---@param theme "cursor"|"dropdown"|"ivy"
+---@param content table
+---@param opts? table
 M.create = function(theme, content, opts)
+  local finders = require "telescope.finders"
+  local pickers = require "telescope.pickers"
+  local actions = require "telescope.actions"
+  local action_utils = require "telescope.actions.utils"
+  local action_state = require "telescope.actions.state"
+  local conf = require("telescope.config").values
   local theme_opts
-
-  if theme == "dropdown" then
-    theme_opts = require("telescope.themes").get_dropdown {}
-  elseif theme == "cursor" then
+  if theme == "cursor" then
     theme_opts = require("telescope.themes").get_cursor {}
+  elseif theme == "dropdown" then
+    theme_opts = require("telescope.themes").get_dropdown {}
   elseif theme == "ivy" then
     theme_opts = require("telescope.themes").get_ivy {}
   end
-
+  opts = opts or {}
   pickers
     .new(theme_opts, {
       prompt_title = opts.title or "",
       finder = finders.new_table {
         results = content,
-        entry_maker = opts.entry_maker or default_entry_maker,
+        entry_maker = opts.entry_maker
+          or function(entry) return { ordinal = entry.label, display = entry.label, value = entry } end,
       },
       previewer = opts.previewer or nil,
       sorter = conf.generic_sorter(theme_opts),
