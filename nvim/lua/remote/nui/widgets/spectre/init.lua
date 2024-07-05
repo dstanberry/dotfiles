@@ -1,6 +1,6 @@
 local n = require "nui-components"
-local engine = require "remote.nui.pickers.spectre.engine"
-local search_tree = require "remote.nui.pickers.spectre.search_tree"
+local engine = require "remote.nui.widgets.spectre.engine"
+local search_tree = require "remote.nui.widgets.spectre.search_tree"
 
 ds.hl.new("NuiComponentsTreeSpectreCodeLine", { fg = vim.g.ds_colors.gray2 })
 ds.hl.new("NuiComponentsTreeSpectreIcon", { bold = true })
