@@ -218,23 +218,29 @@ return {
   {
     "nvim-neo-tree/neo-tree.nvim",
     cmd = "Neotree",
-    keys = {
-      {
-        "<leader>fE",
-        function() require("neo-tree.command").execute { toggle = true, dir = ds.buffer.get_root() } end,
-        desc = "neotree: browse root directory",
-      },
-      {
-        "<localleader>fE",
-        function() require("neo-tree.command").execute { toggle = true, dir = vim.uv.cwd() } end,
-        desc = "neotree: browse current directory",
-      },
-      {
-        "-",
-        function() require("neo-tree.command").execute { toggle = true, dir = vim.uv.cwd() } end,
-        desc = "neotree: browse current directory",
-      },
-    },
+    keys = function()
+      local _cwd = function()
+        require("neo-tree.command").execute { toggle = true, position = "left", dir = vim.uv.cwd() }
+      end
+
+      local _root = function()
+        require("neo-tree.command").execute { toggle = true, position = "left", dir = ds.buffer.get_root() }
+      end
+
+      local _float = function()
+        require("neo-tree.command").execute {
+          toggle = true,
+          position = "float",
+          dir = ds.buffer.get_root(),
+          reveal = true,
+        }
+      end
+      return {
+        { "-", _root, desc = "neotree: browse project" },
+        { "_", _cwd, desc = "neotree: browse current working directory" },
+        { "<localleader>fE", _float, desc = "neotree: browse project (float)" },
+      }
+    end,
     deactivate = function() vim.cmd { cmd = "NeoTree", args = { "close" } } end,
     init = function()
       local GRAY = ds.color.darken(vim.g.ds_colors.gray0, 10)
@@ -269,7 +275,7 @@ return {
       })
     end,
     opts = {
-      sources = { "filesystem", "document_symbols" },
+      sources = { "filesystem" },
       source_selector = {
         winbar = true,
         separator_active = " ",
@@ -278,7 +284,6 @@ return {
             source = "filesystem",
             display_name = ds.pad(ds.icons.documents.MultipleFolders, "both", 1, 2) .. "Files ",
           },
-          { source = "document_symbols", display_name = ds.pad(ds.icons.kind.Class, "both", 1, 2) .. "Symbols " },
         },
       },
       enable_git_status = true,
