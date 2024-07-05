@@ -528,7 +528,7 @@ return {
       },
       {
         "gW",
-        function() vim.cmd { cmd = "Trouble", args = { "w_diag", "toggle" } } end,
+        function() vim.cmd { cmd = "Trouble", args = { "lsp_diag", "toggle" } } end,
         desc = "trouble: workspace diagnostics",
       },
       {
