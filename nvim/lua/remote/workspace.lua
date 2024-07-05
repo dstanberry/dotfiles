@@ -464,6 +464,10 @@ return {
         direction = "tab",
         on_open = function(term)
           vim.wo.sidescrolloff = 0
+          vim.keymap.set("t", "<c-h>", "<c-h>", { buffer = term.bufnr })
+          vim.keymap.set("t", "<c-j>", "<c-j>", { buffer = term.bufnr })
+          vim.keymap.set("t", "<c-k>", "<c-k>", { buffer = term.bufnr })
+          vim.keymap.set("t", "<c-l>", "<c-l>", { buffer = term.bufnr })
           vim.keymap.set(
             { "i", "n", "t" },
             "<a-w><a-g>",
