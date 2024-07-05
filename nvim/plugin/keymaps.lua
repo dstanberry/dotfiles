@@ -118,11 +118,23 @@ vim.keymap.set("n", "H", "^", { desc = "goto start of line" })
 -- move to the end of the current line
 vim.keymap.set("n", "L", "g_", { desc = "goto end of line" })
 
+-- better up/down
+vim.keymap.set({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "down", expr = true, silent = true })
+vim.keymap.set({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "up", expr = true, silent = true })
+
 -- keep cursor stationary when joining line(s) below
-vim.keymap.set("n", "J", "mzJ`z", { desc = "join with line below" })
+-- stylua: ignore
+vim.keymap.set("n", "J", function()
+    vim.cmd [[
+      normal! mzJ`z
+      delmarks z
+    ]]
+end, { desc = "join with line below" })
 
 -- maintain direction when cycling between searches
-vim.keymap.set({ "n", "x", "o" }, "n", "'Nn'[v:searchforward]", { expr = true, desc = "next occurence" })
+vim.keymap.set("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "next occurence" })
+vim.keymap.set("n", "N", "'nN'[v:searchforward].'zv'", { expr = true, desc = "previous occurence" })
+vim.keymap.set({ "x", "o" }, "n", "'Nn'[v:searchforward]", { expr = true, desc = "next occurence" })
 vim.keymap.set({ "n", "x", "o" }, "N", "'nN'[v:searchforward]", { expr = true, desc = "previous occurence" })
 
 -- insert newline without entering insert mode
