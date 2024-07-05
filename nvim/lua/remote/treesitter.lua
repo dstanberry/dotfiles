@@ -103,10 +103,17 @@ return {
       textobjects = {
         move = {
           enable = true,
-          goto_next_start = { ["]a"] = "@parameter.inner", ["]c"] = "@class.outer", ["]f"] = "@function.outer" },
-          goto_next_end = { ["]A"] = "@parameter.inner", ["]C"] = "@class.outer", ["]F"] = "@function.outer" },
-          goto_previous_start = { ["[a"] = "@parameter.inner", ["[c"] = "@class.outer", ["[f"] = "@function.outer" },
-          goto_previous_end = { ["[A"] = "@parameter.inner", ["[C"] = "@class.outer", ["[F"] = "@function.outer" },
+          -- NOTE: matches mnemonic used in |mini.ai| configuration
+          -- f[u]nction parameter | [f]unction | [c]lass
+          goto_next_start = { ["]u"] = "@parameter.inner", ["]c"] = "@class.outer", ["]f"] = "@function.outer" },
+          goto_next_end = { ["]U"] = "@parameter.inner", ["]C"] = "@class.outer", ["]F"] = "@function.outer" },
+          goto_previous_start = { ["[u"] = "@parameter.inner", ["[c"] = "@class.outer", ["[f"] = "@function.outer" },
+          goto_previous_end = { ["[U"] = "@parameter.inner", ["[C"] = "@class.outer", ["[F"] = "@function.outer" },
+        },
+        swap = {
+          enable = true,
+          swap_next = { ["]s"] = "@parameter.inner" },
+          swap_previous = { ["[s"] = "@parameter.inner" },
         },
       },
       query_linter = {

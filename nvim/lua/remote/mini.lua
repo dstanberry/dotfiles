@@ -8,15 +8,15 @@ return {
       return {
         n_lines = 500,
         custom_textobjects = {
-          o = ai.gen_spec.treesitter({
+          o = ai.gen_spec.treesitter({ -- lo[o]ps, c[o]nditions within loop
             a = { "@block.outer", "@conditional.outer", "@loop.outer" },
             i = { "@block.inner", "@conditional.inner", "@loop.inner" },
           }, {}),
-          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}),
-          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}),
-          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },
-          d = { "%f[%d]%d+" }, -- digits
-          e = { -- word with case
+          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}), --[f]unction
+          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}), -- [c]lass
+          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- [t]ags (html)
+          d = { "%f[%d]%d+" }, -- [d]igits
+          e = { -- word with cas[e]
             {
               "%u[%l%d]+%f[^%l%d]",
               "%f[%S][%l%d]+%f[^%l%d]",
@@ -25,7 +25,7 @@ return {
             },
             "^().*()$",
           },
-          g = function(ai_type)
+          g = function(ai_type) -- whole buffer
             local start_line, end_line = 1, vim.fn.line "$"
             if ai_type == "i" then
               -- skip first and last blank lines for `i` textobject
@@ -66,8 +66,8 @@ return {
             end
             return ret
           end,
-          u = ai.gen_spec.function_call(), -- u for "Usage"
-          U = ai.gen_spec.function_call { name_pattern = "[%w_]" }, -- without dot in function name
+          u = ai.gen_spec.function_call(), -- f[u]nction parameter
+          U = ai.gen_spec.function_call { name_pattern = "[%w_]" }, -- f[u]nction parameter without dot in function name
         },
       }
     end,
