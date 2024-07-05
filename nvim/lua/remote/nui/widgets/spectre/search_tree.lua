@@ -52,13 +52,12 @@ local function mappings(search_query, replace_query)
 end
 
 local function prepare_node(node, line, component)
-  local devicons = require "nvim-web-devicons"
   local has_children = node:has_children()
 
   line:append(string.rep("  ", node:get_depth() - 1))
 
   if has_children then
-    local icon, icon_highlight = devicons.get_icon(node.text, string.match(node.text, "%a+$"), { default = true })
+    local icon, icon_highlight = require("mini.icons").get("file", node.text)
 
     line:append(
       node:is_expanded() and ds.pad(ds.icons.misc.FoldOpened, "right") or ds.pad(ds.icons.misc.FoldClosed, "right"),

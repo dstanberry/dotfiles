@@ -65,7 +65,12 @@ return {
             style = "none",
           },
           get_element_icon = function(element)
-            return require("nvim-web-devicons").get_icon(element.path, element.filetype, { default = false })
+            if element.filetype == "octo" or element.path:match "^octo:" then
+              ---@diagnostic disable-next-line: return-type-mismatch
+              return require("mini.icons").get("extension", element.filetype)
+            end
+            ---@diagnostic disable-next-line: return-type-mismatch
+            return require("mini.icons").get(element.directory and "directory" or "file", element.path)
           end,
           offsets = {
             {

@@ -26,13 +26,12 @@ M.breadcrumbs = {
     end
 
     local format_sections = function(path, fname, ext)
-      local devicons = require "nvim-web-devicons"
       local parts = path and vim.split(path, "/") or {}
       table.insert(parts, fname)
       local segments = ds.reduce(parts, function(segments, v, k)
         local section
         if #v > 0 then
-          local icon, icon_hl = devicons.get_icon(fname, ext, { default = true })
+          local icon, icon_hl = require("mini.icons").get("file", fname)
           -- NOTE: octo.nvim
           if parts[1] and parts[1]:match "^octo:" then
             if parts[#parts - 1] == "pull" then
