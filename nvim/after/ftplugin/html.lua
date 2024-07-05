@@ -1,6 +1,6 @@
 vim.opt_local.conceallevel = 2
 
-local html_conceal_ns = vim.api.nvim_create_namespace "html_concealer"
+local NAMESPACE_ID = vim.api.nvim_create_namespace "html_ns_extmarks"
 local group = vim.api.nvim_create_augroup("html_ftplugin", { clear = true })
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "TextChanged", "InsertLeave" }, {
@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "TextChanged", "Insert
 
     for _, captures, metadata in query:iter_matches(root, bufnr, root:start(), root:end_(), {}) do
       local start_row, start_col, end_row, end_col = captures[2]:range()
-      vim.api.nvim_buf_set_extmark(bufnr, html_conceal_ns, start_row, start_col, {
+      vim.api.nvim_buf_set_extmark(bufnr, NAMESPACE_ID, start_row, start_col, {
         end_line = end_row,
         end_col = end_col,
         conceal = metadata[2].conceal,
