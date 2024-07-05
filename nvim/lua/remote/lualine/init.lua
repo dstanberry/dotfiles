@@ -1,6 +1,3 @@
-local theme = require "remote.lualine.theme"
-local util = require "remote.lualine.util"
-
 return {
   "nvim-lualine/lualine.nvim",
   url = "https://github.com/dstanberry/lualine.nvim",
@@ -19,13 +16,16 @@ return {
     end
   end,
   opts = function()
-    local breadcrumbs = require "remote.lualine.components.breadcrumbs"
-    local languageservers = require "remote.lualine.components.languageservers"
-    local filediff = require "remote.lualine.components.filediff"
-    local git_branch = require "remote.lualine.components.git_branch"
-    local git_diff = require "remote.lualine.components.git_diff"
-    local indent = require "remote.lualine.components.indent"
-    local merge_conflicts = require "remote.lualine.components.merge_conflicts"
+    local util = require "remote.lualine.util"
+    local highlighter = util.highlighter
+    local breadcrumbs = util.metadata.breadcrumbs.get
+    local root_dir = util.metadata.root_dir.get
+    local languageservers = util.lsp.get
+    local git_branch = util.git.branch.get
+    local git_diff = util.git.diff.get
+    local git_difflabel = util.git.diffview.get
+    local merge_conflicts = util.git.merge_conflicts.get
+    local indent = util.metadata.indentation.get
 
     local available_width = function(width) return vim.api.nvim_get_option_value("columns", {}) >= width end
 
@@ -44,7 +44,7 @@ return {
         filter = { range = true },
         format = string.format(
           "%s%s{kind_icon}{symbol.name:NoiceSymbolNormal}",
-          util.highlighter.sanitize "NoiceSymbolSeparator",
+          highlighter.sanitize "NoiceSymbolSeparator",
           ds.pad(ds.icons.misc.FoldClosed, "right", 2)
         ),
       }
@@ -70,7 +70,7 @@ return {
         end)
         local result = vim.list_slice(parts, 1, #trimmed_parts)
         if parts[#result + 1] then
-          local etc = string.format("%s...", util.highlighter.sanitize "Winbar")
+          local etc = string.format("%s...", highlighter.sanitize "Winbar")
           table.insert(trimmed_parts, etc)
           if available_width(#bc + #table.concat(trimmed_parts, sep) + margin) then
             table.insert(result, etc)
@@ -81,7 +81,7 @@ return {
         return table.concat(result, sep)
       end
 
-      local default = string.format("%s%s", util.highlighter.sanitize "Winbar", "%=")
+      local default = string.format("%s%s", highlighter.sanitize "Winbar", "%=")
       local data = ds.lsp_symbols.get()
       return data ~= "%#StatusLine#" and calculate_data(data) or default
     end
@@ -94,12 +94,9 @@ return {
 
     return {
       options = {
-        theme = theme.palette,
+        theme = util.theme,
         globalstatus = true,
-        disabled_filetypes = {
-          statusline = ds.excludes.ft.stl_disabled,
-          winbar = ds.excludes.ft.wb_disabled,
-        },
+        disabled_filetypes = { statusline = ds.excludes.ft.stl_disabled, winbar = ds.excludes.ft.wb_disabled },
         component_separators = " ",
         section_separators = " ",
       },
@@ -109,8 +106,10 @@ return {
             function() return ds.icons.misc.VerticalBarBold end,
             padding = { left = 0, right = 0 },
           },
+          { git_branch },
           {
-            git_branch,
+            root_dir,
+            cond = function() return type(root_dir()) == "string" end,
             padding = { right = 3 },
           },
         },
@@ -154,19 +153,19 @@ return {
               hint = { fg = ds.color.blend(vim.g.ds_colors.magenta1, vim.g.ds_colors.white, 0.4) },
             },
           },
-          {
-            languageservers,
-          },
+          { languageservers },
         },
         lualine_y = {
           {
             function()
+              ---@diagnostic disable-next-line: undefined-field
               local text = require("noice").api.status.search.get()
               local query = vim.F.if_nil(text:match "%/(.-)%s", text:match "%?(.-)%s")
               local counter = text:match "%d+%/%d+"
               return string.format("%s %s [%s]", ds.icons.misc.Magnify, query, counter)
             end,
             cond = function()
+              ---@diagnostic disable-next-line: undefined-field
               return package.loaded["noice"] and require("noice").api.status.search.has() and available_width(80)
             end,
             color = { fg = vim.g.ds_colors.gray2, bold = true },
@@ -182,7 +181,7 @@ return {
       winbar = {
         lualine_a = {
           {
-            filediff,
+            git_difflabel,
             color = "Winbar",
             cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
           },
@@ -218,7 +217,7 @@ return {
       inactive_winbar = {
         lualine_a = {
           {
-            filediff,
+            git_difflabel,
             color = "Winbar",
             cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
           },
