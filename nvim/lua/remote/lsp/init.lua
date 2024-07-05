@@ -11,7 +11,6 @@ return {
     event = "LazyFile",
     dependencies = {
       "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
       {
         "folke/neoconf.nvim",
         cmd = "Neoconf",
