@@ -6,7 +6,7 @@ vim.opt_local.breakindent = true
 vim.opt_local.breakindentopt = "min:5,list:-1"
 vim.opt_local.concealcursor = "c"
 vim.opt_local.conceallevel = 2
--- vim.opt_local.spell = true
+vim.opt_local.spell = true
 vim.opt_local.wrap = true
 vim.opt_local.colorcolumn = "80"
 
