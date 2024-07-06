@@ -198,28 +198,21 @@ return {
   {
     "folke/flash.nvim",
     event = "LazyFile",
-    keys = {
-      { "s", mode = { "n", "o", "x" }, function() require("flash").jump() end, desc = "flash: search" },
-      {
-        "S",
-        mode = { "n", "o", "x" },
-        function() require("flash").treesitter() end,
-        desc = "flash: treesitter search",
-      },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "flash: remote op" },
-      {
-        "R",
-        mode = { "n", "o", "x" },
-        function() require("flash").treesitter_search() end,
-        desc = "flash: treesitter remote op",
-      },
-    },
+    keys = function()
+      local _jump = function() require("flash").jump() end
+      local _treesitter = function() require("flash").treesitter() end
+      local _remote = function() require("flash").remote() end
+      local _treesitter_search = function() require("flash").treesitter_search() end
+      return {
+        { "s", mode = { "n", "o", "x" }, _jump, desc = "flash: jump to <pattern>" },
+        { "S", mode = { "n", "o", "x" }, _treesitter, desc = "flash: select treesitter node" },
+        { "r", mode = "o", _remote, desc = "flash: do operation on <pattern>" },
+        { "R", mode = { "n", "o", "x" }, _treesitter_search, desc = "flash: do (treesitter) operation on <pattern>" },
+      }
+    end,
     opts = {
       modes = {
-        char = {
-          enabled = true,
-          keys = { "f", "F", "t", "T", [";"] = "<c-right>", [","] = "<c-left>" },
-        },
+        char = { keys = { "f", "F", "t", "T", [";"] = "<c-right>", [","] = "<c-left>" } },
         search = { enabled = false },
       },
     },
