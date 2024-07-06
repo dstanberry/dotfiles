@@ -1,25 +1,8 @@
 local cache = vim.fn.stdpath "cache"
 local data = vim.fn.stdpath "data"
 
--- update file content if it has been modified on disk
-vim.o.autoread = true
--- auto-indent new line
-vim.o.autoindent = true
--- maintain file backup across sessions
-vim.o.backup = true
--- define location for backup files
-vim.o.backupdir = cache .. "/backup//,."
--- allow <backspace> to cross line boundaries
-vim.o.backspace = "indent,eol,start"
--- disable the system bell
-vim.o.belloff = "all"
--- emphasis on wrapped lines
-vim.o.breakindentopt = "shift:2"
--- setup clipboard
-vim.o.clipboard = "unnamedplus"
--- use win32 native clipboard tool on WSL
 if ds.has "wsl" then
-  vim.g.clipboard = {
+  vim.g.clipboard = { -- use win32 native clipboard tool on WSL
     name = "WslClipboard",
     copy = {
       ["+"] = "clip.exe",
@@ -32,109 +15,39 @@ if ds.has "wsl" then
     cache_enabled = 0,
   }
 end
--- define line-height for command-line
-vim.o.cmdheight = 1
--- include dictionary in completion matches
-vim.opt.complete:append "kspell"
--- use popup menu to show possible completions
-vim.opt.completeopt = "menuone,noselect"
--- highlight current line
-vim.o.cursorline = true
--- define diff options
-vim.opt.diffopt = {
-  "internal",
-  "filler",
-  "closeoff",
-  "hiddenoff",
-  "algorithm:minimal",
-  "linematch:60",
-}
--- define location for swap files
-vim.o.directory = cache .. "/swap//,."
--- don't expand spaces to tabs
-vim.o.expandtab = false
--- define glyphs used for vertical separators and statuslines
-vim.opt.fillchars = {
-  vert = "┃",
-  fold = "·",
-  diff = "",
-  eob = " ",
-  foldclose = "",
-  foldopen = "",
-  foldsep = " ",
-}
--- define the function used to calculate the fold level
-vim.opt.foldexpr = [[v:lua.require("util.ui").foldexpr()]]
--- define the fold level
-vim.opt.foldlevel = 99
--- define how the fold level is calculated
-vim.opt.foldmethod = "expr"
--- specify the text displayed for a closed fold
-vim.opt.foldtext = ""
--- grep program to use
-vim.o.grepprg = "rg --vimgrep --no-heading --smart-case"
--- grep output format
-vim.opt.grepformat = vim.opt.grepformat ^ { "%f:%l:%c:%m" }
--- allow buffers with unsaved changes to be hidden
-vim.o.hidden = true
--- highlight all search pattern matches
-vim.o.hlsearch = true
--- enable case insensitive search
-vim.o.ignorecase = true
--- enable live text substitution and preview matches
-vim.o.inccommand = "split"
--- incremental highlight of matched patterns
-vim.o.incsearch = true
--- disable padding when joining mulitple lines
-vim.o.joinspaces = false
--- display the statusline
-vim.o.laststatus = 3
--- show whitespace characters
-vim.o.list = true
--- soft line wrapping
-vim.o.linebreak = true
--- define glyphs used to visually identify whitespace
-vim.opt.listchars = {
-  conceal = "┊",
-  eol = "¬",
-  extends = "›",
-  lead = "·",
-  nbsp = "␣",
-  precedes = "‹",
-  tab = "» ",
-  trail = "•",
-}
--- enable search using regex expressions
-vim.o.magic = true
--- enable mouse events in normal and visual mode
-vim.o.mouse = "nv"
--- prevent showing context-menu on right-click
-vim.o.mousemodel = "extend"
--- show line numbers
-vim.o.number = true
--- extend path to include current directory
-vim.opt.path:append "**"
--- opacity for popup menu
-vim.o.pumblend = 0
--- the maximum number of entries shown in completion menu
-vim.o.pumheight = 5
--- show line numbers relative to current line
-vim.o.relativenumber = true
--- disable showing cursor position in/below statusline
-vim.o.ruler = false
--- rows: begin scrolling before reaching viewport boundary
-vim.o.scrolloff = 3
--- define shada options
-vim.opt.shada = {
-  "!",
-  "'100",
-  "<50",
-  "s10",
-  "h",
-  string.format("n%s/shada/main.shada", data),
-}
--- use powershell on windows OS
-if ds.has "win32" then
+
+vim.o.autoread = true -- update file content if it has been modified on disk
+vim.o.autoindent = true -- auto-indent new line
+vim.o.backup = true -- maintain file backup across sessions
+vim.o.backupdir = cache .. "/backup//,." -- define location for backup files
+vim.o.backspace = "indent,eol,start" -- allow <backspace> to cross line boundaries
+vim.o.belloff = "all" -- disable the system bell
+vim.o.breakindentopt = "shift:2" -- emphasis on wrapped lines
+vim.o.clipboard = "unnamedplus" -- setup clipboard
+vim.o.cmdheight = 1 -- define line-height for command-line
+vim.o.cursorline = true -- highlight current line
+vim.o.directory = cache .. "/swap//,." -- define location for swap files
+vim.o.expandtab = false -- don't expand spaces to tabs
+vim.o.grepprg = "rg --vimgrep --no-heading --smart-case" -- grep program to use
+vim.o.hidden = true -- allow buffers with unsaved changes to be hidden
+vim.o.hlsearch = true -- highlight all search pattern matches
+vim.o.ignorecase = true -- enable case insensitive search
+vim.o.inccommand = "split" -- enable live text substitution and preview matches
+vim.o.incsearch = true -- incremental highlight of matched patterns
+vim.o.joinspaces = false -- disable padding when joining mulitple lines
+vim.o.laststatus = 3 -- display the statusline
+vim.o.list = true -- show whitespace characters
+vim.o.linebreak = true -- soft line wrapping
+vim.o.magic = true -- enable search using regex expressions
+vim.o.mouse = "nv" -- enable mouse events in normal and visual mode
+vim.o.mousemodel = "extend" -- prevent showing context-menu on right-click
+vim.o.number = true -- show line numbers
+vim.o.pumblend = 0 -- opacity for popup menu
+vim.o.pumheight = 5 -- the maximum number of entries shown in completion menu
+vim.o.relativenumber = true -- show line numbers relative to current line
+vim.o.ruler = false -- disable showing cursor position in/below statusline
+vim.o.scrolloff = 3 -- rows: begin scrolling before reaching viewport boundary
+if ds.has "win32" then -- use powershell on windows OS
   vim.o.shell = "pwsh -NoLogo"
   vim.o.shellcmdflag = table.concat({
     "-NoLogo",
@@ -147,60 +60,86 @@ if ds.has "win32" then
   vim.o.shellquote = ""
   vim.o.shellxquote = ""
 end
--- space indent width
-vim.o.shiftwidth = 4
--- avoid swapfile alert messages
-vim.opt.shortmess:append "A"
--- disable splash screen
-vim.opt.shortmess:append "I"
--- disable showing file info
-vim.opt.shortmess:append "F"
--- don't show completion menu messages
-vim.opt.shortmess:append "c"
--- define line wrap character
-vim.o.showbreak = "⤷"
--- disable showing keystrokes below statusline
-vim.o.showcmd = false
--- disable contextual message based on mode
-vim.o.showmode = false
--- show matching braces
-vim.o.showmatch = true
--- show the tabline
-vim.o.showtabline = 2
--- columns: begin scrolling before reaching viewport boundary
-vim.o.sidescrolloff = 3
--- make search case sensitive if expression contains a capital letter
-vim.o.smartcase = true
--- indent based on code style
-vim.o.smartindent = true
--- tab will respect 'tabstop', 'shiftwidth', and 'softtabstop'
-vim.o.smarttab = true
--- prevent mixing tabs and whitespace
-vim.o.softtabstop = 0
--- default behaviour when creating horizontal splits
-vim.o.splitbelow = true
--- default behaviour when creating vertical splits
-vim.o.splitright = true
--- define the function used to show items in the statuscolumn
-vim.opt.statuscolumn = [[%!v:lua.require'util.ui'.statuscolumn()]]
---reuse windows/tabs if possible
-vim.o.switchbuf = "usetab"
--- tab visible width
-vim.o.tabstop = 4
--- enable true color
-vim.o.termguicolors = true
--- set duration to wait for keymap sequence
-vim.o.timeoutlen = 250
--- disable title modification
-vim.o.title = false
--- define location for undo files
-vim.o.undodir = cache .. "/undo//,."
--- maintain undo history across sessions
-vim.o.undofile = true
--- allow crossing of line boundaries
-vim.o.whichwrap = "b,h,l,s,<,>,[,],~"
--- ignore compiled files and temp files
-vim.opt.wildignore = {
+vim.o.shiftwidth = 4 -- space indent width
+vim.o.showbreak = "⤷" -- define line wrap character
+vim.o.showcmd = false -- disable showing keystrokes below statusline
+vim.o.showmode = false -- disable contextual message based on mode
+vim.o.showmatch = true -- show matching braces
+vim.o.showtabline = 2 -- show the tabline
+vim.o.sidescrolloff = 3 -- columns: begin scrolling before reaching viewport boundary
+vim.o.smartcase = true -- make search case sensitive if expression contains a capital letter
+vim.o.smartindent = true -- indent based on code style
+vim.o.smarttab = true -- tab will respect 'tabstop', 'shiftwidth', and 'softtabstop'
+vim.o.softtabstop = 0 -- prevent mixing tabs and whitespace
+vim.o.splitbelow = true -- default behaviour when creating horizontal splits
+vim.o.splitright = true -- default behaviour when creating vertical splits
+vim.o.switchbuf = "usetab" --reuse windows/tabs if possible
+vim.o.tabstop = 4 -- tab visible width
+vim.o.termguicolors = true -- enable true color
+vim.o.timeoutlen = 250 -- set duration to wait for keymap sequence
+vim.o.title = false -- disable title modification
+vim.o.undodir = cache .. "/undo//,." -- define location for undo files
+vim.o.undofile = true -- maintain undo history across sessions
+vim.o.whichwrap = "b,h,l,s,<,>,[,],~" -- allow crossing of line boundaries
+vim.o.wildmenu = true -- enable enhanced command line completion
+vim.o.wildmode = "full" -- enable file auto-completion
+vim.o.wrap = true -- enable line wrapping
+vim.o.wrapmargin = 8 -- define right margin before wrapping text
+
+vim.opt.complete:append "kspell" -- include dictionary in completion matches
+vim.opt.completeopt = "menuone,noselect" -- use popup menu to show possible completions
+vim.opt.diffopt = { -- define diff options
+  "internal",
+  "filler",
+  "closeoff",
+  "hiddenoff",
+  "algorithm:minimal",
+  "linematch:60",
+}
+vim.opt.fillchars = { -- define glyphs used for vertical separators and statuslines
+  vert = "┃",
+  fold = "·",
+  diff = "",
+  eob = " ",
+  foldclose = "",
+  foldopen = "",
+  foldsep = " ",
+}
+vim.opt.foldexpr = [[v:lua.require("util.ui").foldexpr()]] -- define the function used to calculate the fold level
+vim.opt.foldlevel = 99 -- define the fold level
+vim.opt.foldmethod = "expr" -- define how the fold level is calculated
+vim.opt.foldtext = "" -- specify the text displayed for a closed fold
+vim.opt.grepformat = vim.opt.grepformat ^ { "%f:%l:%c:%m" } -- grep output format
+vim.opt.grepprg = "rg --vimgrep" -- define program used to grep files
+vim.opt.jumpoptions = "view" -- define the jump list behavior
+vim.opt.listchars = { -- define glyphs used to visually identify whitespace
+  conceal = "┊",
+  eol = "¬",
+  extends = "›",
+  lead = "·",
+  nbsp = "␣",
+  precedes = "‹",
+  tab = "» ",
+  trail = "•",
+}
+vim.opt.path:append "**" -- extend path to include current directory
+vim.opt.shada = { -- define shada options
+  "!",
+  "'100",
+  "<50",
+  "s10",
+  "h",
+  string.format("n%s/shada/main.shada", data),
+}
+
+vim.opt.shortmess:append "A" -- avoid swapfile alert messages
+vim.opt.shortmess:append "I" -- disable splash screen
+vim.opt.shortmess:append "F" -- disable showing file info
+vim.opt.shortmess:append "c" -- don't show completion menu messages
+vim.opt.spelllang = "en_us" -- set preferred language
+vim.opt.spelloptions:append "noplainbuffer" -- spell checker can only be available for buffers with a valid filetype
+vim.opt.statuscolumn = [[%!v:lua.require'util.ui'.statuscolumn()]] -- define the function used to populate the statuscolumn
+vim.opt.wildignore = { -- ignore compiled files and temp files
   "*.o",
   "*~",
   "*.pyc",
@@ -216,13 +155,4 @@ vim.opt.wildignore = {
   "ntuser.*",
   "NTUSER.*",
 }
--- enable enhanced command line completion
-vim.o.wildmenu = true
--- enable file auto-completion
-vim.o.wildmode = "full"
--- enable completion menu
-vim.opt.wildoptions = { "pum", "fuzzy" }
--- enable line wrapping
-vim.o.wrap = true
--- define right margin before wrapping text
-vim.o.wrapmargin = 8
+vim.opt.wildoptions = { "pum", "fuzzy" } -- enable completion menu
