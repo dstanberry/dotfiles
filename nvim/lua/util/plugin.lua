@@ -58,15 +58,15 @@ end
 local lazy_file = function()
   vim.api.nvim_create_autocmd("BufReadPost", {
     once = true,
-    callback = function(event)
+    callback = function(args)
       -- skip if we already entered vim
       if vim.v.vim_did_enter == 1 then return end
       -- try to guess the filetype (may change later on during neovim startup)
-      local ft = vim.filetype.match { buf = event.buf }
+      local ft = vim.filetype.match { buf = args.buf }
       if ft then
         -- add treesitter highlights and fallback to syntax
         local lang = vim.treesitter.language.get_lang(ft)
-        if not (lang and pcall(vim.treesitter.start, event.buf, lang)) then vim.bo[event.buf].syntax = ft end
+        if not (lang and pcall(vim.treesitter.start, args.buf, lang)) then vim.bo[args.buf].syntax = ft end
         vim.cmd [[redraw]]
       end
     end,
@@ -151,8 +151,8 @@ M.on_load = function(name, fn)
   else
     vim.api.nvim_create_autocmd("User", {
       pattern = "LazyLoad",
-      callback = function(event)
-        if event.data == name then
+      callback = function(args)
+        if args.data == name then
           fn(name)
           return true
         end

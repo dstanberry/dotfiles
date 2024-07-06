@@ -266,7 +266,7 @@ return {
 
       vim.g.neo_tree_remove_legacy_commands = 1
       vim.api.nvim_create_autocmd("BufEnter", {
-        group = vim.api.nvim_create_augroup("neotree_lazy_load", { clear = true }),
+        group = ds.augroup "neotree",
         desc = "Start Neo-tree with directory",
         once = true,
         callback = function()
@@ -399,7 +399,7 @@ return {
       ds.hl.new("SpectreReplace", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.green0, bold = true })
 
       vim.api.nvim_create_autocmd("FileType", {
-        group = vim.api.nvim_create_augroup("cursorline", { clear = true }),
+        group = ds.augroup "spectre",
         pattern = "spectre_panel",
         callback = function()
           vim.opt_local.number = false

@@ -248,7 +248,7 @@ return {
 
       vim.api.nvim_create_autocmd("User", {
         pattern = "MiniFilesActionRename",
-        callback = function(event) require("remote.lsp.handlers").on_rename(event.data.from, event.data.to) end,
+        callback = function(args) require("remote.lsp.handlers").on_rename(args.data.from, args.data.to) end,
       })
     end,
   },
@@ -297,7 +297,7 @@ return {
       end
 
       vim.api.nvim_create_autocmd("BufWritePost", {
-        group = vim.api.nvim_create_augroup("theme_highlighter", { clear = true }),
+        group = ds.augroup "mini_hipatterns",
         pattern = "*/lua/theme/**.lua",
         callback = vim.schedule_wrap(function(ev)
           vim.cmd.colorscheme(vim.g.colors_name)

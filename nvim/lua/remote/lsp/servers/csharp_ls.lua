@@ -9,7 +9,7 @@ M.config = {
 
 M.setup = function()
   vim.api.nvim_create_autocmd("LspAttach", {
-    group = vim.api.nvim_create_augroup("lsp_csharp", { clear = true }),
+    group = ds.augroup "lsp_csharpls",
     pattern = "cs",
     callback = function(args)
       if not (args.data and args.data.client_id) then return end

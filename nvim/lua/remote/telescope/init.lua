@@ -257,12 +257,6 @@ return {
           },
         },
       }
-
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "TelescopePrompt",
-        callback = function() vim.opt_local.cursorline = false end,
-      })
-
       telescope.load_extension "file_browser"
       telescope.load_extension "fzf"
       telescope.load_extension "gh"

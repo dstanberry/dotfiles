@@ -105,11 +105,13 @@ vim.opt.fillchars = { -- define glyphs used for vertical separators and statusli
   foldopen = "",
   foldsep = " ",
 }
+
 vim.opt.foldexpr = [[v:lua.require("util.ui").foldexpr()]] -- define the function used to calculate the fold level
 vim.opt.foldlevel = 99 -- define the fold level
 vim.opt.foldmethod = "expr" -- define how the fold level is calculated
 vim.opt.foldtext = "" -- specify the text displayed for a closed fold
 vim.opt.grepformat = vim.opt.grepformat ^ { "%f:%l:%c:%m" } -- grep output format
+vim.bo.formatoptions = "cjlnqr" -- define how formatting is to be done
 vim.opt.grepprg = "rg --vimgrep" -- define program used to grep files
 vim.opt.jumpoptions = "view" -- define the jump list behavior
 vim.opt.listchars = { -- define glyphs used to visually identify whitespace
@@ -139,18 +141,20 @@ vim.opt.shortmess:append "c" -- don't show completion menu messages
 vim.opt.spelllang = "en_us" -- set preferred language
 vim.opt.spelloptions:append "noplainbuffer" -- spell checker can only be available for buffers with a valid filetype
 vim.opt.statuscolumn = [[%!v:lua.require'util.ui'.statuscolumn()]] -- define the function used to populate the statuscolumn
-vim.opt.wildignore = { -- ignore compiled files and temp files
-  "*.o",
-  "*~",
-  "*.pyc",
-  "*pycache*",
+vim.opt.wildignore = { -- list of file patterns to ifnore when expanding wildcards
   "*.dll",
   "*.gif",
   "*.ico",
   "*.jpeg",
   "*.jpg",
+  "*.o",
   "*.png",
   "*.png",
+  "*.pyc",
+  "*/env/*",
+  "*/node_modules/*",
+  "*pycache*",
+  "*~",
   ".DS_Store",
   "ntuser.*",
   "NTUSER.*",

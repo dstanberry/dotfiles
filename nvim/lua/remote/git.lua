@@ -180,7 +180,7 @@ return {
 
       ds.plugin.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
-          group = vim.api.nvim_create_augroup("git-completion", { clear = true }),
+          group = ds.augroup "octo_cmp",
           pattern = "octo",
           callback = function()
             ---@diagnostic disable-next-line: missing-fields
@@ -197,7 +197,7 @@ return {
     end,
     opts = function()
       vim.api.nvim_create_autocmd("ExitPre", {
-        group = vim.api.nvim_create_augroup("octo_exit_pre", { clear = true }),
+        group = ds.augroup "octo_exitpre",
         callback = function()
           local keep = { "octo" }
           for _, win in ipairs(vim.api.nvim_list_wins()) do

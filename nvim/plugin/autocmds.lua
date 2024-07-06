@@ -1,61 +1,30 @@
-local cursorline = vim.api.nvim_create_augroup("cursorline", { clear = true })
-vim.api.nvim_create_autocmd("WinEnter", {
-  group = cursorline,
-  callback = function() vim.opt_local.cursorline = true end,
-})
-vim.api.nvim_create_autocmd("WinLeave", {
-  group = cursorline,
-  callback = function() vim.opt_local.cursorline = false end,
-})
-
-local cmdline = vim.api.nvim_create_augroup("cmdline", { clear = true })
-vim.api.nvim_create_autocmd("CmdLineEnter", {
-  group = cmdline,
-  callback = function() vim.o.smartcase = false end,
-})
-vim.api.nvim_create_autocmd("CmdLineLeave", {
-  group = cmdline,
-  callback = function() vim.o.smartcase = true end,
-})
-
-local filesystem = vim.api.nvim_create_augroup("filesystem", { clear = true })
+local filesystem = ds.augroup "filesystem"
+-- check if current file needs to be reloaded when it changes
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   group = filesystem,
   callback = function()
     if vim.o.buftype ~= "nofile" then vim.cmd "checktime" end
   end,
 })
+-- create director(y/ies) in path when saving a file
 vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
   group = filesystem,
   pattern = "*",
-  callback = function(event)
-    local name = vim.api.nvim_buf_get_name(event.buf)
+  callback = function(args)
+    local name = vim.api.nvim_buf_get_name(args.buf)
     local dir = vim.fs.dirname(name)
     if not vim.uv.fs_stat(dir) then vim.fn.mkdir(dir, "p") end
   end,
 })
 
-local ftplugin = vim.api.nvim_create_augroup("ftplugin", { clear = true })
-vim.api.nvim_create_autocmd("Filetype", {
-  group = ftplugin,
-  pattern = "*",
-  callback = function() vim.bo.formatoptions = "cjlnqr" end,
-})
-vim.api.nvim_create_autocmd("BufEnter", {
-  group = ftplugin,
-  pattern = "COMMIT_EDITMSG",
-  callback = function()
-    vim.fn.setpos(".", { 0, 1, 1, 0 })
-    vim.cmd.startinsert()
-  end,
-})
+-- improve experience when editing git commit messages
 vim.api.nvim_create_autocmd("FileType", {
-  group = ftplugin,
-  pattern = { "COMMIT_EDITMSG", "gitcommit", "NeogitCommitMessage" },
-  callback = function()
-    vim.bo.swapfile = false
-    vim.bo.textwidth = 72
-    vim.bo.undofile = false
+  group = ds.augroup "gitcommit",
+  pattern = { "COMMIT_EDITMSG", "gitcommit" },
+  callback = function(args)
+    vim.bo[args.buf].swapfile = false
+    vim.bo[args.buf].textwidth = 72
+    vim.bo[args.buf].undofile = false
     vim.opt_local.backup = false
     vim.opt_local.colorcolumn = "50,72"
     vim.opt_local.foldenable = false
@@ -63,54 +32,77 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
     vim.opt_local.spell = true
+    if vim.bo[args.buf].filetype == "COMMIT_EDITMSG" then
+      vim.fn.setpos(".", { 0, 1, 1, 0 })
+      vim.cmd.startinsert()
+    end
   end,
 })
+
+-- dont create backups of encrypted files
 vim.api.nvim_create_autocmd("Filetype", {
-  group = ftplugin,
+  group = ds.augroup "crypt",
   pattern = { "asc", "gpg", "pgp" },
   callback = function()
     vim.bo.backup = false
     vim.bo.swapfile = false
   end,
 })
+
+-- change background color of manpages, help and quickfix list and use `q` to close
+vim.api.nvim_create_autocmd("FileType", {
+  group = ds.augroup "help_qf",
+  pattern = { "help", "man", "qf" },
+  callback = function(args)
+    if vim.bo[args.buf].filetype == "help" or vim.bo[args.buf].filetype == "qf" then
+      vim.opt_local.winhighlight = "Normal:NormalSB"
+    end
+    vim.keymap.set("n", "q", vim.cmd.close, { buffer = args.buf, silent = true, nowait = true })
+  end,
+})
+
+-- disable line numbers and enusre filetype is set for terminal windows
+vim.api.nvim_create_autocmd("TermOpen", {
+  group = ds.augroup "termui",
+  callback = function()
+    vim.wo.relativenumber = false
+    vim.wo.number = false
+    ---@diagnostic disable-next-line: undefined-field
+    if vim.opt_local.filetype:get() == "" then vim.opt_local.filetype = "term" end
+  end,
+})
+
+-- highlighted copied region when yanked
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = ds.augroup "highlight_yank",
+  callback = function() vim.highlight.on_yank() end,
+})
+
+-- define common coding conventions for various programming languages
+local ftplugin = ds.augroup "ftplugin"
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
-  pattern = { "bash", "javascript", "sh", "typescript", "zsh" },
-  callback = function()
+  pattern = { "bash", "javascript", "json", "jsonc", "lua", "sh", "typescript", "zsh" },
+  callback = function(args)
     vim.bo.expandtab = true
     vim.bo.shiftwidth = 2
-    vim.opt_local.colorcolumn = "80"
+    if vim.tbl_contains({ "json", "jsonc", "lua" }, vim.bo[args.buf].filetype) then
+      vim.opt_local.colorcolumn = "120"
+    else
+      vim.opt_local.colorcolumn = "80"
+    end
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
-  pattern = { "json", "jsonc", "lua" },
-  callback = function()
-    vim.bo.expandtab = true
-    vim.bo.shiftwidth = 2
-    vim.opt_local.colorcolumn = "120"
-  end,
-})
-vim.api.nvim_create_autocmd("FileType", {
-  group = ftplugin,
-  pattern = "python",
-  callback = function()
+  pattern = { "python", "sql" },
+  callback = function(args)
     vim.bo.expandtab = true
     vim.bo.tabstop = 4
     vim.bo.softtabstop = 4
     vim.bo.shiftwidth = 4
-    vim.opt_local.colorcolumn = "80"
-  end,
-})
-vim.api.nvim_create_autocmd("FileType", {
-  group = ftplugin,
-  pattern = "sql",
-  callback = function()
-    vim.bo.expandtab = true
-    vim.bo.tabstop = 4
-    vim.bo.softtabstop = 4
-    vim.bo.shiftwidth = 4
-    vim.opt_local.relativenumber = false
+    if vim.bo[args.buf].filetype == "python" then vim.opt_local.colorcolumn = "80" end
+    if vim.bo[args.buf].filetype == "sql" then vim.opt_local.relativenumber = false end
   end,
 })
 vim.api.nvim_create_autocmd("FileType", {
@@ -122,33 +114,4 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.foldmethod = "marker"
     vim.opt_local.colorcolumn = "120"
   end,
-})
-vim.api.nvim_create_autocmd("FileType", {
-  group = ftplugin,
-  pattern = { "help", "qf" },
-  callback = function() vim.opt_local.winhighlight = "Normal:NormalSB" end,
-})
-
-vim.api.nvim_create_autocmd("Filetype", {
-  group = ftplugin,
-  pattern = { "help", "man", "qf" },
-  callback = function(event)
-    vim.keymap.set("n", "q", vim.cmd.close, { buffer = event.buf, silent = true, nowait = true })
-  end,
-})
-
-local terminal_ui = vim.api.nvim_create_augroup("terminal_ui", { clear = true })
-vim.api.nvim_create_autocmd("TermOpen", {
-  group = terminal_ui,
-  callback = function()
-    vim.wo.relativenumber = false
-    vim.wo.number = false
-    if vim.opt_local.filetype:get() == "" then vim.opt_local.filetype = "term" end
-  end,
-})
-
-local yank_highlight = vim.api.nvim_create_augroup("yank_highlight", { clear = true })
-vim.api.nvim_create_autocmd("TextYankPost", {
-  group = yank_highlight,
-  callback = function() vim.highlight.on_yank() end,
 })

@@ -1,5 +1,5 @@
--- HACK: ...until the nested string wierdness is resolved in `gh/config.yml'
--- (G)it(H)ub (E)dit (I)ssue
+-- HACK: ...until the nested string wierdness is resolved in `gh/config.sml'
+-- [G]it[H]ub [E]dit [I]ssue
 vim.api.nvim_create_user_command("GHEI", function()
   vim.schedule(function()
     local bufs = ds.buffer.list_buffers { listed = true }
@@ -15,8 +15,8 @@ vim.api.nvim_create_user_command("GHEI", function()
   end)
 end, {})
 
--- HACK: ...until the nested string wierdness is resolved in `gh/config.yml'
--- (G)it(H)ub (E)dit (P)ull (R)equest
+-- HACK: ...until the nested string wierdness is resolved in `gh/config.sml'
+-- [G]it[H]ub [E]dit [P]ull [R]equest
 vim.api.nvim_create_user_command("GHEPR", function()
   vim.schedule(function()
     local bufs = ds.buffer.list_buffers { listed = true }

@@ -6,8 +6,8 @@ local group = vim.api.nvim_create_augroup("html_ftplugin", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "TextChanged", "InsertLeave" }, {
   group = group,
   pattern = "html",
-  callback = function(event)
-    local bufnr = event.buf or vim.api.nvim_get_current_buf()
+  callback = function(args)
+    local bufnr = args.buf or vim.api.nvim_get_current_buf()
     local language_tree = vim.treesitter.get_parser(bufnr, "html")
     local syntax_tree = language_tree:parse()
     local root = syntax_tree[1]:root()

@@ -102,9 +102,9 @@ M.on_attach = function(client, bufnr)
     end
     vim.keymap.set("n", "gl", _lens, { buffer = bufnr, desc = "lsp: code lens" })
 
-    local lsp_codelens = vim.api.nvim_create_augroup("lsp_codelens", { clear = true })
+    local codelens = ds.augroup "lsp_codelens"
     vim.api.nvim_create_autocmd("BufEnter", {
-      group = lsp_codelens,
+      group = codelens,
       once = true,
       buffer = bufnr,
       desc = "LSP: Code Lens refresh",
@@ -112,7 +112,7 @@ M.on_attach = function(client, bufnr)
     })
 
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
-      group = lsp_codelens,
+      group = codelens,
       buffer = bufnr,
       desc = "LSP: Code Lens refresh",
       callback = require("vim.lsp.codelens").refresh,
@@ -135,17 +135,15 @@ M.on_attach = function(client, bufnr)
   if client.server_capabilities.documentHighlightProvider then
     vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "lsp: show references" })
 
-    local lsp_highlight = vim.api.nvim_create_augroup("lsp_highlight", { clear = true })
-
+    local doc_highlight = ds.augroup "lsp_dochighlight"
     vim.api.nvim_create_autocmd("CursorHold", {
-      group = lsp_highlight,
+      group = doc_highlight,
       buffer = bufnr,
       desc = "LSP: Highlight symbol",
       callback = function() vim.lsp.buf.document_highlight() end,
     })
-
     vim.api.nvim_create_autocmd("CursorMoved", {
-      group = lsp_highlight,
+      group = doc_highlight,
       buffer = bufnr,
       desc = "LSP: Clear highlighted symbol",
       callback = function() vim.lsp.buf.clear_references() end,

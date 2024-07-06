@@ -36,6 +36,12 @@ function M.any(list, callback)
   return false
 end
 
+---Creates (and clears if previously defined) a new autocommand group.
+---The autocommand will be prefixed with "ds_" to avoid namespace collisions
+---@param name string
+---@return number
+function M.augroup(name) return vim.api.nvim_create_augroup("ds_" .. name, { clear = true }) end
+
 ---Searches for a partial match of a string `needle` in a list `haystack`
 ---@param haystack string[]
 ---@param needle string

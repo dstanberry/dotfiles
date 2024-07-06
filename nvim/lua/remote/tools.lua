@@ -199,7 +199,6 @@ return {
         local pkg = mason_registry.get_package(tool)
         if not pkg:is_installed() then pkg:install() end
       end
-
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "mason",
         callback = function() vim.opt_local.cursorline = false end,
@@ -360,7 +359,7 @@ return {
       end
 
       vim.api.nvim_create_autocmd(opts.events, {
-        group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
+        group = ds.augroup "lint",
         callback = ds.debounce(M.lint, 100),
       })
     end,
@@ -448,9 +447,8 @@ return {
       vim.g.db_ui_use_nvim_notify = true
       vim.g.db_ui_execute_on_save = false
 
-      local ftplugin = vim.api.nvim_create_augroup("hl_dadbod", { clear = true })
       vim.api.nvim_create_autocmd("FileType", {
-        group = ftplugin,
+        group = ds.augroup "dadbod",
         pattern = { "dbout", "dbui" },
         callback = function()
           vim.opt_local.winhighlight = "Normal:NormalSB"
@@ -462,7 +460,7 @@ return {
     config = function()
       ds.plugin.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
-          group = vim.api.nvim_create_augroup("db-completion", { clear = true }),
+          group = ds.augroup "dadbod_cmp",
           pattern = "sql",
           callback = function()
             ---@diagnostic disable-next-line: missing-fields
@@ -496,7 +494,7 @@ return {
       }
       ds.plugin.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
-          group = vim.api.nvim_create_augroup("db-completion", { clear = true }),
+          group = ds.augroup "dbee_cmp",
           pattern = "sql",
           callback = function()
             ---@diagnostic disable-next-line: missing-fields
