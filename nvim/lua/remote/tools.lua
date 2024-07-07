@@ -87,7 +87,7 @@ return {
             prepend_args = { "-i", "2", "-ci", "-sr", "-s", "-bn" },
           },
           sqlfluff = {
-            args = { "format", "--dialect=ansi", "-" },
+            args = { "format", "--dialect=postgres", "-" },
           },
         },
         format_on_save = function(buf)
@@ -334,11 +334,29 @@ return {
         sh = { "shellcheck" },
         sql = { "sqlfluff" },
       },
+      linters = {
+        sqlfluff = {
+          args = { "lint", "--format=json", "--dialect=postgres" },
+        },
+      },
     },
     config = function(_, opts)
-      local lint = require "lint"
       local M = {}
+      local lint = require "lint"
 
+      ds.foreach(opts.linters, function(linter, name)
+        if type(linter) == "table" and type(lint.linters[name]) == "table" then
+          lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name], linter)
+          if type(linter.prepend_args) == "table" then
+            lint.linters[name].args = lint.linters[name].args or {}
+            vim.list_extend(lint.linters[name].args, linter.prepend_args)
+          elseif type(linter.args) == "table" then
+            lint.linters[name].args = linter.args
+          end
+        else
+          lint.linters[name] = linter
+        end
+      end)
       lint.linters_by_ft = opts.linters_by_ft
 
       M.lint = function()
@@ -351,7 +369,8 @@ return {
         ctx.dirname = vim.fs.dirname(ctx.filename)
         names = vim.tbl_filter(function(name)
           local linter = lint.linters[name]
-          if not linter then print("Linter not found: " .. name) end
+          if not linter then ds.warn("Linter not found: " .. name) end
+          ---@diagnostic disable-next-line: undefined-field
           return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
         end, names)
 
