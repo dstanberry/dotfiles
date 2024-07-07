@@ -82,28 +82,44 @@ end, {})
 
 vim.api.nvim_create_user_command("ToggleWord", function()
   local lut = {
-    ["on"] = "off",
-    ["true"] = "false",
-    ["yes"] = "no",
     ["correct"] = "incorrect",
-    ["higher"] = "lower",
+    ["first"] = "last",
+    ["high"] = "low",
     ["max"] = "min",
-    ["maximum"] = "minimum",
+    ["on"] = "off",
     ["open"] = "close",
+    ["start"] = "end",
+    ["true"] = "false",
+    ["up"] = "down",
+    ["yes"] = "no",
   }
-  vim.tbl_add_reverse_lookup(lut)
   local word = vim.fn.expand "<cword>"
-  vim.schedule(function()
-    local keys = vim.tbl_keys(lut)
-    local search = word:lower()
-    if vim.tbl_contains(keys, word:lower()) then
-      local match = lut[search]
-      if word == word:upper() then
+  local full_match, partial_match = false, nil
+  ds.foreach(lut, function(v, k)
+    if k == word:lower() or v == word:lower() then full_match = true end
+    if k:match(word:lower()) then partial_match = { k, v } end
+    if word:lower():match(k) then partial_match = { k, v } end
+    if v:match(word:lower()) then partial_match = { v, k } end
+    if word:lower():match(v) then partial_match = { v, k } end
+  end)
+  if full_match or type(partial_match) == "table" then
+    vim.schedule(function()
+      local match = full_match and lut[word:lower()] or nil
+      if type(partial_match) == "table" and not full_match then
+        match = ds.replace(word, partial_match[1], partial_match[2])
+      elseif match and word == word:upper() then
         match = match:upper()
-      elseif word == ("%s%s"):format(word:sub(1, 1):upper(), word:sub(2, -1)) then
+      elseif match and word == ("%s%s"):format(word:sub(1, 1):upper(), word:sub(2, -1)) then
         match = ("%s%s"):format(match:sub(1, 1):upper(), match:sub(2, -1))
       end
-      vim.cmd.normal { args = { ("ciw%s"):format(match) } }
-    end
-  end)
+      local renamed = false
+      for _, client in pairs(vim.lsp.get_clients { bufnr = vim.api.nvim_get_current_buf() }) do
+        if client.server_capabilities.documentFormattingProvider then
+          renamed = true
+          vim.lsp.buf.rename(match)
+        end
+      end
+      if not renamed then vim.cmd.normal { args = { ("ciw%s"):format(match) } } end
+    end)
+  end
 end, {})
