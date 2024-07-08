@@ -640,7 +640,7 @@ return {
                 buf = 0,
                 {
                   severity = vim.diagnostic.severity.WARN,
-                  function(item) return item.filename:find(vim.uv.cwd(), 1, true) end,
+                  function(item) return item.filename:find(ds.buffer.get_root(), 1, true) end,
                 },
               },
             },
