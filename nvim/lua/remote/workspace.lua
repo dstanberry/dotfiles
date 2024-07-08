@@ -227,23 +227,12 @@ return {
       local _cwd = function()
         require("neo-tree.command").execute { toggle = true, position = "left", dir = vim.uv.cwd() }
       end
-
       local _root = function()
         require("neo-tree.command").execute { toggle = true, position = "left", dir = ds.buffer.get_root() }
-      end
-
-      local _float = function()
-        require("neo-tree.command").execute {
-          toggle = true,
-          position = "float",
-          dir = ds.buffer.get_root(),
-          reveal = true,
-        }
       end
       return {
         { "-", _root, desc = "neotree: browse project" },
         { "_", _cwd, desc = "neotree: browse parent directory" },
-        { "<localleader>fE", _float, desc = "neotree: browse project (float)" },
       }
     end,
     deactivate = function() vim.cmd { cmd = "NeoTree", args = { "close" } } end,
