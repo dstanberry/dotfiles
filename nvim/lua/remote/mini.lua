@@ -402,10 +402,36 @@ return {
     lazy = true,
     opts = {
       style = "glyph",
+      -- stylua: ignore
+      default = {
+        extension = { glyph = "" },
+        file      = { glyph = "" },
+        filetype  = { glyph = "" },
+      },
+      -- stylua: ignore
       extension = {
-        md = { glyph = "", hl = "MiniIconsYellow" },
-        mdx = { glyph = "", hl = "MiniIconsYellow" },
-        octo = { glyph = "", hl = "MiniIconsAzure" },
+        bash  = { glyph = "", hl = "MiniIconsGreen" },
+        md    = { glyph = "", hl = "MiniIconsYellow" },
+        mdx   = { glyph = "", hl = "MiniIconsYellow" },
+        octo  = { glyph = "", hl = "MiniIconsGrey" },
+        zsh   = { glyph = "", hl = "MiniIconsGreen" },
+        zshrc = { glyph = "", hl = "MiniIconsGreen" },
+      },
+      -- stylua: ignore
+      file = {
+        [".eslintrc.js"]        = { glyph = "󰱺", hl = "MiniIconsYellow" },
+        [".eslintrc.json"]      = { glyph = "󰱺", hl = "MiniIconsYellow" },
+        [".node-version"]       = { glyph = "", hl = "MiniIconsGreen" },
+        [".prettierrc"]         = { glyph = "", hl = "MiniIconsPurple" },
+        [".prettierrc.js"]      = { glyph = "", hl = "MiniIconsPurple" },
+        [".prettierrc.json"]    = { glyph = "", hl = "MiniIconsPurple" },
+        [".zshrc"]              = { glyph = "", hl = "MiniIconsGreen" },
+        ["eslint.config.js"]    = { glyph = "󰱺", hl = "MiniIconsYellow" },
+        ["init.lua"]            = { glyph = "󰢱", hl = "MiniIconsAzure" },
+        ["package.json"]        = { glyph = "", hl = "MiniIconsGreen" },
+        ["tsconfig.build.json"] = { glyph = "", hl = "MiniIconsAzure" },
+        ["tsconfig.json"]       = { glyph = "", hl = "MiniIconsAzure" },
+        zshrc                   = { glyph = "", hl = "MiniIconsGreen" },
       },
     },
     init = function()
