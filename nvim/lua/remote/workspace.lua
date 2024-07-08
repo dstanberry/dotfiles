@@ -242,7 +242,7 @@ return {
       end
       return {
         { "-", _root, desc = "neotree: browse project" },
-        { "_", _cwd, desc = "neotree: browse current working directory" },
+        { "_", _cwd, desc = "neotree: browse parent directory" },
         { "<localleader>fE", _float, desc = "neotree: browse project (float)" },
       }
     end,
@@ -366,6 +366,44 @@ return {
           if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
         end,
       })
+    end,
+  },
+  {
+    "stevearc/oil.nvim",
+    opts = {
+      default_file_explorer = true,
+      autosave_changes = false,
+      delete_to_trash = false,
+      skip_confirm_for_simple_edits = true,
+      columns = { "icon" },
+      keymaps = {
+        ["<c-h>"] = false,
+        ["<c-t>"] = { "actions.select", opts = { tab = true }, desc = "oil: open in a new tab" },
+        ["<c-s>"] = { "actions.select", opts = { vertical = true }, desc = "oil: open in a vertical split" },
+        ["<bs>"] = "actions.parent",
+        ["-"] = "actions.close",
+        ["q"] = "actions.close",
+      },
+      float = {
+        border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+        max_width = math.floor(vim.o.columns * 0.6),
+        max_height = math.floor(vim.o.lines * 0.4),
+        win_options = {
+          winblend = 0,
+          cursorline = false,
+          number = false,
+          relativenumber = false,
+        },
+      },
+      preview = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
+      ssh = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
+      keymaps_help = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
+    },
+    keys = function()
+      local _float = function() require("oil").toggle_float() end
+      return {
+        { "<leader>-", _float, desc = "oil: open parent directory" },
+      }
     end,
   },
   {
