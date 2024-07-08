@@ -216,7 +216,7 @@ return {
       local _debug = function() require("neotest").run.run { vim.fn.expand "%", strategy = "dap" } end
       local _file = function() require("neotest").run.run(vim.fn.expand "%") end
       local _dir = function() require("neotest").run.run(vim.uv.cwd()) end
-      local _run = function() require("neotest").run.run() end
+      local _nearest = function() require("neotest").run.run() end
       local _last = function() require("neotest").run.run_last() end
       local _summary = function() require("neotest").summary.toggle() end
       local _out = function() require("neotest").output.open { enter = true, auto_close = true } end
@@ -229,7 +229,7 @@ return {
         { "<leader>td", _debug, desc = "test: debug test" },
         { "<leader>tr", _file, desc = "test: run file" },
         { "<leader>tR", _dir, desc = "test: run all test files" },
-        { "<leader>tn", _run, desc = "test: run nearest" },
+        { "<leader>tn", _nearest, desc = "test: run nearest" },
         { "<leader>tl", _last, desc = "test: run last" },
         { "<leader>ts", _summary, desc = "test: toggle summary" },
         { "<leader>to", _out, desc = "test: show output" },
