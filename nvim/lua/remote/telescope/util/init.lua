@@ -149,6 +149,7 @@ function M.set_prompt_to_entry_value(prompt_bufnr)
 end
 
 function M.switch_focus(prompt_bufnr)
+  local actions = require "telescope.actions"
   local state = require "telescope.actions.state"
 
   local picker = state.get_current_picker(prompt_bufnr)
@@ -156,17 +157,15 @@ function M.switch_focus(prompt_bufnr)
   local previewer = picker.previewer
   local winid = previewer.state.winid
   local bufnr = previewer.state.bufnr
-  vim.keymap.set(
-    { "i", "n" },
-    "<a-t>",
-    function()
-      vim.cmd.lua {
-        args = { ("vim.api.nvim_set_current_win(%s)"):format(prompt_win) },
-        mods = { noautocmd = true },
-      }
-    end,
-    { buffer = bufnr }
-  )
+  local _to_prompt = function()
+    vim.cmd.lua {
+      args = { ("vim.api.nvim_set_current_win(%s)"):format(prompt_win) },
+      mods = { noautocmd = true },
+    }
+  end
+  local _close = function() actions.close(prompt_bufnr) end
+  vim.keymap.set({ "i", "n" }, "<a-t>", _to_prompt, { buffer = bufnr })
+  vim.keymap.set({ "i", "n" }, "q", _close, { buffer = bufnr })
   vim.cmd.lua { args = { ("vim.api.nvim_set_current_win(%s)"):format(winid) }, mods = { noautocmd = true } }
 end
 
