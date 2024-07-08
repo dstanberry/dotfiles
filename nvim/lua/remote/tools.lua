@@ -336,7 +336,7 @@ return {
       },
       linters = {
         sqlfluff = {
-          args = { "lint", "--format=json", "--dialect=postgres" },
+          args = { "lint", "--format=json", "--dialect=postgres", "--exclude-rules=LT02,LT12" },
         },
       },
     },
