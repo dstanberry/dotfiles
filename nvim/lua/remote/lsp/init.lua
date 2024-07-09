@@ -2,7 +2,7 @@
 -- vim.cmd.edit(vim.lsp.get_log_path())
 
 return {
-  { "Decodetalkers/csharpls-extended-lsp.nvim", lazy = true },
+  { "Hoffs/omnisharp-extended-lsp.nvim", lazy = true },
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },
   { "mickael-menu/zk-nvim", lazy = true },
