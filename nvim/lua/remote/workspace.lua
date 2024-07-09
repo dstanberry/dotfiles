@@ -444,7 +444,8 @@ return {
         "<c-up>",
         function()
           if require("trouble").is_open() then
-            require("trouble").previous { skip_groups = true, jump = true }
+            ---@diagnostic disable-next-line: missing-fields
+            require("trouble").prev { skip_groups = true, jump = true }
           else
             pcall(vim.cmd.cprevious)
           end
