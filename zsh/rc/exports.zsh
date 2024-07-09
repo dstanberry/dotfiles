@@ -167,7 +167,17 @@ fi
 
 # define configuration path for dotnet
 if hash dotnet 2> /dev/null; then
-  export DOTNET_ROOT="$XDG_DATA_HOME/dotnet"
+  if test -d "/usr/local/share/dotnet"; then
+    export DOTNET_ROOT="/usr/local/share/dotnet"
+  elif is_gentoo && hash dotnet 2> /dev/null; then
+    _dotnet_root=$(eselect dotnet list 2> /dev/null \
+      | grep $(eselect dotnet show) 2> /dev/null \
+      | grep -oP '\(\K[^\)]+')
+    if test -d "$_dotnet_root"; then
+      export DOTNET_ROOT="$_dotnet_root"
+    fi
+    unset _dotnet_root
+  fi
 fi
 
 # define configuration path for rubygems

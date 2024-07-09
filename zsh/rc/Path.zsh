@@ -1,14 +1,12 @@
 # shellcheck disable=SC2148
 
-NEWPATH=$PATH
-
 # base directory for system-wide available scripts
 ULOCAL="/usr/local/bin"
 # base directory for user local binaries
 LOCAL="${HOME}/.local/bin"
 
 # include directory in PATH
-NEWPATH=$ULOCAL:$NEWPATH:$LOCAL
+NEWPATH=$ULOCAL:$PATH:$LOCAL
 unset ULOCAL
 unset LOCAL
 
@@ -43,12 +41,10 @@ if test -d "$CARGO" || hash cargo 2> /dev/null; then
 fi
 unset CARGO
 
-# add dotnet to path if present
+# add dotnet installed tools to path if present
 if hash dotnet 2> /dev/null; then
-  DOTNET="${DOTNET_ROOT:-$HOME/.local/share/dotnet}"
-  DOTNET_TOOLS="$DOTNET/tools"
-  NEWPATH=$NEWPATH:$DOTNET:$DOTNET_TOOLS
-  unset DOTNET
+  DOTNET_TOOLS="${XDG_DATA_HOME:-$HOME/.local/share}/dotnet/tools"
+  NEWPATH=$NEWPATH:$DOTNET_TOOLS
   unset DOTNET_TOOLS
 fi
 
@@ -112,11 +108,9 @@ elif is_wsl; then
   unset WBEM
 fi
 
-export PATH=$NEWPATH
-unset NEWPATH
-
 # ensure no duplicate entries are present in PATH
-dedup_pathvar PATH
-
+dedup_pathvar NEWPATH
+NEWPATH=$(echo "$NEWPATH" | sed 's/::/:/g')
 # print the result so that it can be cached (by |evalcache|)
-echo "export PATH=$PATH"
+echo "export PATH=$NEWPATH"
+unset NEWPATH
