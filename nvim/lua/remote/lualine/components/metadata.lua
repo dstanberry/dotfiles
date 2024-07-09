@@ -92,7 +92,7 @@ M.root_dir = {
     local cwd = vim.uv.cwd()
     local root = ds.buffer.get_root()
     local name = vim.fs.basename(root)
-    local result = ds.pad(ds.icons.documents.FolderOutlineOpened, "right", 2) .. name
+    local result = ds.pad(ds.icons.documents.MultipleFolders, "right", 2) .. name
     if root == cwd then
       return nil
     else
