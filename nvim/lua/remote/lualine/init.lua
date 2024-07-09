@@ -106,14 +106,21 @@ return {
             function() return ds.icons.misc.VerticalBarBold end,
             padding = { left = 0, right = 0 },
           },
-          { git_branch },
+          { git_branch, padding = { right = 2 } },
+        },
+        lualine_b = {
           {
             root_dir,
             cond = function() return type(root_dir()) == "string" end,
-            padding = { right = 3 },
+            padding = { right = 1 },
+          },
+          {
+            "vim.b.gitsigns_blame_line",
+            padding = { left = 2, right = 2 },
+            cond = function() return available_width(120) end,
           },
         },
-        lualine_b = {
+        lualine_c = {
           {
             "diff",
             source = git_diff,
@@ -127,13 +134,6 @@ return {
               modified = { fg = ds.color.blend(vim.g.ds_colors.yellow2, vim.g.ds_colors.white, 0.6) },
               removed = { fg = ds.color.blend(vim.g.ds_colors.red1, vim.g.ds_colors.white, 0.6) },
             },
-          },
-        },
-        lualine_c = {
-          {
-            "vim.b.gitsigns_blame_line",
-            padding = { left = 2, right = 2 },
-            cond = function() return available_width(120) end,
           },
         },
         lualine_x = {
