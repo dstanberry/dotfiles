@@ -102,13 +102,6 @@ return {
               text_align = "center",
             },
             {
-              text = ds.pad(ds.icons.documents.FolderOutlineClosed, "right") .. "EXPLORER",
-              filetype = "neo-tree",
-              highlight = "PanelHeading",
-              separator = true,
-              text_align = "center",
-            },
-            {
               text = ds.pad(ds.icons.misc.Magnify, "right") .. "Find | Replace",
               filetype = "spectre_panel",
               highlight = "PanelHeading",
@@ -221,143 +214,6 @@ return {
     end,
   },
   {
-    "nvim-neo-tree/neo-tree.nvim",
-    cmd = "Neotree",
-    keys = function()
-      local _cwd = function()
-        require("neo-tree.command").execute { toggle = true, position = "left", dir = vim.uv.cwd() }
-      end
-      local _root = function()
-        require("neo-tree.command").execute { toggle = true, position = "left", dir = ds.buffer.get_root() }
-      end
-      return {
-        { "-", _root, desc = "neotree: browse project" },
-        { "_", _cwd, desc = "neotree: browse parent directory" },
-      }
-    end,
-    deactivate = function() vim.cmd { cmd = "NeoTree", args = { "close" } } end,
-    init = function()
-      local GRAY = ds.color.darken(vim.g.ds_colors.gray0, 10)
-
-      ds.hl.new("NeoTreeTitleBar", { fg = vim.g.ds_colors.bg2, bg = vim.g.ds_colors.red1, bold = true })
-      ds.hl.new("NeoTreeFloatBorder", { fg = GRAY, bg = GRAY })
-      ds.hl.new("NeoTreeFloatNormal", { bg = GRAY })
-
-      ds.hl.new("NeoTreeNormal", { link = "NormalSB" })
-      ds.hl.new("NeoTreeNormalNC", { link = "NormalSB" })
-      ds.hl.new("NeoTreeTabActive", { fg = vim.g.ds_colors.fg0, bg = vim.g.ds_colors.bgX })
-      ds.hl.new("NeoTreeTabInactive", { fg = vim.g.ds_colors.gray1, bg = vim.g.ds_colors.bgX })
-      ds.hl.new("NeoTreeTabSeparatorActive", { fg = vim.g.ds_colors.bgX, bg = vim.g.ds_colors.bgX })
-      ds.hl.new("NeoTreeTabSeparatorInactive", { fg = vim.g.ds_colors.bgX, bg = vim.g.ds_colors.bgX })
-
-      ds.hl.new("NeoTreeFileName", { fg = ds.color.lighten(vim.g.ds_colors.gray2, 30) })
-      ds.hl.new("NeoTreeRootName", { link = "Directory" })
-
-      vim.g.neo_tree_remove_legacy_commands = 1
-      vim.api.nvim_create_autocmd("BufEnter", {
-        group = ds.augroup "neotree",
-        desc = "Start Neo-tree with directory",
-        once = true,
-        callback = function()
-          if package.loaded["neo-tree"] then
-            return
-          else
-            local stats = vim.uv.fs_stat(vim.fn.argv(0))
-            if stats and stats.type == "directory" then require "neo-tree" end
-          end
-        end,
-      })
-    end,
-    opts = {
-      sources = { "filesystem" },
-      source_selector = {
-        winbar = true,
-        separator_active = " ",
-        sources = {
-          {
-            source = "filesystem",
-            display_name = ds.pad(ds.icons.documents.MultipleFolders, "both", 1, 2) .. "Files ",
-          },
-        },
-      },
-      enable_git_status = true,
-      git_status_async = true,
-      use_popups_for_input = true,
-      filesystem = {
-        bind_to_cwd = false,
-        follow_current_file = { enabled = true },
-        use_libuv_file_watcher = true,
-        filtered_items = {
-          visible = true,
-          hide_dotfiles = false,
-          hide_gitignored = true,
-          never_show = { ".DS_Store", "ntuser.*", "NTUSER.*" },
-        },
-      },
-      window = {
-        mappings = {
-          ["<space>"] = "none",
-          ["O"] = {
-            command = function(state)
-              local filepath = state.tree:get_node().path
-              vim.ui.open(filepath)
-            end,
-            desc = "neotree: open file in system UI",
-          },
-          ["Y"] = {
-            function(state)
-              local node = state.tree:get_node()
-              local path = node:get_id()
-              vim.fn.setreg("+", path, "c")
-            end,
-            desc = "neotree: copy path to clipboard",
-          },
-        },
-      },
-      document_symbols = {
-        follow_cursor = true,
-        kinds = ds.reduce(vim.tbl_deep_extend("keep", ds.icons.kind, ds.icons.type), function(acc, v, k)
-          acc[k] = { icon = v, hl = ("TroubleIcon%s"):format(k) }
-          return acc
-        end),
-      },
-      default_component_configs = {
-        icon = {
-          folder_closed = ds.icons.documents.FolderClosed,
-          folder_open = ds.icons.documents.FolderOpened,
-          folder_empty = ds.icons.documents.FolderEmpty,
-          folder_empty_open = ds.icons.documents.FolderEmpty,
-        },
-        indent = {
-          with_expanders = true,
-          expander_collapsed = ds.icons.misc.FoldClosed,
-          expander_expanded = ds.icons.misc.FoldOpened,
-          expander_highlight = "NeoTreeExpander",
-        },
-        name = {
-          highlight_opened_files = true,
-        },
-      },
-    },
-    config = function(_, opts)
-      local function on_move(data) require("remote.lsp.handlers").on_rename(data.source, data.destination) end
-
-      local events = require "neo-tree.events"
-      opts.event_handlers = opts.event_handlers or {}
-      vim.list_extend(opts.event_handlers, {
-        { event = events.FILE_MOVED, handler = on_move },
-        { event = events.FILE_RENAMED, handler = on_move },
-      })
-      require("neo-tree").setup(opts)
-      vim.api.nvim_create_autocmd("TermClose", {
-        pattern = "*lazygit",
-        callback = function()
-          if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
-        end,
-      })
-    end,
-  },
-  {
     "stevearc/oil.nvim",
     opts = {
       default_file_explorer = true,
@@ -384,14 +240,16 @@ return {
           relativenumber = false,
         },
       },
+      keymaps_help = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
       preview = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
       ssh = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
-      keymaps_help = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
     },
     keys = function()
+      local _open = function() require("oil").open(ds.buffer.get_root()) end
       local _float = function() require("oil").toggle_float() end
       return {
-        { "<leader>-", _float, desc = "oil: open parent directory" },
+        { "-", _open, desc = "oil: browse project" },
+        { "<leader>-", _float, desc = "oil: browse parent directory" },
       }
     end,
   },

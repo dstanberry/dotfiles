@@ -40,6 +40,10 @@ M.breadcrumbs = {
               icon = ds.icons.git.Issue
             end
           end
+          -- NOTE: oil.nvim
+          if parts[1] and parts[1]:match "^oil:" then
+            icon, icon_hl = require("mini.icons").get("directory", path)
+          end
           -- NOTE: nvim-dap
           if fname and fname:match "^DAP" then icon = dap_icons[fname] or icon end
           if #segments == 0 then
