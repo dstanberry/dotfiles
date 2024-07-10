@@ -2,6 +2,8 @@ local cache = vim.fn.stdpath "cache"
 local data = vim.fn.stdpath "data"
 
 if ds.has "wsl" then
+  -- NOTE: May require `Beta: Use Unicode UTF-8 for global language support`
+  -- https://github.com/microsoft/WSL/issues/4852
   vim.g.clipboard = { -- use win32 native clipboard tool on WSL
     name = "WslClipboard",
     copy = {
