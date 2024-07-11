@@ -35,7 +35,6 @@ vim.fn.mkdir(vim.fs.joinpath(cache, "undo"), "p")
 vim.fn.mkdir(vim.fs.joinpath(cache, "shada"), "p")
 
 vim.cmd.colorscheme "kdark"
--- vim.cmd.colorscheme "catppuccin-frappe"
 
 ds.fs.load_dirhash(vim.env.SHELL)
 ds.fs.load_settings()
