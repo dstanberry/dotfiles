@@ -16,7 +16,7 @@ return {
         desc = "diffview: toggle diff",
       },
       { "<localleader>gh", "<cmd>DiffviewFileHistory<cr>", desc = "diffview: file history" },
-      { "<localleader>gH", [[:'<'>DiffviewFileHistory<cr>]], mode = "v", desc = "diffview: file history" },
+      { "<localleader>gh", [[:'<'>DiffviewFileHistory<cr>]], mode = "v", desc = "diffview: file history" },
     },
     init = function()
       ds.hl.new("DiffviewFilePanelTitle", { link = "@markup.environment" })
