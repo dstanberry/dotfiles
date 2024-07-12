@@ -3,7 +3,6 @@ return {
     "nvim-telescope/telescope.nvim",
     dependencies = {
       "nvim-telescope/telescope-file-browser.nvim",
-      "nvim-telescope/telescope-github.nvim",
       "nvim-telescope/telescope-live-grep-args.nvim",
       "nvim-telescope/telescope-symbols.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
@@ -259,7 +258,6 @@ return {
       }
       telescope.load_extension "file_browser"
       telescope.load_extension "fzf"
-      telescope.load_extension "gh"
       telescope.load_extension "ui-select"
     end,
   },
