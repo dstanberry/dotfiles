@@ -4,13 +4,18 @@ M.setup = function()
   local dap = require "dap"
   local vscode = require "dap.ext.vscode"
 
-  local adapters = { "chrome", "node", "pwa-chrome", "pwa-node" }
+  local adapters = { "node", "pwa-node" }
   local filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
 
   vscode.type_to_filetypes["chrome"] = filetypes
   vscode.type_to_filetypes["node"] = filetypes
-  vscode.type_to_filetypes["pwa-chrome"] = filetypes
   vscode.type_to_filetypes["pwa-node"] = filetypes
+
+  dap.adapters.chrome = {
+    type = "executable",
+    command = "node",
+    args = { ds.plugin.get_pkg_path("chrome-debug-adapter", "/out/src/chromeDebug.js") },
+  }
 
   for _, adapter in ipairs(adapters) do
     dap.adapters[adapter] = {
@@ -59,7 +64,7 @@ M.setup = function()
           sourceMaps = true,
         },
         {
-          type = "pwa-chrome",
+          type = "chrome",
           name = "Launch new process (chrome)",
           request = "launch",
           preLaunchTask = "npm start",
@@ -71,11 +76,10 @@ M.setup = function()
               }, function(url) coroutine.resume(_c, (url and url ~= "") and url or dap.ABORT) end)
             end)
           end,
+          port = 9222,
           webRoot = "${workspaceFolder}",
           sourceMaps = true,
-          userDataDir = false,
           protocol = "inspector",
-          console = "integratedTerminal",
         },
       }
     end
