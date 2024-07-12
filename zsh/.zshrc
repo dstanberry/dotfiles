@@ -68,7 +68,8 @@ zstyle ':completion:*' matcher-list '' \
   '+m:{[:lower:]}={[:upper:]}' \
   '+m:{[:upper:]}={[:lower:]}' \
   '+m:{_-}={-_}' \
-  'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+  'r:|[._-]=* r:|=*' \
+  'l:|=* r:|=*'
 
 # allow completion of ..<tab> to ../
 zstyle -e ':completion:*' special-dirs '[[ $PREFIX = (../)#(..) ]] && reply=(..)'
