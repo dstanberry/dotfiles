@@ -22,7 +22,6 @@ M.setup = function()
         args = {
           ds.plugin.get_pkg_path("js-debug-adapter", "/js-debug/src/dapDebugServer.js"),
           "${port}",
-          "localhost",
         },
       },
     }
@@ -73,11 +72,6 @@ M.setup = function()
             end)
           end,
           webRoot = "${workspaceFolder}",
-          -- skipFiles = { "<node_internals>/**/*.js" },
-          -- resolveSourceMapLocations = {
-          --   "${workspaceFolder}/dist/**/*.js",
-          --   "${workspaceFolder}/dist/*.js",
-          -- },
           sourceMaps = true,
           userDataDir = false,
           protocol = "inspector",
