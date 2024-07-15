@@ -4,9 +4,18 @@ return {
     event = "LazyFile",
     opts = function()
       local ai = require "mini.ai"
-
       return {
         n_lines = 500,
+        mappings = {
+          around = "a",
+          inside = "i",
+          around_next = "an",
+          inside_next = "in",
+          around_last = "al",
+          inside_last = "il",
+          goto_left = nil,
+          goto_right = nil,
+        },
         custom_textobjects = {
           o = ai.gen_spec.treesitter({ -- lo[o]ps, c[o]nditions within loop
             a = { "@block.outer", "@conditional.outer", "@loop.outer" },
@@ -75,51 +84,44 @@ return {
       require("mini.ai").setup(opts)
       ds.plugin.on_load("which-key.nvim", function()
         local mini_motions = function()
-          local i = {
-            [" "] = "mini.ai: whitespace",
-            ['"'] = 'mini.ai: balanced "',
-            ["'"] = "mini.ai: balanced '",
-            ["`"] = "mini.ai: balanced `",
-            ["("] = "mini.ai: balanced (",
-            [")"] = "mini.ai: balanced ) including white-space",
-            [">"] = "mini.ai: balanced > including white-space",
-            ["<lt>"] = "mini.ai: balanced <",
-            ["]"] = "mini.ai: balanced ] including white-space",
-            ["["] = "mini.ai: balanced [",
-            ["}"] = "mini.ai: balanced } including white-space",
-            ["{"] = "mini.ai: balanced {",
-            ["?"] = "mini.ai: user prompt",
-            _ = "mini.ai: underscore",
-            a = "mini.ai: argument",
-            b = "mini.ai: balanced ), ], }",
-            c = "mini.ai: class",
-            d = "mini.ai: digit(s)",
-            e = "mini.ai: word with (camel/snake) case",
-            f = "mini.ai: function",
-            g = "mini.ai: entire buffer",
-            o = "mini.ai: block, conditional, loop",
-            q = "mini.ai: quote `, \", '",
-            t = "mini.ai: tag",
-            u = "mini.ai: use/call function and method",
-            U = "mini.ai: use/call without dot in function name",
+          local motions = {
+            { " ", desc = "mini.ai: whitespace" },
+            { "'", desc = "mini.ai: ' string" },
+            { "(", desc = "mini.ai: () block" },
+            { ")", desc = "mini.ai: () block with whitespace" },
+            { "<", desc = "mini.ai: <> block" },
+            { ">", desc = "mini.ai: <> block with whitespace" },
+            { "?", desc = "mini.ai: user prompt" },
+            { "[", desc = "mini.ai: [] block" },
+            { "]", desc = "mini.ai: [] block with whitespace" },
+            { "_", desc = "mini.ai: underscore" },
+            { "`", desc = "mini.ai: ` string" },
+            { "{", desc = "mini.ai: {} block" },
+            { "}", desc = "mini.ai: {} block with whitespace" },
+            { '"', desc = 'mini.ai: " string' },
+            { "a", desc = "mini.ai: argument" },
+            { "b", desc = "mini.ai: )]} block" },
+            { "c", desc = "mini.ai: class" },
+            { "d", desc = "mini.ai: digit(s)" },
+            { "e", desc = "mini.ai: camelCase / snake_case" },
+            { "f", desc = "mini.ai: function" },
+            { "g", desc = "mini.ai: entire buffer" },
+            { "o", desc = "mini.ai: block, conditional, loop" },
+            { "q", desc = "mini.ai: quote `\"'" },
+            { "t", desc = "mini.ai: tag" },
+            { "u", desc = "mini.ai: function use/call" },
+            { "U", desc = "mini.ai: function use/call (no dot in function name)" },
           }
-          local a = vim.deepcopy(i)
-          for k, v in pairs(a) do
-            a[k] = v:gsub(" including.*", "")
+          local ret = { mode = { "o", "x" } }
+          for prefix, name in pairs(opts.mappings) do
+            ret[#ret + 1] = { prefix, group = name }
+            for _, obj in ipairs(motions) do
+              local desc = obj.desc
+              if prefix:sub(1, 1) == "i" then desc = desc:gsub(" with whitespace", "") end
+              ret[#ret + 1] = { prefix .. obj[1], desc = obj.desc }
+            end
           end
-          local ic = vim.deepcopy(i)
-          local ac = vim.deepcopy(a)
-          for key, name in pairs { n = "next", p = "previous" } do
-            ---@diagnostic disable-next-line: assign-type-mismatch
-            i[key] = vim.tbl_extend("force", { name = "mini.ai: inside " .. name .. " textobject" }, ic)
-            ---@diagnostic disable-next-line: assign-type-mismatch
-            a[key] = vim.tbl_extend("force", { name = "mini.ai: around " .. name .. " textobject" }, ac)
-          end
-          require("which-key").register {
-            mode = { "o", "x" },
-            i = i,
-            a = a,
-          }
+          require("which-key").add(ret, { notify = false })
         end
         vim.schedule(mini_motions)
       end)

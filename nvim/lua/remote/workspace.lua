@@ -188,6 +188,7 @@ return {
       end
 
       local keys = {
+        { "<leader>h", desc = "+harpoon" },
         { "<leader>ha", function() require("harpoon"):list():add() end, desc = "harpoon: mark file" },
         {
           "<leader>hf",

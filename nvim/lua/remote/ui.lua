@@ -569,66 +569,111 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    opts = {
-      layout = {
-        align = "center",
-      },
-      plugins = {
-        spelling = {
-          enabled = true,
+    opts = function()
+      return {
+        preset = "helix",
+        win = {
+          border = ds.map(ds.icons.border.Default, function(icon) return { icon, "WhichKeyBorder" } end),
+          title = false,
         },
-      },
-      window = {
-        border = ds.icons.border.Default,
-      },
-    },
+        keys = { scroll_down = "<c-d>", scroll_up = "<c-f>" },
+        icons = {
+          rules = {
+            -- groups
+            { pattern = "command", icon = " ", color = "azure" },
+            { pattern = "copilot", icon = " ", color = "grey" },
+            { pattern = "dap", icon = " ", color = "red" },
+            { pattern = "debug", icon = " ", color = "red" },
+            { pattern = "database", icon = " ", color = "yellow" },
+            { pattern = "lsp", icon = " ", color = "red" },
+            { pattern = "notes", icon = " ", color = "purple" },
+            { pattern = "quickfix", icon = " ", color = "grey" },
+            { pattern = "test", icon = " ", color = "yellow" },
+            { pattern = "trouble", icon = " ", color = "yellow" },
+            -- primary actions
+            { pattern = "diff", icon = "", color = "azure" },
+            { pattern = "fold", icon = " ", color = "azure" },
+            { pattern = "grep", icon = " ", color = "orange" },
+            { pattern = "mark", icon = " ", color = "yellow" },
+            { pattern = "regex", icon = " ", color = "yellow" },
+            { pattern = "workspace", icon = " ", color = "yellow" },
+            -- overrides
+            { pattern = "harpoon", icon = "󰛢 ", color = "cyan" },
+            { plugin = "nvim-spectre", icon = " ", color = "blue" },
+            { pattern = "find", icon = " ", color = "green" },
+            { pattern = "search", icon = " ", color = "green" },
+            { pattern = "buffer", icon = " ", color = "purple" },
+            -- secondary actions
+            { pattern = "create", icon = " ", color = "green" },
+            { pattern = "insert", icon = " ", color = "cyan" },
+            { pattern = "new", icon = " ", color = "green" },
+            { pattern = "launch", icon = " ", color = "green" },
+            { pattern = "run", icon = " ", color = "green" },
+            { pattern = "close", icon = " ", color = "red" },
+            { pattern = "stop", icon = " ", color = "red" },
+            { pattern = "reload", icon = " ", color = "green" },
+            { pattern = "reset", icon = " ", color = "green" },
+            { pattern = "restore", icon = " ", color = "grey" },
+            { pattern = "delete", icon = " ", color = "red" },
+            { pattern = "open", icon = " ", color = "green" },
+            { pattern = "bottom", icon = " ", color = "grey" },
+            { pattern = "down", icon = " ", color = "grey" },
+            { pattern = "left", icon = " ", color = "grey" },
+            { pattern = "right", icon = " ", color = "grey" },
+            { pattern = "top", icon = " ", color = "grey" },
+            { pattern = "up", icon = " ", color = "grey" },
+            { pattern = "move", icon = " ", color = "grey" },
+            { pattern = "swap", icon = " ", color = "grey" },
+            { pattern = "switch", icon = " ", color = "grey" },
+            { pattern = "join", icon = "󰡍", color = "grey" },
+            { pattern = "split", icon = "󰡏", color = "grey" },
+            { pattern = "add", icon = "", color = "grey" },
+            { pattern = "increase", icon = "", color = "grey" },
+            { pattern = "remove", icon = "", color = "grey" },
+            { pattern = "decrease", icon = "", color = "grey" },
+            { pattern = "max", icon = "", color = "grey" },
+            { pattern = "min", icon = "󰖰", color = "grey" },
+          },
+        },
+        spec = {
+          {
+            mode = "n",
+            { "]", group = "next" },
+            { "[", group = "previous" },
+            { "<leader>b", group = "buffer" },
+            { "<leader>d", group = "debug" },
+            { "<leader>f", group = "find" },
+            { "<leader>g", group = "git" },
+            { "<leader>m", group = "notes (markdown)" },
+            { "<leader>s", group = "search" },
+            { "<leader>q", group = "session" },
+            { "<localleader>,", group = "command" },
+            { "<localleader>d", group = "database" },
+            { "<localleader>f", group = "find" },
+            { "<localleader>g", group = "git" },
+            { "<localleader>m", group = "notes (markdown)" },
+            { "<localleader>q", group = "quickfix (trouble)" },
+            { "<localleader>s", group = "search" },
+          },
+          {
+            mode = "v",
+            { "<leader>g", group = "git" },
+            { "<leader>m", group = "notes (markdown)" },
+            { "<leader>s", group = "selection" },
+          },
+        },
+      }
+    end,
     init = function()
       local BLUE_DARK = ds.color.blend(vim.g.ds_colors.blue2, vim.g.ds_colors.bg0, 0.08)
 
       ds.hl.new("WhichKeyFloat", { bg = BLUE_DARK })
-      ds.hl.new("WhichKeyBorder", { fg = vim.g.ds_colors.gray0, bg = BLUE_DARK })
+      ds.hl.new("WhichKeyNormal", { fg = vim.g.ds_colors.white, bg = BLUE_DARK })
+      ds.hl.new("WhichKeyBorder", { fg = vim.g.ds_colors.blue0, bg = BLUE_DARK })
+      ds.hl.new("WhichKeyTitle", { fg = vim.g.ds_colors.blue0, bg = BLUE_DARK })
       ds.hl.new("WhichKeySeparator", { fg = ds.color.lighten(vim.g.ds_colors.gray1, 20) })
       ds.hl.new("WhichKeyDesc", { link = "Constant" })
       ds.hl.new("WhichKeyGroup", { link = "Identifier" })
-    end,
-    config = function(_, opts)
-      local wk = require "which-key"
-      wk.setup(opts)
-      wk.register {
-        mode = "n",
-        ["]"] = { name = "+next" },
-        ["["] = { name = "+previous" },
-        ["<leader>"] = {
-          b = { name = "+buffer" },
-          d = { name = "+debug" },
-          f = { name = "+file/find" },
-          g = { name = "+git" },
-          h = { name = "+marks" },
-          m = { name = "+notes (markdown)" },
-          s = { name = "+search" },
-          q = { name = "+session" },
-        },
-        ["<localleader>"] = {
-          ["<localleader>"] = { name = "+command" },
-          d = { name = "+database" },
-          f = { name = "+file/find" },
-          g = { name = "+git" },
-          m = { name = "+notes (markdown)" },
-          q = { name = "+quickfix (trouble)" },
-          s = { name = "+search" },
-        },
-      }
-      wk.register {
-        mode = "v",
-        ["<leader>"] = {
-          m = { name = "+notes (markdown)" },
-          s = { name = "+selection" },
-        },
-        ["<localleader>"] = {
-          g = { name = "+git" },
-          m = { name = "+notes (markdown)" },
-        },
-      }
     end,
   },
   {
