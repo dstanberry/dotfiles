@@ -85,6 +85,7 @@ vim.api.nvim_create_user_command("ToggleWord", function()
     ["correct"] = "incorrect",
     ["first"] = "last",
     ["high"] = "low",
+    ["left"] = "right",
     ["max"] = "min",
     ["on"] = "off",
     ["open"] = "close",
