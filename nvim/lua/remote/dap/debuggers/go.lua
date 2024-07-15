@@ -10,7 +10,7 @@ M.setup = function()
     type = "server",
     port = "${port}",
     executable = {
-      command = ds.has "win32" and vim.fn.exepath "dlv" or "dlv",
+      command = vim.fn.exepath "dlv",
       args = { "dap", "-l", "127.0.0.1:${port}" },
     },
   }

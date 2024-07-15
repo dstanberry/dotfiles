@@ -1,14 +1,10 @@
 local M = {}
 
-local cmd = { "ls_emmet", "--stdio" }
-local function get_cmd()
-  if ds.has "win32" then cmd[1] = vim.fn.exepath(cmd[1]) end
-  return cmd
-end
+local cmd = { vim.fn.exepath "ls_emmet", "--stdio" }
 
 M.config = {
   cmd = cmd,
-  on_new_config = function(new_config, _) new_config.cmd = get_cmd() end,
+  on_new_config = function(new_config, _) new_config.cmd = cmd end,
   filetypes = {
     "css",
     "html",

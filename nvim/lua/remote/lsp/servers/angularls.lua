@@ -6,8 +6,8 @@ end
 
 local get_cmd = function(workspace_dir)
   local angularls_path = ds.plugin.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server")
-  local cmd = {
-    "ngserver",
+  return {
+    vim.fn.exepath "ngserver",
     "--stdio",
     "--tsProbeLocations",
     table.concat(node_modules { angularls_path, workspace_dir }, ","),
@@ -20,11 +20,6 @@ local get_cmd = function(workspace_dir)
       ","
     ),
   }
-  if ds.has "win32" then
-    local exec = vim.fn.exepath(cmd[1])
-    cmd[1] = exec ~= "" and exec or "ngserver"
-  end
-  return cmd
 end
 
 local goto_template = function()

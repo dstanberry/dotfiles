@@ -3,14 +3,15 @@ local M = {}
 M.setup = function()
   local dap = require "dap"
 
-  dap.adapters.coreclr = {
+  dap.adapters.netcoredbg = {
     type = "executable",
     args = { "--interpreter=vscode" },
-    command = ds.has "win32" and vim.fn.exepath "netcoredbg" or "netcoredbg",
+    command = vim.fn.exepath "netcoredbg",
+    options = { detached = false },
   }
   dap.configurations.cs = {
     {
-      type = "coreclr",
+      type = "netcoredbg",
       name = "Launch new process",
       request = "launch",
       program = function()
@@ -38,24 +39,6 @@ M.setup = function()
       end,
       env = { ASPNETCORE_ENVIRONMENT = "Development" },
       stopAtEntry = false,
-    },
-    {
-      type = "coreclr",
-      name = "Attach to existing process",
-      request = "attach",
-      processId = function(opts)
-        opts = opts or {}
-        local procs = require("dap.utils").get_processes()
-        return coroutine.create(function(_c)
-          vim.ui.select(
-            procs,
-            { prompt = "Select process:", format_item = function(item) return item.name end },
-            function(choice)
-              coroutine.resume(_c, (choice and choice.pid and choice.pid > 0) and choice.pid or dap.ABORT)
-            end
-          )
-        end)
-      end,
     },
   }
 end
