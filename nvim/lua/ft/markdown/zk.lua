@@ -1,3 +1,6 @@
+---@class ft.markdown.zk
+local M = {}
+
 local telescope = require "telescope"
 local tb = require "telescope.builtin"
 local tt = require "telescope.themes"
@@ -30,8 +33,6 @@ local templates = {
 }
 
 pcall(telescope.load_extension, "zk")
-
-local M = {}
 
 ---Override of zk API |edit(...)|
 ---* Opens a `telescope` notes picker, and edits the selected notes

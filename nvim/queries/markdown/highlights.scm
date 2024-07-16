@@ -28,28 +28,28 @@
     (task_list_marker_unchecked)
 ](#set! conceal ""))
 
-(pipe_table_header
-  "|" @punctuation.special (#set! conceal "│"))
-
-(pipe_table_delimiter_row
-  "|" @punctuation.special (#set! conceal "├")
-  (pipe_table_delimiter_cell))
-
-(pipe_table_delimiter_row
-  (pipe_table_delimiter_cell)
-  "|" @punctuation.special (#set! conceal "┤"))
-
-(pipe_table_delimiter_row
-  (pipe_table_delimiter_cell)
-  "|" @punctuation.special (#set! conceal "┼")
-  (pipe_table_delimiter_cell))
-
-(pipe_table_delimiter_cell
-  "-" @punctuation.special (#set! conceal "─"))
-
-(pipe_table_row
-  "|" @punctuation.special (#set! conceal "│"))
-
-((pipe_table_align_left) @punctuation.special (#set! conceal "─"))
-
-((pipe_table_align_right) @punctuation.special (#set! conceal "─"))
+; (pipe_table_header
+;   "|" @punctuation.special (#set! conceal "│"))
+;
+; (pipe_table_delimiter_row
+;   "|" @punctuation.special (#set! conceal "├")
+;   (pipe_table_delimiter_cell))
+;
+; (pipe_table_delimiter_row
+;   (pipe_table_delimiter_cell)
+;   "|" @punctuation.special (#set! conceal "┤"))
+;
+; (pipe_table_delimiter_row
+;   (pipe_table_delimiter_cell)
+;   "|" @punctuation.special (#set! conceal "┼")
+;   (pipe_table_delimiter_cell))
+;
+; (pipe_table_delimiter_cell
+;   "-" @punctuation.special (#set! conceal "─"))
+;
+; (pipe_table_row
+;   "|" @punctuation.special (#set! conceal "│"))
+;
+; ((pipe_table_align_left) @punctuation.special (#set! conceal "─"))
+;
+; ((pipe_table_align_right) @punctuation.special (#set! conceal "─"))

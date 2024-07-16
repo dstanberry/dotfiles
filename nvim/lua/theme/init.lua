@@ -389,6 +389,7 @@ M.defaults = function(c)
     ["@markup.codeblock"]                      = { bg = ds.color.blend(c.grayX, c.bg2, 0.44) },
     ["@markup.dash"]                           = { fg = c.yellow0, bold = true },
     ["@markup.heading"]                        = { link = "htmlH1" },
+    ["@markup.table"]                        = { link = "Special" },
     ["@variable.member.yaml"]                  = { fg = c.aqua1 },
 
     -- statusline highlighting

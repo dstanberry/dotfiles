@@ -1,30 +1,14 @@
-local M = {
-  zk = require "ft.markdown.zk",
-}
+---@class ft.markdown
+---@field render ft.markdown.render
+---@field zk ft.markdown.zk
+local M = {}
 
-local NAMESPACE_ID = vim.api.nvim_create_namespace "markdown_ns_extmarks"
-
-local headings = {
-  ds.icons.markdown.H1,
-  ds.icons.markdown.H2,
-  ds.icons.markdown.H3,
-  ds.icons.markdown.H4,
-  ds.icons.markdown.H5,
-  ds.icons.markdown.H6,
-}
-
-local highlight_groups = {
-  "@markup.heading",
-  "@markup.heading",
-  "@variable.builtin",
-}
-
----@param clear_buf? boolean
-M.disable_extmarks = function(clear_buf)
-  local line = vim.fn.line "."
-  if clear_buf then return pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, 0, -1) end
-  pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, line - 1, line + 1)
-end
+setmetatable(M, {
+  __index = function(t, k)
+    t[k] = require(string.format("ft.markdown.%s", k))
+    return t[k]
+  end,
+})
 
 M.insert_checkbox = function() vim.api.nvim_put({ "[ ] " }, "c", true, true) end
 
@@ -38,19 +22,19 @@ end
 
 M.insert_list_marker = function()
   local cursor = vim.api.nvim_win_get_cursor(0)
-  local node = vim.treesitter.get_node { bufnr = 0, pos = { cursor[1] - 1, 0 } }
-  if node then
-    local capture = node:type()
-    local text = vim.treesitter.get_node_text(node, 0)
+  local capture_node = vim.treesitter.get_node { bufnr = 0, pos = { cursor[1] - 1, 0 } }
+  if capture_node then
+    local capture_name = capture_node:type()
+    local capture_text = vim.treesitter.get_node_text(capture_node, 0)
     local newtext = ""
 
-    if capture == "checkbox_unchecked" or capture == "checkbox_checked" then
+    if capture_name == "checkbox_unchecked" or capture_name == "checkbox_checked" then
       newtext = "[ ] "
-    elseif capture == "list_marker_dot" then
-      local next = tonumber(text:sub(1, 1))
+    elseif capture_name == "list_marker_dot" then
+      local next = tonumber(capture_text:sub(1, 1))
       if next and type(next) == "number" then newtext = ("%s. "):format(next + 1) end
-    elseif capture == "list_marker_minus" then
-      newtext = ("%s "):format(text:sub(1, 1))
+    elseif capture_name == "list_marker_minus" then
+      newtext = ("%s "):format(capture_text:sub(1, 1))
     end
     vim.api.nvim_buf_set_lines(0, cursor[1], cursor[1], false, { newtext })
     vim.api.nvim_win_set_cursor(0, { cursor[1] + 1, #newtext + 1 })
@@ -64,7 +48,7 @@ local get_all_headings = function()
     local capture_name = parsed_query.captures[capture_id]
     local row_start, _, row_end, _ = capture_node:range()
     local capture_text = vim.treesitter.get_node_text(capture_node, 0)
-    if capture_name == "heading_marker" then
+    if capture_name == "heading" then
       local hold = {
         start_row = row_start,
         end_row = row_end,
@@ -72,7 +56,7 @@ local get_all_headings = function()
         index = #data + 1,
       }
       table.insert(data, hold)
-    elseif capture_name == "yaml_frontmatter" then
+    elseif capture_name == "frontmatter" then
       local hold = {
         start_row = row_start,
         end_row = row_end,
@@ -199,7 +183,7 @@ M.parse_document = function()
       ([
         (minus_metadata)
         (plus_metadata)
-      ] @yaml_frontmatter)
+      ] @frontmatter)
       (atx_heading [
         (atx_h1_marker)
         (atx_h2_marker)
@@ -207,7 +191,7 @@ M.parse_document = function()
         (atx_h4_marker)
         (atx_h5_marker)
         (atx_h6_marker)
-      ] @heading_marker)
+      ] @heading)
       ((list_marker_dot) @list_marker_dot)
       ((list_marker_minus) @list_marker_minus)
       ((task_list_marker_unchecked) @checkbox_unchecked)
@@ -221,6 +205,15 @@ M.parse_document = function()
   return root, parsed_query
 end
 
+local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_markdown_extmarks"
+
+---@param clear_buf? boolean
+M.disable_extmarks = function(clear_buf)
+  local line = vim.fn.line "."
+  if clear_buf then return pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, 0, -1) end
+  pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, line - 1, line + 1)
+end
+
 M.set_extmarks = function()
   vim.api.nvim_buf_clear_namespace(0, NAMESPACE_ID, 0, -1)
   local root, parsed_query = M.parse_document()
@@ -228,66 +221,14 @@ M.set_extmarks = function()
     local capture_name = parsed_query.captures[capture_id]
     local row_start, col_start, row_end, col_end = capture_node:range()
     local capture_text = vim.treesitter.get_node_text(capture_node, 0)
-    if capture_name == "yaml_frontmatter" then
-      local parts = vim.split(capture_text, "\n")
-      if #parts >= 2 then
-        local top, bottom = parts[1], parts[#parts]
-        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, 0, {
-          end_col = #top,
-          virt_text = { { top, "@comment" } },
-          virt_text_pos = "overlay",
-          hl_group = "@comment",
-        })
-        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_end - 1, 0, {
-          end_col = #bottom,
-          virt_text = { { bottom, "@comment" } },
-          virt_text_pos = "overlay",
-          hl_group = "@comment",
-        })
-      end
-    elseif capture_name == "heading_marker" then
-      vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, 0, {
-        end_col = #capture_text,
-        virt_text = {
-          { headings[#capture_text], highlight_groups[#capture_text] or highlight_groups[#highlight_groups] },
-        },
-        virt_text_pos = "overlay",
-        hl_group = highlight_groups[#capture_text] or highlight_groups[#highlight_groups],
-      })
-    elseif capture_name == "checkbox_unchecked" then
-      vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, col_start, {
-        end_col = col_start + #capture_text,
-        virt_text = { { ds.icons.markdown.Unchecked, "@markup.todo" } },
-        virt_text_pos = "overlay",
-        hl_group = "@markup.todo",
-      })
-    elseif capture_name == "checkbox_checked" then
-      vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, col_start, {
-        end_col = col_start + #capture_text,
-        virt_text = { { ds.icons.markdown.Checked, "@markup.todo" } },
-        virt_text_pos = "overlay",
-        hl_group = "@markup.todo",
-      })
-    elseif capture_name == "list_marker_minus" then
-      vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, col_start, {
-        end_col = col_start + #capture_text,
-        virt_text = { { ds.icons.markdown.ListMinus, "@markup.list" } },
-        virt_text_pos = "overlay",
-        hl_group = "@markup.list",
-      })
-    elseif capture_name == "dash" then
-      vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, 0, {
-        virt_text = { { ("-"):rep(vim.api.nvim_win_get_width(0)), "@markup.dash" } },
-        virt_text_pos = "overlay",
-        hl_group = "combine",
-      })
-    elseif capture_name == "codeblock" then
-      vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, 0, {
-        end_col = 0,
-        end_row = row_end,
-        hl_group = "@markup.codeblock",
-        hl_eol = true,
-      })
+
+    if M.render[capture_name] and type(M.render[capture_name]) == "function" then
+      M.render[capture_name](
+        NAMESPACE_ID,
+        capture_node,
+        capture_text,
+        { row_start = row_start, col_start = col_start, row_end = row_end, col_end = col_end }
+      )
     end
   end
 end

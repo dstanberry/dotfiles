@@ -4,14 +4,14 @@ vim.opt_local.formatlistpat = [=[^\s*\d\+\.\s\+\|^\s*[-*+>]\s\+\|^\[^\ze[^\]]\+\
 vim.opt_local.iskeyword:append "-"
 vim.opt_local.breakindent = true
 vim.opt_local.breakindentopt = "min:5,list:-1"
-vim.opt_local.concealcursor = "c"
+vim.opt_local.concealcursor = "n"
 vim.opt_local.conceallevel = 2
 vim.opt_local.spell = true
 vim.opt_local.wrap = true
 vim.opt_local.colorcolumn = "80"
 
 local md_extmarks = vim.api.nvim_create_augroup("md_extmarks", { clear = true })
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "CmdlineLeave", "InsertLeave" }, {
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
   group = md_extmarks,
   buffer = 0,
   callback = function()
