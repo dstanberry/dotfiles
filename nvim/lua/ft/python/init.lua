@@ -1,6 +1,6 @@
 local M = {}
 
-local NAMESPACE_ID = vim.api.nvim_create_namespace "python_ns_extmarks"
+local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_python_extmarks"
 
 ---@param clear_buf? boolean
 M.disable_extmarks = function(clear_buf)
@@ -25,21 +25,18 @@ end
 M.set_extmarks = function()
   vim.api.nvim_buf_clear_namespace(0, NAMESPACE_ID, 0, -1)
   local root, parsed_query = M.parse_document()
-  for _, captures, metadata in parsed_query:iter_matches(root, 0) do
-    for id, node in pairs(captures) do
-      local capture = parsed_query.captures[id]
-      local start_row, start_column, _, _ =
-        unpack(vim.tbl_extend("force", { node:range() }, (metadata[id] or {}).range or {}))
-      local text = vim.treesitter.get_node_text(node, 0, { concat = true })
-      if capture == "string_init" then
-        local pre = text:gsub([["]], "")
-        if pre == "f" then
-          vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
-            end_col = start_column + 1,
-            hl_group = "@function.macro",
-            hl_eol = false,
-          })
-        end
+  for capture_id, capture_node, _, _ in parsed_query:iter_captures(root, 0) do
+    local capture_name = parsed_query.captures[capture_id]
+    local row_start, col_start, _, _ = capture_node:range()
+    local capture_text = vim.treesitter.get_node_text(capture_node, 0)
+    if capture_name == "string_init" then
+      local pre = capture_text:gsub([["]], "")
+      if pre == "f" then
+        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, col_start, {
+          end_col = col_start + 1,
+          hl_group = "@function.macro",
+          hl_eol = false,
+        })
       end
     end
   end
