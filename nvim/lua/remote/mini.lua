@@ -439,6 +439,16 @@ return {
         require("mini.icons").mock_nvim_web_devicons()
         return package.loaded["nvim-web-devicons"]
       end
+
+      ds.hl.new("MiniIconsYellow", { fg = vim.g.ds_colors.yellow0 })
+      ds.hl.new("MiniIconsPurple", { fg = vim.g.ds_colors.purple0 })
+      ds.hl.new("MiniIconsOrange", { fg = vim.g.ds_colors.orange0 })
+      ds.hl.new("MiniIconsGreen", { fg = vim.g.ds_colors.green0 })
+      ds.hl.new("MiniIconsAzure", { fg = vim.g.ds_colors.aqua0 })
+      ds.hl.new("MiniIconsGrey", { fg = vim.g.ds_colors.overlay1 })
+      ds.hl.new("MiniIconsCyan", { fg = vim.g.ds_colors.cyan0 })
+      ds.hl.new("MiniIconsBlue", { fg = vim.g.ds_colors.blue0 })
+      ds.hl.new("MiniIconsRed", { fg = vim.g.ds_colors.rose0 })
     end,
   },
   {
