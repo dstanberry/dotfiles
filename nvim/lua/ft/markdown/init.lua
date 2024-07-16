@@ -60,28 +60,26 @@ end
 local get_all_headings = function()
   local data = {}
   local root, parsed_query = M.parse_document()
-  for _, captures, metadata in parsed_query:iter_matches(root, 0, 0, 0) do
-    for id, node in pairs(captures) do
-      local capture = parsed_query.captures[id]
-      local start_row, _, end_row, _ =
-        unpack(vim.tbl_extend("force", { node:range() }, (metadata[id] or {}).range or {}))
-      if capture == "heading_marker" then
-        local hold = {
-          start_row = start_row,
-          end_row = end_row,
-          level = #vim.treesitter.get_node_text(node, 0),
-          index = #data + 1,
-        }
-        table.insert(data, hold)
-      elseif capture == "yaml_frontmatter" then
-        local hold = {
-          start_row = start_row,
-          end_row = end_row,
-          level = 1,
-          index = #data + 1,
-        }
-        table.insert(data, hold)
-      end
+  for capture_id, capture_node, _, _ in parsed_query:iter_captures(root, 0) do
+    local capture_name = parsed_query.captures[capture_id]
+    local row_start, _, row_end, _ = capture_node:range()
+    local capture_text = vim.treesitter.get_node_text(capture_node, 0)
+    if capture_name == "heading_marker" then
+      local hold = {
+        start_row = row_start,
+        end_row = row_end,
+        level = #capture_text,
+        index = #data + 1,
+      }
+      table.insert(data, hold)
+    elseif capture_name == "yaml_frontmatter" then
+      local hold = {
+        start_row = row_start,
+        end_row = row_end,
+        level = 1,
+        index = #data + 1,
+      }
+      table.insert(data, hold)
     end
   end
   return data
@@ -166,7 +164,7 @@ M.toggle_bullet = function()
   else
     vim.api.nvim_buf_set_lines(0, line_start - 1, line_end, true, newlines)
   end
-  M.buf.set_extmarks()
+  M.set_extmarks()
 end
 
 M.toggle_checkbox = function()
@@ -188,7 +186,7 @@ M.toggle_checkbox = function()
   else
     vim.api.nvim_buf_set_lines(0, line_start - 1, line_end, true, newlines)
   end
-  M.buf.set_extmarks()
+  M.set_extmarks()
 end
 
 M.parse_document = function()
@@ -210,12 +208,14 @@ M.parse_document = function()
         (atx_h5_marker)
         (atx_h6_marker)
       ] @heading_marker)
-      (list_marker_dot) @list_marker_dot
-      (list_marker_minus) @list_marker_minus
-      (task_list_marker_unchecked) @checkbox_unchecked
-      (task_list_marker_checked) @checkbox_checked
-      (thematic_break) @dash
-      (fenced_code_block) @codeblock
+      ((list_marker_dot) @list_marker_dot)
+      ((list_marker_minus) @list_marker_minus)
+      ((task_list_marker_unchecked) @checkbox_unchecked)
+      ((task_list_marker_checked) @checkbox_checked)
+      ((thematic_break) @dash)
+      ((fenced_code_block) @codeblock)
+      ((block_quote) @block_quote)
+      ((pipe_table) @table)
     ]]
   )
   return root, parsed_query
@@ -224,71 +224,70 @@ end
 M.set_extmarks = function()
   vim.api.nvim_buf_clear_namespace(0, NAMESPACE_ID, 0, -1)
   local root, parsed_query = M.parse_document()
-  for _, captures, metadata in parsed_query:iter_matches(root, 0) do
-    for id, node in pairs(captures) do
-      local capture = parsed_query.captures[id]
-      local start_row, start_column, end_row, _ =
-        unpack(vim.tbl_extend("force", { node:range() }, (metadata[id] or {}).range or {}))
-      local text = vim.treesitter.get_node_text(node, 0, { concat = true })
-      if capture == "yaml_frontmatter" then
-        local parts = vim.split(text, "\n")
-        if #parts >= 2 then
-          local top, bottom = parts[1], parts[#parts]
-          vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, 0, {
-            end_col = #top,
-            virt_text = { { top, "@comment" } },
-            virt_text_pos = "overlay",
-            hl_group = "@comment",
-          })
-          vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, end_row - 1, 0, {
-            end_col = #bottom,
-            virt_text = { { bottom, "@comment" } },
-            virt_text_pos = "overlay",
-            hl_group = "@comment",
-          })
-        end
-      elseif capture == "heading_marker" then
-        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, 0, {
-          end_col = #text,
-          virt_text = { { headings[#text], highlight_groups[#text] or highlight_groups[#highlight_groups] } },
+  for capture_id, capture_node, _, _ in parsed_query:iter_captures(root, 0) do
+    local capture_name = parsed_query.captures[capture_id]
+    local row_start, col_start, row_end, col_end = capture_node:range()
+    local capture_text = vim.treesitter.get_node_text(capture_node, 0)
+    if capture_name == "yaml_frontmatter" then
+      local parts = vim.split(capture_text, "\n")
+      if #parts >= 2 then
+        local top, bottom = parts[1], parts[#parts]
+        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, 0, {
+          end_col = #top,
+          virt_text = { { top, "@comment" } },
           virt_text_pos = "overlay",
-          hl_group = highlight_groups[#text] or highlight_groups[#highlight_groups],
+          hl_group = "@comment",
         })
-      elseif capture == "checkbox_unchecked" then
-        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
-          end_col = start_column + #text,
-          virt_text = { { ds.icons.markdown.Unchecked, "@markup.todo" } },
+        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_end - 1, 0, {
+          end_col = #bottom,
+          virt_text = { { bottom, "@comment" } },
           virt_text_pos = "overlay",
-          hl_group = "@markup.todo",
-        })
-      elseif capture == "checkbox_checked" then
-        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
-          end_col = start_column + #text,
-          virt_text = { { ds.icons.markdown.Checked, "@markup.todo" } },
-          virt_text_pos = "overlay",
-          hl_group = "@markup.todo",
-        })
-      elseif capture == "list_marker_minus" then
-        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, start_column, {
-          end_col = start_column + #text,
-          virt_text = { { ds.icons.markdown.ListMinus, "@markup.list" } },
-          virt_text_pos = "overlay",
-          hl_group = "@markup.list",
-        })
-      elseif capture == "dash" then
-        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, 0, {
-          virt_text = { { ("-"):rep(vim.api.nvim_win_get_width(0)), "@markup.dash" } },
-          virt_text_pos = "overlay",
-          hl_group = "combine",
-        })
-      elseif capture == "codeblock" then
-        vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, start_row, 0, {
-          end_col = 0,
-          end_row = end_row,
-          hl_group = "@markup.codeblock",
-          hl_eol = true,
+          hl_group = "@comment",
         })
       end
+    elseif capture_name == "heading_marker" then
+      vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, 0, {
+        end_col = #capture_text,
+        virt_text = {
+          { headings[#capture_text], highlight_groups[#capture_text] or highlight_groups[#highlight_groups] },
+        },
+        virt_text_pos = "overlay",
+        hl_group = highlight_groups[#capture_text] or highlight_groups[#highlight_groups],
+      })
+    elseif capture_name == "checkbox_unchecked" then
+      vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, col_start, {
+        end_col = col_start + #capture_text,
+        virt_text = { { ds.icons.markdown.Unchecked, "@markup.todo" } },
+        virt_text_pos = "overlay",
+        hl_group = "@markup.todo",
+      })
+    elseif capture_name == "checkbox_checked" then
+      vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, col_start, {
+        end_col = col_start + #capture_text,
+        virt_text = { { ds.icons.markdown.Checked, "@markup.todo" } },
+        virt_text_pos = "overlay",
+        hl_group = "@markup.todo",
+      })
+    elseif capture_name == "list_marker_minus" then
+      vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, col_start, {
+        end_col = col_start + #capture_text,
+        virt_text = { { ds.icons.markdown.ListMinus, "@markup.list" } },
+        virt_text_pos = "overlay",
+        hl_group = "@markup.list",
+      })
+    elseif capture_name == "dash" then
+      vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, 0, {
+        virt_text = { { ("-"):rep(vim.api.nvim_win_get_width(0)), "@markup.dash" } },
+        virt_text_pos = "overlay",
+        hl_group = "combine",
+      })
+    elseif capture_name == "codeblock" then
+      vim.api.nvim_buf_set_extmark(0, NAMESPACE_ID, row_start, 0, {
+        end_col = 0,
+        end_row = row_end,
+        hl_group = "@markup.codeblock",
+        hl_eol = true,
+      })
     end
   end
 end
