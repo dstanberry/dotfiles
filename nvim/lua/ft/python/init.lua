@@ -1,14 +1,5 @@
 local M = {}
 
-local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_python_extmarks"
-
----@param clear_buf? boolean
-M.disable_extmarks = function(clear_buf)
-  local line = vim.fn.line "."
-  if clear_buf then return pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, 0, -1) end
-  pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, line - 1, line + 1)
-end
-
 M.parse_document = function()
   local language_tree = vim.treesitter.get_parser(0, "python")
   local syntax_tree = language_tree:parse()
@@ -20,6 +11,15 @@ M.parse_document = function()
     ]]
   )
   return root, parsed_query
+end
+
+local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_python_extmarks"
+
+---@param clear_buf? boolean
+M.disable_extmarks = function(clear_buf)
+  local line = vim.fn.line "."
+  if clear_buf then return pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, 0, -1) end
+  pcall(vim.api.nvim_buf_clear_namespace, 0, NAMESPACE_ID, line - 1, line + 1)
 end
 
 M.set_extmarks = function()

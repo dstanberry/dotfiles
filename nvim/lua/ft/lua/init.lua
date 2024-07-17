@@ -1,3 +1,5 @@
+local M = {}
+
 local sep = string.match(package.config, "^[^\n]")
 
 local include_paths = function(fname, ext)
@@ -20,8 +22,6 @@ local include_rtpaths = function(fname, ext)
     if vim.uv.fs_stat(path2) then return path2 end
   end
 end
-
-local M = {}
 
 M.include_expr = function(module)
   local fname = module:gsub("%.", sep)
