@@ -4,17 +4,29 @@ M.setup = function()
   local dap = require "dap"
   local vscode = require "dap.ext.vscode"
 
-  local adapters = { "node", "pwa-node" }
+  local adapters = { "pwa-chrome", "pwa-node", "node" }
   local filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
 
   vscode.type_to_filetypes["chrome"] = filetypes
-  vscode.type_to_filetypes["node"] = filetypes
   vscode.type_to_filetypes["pwa-node"] = filetypes
+  vscode.type_to_filetypes["node"] = filetypes
 
   dap.adapters.chrome = {
-    type = "executable",
-    command = "node",
-    args = { ds.plugin.get_pkg_path("chrome-debug-adapter", "/out/src/chromeDebug.js") },
+    type = "server",
+    host = "localhost",
+    port = "${port}",
+    executable = {
+      command = "node",
+      args = {
+        ds.plugin.get_pkg_path("js-debug-adapter", "/js-debug/src/dapDebugServer.js"),
+        "${port}",
+      },
+    },
+    enrich_config = function(config, on_config)
+      local _config = vim.deepcopy(config)
+      if config.type == "chrome" then _config.type = "pwa-chrome" end
+      on_config(_config)
+    end,
   }
 
   for _, adapter in ipairs(adapters) do
@@ -62,24 +74,6 @@ M.setup = function()
           end,
           cwd = "${workspaceFolder}",
           sourceMaps = true,
-        },
-        {
-          type = "chrome",
-          name = "Launch new process (chrome)",
-          request = "launch",
-          preLaunchTask = "npm start",
-          url = function()
-            return coroutine.create(function(_c)
-              vim.ui.input({
-                prompt = "Enter URL: ",
-                default = "http://localhost:4200",
-              }, function(url) coroutine.resume(_c, (url and url ~= "") and url or dap.ABORT) end)
-            end)
-          end,
-          port = 9222,
-          webRoot = "${workspaceFolder}",
-          sourceMaps = true,
-          protocol = "inspector",
         },
       }
     end

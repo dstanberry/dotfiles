@@ -137,7 +137,6 @@ return {
       "yaml-language-server",
       "zk",
       -- debuggers
-      "chrome-debug-adapter",
       "codelldb",
       "debugpy",
       "delve",
