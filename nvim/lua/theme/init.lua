@@ -357,6 +357,7 @@ M.defaults = function(c)
     ["@markup.warning"]                        = { fg = c.bg2, bg = c.yellow2 },
     ["@module"]                                = { fg = c.blue1 },
     ["@module.builtin"]                        = { fg = c.blue1, bold = true },
+    ["@namespace.builtin"]                     = { link = "@variable.builtin" },
     ["@none"]                                  = {},
     ["@number"]                                = { link = "Number" },
     ["@number.float"]                          = { link = "Float" },
