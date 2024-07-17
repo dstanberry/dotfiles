@@ -8,7 +8,7 @@ vim.opt_local.concealcursor = "n"
 vim.opt_local.conceallevel = 2
 vim.opt_local.spell = true
 vim.opt_local.wrap = true
-vim.opt_local.colorcolumn = "80"
+vim.opt_local.listchars:append "eol: "
 
 local md_extmarks = vim.api.nvim_create_augroup("md_extmarks", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {

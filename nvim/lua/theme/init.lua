@@ -386,7 +386,7 @@ M.defaults = function(c)
     ["@variable.parameter.reference"]          = { fg = c.rose0 },
 
     -- custom treesitter extended highlighting
-    ["@markup.codeblock"]                      = { bg = ds.color.blend(c.grayX, c.bg2, 0.44) },
+    ["@markup.codeblock"]                      = { bg = ds.color.blend(c.blue4, c.bg0, 0.08) },
     ["@markup.dash"]                           = { fg = c.yellow0, bold = true },
     ["@markup.heading"]                        = { link = "htmlH1" },
     ["@markup.table"]                        = { link = "Special" },

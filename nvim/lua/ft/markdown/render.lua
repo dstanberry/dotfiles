@@ -30,17 +30,57 @@ M.checkbox_unchecked = function(ns, capture_node, capture_text, range)
   })
 end
 
+local calculate_cb_width = function(str)
+  local width, overflow = 0, 0
+  for match in str:gmatch "[%z\1-\127\194-\244][\128-\191]*" do
+    overflow = overflow + (vim.fn.strdisplaywidth(match) - 1)
+    width = width + #match
+  end
+  return width, overflow
+end
+
 ---@param ns number
 ---@param capture_node TSNode
 ---@param capture_text string
 ---@param range tsRange
 M.codeblock = function(ns, capture_node, capture_text, range)
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, 0, {
-    end_col = 0,
-    end_row = range.row_end,
-    hl_group = "@markup.codeblock",
-    hl_eol = true,
+  local max_width = 0
+  local widths = {}
+  local lines = vim.tbl_filter(function(s) return not s:find "^```" end, vim.split(capture_text, "\n"))
+  for i = 1, (range.row_end - range.row_start) - 2 do
+    local line = lines[i]
+    local width = vim.fn.strchars(line) or 0
+    if width > max_width then max_width = width end
+    table.insert(widths, width)
+  end
+  max_width = math.max(max_width, 78)
+
+  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
+    virt_text = { { string.rep(" ", max_width + 2), "@markup.codeblock" } },
+    virt_text_pos = "inline",
+    hl_mode = "combine",
   })
+  vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start, {
+    virt_text = { { string.rep(" ", max_width + 2), "@markup.codeblock" } },
+    virt_text_pos = "inline",
+    hl_mode = "combine",
+  })
+
+  for i, line in ipairs(lines) do
+    local line_width = widths[i] - range.col_start
+    local position, overflow = calculate_cb_width(line)
+    local col = line_width < 0 and range.col_start + line_width or range.col_start
+
+    vim.api.nvim_buf_add_highlight(0, ns, "@markup.codeblock", range.row_start + i, range.col_start, -1)
+    vim.api.nvim_buf_set_extmark(0, ns, range.row_start + i, col, {
+      virt_text = { { string.rep(" ", 1), "@markup.codeblock" } },
+      virt_text_pos = "inline",
+    })
+    vim.api.nvim_buf_set_extmark(0, ns, range.row_start + i, position, {
+      virt_text = { { string.rep(" ", max_width - line_width - overflow), "@markup.codeblock" } },
+      virt_text_pos = "inline",
+    })
+  end
 end
 
 ---@param ns number
@@ -116,7 +156,7 @@ M.list_marker_minus = function(ns, capture_node, capture_text, range)
   })
 end
 
-local calculate_width = function(text)
+local calculate_md_width = function(text)
   local width = vim.fn.strchars(text)
   for fmt_start, fmt_end in text:gmatch "([*_]*)%w+([*_]*)" do
     local pre = text:sub(text:find(fmt_start .. "%w+" .. fmt_end) - 1, text:find(fmt_start .. "%w+" .. fmt_end) - 1)
@@ -181,7 +221,7 @@ local render_header = function(ns, row, alignments, range)
       table.insert(border, { ds.icons.table.Dividers[1], "@markup.table" })
       col_offset = col_offset + 1
     else
-      local width, real_width = calculate_width(col)
+      local width, real_width = calculate_md_width(col)
       local align = alignments[current_col]
       if width < real_width then
         if align == "left" then
@@ -291,7 +331,6 @@ end
 
 local render_row = function(ns, row_num, row, alignments, range)
   local current_col, col_offset = 1, 0
-  -- ds.info { row_num, range.row_start, range.row_end, row }
   for index, col in ipairs(row) do
     if index == 1 then
       vim.api.nvim_buf_set_extmark(0, ns, range.row_start + row_num - 1, range.col_start, {
@@ -318,7 +357,7 @@ local render_row = function(ns, row_num, row, alignments, range)
       })
       col_offset = col_offset + 1
     else
-      local width, real_width = calculate_width(col)
+      local width, real_width = calculate_md_width(col)
       local align = alignments[current_col]
       if width < real_width then
         if align == "left" then
@@ -387,7 +426,7 @@ local render_footer = function(ns, row, alignments, range)
       table.insert(border, { ds.icons.table.Dividers[5], "@markup.table" })
       col_offset = col_offset + 1
     else
-      local width, real_width = calculate_width(col)
+      local width, real_width = calculate_md_width(col)
       local align = alignments[current_col]
       if width < real_width then
         if align == "left" then
