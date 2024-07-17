@@ -226,8 +226,7 @@ return {
         ["<c-h>"] = false,
         ["<c-t>"] = { "actions.select", opts = { tab = true }, desc = "oil: open in a new tab" },
         ["<c-s>"] = { "actions.select", opts = { vertical = true }, desc = "oil: open in a vertical split" },
-        ["<bs>"] = "actions.parent",
-        ["-"] = "actions.close",
+        ["-"] = "actions.parent",
         ["q"] = "actions.close",
       },
       float = {
