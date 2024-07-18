@@ -318,7 +318,7 @@ return {
           local f = get_file(buf)
           if not f then return end
           load_highlights(f)
-          return f and '^%s*%[?"?()[%w%.@]+()"?%]?%s*='
+          return f and '^%s*%[?"?()[%w_%.@]+()"?%]?%s*='
         end,
         group = function(buf, match, _)
           local name = get_file(buf)

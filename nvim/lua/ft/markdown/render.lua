@@ -4,33 +4,33 @@ local M = {}
 
 ---@alias tsRange {row_start: number, col_start: number, row_end?: number, col_end?: number}
 
+---@param bufnr number
 ---@param ns number
 ---@param capture_node TSNode
 ---@param capture_text string
 ---@param range tsRange
-M.checkbox_checked = function(ns, capture_node, capture_text, range)
+M.checkbox_checked = function(bufnr, ns, capture_node, capture_text, range)
   vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
     end_col = range.col_start + #capture_text,
-    virt_text = { { ds.icons.markdown.Checked, "@markup.todo" } },
+    virt_text = { { ds.pad(ds.icons.markdown.Checked, "right", 2), "@markup.list.checked" } },
     virt_text_pos = "overlay",
-    hl_group = "@markup.todo",
   })
 end
 
+---@param bufnr number
 ---@param ns number
 ---@param capture_node TSNode
 ---@param capture_text string
 ---@param range tsRange
-M.checkbox_unchecked = function(ns, capture_node, capture_text, range)
+M.checkbox_unchecked = function(bufnr, ns, capture_node, capture_text, range)
   vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
     end_col = range.col_start + #capture_text,
-    virt_text = { { ds.icons.markdown.Unchecked, "@markup.todo" } },
+    virt_text = { { ds.pad(ds.icons.markdown.Unchecked, "right", 2), "@markup.list.unchecked" } },
     virt_text_pos = "overlay",
-    hl_group = "@markup.todo",
   })
 end
 
-local calculate_cb_width = function(str)
+local calculate_block_width = function(str)
   local width, overflow = 0, 0
   for match in str:gmatch "[%z\1-\127\194-\244][\128-\191]*" do
     overflow = overflow + (vim.fn.strdisplaywidth(match) - 1)
@@ -39,11 +39,30 @@ local calculate_cb_width = function(str)
   return width, overflow
 end
 
+---@param bufnr number
 ---@param ns number
 ---@param capture_node TSNode
 ---@param capture_text string
 ---@param range tsRange
-M.codeblock = function(ns, capture_node, capture_text, range)
+M.code_span = function(bufnr, ns, capture_node, capture_text, range)
+  capture_text = string.gsub(capture_text, "`", "")
+  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start + 1, {
+    virt_text = { { " ", "@markup.raw.markdown_inline" } },
+    virt_text_pos = "inline",
+  })
+  vim.api.nvim_buf_add_highlight(0, ns, "@markup.raw.markdown_inline", range.row_start, range.col_start, range.col_end)
+  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_end - 1, {
+    virt_text = { { " ", "@markup.raw.markdown_inline" } },
+    virt_text_pos = "inline",
+  })
+end
+
+---@param bufnr number
+---@param ns number
+---@param capture_node TSNode
+---@param capture_text string
+---@param range tsRange
+M.codeblock = function(bufnr, ns, capture_node, capture_text, range)
   local max_width = 0
   local widths = {}
   local lines = vim.tbl_filter(function(s) return not s:find "^```" end, vim.split(capture_text, "\n"))
@@ -68,7 +87,7 @@ M.codeblock = function(ns, capture_node, capture_text, range)
 
   for i, line in ipairs(lines) do
     local line_width = widths[i] - range.col_start
-    local position, overflow = calculate_cb_width(line)
+    local position, overflow = calculate_block_width(line)
     local col = line_width < 0 and range.col_start + line_width or range.col_start
 
     vim.api.nvim_buf_add_highlight(0, ns, "@markup.codeblock", range.row_start + i, range.col_start, -1)
@@ -83,33 +102,47 @@ M.codeblock = function(ns, capture_node, capture_text, range)
   end
 end
 
+---@param bufnr number
 ---@param ns number
 ---@param capture_node TSNode
 ---@param capture_text string
 ---@param range tsRange
-M.dash = function(ns, capture_node, capture_text, range)
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, 0, {
-    virt_text = { { ("-"):rep(vim.api.nvim_win_get_width(0)), "@markup.dash" } },
+M.dash = function(bufnr, ns, capture_node, capture_text, range)
+  local parts = {
+    { type = "repeat", text = ds.icons.border.CompactRound[2] },
+    { type = "text", text = ds.pad(ds.icons.misc.Diamond, "both") },
+    { type = "repeat", text = ds.icons.border.CompactRound[2] },
+  }
+  local content = {}
+  for index, part in ipairs(parts) do
+    local repeat_amount = part.type == "repeat" and 38 or 1
+    for r = 1, repeat_amount do
+      table.insert(content, { part.text, "@markup.dash" })
+    end
+  end
+  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
+    end_col = #capture_text,
+    virt_text = content,
     virt_text_pos = "overlay",
-    hl_group = "combine",
   })
 end
 
+---@param bufnr number
 ---@param ns number
 ---@param capture_node TSNode
 ---@param capture_text string
 ---@param range tsRange
-M.frontmatter = function(ns, capture_node, capture_text, range)
+M.frontmatter = function(bufnr, ns, capture_node, capture_text, range)
   local parts = vim.split(capture_text, "\n")
   if #parts >= 2 then
     local top, bottom = parts[1], parts[#parts]
-    vim.api.nvim_buf_set_extmark(0, ns, range.row_start, 0, {
+    vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
       end_col = #top,
       virt_text = { { top, "@comment" } },
       virt_text_pos = "overlay",
       hl_group = "@comment",
     })
-    vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, 0, {
+    vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start, {
       end_col = #bottom,
       virt_text = { { bottom, "@comment" } },
       virt_text_pos = "overlay",
@@ -118,12 +151,13 @@ M.frontmatter = function(ns, capture_node, capture_text, range)
   end
 end
 
+---@param bufnr number
 ---@param ns number
 ---@param capture_node TSNode
 ---@param capture_text string
 ---@param range tsRange
-M.heading = function(ns, capture_node, capture_text, range)
-  local highlight_groups = { "@markup.heading", "@markup.heading", "@variable.builtin" }
+M.heading = function(bufnr, ns, capture_node, capture_text, range)
+  local highlight_groups = { "@markup.heading", "@markup.heading.sub", "@variable.builtin" }
   local headings = {
     ds.icons.markdown.H1,
     ds.icons.markdown.H2,
@@ -132,27 +166,64 @@ M.heading = function(ns, capture_node, capture_text, range)
     ds.icons.markdown.H5,
     ds.icons.markdown.H6,
   }
+  local current_heading = headings[#capture_text]
+  local current_highlight = highlight_groups[#capture_text] or highlight_groups[#highlight_groups]
 
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, 0, {
+  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
     end_col = #capture_text,
-    virt_text = {
-      { headings[#capture_text], highlight_groups[#capture_text] or highlight_groups[#highlight_groups] },
-    },
+    virt_text = { { current_heading, current_highlight } },
     virt_text_pos = "overlay",
-    hl_group = highlight_groups[#capture_text] or highlight_groups[#highlight_groups],
+    hl_group = current_highlight,
+  })
+  vim.api.nvim_buf_set_extmark(0, ns, range.row_start + 1, range.col_start, {
+    virt_text = { { string.rep(ds.icons.border.CompactRound[2], 80), current_highlight } },
+    virt_text_pos = "inline",
   })
 end
 
+---@param bufnr number
 ---@param ns number
 ---@param capture_node TSNode
 ---@param capture_text string
 ---@param range tsRange
-M.list_marker_minus = function(ns, capture_node, capture_text, range)
+M.list_marker_minus = function(bufnr, ns, capture_node, capture_text, range)
   vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
     end_col = range.col_start + #capture_text,
     virt_text = { { ds.icons.markdown.ListMinus, "@markup.list" } },
     virt_text_pos = "overlay",
     hl_group = "@markup.list",
+  })
+end
+
+---@param bufnr number
+---@param ns number
+---@param capture_node TSNode
+---@param capture_text string
+---@param range tsRange
+M.md_link = function(bufnr, ns, capture_node, capture_text, range)
+  local text = capture_text:match "%[(.-)%]"
+  local resource = capture_text:match "%((.-)%)"
+  local type = capture_node:type()
+  local is_email = type == "email_autolink"
+  local icons = {
+    image = ds.pad(ds.icons.misc.Image, "right"),
+    ["email_autolink"] = ds.pad(ds.icons.misc.User, "right"),
+    ["inline_link"] = ds.pad(ds.icons.misc.Link, "right"),
+    ["shortcut_link"] = ds.pad(ds.icons.misc.Link, "right"),
+  }
+
+  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, is_email and range.col_start or range.col_start + 1, {
+    end_col = is_email and range.col_start + 1 or range.col_start,
+    virt_text = { { icons[type] or "", "@markup.link.url" } },
+    virt_text_pos = "inline",
+    conceal = "",
+  })
+  vim.api.nvim_buf_add_highlight(bufnr, ns, "@markup.link.url", range.row_start, range.col_start, range.col_end)
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end, is_email and range.col_end - 1 or range.col_end, {
+    virt_text_pos = "inline",
+    virt_text = { { " ", "@markup.link.url" } },
+    end_col = is_email and range.col_end or range.col_start,
+    conceal = "",
   })
 end
 
@@ -183,27 +254,27 @@ local determine_alignment = function(text)
   return ""
 end
 
-local render_header = function(ns, row, alignments, range)
+local render_header = function(bufnr, ns, row, alignments, range)
   local current_col, col_offset = 1, 0
   local border = {}
   for index, col in ipairs(row) do
     if index == 1 then
       vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
         end_col = range.col_start + 1,
-        virt_text = { { ds.icons.border.CompactRounded[4], "@markup.table" } },
+        virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
         conceal = "",
       })
-      table.insert(border, { ds.icons.border.CompactRounded[1], "@markup.table" })
+      table.insert(border, { ds.icons.border.CompactRound[1], "@markup.table" })
       col_offset = col_offset + 1
     elseif index == #row then
       vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
-        virt_text = { { ds.icons.border.CompactRounded[4], "@markup.table" } },
+        virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
         conceal = "",
       })
-      table.insert(border, { ds.icons.border.CompactRounded[3], "@markup.table" })
+      table.insert(border, { ds.icons.border.CompactRound[3], "@markup.table" })
       if range.row_start > 0 then
         vim.api.nvim_buf_set_extmark(0, ns, range.row_start - 1, range.col_start, {
           virt_text = border,
@@ -214,7 +285,7 @@ local render_header = function(ns, row, alignments, range)
     elseif col == "|" then
       vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
-        virt_text = { { ds.icons.border.CompactRounded[4], "@markup.table" } },
+        virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
         conceal = "",
       })
@@ -246,14 +317,14 @@ local render_header = function(ns, row, alignments, range)
           })
         end
       end
-      table.insert(border, { string.rep(ds.icons.border.CompactRounded[2], real_width), "@markup.table" })
+      table.insert(border, { string.rep(ds.icons.border.CompactRound[2], real_width), "@markup.table" })
       col_offset = col_offset + vim.fn.strchars(col)
       current_col = current_col + 1
     end
   end
 end
 
-local render_delimiter = function(ns, row, alignments, range)
+local render_delimiter = function(bufnr, ns, row, alignments, range)
   local current_col, col_offset = 1, 0
   for index, col in ipairs(row) do
     if index == 1 then
@@ -288,7 +359,7 @@ local render_delimiter = function(ns, row, alignments, range)
             end_col = range.col_start + col_offset + vim.fn.strchars(col) + 1,
             virt_text = {
               { ds.icons.table.Alignment[1], "@markup.table" },
-              { string.rep(ds.icons.border.CompactRounded[2], vim.fn.strchars(col) - 1), "@markup.table" },
+              { string.rep(ds.icons.border.CompactRound[2], vim.fn.strchars(col) - 1), "@markup.table" },
             },
             virt_text_pos = "inline",
             conceal = "",
@@ -297,7 +368,7 @@ local render_delimiter = function(ns, row, alignments, range)
           vim.api.nvim_buf_set_extmark(0, ns, range.row_start + 1, range.col_start + col_offset, {
             end_col = range.col_start + col_offset + vim.fn.strchars(col) + 1,
             virt_text = {
-              { string.rep(ds.icons.border.CompactRounded[2], vim.fn.strchars(col) - 1), "@markup.table" },
+              { string.rep(ds.icons.border.CompactRound[2], vim.fn.strchars(col) - 1), "@markup.table" },
               { ds.icons.table.Alignment[2], "@markup.table" },
             },
             virt_text_pos = "inline",
@@ -308,7 +379,7 @@ local render_delimiter = function(ns, row, alignments, range)
             end_col = range.col_start + col_offset + vim.fn.strchars(col) + 1,
             virt_text = {
               { ds.icons.table.Alignment[3], "@markup.table" },
-              { string.rep(ds.icons.border.CompactRounded[2], vim.fn.strchars(col) - 2), "@markup.table" },
+              { string.rep(ds.icons.border.CompactRound[2], vim.fn.strchars(col) - 2), "@markup.table" },
               { ds.icons.table.Alignment[4], "@markup.table" },
             },
             virt_text_pos = "inline",
@@ -318,7 +389,7 @@ local render_delimiter = function(ns, row, alignments, range)
       else
         vim.api.nvim_buf_set_extmark(0, ns, range.row_start + 1, range.col_start + col_offset, {
           end_col = range.col_start + col_offset + vim.fn.strchars(col) + 1,
-          virt_text = { { string.rep(ds.icons.border.CompactRounded[2], vim.fn.strchars(col)), "@markup.table" } },
+          virt_text = { { string.rep(ds.icons.border.CompactRound[2], vim.fn.strchars(col)), "@markup.table" } },
           virt_text_pos = "inline",
           conceal = "",
         })
@@ -329,13 +400,13 @@ local render_delimiter = function(ns, row, alignments, range)
   end
 end
 
-local render_row = function(ns, row_num, row, alignments, range)
+local render_row = function(bufnr, ns, row_num, row, alignments, range)
   local current_col, col_offset = 1, 0
   for index, col in ipairs(row) do
     if index == 1 then
       vim.api.nvim_buf_set_extmark(0, ns, range.row_start + row_num - 1, range.col_start, {
         end_col = range.col_start + 1,
-        virt_text = { { ds.icons.border.CompactRounded[4], "@markup.table" } },
+        virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
         conceal = "",
       })
@@ -343,7 +414,7 @@ local render_row = function(ns, row_num, row, alignments, range)
     elseif index == #row then
       vim.api.nvim_buf_set_extmark(0, ns, range.row_start + row_num - 1, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
-        virt_text = { { ds.icons.border.CompactRounded[4], "@markup.table" } },
+        virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
         conceal = "",
       })
@@ -351,7 +422,7 @@ local render_row = function(ns, row_num, row, alignments, range)
     elseif col == "|" then
       vim.api.nvim_buf_set_extmark(0, ns, range.row_start + row_num - 1, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
-        virt_text = { { ds.icons.border.CompactRounded[4], "@markup.table" } },
+        virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
         conceal = "",
       })
@@ -388,27 +459,27 @@ local render_row = function(ns, row_num, row, alignments, range)
   end
 end
 
-local render_footer = function(ns, row, alignments, range)
+local render_footer = function(bufnr, ns, row, alignments, range)
   local current_col, col_offset = 1, 0
   local border = {}
   for index, col in ipairs(row) do
     if index == 1 then
       vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start, {
         end_col = range.col_start + 1,
-        virt_text = { { ds.icons.border.CompactRounded[4], "@markup.table" } },
+        virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
         conceal = "",
       })
-      table.insert(border, { ds.icons.border.CompactRounded[7], "@markup.table" })
+      table.insert(border, { ds.icons.border.CompactRound[7], "@markup.table" })
       col_offset = col_offset + 1
     elseif index == #row then
       vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
-        virt_text = { { ds.icons.border.CompactRounded[4], "@markup.table" } },
+        virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
         conceal = "",
       })
-      table.insert(border, { ds.icons.border.CompactRounded[5], "@markup.table" })
+      table.insert(border, { ds.icons.border.CompactRound[5], "@markup.table" })
       if range.row_start > 0 then
         vim.api.nvim_buf_set_extmark(0, ns, range.row_end, range.col_start, {
           virt_text = border,
@@ -419,7 +490,7 @@ local render_footer = function(ns, row, alignments, range)
     elseif col == "|" then
       vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
-        virt_text = { { ds.icons.border.CompactRounded[4], "@markup.table" } },
+        virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
         conceal = "",
       })
@@ -451,14 +522,14 @@ local render_footer = function(ns, row, alignments, range)
           })
         end
       end
-      table.insert(border, { string.rep(ds.icons.border.CompactRounded[2], real_width), "@markup.table" })
+      table.insert(border, { string.rep(ds.icons.border.CompactRound[2], real_width), "@markup.table" })
       col_offset = col_offset + vim.fn.strchars(col)
       current_col = current_col + 1
     end
   end
 end
 
-local render_rows = function(ns, rows, alignments, range)
+local render_rows = function(bufnr, ns, rows, alignments, range)
   local row_count = 1
   local keys = vim.tbl_keys(rows)
   table.sort(keys, function(a, b) return a < b end)
@@ -473,11 +544,12 @@ local render_rows = function(ns, rows, alignments, range)
   end
 end
 
+---@param bufnr number
 ---@param ns number
 ---@param capture_node TSNode
 ---@param capture_text string
 ---@param range tsRange
-M.table = function(ns, capture_node, capture_text, range)
+M.md_table = function(bufnr, ns, capture_node, capture_text, range)
   local parts = vim.split(capture_text, "\n")
   local delimiter, alignments, rows = {}, {}, {}
   local row_index = 1

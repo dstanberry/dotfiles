@@ -51,6 +51,8 @@
 ---@field yellow0 string
 ---@field yellow1 string
 ---@field yellow2 string
+---@field overlay0 string
+---@field overlay1 string
 
 ---@alias Colorscheme "kdark"|"catppuccin-frappe"|"catppuccin-mocha"
 ---@alias Background "light"|"dark"
@@ -174,8 +176,7 @@ M.defaults = function(c)
     Italic                                     = { italic = true },
 
     htmlH1                                     = { fg = c.blue3, bold = true },
-    htmlH2                                     = { fg = c.magenta1, bold = true },
-    htmlH3                                     = { fg = c.fg2, bold = true },
+    htmlH2                                     = { fg = ds.color.blend(c.blue3, c.bg2, 0.62), bold = true },
 
     -- diff highlighting
     DiffAdd                                    = { bg = c.diff_add },
@@ -336,20 +337,25 @@ M.defaults = function(c)
     ["@keyword.return"]                        = { fg = c.red2 },
     ["@keyword.storage"]                       = { link = "StorageClass" },
     ["@label"]                                 = { link = "Label" },
-    ["@markup"]                                = { fg = c.fg1 },
+    ["@markup"]                                = {},
     ["@markup.danger"]                         = { fg = c.bg2, bg = c.red1 },
     ["@markup.diff.add"]                       = { link = "DiffAdd" },
     ["@markup.diff.delete"]                    = { link = "DiffDelete" },
     ["@markup.emphasis"]                       = { fg = c.yellow2, italic = true },
     ["@markup.environment"]                    = { fg = c.blue4 },
     ["@markup.environment.name"]               = { fg = c.yellow2 },
-    ["@markup.link"]                           = { fg = c.cyan1 },
-    ["@markup.link.label"]                     = { link = "Special" },
-    ["@markup.link.url"]                       = { fg = c.aqua1, underline = true },
+    ["@markup.italic"]                         = { italic = true },
+    ["@markup.link"]                           = { fg = c.overlay1 },
+    ["@markup.link.label"]                     = { fg = ds.color.lighten(c.blue4, 30) },
+    ["@markup.link.label.symbol"]              = { link = "Identifier" },
+    ["@markup.link.url"]                       = { underline = true },
     ["@markup.list"]                           = { fg = c.aqua0 },
-    ["@markup.math"]                           = { fg = c.gray2, bg = c.bg0 },
+    ["@markup.list.checked"]                   = { fg = c.green2 },
+    ["@markup.list.unchecked"]                 = { fg = c.overlay1 },
+    ["@markup.math"]                           = { fg = c.gray2, bg = c.bgX },
     ["@markup.note"]                           = { fg = c.bg2, bg = c.aqua0 },
-    ["@markup.raw"]                            = { fg = c.orange0 },
+    ["@markup.raw"]                            = { fg = ds.color.blend(c.rose0, c.bg2, 0.80) },
+    ["@markup.raw.markdown_inline"]            = { fg = ds.color.blend(c.overlay1, c.bgX, 0.90), bg = c.bgX },
     ["@markup.strikethrough"]                  = { strikethrough = true },
     ["@markup.strong"]                         = { bold = true },
     ["@markup.todo"]                           = { link = "Todo" },
@@ -388,9 +394,10 @@ M.defaults = function(c)
 
     -- custom treesitter extended highlighting
     ["@markup.codeblock"]                      = { bg = ds.color.blend(c.blue4, c.bg0, 0.08) },
-    ["@markup.dash"]                           = { fg = c.yellow0, bold = true },
+    ["@markup.dash"]                           = { fg = c.overlay0, bold = true },
     ["@markup.heading"]                        = { link = "htmlH1" },
-    ["@markup.table"]                        = { link = "Special" },
+    ["@markup.heading.sub"]                    = { link = "htmlH2" },
+    ["@markup.table"]                          = { link = "Special" },
     ["@variable.member.yaml"]                  = { fg = c.aqua1 },
 
     -- statusline highlighting

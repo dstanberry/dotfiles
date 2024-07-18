@@ -2,11 +2,13 @@ local markdown = require "ft.markdown"
 
 local edit = function() markdown.zk.edit({}, { title = "Notes" }) end
 
-local edit_links =
-  function() markdown.zk.edit({ linkedBy = { vim.api.nvim_buf_get_name(0) } }, { title = "Notes (links)" }) end
+local edit_links = function()
+  markdown.zk.edit({ linkedBy = { vim.api.nvim_buf_get_name(0) } }, { title = "Notes (links)" })
+end
 
-local edit_backlinks =
-  function() markdown.zk.edit({ linkTo = { vim.api.nvim_buf_get_name(0) } }, { title = "Notes (backlinks)" }) end
+local edit_backlinks = function()
+  markdown.zk.edit({ linkTo = { vim.api.nvim_buf_get_name(0) } }, { title = "Notes (backlinks)" })
+end
 
 local edit_tags = function()
   markdown.zk.pick_tags({}, { title = "Notes (tags)" }, function(tags)

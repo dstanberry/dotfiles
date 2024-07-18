@@ -1,7 +1,7 @@
 ---@class util.icons
 local M = {}
 M.border = {
-  CompactRounded = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+  CompactRound = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
   CompactSquare = { "┌", "─", "┐", "│", "┘", "─", "└", "│" },
   Default = { "🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏" },
 }
@@ -106,8 +106,8 @@ M.kind = {
 }
 
 M.markdown = {
-  Checked = "󰄲  ",
-  Unchecked = "󰄱  ",
+  Checked = "󰄲",
+  Unchecked = "󰄱",
   H1 = "▓",
   H2 = "▓▓",
   H3 = "▓▓▓",
@@ -130,6 +130,7 @@ M.misc = {
   CloseBold = "",
   DiagonalExpand = "",
   DiagonalShrink = "󰘕",
+  Diamond = "",
   DownArrow = "↓",
   Ellipses = "⋯",
   FilledCircle = "●",
@@ -139,13 +140,14 @@ M.misc = {
   Gears = "",
   HalfBlockLower = "▃",
   HalfBlockUpper = "▀",
+  Image = "󰥶",
   Key = "",
   Layer = "",
-  Link = "🔗",
   LeftArrow = "",
   LeftArrowCircled = "",
   LightUpAndRight = "└╴",
   LightVerticalAndRight = "├╴",
+  Link = "󰌷",
   Lock = "",
   Magnify = " ",
   Orbit = "󰀘 ",
@@ -154,11 +156,11 @@ M.misc = {
   RightArrow = "→",
   RightArrowCircled = "",
   ScriptSmall = "ℓ",
-  SquarDot = "▪",
+  SquareDot = "▪",
   Square = "■",
   Table = "",
   Tag = "",
-  User = "",
+  User = "",
   VerticalBar = "▎",
   VerticalBarBold = "▊",
   VerticalBarSemi = "▍",
