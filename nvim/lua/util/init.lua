@@ -116,7 +116,7 @@ end
 function M.get_module(filepath)
   local mod, sep
   sep = ds.has "win32" and "\\" or "/"
-  mod = filepath:match(("lua%s(.+)%.lua$"):format(sep)):gsub(sep, "."):gsub("%.init", "")
+  mod = filepath:match("lua%S(.+)%.lua$"):format(sep):gsub(sep, "."):gsub("%.init", "")
   return mod or ""
 end
 
