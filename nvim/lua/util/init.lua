@@ -261,7 +261,7 @@ function M.print(...)
   else
     value = (vim.islist or vim.islist)(value) and vim.tbl_count(value) <= 1 and value[1] or value
   end
-  M.notify(value, { title = "Debug", location = M.get_location() })
+  M.notify(value, { location = M.get_location() })
 end
 
 vim.print = M.print

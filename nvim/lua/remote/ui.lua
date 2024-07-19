@@ -425,28 +425,28 @@ return {
       max_width = function() return math.floor(vim.o.columns * 0.75) end,
     },
     init = function()
-      ds.hl.new("NotifyTRACEBody", { link = "NormalFloat" })
-      ds.hl.new("NotifyTRACEBorder", { link = "FloatBorder" })
-      ds.hl.new("NotifyTRACEIcon", { link = "@markup" })
-      ds.hl.new("NotifyTRACETitle", { link = "@markup" })
+      ds.hl.new("NotifyTRACEBody", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg0 })
+      ds.hl.new("NotifyTRACEBorder", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.bg0 })
+      ds.hl.new("NotifyTRACEIcon", { link = "Debug" })
+      ds.hl.new("NotifyTRACETitle", { link = "Debug" })
 
-      ds.hl.new("NotifyDEBUGBody", { link = "NormalFloat" })
-      ds.hl.new("NotifyDEBUGBorder", { link = "FloatBorder" })
+      ds.hl.new("NotifyDEBUGBody", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg0 })
+      ds.hl.new("NotifyDEBUGBorder", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.bg0 })
       ds.hl.new("NotifyDEBUGIcon", { link = "Debug" })
       ds.hl.new("NotifyDEBUGTitle", { link = "Debug" })
 
-      ds.hl.new("NotifyINFOBody", { link = "NormalFloat" })
-      ds.hl.new("NotifyINFOBorder", { link = "FloatBorder" })
+      ds.hl.new("NotifyINFOBody", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg0 })
+      ds.hl.new("NotifyINFOBorder", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.bg0 })
       ds.hl.new("NotifyINFOIcon", { link = "String" })
       ds.hl.new("NotifyINFOTitle", { link = "String" })
 
-      ds.hl.new("NotifyWARNBody", { link = "NormalFloat" })
-      ds.hl.new("NotifyWARNBorder", { link = "FloatBorder" })
+      ds.hl.new("NotifyWARNBody", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg0 })
+      ds.hl.new("NotifyWARNBorder", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.bg0 })
       ds.hl.new("NotifyWARNIcon", { link = "WarningMsg" })
       ds.hl.new("NotifyWARNTitle", { link = "WarningMsg" })
 
-      ds.hl.new("NotifyERRORBody", { link = "NormalFloat" })
-      ds.hl.new("NotifyERRORBorder", { link = "FloatBorder" })
+      ds.hl.new("NotifyERRORBody", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg0 })
+      ds.hl.new("NotifyERRORBorder", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.bg0 })
       ds.hl.new("NotifyERRORIcon", { link = "ErrorMsg" })
       ds.hl.new("NotifyERRORTitle", { link = "ErrorMsg" })
 
