@@ -85,72 +85,45 @@ function M.get_root()
   return root
 end
 
-local get_marked_region = function(mark1, mark2, options)
-  local bufnr = 0
-  local adjust = options.adjust or function(pos1, pos2) return pos1, pos2 end
-  local regtype = options.regtype or vim.fn.visualmode()
-  local selection = options.selection or (vim.o.selection ~= "exclusive")
-  local pos1 = vim.fn.getpos(mark1)
-  local pos2 = vim.fn.getpos(mark2)
-  pos1, pos2 = adjust(pos1, pos2)
-  if options.positions then return "", pos1, pos2 end
-  local start = { pos1[2] - 1, pos1[3] - 1 + pos1[4] }
-  local finish = { pos2[2] - 1, pos2[3] - 1 + pos2[4] }
-  if start[2] < 0 or finish[1] < start[1] then return end
-  local region = vim.region(bufnr, start, finish, regtype, selection)
-  return region, start, finish
+function M.get_line_selection()
+  local start_char, end_char = "'<", "'>"
+  vim.cmd "normal! "
+  local start_line, start_col = unpack(vim.fn.getpos(start_char), 2, 3)
+  local end_line, end_col = unpack(vim.fn.getpos(end_char), 2, 3)
+  local selected_lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+  return {
+    selected_lines = selected_lines,
+    start_pos = { start_line, start_col },
+    end_pos = { end_line, end_col },
+  }
 end
 
----@class VisualSelectionSpec
----@field positions boolean Request the result be a table containing
----the row and column for the start and end of the selected range
-
 ---Captures the currently selected region of text
----@param opt? VisualSelectionSpec
----@return table, table? #Table containing each line of the selected range
----and/or a table containing the row-column of the start and end of the range
-function M.get_visual_selection(opt)
-  opt = vim.F.if_nil(opt, {})
-  local bufnr = 0
-  local visual_modes = {
-    v = true,
-    V = true,
-  }
-  if visual_modes[vim.api.nvim_get_mode().mode] == nil then return {} end
-  local options = {}
-  ---@diagnostic disable-next-line: need-check-nil
-  options.positions = vim.F.if_nil(opt.positions, false)
-  options.adjust = function(pos1, pos2)
-    if vim.fn.mode() == "V" then
-      pos1[3] = 1
-      pos2[3] = 2 ^ 31 - 1
-    end
-    if pos1[2] > pos2[2] then
-      pos2[3], pos1[3] = pos1[3], pos2[3]
-      return pos2, pos1
-    elseif pos1[2] == pos2[2] and pos1[3] > pos2[3] then
-      return pos2, pos1
-    else
-      return pos1, pos2
-    end
+---@return string|string[], table #Table containing each line of the selected range
+---and a table containing the two row-column tuples of the start and end of the range
+function M.get_visual_selection()
+  local res = M.get_line_selection()
+  local mode = vim.fn.visualmode()
+  local start_line, start_col = unpack(res.start_pos)
+  local end_line, end_col = unpack(res.end_pos)
+  local range = { { start_line, start_col }, { end_line, end_col } }
+  local selection = ""
+  -- line-visual
+  if mode == "V" then selection = res.selected_lines end
+  if mode == "v" then
+    -- visual
+    if vim.opt.selection:get() == "exclusive" then end_col = end_col - 1 end
+    selection = vim.api.nvim_buf_get_text(0, start_line - 1, start_col - 1, end_line - 1, end_col, {})
   end
-  local region, start, finish = get_marked_region("v", ".", options)
-  if options.positions then return { start, finish } end
-  if region ~= nil and start ~= nil and finish ~= nil then
-    local lines = vim.api.nvim_buf_get_lines(bufnr, start[1], finish[1] + 1, false)
-    local line1_end
-    if region[start[1]][2] - region[start[1]][1] < 0 then
-      line1_end = #lines[1] - region[start[1]][1]
-    else
-      line1_end = region[start[1]][2] - region[start[1]][1]
+  -- block-visual
+  if mode == "\x16" then
+    if vim.opt.selection:get() == "exclusive" then end_col = end_col - 1 end
+    if start_col > end_col then
+      start_col, end_col = end_col, start_col
     end
-    lines[1] = vim.fn.strpart(lines[1], region[start[1]][1], line1_end)
-    if start[1] ~= finish[1] then
-      lines[#lines] = vim.fn.strpart(lines[#lines], region[finish[1]][1], region[finish[1]][2] - region[finish[1]][1])
-    end
-    return lines, { start, finish }
+    selection = vim.tbl_map(function(line) return line:sub(start_col, end_col) end, res.selected_lines)
   end
-  return {}
+  return selection, range
 end
 
 ---@class ListBufsSpec
@@ -205,9 +178,9 @@ function M.quickfix_delete(bufnr)
   local qfl = vim.fn.getqflist()
   local line = unpack(vim.api.nvim_win_get_cursor(0))
   if string.lower(vim.api.nvim_get_mode().mode) == "v" then
-    local selection = M.get_visual_selection { positions = true }
-    local firstline = selection[1][2]
-    local lastline = selection[2][2]
+    local _, range = M.get_visual_selection()
+    local firstline = range[1][2]
+    local lastline = range[2][2]
     local result = {}
     for i, item in ipairs(qfl) do
       if i < firstline or i > lastline then table.insert(result, item) end
