@@ -143,7 +143,6 @@ return {
       "js-debug-adapter",
       "netcoredbg",
       -- linters
-      "eslint_d",
       "flake8",
       "markdownlint-cli2",
       "shellcheck",
@@ -327,8 +326,6 @@ return {
     opts = {
       events = { "BufWritePost", "BufReadPost", "InsertLeave" },
       linters_by_ft = {
-        javascript = { "eslint_d" },
-        typescript = { "eslint_d" },
         markdown = { "markdownlint-cli2" },
         python = { "flake8" },
         sh = { "shellcheck" },
