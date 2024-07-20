@@ -103,7 +103,7 @@ return {
             },
             {
               text = ds.pad(ds.icons.misc.Magnify, "right") .. "Find | Replace",
-              filetype = "spectre_panel",
+              filetype = "grug-far",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
@@ -272,25 +272,33 @@ return {
     },
   },
   {
-    "windwp/nvim-spectre",
-    keys = {
-      { "<leader>sr", function() require("spectre").open() end, desc = "spectre: replace in files" },
-    },
-    opts = { open_cmd = "noswapfile vnew" },
-    config = function(_, opts)
-      require("spectre").setup(opts)
-
-      ds.hl.new("SpectreSearch", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.rose0, bold = true })
-      ds.hl.new("SpectreReplace", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.green0, bold = true })
-
-      vim.api.nvim_create_autocmd("FileType", {
-        group = ds.augroup "spectre",
-        pattern = "spectre_panel",
-        callback = function()
-          vim.opt_local.number = false
-          vim.opt_local.relativenumber = false
-        end,
-      })
+    "MagicDuck/grug-far.nvim",
+    opts = { headerMaxWidth = 80 },
+    cmd = "GrugFar",
+    keys = function()
+      local _far = function()
+        local is_visual = vim.fn.mode():lower():find "v"
+        if is_visual then vim.cmd [[normal! v]] end
+        local grug = require "grug-far";
+        (is_visual and grug.with_visual_selection or grug.grug_far) {
+          prefills = { filesFilter = "*." .. vim.fn.expand "%:e" },
+        }
+      end
+      return {
+        { "<leader>sr", mode = { "n", "v" }, _far, desc = "gruf-far: search/replace in files" },
+      }
+    end,
+    init = function()
+      local GREEN = ds.color.blend(vim.g.ds_colors.green1, vim.g.ds_colors.bg2, 0.66)
+      ds.hl.new("GrugFarInputLabel", { link = "DiagnosticInfo" })
+      ds.hl.new("GrugFarInputPlaceholder", { link = "LspCodeLens" })
+      ds.hl.new("GrugFarResultsHeader", { link = "DiagnosticUnnecessary" })
+      ds.hl.new("GrugFarResultsStats", { link = "DiagnosticUnnecessary" })
+      ds.hl.new("GrugFarResultsLineColumn", { link = "LineNr" })
+      ds.hl.new("GrugFarResultsLineNo", { link = "LineNr" })
+      ds.hl.new("GrugFarResultsMatch", { fg = vim.g.ds_colors.bgX, bg = GREEN, bold = true })
+      ds.hl.new("GrugFarResultsPath", { fg = vim.g.ds_colors.gray2, italic = true })
+      ds.hl.new("GrugFarResultsChangeIndicator", { fg = vim.g.ds_colors.green0 })
     end,
   },
   {

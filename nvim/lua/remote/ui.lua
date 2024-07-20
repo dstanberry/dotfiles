@@ -599,7 +599,7 @@ return {
             { pattern = "workspace", icon = " ", color = "yellow" },
             -- overrides
             { pattern = "harpoon", icon = "󰛢 ", color = "cyan" },
-            { plugin = "nvim-spectre", icon = " ", color = "blue" },
+            { plugin = "grug-far", icon = " ", color = "blue" },
             { pattern = "find", icon = " ", color = "green" },
             { pattern = "search", icon = " ", color = "green" },
             { pattern = "buffer", icon = " ", color = "purple" },
