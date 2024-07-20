@@ -16,7 +16,7 @@ local bootstrap = function()
   vim.opt.rtp:prepend(lazypath)
 end
 
-local init = function()
+local init_plugins = function()
   require("lazy").setup("remote", {
     defaults = { lazy = true },
     root = vim.fs.joinpath(vim.fn.stdpath "data", "lazy"),
@@ -75,6 +75,35 @@ local lazy_file = function()
   local Event = require "lazy.core.handler.event"
   Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFile", "BufWritePre" } }
   Event.mappings["User LazyFile"] = Event.mappings.LazyFile
+end
+
+local browse_remote = function()
+  local lines = require("lazy.manage.process").exec { "git", "remote", "-v" }
+  local remotes = {}
+  for _, line in ipairs(lines) do
+    local name, url = line:match "(%S+)%s+(%S+)%s+%(fetch%)"
+    if name and url then
+      if url:find "git@" == 1 then url = url:gsub("git@(%S+):", "https://%1/"):gsub(".git$", "") end
+      table.insert(remotes, { name = name, url = url })
+    end
+  end
+  local open = function(remote)
+    if remote then
+      print(("Opening [%s](%s)"):format(remote.name, remote.url))
+      vim.ui.open(remote.url)
+    end
+  end
+  if #remotes == 0 then
+    return print "No git remotes found"
+  elseif #remotes == 1 then
+    return open(remotes[1])
+  end
+  vim.ui.select(remotes, {
+    prompt = "Select remote to browse",
+    format_item = function(item)
+      return item.name .. (" "):rep(8 - #item.name) .. ds.pad(ds.icons.misc.Link, "both") .. item.url
+    end,
+  }, open)
 end
 
 M.initialized = false
@@ -165,39 +194,13 @@ M.setup = function()
   if not ds.setting_enabled "remote_plugins" then return end
   if M.initialized then return end
   M.initialized = true
+
   bootstrap()
   lazy_file()
-  init()
   M.lazy_notify()
-  local browse = function()
-    local lines = require("lazy.manage.process").exec { "git", "remote", "-v" }
-    local remotes = {}
-    for _, line in ipairs(lines) do
-      local name, url = line:match "(%S+)%s+(%S+)%s+%(fetch%)"
-      if name and url then
-        if url:find "git@" == 1 then url = url:gsub("git@(%S+):", "https://%1/"):gsub(".git$", "") end
-        table.insert(remotes, { name = name, url = url })
-      end
-    end
-    local open = function(remote)
-      if remote then
-        print(("Opening [%s](%s)"):format(remote.name, remote.url))
-        vim.ui.open(remote.url)
-      end
-    end
-    if #remotes == 0 then
-      return print "No git remotes found"
-    elseif #remotes == 1 then
-      return open(remotes[1])
-    end
-    vim.ui.select(remotes, {
-      prompt = "Select remote to browse",
-      format_item = function(item)
-        return item.name .. (" "):rep(8 - #item.name) .. ds.pad(ds.icons.misc.Link, "both") .. item.url
-      end,
-    }, open)
-  end
-  vim.keymap.set("n", "<localleader>gb", browse, { noremap = true, silent = true, desc = "git: browse remote" })
+  init_plugins()
+
+  vim.keymap.set("n", "<localleader>gb", browse_remote, { noremap = true, silent = true, desc = "git: browse remote" })
 end
 
 return M
