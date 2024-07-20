@@ -92,9 +92,9 @@ M.on_attach = function(client, bufnr)
         format_item = function(item) return "Code lens " .. item end,
       }, function(choice)
         if choice == "display" then
-          vim.lsp.codelens.display()
+          vim.lsp.codelens.display(vim.lsp.codelens.get(bufnr), bufnr, client.id)
         elseif choice == "refresh" then
-          vim.lsp.codelens.refresh()
+          vim.lsp.codelens.refresh { bufnr = bufnr }
         elseif choice == "run" then
           vim.lsp.codelens.run()
         end
@@ -108,14 +108,14 @@ M.on_attach = function(client, bufnr)
       once = true,
       buffer = bufnr,
       desc = "LSP: Code Lens refresh",
-      callback = require("vim.lsp.codelens").refresh,
+      callback = function(args) pcall(vim.lsp.codelens.refresh, { bufnr = args.buf }) end,
     })
 
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
       group = codelens,
       buffer = bufnr,
       desc = "LSP: Code Lens refresh",
-      callback = require("vim.lsp.codelens").refresh,
+      callback = function(args) pcall(vim.lsp.codelens.refresh, { bufnr = args.buf }) end,
     })
   end
 
