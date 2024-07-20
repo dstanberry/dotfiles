@@ -275,6 +275,7 @@ return {
           hl = type(hl) == "string" and { link = hl } or hl
           hl = vim.deepcopy(hl, true)
           hl.fg = hl.fg or vim.g.ds_colors.gray2
+          if hl.fg == hl.bg then hl.fg = nil end
           vim.api.nvim_set_hl(0, group, hl)
           hl_groups[group] = true
         end
@@ -284,27 +285,33 @@ return {
       local load_highlights = function(group)
         if cache[group] then return end
         cache[group] = {}
-        colors = vim.g.ds_colors
-        local highlights = require("theme").defaults(colors)
-        for k, v in pairs(highlights) do
+        local base = require("theme").defaults(vim.g.ds_colors)
+        for k, v in pairs(base) do
+          cache[group][k] = get_hl_group(v)
+        end
+        local custom = ds.hl.get_cached()
+        for k, v in pairs(custom) do
           cache[group][k] = get_hl_group(v)
         end
       end
 
-      local get_file = function(buf)
+      local get_config_file = function(buf)
         local fname = vim.api.nvim_buf_get_name(buf or 0)
         fname = vim.fs.normalize(fname)
-        if not fname:find "lua/theme" then return end
-        return vim.fn.fnamemodify(fname, ":t:r")
+        if not (fname:find "lua/theme" or fname:find "lua/remote") then return end
+        local base = vim.fs.basename(vim.fs.dirname(fname))
+        fname = base .. "_" .. vim.fn.fnamemodify(fname, ":t:r")
+        return fname
       end
 
       vim.api.nvim_create_autocmd("BufWritePost", {
-        group = ds.augroup "mini_hipatterns",
+        group = ds.augroup "mini_reload_colorscheme",
         pattern = "*/lua/theme/**.lua",
         callback = vim.schedule_wrap(function(ev)
-          vim.cmd.colorscheme(vim.g.colors_name)
+          local group = get_config_file(ev.buf) or ""
           hl_groups = {}
-          local group = get_file(ev.buf)
+          if not group:match "^theme" then return end
+          vim.cmd.colorscheme(vim.g.colors_name)
           if group then cache[group] = nil end
           for _, buf in ipairs(hi.get_enabled_buffers()) do
             hi.update(buf)
@@ -313,20 +320,21 @@ return {
       })
 
       opts.highlighters = opts.highlighters or {}
-      opts.highlighters.nvim_theme = {
+      opts.highlighters.nvim_hl_groups = {
         pattern = function(buf)
-          local f = get_file(buf)
+          local f = get_config_file(buf)
           if not f then return end
           load_highlights(f)
-          return f and '^%s*%[?"?()[%w_%.@]+()"?%]?%s*='
+          if f:match "^theme" then return f and '^%s*%[?"?()[%w_%.@]+()"?%]?%s*=' end
+          return f and 'ds%.hl%.new%("?()[%w_%.@]+()"?%)?%s*,'
         end,
         group = function(buf, match, _)
-          local name = get_file(buf)
+          local name = get_config_file(buf)
           return name and cache[name][match]
         end,
         extmark_opts = { priority = 2000 },
       }
-      opts.highlighters.nvim_theme_colors = {
+      opts.highlighters.nvim_hl_colors = {
         pattern = {
           "%f[%w]()c%.[%w_%.]+()%f[%W]",
           "%f[%w]()vim%.g%.ds_colors%.[%w_%.]+()%f[%W]",
@@ -350,7 +358,7 @@ return {
       local hex = hi.gen_highlighter.hex_color { priority = 2000, style = "inline", inline_text = vtext }
       opts.highlighters.hex_color = {
         pattern = function(buf)
-          local f = get_file(buf)
+          local f = get_config_file(buf)
           if not (f or vim.tbl_contains(filetypes, vim.bo[buf].ft)) then return end
           return hex.pattern()
         end,

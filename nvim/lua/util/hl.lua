@@ -1,6 +1,8 @@
 ---@class util.hl
 local M = {}
 
+local _cached_highlights = {}
+
 ---@type HighlightGroups
 local hi = setmetatable({}, {
   ---@param name string
@@ -10,13 +12,16 @@ local hi = setmetatable({}, {
 
 ---@param name string
 ---@param args? vim.api.keyset.highlight
-M.new = function(name, args) hi[name] = args end
+M.new = function(name, args)
+  hi[name] = args
+  _cached_highlights[name] = args
+end
 
 ---@param c ColorPalette
 ---@param fn fun(c:ColorPalette):HighlightGroups
 M.apply = function(c, fn)
   -- reapply previously defined highlight groups
-  for k, v in pairs(hi) do
+  for k, v in pairs(_cached_highlights) do
     vim.api.nvim_set_hl(0, k, v)
   end
   -- enforce styles for builtin highlight groups
@@ -45,5 +50,8 @@ M.apply = function(c, fn)
   -- highlighting for special characters
   vim.wo.winhighlight = "SpecialKey:SpecialKeyWin"
 end
+
+---@return HighlightGroups
+M.get_cached = function() return vim.deepcopy(_cached_highlights) end
 
 return M
