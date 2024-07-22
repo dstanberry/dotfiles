@@ -265,7 +265,7 @@ return {
       local tailwind_colors = require("ft.css.colors").tailwind
       local filetypes = { "css", "html", "javascript", "javascriptreact", "typescript", "typescriptreact" }
 
-      local colors ---@type ColorPalette
+      local colors ---@type util.theme_palette
       local cache = {} ---@type table<string,table<string,string>>
       local hl_groups = {} ---@type table<string,boolean>
 

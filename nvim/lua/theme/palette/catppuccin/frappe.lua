@@ -1,5 +1,5 @@
 -- stylua: ignore
----@type ColorPalette
+---@type util.theme_palette
 ---@diagnostic disable-next-line: missing-fields
 local c = {
   bg0      = "#232634", --crust

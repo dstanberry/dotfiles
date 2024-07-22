@@ -3,7 +3,7 @@ local M = {}
 
 local _cached_highlights = {}
 
----@type HighlightGroups
+---@type util.theme_hl
 local hi = setmetatable({}, {
   ---@param name string
   ---@param args? vim.api.keyset.highlight
@@ -17,8 +17,8 @@ M.new = function(name, args)
   _cached_highlights[name] = args
 end
 
----@param c ColorPalette
----@param fn fun(c:ColorPalette):HighlightGroups
+---@param c util.theme_palette
+---@param fn fun(c:util.theme_palette):util.theme_hl
 M.apply = function(c, fn)
   -- reapply previously defined highlight groups
   for k, v in pairs(_cached_highlights) do
@@ -51,7 +51,7 @@ M.apply = function(c, fn)
   vim.wo.winhighlight = "SpecialKey:SpecialKeyWin"
 end
 
----@return HighlightGroups
+---@return util.theme_hl
 M.get_cached = function() return vim.deepcopy(_cached_highlights) end
 
 return M
