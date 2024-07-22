@@ -25,7 +25,7 @@ M.breadcrumbs = {
       return #path > limit and "..." or path
     end
 
-    local format_sections = function(path, fname, ext)
+    local format_sections = function(path, fname)
       local parts = path and vim.split(path, "/") or {}
       table.insert(parts, fname)
       local segments = ds.reduce(parts, function(segments, v, k)
@@ -72,8 +72,7 @@ M.breadcrumbs = {
     local dirpath, filename = (filepath):match "^(.+)/(.+)$"
     local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
     local relative_path = vim.startswith(bufid, "diffview") and "" or get_relative_path(winid, dirpath)
-    local ext = vim.fs.basename(filename):match "[^.]+$"
-    return format_sections(relative_path, filename, ext)
+    return format_sections(relative_path, filename)
   end,
 }
 
