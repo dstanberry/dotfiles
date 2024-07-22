@@ -1,4 +1,3 @@
 corepack
-ls_emmet
 neovim
 yarn
