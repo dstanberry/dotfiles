@@ -45,25 +45,38 @@ return {
         ".prettierrc.toml",
       })[1] or ""
 
+      local function first(bufnr, ...)
+        local conform = require "conform"
+        for i = 1, select("#", ...) do
+          local formatter = select(i, ...)
+          if conform.get_formatter_info(formatter, bufnr).available then return formatter end
+        end
+        return select(1, ...)
+      end
+
       return {
         formatters_by_ft = {
           bash = { "shfmt" },
           cs = { "csharpier" },
           go = { "goimports", "gofumpt" },
-          html = { { "prettierd", "prettier" } },
-          javascript = { { "prettierd", "prettier" } },
-          json = { { "prettierd", "prettier" } },
-          jsonc = { { "prettierd", "prettier" } },
+          html = { "prettierd", "prettier", stop_after_first = true },
+          javascript = { "prettierd", "prettier", stop_after_first = true },
+          json = { "prettierd", "prettier", stop_after_first = true },
+          jsonc = { "prettierd", "prettier", stop_after_first = true },
           lua = { "stylua" },
-          markdown = { { "prettierd", "prettier" }, "markdownlint-cli2", "markdown-toc", "cbfmt" },
-          ["markdown.mdx"] = { { "prettierd", "prettier" }, "markdownlint-cli2", "markdown-toc", "cbfmt" },
-          psql = { { "sqlfluff", "sql_formatter" } },
+          markdown = function(bufnr)
+            return { first(bufnr, "prettierd", "prettier"), "markdownlint-cli2", "markdown-toc", "cbfmt" }
+          end,
+          ["markdown.mdx"] = function(bufnr)
+            return { first(bufnr, "prettierd", "prettier"), "markdownlint-cli2", "markdown-toc", "cbfmt" }
+          end,
+          psql = { "sqlfluff", "sql_formatter", stop_after_first = true },
           -- python = { "isort", "injected", "black" },
           python = { "isort", "black" },
           rust = { "rustfmt" },
           sh = { "shfmt" },
-          sql = { { "sqlfluff", "sql_formatter" } },
-          typescript = { { "prettierd", "prettier" } },
+          sql = { "sqlfluff", "sql_formatter", stop_after_first = true },
+          typescript = { "prettierd", "prettier", stop_after_first = true },
           yaml = { "yamlfmt" },
           zsh = { "shfmt" },
         },
