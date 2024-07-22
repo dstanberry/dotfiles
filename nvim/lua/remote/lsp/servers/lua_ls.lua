@@ -16,6 +16,9 @@ M.config = {
         disable = { "cast-local-type", "missing-parameter", "param-type-mismatch" },
         globals = { "ds" },
       },
+      doc = {
+        privateName = { "^_" },
+      },
       format = {
         enable = false,
       },

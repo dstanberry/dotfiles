@@ -49,9 +49,10 @@ end
 M.config = {
   cmd = get_cmd(vim.uv.cwd()),
   on_new_config = function(new_config, root_dir) new_config.cmd = get_cmd(root_dir) end,
-  on_attach = function(client)
+  on_attach = function(client, bufnr)
+    client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.renameProvider = false
-
+    require("remote.lsp.handlers").on_attach(client, bufnr)
     vim.api.nvim_create_user_command("NgTemplate", goto_template, {})
     vim.api.nvim_create_user_command("NgComponent", goto_component, {})
   end,

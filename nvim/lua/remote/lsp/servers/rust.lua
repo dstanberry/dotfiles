@@ -1,7 +1,18 @@
 local M = {}
 
 M.config = {
-  default_settings = { require("remote.lsp.servers.rust_analyzer").config.settings },
+  default_settings = {
+    ["rust-analyzer"] = {
+      assist = { importGranularity = "module", importPrefix = "by_self" },
+      cargo = { allFeatures = true, loadOutDirsFromCheck = true, buildScripts = { enable = true } },
+      checkOnSave = { enable = true, command = "clippy" },
+      experimental = { procAttrMacros = true },
+      hoverActions = { references = true },
+      inlayHints = { enable = true },
+      lens = { enable = true, methodReferences = true, references = true },
+      procMacro = { enable = true },
+    },
+  },
   server = {
     on_attach = function(_, bufnr)
       local _action = function() vim.cmd.RustLsp "codeAction" end
@@ -13,8 +24,8 @@ M.config = {
   },
 }
 
-M.setup = function(opts) vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {}) end
-
 M.defer_setup = true
+
+M.setup = function(opts) vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {}) end
 
 return M

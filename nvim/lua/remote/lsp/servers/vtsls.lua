@@ -1,7 +1,5 @@
 local M = {}
 
-local handlers = require "remote.lsp.handlers"
-
 local ts_settings = {
   updateImportsOnFileMove = { enabled = "always" },
   suggest = {
@@ -42,6 +40,8 @@ M.config = {
     javascript = ts_settings,
   },
   on_attach = function(client, bufnr)
+    local handlers = require "remote.lsp.handlers"
+
     handlers.on_attach(client, bufnr)
     client.commands["_typescript.moveToFileRefactoring"] = function(command, _)
       local action, uri, range = unpack(command.arguments)

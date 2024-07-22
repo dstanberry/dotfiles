@@ -43,7 +43,7 @@ return {
         ".prettierrc.mjs",
         ".prettierrc.cjs",
         ".prettierrc.toml",
-      })[1]
+      })[1] or ""
 
       return {
         formatters_by_ft = {
@@ -138,6 +138,7 @@ return {
       "omnisharp",
       "powershell-editor-services",
       "pyright",
+      "ruff",
       "rust-analyzer",
       "snyk-ls",
       "typescript-language-server",
