@@ -22,7 +22,7 @@ M.setup = function()
       request = "launch",
       program = function()
         return coroutine.create(function(_c)
-          local root = ds.buffer.get_root()
+          local root = ds.root.get()
           local targets = {}
           ds.walk(root, function(_path, _, type)
             if (type == "file" or type == "link") and _path:match "/target/debug/" then table.insert(targets, _path) end

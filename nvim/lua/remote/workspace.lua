@@ -245,7 +245,7 @@ return {
       ssh = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
     },
     keys = function()
-      local _open = function() require("oil").open(ds.buffer.get_root()) end
+      local _open = function() require("oil").open(ds.root.get()) end
       local _float = function() require("oil").toggle_float() end
       return {
         { "-", _open, desc = "oil: browse project" },
@@ -510,7 +510,7 @@ return {
                 buf = 0,
                 {
                   severity = vim.diagnostic.severity.WARN,
-                  function(item) return item.filename:find(ds.buffer.get_root(), 1, true) end,
+                  function(item) return item.filename:find(ds.root.get(), 1, true) end,
                 },
               },
             },

@@ -217,28 +217,6 @@ M.on_attach = function(client, bufnr)
   vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr, desc = "lsp: show line diagnostics" })
   vim.keymap.set("n", "gn", _next, { buffer = bufnr, desc = "lsp: next diagnostic" })
   vim.keymap.set("n", "gp", _previous, { buffer = bufnr, desc = "lsp: previous diagnostic" })
-
-  vim.api.nvim_buf_create_user_command(bufnr, "Workspace", function(opts)
-    local cmd = unpack(opts.fargs)
-    if cmd == "list" then
-      ds.info(vim.lsp.buf.list_workspace_folders(), { title = "LSP Workspace(s)" })
-    elseif cmd == "add" then
-      vim.lsp.buf.add_workspace_folder()
-    elseif cmd == "remove" then
-      vim.lsp.buf.remove_workspace_folder()
-    else
-      ds.error(("Invalid workspace operation: '%s'"):format(cmd), { title = "LSP" })
-    end
-  end, {
-    nargs = "*",
-    complete = function(_, line)
-      local l = vim.split(line, "%s+")
-      local n = #l - 2
-      if n == 0 then
-        return vim.tbl_filter(function(val) return vim.startswith(val, l[2]) end, { "list", "add", "remove" })
-      end
-    end,
-  })
 end
 
 M.run_code_action = setmetatable({}, {

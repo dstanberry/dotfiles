@@ -35,7 +35,15 @@ return {
       })
     end,
     opts = function()
-      local prettier_conf = ("%s/.prettierrc.json"):format(ds.buffer.get_root())
+      local prettier_conf = ds.root.detectors.pattern(0, {
+        ".prettierrc",
+        ".prettierrc.json",
+        ".prettierrc.yaml",
+        ".prettierrc.js",
+        ".prettierrc.mjs",
+        ".prettierrc.cjs",
+        ".prettierrc.toml",
+      })[1]
 
       return {
         formatters_by_ft = {

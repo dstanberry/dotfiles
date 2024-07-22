@@ -16,7 +16,7 @@ M.setup = function()
       request = "launch",
       program = function()
         return coroutine.create(function(_c)
-          local root = ds.buffer.get_root()
+          local root = ds.root.get()
           local dlls = {}
           ds.walk(root, function(path, name, type)
             if

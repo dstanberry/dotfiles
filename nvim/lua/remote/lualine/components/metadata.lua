@@ -89,7 +89,7 @@ M.indentation = {
 M.root_dir = {
   get = function()
     local cwd = vim.uv.cwd()
-    local root = ds.buffer.get_root()
+    local root = ds.root.get()
     local name = vim.fs.basename(root)
     local result = ds.pad(ds.icons.documents.MultipleFolders, "right", 2) .. name
     if root == cwd then

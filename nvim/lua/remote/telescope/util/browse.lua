@@ -3,7 +3,7 @@ local M = {}
 
 function M.project()
   require("telescope").extensions.file_browser.file_browser {
-    path = ds.buffer.get_root(),
+    path = ds.root.get(),
     prompt_title = "File Browser",
   }
 end

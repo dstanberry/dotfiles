@@ -28,14 +28,13 @@ function M.foldexpr()
 end
 
 ---Returns a list of regular and extmark signs sorted by priority (low to high)
----@alias Sign {name:string, text:string, texthl:string, priority:number}
----@return Sign[]
+---@alias util.sign {name:string, text:string, texthl:string, priority:number}
+---@return util.sign[]
 ---@param buf number
 ---@param lnum number
 function M.get_signs(buf, lnum)
   -- regular signs
-  ---@type Sign[]
-  local signs = {}
+  local signs = {} ---@type util.sign[]
   -- extmark signs
   local extmarks = vim.api.nvim_buf_get_extmarks(
     buf,
@@ -56,7 +55,7 @@ function M.get_signs(buf, lnum)
   return signs
 end
 
----@param sign? Sign
+---@param sign? util.sign
 ---@param len? number
 local get_icon = function(sign, len)
   sign = sign or {}
@@ -66,7 +65,7 @@ local get_icon = function(sign, len)
   return sign.texthl and ("%#" .. sign.texthl .. "#" .. text .. "%*") or text
 end
 
----@return Sign?
+---@return util.sign?
 ---@param buf number
 ---@param lnum number
 local get_mark = function(buf, lnum)
@@ -88,7 +87,7 @@ function M.statuscolumn()
   local components = { "", "", "" } -- left, middle, right
   if show_signs then
     local signs = M.get_signs(buf, vim.v.lnum)
-    ---@type Sign?,Sign?,Sign?
+    ---@type util.sign?,util.sign?,util.sign?
     local left, right, fold, githl
     for _, s in ipairs(signs) do
       -- NOTE: gitsigns.nvim

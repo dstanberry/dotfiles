@@ -7,6 +7,7 @@
 ---@field hl util.hl
 ---@field icons util.icons
 ---@field plugin util.plugin
+---@field root util.root
 ---@field ui util.ui
 local M = {}
 
@@ -199,6 +200,7 @@ function M.notify(msg, opts)
   opts.level = opts.level or vim.log.levels.INFO
   opts.location = opts.location or M.get_location()
   opts.title = opts.title or ("Debug: " .. opts.location)
+  opts.lang = opts.lang or "lua"
   if vim.in_fast_event() then return vim.schedule(function() M.notify(msg, opts) end) end
   opts.location = vim.fn.fnamemodify(opts.location, ":~:.")
   if type(msg) == "table" and opts.merge then
@@ -211,13 +213,20 @@ function M.notify(msg, opts)
   end
   if not opts.merge then msg = vim.inspect(msg) end
   vim.notify(msg, tonumber(opts.level), {
+    title = opts.title,
     on_open = function(win)
       vim.wo[win].conceallevel = 3
       vim.wo[win].concealcursor = ""
       vim.wo[win].cursorline = false
       vim.wo[win].spell = false
+
       local buf = vim.api.nvim_win_get_buf(win)
-      if not pcall(vim.treesitter.start, buf, "lua") then vim.bo[buf].filetype = "lua" end
+      local ok = pcall(function() vim.treesitter.language.add "markdown" end)
+      if not ok then pcall(require, "nvim-treesitter") end
+      if not pcall(vim.treesitter.start, buf, opts.lang) then
+        vim.bo[buf].filetype = opts.lang
+        vim.bo[buf].syntax = opts.lang
+      end
     end,
   })
 end
@@ -336,7 +345,7 @@ end
 ---Recursive filesystem walker that traverses `path` and
 ---applies a provided function `fn` to each file or directory it encounters
 ---@param path string
----@param fn fun(path: string, name:string, type:FileType)
+---@param fn fun(path: string, name:string, type:util.fileType)
 function M.walk(path, fn)
   M.walker(path, function(child, name, type)
     if type == "directory" then M.walk(child, fn) end
@@ -345,11 +354,11 @@ function M.walk(path, fn)
 end
 
 ---@diagnostic disable-next-line: duplicate-doc-alias
----@alias FileType "file"|"directory"|"link"
+---@alias util.fileType "file"|"directory"|"link"
 ---Filesystem walker that iterates over each file or directory in a given `path`,
 ---applying the function `fn` to each, and stops if `fn` returns `false`.
 ---@param path string
----@param fn fun(path: string, name:string, type:FileType):boolean?
+---@param fn fun(path: string, name:string, type:util.fileType):boolean?
 function M.walker(path, fn)
   if not vim.uv.fs_stat(path) then
     local rtpaths = vim.api.nvim_list_runtime_paths()
