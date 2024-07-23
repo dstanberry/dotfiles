@@ -6,7 +6,15 @@ return {
   { "b0o/schemastore.nvim", lazy = true, version = false },
   {
     "mickael-menu/zk-nvim",
-    lazy = true,
+    dependencies = { "neovim/nvim-lspconfig" },
+    keys = function()
+      local md_keymaps = require "ft.markdown.keymaps"
+      local ret = {}
+      for k, v in pairs(md_keymaps) do
+        table.insert(ret, { k, v[1], desc = v[2], mode = v[3] or "n" })
+      end
+      return ret
+    end,
     opts = {
       name = "zk",
       root_dir = vim.env.ZK_NOTEBOOK_DIR,
@@ -44,14 +52,6 @@ return {
         opts = { local_settings = ".nvim.json", global_settings = "nvim.json" },
       },
     },
-    keys = function()
-      local md_keymaps = require "ft.markdown.keymaps"
-      local ret = {}
-      for k, v in pairs(md_keymaps) do
-        table.insert(ret, { k, v[1], desc = v[2], mode = v[3] or "n" })
-      end
-      return ret
-    end,
     config = function()
       local lspconfig = require "lspconfig"
       local configs = require "lspconfig.configs"
