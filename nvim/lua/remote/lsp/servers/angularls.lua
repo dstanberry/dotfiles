@@ -1,60 +1,53 @@
 local M = {}
 
-local node_modules = function(dirs)
-  return ds.map(dirs, function(dir) return table.concat({ dir, "node_modules" }, "/") end)
-end
-
-local get_cmd = function(workspace_dir)
+local get_cmd = function(project_modules)
   local angularls_path = ds.plugin.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server")
   return {
     vim.fn.exepath "ngserver",
     "--stdio",
     "--tsProbeLocations",
-    table.concat(node_modules { angularls_path, workspace_dir }, ","),
+    table.concat({
+      vim.fs.joinpath(angularls_path, "node_modules", "@angular", "language-service", "node_modules"),
+      project_modules,
+    }, ","),
     "--ngProbeLocations",
-    table.concat(
-      node_modules {
-        table.concat({ angularls_path, "node_modules", "@angular", "language-service" }, "/"),
-        workspace_dir,
-      },
-      ","
-    ),
+    table.concat({
+      vim.fs.joinpath(angularls_path, "node_modules", "@angular", "language-service", "node_modules"),
+      project_modules,
+    }, ","),
   }
 end
 
-local goto_template = function()
+local goto_template_or_component = function(bufnr)
   local params = vim.lsp.util.make_position_params(0)
-  vim.lsp.buf_request(0, "angular/getTemplateLocationForComponent", params, function(_, result)
+  vim.lsp.buf_request(bufnr, "angular/getTemplateLocationForComponent", params, function(_, result)
     if result then vim.lsp.util.jump_to_location(result, "utf-8") end
   end)
-end
-
-local goto_component = function()
-  local params = vim.lsp.util.make_position_params(0)
-  vim.lsp.buf_request(0, "angular/getComponentsWithTemplateFile", params, function(_, result)
+  vim.lsp.buf_request(bufnr, "angular/getComponentsWithTemplateFile", params, function(_, result)
     if result then
       if #result == 1 then
         vim.lsp.util.jump_to_location(result[1], "utf-8")
       else
         vim.fn.setqflist({}, " ", {
-          title = "Angular Component Files",
+          title = "Components",
           items = vim.lsp.util.locations_to_items(result, "utf-8"),
         })
-        vim.cmd.copen()
       end
     end
   end)
 end
 
 M.config = {
-  cmd = get_cmd(vim.uv.cwd()),
-  on_new_config = function(new_config, root_dir) new_config.cmd = get_cmd(root_dir) end,
+  on_new_config = function(new_config)
+    local root_dir = ds.root.detectors.pattern(0, { "node_modules" })[1] or vim.uv.cwd()
+    local node_modules = vim.fs.joinpath(root_dir, "node_modules")
+    new_config.cmd = get_cmd(node_modules)
+  end,
   on_attach = function(client, bufnr)
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.renameProvider = false
     require("remote.lsp.handlers").on_attach(client, bufnr)
-    vim.api.nvim_create_user_command("NgTemplate", goto_template, {})
-    vim.api.nvim_create_user_command("NgComponent", goto_component, {})
+    vim.keymap.set("n", "go", function() goto_template_or_component(bufnr) end)
   end,
 }
 

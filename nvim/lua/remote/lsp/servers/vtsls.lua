@@ -26,18 +26,18 @@ M.config = {
           enableServerSideFuzzyMatch = true,
         },
       },
-    },
-    tsserver = {
-      globalPlugins = {
-        {
-          name = "@angular/language-server",
-          location = ds.plugin.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server"),
-          enableForWorkspaceTypeScriptVersions = true,
+      tsserver = {
+        globalPlugins = {
+          {
+            name = "@angular/language-server",
+            location = ds.plugin.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server"),
+            enableForWorkspaceTypeScriptVersions = true,
+          },
         },
       },
     },
-    typescript = ts_settings,
     javascript = ts_settings,
+    typescript = ts_settings,
   },
   on_attach = function(client, bufnr)
     local handlers = require "remote.lsp.handlers"
