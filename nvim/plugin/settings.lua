@@ -1,23 +1,6 @@
 local cache = vim.fn.stdpath "cache"
 local data = vim.fn.stdpath "data"
 
-if ds.has "wsl" then
-  -- NOTE: May require `Beta: Use Unicode UTF-8 for global language support`
-  -- https://github.com/microsoft/WSL/issues/4852
-  vim.g.clipboard = { -- use win32 native clipboard tool on WSL
-    name = "WslClipboard",
-    copy = {
-      ["+"] = "clip.exe",
-      ["*"] = "clip.exe",
-    },
-    paste = {
-      ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-      ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-    },
-    cache_enabled = 0,
-  }
-end
-
 vim.o.autoread = true -- update file content if it has been modified on disk
 vim.o.autoindent = true -- auto-indent new line
 vim.o.backup = true -- maintain file backup across sessions
@@ -25,7 +8,7 @@ vim.o.backupdir = cache .. "/backup//,." -- define location for backup files
 vim.o.backspace = "indent,eol,start" -- allow <backspace> to cross line boundaries
 vim.o.belloff = "all" -- disable the system bell
 vim.o.breakindentopt = "shift:2" -- emphasis on wrapped lines
-vim.o.clipboard = "unnamedplus" -- setup clipboard
+vim.o.clipboard = "" -- DON'T DEFINE CLIPBOARD HERE DUE TO STARTUP PENALTY!
 vim.o.cmdheight = 1 -- define line-height for command-line
 vim.o.cursorline = true -- highlight current line
 vim.o.directory = cache .. "/swap//,." -- define location for swap files

@@ -197,6 +197,31 @@ M.setup = function()
 
   bootstrap()
   lazy_file()
+
+  vim.api.nvim_create_autocmd("User", {
+    group = ds.augroup "lazy_clipboard",
+    pattern = "VeryLazy",
+    callback = function()
+      vim.o.clipboard = "unnamedplus"
+      if ds.has "wsl" then
+        -- NOTE: May require `Beta: Use Unicode UTF-8 for global language support`
+        -- https://github.com/microsoft/WSL/issues/4852
+        vim.g.clipboard = { -- use win32 native clipboard tool on WSL
+          name = "WslClipboard",
+          copy = {
+            ["+"] = "clip.exe",
+            ["*"] = "clip.exe",
+          },
+          paste = {
+            ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+            ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+          },
+          cache_enabled = 0,
+        }
+      end
+    end,
+  })
+
   M.lazy_notify()
   init_plugins()
 
