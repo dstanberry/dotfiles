@@ -76,6 +76,9 @@ return {
           rust = { "rustfmt" },
           sh = { "shfmt" },
           sql = { "sqlfluff", "sql_formatter", stop_after_first = true },
+          terraform = { "terraform_fmt" },
+          ["terraform-vars"] = { "terraform_fmt" },
+          tf = { "terraform_fmt" },
           typescript = { "prettierd", "prettier", stop_after_first = true },
           yaml = { "yamlfmt" },
           zsh = { "shfmt" },
@@ -154,6 +157,7 @@ return {
       "ruff",
       "rust-analyzer",
       "snyk-ls",
+      "terraform-ls",
       "typescript-language-server",
       "vtsls",
       "yaml-language-server",
@@ -170,6 +174,7 @@ return {
       "shellcheck",
       "snyk",
       "sqlfluff",
+      "tflint",
       "vale",
       -- formatters
       "beautysh",
@@ -352,6 +357,8 @@ return {
         python = { "flake8" },
         sh = { "shellcheck" },
         sql = { "sqlfluff" },
+        terraform = { "terraform_validate" },
+        tf = { "terraform_validate" },
       },
       linters = {
         sqlfluff = {

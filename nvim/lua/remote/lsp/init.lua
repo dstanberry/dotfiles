@@ -62,6 +62,7 @@ return {
         cmake = {},
         cssls = {},
         html = { init_options = { provideFormatter = false } },
+        terraformls = {},
       }
       local default_opts = {
         capabilities = handlers.get_client_capabilities(),
