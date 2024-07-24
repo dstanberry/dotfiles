@@ -135,12 +135,12 @@ return {
   },
   {
     "windwp/nvim-ts-autotag",
-    event = { "LazyFile", "VeryLazy" },
+    event = "LazyFile",
     opts = {},
   },
   {
     "HiPhish/rainbow-delimiters.nvim",
-    event = { "LazyFile", "VeryLazy" },
+    event = "LazyFile",
     init = function()
       local CYAN = "#73c1b9"
       local CYAN_LIGHT = "#80d3dd"

@@ -167,41 +167,26 @@ return {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
     keys = function()
-      local has_telescope, telescope = pcall(require, "telescope.pickers")
-      local telescope_picker
-      if has_telescope then
-        telescope_picker = function(files)
-          local file_paths = {}
-          for _, item in ipairs(files.items) do
-            table.insert(file_paths, item.value)
-          end
-          telescope
-            .new(require("telescope.themes").get_ivy {}, {
-              prompt_title = "Harpoon (marks)",
-              finder = require("telescope.finders").new_table { results = file_paths },
-              previewer = require("telescope.config").values.file_previewer {},
-              sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
-              layout_config = { height = 30, prompt_position = "top" },
-            })
-            :find()
+      local telescope_picker = function(files)
+        local file_paths = {}
+        for _, item in ipairs(files.items) do
+          table.insert(file_paths, item.value)
         end
+        require("telescope")
+          .new(require("telescope.themes").get_ivy {}, {
+            prompt_title = "Harpoon (marks)",
+            finder = require("telescope.finders").new_table { results = file_paths },
+            previewer = require("telescope.config").values.file_previewer {},
+            sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
+            layout_config = { height = 30, prompt_position = "top" },
+          })
+          :find()
       end
 
       local keys = {
         { "<leader>h", desc = "+harpoon" },
         { "<leader>ha", function() require("harpoon"):list():add() end, desc = "harpoon: mark file" },
-        {
-          "<leader>hf",
-          function()
-            local harpoon = require "harpoon"
-            if has_telescope then
-              telescope_picker(harpoon:list())
-            else
-              harpoon.ui:toggle_quick_menu(harpoon:list())
-            end
-          end,
-          desc = "harpoon: find marks",
-        },
+        { "<leader>hf", function() telescope_picker(require("harpoon"):list()) end, desc = "harpoon: find marks" },
       }
 
       for i = 1, 5 do
@@ -306,6 +291,80 @@ return {
   {
     "akinsho/toggleterm.nvim",
     cmd = "ToggleTerm",
+    keys = function()
+      local toggle_float, toggle_tab, toggle_lazygit
+
+      local _float = function()
+        toggle_float = toggle_float
+          or require("toggleterm.terminal").Terminal:new {
+            direction = "float",
+            on_open = function(term)
+              vim.wo.sidescrolloff = 0
+              vim.keymap.set(
+                { "i", "n", "t" },
+                "<a-w><a-f>",
+                function() toggle_float:toggle() end,
+                { buffer = term.bufnr, desc = "toggleterm: toggle float" }
+              )
+            end,
+          }
+        toggle_float:toggle()
+      end
+
+      local _tab = function()
+        toggle_tab = toggle_tab
+          or require("toggleterm.terminal").Terminal:new {
+            direction = "tab",
+            on_open = function(term)
+              vim.keymap.set(
+                { "i", "n", "t" },
+                "<a-w><a-t>",
+                function() toggle_tab:toggle() end,
+                { buffer = term.bufnr, desc = "toggleterm: toggle tab" }
+              )
+            end,
+          }
+        toggle_tab:toggle()
+      end
+
+      local _lazygit = function(git_args)
+        toggle_lazygit = toggle_lazygit
+          or require("toggleterm.terminal").Terminal:new {
+            cmd = git_args and ("lazygit %s"):format(table.concat(git_args, " ")) or "lazygit",
+            dir = "git_dir",
+            hidden = true,
+            direction = "tab",
+            on_open = function(term)
+              vim.wo.sidescrolloff = 0
+              vim.keymap.set("t", "<esc>", "<esc>", { buffer = term.bufnr })
+              vim.keymap.set("t", "<esc><esc>", "<esc>", { buffer = term.bufnr })
+              vim.keymap.set("t", "<c-h>", "<c-h>", { buffer = term.bufnr })
+              vim.keymap.set("t", "<c-j>", "<c-j>", { buffer = term.bufnr })
+              vim.keymap.set("t", "<c-k>", "<c-k>", { buffer = term.bufnr })
+              vim.keymap.set("t", "<c-l>", "<c-l>", { buffer = term.bufnr })
+              vim.keymap.set(
+                { "i", "n", "t" },
+                "<a-w><a-g>",
+                function() toggle_lazygit:toggle() end,
+                { buffer = term.bufnr, desc = "toggleterm: toggle lazygit" }
+              )
+            end,
+          }
+        toggle_lazygit:toggle()
+      end
+
+      return {
+        { "<a-w><a-f>", _float, desc = "toggleterm: toggle float" },
+        { "<a-w><a-t>", _tab, desc = "toggleterm: toggle tab" },
+        { "<a-w><a-g>", _lazygit, desc = "toggleterm: toggle lazygit" },
+        -- lazygit extras
+        {
+          "<leader>gl",
+          function() _lazygit { "-f", vim.trim(vim.api.nvim_buf_get_name(0)) } end,
+          desc = "git: show log for current file",
+        },
+      }
+    end,
     opts = {
       direction = "float",
       size = function(term)
@@ -336,76 +395,6 @@ return {
       close_on_exit = true,
       shell = ds.has "win32" and "pwsh -NoLogo" or vim.o.shell,
     },
-    keys = function()
-      local terminal = function() return require("toggleterm.terminal").Terminal end
-      local float, tab, lazygit
-      float = terminal():new {
-        direction = "float",
-        on_open = function(term)
-          vim.wo.sidescrolloff = 0
-          vim.keymap.set(
-            { "i", "n", "t" },
-            "<a-w><a-f>",
-            function() float:toggle() end,
-            { buffer = term.bufnr, desc = "toggleterm: toggle float" }
-          )
-        end,
-      }
-      tab = terminal():new {
-        direction = "tab",
-        on_open = function(term)
-          vim.keymap.set(
-            { "i", "n", "t" },
-            "<a-w><a-t>",
-            function() tab:toggle() end,
-            { buffer = term.bufnr, desc = "toggleterm: toggle tab" }
-          )
-        end,
-      }
-      lazygit = terminal():new {
-        cmd = "lazygit",
-        dir = "git_dir",
-        hidden = true,
-        direction = "tab",
-        on_open = function(term)
-          vim.wo.sidescrolloff = 0
-          vim.keymap.set("t", "<esc>", "<esc>", { buffer = term.bufnr })
-          vim.keymap.set("t", "<esc><esc>", "<esc>", { buffer = term.bufnr })
-          vim.keymap.set("t", "<c-h>", "<c-h>", { buffer = term.bufnr })
-          vim.keymap.set("t", "<c-j>", "<c-j>", { buffer = term.bufnr })
-          vim.keymap.set("t", "<c-k>", "<c-k>", { buffer = term.bufnr })
-          vim.keymap.set("t", "<c-l>", "<c-l>", { buffer = term.bufnr })
-          vim.keymap.set(
-            { "i", "n", "t" },
-            "<a-w><a-g>",
-            function() lazygit:toggle() end,
-            { buffer = term.bufnr, desc = "toggleterm: toggle lazygit" }
-          )
-        end,
-      }
-      local lazygit_with_args = function(git_args)
-        terminal()
-          :new({
-            cmd = git_args and ("lazygit %s"):format(table.concat(git_args, " ")) or "lazygit",
-            dir = "git_dir",
-            hidden = true,
-            direction = "tab",
-            on_open = function() vim.wo.sidescrolloff = 0 end,
-          })
-          :open()
-      end
-      return {
-        { "<a-w><a-f>", function() float:toggle() end, desc = "toggleterm: toggle float" },
-        { "<a-w><a-t>", function() tab:toggle() end, desc = "toggleterm: toggle tab" },
-        { "<a-w><a-g>", function() lazygit:toggle() end, desc = "toggleterm: toggle lazygit" },
-        -- lazygit extras
-        {
-          "<leader>gl",
-          function() lazygit_with_args { "-f", vim.trim(vim.api.nvim_buf_get_name(0)) } end,
-          desc = "git: show log for current file",
-        },
-      }
-    end,
   },
   {
     "folke/trouble.nvim",

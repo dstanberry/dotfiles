@@ -1,12 +1,49 @@
 return {
+  { "nvim-telescope/telescope-live-grep-args.nvim", lazy = true },
+  { "nvim-telescope/telescope-symbols.nvim", lazy = true },
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    lazy = true,
+    config = function() require("telescope").load_extension "file_browser" end,
+  },
+  {
+    "nvim-telescope/telescope-ui-select.nvim",
+    lazy = true,
+    config = function() require("telescope").load_extension "ui-select" end,
+  },
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
-      "nvim-telescope/telescope-file-browser.nvim",
-      "nvim-telescope/telescope-live-grep-args.nvim",
-      "nvim-telescope/telescope-symbols.nvim",
-      "nvim-telescope/telescope-ui-select.nvim",
-      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        lazy = true,
+        build = vim.fn.executable "make" == 1 and "make"
+          or "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+        enabled = vim.fn.executable "make" == 1 or vim.fn.executable "cmake" == 1,
+        config = function(plugin)
+          ds.plugin.on_load("telescope.nvim", function()
+            local ok, res = pcall(require("telescope").load_extension, "fzf")
+            if not ok then
+              local lib = vim.fs.joinpath(plugin.dir, "build", "libfzf." .. ds.has "win32" and "dll" or "so")
+              if not vim.uv.fs_stat(lib) then
+                require("lazy").build({ plugins = { plugin }, show = false }):wait(
+                  function()
+                    ds.info(
+                      "Rebuilding `telescope-fzf-native.nvim` done.\nPlease restart Neovim.",
+                      { title = "telescope.nvim", lang = "markdown", merge = true }
+                    )
+                  end
+                )
+              else
+                ds.error(
+                  "Failed to load `telescope-fzf-native.nvim`:\n" .. res,
+                  { title = "telescope.nvim", lang = "markdown", merge = true }
+                )
+              end
+            end
+          end)
+        end,
+      },
     },
     cmd = "Telescope",
     keys = function()
@@ -58,15 +95,14 @@ return {
       ds.hl.new("TelescopeSelection", { bg = BLUE, bold = true })
       ds.hl.new("TelescopeSelectionCaret", { fg = vim.g.ds_colors.fg0, bg = BLUE, bold = true })
     end,
-    config = function()
-      local telescope = require "telescope"
+    opts = function()
       local util = require "remote.telescope.util"
       local actions = require "telescope.actions"
       local layout = require "telescope.actions.layout"
       local themes = require "telescope.themes"
       local lga_actions = require "telescope-live-grep-args.actions"
 
-      telescope.setup {
+      return {
         defaults = {
           set_env = { LESS = "", DELTA_PAGER = "less" },
           prompt_prefix = ds.pad(ds.icons.misc.Prompt, "right"),
@@ -256,9 +292,6 @@ return {
           },
         },
       }
-      telescope.load_extension "file_browser"
-      telescope.load_extension "fzf"
-      telescope.load_extension "ui-select"
     end,
   },
 }
