@@ -84,9 +84,18 @@ end
 ---@param bufnr integer
 M.on_attach = function(client, bufnr)
   if client.server_capabilities.codeActionProvider then
-    local _action = function() vim.lsp.buf.code_action { context = { only = { "source" }, diagnostics = {} } } end
     vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr, desc = "lsp: code action" })
-    vim.keymap.set("n", "gA", _action, { buffer = bufnr, desc = "lsp: source action" })
+
+    vim.api.nvim_create_autocmd("CursorHold", {
+      group = ds.augroup "lsp_codeaction",
+      callback = function()
+        local params = vim.lsp.util.make_range_params()
+        params.context = { diagnostics = vim.lsp.diagnostic.get_line_diagnostics() }
+        vim.lsp.buf_request(bufnr, "textDocument/codeAction", params, function(_, result, _, _)
+          if result and result[1] then ds.info("Code actions available", { title = "LSP" }) end
+        end)
+      end,
+    })
   end
 
   if client.server_capabilities.codeLensProvider then

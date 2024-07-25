@@ -241,7 +241,6 @@ return {
       ds.hl.new("NoiceFormatProgressDone", { bg = vim.g.ds_colors.blue0 })
       ds.hl.new("NoiceFormatEvent", { link = "Comment" })
       ds.hl.new("NoiceFormatKind", { link = "Comment" })
-      vim.g.lua_show_progress = true
     end,
     opts = {
       cmdline = {
@@ -308,16 +307,6 @@ return {
               { event = "msg_show", find = "search hit" },
               { event = "msg_show", find = "written" },
               { event = "msg_show", kind = "search_count" },
-              {
-                event = "lsp",
-                kind = "progress",
-                cond = function(msg)
-                  local client = vim.tbl_get(msg.opts, "progress", "client")
-                  local skipped = not vim.g.lua_show_progress and vim.tbl_contains({ "lua_ls" }, client)
-                  vim.defer_fn(function() vim.g.lua_show_progress = false end, 10000)
-                  return skipped
-                end,
-              },
             },
           },
         },
@@ -337,6 +326,7 @@ return {
             any = {
               { event = "msg_show", find = "^E486:" },
               { event = "msg_show", find = "^Hunk %d+ of %d" },
+              { event = "notify", find = "Code actions available" },
             },
           },
         },
