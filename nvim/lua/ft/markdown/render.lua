@@ -10,7 +10,7 @@ local M = {}
 ---@param capture_text string
 ---@param range tsRange
 M.checkbox_checked = function(bufnr, ns, capture_node, capture_text, range)
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {
     end_col = range.col_start + #capture_text,
     virt_text = { { ds.pad(ds.icons.markdown.Checked, "right", 2), "@markup.list.checked" } },
     virt_text_pos = "overlay",
@@ -23,7 +23,7 @@ end
 ---@param capture_text string
 ---@param range tsRange
 M.checkbox_unchecked = function(bufnr, ns, capture_node, capture_text, range)
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {
     end_col = range.col_start + #capture_text,
     virt_text = { { ds.pad(ds.icons.markdown.Unchecked, "right", 2), "@markup.list.unchecked" } },
     virt_text_pos = "overlay",
@@ -46,12 +46,12 @@ end
 ---@param range tsRange
 M.code_span = function(bufnr, ns, capture_node, capture_text, range)
   capture_text = string.gsub(capture_text, "`", "")
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start + 1, {
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start + 1, {
     virt_text = { { " ", "@markup.raw.markdown_inline" } },
     virt_text_pos = "inline",
   })
   vim.api.nvim_buf_add_highlight(0, ns, "@markup.raw.markdown_inline", range.row_start, range.col_start, range.col_end)
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_end - 1, {
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_end - 1, {
     virt_text = { { " ", "@markup.raw.markdown_inline" } },
     virt_text_pos = "inline",
   })
@@ -74,12 +74,12 @@ M.codeblock = function(bufnr, ns, capture_node, capture_text, range)
   end
   max_width = math.max(max_width, 78)
 
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {
     virt_text = { { string.rep(" ", max_width + 2), "@markup.codeblock" } },
     virt_text_pos = "inline",
     hl_mode = "combine",
   })
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start, {
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end - 1, range.col_start, {
     virt_text = { { string.rep(" ", max_width + 2), "@markup.codeblock" } },
     virt_text_pos = "inline",
     hl_mode = "combine",
@@ -91,11 +91,11 @@ M.codeblock = function(bufnr, ns, capture_node, capture_text, range)
     local col = line_width < 0 and range.col_start + line_width or range.col_start
 
     vim.api.nvim_buf_add_highlight(0, ns, "@markup.codeblock", range.row_start + i, range.col_start, -1)
-    vim.api.nvim_buf_set_extmark(0, ns, range.row_start + i, col, {
+    vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + i, col, {
       virt_text = { { string.rep(" ", 1), "@markup.codeblock" } },
       virt_text_pos = "inline",
     })
-    vim.api.nvim_buf_set_extmark(0, ns, range.row_start + i, position, {
+    vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + i, position, {
       virt_text = { { string.rep(" ", max_width - line_width - overflow), "@markup.codeblock" } },
       virt_text_pos = "inline",
     })
@@ -120,7 +120,7 @@ M.dash = function(bufnr, ns, capture_node, capture_text, range)
       table.insert(content, { part.text, "@markup.dash" })
     end
   end
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {
     end_col = #capture_text,
     virt_text = content,
     virt_text_pos = "overlay",
@@ -136,13 +136,13 @@ M.frontmatter = function(bufnr, ns, capture_node, capture_text, range)
   local parts = vim.split(capture_text, "\n")
   if #parts >= 2 then
     local top, bottom = parts[1], parts[#parts]
-    vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
+    vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {
       end_col = #top,
       virt_text = { { top, "@comment" } },
       virt_text_pos = "overlay",
       hl_group = "@comment",
     })
-    vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start, {
+    vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end - 1, range.col_start, {
       end_col = #bottom,
       virt_text = { { bottom, "@comment" } },
       virt_text_pos = "overlay",
@@ -169,13 +169,13 @@ M.heading = function(bufnr, ns, capture_node, capture_text, range)
   local current_heading = headings[#capture_text]
   local current_highlight = highlight_groups[#capture_text] or highlight_groups[#highlight_groups]
 
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {
     end_col = #capture_text,
     virt_text = { { current_heading, current_highlight } },
     virt_text_pos = "overlay",
     hl_group = current_highlight,
   })
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start + 1, range.col_start, {
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + 1, range.col_start, {
     virt_text = { { string.rep(ds.icons.border.CompactRound[2], 80), current_highlight } },
     virt_text_pos = "inline",
   })
@@ -187,7 +187,7 @@ end
 ---@param capture_text string
 ---@param range tsRange
 M.list_marker_minus = function(bufnr, ns, capture_node, capture_text, range)
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {
     end_col = range.col_start + #capture_text,
     virt_text = { { ds.icons.markdown.ListMinus, "@markup.list" } },
     virt_text_pos = "overlay",
@@ -212,16 +212,16 @@ M.md_link = function(bufnr, ns, capture_node, capture_text, range)
     ["shortcut_link"] = ds.pad(ds.icons.misc.Link, "right"),
   }
 
-  vim.api.nvim_buf_set_extmark(0, ns, range.row_start, is_email and range.col_start or range.col_start + 1, {
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, is_email and range.col_start or range.col_start + 1, {
     end_col = is_email and range.col_start + 1 or range.col_start,
-    virt_text = { { icons[type] or "", "@markup.link.url" } },
+    virt_text = { { icons[type] or "", "@markup.link" } },
     virt_text_pos = "inline",
     conceal = "",
   })
-  vim.api.nvim_buf_add_highlight(bufnr, ns, "@markup.link.url", range.row_start, range.col_start, range.col_end)
+  vim.api.nvim_buf_add_highlight(bufnr, ns, "@markup.link.label", range.row_start, range.col_start, range.col_end)
   vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end, is_email and range.col_end - 1 or range.col_end, {
     virt_text_pos = "inline",
-    virt_text = { { " ", "@markup.link.url" } },
+    virt_text = { { " ", "@markup.link" } },
     end_col = is_email and range.col_end or range.col_start,
     conceal = "",
   })
@@ -259,7 +259,7 @@ local render_header = function(bufnr, ns, row, alignments, range)
   local border = {}
   for index, col in ipairs(row) do
     if index == 1 then
-      vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {
         end_col = range.col_start + 1,
         virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
@@ -268,7 +268,7 @@ local render_header = function(bufnr, ns, row, alignments, range)
       table.insert(border, { ds.icons.border.CompactRound[1], "@markup.table" })
       col_offset = col_offset + 1
     elseif index == #row then
-      vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start + col_offset, {
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
         virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
@@ -276,14 +276,14 @@ local render_header = function(bufnr, ns, row, alignments, range)
       })
       table.insert(border, { ds.icons.border.CompactRound[3], "@markup.table" })
       if range.row_start > 0 then
-        vim.api.nvim_buf_set_extmark(0, ns, range.row_start - 1, range.col_start, {
+        vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start - 1, range.col_start, {
           virt_text = border,
           virt_text_pos = "inline",
         })
       end
       col_offset = col_offset + 1
     elseif col == "|" then
-      vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start + col_offset, {
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
         virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
@@ -296,22 +296,22 @@ local render_header = function(bufnr, ns, row, alignments, range)
       local align = alignments[current_col]
       if width < real_width then
         if align == "left" then
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start + col_offset + width + 1, {
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start + col_offset + width + 1, {
             virt_text = { { string.rep(" ", (real_width - width)) } },
             virt_text_pos = "inline",
           })
         elseif align == "right" then
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start, {
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {
             virt_text = { { string.rep(" ", (real_width - width)) } },
             virt_text_pos = "inline",
           })
         else
           local before, after = math.floor((real_width - width) / 2), math.ceil((real_width - width) / 2)
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start + col_offset + width + 1, {
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start + col_offset + width + 1, {
             virt_text = { { string.rep(" ", after) } },
             virt_text_pos = "inline",
           })
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_start, range.col_start + col_offset, {
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start + col_offset, {
             virt_text = { { string.rep(" ", before) } },
             virt_text_pos = "inline",
           })
@@ -328,7 +328,7 @@ local render_delimiter = function(bufnr, ns, row, alignments, range)
   local current_col, col_offset = 1, 0
   for index, col in ipairs(row) do
     if index == 1 then
-      vim.api.nvim_buf_set_extmark(0, ns, range.row_start + 1, range.col_start, {
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + 1, range.col_start, {
         end_col = range.col_start + 1,
         virt_text = { { ds.icons.table.Dividers[2], "@markup.table" } },
         virt_text_pos = "inline",
@@ -336,7 +336,7 @@ local render_delimiter = function(bufnr, ns, row, alignments, range)
       })
       col_offset = col_offset + 1
     elseif index == #row then
-      vim.api.nvim_buf_set_extmark(0, ns, range.row_start + 1, range.col_start + col_offset, {
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + 1, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
         virt_text = { { ds.icons.table.Dividers[3], "@markup.table" } },
         virt_text_pos = "inline",
@@ -344,7 +344,7 @@ local render_delimiter = function(bufnr, ns, row, alignments, range)
       })
       col_offset = col_offset + 1
     elseif col == "|" then
-      vim.api.nvim_buf_set_extmark(0, ns, range.row_start + 1, range.col_start + col_offset, {
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + 1, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
         virt_text = { { ds.icons.table.Dividers[4], "@markup.table" } },
         virt_text_pos = "inline",
@@ -355,7 +355,7 @@ local render_delimiter = function(bufnr, ns, row, alignments, range)
       local align = alignments[current_col]
       if col:match ":" then
         if align == "left" then
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_start + 1, range.col_start + col_offset, {
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + 1, range.col_start + col_offset, {
             end_col = range.col_start + col_offset + vim.fn.strchars(col) + 1,
             virt_text = {
               { ds.icons.table.Alignment[1], "@markup.table" },
@@ -365,7 +365,7 @@ local render_delimiter = function(bufnr, ns, row, alignments, range)
             conceal = "",
           })
         elseif align == "right" then
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_start + 1, range.col_start + col_offset, {
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + 1, range.col_start + col_offset, {
             end_col = range.col_start + col_offset + vim.fn.strchars(col) + 1,
             virt_text = {
               { string.rep(ds.icons.border.CompactRound[2], vim.fn.strchars(col) - 1), "@markup.table" },
@@ -375,7 +375,7 @@ local render_delimiter = function(bufnr, ns, row, alignments, range)
             conceal = "",
           })
         elseif align == "center" then
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_start + 1, range.col_start + col_offset, {
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + 1, range.col_start + col_offset, {
             end_col = range.col_start + col_offset + vim.fn.strchars(col) + 1,
             virt_text = {
               { ds.icons.table.Alignment[3], "@markup.table" },
@@ -387,7 +387,7 @@ local render_delimiter = function(bufnr, ns, row, alignments, range)
           })
         end
       else
-        vim.api.nvim_buf_set_extmark(0, ns, range.row_start + 1, range.col_start + col_offset, {
+        vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + 1, range.col_start + col_offset, {
           end_col = range.col_start + col_offset + vim.fn.strchars(col) + 1,
           virt_text = { { string.rep(ds.icons.border.CompactRound[2], vim.fn.strchars(col)), "@markup.table" } },
           virt_text_pos = "inline",
@@ -404,7 +404,7 @@ local render_row = function(bufnr, ns, row_num, row, alignments, range)
   local current_col, col_offset = 1, 0
   for index, col in ipairs(row) do
     if index == 1 then
-      vim.api.nvim_buf_set_extmark(0, ns, range.row_start + row_num - 1, range.col_start, {
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + row_num - 1, range.col_start, {
         end_col = range.col_start + 1,
         virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
@@ -412,7 +412,7 @@ local render_row = function(bufnr, ns, row_num, row, alignments, range)
       })
       col_offset = col_offset + 1
     elseif index == #row then
-      vim.api.nvim_buf_set_extmark(0, ns, range.row_start + row_num - 1, range.col_start + col_offset, {
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + row_num - 1, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
         virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
@@ -420,7 +420,7 @@ local render_row = function(bufnr, ns, row_num, row, alignments, range)
       })
       col_offset = col_offset + 1
     elseif col == "|" then
-      vim.api.nvim_buf_set_extmark(0, ns, range.row_start + row_num - 1, range.col_start + col_offset, {
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + row_num - 1, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
         virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
@@ -432,22 +432,34 @@ local render_row = function(bufnr, ns, row_num, row, alignments, range)
       local align = alignments[current_col]
       if width < real_width then
         if align == "left" then
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_start + row_num - 1, range.col_start + col_offset + width + 1, {
-            virt_text = { { string.rep(" ", (real_width - width)) } },
-            virt_text_pos = "inline",
-          })
+          vim.api.nvim_buf_set_extmark(
+            bufnr,
+            ns,
+            range.row_start + row_num - 1,
+            range.col_start + col_offset + width + 1,
+            {
+              virt_text = { { string.rep(" ", (real_width - width)) } },
+              virt_text_pos = "inline",
+            }
+          )
         elseif align == "right" then
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_start + row_num - 1, range.col_start, {
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + row_num - 1, range.col_start, {
             virt_text = { { string.rep(" ", (real_width - width)) } },
             virt_text_pos = "inline",
           })
         else
           local before, after = math.floor((real_width - width) / 2), math.ceil((real_width - width) / 2)
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_start + row_num - 1, range.col_start + col_offset + width + 1, {
-            virt_text = { { string.rep(" ", after) } },
-            virt_text_pos = "inline",
-          })
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_start + row_num - 1, range.col_start + col_offset, {
+          vim.api.nvim_buf_set_extmark(
+            bufnr,
+            ns,
+            range.row_start + row_num - 1,
+            range.col_start + col_offset + width + 1,
+            {
+              virt_text = { { string.rep(" ", after) } },
+              virt_text_pos = "inline",
+            }
+          )
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + row_num - 1, range.col_start + col_offset, {
             virt_text = { { string.rep(" ", before) } },
             virt_text_pos = "inline",
           })
@@ -464,7 +476,7 @@ local render_footer = function(bufnr, ns, row, alignments, range)
   local border = {}
   for index, col in ipairs(row) do
     if index == 1 then
-      vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start, {
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end - 1, range.col_start, {
         end_col = range.col_start + 1,
         virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
@@ -473,7 +485,7 @@ local render_footer = function(bufnr, ns, row, alignments, range)
       table.insert(border, { ds.icons.border.CompactRound[7], "@markup.table" })
       col_offset = col_offset + 1
     elseif index == #row then
-      vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start + col_offset, {
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end - 1, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
         virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
@@ -481,14 +493,14 @@ local render_footer = function(bufnr, ns, row, alignments, range)
       })
       table.insert(border, { ds.icons.border.CompactRound[5], "@markup.table" })
       if range.row_start > 0 then
-        vim.api.nvim_buf_set_extmark(0, ns, range.row_end, range.col_start, {
+        vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end, range.col_start, {
           virt_text = border,
           virt_text_pos = "inline",
         })
       end
       col_offset = col_offset + 1
     elseif col == "|" then
-      vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start + col_offset, {
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end - 1, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
         virt_text = { { ds.icons.border.CompactRound[4], "@markup.table" } },
         virt_text_pos = "inline",
@@ -501,22 +513,22 @@ local render_footer = function(bufnr, ns, row, alignments, range)
       local align = alignments[current_col]
       if width < real_width then
         if align == "left" then
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start + col_offset + width + 1, {
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end - 1, range.col_start + col_offset + width + 1, {
             virt_text = { { string.rep(" ", (real_width - width)) } },
             virt_text_pos = "inline",
           })
         elseif align == "right" then
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start, {
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end - 1, range.col_start, {
             virt_text = { { string.rep(" ", (real_width - width)) } },
             virt_text_pos = "inline",
           })
         else
           local before, after = math.floor((real_width - width) / 2), math.ceil((real_width - width) / 2)
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start + col_offset + width + 1, {
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end - 1, range.col_start + col_offset + width + 1, {
             virt_text = { { string.rep(" ", after) } },
             virt_text_pos = "inline",
           })
-          vim.api.nvim_buf_set_extmark(0, ns, range.row_end - 1, range.col_start + col_offset, {
+          vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end - 1, range.col_start + col_offset, {
             virt_text = { { string.rep(" ", before) } },
             virt_text_pos = "inline",
           })
@@ -536,9 +548,9 @@ local render_rows = function(bufnr, ns, rows, alignments, range)
   for _, index in ipairs(keys) do
     local row = rows[index]
     if row_count == vim.tbl_count(rows) then
-      render_footer(ns, row, alignments, range)
+      render_footer(bufnr, ns, row, alignments, range)
     else
-      render_row(ns, index, row, alignments, range)
+      render_row(bufnr, ns, index, row, alignments, range)
     end
     row_count = row_count + 1
   end
@@ -575,15 +587,15 @@ M.md_table = function(bufnr, ns, capture_node, capture_text, range)
 
     rows[row_index] = nil
     if row_type == "pipe_table_header" then
-      render_header(ns, section, alignments, range)
+      render_header(bufnr, ns, section, alignments, range)
     elseif row:type() == "pipe_table_delimiter_row" then
-      render_delimiter(ns, section, alignments, range)
+      render_delimiter(bufnr, ns, section, alignments, range)
     elseif row:type() == "pipe_table_row" then
       rows[row_index] = section
     end
     row_index = row_index + 1
   end
-  render_rows(ns, rows, alignments, range)
+  render_rows(bufnr, ns, rows, alignments, range)
 end
 
 return M
