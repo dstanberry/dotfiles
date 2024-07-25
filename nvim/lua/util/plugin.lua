@@ -198,6 +198,9 @@ M.setup = function()
   bootstrap()
   lazy_file()
 
+  ds.hl.new("LazyButton", { bg = vim.g.ds_colors.grayX })
+  ds.hl.new("LazyButtonActive", { bg = ds.color.blend(vim.g.ds_colors.purple1, vim.g.ds_colors.bg0, 0.15) })
+
   vim.api.nvim_create_autocmd("User", {
     group = ds.augroup "lazy_clipboard",
     pattern = "VeryLazy",
