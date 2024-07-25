@@ -199,6 +199,12 @@ return {
           require(root:gsub("/", ".") .. "." .. name).setup()
         end
       end)
+
+      -- local vscode_path = ds.root.detectors.pattern(0, { ".vscode" })[1] or ""
+      -- ds.info { vscode_path, vim.fs.joinpath(vscode_path, ".vscode", "launch.json") }
+      -- if vim.uv.fs_stat(vscode_path) then
+      --   vscode.load_launchjs(vim.fs.joinpath(vscode_path, ".vscode", "launch.json"))
+      -- end
     end,
   },
 }
