@@ -40,11 +40,13 @@ M.get_client_capabilities = function()
   return capabilities
 end
 
+---@param opts? { method?: fun(...) }
 M.on_init = function(opts)
+  opts = opts or {}
+  ---@param client vim.lsp.Client
   return function(client)
     local default_request = client.rpc.request
     function client.rpc.request(method, params, handler, ...)
-      opts = vim.F.if_nil(opts, {})
       local default_handler = handler
       local preprocessor = opts[method]
       handler = preprocessor ~= nil
@@ -78,6 +80,8 @@ M.on_rename = function(old_fname, new_fname)
   if not renamed then ds.warn("File Rename not supported", { title = "LSP" }) end
 end
 
+---@param client vim.lsp.Client
+---@param bufnr integer
 M.on_attach = function(client, bufnr)
   if client.server_capabilities.codeActionProvider then
     local _action = function() vim.lsp.buf.code_action { context = { only = { "source" }, diagnostics = {} } } end

@@ -191,7 +191,7 @@ function M.reduce(list, callback, acc)
   return acc
 end
 
----@alias util.notifyOpts {lang?:string, title?:string, level?:number, merge?: boolean, location?: string}
+---@alias util.notifyOpts { lang?: string, title?: string, level?: number, merge?: boolean, location?: string }
 ---Displays a notification containing a human-readable representation of the object(s) provided
 ---@param msg string|string[]
 ---@param opts? util.notifyOpts
