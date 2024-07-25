@@ -562,9 +562,11 @@ return {
   },
   {
     "lukas-reineke/virt-column.nvim",
-    event = "LazyFile",
+    event = "BufReadPre",
     init = function() ds.hl.new("VirtColumn", { link = "NonText" }) end,
-    opts = { char = ds.icons.misc.VerticalBarVeryThin },
+    opts = {
+      char = ds.icons.misc.VerticalBarVeryThin,
+    },
   },
   {
     "folke/which-key.nvim",
