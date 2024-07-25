@@ -5,6 +5,16 @@ return {
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },
   {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "LspAttach",
+    opts = {
+      blend = { factor = 0.15 },
+      options = {
+        throttle = 50,
+      },
+    },
+  },
+  {
     "mickael-menu/zk-nvim",
     dependencies = { "neovim/nvim-lspconfig" },
     keys = function()
