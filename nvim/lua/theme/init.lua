@@ -113,8 +113,8 @@ M.defaults = function(c)
     Bold                                       = { bold = true },
     Italic                                     = { italic = true },
 
-    htmlH1                                     = { fg = c.blue3, bold = true },
-    htmlH2                                     = { fg = ds.color.blend(c.blue3, c.bg2, 0.62), bold = true },
+    htmlH1                                     = { fg = ds.color.lighten(c.blue3, 20), bold = true },
+    htmlH2                                     = { fg = ds.color.lighten(c.blue4, 30), bold = true },
 
     -- diff highlighting
     DiffAdd                                    = { bg = c.diff_add },
@@ -283,17 +283,17 @@ M.defaults = function(c)
     ["@markup.environment"]                    = { fg = c.blue4 },
     ["@markup.environment.name"]               = { fg = c.yellow2 },
     ["@markup.italic"]                         = { italic = true },
-    ["@markup.link"]                           = { fg = c.overlay1 },
-    ["@markup.link.label"]                     = { fg = ds.color.lighten(c.blue4, 30) },
+    ["@markup.link"]                           = { fg = ds.color.lighten(c.overlay1, 30) },
+    ["@markup.link.label"]                     = { fg = c.purple1 },
     ["@markup.link.label.symbol"]              = { link = "Identifier" },
     ["@markup.link.url"]                       = { underline = true },
     ["@markup.list"]                           = { fg = c.aqua0 },
     ["@markup.list.checked"]                   = { fg = c.green2 },
     ["@markup.list.unchecked"]                 = { fg = c.overlay1 },
-    ["@markup.math"]                           = { fg = c.gray2, bg = c.bgX },
+    ["@markup.math"]                           = { fg = c.purple0 },
     ["@markup.note"]                           = { fg = c.bg2, bg = c.aqua0 },
     ["@markup.raw"]                            = { fg = ds.color.blend(c.rose0, c.bg2, 0.80) },
-    ["@markup.raw.markdown_inline"]            = { fg = ds.color.blend(c.overlay1, c.bgX, 0.90), bg = c.bgX },
+    ["@markup.raw.markdown_inline"]            = { bg = ds.color.blend(c.blue4, c.bg0, 0.08) },
     ["@markup.strikethrough"]                  = { strikethrough = true },
     ["@markup.strong"]                         = { bold = true },
     ["@markup.todo"]                           = { link = "Todo" },
@@ -309,6 +309,7 @@ M.defaults = function(c)
     ["@property"]                              = { fg = c.fg1 },
     ["@punctuation.bracket"]                   = { fg = c.aqua0 },
     ["@punctuation.delimiter"]                 = { fg = c.aqua0 },
+    ["@punctuation.special"]                   = { fg = c.purple0 },
     ["@string"]                                = { link = "String" },
     ["@string.documentation"]                  = { link = "SpecialComment" },
     ["@string.escape"]                         = { fg = c.purple0 },
@@ -331,11 +332,11 @@ M.defaults = function(c)
     ["@variable.parameter.reference"]          = { fg = c.rose0 },
 
     -- custom treesitter extended highlighting
-    ["@markup.codeblock"]                      = { bg = ds.color.blend(c.blue4, c.bg0, 0.08) },
+    ["@markup.codeblock"]                      = { link = "@markup.raw.markdown_inline"},
     ["@markup.dash"]                           = { fg = c.overlay0, bold = true },
     ["@markup.heading"]                        = { link = "htmlH1" },
     ["@markup.heading.sub"]                    = { link = "htmlH2" },
-    ["@markup.table"]                          = { link = "Special" },
+    ["@markup.table"]                          = { link = "@punctuation.special" },
     ["@variable.member.yaml"]                  = { fg = c.aqua1 },
 
     -- statusline highlighting
