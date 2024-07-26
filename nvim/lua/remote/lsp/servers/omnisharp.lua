@@ -1,16 +1,45 @@
 local M = {}
 
 M.config = {
-  cmd = { "omnisharp", ds.plugin.get_pkg_path("omnisharp", "libexec/OmniSharp.dll") },
-  enable_roslyn_analyzers = true,
-  organize_imports_on_format = true,
-  enable_import_completion = true,
-  handlers = {
-    ["textDocument/definition"] = function(...) return require("omnisharp_extended").handler(...) end,
-    ["textDocument/typeDefinition"] = function(...) return require("omnisharp_extended").handler(...) end,
-    ["textDocument/references"] = function(...) return require("omnisharp_extended").references_handler(...) end,
-    ["textDocument/implementation"] = function(...) return require("omnisharp_extended").implementation_handler(...) end,
+  cmd = { vim.fn.exepath "dotnet", ds.plugin.get_pkg_path("omnisharp", "libexec/OmniSharp.dll") },
+  settings = {
+    FormattingOptions = {
+      EnableEditorConfigSupport = true,
+      OrganizeImports = true,
+    },
+    MsBuild = {
+      LoadProjectsOnDemand = nil,
+    },
+    RoslynExtensionsOptions = {
+      EnableAnalyzersSupport = true,
+      EnableImportCompletion = true,
+      AnalyzeOpenDocumentsOnly = nil,
+    },
+    Sdk = {
+      IncludePrereleases = true,
+    },
   },
+  on_attach = function(client, bufnr)
+    require("remote.lsp.handlers").on_attach(client, bufnr)
+    local opts = {
+      reuse_win = true,
+      layout_strategy = "vertical",
+      layout_config = { height = 40, prompt_position = "top" },
+    }
+    local ropts = {
+      layout_strategy = "vertical",
+      layout_config = { height = 40, prompt_position = "top" },
+      path_display = { "shorten" },
+    }
+    local _definition = function() require("omnisharp_extended").telescope_lsp_definition(opts) end
+    local _implementation = function() require("omnisharp_extended").telescope_lsp_implementation(opts) end
+    local _references = function() require("omnisharp_extended").telescope_lsp_references(ropts) end
+    local _type_definition = function() require("omnisharp_extended").telescope_lsp_type_definition(opts) end
+    vim.keymap.set("n", "gd", _definition, { buffer = bufnr, desc = "omnisharp: goto definition" })
+    vim.keymap.set("n", "gi", _implementation, { buffer = bufnr, desc = "omnisharp: goto implementation" })
+    vim.keymap.set("n", "gr", _references, { buffer = bufnr, desc = "omnisharp: show references" })
+    vim.keymap.set("n", "gt", _type_definition, { buffer = bufnr, desc = "omnisharp: goto type definition" })
+  end,
 }
 
 return M
