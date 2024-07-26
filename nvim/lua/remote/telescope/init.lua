@@ -211,17 +211,17 @@ return {
           lsp_definitions = {
             reuse_win = true,
             layout_strategy = "vertical",
-            layout_config = { height = 40, prompt_position = "top" },
+            layout_config = { height = 40, prompt_position = "bottom" },
           },
           lsp_document_symbols = {
             layout_strategy = "vertical",
-            layout_config = { height = 40, prompt_position = "top" },
+            layout_config = { height = 40, prompt_position = "bottom" },
             path_display = { "hidden" },
           },
           lsp_dynamic_workspace_symbols = {
             symbols = util.lsp_symbols_filter(),
             layout_strategy = "vertical",
-            layout_config = { height = 40, prompt_position = "top" },
+            layout_config = { height = 40, prompt_position = "bottom" },
             path_display = { "shorten" },
             mappings = {
               i = { ["<c-f>"] = actions.to_fuzzy_refine },
@@ -230,17 +230,17 @@ return {
           },
           lsp_references = {
             layout_strategy = "vertical",
-            layout_config = { height = 40, prompt_position = "top" },
+            layout_config = { height = 40, prompt_position = "bottom" },
             path_display = { "shorten" },
           },
           lsp_type_definitions = {
             reuse_win = true,
             layout_strategy = "vertical",
-            layout_config = { height = 40, prompt_position = "top" },
+            layout_config = { height = 40, prompt_position = "bottom" },
           },
           lsp_workspace_symbols = {
             layout_strategy = "vertical",
-            layout_config = { height = 40, prompt_position = "top" },
+            layout_config = { height = 40, prompt_position = "bottom" },
             path_display = { "shorten" },
           },
           registers = {

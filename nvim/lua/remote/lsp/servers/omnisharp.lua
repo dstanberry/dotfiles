@@ -24,11 +24,11 @@ M.config = {
     local opts = {
       reuse_win = true,
       layout_strategy = "vertical",
-      layout_config = { height = 40, prompt_position = "top" },
+      layout_config = { height = 40, prompt_position = "bottom" },
     }
     local ropts = {
       layout_strategy = "vertical",
-      layout_config = { height = 40, prompt_position = "top" },
+      layout_config = { height = 40, prompt_position = "bottom" },
       path_display = { "shorten" },
     }
     local _definition = function() require("omnisharp_extended").telescope_lsp_definition(opts) end
