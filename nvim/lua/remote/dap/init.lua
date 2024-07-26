@@ -186,11 +186,10 @@ return {
       dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close() end
       dap.listeners.before.event_exited["dapui_config"] = function() dapui.close() end
 
-      local json = require "plenary.json"
-      local vscode = require "dap.ext.vscode"
-
       ---@diagnostic disable-next-line: duplicate-set-field
-      vscode.json_decode = function(str) return vim.json.decode(json.json_strip_comments(str)) end
+      require("dap.ext.vscode").json_decode = function(str)
+        return vim.json.decode(require("plenary.json").json_strip_comments(str))
+      end
 
       local root = "remote/dap/debuggers"
       ds.walk(root, function(path, name, type)
