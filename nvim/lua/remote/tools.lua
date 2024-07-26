@@ -530,7 +530,7 @@ return {
     keys = {
       { "<localleader>db", "<cmd>Dbee toggle<cr>", desc = "dbee: toggle interface" },
     },
-    build = function() require("dbee").install "go" end,
+    build = function() require("dbee").install "curl" end,
     config = function()
       require("dbee").setup {
         sources = {
