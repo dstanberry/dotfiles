@@ -15,7 +15,14 @@ return {
       backend_opts = { use_git_config = true },
       telescope_opts = {
         layout_strategy = "vertical",
-        layout_config = { height = 40, prompt_position = "bottom" },
+        layout_config = {
+          height = 25,
+          preview_height = function(_, _, max_lines)
+            local lines = math.floor(max_lines * 0.5)
+            return math.max(lines, 10)
+          end,
+          prompt_position = "bottom",
+        },
       },
     },
   },
