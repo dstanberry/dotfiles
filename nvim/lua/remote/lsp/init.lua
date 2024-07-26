@@ -5,6 +5,21 @@ return {
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },
   {
+    "rachartier/tiny-code-action.nvim",
+    event = "LspAttach",
+    keys = {
+      { "gA", function() require("tiny-code-action").code_action() end, desc = "tiny-code-action: code action" },
+    },
+    opts = {
+      backend = "delta",
+      backend_opts = { use_git_config = true },
+      telescope_opts = {
+        layout_strategy = "vertical",
+        layout_config = { height = 40, prompt_position = "bottom" },
+      },
+    },
+  },
+  {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "LspAttach",
     opts = {
