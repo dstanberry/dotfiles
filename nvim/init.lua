@@ -25,6 +25,11 @@ vim.filetype.add {
     [".*/git/config"] = "gitconfig",
     [".*/git/gitconfig"] = "gitconfig",
     [".*/git/ignore"] = "gitignore",
+    [".*"] = {
+      function(path, buf)
+        return vim.bo[buf] ~= "bigfile" and path and vim.fn.getfsize(path) > 1024 * 1024 * 1.5 and "bigfile" or nil
+      end,
+    },
   },
 }
 
