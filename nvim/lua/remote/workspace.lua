@@ -119,9 +119,21 @@ return {
           groups = {
             items = {
               {
+                name = "Notes",
+                -- icon =ds.icons.groups.Book,
+                highlight = { fg = vim.g.ds_colors.overlay1 },
+                auto_close = false,
+                matcher = function(buf)
+                  return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten"
+                end,
+                separator = {
+                  style = bufferline_groups.separator.pill,
+                },
+              },
+              {
                 name = "SQL",
                 -- icon =ds.icons.groups.Sql,
-                auto_close = true,
+                auto_close = false,
                 highlight = { fg = vim.g.ds_colors.orange0 },
                 matcher = function(buf) return buf.name:match "%.sql$" end,
                 separator = {
@@ -132,24 +144,12 @@ return {
                 name = "Unit Tests",
                 -- icon =ds.icons.groups.Lab,
                 highlight = { fg = vim.g.ds_colors.yellow0 },
-                auto_close = true,
+                auto_close = false,
                 matcher = function(buf)
                   return buf.name:match "_spec%."
                     or buf.name:match "%.spec"
                     or buf.name:match "_test%."
                     or buf.name:match "%.test"
-                end,
-                separator = {
-                  style = bufferline_groups.separator.pill,
-                },
-              },
-              {
-                name = "Notes",
-                -- icon =ds.icons.groups.Book,
-                highlight = { fg = vim.g.ds_colors.overlay1 },
-                auto_close = true,
-                matcher = function(buf)
-                  return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten"
                 end,
                 separator = {
                   style = bufferline_groups.separator.pill,
