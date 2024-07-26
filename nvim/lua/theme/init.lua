@@ -81,7 +81,7 @@ M.defaults = function(c)
     Function                                   = { fg = c.blue2 },
 
     Statement                                  = { fg = c.magenta1 },
-    Keyword                                    = { fg = c.magenta1 },
+    Keyword                                    = { fg = c.magenta2 },
     Operator                                   = { fg = c.fg1 },
     -- Conditional                             = {},
     -- Exception                               = {},
@@ -135,7 +135,7 @@ M.defaults = function(c)
     gitcommitUntracked                         = { fg = c.gray1 },
     gitcommitDiscarded                         = { fg = c.gray1 },
     gitcommitSelected                          = { fg = c.gray1 },
-    gitcommitHeader                            = { fg = c.magenta1 },
+    gitcommitHeader                            = { fg = c.magenta0 },
     gitcommitSelectedType                      = { fg = c.blue2 },
     gitcommitUnmergedType                      = { fg = c.blue2 },
     gitcommitDiscardedType                     = { fg = c.blue2 },
@@ -162,20 +162,20 @@ M.defaults = function(c)
     DiagnosticDeprecated                       = { sp = c.red3, italic = true, strikethrough = true },
     DiagnosticUnnecessary                      = { fg = c.gray2, italic = true },
 
-    DiagnosticError                            = { fg = c.red1 },
-    DiagnosticWarn                             = { fg = c.yellow2 },
+    DiagnosticError                            = { fg = c.red0 },
+    DiagnosticWarn                             = { fg = c.yellow0 },
     DiagnosticInfo                             = { fg = c.aqua1 },
-    DiagnosticHint                             = { fg = c.magenta1 },
+    DiagnosticHint                             = { fg = c.magenta0 },
 
-    DiagnosticStatusError                      = { fg = c.red1, bg = c.gray0 },
-    DiagnosticStatusWarn                       = { fg = c.yellow2, bg = c.gray0 },
+    DiagnosticStatusError                      = { fg = c.red0, bg = c.gray0 },
+    DiagnosticStatusWarn                       = { fg = c.yellow0, bg = c.gray0 },
     DiagnosticStatusInfo                       = { fg = c.aqua1, bg = c.gray0 },
-    DiagnosticStatusHint                       = { fg = c.magenta1, bg = c.gray0 },
+    DiagnosticStatusHint                       = { fg = c.magenta0, bg = c.gray0 },
 
-    DiagnosticUnderlineError                   = { undercurl = true, sp = c.red1 },
-    DiagnosticUnderlineWarn                    = { undercurl = true, sp = c.yellow2 },
+    DiagnosticUnderlineError                   = { undercurl = true, sp = c.red0 },
+    DiagnosticUnderlineWarn                    = { undercurl = true, sp = c.yellow0 },
     DiagnosticUnderlineInfo                    = { undercurl = true, sp = c.aqua1 },
-    DiagnosticUnderlineHint                    = { undercurl = true, sp = c.magenta1 },
+    DiagnosticUnderlineHint                    = { undercurl = true, sp = c.magenta0 },
 
     -- lsp semantic tokens
     ["@lsp.type.boolean"]                      = { link = "@boolean" },
