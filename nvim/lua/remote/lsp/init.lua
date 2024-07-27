@@ -5,6 +5,55 @@ return {
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },
   {
+    "neovim/nvim-lspconfig",
+    event = "LazyFile",
+    dependencies = {
+      "williamboman/mason.nvim",
+      {
+        "folke/neoconf.nvim",
+        cmd = "Neoconf",
+        opts = { local_settings = ".nvim.json", global_settings = "nvim.json" },
+      },
+    },
+    config = function()
+      local lspconfig = require "lspconfig"
+      local configs = require "lspconfig.configs"
+      local handlers = require "remote.lsp.handlers"
+
+      local servers = {
+        bashls = {},
+        cmake = {},
+        cssls = {},
+        html = { init_options = { provideFormatter = false } },
+        terraformls = {},
+      }
+      local default_opts = {
+        capabilities = handlers.get_client_capabilities(),
+        on_attach = handlers.on_attach,
+        flags = { debounce_text_changes = 150 },
+      }
+      local enabled = {}
+
+      local root = "remote/lsp/servers"
+      ds.walk(root, function(path, name, type)
+        if (type == "file" or type == "link") and name:match "%.lua$" then
+          local m = path:match(root .. "/(.*)"):sub(1, -5):gsub("/", ".")
+          name = name:sub(1, -5)
+          local mod = require(root:gsub("/", ".") .. "." .. m)
+          local config = vim.F.if_nil(mod.config, {})
+          local server_opts = vim.tbl_deep_extend("force", default_opts, config)
+          if mod.register_default_config and not configs[name] then configs[name] = { default_config = config } end
+          if mod.setup then mod.setup(server_opts) end
+          if not mod.defer_setup then servers = vim.tbl_deep_extend("force", servers, { [name] = config }, enabled) end
+        end
+      end)
+      for srv, config in pairs(servers) do
+        if config then lspconfig[srv].setup(vim.tbl_deep_extend("force", default_opts, config)) end
+      end
+      handlers.setup()
+    end,
+  },
+  {
     "rachartier/tiny-code-action.nvim",
     event = "LspAttach",
     keys = {
@@ -71,55 +120,6 @@ return {
           if client and client.name == "marksman" then require("zk.lsp").buf_add(args.buf) end
         end,
       })
-    end,
-  },
-  {
-    "neovim/nvim-lspconfig",
-    event = "LazyFile",
-    dependencies = {
-      "williamboman/mason.nvim",
-      {
-        "folke/neoconf.nvim",
-        cmd = "Neoconf",
-        opts = { local_settings = ".nvim.json", global_settings = "nvim.json" },
-      },
-    },
-    config = function()
-      local lspconfig = require "lspconfig"
-      local configs = require "lspconfig.configs"
-      local handlers = require "remote.lsp.handlers"
-
-      local servers = {
-        bashls = {},
-        cmake = {},
-        cssls = {},
-        html = { init_options = { provideFormatter = false } },
-        terraformls = {},
-      }
-      local default_opts = {
-        capabilities = handlers.get_client_capabilities(),
-        on_attach = handlers.on_attach,
-        flags = { debounce_text_changes = 150 },
-      }
-      local enabled = {}
-
-      local root = "remote/lsp/servers"
-      ds.walk(root, function(path, name, type)
-        if (type == "file" or type == "link") and name:match "%.lua$" then
-          local m = path:match(root .. "/(.*)"):sub(1, -5):gsub("/", ".")
-          name = name:sub(1, -5)
-          local mod = require(root:gsub("/", ".") .. "." .. m)
-          local config = vim.F.if_nil(mod.config, {})
-          local server_opts = vim.tbl_deep_extend("force", default_opts, config)
-          if mod.register_default_config and not configs[name] then configs[name] = { default_config = config } end
-          if mod.setup then mod.setup(server_opts) end
-          if not mod.defer_setup then servers = vim.tbl_deep_extend("force", servers, { [name] = config }, enabled) end
-        end
-      end)
-      for srv, config in pairs(servers) do
-        if config then lspconfig[srv].setup(vim.tbl_deep_extend("force", default_opts, config)) end
-      end
-      handlers.setup()
     end,
   },
 }
