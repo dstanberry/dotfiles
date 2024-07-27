@@ -124,7 +124,7 @@ return {
 
           vim.api.nvim_exec_autocmds("User", { pattern = "FormatPre" })
 
-          return { timeout_ms = 500, lsp_format = "fallback" }, on_format
+          return { timeout_ms = 2500, lsp_format = "fallback" }, on_format
         end,
         format_after_save = function(buf)
           if not vim.g.conform_slow_formatters[vim.bo[buf].filetype] then return end
