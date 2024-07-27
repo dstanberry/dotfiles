@@ -100,7 +100,6 @@ return {
       local actions = require "telescope.actions"
       local layout = require "telescope.actions.layout"
       local themes = require "telescope.themes"
-      local lga_actions = require "telescope-live-grep-args.actions"
 
       return {
         defaults = {
@@ -266,13 +265,17 @@ return {
             mappings = {
               i = {
                 ["<c-f>"] = actions.to_fuzzy_refine,
-                ["<c-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
-                ["<c-k>"] = lga_actions.quote_prompt(),
+                ["<c-k>"] = function() return require("telescope-live-grep-args.actions").quote_prompt() end,
+                ["<c-i>"] = function()
+                  return require("telescope-live-grep-args.actions").quote_prompt { postfix = " --iglob " }
+                end,
               },
               n = {
                 ["<c-f>"] = actions.to_fuzzy_refine,
-                ["<c-i>"] = lga_actions.quote_prompt { postfix = " --iglob " },
-                ["<c-k>"] = lga_actions.quote_prompt(),
+                ["<c-k>"] = function() return require("telescope-live-grep-args.actions").quote_prompt() end,
+                ["<c-i>"] = function()
+                  return require("telescope-live-grep-args.actions").quote_prompt { postfix = " --iglob " }
+                end,
               },
             },
           },
