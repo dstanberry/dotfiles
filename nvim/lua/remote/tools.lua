@@ -438,6 +438,19 @@ return {
     config = function(_, opts) require("silicon").setup(opts) end,
   },
   {
+    "vuki656/package-info.nvim",
+    event = { "BufRead package.json" },
+    opts = {
+      package_manager = "npm",
+      colors = {},
+    },
+      -- stylua: ignore
+    init = function()
+      ds.hl.new("PackageInfoOutdatedVersion", { fg = ds.color.blend(vim.g.ds_colors.orange1, vim.g.ds_colors.bg2, 0.40) })
+      ds.hl.new("PackageInfoUpToDateVersion", { fg = ds.color.blend(vim.g.ds_colors.green1, vim.g.ds_colors.bg2, 0.40) })
+    end,
+  },
+  {
     "mrjones2014/smart-splits.nvim",
     keys = function()
       local _resize_left = function() require("smart-splits").resize_left(1) end
