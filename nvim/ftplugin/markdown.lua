@@ -39,17 +39,19 @@ if package.loaded["nvim-treesitter"] then
   local _inner = function() markdown.insert_inner_heading(vim.api.nvim_get_current_buf()) end
   local _outer = function() markdown.insert_outer_heading(vim.api.nvim_get_current_buf()) end
 
-  vim.keymap.set("n", "<c-w><c-a>", _adjacent, { buffer = 0, desc = "insert adjacent heading" })
-  vim.keymap.set("n", "<c-w><c-i>", _inner, { buffer = 0, desc = "insert inner heading" })
-  vim.keymap.set("n", "<c-w><c-o>", _outer, { buffer = 0, desc = "insert outer heading" })
+  vim.keymap.set("n", "<localleader>ia", _adjacent, { buffer = 0, desc = "markdown: insert adjacent heading" })
+  vim.keymap.set("n", "<localleader>ii", _inner, { buffer = 0, desc = "markdown: insert inner heading" })
+  vim.keymap.set("n", "<localleader>io", _outer, { buffer = 0, desc = "markdown: insert outer heading" })
 end
 
-vim.keymap.set("i", "<s-cr>", markdown.insert_list_marker, { buffer = 0, desc = "insert list marker" })
-vim.keymap.set("i", "<c-w><c-c>", markdown.insert_checkbox, { buffer = 0, desc = "insert checkbox" })
-vim.keymap.set("i", "<c-w><c-l>", markdown.insert_link, { buffer = 0, desc = "insert link" })
+vim.keymap.set("i", "<s-cr>", markdown.insert_list_marker, { buffer = 0, desc = "markdown: insert list marker" })
+vim.keymap.set("i", "<c-w><c-c>", markdown.insert_checkbox, { buffer = 0, desc = "markdown: insert checkbox" })
+vim.keymap.set("i", "<c-w><c-l>", markdown.insert_link, { buffer = 0, desc = "markdown: insert link" })
 
-vim.keymap.set({ "n", "v" }, "<c-w><c-b>", markdown.toggle_bullet, { buffer = 0, desc = "toggle bullet" })
-vim.keymap.set({ "n", "v" }, "<c-w><c-x>", markdown.toggle_checkbox, { buffer = 0, desc = "toggle checkbox" })
+-- stylua: ignore start
+vim.keymap.set({ "n", "v" }, "<localleader>ib", markdown.toggle_bullet, { buffer = 0, desc = "markdown: toggle bullet" })
+vim.keymap.set({ "n", "v" }, "<localleader>ic", markdown.toggle_checkbox, { buffer = 0, desc = "markdown: toggle checkbox" })
+-- stylua: ignore end
 
 -- NOTE: Completion engine will handle this better
 -- vim.keymap.set("i", "[[", markdown.zk.insert_link, { buffer = 0, desc = "zk: insert link to note" })

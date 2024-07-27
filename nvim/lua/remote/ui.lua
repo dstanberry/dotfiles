@@ -643,6 +643,7 @@ return {
             { "<localleader>d", group = "database" },
             { "<localleader>f", group = "find" },
             { "<localleader>g", group = "git" },
+            { "<localleader>i", group = "insert" },
             { "<localleader>m", group = "notes (markdown)" },
             { "<localleader>q", group = "quickfix (trouble)" },
             { "<localleader>s", group = "search" },
@@ -652,6 +653,7 @@ return {
             { "<leader>g", group = "git" },
             { "<leader>m", group = "notes (markdown)" },
             { "<leader>s", group = "selection" },
+            { "<localleader>i", group = "insert" },
           },
         },
       }
