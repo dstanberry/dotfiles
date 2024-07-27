@@ -2,6 +2,7 @@
 
 return {
   { "Hoffs/omnisharp-extended-lsp.nvim", lazy = true },
+  { "seblj/roslyn.nvim", lazy = true },
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },
   {
@@ -32,7 +33,7 @@ return {
         on_attach = handlers.on_attach,
         flags = { debounce_text_changes = 150 },
       }
-      local enabled = {}
+      local enabled = { omnisharp = false }
 
       local root = "remote/lsp/servers"
       ds.walk(root, function(path, name, type)

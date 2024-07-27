@@ -43,46 +43,45 @@ M.config = {
     vim.keymap.set("n", "gr", _references, { buffer = bufnr, desc = "omnisharp: show references" })
     vim.keymap.set("n", "gt", _type_definition, { buffer = bufnr, desc = "omnisharp: goto type definition" })
 
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = ds.augroup "lsp_omnisharp",
-      pattern = "*.cs",
-      callback = function()
-        if not (client and bufnr) then return end
-        local params = vim.lsp.util.make_position_params(0, "utf-8")
-        local request = {
-          Column = params.position.character,
-          Line = params.position.line,
-          FileName = vim.uri_to_fname(params.textDocument.uri),
-          WantsTextChanges = true,
-          ApplyTextChanges = false,
-        }
-        local response = client.request_sync("o#/fixusings", request, 500, bufnr)
-        if response.err then
-          ds.error(
-            "`fixusings` failed:\n" .. response.err,
-            { title = "Lsp: omnisharp", lang = "markdown", merge = true }
-          )
-        elseif response.result.Changes then
-          local edits = {}
-          for _, change in pairs(response.result.Changes) do
-            table.insert(edits, {
-              newText = change.NewText,
-              range = {
-                start = {
-                  line = change.StartLine,
-                  character = change.StartColumn,
-                },
-                ["end"] = {
-                  line = change.EndLine,
-                  character = change.EndColumn,
-                },
+    local _unused = function()
+      if not (client and bufnr) then return end
+      local params = vim.lsp.util.make_position_params(0, "utf-8")
+      local request = {
+        Column = params.position.character,
+        Line = params.position.line,
+        FileName = vim.uri_to_fname(params.textDocument.uri),
+        WantsTextChanges = true,
+        ApplyTextChanges = false,
+      }
+      local response = client.request_sync("o#/fixusings", request, 500, bufnr)
+      if response.err then
+        ds.error(
+          "`fixusings` failed:\n" .. response.err.data.message .. "\n" .. response.err.data.stack,
+          { title = "Lsp: omnisharp", lang = "markdown", merge = true }
+        )
+      elseif response.result.Changes then
+        local edits = {}
+        for _, change in pairs(response.result.Changes) do
+          table.insert(edits, {
+            newText = change.NewText,
+            range = {
+              start = {
+                line = change.StartLine,
+                character = change.StartColumn,
               },
-            })
-          end
-          vim.lsp.util.apply_text_edits(edits, bufnr, "utf-8")
+              ["end"] = {
+                line = change.EndLine,
+                character = change.EndColumn,
+              },
+            },
+          })
         end
-      end,
-    })
+        vim.lsp.util.apply_text_edits(edits, bufnr, "utf-8")
+      end
+    end
+
+    vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (.NET)" })
+    vim.keymap.set("n", "<leader>lu", _unused, { buffer = bufnr, desc = "typescript: remove unused imports" })
   end,
 }
 
