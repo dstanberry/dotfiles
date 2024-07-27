@@ -465,7 +465,7 @@ return {
     "echasnovski/mini.pairs",
     event = "LazyFile",
     opts = {
-      markdown = true,
+      markdown = false,
       modes = { insert = true, command = true, terminal = false },
       skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
       skip_ts = { "string" },
