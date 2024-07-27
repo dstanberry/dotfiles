@@ -443,6 +443,10 @@ return {
         ["tsconfig.json"]       = { glyph = "", hl = "MiniIconsAzure" },
         zshrc                   = { glyph = "", hl = "MiniIconsGreen" },
       },
+      use_file_extension = function(ext, _)
+        local _skipped = { "json", "scm", "txt", "yaml", "yml" }
+        return not _skipped[ext:lower()]
+      end,
     },
     init = function()
       package.preload["nvim-web-devicons"] = function()
