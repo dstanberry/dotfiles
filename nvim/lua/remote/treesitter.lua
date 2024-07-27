@@ -8,47 +8,6 @@ vim.treesitter.language.register("typescript", "typescriptreact")
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    dependencies = {
-      {
-        "nvim-treesitter/nvim-treesitter-context",
-        opts = {
-          enable = true,
-          multiline_threshold = 4,
-          separator = "─",
-          mode = "topline",
-          patterns = {
-            lua = { "table" },
-          },
-        },
-      },
-      {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        config = function()
-          -- When in diff mode, we want to use the default
-          -- vim text objects c & C instead of the treesitter ones.
-          local move = require "nvim-treesitter.textobjects.move" ---@type table<string,fun(...)>
-          local configs = require "nvim-treesitter.configs"
-          for name, fn in pairs(move) do
-            if name:find "goto" == 1 then
-              move[name] = function(q, ...)
-                if vim.wo.diff then
-                  local config = configs.get_module("textobjects.move")[name] ---@type table<string,string>
-                  for key, query in pairs(config or {}) do
-                    if q == query and key:find "[%]%[][cC]" then
-                      vim.cmd("normal! " .. key)
-                      return
-                    end
-                  end
-                end
-                return fn(q, ...)
-              end
-            end
-          end
-        end,
-      },
-      "nvim-treesitter/playground",
-      "theHamsta/nvim-treesitter-pairs",
-    },
     build = ":TSUpdate",
     lazy = vim.fn.argc(-1) == 0,
     version = false,
@@ -69,35 +28,6 @@ return {
           node_incremental = "=",
           scope_incremental = false,
           node_decremental = "<bs>",
-        },
-      },
-      pairs = {
-        enable = true,
-        disable = {},
-        highlight_pair_events = {},
-        highlight_self = false,
-        fallback_cmd_normal = "normal! %",
-        goto_right_end = false,
-        keymaps = {
-          goto_partner = "%",
-        },
-      },
-      playground = {
-        enable = true,
-        disable = {},
-        updatetime = 25,
-        persist_queries = false,
-        keybindings = {
-          toggle_query_editor = "o",
-          toggle_hl_groups = "i",
-          toggle_injected_languages = "t",
-          toggle_anonymous_nodes = "a",
-          toggle_language_display = "I",
-          focus_language = "f",
-          unfocus_language = "F",
-          update = "R",
-          goto_node = "<cr>",
-          show_help = "?",
         },
       },
       textobjects = {
@@ -132,6 +62,80 @@ return {
       require "nvim-treesitter.query_predicates"
     end,
     config = function(_, opts) pcall(require("nvim-treesitter.configs").setup, opts) end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = "BufReadPost",
+    opts = {
+      enable = true,
+      multiline_threshold = 4,
+      separator = "─",
+      mode = "topline",
+      patterns = {
+        lua = { "table" },
+      },
+    },
+  },
+  {
+    "theHamsta/nvim-treesitter-pairs",
+    keys = {
+      { "%", function() require("nvim-treesitter.pairs").goto_partner() end, desc = "treesitter: goto partner" },
+      { "X", function() require("nvim-treesitter.pairs").delete_balanced() end, desc = "treesitter: delete balanced" },
+    },
+    config = function()
+      local nvim_treesitter_configs = require "nvim-treesitter.configs"
+      ---@diagnostic disable-next-line: missing-fields
+      nvim_treesitter_configs.setup {
+        pairs = {
+          enable = true,
+          disable = {},
+          highlight_pair_events = { "CursorMoved" },
+          highlight_self = false,
+          fallback_cmd_normal = "normal! %",
+          goto_right_end = false,
+          keymaps = {
+            goto_partner = "%",
+            delete_balanced = "X",
+          },
+          delete_balanced = {
+            only_on_first_char = false,
+            fallback_cmd_normal = nil,
+            longest_partner = false,
+          },
+        },
+      }
+    end,
+  },
+  {
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    event = "VeryLazy",
+    config = function()
+      if ds.plugin.is_loaded "nvim-treesitter" then
+        local opts = ds.plugin.get_opts "nvim-treesitter"
+        ---@diagnostic disable-next-line: missing-fields
+        require("nvim-treesitter.configs").setup { textobjects = opts.textobjects or {} }
+      end
+      -- When in diff mode, we want to use the default
+      -- vim text objects c & C instead of the treesitter ones.
+      local move = require "nvim-treesitter.textobjects.move" ---@type table<string,fun(...)>
+      local configs = require "nvim-treesitter.configs"
+      for name, fn in pairs(move) do
+        if name:find "goto" == 1 then
+          move[name] = function(q, ...)
+            if vim.wo.diff then
+              local config = configs.get_module("textobjects.move")[name] ---@type table<string,string>
+              for key, query in pairs(config or {}) do
+                if q == query and key:find "[%]%[][cC]" then
+                  vim.cmd("normal! " .. key)
+                  return
+                end
+              end
+            end
+            return fn(q, ...)
+          end
+        end
+      end
+    end,
   },
   {
     "windwp/nvim-ts-autotag",

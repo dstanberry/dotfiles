@@ -127,6 +127,14 @@ M.get_pkg_path = function(pkg, path, opts)
   return ret
 end
 
+---@param name string
+function M.get_opts(name)
+  local plugin = require("lazy.core.config").spec.plugins[name]
+  if not plugin then return {} end
+  local Plugin = require "lazy.core.plugin"
+  return Plugin.values(plugin, "opts", false)
+end
+
 ---@param plugin string
 M.is_installed = function(plugin)
   local ok, Config = pcall(require, "lazy.core.config")
