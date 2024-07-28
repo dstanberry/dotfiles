@@ -5,9 +5,10 @@ return {
   { "seblj/roslyn.nvim", lazy = true },
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },
+  { "mickael-menu/zk-nvim", lazy = true },
   {
     "neovim/nvim-lspconfig",
-    event = "LazyFile",
+    event = { "LazyFile", "VeryLazy" },
     dependencies = {
       "williamboman/mason.nvim",
       {
@@ -88,42 +89,5 @@ return {
         throttle = 50,
       },
     },
-  },
-  {
-    "mickael-menu/zk-nvim",
-    dependencies = { "neovim/nvim-lspconfig" },
-    keys = function()
-      local md_keymaps = require "ft.markdown.keymaps"
-      local ret = {}
-      for k, v in pairs(md_keymaps) do
-        table.insert(ret, { k, v[1], desc = v[2], mode = v[3] or "n" })
-      end
-      return ret
-    end,
-    opts = {
-      name = "zk",
-      root_dir = vim.env.ZK_NOTEBOOK_DIR,
-    },
-    config = function(_, opts)
-      local zk = require "zk"
-      zk.setup {
-        picker = "telescope",
-        lsp = { config = opts },
-        auto_attach = {
-          enabled = false,
-          filetypes = { "markdown" },
-        },
-      }
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = ds.augroup "lsp_zk",
-        pattern = "*.md",
-        callback = function(args)
-          if not (args.data and args.data.client_id) then return end
-          -- HACK: hijack marksman lsp setup to also add zk to the mix
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
-          if client and client.name == "marksman" then require("zk.lsp").buf_add(args.buf) end
-        end,
-      })
-    end,
   },
 }
