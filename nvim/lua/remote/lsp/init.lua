@@ -21,7 +21,7 @@ return {
       local lspconfig = require "lspconfig"
       local configs = require "lspconfig.configs"
       local handlers = require "remote.lsp.handlers"
-
+      local root = "remote/lsp/servers"
       local servers = {
         bashls = {},
         cmake = {},
@@ -35,7 +35,7 @@ return {
         flags = { debounce_text_changes = 150 },
       }
 
-      local root = "remote/lsp/servers"
+      handlers.setup()
       ds.walk(root, function(path, name, type)
         if (type == "file" or type == "link") and name:match "%.lua$" then
           local m = path:match(root .. "/(.*)"):sub(1, -5):gsub("/", ".")
@@ -55,7 +55,6 @@ return {
       for srv, config in pairs(servers) do
         if config then lspconfig[srv].setup(vim.tbl_deep_extend("force", default_opts, config)) end
       end
-      handlers.setup()
     end,
   },
   {
