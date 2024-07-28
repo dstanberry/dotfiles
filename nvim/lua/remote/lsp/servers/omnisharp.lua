@@ -1,5 +1,7 @@
 local M = {}
 
+M.enabled = false
+
 M.config = {
   cmd = { vim.fn.exepath "dotnet", ds.plugin.get_pkg_path("omnisharp", "libexec/OmniSharp.dll") },
   settings = {
