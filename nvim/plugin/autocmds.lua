@@ -40,7 +40,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- dont create backups of encrypted files
-vim.api.nvim_create_autocmd("Filetype", {
+vim.api.nvim_create_autocmd("FileType", {
   group = ds.augroup "crypt",
   pattern = { "asc", "gpg", "pgp" },
   callback = function()
