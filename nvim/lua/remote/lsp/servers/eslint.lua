@@ -6,13 +6,12 @@ M.config = {
   },
   on_attach = function(client, bufnr)
     require("remote.lsp.handlers").on_attach(client, bufnr)
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      buffer = bufnr,
-      callback = function(args)
-        local diag = vim.diagnostic.get(args.buf, { namespace = vim.lsp.diagnostic.get_namespace(client.id) })
-        if #diag > 0 then vim.cmd "EslintFixAll" end
-      end,
-    })
+    local _fix = function()
+      local diag = vim.diagnostic.get(bufnr, { namespace = vim.lsp.diagnostic.get_namespace(client.id) })
+      if #diag > 0 then vim.cmd "EslintFixAll" end
+    end
+
+    vim.keymap.set("n", "<leader>lF", _fix, { buffer = bufnr, desc = "eslint: fix all problems" })
   end,
 }
 
