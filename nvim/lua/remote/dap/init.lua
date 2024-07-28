@@ -1,22 +1,5 @@
 return {
-  {
-    "mfussenegger/nvim-dap-python",
-    lazy = true,
-    keys = function()
-      local _method = function() require("dap-python").test_method() end
-      local _class = function() require("dap-python").test_class() end
-      return {
-        { "<leader>dp", "", desc = "+dap: python", ft = "python" },
-        { "<leader>dpm", _method, desc = "python: debug method", ft = "python" },
-        { "<leader>dpc", _class, desc = "python: debug class", ft = "python" },
-      }
-    end,
-    config = function()
-      local filepath = ds.has "win32" and ds.plugin.get_pkg_path("debugpy", "venv/Scripts/pythonw.exe")
-        or ds.plugin.get_pkg_path("debugpy", "venv/bin/python")
-      require("dap-python").setup(filepath)
-    end,
-  },
+  { "mfussenegger/nvim-dap-python", lazy = true },
   {
     "mfussenegger/nvim-dap",
     lazy = true,
