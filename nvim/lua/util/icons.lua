@@ -156,6 +156,7 @@ M.misc = {
   RightArrow = "→",
   RightArrowCircled = "",
   ScriptSmall = "ℓ",
+  Server = "",
   SquareDot = "▪",
   Square = "■",
   Table = "",
