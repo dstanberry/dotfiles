@@ -61,7 +61,7 @@
 	editor = nvim
 
 [commit]
-	gpgsign = true
+	gpgsign = true ; requires `user.signingkey = <path_to_github_public_key>` to be defined
 
 [delta]
 	colorMoved = default
