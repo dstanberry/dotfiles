@@ -14,24 +14,24 @@ local md_extmarks = vim.api.nvim_create_augroup("md_extmarks", { clear = true })
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "ModeChanged" }, {
   group = md_extmarks,
   buffer = vim.api.nvim_get_current_buf(),
-  callback = function(args)
-    vim.schedule(function()
-      if package.loaded["nvim-treesitter"] and vim.api.nvim_get_mode().mode == "n" then
-        vim.opt_local.conceallevel = 2
-        markdown.set_extmarks(args.buf)
-      end
-    end)
-  end,
+  callback = vim.schedule_wrap(function(args)
+    if
+      package.loaded["nvim-treesitter"]
+      and vim.api.nvim_get_mode().mode == "n"
+      and vim.bo[args.buf].filetype == "markdown"
+    then
+      vim.opt_local.conceallevel = 2
+      markdown.set_extmarks(args.buf)
+    end
+  end),
 })
 vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
   group = md_extmarks,
   buffer = vim.api.nvim_get_current_buf(),
-  callback = function(args)
-    vim.schedule(function()
-      vim.opt_local.conceallevel = 0
-      markdown.disable_extmarks(args.buf, true)
-    end)
-  end,
+  callback = vim.schedule_wrap(function(args)
+    vim.opt_local.conceallevel = 0
+    markdown.disable_extmarks(args.buf, true)
+  end),
 })
 
 if package.loaded["nvim-treesitter"] then
