@@ -117,12 +117,17 @@ end
 M.new_from_selection = function(opts)
   opts = opts or {}
   if not opts.location and (opts.location ~= "title" or opts.location ~= "content") then
-    error(("Invalid option to create note: '%s'"):format(tostring(opts.location)))
+    ds.error(("Invalid option to create note: '%s'"):format(tostring(opts.location)), { title = "Zk" })
   end
   local lines, range = ds.buffer.get_visual_selection()
   local chunk = table.concat(lines)
-  if chunk == nil then error "Unable to create note: No selected text" end
-  if not range then error("Invalid text selection. Invalid value for 'range': " .. vim.inspect(range)) end
+  if chunk == nil then ds.error("Unable to create note: No selected text", { tite = "Zk" }) end
+  if not range then
+    ds.error(
+      "Invalid text selection.\nInvalid value for 'range': " .. vim.inspect(range),
+      { title = "Zk", merge = true }
+    )
+  end
   local location = make_given_range_params(range)
   vim.schedule(function() M.new { insertLinkAtLocation = location, [opts.location] = chunk } end)
 end
@@ -134,7 +139,7 @@ M.insert_link = function(opts)
   opts = opts or {}
   M.pick_notes(opts, { title = "Notes (insert link to note)", multi_select = false }, function(note)
     zka.link(note.path, zku.get_lsp_location_from_caret(), nil, {}, function(err, res)
-      if not res then error(err) end
+      if not res then ds.error(err, { title = "Zk" }) end
     end)
   end)
 end
@@ -146,12 +151,17 @@ M.insert_link_from_selection = function(opts)
   opts = opts or {}
   local lines, range = ds.buffer.get_visual_selection()
   local selection = table.concat(lines)
-  if selection == nil then error "Unable to create note: No selected text" end
-  if not range then error("Invalid text selection. Invalid value for 'range': " .. vim.inspect(range)) end
+  if selection == nil then ds.error("Unable to create note: No selected text", { title = "Zk" }) end
+  if not range then
+    ds.error(
+      "Invalid text selection.\nInvalid value for 'range': " .. vim.inspect(range),
+      { title = "Zk", merge = true }
+    )
+  end
   local location = make_given_range_params(range)
   M.pick_notes(opts, { title = ("Notes (link '%s' to note)"):format(selection), multi_select = false }, function(note)
     zka.link(note.path, location, nil, { title = selection }, function(err, res)
-      if not res then error(err) end
+      if not res then ds.error(err, { title = "Zk" }) end
     end)
   end)
 end
@@ -162,7 +172,7 @@ M.live_grep = function(opts)
   opts = opts or {}
   local notebook_path = opts.notebook_path and opts.notebook_path or zku.resolve_notebook_path(0)
   local notebook_root = zku.notebook_root(notebook_path)
-  if notebook_root == nil or #notebook_root == 0 then error "No notebook found." end
+  if notebook_root == nil or #notebook_root == 0 then ds.error("No notebook found.", { title = "Zk" }) end
   tb.live_grep { cwd = notebook_root, prompt_title = "Notes (live grep)" }
 end
 
