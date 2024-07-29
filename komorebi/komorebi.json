@@ -1,0 +1,58 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/v0.1.28/schema.json",
+  "app_specific_configuration_path": "$Env:KOMOREBI_CONFIG_HOME/applications.yaml",
+  "window_hiding_behaviour": "Cloak",
+  "cross_monitor_move_behaviour": "Insert",
+  "default_workspace_padding": 5,
+  "default_container_padding": 5,
+  "border": true,
+  "border_width": 2,
+  "border_offset": -1,
+  "border_style": "Square",
+  "border_colours": {
+    "single": "#97b6e5",
+    "stack": "#7f966d",
+    "monocle": "#ac72a0",
+    "unfocused": "#373737"
+  },
+  "stackbar": {
+    "height": 20,
+    "mode": "OnStack",
+    "tabs": {
+      "width": 300,
+      "focused_text": "#7f966d",
+      "unfocused_text": "#5a5a5a",
+      "background": "#373737"
+    }
+  },
+  "display_index_preferences": {
+    //left: portrait
+    "0": "GSM5B55-5&25bf14bb&0&UID270592",
+    //center: primary
+    "1": "GSM7727-5&25bf14bb&0&UID270597"
+  },
+  "monitors": [
+    {
+      "workspaces": [
+        {
+          "name": "portrait",
+          "layout": "Rows"
+        }
+      ]
+    },
+    {
+      "workspaces": [
+        {
+          "name": "primary",
+          "layout_rules": {
+            "1": "VerticalStack",
+            "4": "UltrawideVerticalStack"
+          },
+          "custom_layout_rules": {
+            "3": "C:/Users/Demaro/.config/komorebi/main-layout.json"
+          }
+        }
+      ]
+    }
+  ]
+}
