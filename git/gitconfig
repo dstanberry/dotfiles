@@ -112,7 +112,7 @@
 	prompt = false
 
 [mergetool "nvim"]
-	cmd = nvim +"tabdo DiffviewOpen"
+	cmd = nvim +"DiffviewOpen"
 
 [pager]
 	diff = delta
