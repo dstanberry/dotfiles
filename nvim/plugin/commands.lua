@@ -121,7 +121,7 @@ vim.api.nvim_create_user_command("ToggleWord", function()
       for _, client in pairs(vim.lsp.get_clients { bufnr = vim.api.nvim_get_current_buf() }) do
         if client.server_capabilities.documentFormattingProvider then
           renamed = true
-          vim.lsp.buf.rename(match)
+          pcall(vim.lsp.buf.rename, match)
         end
       end
       if not renamed then vim.cmd.normal { args = { ("ciw%s"):format(match) } } end
