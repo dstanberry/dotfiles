@@ -307,8 +307,8 @@ return {
       vim.api.nvim_create_autocmd("BufWritePost", {
         group = ds.augroup "mini_reload_colorscheme",
         pattern = "*/lua/theme/**.lua",
-        callback = vim.schedule_wrap(function(ev)
-          local group = get_config_file(ev.buf) or ""
+        callback = vim.schedule_wrap(function(args)
+          local group = get_config_file(args.buf) or ""
           hl_groups = {}
           if not group:match "^theme" then return end
           vim.cmd.colorscheme(vim.g.colors_name)

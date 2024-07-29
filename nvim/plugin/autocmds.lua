@@ -65,9 +65,9 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = ds.augroup "bigfile",
   pattern = "bigfile",
-  callback = function(args)
-    vim.schedule(function() vim.bo[args.buf].syntax = vim.filetype.match { buf = args.buf } or "" end)
-  end,
+  callback = vim.schedule_wrap(
+    function(args) vim.bo[args.buf].syntax = vim.filetype.match { buf = args.buf } or "" end
+  ),
 })
 
 -- disable line numbers and enusre filetype is set for terminal windows

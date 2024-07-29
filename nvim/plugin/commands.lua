@@ -1,7 +1,8 @@
 -- HACK: ...until the nested string wierdness is resolved in `gh/config.sml'
 -- [G]it[H]ub [E]dit [I]ssue
-vim.api.nvim_create_user_command("GHEI", function()
-  vim.schedule(function()
+vim.api.nvim_create_user_command(
+  "GHEI",
+  vim.schedule_wrap(function()
     local bufs = ds.buffer.list_buffers { listed = true }
     if #bufs == 1 then
       local path = vim.api.nvim_buf_get_name(bufs[1])
@@ -12,13 +13,15 @@ vim.api.nvim_create_user_command("GHEI", function()
         vim.api.nvim_buf_delete(bufs[1], { force = true })
       end
     end
-  end)
-end, {})
+  end),
+  {}
+)
 
 -- HACK: ...until the nested string wierdness is resolved in `gh/config.sml'
 -- [G]it[H]ub [E]dit [P]ull [R]equest
-vim.api.nvim_create_user_command("GHEPR", function()
-  vim.schedule(function()
+vim.api.nvim_create_user_command(
+  "GHEPR",
+  vim.schedule_wrap(function()
     local bufs = ds.buffer.list_buffers { listed = true }
     if #bufs == 1 then
       local path = vim.api.nvim_buf_get_name(bufs[1])
@@ -29,8 +32,9 @@ vim.api.nvim_create_user_command("GHEPR", function()
         vim.api.nvim_buf_delete(bufs[1], { force = true })
       end
     end
-  end)
-end, {})
+  end),
+  {}
+)
 
 vim.api.nvim_create_user_command(
   "Scratch",
