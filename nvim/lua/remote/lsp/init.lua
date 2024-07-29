@@ -44,6 +44,7 @@ return {
           local mod_enabled = true
           if mod.enabled ~= nil then mod_enabled = mod.enabled end
           if mod_enabled then
+            if mod.default_config then require("lspconfig.configs")[name] = mod.default_config end
             local config = vim.F.if_nil(mod.config, {})
             local server_opts = vim.tbl_deep_extend("force", default_opts, config)
             if mod.register_default_config and not configs[name] then configs[name] = { default_config = config } end
