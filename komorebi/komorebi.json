@@ -35,7 +35,7 @@
     {
       "workspaces": [
         {
-          "name": "main",
+          "name": "portrait",
           "layout": "Rows"
         }
       ]
@@ -43,13 +43,13 @@
     {
       "workspaces": [
         {
-          "name": "main",
-          "custom_layout_rules": {
-            //"1": "$Env:KOMOREBI_CONFIG_HOME/main-layout.json"
-            "1": "C:/Users/Demaro/.config/komorebi/main-layout.json"
-          },
+          "name": "primary",
           "layout_rules": {
+            "1": "VerticalStack",
             "4": "UltrawideVerticalStack"
+          },
+          "custom_layout_rules": {
+            "3": "C:/Users/Demaro/.config/komorebi/main-layout.json"
           }
         }
       ]

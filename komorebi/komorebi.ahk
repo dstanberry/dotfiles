@@ -18,6 +18,7 @@ Komorebic(cmd) {
   try Komorebic("stop")
   Komorebic("start")
 }
+!.::Komorebic("quick-load")
 
 ; Manage active window
 !q::Komorebic("close")
