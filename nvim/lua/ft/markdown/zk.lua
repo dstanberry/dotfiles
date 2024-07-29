@@ -95,21 +95,6 @@ M.new = function(opts)
   })
 end
 
-local make_given_range_params = function(range)
-  local params
-  params = ds.reduce({ "start", "end" }, function(v, k)
-    local row, col = unpack(range[k])
-    col = (vim.o.selection ~= "exclusive" and v == "end") and col + 1 or col
-    params[v] = { line = row, character = col }
-    return params
-  end)
-  local location = vim.lsp.util.make_given_range_params()
-  location.uri = location.textDocument.uri
-  location.textDocument = nil
-  location.range = params
-  return location
-end
-
 ---Using the current |`text selection`|, opens a `telescope` templates picker
 ---and creates/edits a new note based on the template chosen using the
 ---|`text selection`| as either the title or body of the note
@@ -121,14 +106,10 @@ M.new_from_selection = function(opts)
   end
   local lines, range = ds.buffer.get_visual_selection()
   local chunk = table.concat(lines)
-  if chunk == nil then ds.error("Unable to create note: No selected text", { tite = "Zk" }) end
-  if not range then
-    ds.error(
-      "Invalid text selection.\nInvalid value for 'range': " .. vim.inspect(range),
-      { title = "Zk", merge = true }
-    )
-  end
-  local location = make_given_range_params(range)
+  if not (chunk and #chunk > 0 and range) then return end
+  local location = ds.buffer.make_lsp_range_params(range)
+  location.uri = location.textDocument.uri
+  location.textDocument = nil
   vim.schedule(function() M.new { insertLinkAtLocation = location, [opts.location] = chunk } end)
 end
 
@@ -151,14 +132,10 @@ M.insert_link_from_selection = function(opts)
   opts = opts or {}
   local lines, range = ds.buffer.get_visual_selection()
   local selection = table.concat(lines)
-  if selection == nil then ds.error("Unable to create note: No selected text", { title = "Zk" }) end
-  if not range then
-    ds.error(
-      "Invalid text selection.\nInvalid value for 'range': " .. vim.inspect(range),
-      { title = "Zk", merge = true }
-    )
-  end
-  local location = make_given_range_params(range)
+  if not (selection and #selection > 0 and range) then return end
+  local location = ds.buffer.make_lsp_range_params(range)
+  location.uri = location.textDocument.uri
+  location.textDocument = nil
   M.pick_notes(opts, { title = ("Notes (link '%s' to note)"):format(selection), multi_select = false }, function(note)
     zka.link(note.path, location, nil, { title = selection }, function(err, res)
       if not res then ds.error(err, { title = "Zk" }) end
