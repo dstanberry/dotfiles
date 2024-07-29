@@ -17,14 +17,10 @@ return {
           goto_right = nil,
         },
         custom_textobjects = {
-          o = ai.gen_spec.treesitter({ -- lo[o]ps, c[o]nditions within loop
-            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
-            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-          }, {}),
-          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}), --[f]unction
+          a = ai.gen_spec.argument(), -- object/function [a]rgument
           c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}), -- [c]lass
-          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- [t]ags (html)
           d = { "%f[%d]%d+" }, -- [d]igits
+          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}), --[f]unction
           e = { -- word with cas[e]
             {
               "%u[%l%d]+%f[^%l%d]",
@@ -75,8 +71,13 @@ return {
             end
             return ret
           end,
-          u = ai.gen_spec.function_call(), -- f[u]nction parameter
-          U = ai.gen_spec.function_call { name_pattern = "[%w_]" }, -- f[u]nction parameter without dot in function name
+          o = ai.gen_spec.treesitter({ -- lo[o]ps, c[o]nditions within loop
+            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+          }, {}),
+          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- [t]ags (html)
+          u = ai.gen_spec.function_call(), -- function [u]sage
+          U = ai.gen_spec.function_call { name_pattern = "[%w_]" }, -- function [u]sage without dot in function name
         },
       }
     end,
