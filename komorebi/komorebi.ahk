@@ -58,8 +58,8 @@ Komorebic(cmd) {
 ^!t::Komorebic("retile")
 
 ; Manage workspace focus
-#^!1::Komorebic("focus-workspace 0")
-#^!2::Komorebic("focus-workspace 1")
+#^!e::Komorebic("focus-workspace 0")
+#^!r::Komorebic("focus-workspace 1")
 
 ; Move windows between workspaces
 #^!q::Komorebic("move-to-workspace 0")
