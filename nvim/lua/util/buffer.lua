@@ -48,11 +48,23 @@ function M.delete_buffer(buf)
   if vim.api.nvim_buf_is_valid(buf) then pcall(vim.cmd, "bdelete! " .. buf) end
 end
 
+---@alias util.buffer_startLine {start_line: number, start_col: number} {row,col} mark-indexed position.
+---@alias util.buffer_endLine {start_line: number, start_col: number} {row,col} mark-indexed position.
+---@alias util.buffer_selection { selected_lines: string[], start_pos: util.buffer_startLine, end_pos: util.buffer_endLine }
+
+---Captures the currently selected region of text
+---@return util.buffer_selection # Table containing the selection (accuracy is not guaranteed)
+---and two row-column tuples of the start and end of the range
 function M.get_line_selection()
   local start_char, end_char = "'<", "'>"
   vim.cmd "normal! "
+  local offset_encoding = vim.lsp.util._get_offset_encoding(0)
   local start_line, start_col = unpack(vim.fn.getpos(start_char), 2, 3)
   local end_line, end_col = unpack(vim.fn.getpos(end_char), 2, 3)
+  if end_col > 0 then
+    end_col = vim.lsp.util.character_offset(0, end_line, end_col, offset_encoding)
+    if end_col == 0 then end_col = #vim.api.nvim_buf_get_lines(0, end_line - 1, end_line, false)[1] + 1 end
+  end
   local selected_lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
   return {
     selected_lines = selected_lines,
@@ -62,8 +74,8 @@ function M.get_line_selection()
 end
 
 ---Captures the currently selected region of text
----@return string|string[], table #Table containing each line of the selected range
----and a table containing the two row-column tuples of the start and end of the range
+---@return string|string[]|table, util.buffer_selection #Table containing each line of the selected range
+---(accuracy is guaranteed) and a table containing the two row-column tuples of the start and end of the range
 function M.get_visual_selection()
   local res = M.get_line_selection()
   local mode = vim.fn.visualmode()
@@ -132,6 +144,23 @@ function M.list_buffers(opt)
     end
     return true
   end, bufs)
+end
+
+---@alias util.buffer_lsp_range_params { textDocument: { uri: string }, range: { start: number, end: number } }
+
+--- Custom implementation of `vim.lsp.util.make_range_params()`
+---@return util.buffer_lsp_range_params
+function M.make_lsp_range_params(range)
+  local params = {}
+  ds.foreach({ "start", "end" }, function(v, k)
+    local row, col = unpack(range[k])
+    col = (vim.o.selection ~= "exclusive" and v == "end") and col + 1 or col
+    params[v] = { line = row == 0 and row or row - 1, character = col == 0 and col or col - 1 }
+  end)
+  return {
+    ["range"] = params,
+    textDocument = { uri = vim.uri_from_bufnr(0) },
+  }
 end
 
 ---Delete current line or selected range from quickfix list
