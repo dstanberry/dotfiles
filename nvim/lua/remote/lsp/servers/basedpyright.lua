@@ -1,5 +1,7 @@
 local M = {}
 
+M.enabled = false
+
 M.config = {
   settings = {
     basedpyright = {

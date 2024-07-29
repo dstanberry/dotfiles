@@ -300,6 +300,29 @@ return {
           opts = { skip = true },
           filter = {
             any = {
+              {
+                event = "lsp",
+                cond = function(message)
+                  local content = message:content()
+                  local skipped = {
+                    "unknown command",
+                    "Ruff encountered a problem",
+                  }
+                  for _, pattern in ipairs(skipped) do
+                    if vim.bo[vim.api.nvim_get_current_buf()].filetype == "python" and content:find(pattern) then
+                      return true
+                    end
+                  end
+                  return false
+                end,
+              },
+            },
+          },
+        },
+        {
+          opts = { skip = true },
+          filter = {
+            any = {
               { event = "msg_show", find = "%d+ change" },
               { event = "msg_show", find = "%d+ line" },
               { event = "msg_show", find = "%d+ lines, %d+ bytes" },
