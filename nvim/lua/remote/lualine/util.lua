@@ -2,6 +2,7 @@
 ---@field git remote.lualine.component.git
 ---@field lsp remote.lualine.component.lsp
 ---@field metadata remote.lualine.component.metadata
+---@field plugin remote.lualine.component.plugin
 local M = {}
 
 setmetatable(M, {
@@ -26,6 +27,8 @@ M.add = function(highlight, items, join)
   return string.format("%s%s%s", highlight, out, sep)
 end
 
+M.available_width = function(width) return vim.api.nvim_get_option_value("columns", {}) >= width end
+
 M.highlighter = {
   sanitize = function(group) return "%#" .. group .. "#" end,
   segment = "%=",
@@ -34,7 +37,7 @@ M.highlighter = {
 
 M.theme = {
   command = {
-    a = { fg = vim.g.ds_colors.magenta1, bg = vim.g.ds_colors.gray0, bold = true },
+    a = { fg = vim.g.ds_colors.magenta1, bg = vim.g.ds_colors.gray0, gui = "bold" },
     b = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
     c = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
   },
@@ -44,22 +47,22 @@ M.theme = {
     c = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
   },
   insert = {
-    a = { fg = vim.g.ds_colors.green2, bg = vim.g.ds_colors.gray0, bold = true },
+    a = { fg = vim.g.ds_colors.green2, bg = vim.g.ds_colors.gray0, gui = "bold" },
     b = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
     c = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
   },
   normal = {
-    a = { fg = vim.g.ds_colors.blue1, bg = vim.g.ds_colors.gray0, bold = true },
+    a = { fg = vim.g.ds_colors.blue1, bg = vim.g.ds_colors.gray0, gui = "bold" },
     b = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
     c = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
   },
   replace = {
-    a = { fg = vim.g.ds_colors.orange0, bg = vim.g.ds_colors.gray0, bold = true },
+    a = { fg = vim.g.ds_colors.orange0, bg = vim.g.ds_colors.gray0, gui = "bold" },
     b = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
     c = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
   },
   visual = {
-    a = { fg = vim.g.ds_colors.red1, bg = vim.g.ds_colors.gray0, bold = true },
+    a = { fg = vim.g.ds_colors.red1, bg = vim.g.ds_colors.gray0, gui = "bold" },
     b = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
     c = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
   },

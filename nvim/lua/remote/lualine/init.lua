@@ -3,7 +3,7 @@ return {
   url = "https://github.com/dstanberry/lualine.nvim",
   event = "VeryLazy",
   init = function()
-    ds.hl.new("NoiceSymbolNormal", { fg = ds.color.lighten(vim.g.ds_colors.gray1, 15) })
+    ds.hl.new("NoiceSymbolNormal", { fg = ds.color.get_color "WinbarContext" })
     ds.hl.new("NoiceSymbolSeparator", { fg = ds.color.blend(vim.g.ds_colors.purple1, vim.g.ds_colors.bg2, 0.38) })
 
     vim.g.lualine_laststatus = vim.o.laststatus
@@ -17,74 +17,6 @@ return {
   end,
   opts = function()
     local util = require "remote.lualine.util"
-    local highlighter = util.highlighter
-    local breadcrumbs = util.metadata.breadcrumbs.get
-    local root_dir = util.metadata.root_dir.get
-    local languageservers = util.lsp.get
-    local git_branch = util.git.branch.get
-    local git_diff = util.git.diff.get
-    local git_difflabel = util.git.diffview.get
-    local merge_conflicts = util.git.merge_conflicts.get
-    local indent = util.metadata.indentation.get
-
-    local available_width = function(width) return vim.api.nvim_get_option_value("columns", {}) >= width end
-
-    ---@diagnostic disable-next-line: inject-field
-    ds.lsp_symbols = {
-      has = function() return false end,
-      get = function() return "" end,
-    }
-
-    ds.plugin.on_load("trouble.nvim", function()
-      ---@diagnostic disable-next-line: inject-field
-      ds.lsp_symbols = require("trouble").statusline {
-        mode = "lsp_document_symbols",
-        groups = {},
-        title = false,
-        filter = { range = true },
-        format = string.format(
-          "%s%s{kind_icon}{symbol.name:NoiceSymbolNormal}",
-          highlighter.sanitize "NoiceSymbolSeparator",
-          ds.pad(ds.icons.misc.FoldClosed, "right", 2)
-        ),
-      }
-    end)
-
-    local lsp_symbols_section = function()
-      local calculate_data = function(symbols)
-        symbols = symbols:gsub("%%#StatusLine#", ""):gsub("%%%%", "%%")
-        local bc = breadcrumbs():gsub("%%#.-#", "")
-        local sep = ds.pad(ds.icons.misc.FoldClosed, "right", 2)
-        local parts = vim.split(symbols, sep)
-        local raw_symbols = symbols:gsub("%%#.-#", ""):gsub("%%*", ""):gsub("*", "")
-        local margin = 10
-        if available_width(#bc + #raw_symbols + margin) then return symbols end
-        local raw_parts = vim.split(raw_symbols, sep)
-        local trimmed_parts = ds.reduce(raw_parts, function(acc, part)
-          table.insert(acc, part)
-          local new_s = table.concat(acc, sep)
-          if not available_width(#bc + #new_s + margin) then
-            if acc[#acc] == part then table.remove(acc, #acc) end
-          end
-          return acc
-        end)
-        local result = vim.list_slice(parts, 1, #trimmed_parts)
-        if parts[#result + 1] then
-          local etc = string.format("%s...", highlighter.sanitize "Winbar")
-          table.insert(trimmed_parts, etc)
-          if available_width(#bc + #table.concat(trimmed_parts, sep) + margin) then
-            table.insert(result, etc)
-          else
-            result[#result] = etc
-          end
-        end
-        return table.concat(result, sep)
-      end
-
-      local default = string.format("%s%s", highlighter.sanitize "Winbar", "%=")
-      local data = ds.lsp_symbols.get()
-      return data ~= "%#StatusLine#" and calculate_data(data) or default
-    end
 
     -- PERF: disable lualine require
     local lualine_require = require "lualine_require"
@@ -106,24 +38,29 @@ return {
             function() return ds.icons.misc.VerticalBarBold end,
             padding = { left = 0, right = 0 },
           },
-          { git_branch, padding = { right = 2 } },
+          {
+            util.git.branch.get,
+            padding = { right = 2 },
+          },
         },
         lualine_b = {
           {
-            root_dir,
-            cond = function() return type(root_dir()) == "string" end,
+            util.metadata.root_dir.get,
             padding = { right = 1 },
+            color = { fg = vim.g.ds_colors.overlay1 },
+            cond = function() return type(util.metadata.root_dir.get()) == "string" end,
           },
           {
             "vim.b.gitsigns_blame_line",
-            padding = { left = 2, right = 2 },
-            cond = function() return available_width(120) end,
+            padding = { right = 1 },
+            color = { fg = ds.color.get_color "WinbarFilename", gui = "italic" },
+            cond = function() return util.available_width(120) end,
           },
         },
         lualine_c = {
           {
             "diff",
-            source = git_diff,
+            source = util.git.diff.get,
             symbols = {
               added = ds.pad(ds.icons.git.TextAdded, "right"),
               modified = ds.pad(ds.icons.git.TextChanged, "right"),
@@ -147,68 +84,71 @@ return {
               hint = ds.pad(ds.icons.status.Hint, "right"),
             },
             diagnostics_color = {
-              error = { fg = ds.color.blend(vim.g.ds_colors.red1, vim.g.ds_colors.white, 0.4) },
-              warn = { fg = ds.color.blend(vim.g.ds_colors.yellow2, vim.g.ds_colors.white, 0.4) },
-              info = { fg = ds.color.blend(vim.g.ds_colors.aqua1, vim.g.ds_colors.white, 0.4) },
-              hint = { fg = ds.color.blend(vim.g.ds_colors.magenta1, vim.g.ds_colors.white, 0.4) },
+              error = { fg = ds.color.get_color "DiagnosticVirtualTextError" },
+              warn = { fg = ds.color.get_color "DiagnosticVirtualTextWarn" },
+              info = { fg = ds.color.get_color "DiagnosticVirtualTextInfo" },
+              hint = { fg = ds.color.get_color "DiagnosticVirtualTextHint" },
             },
           },
-          { languageservers },
+          {
+            util.lsp.get,
+            color = { fg = ds.color.lighten(vim.g.ds_colors.overlay1, 10), gui = "bold" },
+          },
+          {
+            "filetype",
+            color = { gui = "bold" },
+          },
         },
         lualine_y = {
           {
-            function()
-              ---@diagnostic disable-next-line: undefined-field
-              local text = require("noice").api.status.search.get()
-              local query = vim.F.if_nil(text:match "%/(.-)%s", text:match "%?(.-)%s")
-              local counter = text:match "%d+%/%d+"
-              return string.format("%s %s [%s]", ds.icons.misc.Magnify, query, counter)
-            end,
-            cond = function()
-              ---@diagnostic disable-next-line: undefined-field
-              return package.loaded["noice"] and require("noice").api.status.search.has() and available_width(80)
-            end,
-            color = { fg = vim.g.ds_colors.gray2, bold = true },
+            util.plugin.noice.get,
+            color = { fg = vim.g.ds_colors.gray2, gui = "italic" },
+            cond = function() return util.plugin.noice.cond() and util.available_width(80) end,
           },
-          { "location" },
-          { indent },
-          { "encoding" },
-          { "fileformat", icons_enabled = true, symbols = { unix = "lf", dos = "crlf", mac = "cr" } },
-          { "filetype", padding = { right = 2 } },
+          {
+            "location",
+            color = { fg = ds.color.get_color "WinbarContext", gui = "bold,italic" },
+          },
+          {
+            util.metadata.indentation.get,
+            color = { fg = ds.color.get_color "WinbarContext", gui = "bold,italic" },
+          },
+          {
+            "encoding",
+            color = { fg = ds.color.get_color "WinbarContext", gui = "bold,italic" },
+          },
+          {
+            "fileformat",
+            icons_enabled = true,
+            symbols = { unix = "lf", dos = "crlf", mac = "cr" },
+            color = { fg = ds.color.get_color "WinbarContext" },
+            padding = { right = 2 },
+          },
         },
         lualine_z = {},
       },
       winbar = {
         lualine_a = {
           {
-            git_difflabel,
+            util.git.diffview.get,
             color = "Winbar",
             cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
           },
           {
-            breadcrumbs,
+            util.metadata.breadcrumbs.get,
             color = "Winbar",
             padding = { right = 0 },
           },
           {
-            lsp_symbols_section,
-            cond = function()
-              local buf = vim.api.nvim_get_current_buf()
-              local fname = vim.api.nvim_buf_get_name(buf)
-              return not (
-                fname:match "%[Scratch%]$"
-                or vim.bo[buf].ft:match "dapui_"
-                or vim.tbl_contains(ds.excludes.ft.wb_empty, vim.bo[buf].ft)
-                or vim.tbl_contains(ds.excludes.ft.wb_disabled, vim.bo[buf].ft)
-              )
-            end,
+            util.plugin.trouble.get,
+            cond = util.plugin.trouble.cond,
             padding = { left = 0 },
             color = "Winbar",
           },
         },
         lualine_x = {
           {
-            merge_conflicts,
+            util.git.merge_conflicts.get,
             color = "Winbar",
             cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
           },
@@ -217,19 +157,19 @@ return {
       inactive_winbar = {
         lualine_a = {
           {
-            git_difflabel,
+            util.git.diffview.get,
             color = "Winbar",
             cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
           },
           {
-            breadcrumbs,
+            util.metadata.breadcrumbs.get,
             color = "Winbar",
             padding = { right = 0 },
           },
         },
         lualine_x = {
           {
-            merge_conflicts,
+            util.git.merge_conflicts.get,
             color = "Winbar",
             cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
           },
