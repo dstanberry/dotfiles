@@ -40,6 +40,7 @@ M.diffview = {
     if ds.contains(ds.excludes.ft.wb_empty, ft) then return " " end
     return add(highlighter.sanitize "@variable.builtin", { vim.api.nvim_buf_get_var(buf, "diffview_label") }, true)
   end,
+  cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
 }
 
 M.merge_conflicts = {

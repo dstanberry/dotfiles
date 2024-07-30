@@ -103,7 +103,7 @@ return {
           {
             util.plugin.noice.get,
             color = { fg = vim.g.ds_colors.gray2, gui = "italic" },
-            cond = function() return util.plugin.noice.cond() and util.available_width(80) end,
+            cond = util.plugin.noice.cond,
           },
           {
             "location",
@@ -132,7 +132,7 @@ return {
           {
             util.git.diffview.get,
             color = "Winbar",
-            cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
+            cond = util.git.diffview.cond,
           },
           {
             util.metadata.breadcrumbs.get,
@@ -150,7 +150,7 @@ return {
           {
             util.git.merge_conflicts.get,
             color = "Winbar",
-            cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
+            cond = util.git.diffview.cond,
           },
         },
       },
@@ -159,7 +159,7 @@ return {
           {
             util.git.diffview.get,
             color = "Winbar",
-            cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
+            cond = util.git.diffview.cond,
           },
           {
             util.metadata.breadcrumbs.get,
@@ -171,7 +171,7 @@ return {
           {
             util.git.merge_conflicts.get,
             color = "Winbar",
-            cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
+            cond = util.git.diffview.cond,
           },
         },
       },
