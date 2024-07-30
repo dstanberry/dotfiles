@@ -175,13 +175,10 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     event = "LazyFile",
     opts = {
-      indent = {
-        -- char = "",
-        char = ds.icons.misc.VerticalBarThin,
-        -- tab_char =ds.icons.misc.VerticalBarThin,
-      },
+      indent = { char = ds.icons.misc.VerticalBarThin },
       scope = {
-        enabled = true,
+        -- NOTE: managed by `mini.indentscope`
+        enabled = false,
         char = ds.icons.misc.VerticalBar,
         highlight = {
           "TSRainbow1",
