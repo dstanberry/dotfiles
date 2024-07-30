@@ -11,11 +11,6 @@ return {
     event = { "LazyFile", "VeryLazy" },
     dependencies = {
       "williamboman/mason.nvim",
-      {
-        "folke/neoconf.nvim",
-        cmd = "Neoconf",
-        opts = { local_settings = ".nvim.json", global_settings = "nvim.json" },
-      },
     },
     config = function()
       local lspconfig = require "lspconfig"
