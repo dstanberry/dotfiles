@@ -346,10 +346,9 @@ return {
       package_manager = "npm",
       colors = {},
     },
-      -- stylua: ignore
     init = function()
-      ds.hl.new("PackageInfoOutdatedVersion", { fg = ds.color.blend(vim.g.ds_colors.orange1, vim.g.ds_colors.bg2, 0.40) })
-      ds.hl.new("PackageInfoUpToDateVersion", { fg = ds.color.blend(vim.g.ds_colors.green1, vim.g.ds_colors.bg2, 0.40) })
+      ds.hl.new("PackageInfoOutdatedVersion", { link = "DiagnosticVirtualTextWarn" })
+      ds.hl.new("PackageInfoUpToDateVersion", { link = "DiagnosticVirtualTextInfo" })
     end,
   },
   {

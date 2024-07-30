@@ -167,10 +167,10 @@ M.defaults = function(c)
     DiagnosticInfo                             = { fg = c.aqua1 },
     DiagnosticHint                             = { fg = c.magenta0 },
 
-    DiagnosticStatusError                      = { fg = c.red0, bg = c.gray0 },
-    DiagnosticStatusWarn                       = { fg = c.yellow0, bg = c.gray0 },
-    DiagnosticStatusInfo                       = { fg = c.aqua1, bg = c.gray0 },
-    DiagnosticStatusHint                       = { fg = c.magenta0, bg = c.gray0 },
+    DiagnosticVirtualTextError                 = { fg = ds.color.blend(c.red0, c.bg2, 0.6) },
+    DiagnosticVirtualTextWarn                  = { fg = ds.color.blend(c.yellow0, c.bg2, 0.6) },
+    DiagnosticVirtualTextInfo                  = { fg = ds.color.blend(c.aqua1, c.bg2, 0.6) },
+    DiagnosticVirtualTextHint                  = { fg = ds.color.blend(c.magenta0, c.bg2, 0.6) },
 
     DiagnosticUnderlineError                   = { undercurl = true, sp = c.red0 },
     DiagnosticUnderlineWarn                    = { undercurl = true, sp = c.yellow0 },
