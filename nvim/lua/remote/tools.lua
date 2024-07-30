@@ -70,12 +70,12 @@ return {
           ["markdown.mdx"] = function(bufnr)
             return { first(bufnr, "prettierd", "prettier"), "markdownlint-cli2", "markdown-toc", "cbfmt" }
           end,
-          psql = { "sqlfluff", "sql_formatter", stop_after_first = true },
+          psql = { "sqlfluff" },
           -- python = { "injected", "black" },
           python = { "black" },
           rust = { "rustfmt" },
           sh = { "shfmt" },
-          sql = { "sqlfluff", "sql_formatter", stop_after_first = true },
+          sql = { "sqlfluff" },
           terraform = { "terraform_fmt" },
           ["terraform-vars"] = { "terraform_fmt" },
           tf = { "terraform_fmt" },
@@ -256,7 +256,6 @@ return {
       events = { "BufWritePost", "BufReadPost", "InsertLeave" },
       linters_by_ft = {
         markdown = { "markdownlint-cli2" },
-        python = { "flake8" },
         sh = { "shellcheck" },
         sql = { "sqlfluff" },
         terraform = { "terraform_validate" },

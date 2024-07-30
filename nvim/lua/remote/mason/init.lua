@@ -20,7 +20,6 @@ return {
       "omnisharp",
       "powershell-editor-services",
       "pylance",
-      "pyright",
       "roslyn",
       "ruff",
       "rust-analyzer",
@@ -38,7 +37,6 @@ return {
       "js-debug-adapter",
       "netcoredbg",
       -- linters
-      "flake8",
       "markdownlint-cli2",
       "shellcheck",
       "snyk",
@@ -46,7 +44,6 @@ return {
       "tflint",
       "vale",
       -- formatters
-      "beautysh",
       "black",
       "cbfmt",
       "csharpier",
@@ -57,7 +54,6 @@ return {
       "prettier",
       "prettierd",
       "shfmt",
-      "sql-formatter",
       "stylua",
       "yamlfmt",
     },
