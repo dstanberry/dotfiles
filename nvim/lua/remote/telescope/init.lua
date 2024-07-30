@@ -69,6 +69,7 @@ return {
         { "<localleader>fe", util.browse.current_directory, desc = "telescope: browse current directory" },
         -- misc
         { "<leader>fk", util.misc.help_tags, desc = "telescope: help pages" },
+        { "<leader>z=", util.misc.spell_suggest, desc = "telescope: help pages" },
       }
     end,
     init = function()
@@ -245,6 +246,10 @@ return {
           registers = {
             theme = "dropdown",
             layout_config = { height = 40 },
+          },
+          spell_suggest = {
+            theme = "dropdown",
+            layout_config = { height = 15 },
           },
         },
         extensions = {

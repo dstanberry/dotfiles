@@ -138,6 +138,7 @@ M.misc = {
   help_tags = function() require("telescope.builtin").help_tags() end,
   lsp_buffer_diagnostics = function() require("telescope.builtin").diagnostics { bufnr = 0 } end,
   lsp_workspace_diagnostics = function() require("telescope.builtin").diagnostics() end,
+  spell_suggest = function() require("telescope.builtin").spell_suggest() end,
 }
 
 function M.set_prompt_to_entry_value(prompt_bufnr)
