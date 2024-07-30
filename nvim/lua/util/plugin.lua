@@ -206,9 +206,6 @@ M.setup = function()
   bootstrap()
   lazy_file()
 
-  ds.hl.new("LazyButton", { fg = vim.g.ds_colors.black, bg = ds.color.darken(vim.g.ds_colors.gray2, 5) })
-  ds.hl.new("LazyButtonActive", { bg = ds.color.blend(vim.g.ds_colors.purple1, vim.g.ds_colors.bg0, 0.15) })
-
   vim.api.nvim_create_autocmd("User", {
     group = ds.augroup "lazy_clipboard",
     pattern = "VeryLazy",
@@ -235,6 +232,9 @@ M.setup = function()
 
   M.lazy_notify()
   init_plugins()
+
+  ds.hl.new("LazyButton", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg3 })
+  ds.hl.new("LazyButtonActive", { bg = ds.color.get_color("Visual", true), bold = true })
 
   vim.keymap.set("n", "<localleader>gb", browse_remote, { noremap = true, silent = true, desc = "git: browse remote" })
 end
