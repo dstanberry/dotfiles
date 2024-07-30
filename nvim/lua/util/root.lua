@@ -41,8 +41,11 @@ local bufpath = function(buf) return realpath(vim.api.nvim_buf_get_name(assert(b
 ---@diagnostic disable-next-line: unused-local, unused-function
 local cwd = function() return realpath(vim.uv.cwd()) end
 
+---@return util.root_dirs[]
 function M.detectors.cwd() return { vim.uv.cwd() } end
 
+---@param buf number
+---@return util.root_dirs[]
 function M.detectors.lsp(buf)
   local filepath = bufpath(buf)
   if not filepath then return {} end
@@ -60,7 +63,9 @@ function M.detectors.lsp(buf)
   end, roots)
 end
 
+---@param buf number
 ---@param patterns string[]|string
+---@return util.root_dirs[]
 function M.detectors.pattern(buf, patterns)
   patterns = type(patterns) == "string" and { patterns } or patterns
   local filepath = bufpath(buf) or vim.uv.cwd()
@@ -86,6 +91,7 @@ function M.resolve(spec)
 end
 
 ---@param opts? { buf?: number, spec?: util.root_spec[], all?: boolean }
+---@return util.root_dirs[]
 function M.detect(opts)
   opts = opts or {}
   opts.buf = (opts.buf == nil or opts.buf == 0) and vim.api.nvim_get_current_buf() or opts.buf
