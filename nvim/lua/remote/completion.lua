@@ -6,6 +6,9 @@ return {
       completion = {
         cmp = { enabled = true },
       },
+      popup = {
+        border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+      },
     },
     config = function(_, opts)
       require("crates").setup(opts)
