@@ -3,60 +3,6 @@ return {
     "williamboman/mason.nvim",
     build = ":MasonUpdate",
     cmd = "Mason",
-    ensure_installed = {
-      -- language servers
-      "angular-language-server",
-      "basedpyright",
-      "bash-language-server",
-      "clangd",
-      "cmake-language-server",
-      "css-lsp",
-      "eslint-lsp",
-      "gopls",
-      "html-lsp",
-      "json-lsp",
-      "lua-language-server",
-      "marksman",
-      "omnisharp",
-      "powershell-editor-services",
-      "pylance",
-      "roslyn",
-      "ruff",
-      "rust-analyzer",
-      "snyk-ls",
-      "taplo",
-      "terraform-ls",
-      "typescript-language-server",
-      "vtsls",
-      "yaml-language-server",
-      "zk",
-      -- debuggers
-      "codelldb",
-      "debugpy",
-      "delve",
-      "js-debug-adapter",
-      "netcoredbg",
-      -- linters
-      "markdownlint-cli2",
-      "shellcheck",
-      "snyk",
-      "sqlfluff",
-      "tflint",
-      "vale",
-      -- formatters
-      "black",
-      "cbfmt",
-      "csharpier",
-      "gofumpt",
-      "goimports",
-      "markdown-toc",
-      "markdownlint-cli2",
-      "prettier",
-      "prettierd",
-      "shfmt",
-      "stylua",
-      "yamlfmt",
-    },
     opts = {
       PATH = "append",
       log_level = vim.log.levels.INFO,
@@ -90,10 +36,11 @@ return {
       ds.hl.new("MasonMutedBlock", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg3 })
       ds.hl.new("MasonHighlightBlockBold", { bg = ds.color.get_color("Visual", true), bold = true })
     end,
-    config = function(plugin, opts)
+    config = function(_, opts)
       require("mason").setup(opts)
       local mason_registry = require "mason-registry"
-      for _, tool in ipairs(plugin.ensure_installed) do
+      local tools = require "remote.mason.packages" or {}
+      for _, tool in ipairs(tools) do
         local pkg = mason_registry.get_package(tool)
         if not pkg:is_installed() then pkg:install() end
       end
