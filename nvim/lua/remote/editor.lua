@@ -225,7 +225,7 @@ return {
     opts = function()
       return {
         library = {
-          uv = vim.fs.joinpath(vim.fn.stdpath "data", "lazy", "luvit-meta", "library"),
+          { path = "luvit-meta/library", words = { "vim%.uv" } },
         },
       }
     end,
