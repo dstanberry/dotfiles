@@ -171,8 +171,8 @@ return {
       adapters["neotest-python"] = { runner = "pytest" }
       local py_venv = vim.fs.find({ ".venv", "venv" }, { path = vim.uv.cwd(), upward = true })[1]
       if py_venv then
-        local root = ds.has "win32" and py_venv .. "/Scripts/pythonw.exe" or py_venv .. "bin/python"
-        adapters["neotest-python"]["python"] = root
+        local bin = ds.has "win32" and { "Scripts", "python.exe" } or { "bin", "python" }
+        adapters["neotest-python"]["python"] = vim.fs.joinpath(py_venv, unpack(bin))
       end
       return {
         adapters = adapters,
