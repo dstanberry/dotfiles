@@ -20,18 +20,11 @@ end
 
 function M.plugin_spec()
   local files = {}
-  for _, plugin in pairs(require("lazy.core.config").plugins) do
-    repeat
-      ---@diagnostic disable-next-line: undefined-field
-      if plugin._.module then
-        ---@diagnostic disable-next-line: undefined-field
-        local info = vim.loader.find(plugin._.module)[1]
-        if info then files[info.modpath] = info.modpath end
-      end
-      ---@diagnostic disable-next-line: undefined-field
-      plugin = plugin._.super
-    until not plugin
-  end
+  ds.walk("remote", function(path, name, type)
+    if (type == "file" or type == "link") and name:match "%.lua$" then
+      if name == "init.lua" or vim.fs.dirname(path):match "remote$" then files[path] = path end
+    end
+  end)
   require("telescope.builtin").live_grep {
     default_text = "/",
     search_dirs = vim.tbl_values(files),
