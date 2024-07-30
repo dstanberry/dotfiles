@@ -91,7 +91,7 @@ return {
             },
           },
           {
-            util.lsp.get,
+            util.lsp.clients.get,
             color = { fg = ds.color.lighten(vim.g.ds_colors.overlay1, 10), gui = "bold" },
           },
           {
@@ -101,9 +101,9 @@ return {
         },
         lualine_y = {
           {
-            util.plugin.noice.get,
+            util.message.noice.get,
             color = { fg = vim.g.ds_colors.gray2, gui = "italic" },
-            cond = util.plugin.noice.cond,
+            cond = util.message.noice.cond,
           },
           {
             "location",
@@ -140,8 +140,8 @@ return {
             padding = { right = 0 },
           },
           {
-            util.plugin.trouble.get,
-            cond = util.plugin.trouble.cond,
+            util.lsp.symbols.get,
+            cond = util.lsp.symbols.cond,
             padding = { left = 0 },
             color = "Winbar",
           },
