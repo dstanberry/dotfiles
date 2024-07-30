@@ -420,18 +420,13 @@ return {
     config = function()
       ds.plugin.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
-          group = ds.augroup "dadbod_cmp",
+          group = vim.g.ds_cmp_group,
           pattern = "sql",
           callback = function()
-            ---@diagnostic disable-next-line: missing-fields
-            require("cmp").setup.buffer {
-              sources = {
-                { name = "vim-dadbod-completion" },
-                { name = "luasnip" },
-                { name = "path" },
-                { name = "buffer", keyword_length = 5, max_item_count = 5 },
-              },
-            }
+            local plugin = require("lazy.core.config").spec.plugins["nvim-cmp"]
+            local sources = require("lazy.core.plugin").values(plugin, "opts", false).sources or {}
+            table.insert(sources, { name = "vim-dadbod-completion" })
+            require("cmp").setup.buffer { sources = sources }
           end,
         })
       end)
@@ -454,18 +449,13 @@ return {
       }
       ds.plugin.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
-          group = ds.augroup "dbee_cmp",
+          group = vim.g.ds_cmp_group,
           pattern = "sql",
           callback = function()
-            ---@diagnostic disable-next-line: missing-fields
-            require("cmp").setup.buffer {
-              sources = {
-                { name = "cmp-dbee" },
-                { name = "luasnip" },
-                { name = "path" },
-                { name = "buffer", keyword_length = 5, max_item_count = 5 },
-              },
-            }
+            local plugin = require("lazy.core.config").spec.plugins["nvim-cmp"]
+            local sources = require("lazy.core.plugin").values(plugin, "opts", false).sources or {}
+            table.insert(sources, { name = "cmp-dbee" })
+            require("cmp").setup.buffer { sources = sources }
           end,
         })
       end)

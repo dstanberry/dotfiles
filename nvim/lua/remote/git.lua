@@ -182,10 +182,9 @@ return {
 
       ds.plugin.on_load("nvim-cmp", function()
         vim.api.nvim_create_autocmd("FileType", {
-          group = ds.augroup "octo_cmp",
+          group = vim.g.ds_cmp_group,
           pattern = "octo",
           callback = function()
-            ---@diagnostic disable-next-line: missing-fields
             require("cmp").setup.buffer {
               sources = {
                 { name = "buffer", keyword_length = 5, max_item_count = 5 },
