@@ -25,6 +25,7 @@ return {
       "ruff",
       "rust-analyzer",
       "snyk-ls",
+      "taplo",
       "terraform-ls",
       "typescript-language-server",
       "vtsls",

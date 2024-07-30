@@ -272,6 +272,15 @@ return {
           })
         end,
       },
+      {
+        "Saecki/crates.nvim",
+        event = { "BufRead Cargo.toml" },
+        opts = {
+          completion = {
+            cmp = { enabled = true },
+          },
+        },
+      },
     },
     opts = function()
       local cmp = require "cmp"
