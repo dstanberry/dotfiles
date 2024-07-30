@@ -12,7 +12,7 @@ function M.get()
   local names = clients and table.concat(clients, ds.pad(ds.icons.misc.CircleDot, "both")) or ""
   return #names == 0 and ""
     or #names < limit and ds.pad(ds.icons.misc.Gear, "right", 2) .. names
-    or ds.pad(ds.icons.misc.Gear, "right", 2) .. #names
+    or ds.pad(ds.icons.misc.Gear, "right", 2) .. #clients
 end
 
 return M
