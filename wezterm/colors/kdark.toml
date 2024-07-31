@@ -6,8 +6,27 @@ cursor_border = "#b4bac6"
 cursor_fg = "#373737"
 selection_bg = "#e5c179"
 selection_fg = "#b4bac6"
-ansi = ["#434345", "#b04b57", "#93b379", "#e5c179", "#6f8fb4", "#a4799d", "#77b3c5", "#b4bac6"]
-brights = ["#434345", "#b04b57", "#93b379", "#e5c179", "#6f8fb4", "#a4799d", "#77b3c5", "#b4bac6"]
+
+ansi = [
+	"#434345",
+	"#b04b57",
+	"#93b379",
+	"#e5c179",
+	"#6f8fb4",
+	"#a4799d",
+	"#77b3c5",
+	"#b4bac6",
+]
+brights = [
+	"#434345",
+	"#b04b57",
+	"#93b379",
+	"#e5c179",
+	"#6f8fb4",
+	"#a4799d",
+	"#77b3c5",
+	"#b4bac6",
+]
 
 [colors.tab_bar]
 inactive_tab_edge = "#373737"

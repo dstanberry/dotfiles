@@ -296,12 +296,13 @@
 ---@field quick_select_patterns any #TODO
 ---@field quit_when_all_windows_are_closed any #TODO
 ---@field quote_dropped_files any #TODO
+---@field resolved_palette ColorScheme #TODO
 ---@field scroll_to_bottom_on_input boolean
 ---@field scrollback_lines integer
 ---@field selection_word_boundary string
 ---@field serial_ports any #TODO
 ---@field set_environment_variables { [string]: string } Specifies a map of environment variables that should be set when spawning new commands in the "local" domain. This configuration is consulted at the time that a program is launched. It is not possible to update the environment of a running program on any Operating System. This is not used when working with remote domains.
----@field set_strict_mode fun(self: WeztermConfig, strict: boolean) 
+---@field set_strict_mode fun(self: WeztermConfig, strict: boolean)
 ---@field show_new_tab_button_in_tab_bar boolean When set to true (the default), the tab bar will display the new-tab button, which can be left-clicked to create a new tab, or right-clicked to display the Launcher Menu. When set to false, the new-tab button will not be drawn into the tab bar.
 ---@field show_tab_index_in_tab_bar boolean When set to true (the default), tab titles show their tab number (tab index) with a prefix such as 1:. When false, no numeric prefix is shown.
 ---@field show_tabs_in_tab_bar boolean When set to true (the default), the tab bar will display the tabs associated with the current window. When set to false, the tabs will not be drawn into the tab bar.
