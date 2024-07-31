@@ -213,7 +213,7 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    version = "v4.4.7",
+    commit = "b3f08e6",
     keys = {
       {
         "<c-d>",
