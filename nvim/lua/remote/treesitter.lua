@@ -1,7 +1,3 @@
-ds.hl.new("TreesitterContext", { link = "Normal" })
-ds.hl.new("TreesitterContextLineNumber", { link = "LineNr" })
-ds.hl.new("TreesitterContextSeparator", { link = "NonText" })
-
 -- vim.treesitter.language.register("bash", "zsh")
 vim.treesitter.language.register("typescript", "typescriptreact")
 
@@ -75,6 +71,11 @@ return {
         lua = { "table" },
       },
     },
+    init = function()
+      ds.hl.new("TreesitterContext", { link = "Normal" })
+      ds.hl.new("TreesitterContextLineNumber", { link = "LineNr" })
+      ds.hl.new("TreesitterContextSeparator", { link = "NonText" })
+    end,
   },
   {
     "theHamsta/nvim-treesitter-pairs",
