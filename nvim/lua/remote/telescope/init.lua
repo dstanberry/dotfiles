@@ -270,16 +270,16 @@ return {
             mappings = {
               i = {
                 ["<c-f>"] = actions.to_fuzzy_refine,
-                ["<c-k>"] = function() return require("telescope-live-grep-args.actions").quote_prompt() end,
-                ["<c-i>"] = function()
-                  return require("telescope-live-grep-args.actions").quote_prompt { postfix = " --iglob " }
+                ["<c-k>"] = function(...) require("telescope-live-grep-args.actions").quote_prompt()(...) end,
+                ["<c-i>"] = function(...)
+                  require("telescope-live-grep-args.actions").quote_prompt { postfix = " --iglob " }(...)
                 end,
               },
               n = {
                 ["<c-f>"] = actions.to_fuzzy_refine,
-                ["<c-k>"] = function() return require("telescope-live-grep-args.actions").quote_prompt() end,
-                ["<c-i>"] = function()
-                  return require("telescope-live-grep-args.actions").quote_prompt { postfix = " --iglob " }
+                ["<c-k>"] = function(...) require("telescope-live-grep-args.actions").quote_prompt()(...) end,
+                ["<c-i>"] = function(...)
+                  require("telescope-live-grep-args.actions").quote_prompt { postfix = " --iglob " }(...)
                 end,
               },
             },
