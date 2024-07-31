@@ -20,23 +20,6 @@ M.clients = {
   end,
 }
 
-ds.plugin.on_load(
-  "trouble.nvim",
-  function()
-    M.symbols._ = require("trouble").statusline {
-      mode = "lsp_document_symbols",
-      groups = {},
-      title = false,
-      filter = { range = true },
-      format = string.format(
-        "%s%s{kind_icon}{symbol.name:NoiceSymbolNormal}",
-        highlighter.sanitize "NoiceSymbolSeparator",
-        ds.pad(ds.icons.misc.FoldClosed, "right", 2)
-      ),
-    }
-  end
-)
-
 M.symbols = {
   _ = {
     has = function() return false end,
@@ -88,5 +71,22 @@ M.symbols = {
     )
   end,
 }
+
+ds.plugin.on_load(
+  "trouble.nvim",
+  function()
+    M.symbols._ = require("trouble").statusline {
+      mode = "lsp_document_symbols",
+      groups = {},
+      title = false,
+      filter = { range = true },
+      format = string.format(
+        "%s%s{kind_icon}{symbol.name:NoiceSymbolNormal}",
+        highlighter.sanitize "NoiceSymbolSeparator",
+        ds.pad(ds.icons.misc.FoldClosed, "right", 2)
+      ),
+    }
+  end
+)
 
 return M
