@@ -1,7 +1,8 @@
 local M = {}
 
+M.enabled = not ds.has "win32"
+
 M.initialized = false
-M.defer_setup = true
 
 local init_zk = function()
   if M.initialized then return end
@@ -20,6 +21,8 @@ local init_zk = function()
     },
   }
 end
+
+M.defer_setup = true
 
 M.setup = function()
   local md_keymaps = require "ft.markdown.keymaps"
