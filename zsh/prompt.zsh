@@ -27,10 +27,11 @@ if [ -f "$CONFIG_HOME/zsh/site-functions/async" ]; then
 
     # show untracked status in git prompt
     function +vi-git-untracked() {
+    local untracked_icon="▪"
       emulate -L zsh
       if __in_git; then
         if [[ -n $(git ls-files --directory --no-empty-directory --exclude-standard --others 2> /dev/null) ]]; then
-          hook_com[unstaged]+="%F{blue}▪%f"
+          hook_com[unstaged]+="%F{blue}$untracked_icon%f"
         fi
       fi
     }
@@ -48,6 +49,8 @@ if [ -f "$CONFIG_HOME/zsh/site-functions/async" ]; then
 
     # show metrics local branch is ahead-of or behind remote HEAD.
     function +vi-git-compare() {
+      local ahead_icon="⇡"
+      local behind_icon="⇣"
       local ahead behind
       local -a gitstatus
       git rev-parse ${hook_com[branch]}@{upstream} >/dev/null 2>&1 || return 0
@@ -56,8 +59,8 @@ if [ -f "$CONFIG_HOME/zsh/site-functions/async" ]; then
       )
       ahead=${ahead_and_behind[1]}
       behind=${ahead_and_behind[2]}
-      local ahead_symbol="%{$fg[red]%}⇡%{$reset_color%}${ahead}"
-      local behind_symbol="%{$fg[cyan]%}⇣%{$reset_color%}${behind}"
+      local ahead_symbol="%{$fg[magenta]%}${ahead_icon}%{$reset_color%}${ahead}"
+      local behind_symbol="%{$fg[magenta]%}${behind_icon}%{$reset_color%}${behind}"
       (( $ahead )) && gitstatus+=( "${ahead_symbol}" )
       (( $behind )) && gitstatus+=( "${behind_symbol}" )
       hook_com[misc]+="${(j: :)gitstatus}"
