@@ -5,24 +5,34 @@
   "cross_monitor_move_behaviour": "Insert",
   "default_workspace_padding": 5,
   "default_container_padding": 5,
+  "animation": {
+    "enabled": true,
+    "duration": 100,
+    "style": "Linear",
+    "fps": 140
+  },
   "border": true,
+  "border_implementation": "Komorebi",
   "border_width": 2,
-  "border_offset": -1,
-  "border_style": "Square",
+  "border_offset": 0,
+  "border_style": "Rounded",
   "border_colours": {
     "single": "#97b6e5",
-    "stack": "#7f966d",
-    "monocle": "#ac72a0",
+    "stack": "#f7768e",
+    "monocle": "#7f849c",
     "unfocused": "#373737"
   },
   "stackbar": {
     "height": 20,
     "mode": "OnStack",
+    "label": "Title",
     "tabs": {
-      "width": 300,
-      "focused_text": "#7f966d",
+      "width": 200,
+      "focused_text": "#f7768e",
       "unfocused_text": "#5a5a5a",
-      "background": "#373737"
+      "background": "#373737",
+      "font_family": "Futura PT",
+      "font_size": 14
     }
   },
   "display_index_preferences": {

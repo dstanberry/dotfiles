@@ -14,21 +14,21 @@ Komorebic(cmd) {
 }
 ; Reload Configuration
 ^!r::Komorebic("reload-configuration")
-#^r:: {
+#^!`:: {
   try Komorebic("stop")
   Komorebic("start")
 }
-!.::Komorebic("quick-load")
+#^!LShift::Komorebic("quick-load")
 
 ; Manage active window
 !q::Komorebic("close")
-!m::Komorebic("minimize")
+; !m::Komorebic("minimize")
 
 ; Manage window focus
 #^!a::Komorebic("focus left")
 #^!g::Komorebic("focus right")
-#^!Up::Komorebic("focus up")
-#^!Down::Komorebic("focus down")
+#^!PgUp::Komorebic("focus up")
+#^!PgDn::Komorebic("focus down")
 
 ; Manage window stacks
 #^!z::Komorebic("stack left")
@@ -36,15 +36,16 @@ Komorebic(cmd) {
 #^!v::Komorebic("stack up")
 #^!c::Komorebic("stack down")
 #^!BackSpace::Komorebic("unstack")
+
 ; Manage window focus within a stack
 #^!d::Komorebic("cycle-stack previous")
 #^!f::Komorebic("cycle-stack next")
 
 ; Move windows
-#^h::Komorebic("move left")
-#^j::Komorebic("move down")
-#^k::Komorebic("move up")
-#^l::Komorebic("move right")
+#^!Left::Komorebic("move left")
+#^!Right::Komorebic("move right")
+#^!Down::Komorebic("move down")
+#^!Up::Komorebic("move up")
 
 ; Resize windows
 #^=::Komorebic("resize-axis horizontal increase")
