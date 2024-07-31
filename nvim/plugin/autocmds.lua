@@ -1,4 +1,6 @@
 local filesystem = ds.augroup "filesystem"
+local ftplugin = ds.augroup "ftplugin"
+
 -- check if current file needs to be reloaded when it changes
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
   group = filesystem,
@@ -19,7 +21,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
 
 -- improve experience when editing git commit messages
 vim.api.nvim_create_autocmd("FileType", {
-  group = ds.augroup "gitcommit",
+  group = ftplugin,
   pattern = { "COMMIT_EDITMSG", "gitcommit" },
   callback = function(args)
     vim.bo[args.buf].swapfile = false
@@ -41,7 +43,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- dont create backups of encrypted files
 vim.api.nvim_create_autocmd("FileType", {
-  group = ds.augroup "crypt",
+  group = ftplugin,
   pattern = { "asc", "gpg", "pgp" },
   callback = function()
     vim.bo.backup = false
@@ -51,7 +53,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- change background color of manpages, help and quickfix list and use `q` to close
 vim.api.nvim_create_autocmd("FileType", {
-  group = ds.augroup "help_qf",
+  group = ftplugin,
   pattern = { "help", "man", "qf" },
   callback = function(args)
     if vim.bo[args.buf].filetype == "help" or vim.bo[args.buf].filetype == "qf" then
@@ -63,7 +65,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- simplify ui for large files
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  group = ds.augroup "bigfile",
+  group = ftplugin,
   pattern = "bigfile",
   callback = vim.schedule_wrap(
     function(args) vim.bo[args.buf].syntax = vim.filetype.match { buf = args.buf } or "" end
@@ -88,7 +90,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- define common coding conventions for various programming languages
-local ftplugin = ds.augroup "ftplugin"
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
   pattern = { "bash", "javascript", "json", "jsonc", "lua", "sh", "typescript", "zsh" },
