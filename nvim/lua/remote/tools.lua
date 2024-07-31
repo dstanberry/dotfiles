@@ -35,16 +35,6 @@ return {
       })
     end,
     opts = function()
-      local prettier_conf = ds.root.detectors.pattern(0, {
-        ".prettierrc",
-        ".prettierrc.json",
-        ".prettierrc.yaml",
-        ".prettierrc.js",
-        ".prettierrc.mjs",
-        ".prettierrc.cjs",
-        ".prettierrc.toml",
-      })[1] or ""
-
       local function first(bufnr, ...)
         local conform = require "conform"
         for i = 1, select("#", ...) do
@@ -105,13 +95,32 @@ return {
             end,
           },
           prettierd = {
-            env = vim.uv.fs_realpath(prettier_conf) and { PRETTIERD_DEFAULT_CONFIG = prettier_conf } or nil,
+            env = function(_, ctx)
+              local conf = ds.root.detectors.pattern(ctx.buf, {
+                ".prettierrc",
+                ".prettierrc.json",
+                ".prettierrc.yaml",
+                ".prettierrc.js",
+                ".prettierrc.mjs",
+                ".prettierrc.cjs",
+                ".prettierrc.toml",
+              })[1] or ""
+              return conf == "" and nil or { PRETTIERD_DEFAULT_CONFIG = conf }
+            end,
           },
           shfmt = {
             prepend_args = { "-i", "2", "-ci", "-sr", "-s", "-bn" },
           },
           sqlfluff = {
             args = { "format", "--dialect=postgres", "-" },
+          },
+          stylua = {
+            args = function(_, ctx)
+              local root = ds.root.detectors.pattern(ctx.buf, { "stylua.toml" })[1] or ""
+              local path = root == "" and vim.fs.joinpath(vim.fn.stdpath "config", "stylua.toml")
+                or vim.fs.joinpath(root, "stylua.toml")
+              return { "--config-path", path, "--stdin-filepath", "$FILENAME", "-" }
+            end,
           },
         },
         format_on_save = function(buf)
