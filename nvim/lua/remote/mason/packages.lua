@@ -39,7 +39,6 @@ return {
   "tflint",
   -- formatters
   "black",
-  "cbfmt",
   "csharpier",
   "gofumpt",
   "goimports",
