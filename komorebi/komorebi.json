@@ -7,15 +7,15 @@
   "default_container_padding": 5,
   "animation": {
     "enabled": true,
-    "duration": 100,
+    "duration": 250,
     "style": "Linear",
     "fps": 140
   },
   "border": true,
-  "border_implementation": "Komorebi",
-  "border_width": 2,
+  "border_implementation": "Windows",
   "border_offset": 0,
   "border_style": "Rounded",
+  "border_width": 2,
   "border_colours": {
     "single": "#97b6e5",
     "stack": "#f7768e",
