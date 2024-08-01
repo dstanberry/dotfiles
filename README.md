@@ -5,9 +5,8 @@
 The schema is constructed such that it adheres to the XDG Base Directory
 Specification.
 
-This configuration adopts a somewhat consolidated approach; the `.config`
-directory is maintained as a worktree linked to a git bare repository. To setup
-the environment, a number of one-time tasks will need to be executed:
+The `.config` directory is maintained as a worktree linked to a git bare repository.
+To setup the environment, a number of one-time tasks will need to be executed:
 
 Clone the repository:
 
@@ -23,15 +22,6 @@ git worktree add $worktree $(git branch --show-current)
 The glue required to make this possible is to tell the system wide configuration
 file where to look for the user shell profile:
 
-Bash (_Deprecated_): Depending on the distro this file may exist in
-`/etc/bashrc`, `/etc/bash.bashrc` or `/etc/bash/bashrc`.
-
-```bash
-if [ -s "${XDG_CONFIG_HOME:-$HOME/.config}/bash/bashrc" ]; then
-    . "${XDG_CONFIG_HOME:-$HOME/.config}/bash/bashrc"
-fi
-```
-
 ZSH: This will need to be set in `/etc/zsh/zshenv`.
 
 ```zsh
@@ -39,12 +29,12 @@ export XDG_CONFIG_HOME="${HOME}/.config"
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh/"
 ```
 
-**_Note on bash/zsh:_**
+**_Note:_**
 
-Machine specific settings can be defined within {bash,zsh}/rc.private/ if
+Machine specific settings can be defined within zsh/rc.private/ if
 desired. The directory will be created automatically if it does not exist. In
-particular during startup vim and neovim will check if the current shell has a
-file called `hashes.zsh` or `hashes.bash` (depending on the running shell) and
+particular during startup neovim will check if the current shell has a
+file called `hashes.zsh` (depending on the running shell) and
 will define each path as an environment variable within the editor.
 
 ```zsh
