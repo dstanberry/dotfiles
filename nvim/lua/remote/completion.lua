@@ -73,7 +73,6 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-path",
-      "petertriho/cmp-git",
       "saadparwaiz1/cmp_luasnip",
       "L3MON4D3/LuaSnip",
     },
@@ -93,7 +92,7 @@ return {
           end
         end,
         experimental = {
-          ghost_text = true,
+          ghost_text = { hl_group = "CmpGhostText" },
         },
         ---@diagnostic disable-next-line: missing-fields
         formatting = {
@@ -111,19 +110,29 @@ return {
           ["<c-space>"] = cmp.mapping.complete(),
           ["<c-@>"] = cmp.mapping.complete(),
           ["<c-c>"] = cmp.mapping.close(),
-          ["<cr>"] = cmp.mapping.confirm { select = true },
+          ["<cr>"] = function(fallback)
+            local confirm_opts = { select = true, behavior = cmp.ConfirmBehavior.Insert }
+            if cmp.core.view:visible() or vim.fn.pumvisible() == 1 then
+              if vim.api.nvim_get_mode().mode == "i" then
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-g>u", true, true, true), "n", false)
+              end
+              if cmp.confirm(confirm_opts) then return end
+            end
+            return fallback()
+          end,
         },
         snippet = {
           expand = function(args)
             pcall(function() require("luasnip").lsp_expand(args.body) end)
           end,
         },
-        sources = cmp.config.sources {
-          { name = "nvim_lsp", priority_weight = 120, group_index = 1 },
-          { name = "luasnip", priority_weight = 100, group_index = 1 },
-          { name = "path", priority_weight = 90, group_index = 1 },
-          { name = "buffer", priority_weight = 50, keyword_length = 5, max_view_entries = 5, group_index = 2 },
-        },
+        sources = cmp.config.sources({
+          { name = "nvim_lsp" },
+          { name = "luasnip" },
+          { name = "path" },
+        }, {
+          { name = "buffer", keyword_length = 5, max_view_entries = 5 },
+        }),
         view = {
           entries = { name = "custom", selection_order = "near_cursor" },
         },
@@ -145,6 +154,7 @@ return {
       local BLUE = ds.color.lighten(vim.g.ds_colors.blue2, 15)
       local BLUE_DARK = ds.color.darken(vim.g.ds_colors.blue2, 35)
 
+      ds.hl.new("CmpGhostText", { link = "Comment" })
       ds.hl.new("CmpItemAbbrDefault", { fg = vim.g.ds_colors.white })
       ds.hl.new("CmpItemAbbrDeprecatedDefault", { fg = vim.g.ds_colors.white })
       ds.hl.new("CmpItemAbbrMatchDefault", { fg = BLUE, bold = true })
