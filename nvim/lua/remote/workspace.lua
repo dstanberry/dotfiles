@@ -124,7 +124,9 @@ return {
                 highlight = { fg = vim.g.ds_colors.overlay1 },
                 auto_close = false,
                 matcher = function(buf)
-                  return vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR) or buf.path:match "zettelkasten"
+                  return (vim.env.ZK_NOTEBOOK_DIR and vim.env.ZK_NOTEBOOK_DIR ~= "")
+                      and vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR)
+                    or buf.path:match "zettelkasten"
                 end,
                 separator = {
                   style = bufferline_groups.separator.pill,
