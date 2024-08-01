@@ -186,4 +186,26 @@ function M.quickfix_delete(bufnr)
   vim.api.nvim_replace_termcodes("<esc>", true, false, true)
 end
 
+---Takes the content of the current buffer and displays them in a terminal buffer
+function M.send_to_term()
+  local buf = vim.api.nvim_get_current_buf()
+  local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+
+  vim.wo.number = false
+  vim.wo.relativenumber = false
+  vim.wo.statuscolumn = ""
+  vim.wo.signcolumn = "no"
+  vim.opt.listchars = { space = " " }
+
+  while #lines > 0 and vim.trim(lines[#lines]) == "" do
+    lines[#lines] = nil
+  end
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
+
+  vim.api.nvim_chan_send(vim.api.nvim_open_term(buf, {}), table.concat(lines, "\r\n"))
+  vim.keymap.set("n", "q", "<cmd>qa!<cr>", { buffer = buf, silent = true })
+  vim.api.nvim_create_autocmd("TextChanged", { buffer = buf, command = "normal! G$" })
+  vim.api.nvim_create_autocmd("TermEnter", { buffer = buf, command = "stopinsert" })
+end
+
 return M
