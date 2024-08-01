@@ -2,25 +2,14 @@
 local M = {}
 
 ---Utility to load linux directory hashes (if defined) into the current runtime
----@param shell any
+---@param shell string
 function M.load_dirhash(shell)
   if ds.has "win32" then return end
-  if shell == nil then
-    print "cannot load hashes without specifying shell"
-    return
-  end
-  if shell:find "bash" then
-    shell = "bash"
-  elseif shell:find "zsh" then
-    shell = "zsh"
-  end
-  if not vim.tbl_contains({ "bash", "zsh" }, shell) then
-    print("cannot load hashes for unsupported shell: " .. shell)
-    return
-  end
+  local term = shell:find "zsh" and "zsh"
+  if not (term and vim.env.XDG_CONFIG_HOME) then return end
   local loader = function(rc_dir)
-    local path = vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, shell, rc_dir, ("hashes.%s"):format(shell))
-    local cmd = ([[%s -c "source %s; hash -d"]]):format(shell, path)
+    local path = vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, term, rc_dir, "hashes." .. term)
+    local cmd = ([[%s -c "source %s; hash -d"]]):format(term, path)
     local dirs = vim.fn.system(cmd)
     local lines = vim.split(dirs, "\n")
     for _, line in pairs(lines) do
