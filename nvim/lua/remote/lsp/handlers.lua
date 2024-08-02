@@ -16,28 +16,14 @@ end
 
 M.get_client_capabilities = function()
   local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  if ok then capabilities = vim.tbl_deep_extend("keep", capabilities, cmp_nvim_lsp.default_capabilities()) end
-  capabilities = vim.tbl_deep_extend("keep", capabilities, {
-    textDocument = {
-      completion = {
-        completionItem = {
-          commitCharactersSupport = true,
-          deprecatedSupport = true,
-          insertReplaceSupport = true,
-          labelDetailsSupport = true,
-          preselectSupport = true,
-          snippetSupport = true,
-          resolveSupport = {
-            properties = { "documentation", "detail", "additionalTextEdits" },
-          },
-        },
-      },
-      foldingRange = { dynamicRegistration = false, lineFoldingOnly = true },
-    },
-    workspace = { didChangeWatchedFiles = { dynamicRegistration = true } },
-  })
-  return capabilities
+  return vim.deepcopy(
+    vim.tbl_deep_extend(
+      "force",
+      {},
+      vim.lsp.protocol.make_client_capabilities(),
+      ok and cmp_nvim_lsp.default_capabilities() or {}
+    )
+  )
 end
 
 ---@param opts? { method?: fun(...) }

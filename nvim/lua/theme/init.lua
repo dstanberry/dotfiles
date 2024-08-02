@@ -375,6 +375,7 @@ M.load = function(t, b)
     end)
   end
   if t and M.themes[t] then
+    vim.cmd "highlight clear"
     vim.o.background = "dark"
     vim.g.colors_name = t ---@type util.theme_name
     vim.g.ds_colors = M.themes[t] ---@type util.theme_palette

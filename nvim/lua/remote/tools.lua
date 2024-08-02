@@ -55,10 +55,10 @@ return {
           jsonc = { "prettierd", "prettier", stop_after_first = true },
           lua = { "stylua" },
           markdown = function(bufnr)
-            return { first(bufnr, "prettierd", "prettier"), "markdownlint-cli2", "markdown-toc", "cbfmt" }
+            return { first(bufnr, "prettierd", "prettier"), "markdownlint-cli2", "markdown-toc" }
           end,
           ["markdown.mdx"] = function(bufnr)
-            return { first(bufnr, "prettierd", "prettier"), "markdownlint-cli2", "markdown-toc", "cbfmt" }
+            return { first(bufnr, "prettierd", "prettier"), "markdownlint-cli2", "markdown-toc" }
           end,
           psql = { "sqlfluff" },
           -- python = { "injected", "black" },

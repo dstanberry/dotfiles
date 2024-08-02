@@ -45,14 +45,14 @@ fi
             project_dirs="$f"
           else
             project_dirs="$project_dirs $f"
-            if [ -d "$f/worktrees" ] || [ -d "$f/.git/worktrees" ]; then
-              worktree_list=$(git -C "$f" worktree list 2> /dev/null | awk '{print $1}')
-              if [ -n "$worktree_list" ]; then
-                # shellcheck disable=SC2066
-                for w in "$worktree_list"; do
-                  worktree_dirs="$worktree_dirs $w"
-                done
-              fi
+          fi
+          if [ -d "$f/worktrees" ] || [ -d "$f/.git/worktrees" ]; then
+            worktree_list=$(git -C "$f" worktree list 2> /dev/null | awk '{print $1}')
+            if [ -n "$worktree_list" ]; then
+              # shellcheck disable=SC2066
+              for w in "$worktree_list"; do
+                worktree_dirs="$worktree_dirs $w"
+              done
             fi
           fi
         fi

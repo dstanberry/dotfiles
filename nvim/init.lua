@@ -40,6 +40,7 @@ vim.fn.mkdir(vim.fs.joinpath(cache, "undo"), "p")
 vim.fn.mkdir(vim.fs.joinpath(cache, "shada"), "p")
 
 vim.cmd.colorscheme "kdark"
+ds.color.sync_term_bg()
 
 ds.fs.load_dirhash(vim.env.SHELL)
 ds.fs.load_settings()

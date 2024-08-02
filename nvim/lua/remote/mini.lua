@@ -492,11 +492,11 @@ return {
     "echasnovski/mini.pairs",
     event = "LazyFile",
     opts = {
-      markdown = false,
       modes = { insert = true, command = true, terminal = false },
       skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
       skip_ts = { "string" },
       skip_unbalanced = true,
+      markdown = false,
     },
     config = function(_, opts)
       local pairs = require "mini.pairs"
@@ -510,8 +510,11 @@ return {
         local cursor = vim.api.nvim_win_get_cursor(0)
         local next = line:sub(cursor[2] + 1, cursor[2] + 1)
         local before = line:sub(1, cursor[2])
-        if opts.markdown and _o == "`" and vim.bo.filetype == "markdown" and before:match "^%s*``" then
-          return "`\n```" .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
+        if vim.bo.filetype == "markdown" then
+          if not opts.markdown then return _o end
+          if _o == "`" and before:match "^%s*``" then
+            return "`\n```" .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
+          end
         end
         if opts.skip_next and next ~= "" and next:match(opts.skip_next) then return _o end
         if opts.skip_ts and #opts.skip_ts > 0 then
