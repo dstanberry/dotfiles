@@ -61,8 +61,6 @@ return {
     local luasnip = require "luasnip"
     local types = require "luasnip.util.types"
 
-    ds.hl.new("LuasnipChoiceNodePassive", { bold = true })
-
     luasnip.config.setup {
       keep_roots = true,
       link_roots = true,

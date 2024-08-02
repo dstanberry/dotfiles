@@ -79,13 +79,6 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = "LazyFile",
-    init = function()
-      ds.hl.new("GitSignsAdd", { fg = vim.g.ds_colors.green2 })
-      ds.hl.new("GitSignsChange", { fg = vim.g.ds_colors.yellow2 })
-      ds.hl.new("GitSignsDelete", { fg = vim.g.ds_colors.red1 })
-      ds.hl.new("GitSignsChangeDelete", { fg = vim.g.ds_colors.orange0 })
-      ds.hl.new("GitSignsCurrentLineBlame", { fg = vim.g.ds_colors.gray1, italic = true })
-    end,
     config = function()
       local signs = require "gitsigns"
       signs.setup {
@@ -175,9 +168,6 @@ return {
       { "#", "#<c-x><c-o>", mode = "i", ft = "octo", silent = true },
     },
     init = function()
-      ds.hl.new("OctoBubble", { link = "Normal" })
-      ds.hl.new("OctoEditable", { fg = vim.g.ds_colors.white, bg = ds.color.darken(vim.g.ds_colors.gray0, 10) })
-
       vim.treesitter.language.register("markdown", "octo")
 
       ds.plugin.on_load("nvim-cmp", function()

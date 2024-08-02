@@ -3,9 +3,6 @@ return {
   url = "https://github.com/dstanberry/lualine.nvim",
   event = "VeryLazy",
   init = function()
-    ds.hl.new("NoiceSymbolNormal", { fg = ds.color.get_color "WinbarContext" })
-    ds.hl.new("NoiceSymbolSeparator", { fg = ds.color.blend(vim.g.ds_colors.purple1, vim.g.ds_colors.bg2, 0.38) })
-
     vim.g.lualine_laststatus = vim.o.laststatus
     if vim.fn.argc(-1) > 0 then
       -- set an empty statusline till lualine loads

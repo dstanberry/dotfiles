@@ -18,11 +18,6 @@ return {
       { "<localleader>gh", "<cmd>DiffviewFileHistory<cr>", desc = "diffview: file history" },
       { "<localleader>gh", [[:'<'>DiffviewFileHistory<cr>]], mode = "v", desc = "diffview: file history" },
     },
-    init = function()
-      ds.hl.new("DiffviewFilePanelTitle", { link = "@markup.environment" })
-      ds.hl.new("DiffviewFilePanelCounter", { link = "Normal" })
-      ds.hl.new("DiffviewHash", { link = "Boolean" })
-    end,
     config = function()
       local diffview = require "diffview"
       local lazy = require "diffview.lazy"
@@ -180,15 +175,7 @@ return {
         -- NOTE: managed by `mini.indentscope`
         enabled = false,
         char = ds.icons.misc.VerticalBar,
-        highlight = {
-          "TSRainbow1",
-          "TSRainbow2",
-          "TSRainbow3",
-          "TSRainbow4",
-          "TSRainbow5",
-          "TSRainbow6",
-          "TSRainbow7",
-        },
+        -- highlight = { "TSRainbow1", "TSRainbow2", "TSRainbow3", "TSRainbow4", "TSRainbow5", "TSRainbow6", "TSRainbow7" },
       },
       exclude = {
         filetypes = vim.tbl_deep_extend(
@@ -213,7 +200,7 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    commit = "b3f08e6",
+    -- commit = "b3f08e6",
     keys = {
       {
         "<c-d>",
@@ -234,12 +221,6 @@ return {
         desc = "noice: scroll up",
       },
     },
-    init = function()
-      ds.hl.new("NoiceFormatProgressTodo", { bg = ds.color.blend(vim.g.ds_colors.blue1, vim.g.ds_colors.grayX, 0.20) })
-      ds.hl.new("NoiceFormatProgressDone", { bg = vim.g.ds_colors.blue0 })
-      ds.hl.new("NoiceFormatEvent", { link = "Comment" })
-      ds.hl.new("NoiceFormatKind", { link = "Comment" })
-    end,
     opts = {
       cmdline = {
         format = {
@@ -436,31 +417,6 @@ return {
       max_width = function() return math.floor(vim.o.columns * 0.75) end,
     },
     init = function()
-      ds.hl.new("NotifyTRACEBody", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg0 })
-      ds.hl.new("NotifyTRACEBorder", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.bg0 })
-      ds.hl.new("NotifyTRACEIcon", { link = "Debug" })
-      ds.hl.new("NotifyTRACETitle", { link = "Debug" })
-
-      ds.hl.new("NotifyDEBUGBody", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg0 })
-      ds.hl.new("NotifyDEBUGBorder", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.bg0 })
-      ds.hl.new("NotifyDEBUGIcon", { link = "Debug" })
-      ds.hl.new("NotifyDEBUGTitle", { link = "Debug" })
-
-      ds.hl.new("NotifyINFOBody", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg0 })
-      ds.hl.new("NotifyINFOBorder", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.bg0 })
-      ds.hl.new("NotifyINFOIcon", { link = "String" })
-      ds.hl.new("NotifyINFOTitle", { link = "String" })
-
-      ds.hl.new("NotifyWARNBody", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg0 })
-      ds.hl.new("NotifyWARNBorder", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.bg0 })
-      ds.hl.new("NotifyWARNIcon", { link = "WarningMsg" })
-      ds.hl.new("NotifyWARNTitle", { link = "WarningMsg" })
-
-      ds.hl.new("NotifyERRORBody", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg0 })
-      ds.hl.new("NotifyERRORBorder", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.bg0 })
-      ds.hl.new("NotifyERRORIcon", { link = "ErrorMsg" })
-      ds.hl.new("NotifyERRORTitle", { link = "ErrorMsg" })
-
       if not ds.plugin.is_installed "noice.nvim" then
         vim.api.nvim_create_autocmd("User", {
           pattern = "VeryLazy",
@@ -670,17 +626,6 @@ return {
           },
         },
       }
-    end,
-    init = function()
-      local BLUE_DARK = ds.color.blend(vim.g.ds_colors.blue2, vim.g.ds_colors.bg0, 0.08)
-
-      ds.hl.new("WhichKeyFloat", { bg = BLUE_DARK })
-      ds.hl.new("WhichKeyNormal", { fg = vim.g.ds_colors.white, bg = BLUE_DARK })
-      ds.hl.new("WhichKeyBorder", { fg = vim.g.ds_colors.blue0, bg = BLUE_DARK })
-      ds.hl.new("WhichKeyTitle", { fg = vim.g.ds_colors.blue0, bg = BLUE_DARK })
-      ds.hl.new("WhichKeySeparator", { fg = ds.color.lighten(vim.g.ds_colors.gray1, 20) })
-      ds.hl.new("WhichKeyDesc", { link = "Constant" })
-      ds.hl.new("WhichKeyGroup", { link = "Identifier" })
     end,
   },
   {

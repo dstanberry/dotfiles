@@ -72,30 +72,6 @@ return {
         { "<leader>z=", util.misc.spell_suggest, desc = "telescope: help pages" },
       }
     end,
-    init = function()
-      local GRAY = ds.color.darken(vim.g.ds_colors.gray0, 10)
-      local GRAY_DARK = ds.color.darken(vim.g.ds_colors.gray0, 25)
-      local BLUE = ds.color.darken(vim.g.ds_colors.blue1, 43)
-
-      ds.hl.new("TelescopePromptBorder", { fg = GRAY, bg = GRAY })
-      ds.hl.new("TelescopePreviewBorder", { fg = vim.g.ds_colors.bg0, bg = vim.g.ds_colors.bg0 })
-      ds.hl.new("TelescopeResultsBorder", { fg = GRAY_DARK, bg = GRAY_DARK })
-
-      ds.hl.new("TelescopePromptTitle", { fg = vim.g.ds_colors.bg2, bg = vim.g.ds_colors.red1, bold = true })
-      ds.hl.new("TelescopePreviewTitle", { fg = vim.g.ds_colors.bg0 })
-      ds.hl.new("TelescopeResultsTitle", { fg = GRAY_DARK })
-
-      ds.hl.new("TelescopePromptCounter", { fg = vim.g.ds_colors.gray1 })
-      ds.hl.new("TelescopePromptPrefix", { fg = vim.g.ds_colors.green2 })
-      ds.hl.new("TelescopePromptNormal", { bg = GRAY })
-      ds.hl.new("TelescopePreviewNormal", { fg = vim.g.ds_colors.green2, bg = vim.g.ds_colors.bg0 })
-      ds.hl.new("TelescopeResultsNormal", { bg = GRAY_DARK })
-
-      ds.hl.new("TelescopeMatching", { fg = vim.g.ds_colors.orange0, bold = true })
-      ds.hl.new("TelescopeMultiSelection", { fg = vim.g.ds_colors.magenta1 })
-      ds.hl.new("TelescopeSelection", { bg = BLUE, bold = true })
-      ds.hl.new("TelescopeSelectionCaret", { fg = vim.g.ds_colors.fg0, bg = BLUE, bold = true })
-    end,
     opts = function()
       local util = require "remote.telescope.util"
       local actions = require "telescope.actions"

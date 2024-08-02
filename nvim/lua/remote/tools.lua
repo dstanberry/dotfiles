@@ -354,10 +354,6 @@ return {
       package_manager = "npm",
       colors = {},
     },
-    init = function()
-      ds.hl.new("PackageInfoOutdatedVersion", { link = "DiagnosticVirtualTextWarn" })
-      ds.hl.new("PackageInfoUpToDateVersion", { link = "DiagnosticVirtualTextInfo" })
-    end,
   },
   {
     "mrjones2014/smart-splits.nvim",

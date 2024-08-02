@@ -1,57 +1,43 @@
 ---@class util.hl
 local M = {}
 
-local _cached_highlights = {}
+local _cache = {}
 
 ---@type util.theme_hl
-local hi = setmetatable({}, {
+local highlight_groups = setmetatable({}, {
   ---@param name string
   ---@param args? vim.api.keyset.highlight
-  __newindex = function(_, name, args) vim.api.nvim_set_hl(0, name, args) end,
+  __newindex = function(_, name, args)
+    args = type(args) == "string" and { link = args } or args
+    vim.api.nvim_set_hl(0, name, args)
+  end,
 })
 
+--- Autocmd group id to be used for `ColorScheme` events
+M.autocmd_group = ds.augroup "theme_highlights"
+
+--- Used by `mini.hipatterns` to toggle live preview of highlight groups by name
+M.show_preview = false
+
+--- Add or update a highlight group
 ---@param name string
 ---@param args? vim.api.keyset.highlight
-M.new = function(name, args)
-  hi[name] = args
-  _cached_highlights[name] = args
+M.add = function(name, args)
+  highlight_groups[name] = args
+  _cache[name] = args
 end
 
----@param c util.theme_palette
----@param fn fun(c:util.theme_palette):util.theme_hl
-M.apply = function(c, fn)
-  -- reapply previously defined highlight groups
-  for k, v in pairs(_cached_highlights) do
-    vim.api.nvim_set_hl(0, k, v)
+--- Sets and caches highlight groups
+---@param groups util.theme_hl
+M.set = function(groups)
+  for k, v in pairs(groups) do
+    highlight_groups[k] = v
+    _cache[k] = v
   end
-  -- enforce styles for builtin highlight groups
-  for k, v in pairs(fn(c)) do
-    hi[k] = v
-  end
-  -- ensure termguicolors is set (likely redundant)
-  vim.o.termguicolors = true
-  -- set gui colors
-  vim.g.terminal_color_0 = c.bg2
-  vim.g.terminal_color_1 = c.red1
-  vim.g.terminal_color_2 = c.green2
-  vim.g.terminal_color_3 = c.yellow2
-  vim.g.terminal_color_4 = c.blue2
-  vim.g.terminal_color_5 = c.magenta1
-  vim.g.terminal_color_6 = c.cyan2
-  vim.g.terminal_color_7 = c.fg1
-  vim.g.terminal_color_8 = c.gray1
-  vim.g.terminal_color_9 = c.red1
-  vim.g.terminal_color_10 = c.green2
-  vim.g.terminal_color_11 = c.yellow2
-  vim.g.terminal_color_12 = c.blue2
-  vim.g.terminal_color_13 = c.magenta1
-  vim.g.terminal_color_14 = c.cyan2
-  vim.g.terminal_color_15 = c.fg2
-  -- highlighting for special characters
-  vim.wo.winhighlight = "SpecialKey:SpecialKeyWin"
 end
 
+--- Returns a copy of currently cached highlight group definitions
 ---@return util.theme_hl
-M.get_cached = function() return vim.deepcopy(_cached_highlights) end
+M.get = function() return vim.deepcopy(_cache) end
 
 return M
