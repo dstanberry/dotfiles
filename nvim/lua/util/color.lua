@@ -1,7 +1,6 @@
 ---@class util.color
 local M = {}
 
--- return value within range boundary
 local clamp = function(val, min, max)
   if val == nil then return end
   if val < min then
@@ -12,13 +11,11 @@ local clamp = function(val, min, max)
   return val
 end
 
--- convert hex to rgb
 local hex_to_rgb = function(c)
   c = string.lower(c)
   return { tonumber(c:sub(2, 3), 16), tonumber(c:sub(4, 5), 16), tonumber(c:sub(6, 7), 16) }
 end
 
--- convert hex to rgb
 local rgb_to_hex = function(rgb)
   local hex = ""
   for _, v in pairs(rgb) do
