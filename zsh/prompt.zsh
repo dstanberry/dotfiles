@@ -27,7 +27,7 @@ if [ -f "$CONFIG_HOME/zsh/site-functions/async" ]; then
 
     # show untracked status in git prompt
     function +vi-git-untracked() {
-    local untracked_icon="▪"
+      local untracked_icon="▪"
       emulate -L zsh
       if __in_git; then
         if [[ -n $(git ls-files --directory --no-empty-directory --exclude-standard --others 2> /dev/null) ]]; then
@@ -116,8 +116,12 @@ if [ -f "$CONFIG_HOME/zsh/site-functions/async" ]; then
         return
       fi
     fi
-    vcs_info_msg_0_=$stdout
-    # -update-rprompt "\${vcs_info_msg_0_}%F"
+    local out=$stdout
+    if [ -z "$out" ]; then
+      vcs_info_msg_0_="$out"
+    else
+      vcs_info_msg_0_="on $out"
+    fi
     (( $more )) || zle reset-prompt
   }
 
@@ -139,9 +143,9 @@ if [ -f "$CONFIG_HOME/zsh/site-functions/async" ]; then
   add-zsh-hook precmd -vcs-info-run-in-worker
   add-zsh-hook chpwd -clear-vcs-info-on-chpwd
 
-  RPROMPT_VCS="\${vcs_info_msg_0_}"
+  vcs_metadata="\${vcs_info_msg_0_}"
 else
-  RPROMPT_VCS=""
+  vcs_metadata=""
 fi
 
 # (lhs) update the prompt
@@ -172,20 +176,53 @@ function -update-prompt() {
   fi
   local mode=$1
   if [[ $mode == insert ]]; then
-    local SUFFIX=$(printf '%%F{green}%%(?..%%F{red})❯%.0s%%f' {1..$LVL})
+    local SUFFIX=$(printf '\n %%F{green}%%(?..%%F{red})❯%.0s%%f' {1..$LVL})
   else
-    local SUFFIX=$(printf '%%F{magenta}❯%.0s%%f' {1..$LVL})
+    local SUFFIX=$(printf '\n %%F{magenta}❯%.0s%%f' {1..$LVL})
   fi
 
   # define the primary prompt
-  PS1="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }%F{blue}%B%1~ %b%f%B${SUFFIX}%b "
+  local conditional="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }"
+  local first_line="%F{blue}%B%1~ %b%f${vcs_metadata} %F{244}${cmd_exec_time}%f"
+  local last_line="%B${SUFFIX}%b "
 
-  if [[ -n "$TMUXING" ]]; then
-    # outside tmux, ZLE_RPROMPT_INDENT ends up eating the space after PS1, and
-    # prompt still gets corrupted even if we add an extra space to compensate.
-    export ZLE_RPROMPT_INDENT=0
-  fi
+  export PROMPT="${conditional}${first_line}${last_line}"
 }
+
+__calculate_elapsed_time() {
+  local result total_seconds=$1 var=$2
+  local days=$(( total_seconds / 60 / 60 / 24 ))
+  local hours=$(( total_seconds / 60 / 60 % 24 ))
+  local minutes=$(( total_seconds / 60 % 60 ))
+  local seconds=$(( total_seconds % 60 ))
+  (( days > 0 )) && result+="${days}d "
+  (( hours > 0 )) && result+="${hours}h "
+  (( minutes > 0 )) && result+="${minutes}m "
+  result+="${seconds}s"
+  # Store elapsed time in a variable
+  typeset -g "${var}"="${result}"
+}
+
+function -start-timer() {
+  emulate -L zsh
+  typeset -g cmd_timestamp=$EPOCHSECONDS
+}
+
+add-zsh-hook preexec -start-timer
+
+
+# update the prompt with how long the previous command took
+function -stop-timer() {
+  integer elapsed
+  (( elapsed = EPOCHSECONDS - ${cmd_timestamp:-$EPOCHSECONDS} ))
+  typeset -g cmd_exec_time=
+  (( elapsed > 1 )) && {
+    __calculate_elapsed_time $elapsed "cmd_exec_time"
+  }
+  unset cmd_timestamp
+}
+
+add-zsh-hook precmd -stop-timer
 
 # set the cursor shape depending on current vi mode
 function zle-keymap-select {
@@ -213,42 +250,3 @@ function zle-line-init() {
 }
 
 zle -N zle-line-init
-
-typeset -F SECONDS
-
-function -record-start-time() {
-  emulate -L zsh
-  ZSH_START_TIME=${ZSH_START_TIME:-$SECONDS}
-}
-
-add-zsh-hook preexec -record-start-time
-
-# (rhs) update the prompt
-function -update-rprompt() {
-  emulate -L zsh
-  if [ "$ZSH_START_TIME" ]; then
-    local DELTA=$((SECONDS - ZSH_START_TIME))
-    local DAYS=$((~~(DELTA / 86400)))
-    local HOURS=$((~~((DELTA - DAYS * 86400) / 3600)))
-    local MINUTES=$((~~((DELTA - DAYS * 86400 - HOURS * 3600) / 60)))
-    local SECS=$((DELTA - DAYS * 86400 - HOURS * 3600 - MINUTES * 60))
-    local ELAPSED=''
-    test "$DAYS" != '0' && ELAPSED="${DAYS}d"
-    test "$HOURS" != '0' && ELAPSED="${ELAPSED}${HOURS}h"
-    test "$MINUTES" != '0' && ELAPSED="${ELAPSED}${MINUTES}m"
-    if [ "$ELAPSED" = '' ]; then
-      SECS="$(print -f "%.2f" $SECS)s"
-    elif [ "$DAYS" != '0' ]; then
-      SECS=''
-    else
-      SECS="$((~~SECS))s"
-    fi
-    ELAPSED="${ELAPSED}${SECS}"
-    export RPROMPT="$RPROMPT_VCS $@%F{244}${ELAPSED}%f"
-    unset ZSH_START_TIME
-  else
-    export RPROMPT="$RPROMPT_VCS"
-  fi
-}
-
-add-zsh-hook precmd -update-rprompt
