@@ -71,9 +71,12 @@ return {
           tf = { "terraform_fmt" },
           typescript = { "prettierd", "prettier", stop_after_first = true },
           yaml = { "yamlfmt" },
-          zsh = { "shfmt" },
+          zsh = { "beautysh" },
         },
         formatters = {
+          beautysh = {
+            args = { "-i", "2", "-" },
+          },
           csharpier = {
             command = "dotnet-csharpier",
             args = { "--write-stdout" },

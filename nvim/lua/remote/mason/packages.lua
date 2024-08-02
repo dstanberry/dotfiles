@@ -38,6 +38,7 @@ return {
   "sqlfluff",
   "tflint",
   -- formatters
+  "beautysh",
   "black",
   "csharpier",
   "gofumpt",
