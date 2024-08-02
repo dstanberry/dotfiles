@@ -118,7 +118,7 @@ return {
             "fileformat",
             icons_enabled = true,
             symbols = { unix = "lf", dos = "crlf", mac = "cr" },
-            color = { fg = ds.color.get_color "WinbarContext" },
+            color = { fg = ds.color.get_color "WinbarContext", gui = "bold,italic" },
             padding = { right = 2 },
           },
         },
