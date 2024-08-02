@@ -146,47 +146,55 @@ return {
             winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorderSB",
           },
         },
+        custom_highlights = function()
+          local BLUE = ds.color.lighten(vim.g.ds_colors.blue2, 15)
+          local BLUE_DARK = ds.color.darken(vim.g.ds_colors.blue2, 35)
+
+          ds.hl.new("CmpGhostText", { link = "Comment" })
+
+          ds.hl.new("CmpItemAbbrDefault", { fg = vim.g.ds_colors.white })
+          ds.hl.new("CmpItemAbbrDeprecatedDefault", { fg = vim.g.ds_colors.white })
+          ds.hl.new("CmpItemAbbrMatchDefault", { fg = BLUE, bold = true })
+          ds.hl.new("CmpItemAbbrMatchFuzzyDefault", { fg = vim.g.ds_colors.orange0, bold = true })
+          ds.hl.new("CmpItemMenu", { fg = BLUE_DARK })
+
+          ds.hl.new("CmpItemMenuDefault", { link = "@property" })
+          ds.hl.new("CmpItemKindClass", { link = "@lsp.type.class" })
+          ds.hl.new("CmpItemKindConstant", { link = "@constant" })
+          ds.hl.new("CmpItemKindConstructor", { link = "@constructor" })
+          ds.hl.new("CmpItemKindCopilot", { fg = vim.g.ds_colors.green0 })
+          ds.hl.new("CmpItemKindDefault", { fg = vim.g.ds_colors.white })
+          ds.hl.new("CmpItemKindEnum", { link = "@lsp.type.enum" })
+          ds.hl.new("CmpItemKindEnumMember", { link = "@lsp.type.enumMember" })
+          ds.hl.new("CmpItemKindEvent", { link = "@boolean" })
+          ds.hl.new("CmpItemKindField", { link = "@variable.member" })
+          ds.hl.new("CmpItemKindFile", { link = "Directory" })
+          ds.hl.new("CmpItemKindFolder", { link = "Directory" })
+          ds.hl.new("CmpItemKindFunction", { link = "@lsp.type.function" })
+          ds.hl.new("CmpItemKindInterface", { link = "@lsp.type.interface" })
+          ds.hl.new("CmpItemKindKeyword", { link = "@keyword" })
+          ds.hl.new("CmpItemKindMethod", { link = "@lsp.type.method" })
+          ds.hl.new("CmpItemKindModule", { link = "@module" })
+          ds.hl.new("CmpItemKindOperator", { link = "@operator" })
+          ds.hl.new("CmpItemKindProperty", { link = "@property" })
+          ds.hl.new("CmpItemKindReference", { link = "@markup.link" })
+          ds.hl.new("CmpItemKindSnippet", { fg = vim.g.ds_colors.purple0 })
+          ds.hl.new("CmpItemKindStruct", { link = "@lsp.type.struct" })
+          ds.hl.new("CmpItemKindText", { link = "@markup.raw" })
+          ds.hl.new("CmpItemKindTypeParameter", { link = "@lsp.type.parameter" })
+          ds.hl.new("CmpItemKindUnit", { link = "SpecialChar" })
+          ds.hl.new("CmpItemKindValue", { link = "@markup" })
+          ds.hl.new("CmpItemKindVariable", { link = "@property" })
+        end,
       }
     end,
     config = function(_, opts)
       require("cmp").setup(opts)
-
-      local BLUE = ds.color.lighten(vim.g.ds_colors.blue2, 15)
-      local BLUE_DARK = ds.color.darken(vim.g.ds_colors.blue2, 35)
-
-      ds.hl.new("CmpGhostText", { link = "Comment" })
-      ds.hl.new("CmpItemAbbrDefault", { fg = vim.g.ds_colors.white })
-      ds.hl.new("CmpItemAbbrDeprecatedDefault", { fg = vim.g.ds_colors.white })
-      ds.hl.new("CmpItemAbbrMatchDefault", { fg = BLUE, bold = true })
-      ds.hl.new("CmpItemAbbrMatchFuzzyDefault", { fg = vim.g.ds_colors.orange0, bold = true })
-      ds.hl.new("CmpItemMenu", { fg = BLUE_DARK })
-
-      ds.hl.new("CmpItemKindClass", { link = "@lsp.type.class" })
-      ds.hl.new("CmpItemKindConstant", { link = "@constant" })
-      ds.hl.new("CmpItemKindConstructor", { link = "@constructor" })
-      ds.hl.new("CmpItemKindCopilot", { fg = vim.g.ds_colors.green0 })
-      ds.hl.new("CmpItemKindDefault", { fg = vim.g.ds_colors.white })
-      ds.hl.new("CmpItemKindEnum", { link = "@lsp.type.enum" })
-      ds.hl.new("CmpItemKindEnumMember", { link = "@lsp.type.enumMember" })
-      ds.hl.new("CmpItemKindEvent", { link = "@boolean" })
-      ds.hl.new("CmpItemKindField", { link = "@variable.member" })
-      ds.hl.new("CmpItemKindFile", { link = "Directory" })
-      ds.hl.new("CmpItemKindFolder", { link = "Directory" })
-      ds.hl.new("CmpItemKindFunction", { link = "@lsp.type.function" })
-      ds.hl.new("CmpItemKindInterface", { link = "@lsp.type.interface" })
-      ds.hl.new("CmpItemKindKeyword", { link = "@keyword" })
-      ds.hl.new("CmpItemKindMethod", { link = "@lsp.type.method" })
-      ds.hl.new("CmpItemKindModule", { link = "@module" })
-      ds.hl.new("CmpItemKindOperator", { link = "@operator" })
-      ds.hl.new("CmpItemKindProperty", { link = "@property" })
-      ds.hl.new("CmpItemKindReference", { link = "@markup.link" })
-      ds.hl.new("CmpItemKindSnippet", { fg = vim.g.ds_colors.purple0 })
-      ds.hl.new("CmpItemKindStruct", { link = "@lsp.type.struct" })
-      ds.hl.new("CmpItemKindText", { link = "@markup" })
-      ds.hl.new("CmpItemKindTypeParameter", { link = "@lsp.type.parameter" })
-      ds.hl.new("CmpItemKindUnit", { link = "SpecialChar" })
-      ds.hl.new("CmpItemKindValue", { link = "@markup" })
-      ds.hl.new("CmpItemKindVariable", { link = "@variable" })
+      if opts.custom_highlights and type(opts.custom_highlights) == "function" then opts.custom_highlights() end
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        group = vim.g.ds_cmp_group,
+        callback = opts.custom_highlights,
+      })
     end,
   },
 }
