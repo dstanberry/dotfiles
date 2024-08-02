@@ -201,11 +201,10 @@ end
 M.setup = function()
   if not ds.setting_enabled "remote_plugins" then return end
   if M.initialized then return end
-  M.initialized = true
 
+  M.initialized = true
   bootstrap()
   lazy_file()
-
   vim.api.nvim_create_autocmd("User", {
     group = ds.augroup "lazy_clipboard",
     pattern = "VeryLazy",
@@ -229,13 +228,8 @@ M.setup = function()
       end
     end,
   })
-
   M.lazy_notify()
   init_plugins()
-
-  ds.hl.new("LazyButton", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg3 })
-  ds.hl.new("LazyButtonActive", { bg = ds.color.get_color("Visual", true), bold = true })
-
   vim.keymap.set("n", "<localleader>gb", browse_remote, { noremap = true, silent = true, desc = "git: browse remote" })
 end
 

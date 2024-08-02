@@ -32,10 +32,6 @@ return {
         },
       },
     },
-    init = function()
-      ds.hl.new("MasonMutedBlock", { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.bg3 })
-      ds.hl.new("MasonHighlightBlockBold", { bg = ds.color.get_color("Visual", true), bold = true })
-    end,
     config = function(_, opts)
       require("mason").setup(opts)
       local mason_registry = require "mason-registry"

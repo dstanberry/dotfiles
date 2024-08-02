@@ -51,29 +51,6 @@ return {
         { "<leader>dT", _stop, desc = "dap: terminate" },
       }
     end,
-    init = function()
-      ds.hl.new("DapBreakpointActiveLine", { bg = ds.color.blend(vim.g.ds_colors.yellow2, vim.g.ds_colors.bg3, 0.14) })
-
-      ds.hl.new("DapUINormal", { link = "NormalSB" })
-      ds.hl.new("DapUIStop", { fg = vim.g.ds_colors.red1 })
-      ds.hl.new("DapUIStopNC", { link = "DapUIStop" })
-      ds.hl.new("DapUIRestart", { fg = vim.g.ds_colors.green1 })
-      ds.hl.new("DapUIRestartNC", { link = "DapUIRestart" })
-      ds.hl.new("DapUIStepOver", { fg = vim.g.ds_colors.blue0 })
-      ds.hl.new("DapUIStepOverNC", { link = "DapUIStepOver" })
-      ds.hl.new("DapUIStepInto", { fg = vim.g.ds_colors.blue0 })
-      ds.hl.new("DapUIStepIntoNC", { link = "DapUIStepInto" })
-      ds.hl.new("DapUIStepOut", { fg = vim.g.ds_colors.blue0 })
-      ds.hl.new("DapUIStepOutNC", { link = "DapUIStepOut" })
-      ds.hl.new("DapUIStepBack", { fg = vim.g.ds_colors.blue0 })
-      ds.hl.new("DapUIStepBackNC", { link = "DapUIStepBack" })
-      ds.hl.new("DapUIPlayPause", { fg = vim.g.ds_colors.blue4 })
-      ds.hl.new("DapUIPlayPauseNC", { link = "DapUIPlayPause" })
-      ds.hl.new("DapUIUnavailable", { fg = vim.g.ds_colors.gray2 })
-      ds.hl.new("DapUIUnavailableNC", { link = "DapUIUnavailable" })
-      ds.hl.new("DapUIThread", { fg = vim.g.ds_colors.green0 })
-      ds.hl.new("DapUIThreadNC", { link = "DapUIThread" })
-    end,
     config = function()
       local dap = require "dap"
       local dapui = require "dapui"

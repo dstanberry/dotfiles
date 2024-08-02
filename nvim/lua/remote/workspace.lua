@@ -8,7 +8,6 @@ return {
       { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = "bufferline: toggle pin" },
       { "<leader>bP", "<cmd>BufferLineGroupClose ungrouped<cr>", desc = "bufferline: delete all non-pinned buffers" },
     },
-    init = function() ds.hl.new("PanelHeading", { link = "Title" }) end,
     config = function()
       local bufferline_groups = require "bufferline.groups"
       local bufferline = require "bufferline"
@@ -276,18 +275,6 @@ return {
       return {
         { "<leader>sr", mode = { "n", "v" }, _far, desc = "gruf-far: search/replace in files" },
       }
-    end,
-    init = function()
-      local GREEN = ds.color.blend(vim.g.ds_colors.green1, vim.g.ds_colors.bg2, 0.66)
-      ds.hl.new("GrugFarInputLabel", { link = "DiagnosticInfo" })
-      ds.hl.new("GrugFarInputPlaceholder", { link = "LspCodeLens" })
-      ds.hl.new("GrugFarResultsHeader", { link = "DiagnosticUnnecessary" })
-      ds.hl.new("GrugFarResultsStats", { link = "DiagnosticUnnecessary" })
-      ds.hl.new("GrugFarResultsLineColumn", { link = "LineNr" })
-      ds.hl.new("GrugFarResultsLineNo", { link = "LineNr" })
-      ds.hl.new("GrugFarResultsMatch", { fg = vim.g.ds_colors.bgX, bg = GREEN, bold = true })
-      ds.hl.new("GrugFarResultsPath", { fg = vim.g.ds_colors.gray2, italic = true })
-      ds.hl.new("GrugFarResultsChangeIndicator", { fg = vim.g.ds_colors.green0 })
     end,
   },
   {
