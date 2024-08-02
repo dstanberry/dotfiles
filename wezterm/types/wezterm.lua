@@ -562,6 +562,7 @@
 ---@field send_text fun(self: PaneObj, text: string): nil Sends text to the pane as-is.
 ---@field split fun(self: PaneObj): PaneObj TODO
 ---@field tab fun(self: PaneObj): MuxTabObj? the MuxTab that contains this pane. Note that this method can return nil when pane is a GUI-managed overlay pane (such as the debug overlay), because those panes are not managed by the mux layer.
+---@field title string The pane title as defined by `PaneObj:get_title()`.
 ---@field window fun(self: PaneObj): MuxWindowObj Returns the MuxWindow that contains the tab that contains this pane.
 
 ---@alias CopyToTarget "Clipboard" | "PrimarySelection" | "ClipboardAndPrimarySelection"

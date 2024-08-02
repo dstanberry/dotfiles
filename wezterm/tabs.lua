@@ -15,14 +15,17 @@ function M.set_title(tab, max_width)
     end
   end
   if is_zoomed then title = " " .. title end
+  if tab.is_active then
+    title = "❐ " .. title
 
-  title = wezterm.truncate_right(title, max_width - 3)
-  return " " .. title .. " "
+    title = wezterm.truncate_right(title, max_width - 3)
+    return "  " .. title .. "  "
+  end
 end
 
 ---@param config WeztermConfig
 function M.setup(config)
-  config.hide_tab_bar_if_only_one_tab = false
+  config.hide_tab_bar_if_only_one_tab = true
   config.tab_bar_at_bottom = true
   config.tab_max_width = 32
   config.unzoom_on_switch_pane = true
@@ -30,27 +33,7 @@ function M.setup(config)
 
   wezterm.on("format-tab-title", function(tab, _, _, _, hover, max_width)
     local title = M.set_title(tab, max_width)
-    local background = config.colors.brights[1]
-    local foreground = config.colors.foreground
-
-    if tab.is_active then
-      background = config.colors.brights[7]
-      foreground = config.colors.background
-    elseif hover then
-      background = config.colors.brights[8]
-      foreground = config.colors.background
-    end
-
-    ---@diagnostic disable-next-line: return-type-mismatch
-    return {
-      { Foreground = { Color = background } },
-      { Text = "█" },
-      { Background = { Color = background } },
-      { Foreground = { Color = foreground } },
-      { Text = title },
-      { Foreground = { Color = background } },
-      { Text = "█" },
-    }
+    return title
   end)
 end
 

@@ -1,13 +1,26 @@
+---@diagnostic disable: inject-field
 local wezterm = require "wezterm" --[[@as wezterm]]
 local config = wezterm.config_builder()
 
 require("tabs").setup(config)
 
+config.keys = {
+  {
+    key = "w",
+    mods = "CTRL",
+    action = wezterm.action.CloseCurrentPane { confirm = false },
+  },
+}
 if wezterm.target_triple:find "windows" then
   local launch_menu = {}
   local wsl_domains = wezterm.default_wsl_domains()
 
-  if #wsl_domains > 0 then config.default_domain = wsl_domains[1].name end
+  if #wsl_domains > 0 then
+    for _, dom in ipairs(wsl_domains) do
+      dom.default_cwd = "~"
+    end
+    config.default_domain = wsl_domains[1].name
+  end
 
   table.insert(launch_menu, {
     label = "PowerShell",
@@ -76,15 +89,6 @@ config.hyperlink_rules = {
   { regex = [[\b[tT](\d+)\b]], format = "https://example.com/tasks/?t=$1" },
   { regex = [[["]?([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["]?]], format = "https://www.github.com/$1/$3" },
   { regex = [[\b\w+://(?:[\d]{1,3}\.){3}[\d]{1,3}\S*\b]], format = "$0" },
-}
-
----@diagnostic disable-next-line: inject-field
-config.keys = {
-  {
-    key = "w",
-    mods = "CMD|SHIFT",
-    action = wezterm.action.CloseCurrentPane { confirm = false },
-  },
 }
 
 return config
