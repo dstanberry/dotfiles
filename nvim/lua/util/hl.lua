@@ -19,7 +19,7 @@ M.autocmd_group = ds.augroup "theme_highlights"
 --- Used by `mini.hipatterns` to toggle live preview of highlight groups by name
 M.show_preview = false
 
---- Add or update a highlight group
+--- Adds a new or updates an existing highlight group
 ---@param name string
 ---@param args? vim.api.keyset.highlight
 M.add = function(name, args)
