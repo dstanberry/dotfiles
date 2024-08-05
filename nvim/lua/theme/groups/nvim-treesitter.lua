@@ -18,7 +18,7 @@ M.get = function(c)
     ["@boolean"]                      = { link = "Boolean" },
     ["@character"]                    = { link = "Character" },
     ["@character.special"]            = { link = "SpecialChar" },
-    ["@class"]                        = { fg = c.blue4 },
+    ["@class"]                        = { fg = c.cyan0, bold = true },
     ["@comment"]                      = { link = "Comment" },
     ["@comment.documentation"]        = { link = "SpecialComment" },
     ["@comment.error"]                = { link = "Error" },

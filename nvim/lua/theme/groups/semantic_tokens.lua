@@ -19,7 +19,7 @@ M.get = function(c)
     ["@lsp.type.formatSpecifier"]              = { link = "@markup.list" },
     ["@lsp.type.function"]                     = { link = "@function" },
     ["@lsp.type.generic"]                      = { link = "@variable" },
-    ["@lsp.type.interface"]                    = { fg = ds.color.lighten(c.cyan1, 20) },
+    ["@lsp.type.interface"]                    = { fg = ds.color.lighten(c.cyan1, 20), bold = true },
     ["@lsp.type.lifetime"]                     = { link = "@keyword.storage" },
     ["@lsp.type.method"]                       = { link = "@function.method" },
     ["@lsp.type.modifier"]                     = { link = "Identifier" },
