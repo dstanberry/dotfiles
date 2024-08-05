@@ -176,15 +176,15 @@ function -update-prompt() {
   fi
   local mode=$1
   if [[ $mode == insert ]]; then
-    local SUFFIX=$(printf '\n %%F{green}%%(?..%%F{red})❯%.0s%%f' {1..$LVL})
+    local SUFFIX=$(printf '%%F{green}%%(?..%%F{red})❯%.0s%%f' {1..$LVL})
   else
-    local SUFFIX=$(printf '\n %%F{magenta}❯%.0s%%f' {1..$LVL})
+    local SUFFIX=$(printf '%%F{magenta}❯%.0s%%f' {1..$LVL})
   fi
 
   # define the primary prompt
   local conditional="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }"
   local first_line="%F{blue}%B%1~ %b%f${vcs_metadata} %F{244}${cmd_exec_time}%f"
-  local last_line="%B${SUFFIX}%b "
+  local last_line=$(printf '%%B\n %s%%b ' ${SUFFIX})
 
   export PROMPT="${conditional}${first_line}${last_line}"
 }
