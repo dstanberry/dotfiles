@@ -2,22 +2,18 @@ return {
   {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
-    keys = {
-      {
-        "<localleader>gd",
-        function()
-          local view = require("diffview.lib").get_current_view()
-          if view then
-            vim.cmd "DiffviewClose"
-          else
-            vim.cmd "DiffviewOpen"
-          end
-        end,
-        desc = "diffview: toggle diff",
-      },
-      { "<localleader>gh", "<cmd>DiffviewFileHistory<cr>", desc = "diffview: file history" },
-      { "<localleader>gh", [[:'<'>DiffviewFileHistory<cr>]], mode = "v", desc = "diffview: file history" },
-    },
+    keys = function()
+      local _toggle = function()
+        local action = require("diffview.lib").get_current_view() and "Close" or "Open"
+        vim.cmd("Diffview" .. action)
+      end
+
+      return {
+        { "<localleader>gd", _toggle, desc = "diffview: toggle diff" },
+        { "<localleader>gh", "<cmd>DiffviewFileHistory<cr>", desc = "diffview: file history" },
+        { "<localleader>gh", ":'<'>DiffviewFileHistory<cr>", desc = "diffview: file history", mode = "v" },
+      }
+    end,
     config = function()
       local diffview = require "diffview"
       local lazy = require "diffview.lazy"
