@@ -45,6 +45,7 @@ brew "little-cms2"
 brew "lnav"
 brew "lua@5.1"
 brew "luajit"
+brew "luarocks"
 brew "n"
 brew "neovim", args: ["HEAD"]
 brew "neovim-remote"
