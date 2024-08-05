@@ -257,7 +257,7 @@ return {
       local vtext = ds.pad(ds.icons.misc.FilledCircleLarge, "right")
       local style = "full" -- "full" | "compact"
       local tailwind_colors = require("ft.css.colors").tailwind
-      local filetypes = { "css", "html", "javascript", "javascriptreact", "typescript", "typescriptreact" }
+      local filetypes = { "css", "html" }
 
       local colors ---@type util.theme_palette
       local cache = {} ---@type table<string,table<string,string>>
@@ -350,7 +350,7 @@ return {
       opts.highlighters.hex_color = {
         pattern = function(buf)
           local f = get_config_file(buf)
-          if not (f or vim.tbl_contains(filetypes, vim.bo[buf].ft)) then return end
+          if not (f or vim.tbl_contains(filetypes, vim.bo[buf].ft) or vim.b.minihipatterns_enabled) then return end
           return hex.pattern()
         end,
         group = hex.group,
