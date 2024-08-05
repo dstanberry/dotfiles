@@ -2,7 +2,7 @@ angular/
 configstore
 dlv/
 gh/hosts.yml
-gh-dash/config-private.yml
+gh-dash/config.private.yml
 git/config
 github-copilot/
 hammerspoon/hs/
