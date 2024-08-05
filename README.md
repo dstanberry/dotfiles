@@ -88,9 +88,3 @@ is also checked.
 [Lazygit](https://github.com/jesseduffield/lazygit)
 
 [Neovim](https://github.com/neovim/neovim)
-
-## Extras
-
-[shared/packages](https://github.com/dstanberry/dotfiles/blob/main/shared/packages)
-contains text files in the format `<tool>.txt` whose contents are a lists of
-packages that can be installed by executing `<tool> load`.
