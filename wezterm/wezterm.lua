@@ -1,16 +1,9 @@
 ---@diagnostic disable: inject-field
 local wezterm = require "wezterm" --[[@as wezterm]]
+local tabs = require "tabs"
+local keys = require "keys"
 local config = wezterm.config_builder()
 
-require("tabs").setup(config)
-
-config.keys = {
-  {
-    key = "w",
-    mods = "CTRL",
-    action = wezterm.action.CloseCurrentPane { confirm = false },
-  },
-}
 if wezterm.target_triple:find "windows" then
   local launch_menu = {}
   local wsl_domains = wezterm.default_wsl_domains()
@@ -59,13 +52,14 @@ config.font = wezterm.font_with_fallback {
   { family = "Symbols Nerd Font" },
   { family = "LegacyComputing" },
 }
-config.font_shaper = "Harfbuzz"
 config.font_size = 10
+config.default_cursor_style = "SteadyBlock"
 config.cursor_thickness = 4
 config.cell_width = 1.00
-config.line_height = 1.20
+config.line_height = 1.05
 config.underline_position = -5
 config.underline_thickness = 2
+config.command_palette_font_size = 12
 
 config.scrollback_lines = 10000
 config.enable_scroll_bar = false
@@ -76,9 +70,15 @@ config.window_decorations = "RESIZE"
 config.window_padding = {
   left = 2,
   right = 0,
-  top = 0,
-  bottom = 0,
+  top = 10,
+  bottom = 1,
 }
+
+if wezterm.target_triple == "aarch64-apple-darwin" or wezterm.target_triple == "x86_64-apple-darwin" then
+  config.font_size = 14
+  config.command_palette_font_size = 14
+end
+
 config.window_close_confirmation = "NeverPrompt"
 config.exit_behavior = "Close"
 
@@ -90,5 +90,22 @@ config.hyperlink_rules = {
   { regex = [[["]?([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["]?]], format = "https://www.github.com/$1/$3" },
   { regex = [[\b\w+://(?:[\d]{1,3}\.){3}[\d]{1,3}\S*\b]], format = "$0" },
 }
+
+config.alternate_buffer_wheel_scroll_speed = 1
+config.bypass_mouse_reporting_modifiers = "SHIFT"
+config.mouse_bindings = {
+  {
+    event = { Up = { streak = 1, button = "Left" } },
+    action = wezterm.action.CompleteSelection "ClipboardAndPrimarySelection",
+  },
+  {
+    event = { Up = { streak = 1, button = "Left" } },
+    mods = "CTRL",
+    action = wezterm.action.CompleteSelectionOrOpenLinkAtMouseCursor "ClipboardAndPrimarySelection",
+  },
+}
+
+tabs.setup(config)
+keys.setup(config)
 
 return config
