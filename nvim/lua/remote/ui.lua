@@ -196,27 +196,25 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    -- commit = "b3f08e6",
-    keys = {
-      {
-        "<c-d>",
-        function()
-          if not require("noice.lsp").scroll(4) then return "<c-d>" end
-        end,
-        mode = "n",
-        expr = true,
-        desc = "noice: scroll down",
-      },
-      {
-        "<c-f>",
-        function()
-          if not require("noice.lsp").scroll(-4) then return "<c-f>" end
-        end,
-        mode = "n",
-        expr = true,
-        desc = "noice: scroll up",
-      },
-    },
+    keys = function()
+      local _scroll_up = function()
+        if not require("noice.lsp").scroll(4) then return "<c-d>" end
+      end
+      local _scroll_down = function()
+        if not require("noice.lsp").scroll(-4) then return "<c-f>" end
+      end
+
+      return {
+        { "<c-d>", _scroll_up, mode = "n", expr = true, desc = "noice: scroll down" },
+        { "<c-f>", _scroll_down, mode = "n", expr = true, desc = "noice: scroll up" },
+      }
+    end,
+    init = function()
+      vim.api.nvim_create_autocmd("CmdlineChanged", {
+        group = ds.augroup "noice",
+        callback = vim.schedule_wrap(function() vim.cmd "redraw" end),
+      })
+    end,
     opts = {
       cmdline = {
         format = {
