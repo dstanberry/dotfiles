@@ -5,13 +5,13 @@ return {
     "stevearc/conform.nvim",
     event = "BufWritePre",
     cmd = "ConformInfo",
-    keys = {
-      {
-        "ff",
-        function() require("conform").format { async = true, lsp_format = "fallback" } end,
-        desc = "conform: format document",
-      },
-    },
+    keys = function()
+      local _format = function() require("conform").format { async = true, lsp_format = "fallback" } end
+
+      return {
+        { "ff", _format, desc = "conform: format document" },
+      }
+    end,
     init = function()
       vim.g.conform_slow_formatters = {}
       vim.api.nvim_create_user_command("FormatDisable", function(args)
@@ -325,19 +325,18 @@ return {
   {
     "michaelrommel/nvim-silicon",
     cmd = "Silicon",
-    keys = {
-      {
-        "<leader>sc",
-        function()
-          local _, range = ds.buffer.get_visual_selection()
-          local left = range[1][1] or 1
-          local right = range[2][1] or 1
-          vim.cmd { cmd = "Silicon", range = { left + 1, right + 1 } }
-        end,
-        mode = "v",
-        desc = "silicon: screenshot selection",
-      },
-    },
+    keys = function()
+      local _screenshot = function()
+        local _, range = ds.buffer.get_visual_selection()
+        local left = range[1][1] or 1
+        local right = range[2][1] or 1
+        vim.cmd { cmd = "Silicon", range = { left + 1, right + 1 } }
+      end
+
+      return {
+        { "<leader>sc", _screenshot, mode = "v", desc = "silicon: screenshot selection" },
+      }
+    end,
     opts = {
       disable_defaults = false,
       debug = false,
@@ -373,6 +372,7 @@ return {
       local _swap_down = function() require("smart-splits").swap_buf_down() end
       local _swap_up = function() require("smart-splits").swap_buf_up() end
       local _swap_right = function() require("smart-splits").swap_buf_right() end
+
       return {
         { "<a-h>", _resize_left, desc = "smart-splits: resize left" },
         { "<a-j>", _resize_down, desc = "smart-splits: resize down" },
@@ -397,14 +397,14 @@ return {
       "tpope/vim-dadbod",
     },
     cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection" },
-    keys = {
-      {
-        "<localleader>de",
-        function() vim.cmd.edit(vim.fs.joinpath(vim.fn.stdpath "data", "db", "connections.json")) end,
-        desc = "dadbod: edit database connections",
-      },
-      { "<localleader>db", "<cmd>DBUIToggle<cr>", desc = "dadbod: toggle interface" },
-    },
+    keys = function()
+      local _edit = function() vim.cmd.edit(vim.fs.joinpath(vim.fn.stdpath "data", "db", "connections.json")) end
+
+      return {
+        { "<localleader>de", _edit, desc = "dadbod: edit database connections" },
+        { "<localleader>db", "<cmd>DBUIToggle<cr>", desc = "dadbod: toggle interface" },
+      }
+    end,
     init = function()
       vim.g.db_ui_save_location = vim.fs.joinpath(vim.fn.stdpath "data", "db")
       vim.g.db_ui_tmp_query_location = vim.fs.joinpath(vim.fn.stdpath "data", "db", "tmp")

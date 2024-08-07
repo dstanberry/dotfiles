@@ -468,8 +468,6 @@ return {
     event = "LazyFile",
     dependencies = { "kevinhwang91/promise-async" },
     keys = {
-      -- { "zR", function() require("ufo").openAllFolds() end, desc = "ufo: open all folds" },
-      -- { "zM", function() require("ufo").closeAllFolds() end, desc = "ufo: close all folds" },
       { "zp", function() require("ufo").peekFoldedLinesUnderCursor() end, desc = "ufo: peek content within fold" },
     },
     init = function()

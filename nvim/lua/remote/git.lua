@@ -17,31 +17,16 @@ return {
         Job:new({ command = command, args = args }):start()
       end
 
-      local function browser() return { action_callback = open } end
+      local _open_line = function() require("gitlinker").get_buf_range_url("n", { action_callback = open }) end
+      local _open_range = function() require("gitlinker").get_buf_range_url("v", { action_callback = open }) end
+      local _copy_line = function() require("gitlinker").get_buf_range_url "n" end
+      local _copy_range = function() require("gitlinker").get_buf_range_url "v" end
 
       return {
-        {
-          "<localleader>gy",
-          function() require("gitlinker").get_buf_range_url "n" end,
-          desc = "gitlinker: copy line",
-        },
-        {
-          "<localleader>gx",
-          function() require("gitlinker").get_buf_range_url("n", browser()) end,
-          desc = "gitlinker: open line in browser",
-        },
-        {
-          "<localleader>gy",
-          function() require("gitlinker").get_buf_range_url "v" end,
-          mode = "v",
-          desc = "neogit: copy selection",
-        },
-        {
-          "<localleader>gx",
-          function() require("gitlinker").get_buf_range_url("v", browser()) end,
-          mode = "v",
-          desc = "gitlinker: open selection in browser",
-        },
+        { "<localleader>gy", _copy_line, desc = "gitlinker: copy line" },
+        { "<localleader>gx", _open_line, desc = "gitlinker: open line in browser" },
+        { "<localleader>gy", _copy_range, mode = "v", desc = "neogit: copy selection" },
+        { "<localleader>gx", _open_range, mode = "v", desc = "gitlinker: open selection in browser" },
       }
     end,
     opts = function()

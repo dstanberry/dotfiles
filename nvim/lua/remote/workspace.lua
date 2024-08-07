@@ -233,6 +233,7 @@ return {
     keys = function()
       local _open = function() require("oil").open(ds.root.get()) end
       local _float = function() require("oil").toggle_float() end
+
       return {
         { "-", _open, desc = "oil: browse project" },
         { "<leader>-", _float, desc = "oil: browse parent directory" },
@@ -250,11 +251,6 @@ return {
       { "<leader>qs", function() require("persistence").save() end, desc = "persistence: save session" },
       { "<leader>qS", function() require("persistence").stop() end, desc = "persistence: untrack session" },
       { "<leader>qr", function() require("persistence").load() end, desc = "persistence: restore session" },
-      {
-        "<leader>ql",
-        function() require("persistence").load { last = true } end,
-        desc = "persistence: restore last session",
-      },
     },
   },
   {
@@ -272,6 +268,7 @@ return {
           },
         }
       end
+
       return {
         { "<leader>sr", mode = { "n", "v" }, _far, desc = "gruf-far: search/replace in files" },
       }
@@ -282,7 +279,6 @@ return {
     cmd = "ToggleTerm",
     keys = function()
       local toggle_float, toggle_tab, toggle_lazygit
-
       local _float = function()
         toggle_float = toggle_float
           or require("toggleterm.terminal").Terminal:new {
@@ -299,7 +295,6 @@ return {
           }
         toggle_float:toggle()
       end
-
       local _tab = function()
         toggle_tab = toggle_tab
           or require("toggleterm.terminal").Terminal:new {
@@ -315,7 +310,6 @@ return {
           }
         toggle_tab:toggle()
       end
-
       local _lazygit = function(git_args)
         toggle_lazygit = toggle_lazygit
           or require("toggleterm.terminal").Terminal:new {
@@ -341,17 +335,14 @@ return {
           }
         toggle_lazygit:toggle()
       end
+      local _lazygit_log = function() _lazygit { "-f", vim.trim(vim.api.nvim_buf_get_name(0)) } end
 
       return {
         { "<a-w><a-f>", _float, desc = "toggleterm: toggle float" },
         { "<a-w><a-t>", _tab, desc = "toggleterm: toggle tab" },
         { "<a-w><a-g>", _lazygit, desc = "toggleterm: toggle lazygit" },
         -- lazygit extras
-        {
-          "<leader>gl",
-          function() _lazygit { "-f", vim.trim(vim.api.nvim_buf_get_name(0)) } end,
-          desc = "git: show log for current file",
-        },
+        { "<leader>gl", _lazygit_log, desc = "git: show log for current file" },
       }
     end,
     opts = {
@@ -389,72 +380,45 @@ return {
     "folke/trouble.nvim",
     event = "LazyFile",
     cmd = { "Trouble" },
-    keys = {
-      {
-        "gD",
-        function() vim.cmd { cmd = "Trouble", args = { "lsp_def", "toggle" } } end,
-        desc = "trouble: lsp definitions",
-      },
-      {
-        "gI",
-        function() vim.cmd { cmd = "Trouble", args = { "lsp_impl", "toggle" } } end,
-        desc = "trouble: lsp implementations",
-      },
-      {
-        "gR",
-        function() vim.cmd { cmd = "Trouble", args = { "lsp_ref", "toggle" } } end,
-        desc = "trouble: lsp references",
-      },
-      {
-        "gS",
-        function() vim.cmd { cmd = "Trouble", args = { "symbols", "toggle" } } end,
-        desc = "trouble: lsp document symbols",
-      },
-      {
-        "gT",
-        function() vim.cmd { cmd = "Trouble", args = { "lsp_type_def", "toggle" } } end,
-        desc = "trouble: lsp type definitions",
-      },
-      {
-        "gW",
-        function() vim.cmd { cmd = "Trouble", args = { "lsp_diag", "toggle" } } end,
-        desc = "trouble: workspace diagnostics",
-      },
-      {
-        "<localleader>ql",
-        function() vim.cmd { cmd = "Trouble", args = { "loclist", "toggle" } } end,
-        desc = "trouble: location list",
-      },
-      {
-        "<localleader>qq",
-        function() vim.cmd { cmd = "Trouble", args = { "qflist", "toggle" } } end,
-        desc = "trouble: quickfix list",
-      },
-      {
-        "<c-up>",
-        function()
-          if require("trouble").is_open() then
-            ---@diagnostic disable-next-line: missing-fields
-            require("trouble").prev { skip_groups = true, jump = true }
-          else
-            pcall(vim.cmd.cprevious)
-          end
-        end,
-        desc = "trouble: previous item",
-      },
-      {
-        "<c-down>",
-        function()
-          if require("trouble").is_open() then
-            ---@diagnostic disable-next-line: missing-fields
-            require("trouble").next { skip_groups = true, jump = true }
-          else
-            pcall(vim.cmd.cnext)
-          end
-        end,
-        desc = "trouble: next item",
-      },
-    },
+    keys = function()
+      local _definitions = function() vim.cmd { cmd = "Trouble", args = { "lsp_def", "toggle" } } end
+      local _implementation = function() vim.cmd { cmd = "Trouble", args = { "lsp_impl", "toggle" } } end
+      local _references = function() vim.cmd { cmd = "Trouble", args = { "lsp_ref", "toggle" } } end
+      local _symbols = function() vim.cmd { cmd = "Trouble", args = { "symbols", "toggle" } } end
+      local _type_definitions = function() vim.cmd { cmd = "Trouble", args = { "lsp_type_def", "toggle" } } end
+      local _diagnostics = function() vim.cmd { cmd = "Trouble", args = { "lsp_diag", "toggle" } } end
+      local _location_list = function() vim.cmd { cmd = "Trouble", args = { "loclist", "toggle" } } end
+      local _quickfix_list = function() vim.cmd { cmd = "Trouble", args = { "qflist", "toggle" } } end
+      local _next = function()
+        if require("trouble").is_open() then
+          ---@diagnostic disable-next-line: missing-fields
+          require("trouble").next { skip_groups = true, jump = true }
+        else
+          pcall(vim.cmd.cnext)
+        end
+      end
+      local _previous = function()
+        if require("trouble").is_open() then
+          ---@diagnostic disable-next-line: missing-fields
+          require("trouble").prev { skip_groups = true, jump = true }
+        else
+          pcall(vim.cmd.cprevious)
+        end
+      end
+
+      return {
+        { "gD", _definitions, desc = "trouble: lsp definitions" },
+        { "gI", _implementation, desc = "trouble: lsp implementations" },
+        { "gR", _references, desc = "trouble: lsp references" },
+        { "gS", _symbols, desc = "trouble: lsp document symbols" },
+        { "gT", _type_definitions, desc = "trouble: lsp type definitions" },
+        { "gW", _diagnostics, desc = "trouble: workspace diagnostics" },
+        { "<localleader>ql", _location_list, desc = "trouble: location list" },
+        { "<localleader>qq", _quickfix_list, desc = "trouble: quickfix list" },
+        { "<c-up>", _previous, desc = "trouble: previous item" },
+        { "<c-down>", _next, desc = "trouble: next item" },
+      }
+    end,
     init = function()
       vim.api.nvim_create_autocmd("QuickFixCmdPost", {
         callback = function() vim.cmd "Trouble qflist open" end,

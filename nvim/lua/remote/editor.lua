@@ -22,31 +22,19 @@ return {
       }
     end,
     keys = function()
-      local keys = {
+      local _toggle = function() require("CopilotChat").toggle() end
+      local _clear = function() return require("CopilotChat").reset() end
+      local _chat = function()
+        local input = vim.fn.input "Ask Copilot: "
+        if input ~= "" then require("CopilotChat").ask(input) end
+      end
+
+      return {
         { "<leader>c", mode = { "n", "v" }, "", desc = "+copilot" },
-        {
-          "<leader>cc",
-          mode = { "n", "v" },
-          function() return require("CopilotChat").toggle() end,
-          desc = "copilot: toggle chat",
-        },
-        {
-          "<leader>ca",
-          mode = { "n", "v" },
-          function()
-            local input = vim.fn.input "Ask Copilot: "
-            if input ~= "" then require("CopilotChat").ask(input) end
-          end,
-          desc = "copilot: quick chat",
-        },
-        {
-          "<leader>cx",
-          mode = { "n", "v" },
-          function() return require("CopilotChat").reset() end,
-          desc = "copilot: clear history",
-        },
+        { "<leader>cc", mode = { "n", "v" }, _toggle, desc = "copilot: toggle chat" },
+        { "<leader>ca", mode = { "n", "v" }, _chat, desc = "copilot: quick chat" },
+        { "<leader>cx", mode = { "n", "v" }, _clear, desc = "copilot: clear history" },
       }
-      return keys
     end,
     config = function(_, opts)
       require("CopilotChat").setup(opts)
@@ -203,10 +191,11 @@ return {
       local _treesitter = function() require("flash").treesitter() end
       local _remote = function() require("flash").remote() end
       local _treesitter_search = function() require("flash").treesitter_search() end
+
       return {
+        { "r", mode = "o", _remote, desc = "flash: do operation on <pattern>" },
         { "s", mode = { "n", "o", "x" }, _jump, desc = "flash: jump to <pattern>" },
         { "S", mode = { "n", "o", "x" }, _treesitter, desc = "flash: select treesitter node" },
-        { "r", mode = "o", _remote, desc = "flash: do operation on <pattern>" },
         { "R", mode = { "n", "o", "x" }, _treesitter_search, desc = "flash: do (treesitter) operation on <pattern>" },
       }
     end,
