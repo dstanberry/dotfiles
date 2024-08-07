@@ -29,7 +29,7 @@ vim.o.mousemodel = "extend" -- prevent showing context-menu on right-click
 vim.o.number = true -- show line numbers
 vim.o.pumblend = 0 -- opacity for popup menu
 vim.o.pumheight = 5 -- the maximum number of entries shown in completion menu
-vim.o.relativenumber = false -- show line numbers relative to current line
+vim.o.relativenumber = true -- show line numbers relative to current line
 vim.o.ruler = false -- disable showing cursor position in/below statusline
 vim.o.scrolloff = 3 -- rows: begin scrolling before reaching viewport boundary
 if ds.has "win32" then -- use powershell on windows OS
