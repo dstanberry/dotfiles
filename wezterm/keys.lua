@@ -53,19 +53,23 @@ end
 function M.setup(config)
   config.disable_default_key_bindings = true
   config.keys = {
+    -- font
     { mods = M.primary_mod, key = "(", action = action.DecreaseFontSize },
     { mods = M.primary_mod, key = ")", action = action.IncreaseFontSize },
-    { mods = M.primary_mod, key = "-", action = action.SplitHorizontal { domain = "CurrentPaneDomain" } },
-    { mods = M.primary_mod, key = "/", action = action.SplitVertical { domain = "CurrentPaneDomain" } },
+    -- scrollback
     { mods = M.primary_mod, key = "f", action = action.ScrollByPage(-0.5) },
     { mods = M.primary_mod, key = "d", action = action.ScrollByPage(0.5) },
     { mods = M.primary_mod, key = "t", action = action.SpawnTab "CurrentPaneDomain" },
+    -- clipboard
     { mods = M.primary_mod, key = "c", action = action.CopyTo "Clipboard" },
     { mods = M.primary_mod, key = "v", action = action.PasteFrom "Clipboard" },
-    { mods = M.primary_mod, key = "p", action = action.ActivateCommandPalette },
+    -- panes
+    { mods = M.primary_mod, key = "-", action = action.SplitHorizontal { domain = "CurrentPaneDomain" } },
+    { mods = M.primary_mod, key = "/", action = action.SplitVertical { domain = "CurrentPaneDomain" } },
     { mods = M.primary_mod, key = "w", action = action.CloseCurrentPane { confirm = false } },
     { mods = M.primary_mod, key = "z", action = action.TogglePaneZoomState },
-    { mods = M.primary_mod, key = "`", action = action.ShowDebugOverlay },
+    { mods = M.primary_mod, key = "d", action = action.ActivatePaneDirection "Previous" },
+    { mods = M.primary_mod, key = "f", action = action.ActivatePaneDirection "Next" },
     M.split_or_resize("move", M.primary_mod, "h", "Left"),
     M.split_or_resize("move", M.primary_mod, "j", "Down"),
     M.split_or_resize("move", M.primary_mod, "k", "Up"),
@@ -82,8 +86,11 @@ function M.setup(config)
     M.split_or_resize("resize", "ALT", "j", "Down"),
     M.split_or_resize("resize", "ALT", "k", "Up"),
     M.split_or_resize("resize", "ALT", "l", "Left"),
+    -- misc
+    { mods = M.primary_mod, key = "p", action = action.ActivateCommandPalette },
+    { mods = M.primary_mod, key = "`", action = action.ShowDebugOverlay },
   }
-
+  -- tabs
   if wezterm.target_triple:find "windows" then
     table.insert(
       config.keys,
