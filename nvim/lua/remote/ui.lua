@@ -634,7 +634,7 @@ return {
         options = {
           signcolumn = "yes",
           number = true,
-          relativenumber = true,
+          relativenumber = false,
           cursorline = true,
           cursorcolumn = false,
           foldcolumn = "0",

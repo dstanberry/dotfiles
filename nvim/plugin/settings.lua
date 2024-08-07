@@ -29,7 +29,7 @@ vim.o.mousemodel = "extend" -- prevent showing context-menu on right-click
 vim.o.number = true -- show line numbers
 vim.o.pumblend = 0 -- opacity for popup menu
 vim.o.pumheight = 5 -- the maximum number of entries shown in completion menu
-vim.o.relativenumber = true -- show line numbers relative to current line
+vim.o.relativenumber = false -- show line numbers relative to current line
 vim.o.ruler = false -- disable showing cursor position in/below statusline
 vim.o.scrolloff = 3 -- rows: begin scrolling before reaching viewport boundary
 if ds.has "win32" then -- use powershell on windows OS
@@ -91,7 +91,7 @@ vim.opt.fillchars = { -- define glyphs used for vertical separators and statusli
   foldsep = " ",
 }
 
-vim.opt.foldexpr = [[v:lua.require("util.ui").foldexpr()]] -- define the function used to calculate the fold level
+vim.opt.foldexpr = "v:lua.require('util.ui').foldexpr()" -- define the function used to calculate the fold level
 vim.opt.foldlevel = 99 -- define the fold level
 vim.opt.foldmethod = "expr" -- define how the fold level is calculated
 vim.opt.foldtext = "" -- specify the text displayed for a closed fold
@@ -123,9 +123,11 @@ vim.opt.shortmess:append "A" -- avoid swapfile alert messages
 vim.opt.shortmess:append "I" -- disable splash screen
 vim.opt.shortmess:append "F" -- disable showing file info
 vim.opt.shortmess:append "c" -- don't show completion menu messages
+vim.opt.signcolumn = "yes" -- show sign column to prevent visual jitter
 vim.opt.spelllang = "en_us" -- set preferred language
 vim.opt.spelloptions:append "noplainbuffer" -- spell checker can only be available for buffers with a valid filetype
 vim.opt.statuscolumn = [[%!v:lua.require'util.ui'.statuscolumn()]] -- define the function used to populate the statuscolumn
+vim.opt.smoothscroll = true -- when line wrap enabled, scroll by screen line instead of by line
 vim.opt.wildignore = { -- list of file patterns to ifnore when expanding wildcards
   "*.dll",
   "*.gif",
