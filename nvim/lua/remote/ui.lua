@@ -126,7 +126,7 @@ return {
         return vim.ui.select(...)
       end
     end,
-    config = function()
+    opts = function()
       local function get_height(self, _, max_lines)
         local results = #self.finder.results
         local PADDING = 4
@@ -134,7 +134,7 @@ return {
         return (results <= (LIMIT - PADDING) and results + PADDING or LIMIT)
       end
 
-      require("dressing").setup {
+      return {
         input = {
           enabled = false,
           insert_only = false,
@@ -399,6 +399,14 @@ return {
   {
     "rcarriga/nvim-notify",
     lazy = true,
+    init = function()
+      if not ds.plugin.is_installed "noice.nvim" then
+        vim.api.nvim_create_autocmd("User", {
+          pattern = "VeryLazy",
+          callback = function() vim.notify = require "notify" end,
+        })
+      end
+    end,
     opts = {
       stages = "fade_in_slide_out",
       timeout = 3000,
@@ -412,14 +420,6 @@ return {
       max_height = function() return math.floor(vim.o.lines * 0.75) end,
       max_width = function() return math.floor(vim.o.columns * 0.75) end,
     },
-    init = function()
-      if not ds.plugin.is_installed "noice.nvim" then
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "VeryLazy",
-          callback = function() vim.notify = require "notify" end,
-        })
-      end
-    end,
   },
   {
     "levouh/tint.nvim",

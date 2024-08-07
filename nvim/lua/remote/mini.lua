@@ -401,6 +401,12 @@ return {
   {
     "echasnovski/mini.icons",
     lazy = true,
+    init = function()
+      package.preload["nvim-web-devicons"] = function()
+        require("mini.icons").mock_nvim_web_devicons()
+        return package.loaded["nvim-web-devicons"]
+      end
+    end,
     opts = {
       style = "glyph",
       -- stylua: ignore
@@ -439,20 +445,10 @@ return {
         return not _skipped[ext:lower()]
       end,
     },
-    init = function()
-      package.preload["nvim-web-devicons"] = function()
-        require("mini.icons").mock_nvim_web_devicons()
-        return package.loaded["nvim-web-devicons"]
-      end
-    end,
   },
   {
     "echasnovski/mini.indentscope",
     event = "LazyFile",
-    opts = {
-      symbol = ds.icons.misc.VerticalBar,
-      options = { try_as_border = true },
-    },
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
         pattern = vim.tbl_deep_extend(
@@ -466,6 +462,10 @@ return {
         callback = function() vim.b.miniindentscope_disable = true end,
       })
     end,
+    opts = {
+      symbol = ds.icons.misc.VerticalBar,
+      options = { try_as_border = true },
+    },
   },
   {
     "echasnovski/mini.pairs",
