@@ -76,7 +76,7 @@ M.on_attach = function(client, bufnr)
       group = ds.augroup "lsp_codeaction",
       callback = function()
         local params = vim.lsp.util.make_range_params()
-        params.context = { diagnostics = vim.lsp.diagnostic.get_line_diagnostics() }
+        params.context = { diagnostics = vim.diagnostic.get(bufnr, {}) }
         vim.lsp.buf_request(bufnr, "textDocument/codeAction", params, function(_, result, _, _)
           if result and result[1] then ds.info("Code actions available", { title = "LSP" }) end
         end)
@@ -211,8 +211,8 @@ M.on_attach = function(client, bufnr)
   vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "lsp: show documents symbols" })
   vim.keymap.set("n", "gw", _symbols, { buffer = bufnr, desc = "lsp: show workspace symbols" })
 
-  local _previous = function() vim.diagnostic.goto_next { float = true } end
-  local _next = function() vim.diagnostic.goto_prev { float = true } end
+  local _previous = function() vim.diagnostic.jump { count = -1, float = true } end
+  local _next = function() vim.diagnostic.jump { count = 1, float = true } end
   vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr, desc = "lsp: show line diagnostics" })
   vim.keymap.set("n", "gn", _next, { buffer = bufnr, desc = "lsp: next diagnostic" })
   vim.keymap.set("n", "gp", _previous, { buffer = bufnr, desc = "lsp: previous diagnostic" })
