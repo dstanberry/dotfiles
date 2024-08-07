@@ -323,7 +323,6 @@ return {
             any = {
               { event = "msg_show", find = "^E486:" },
               { event = "msg_show", find = "^Hunk %d+ of %d" },
-              { event = "notify", find = "Code actions available" },
             },
           },
         },
