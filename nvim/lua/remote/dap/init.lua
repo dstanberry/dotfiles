@@ -34,6 +34,7 @@ return {
       local _out = function() require("dap").step_out() end
       local _repl = function() require("dap").repl.toggle { height = 15 } end
       local _stop = function() require("dap").terminate() end
+      local _ui = function() require("dapui").toggle() end
 
       return {
         { "<leader>db", _breakpoint, desc = "dap: toggle breakpoint" },
@@ -49,6 +50,7 @@ return {
         { "<leader>dO", _out, desc = "dap: step out" },
         { "<leader>dt", _repl, desc = "dap: toggle repl" },
         { "<leader>dT", _stop, desc = "dap: terminate" },
+        { "<leader>du", _ui, desc = "dap: toggle ui" },
       }
     end,
     config = function()
@@ -131,9 +133,8 @@ return {
             terminate = ds.icons.debug.Stop,
           },
         },
-        ---@diagnostic disable-next-line: missing-fields
         floating = {
-          boder = "single",
+          border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
           max_height = nil,
           max_width = nil,
           mappings = {

@@ -7,7 +7,14 @@ M.get = function(c)
   return {
     DapBreakpointActiveLine = { bg = ds.color.blend(c.yellow2, c.bg3, 0.14) },
 
-    DapUINormal             = { link = "NormalSB" },
+    DapUINormal             = { fg = ds.color.get_color("Normal") },
+    DapUIFloatNormal        = { bg = c.bg0 },
+    DapUIFloatBorder        = { fg = c.gray2 },
+
+    DapUIVariable           = { link  = "@variable" },
+    DapUIValue              = { link = "@keyword.debug" },
+    DapUIType               = { link = "@type" },
+
     DapUIStop               = { fg = c.red1 },
     DapUIStopNC             = { link = "DapUIStop" },
     DapUIRestart            = { fg = c.green1 },
