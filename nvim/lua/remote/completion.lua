@@ -73,6 +73,7 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-path",
+      "roobert/tailwindcss-colorizer-cmp.nvim",
       "saadparwaiz1/cmp_luasnip",
       "L3MON4D3/LuaSnip",
     },
@@ -97,10 +98,10 @@ return {
         ---@diagnostic disable-next-line: missing-fields
         formatting = {
           fields = { "kind", "abbr", "menu" },
-          format = function(_, item)
+          format = function(entry, item)
             item.menu = ds.pad(item.kind, "both")
             item.kind = ds.pad(ds.icons.kind[item.kind], "both")
-            return item
+            return require("tailwindcss-colorizer-cmp").formatter(entry, item)
           end,
         },
         mapping = cmp.mapping.preset.insert {

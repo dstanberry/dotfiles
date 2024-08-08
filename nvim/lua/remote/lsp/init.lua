@@ -1,4 +1,5 @@
--- vim.lsp.set_log_level "trace"
+-- vim.lsp.set_log_level(vim.lsp.log_levels.TRACE)
+-- vim.lsp.log.set_format_func(vim.inspect)
 
 return {
   { "Hoffs/omnisharp-extended-lsp.nvim", lazy = true },
@@ -20,7 +21,7 @@ return {
       local servers = {
         bashls = {},
         cmake = {},
-        cssls = {},
+        cssls = { init_options = { provideFormatter = false } },
         html = { init_options = { provideFormatter = false } },
         terraformls = {},
       }
