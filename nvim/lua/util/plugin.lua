@@ -106,6 +106,39 @@ local browse_remote = function()
   }, open)
 end
 
+local setup_autocmds = function()
+  local group = ds.augroup "lazy"
+  vim.api.nvim_create_autocmd("User", {
+    group = group,
+    pattern = "VeryLazy",
+    callback = function()
+      vim.o.clipboard = "unnamedplus"
+      if ds.has "wsl" then
+        -- NOTE: May require `Beta: Use Unicode UTF-8 for global language support`
+        -- https://github.com/microsoft/WSL/issues/4852
+        vim.g.clipboard = { -- use win32 native clipboard tool on WSL
+          name = "WslClipboard",
+          copy = {
+            ["+"] = "clip.exe",
+            ["*"] = "clip.exe",
+          },
+          paste = {
+            ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+            ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
+          },
+          cache_enabled = 0,
+        }
+      end
+    end,
+  })
+
+  vim.api.nvim_create_autocmd("FileType", {
+    group = group,
+    pattern = "lazy",
+    callback = function() vim.opt_local.listchars = {} end,
+  })
+end
+
 M.initialized = false
 
 ---@param pkg string
@@ -201,33 +234,10 @@ end
 M.setup = function()
   if not ds.setting_enabled "remote_plugins" then return end
   if M.initialized then return end
-
   M.initialized = true
   bootstrap()
   lazy_file()
-  vim.api.nvim_create_autocmd("User", {
-    group = ds.augroup "lazy_clipboard",
-    pattern = "VeryLazy",
-    callback = function()
-      vim.o.clipboard = "unnamedplus"
-      if ds.has "wsl" then
-        -- NOTE: May require `Beta: Use Unicode UTF-8 for global language support`
-        -- https://github.com/microsoft/WSL/issues/4852
-        vim.g.clipboard = { -- use win32 native clipboard tool on WSL
-          name = "WslClipboard",
-          copy = {
-            ["+"] = "clip.exe",
-            ["*"] = "clip.exe",
-          },
-          paste = {
-            ["+"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-            ["*"] = 'powershell.exe -c [Console]::Out.Write($(Get-Clipboard -Raw).tostring().replace("`r", ""))',
-          },
-          cache_enabled = 0,
-        }
-      end
-    end,
-  })
+  setup_autocmds()
   M.lazy_notify()
   init_plugins()
   vim.keymap.set("n", "<localleader>gb", browse_remote, { noremap = true, silent = true, desc = "git: browse remote" })
