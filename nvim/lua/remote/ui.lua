@@ -167,12 +167,7 @@ return {
     event = "LazyFile",
     opts = {
       indent = { char = ds.icons.misc.VerticalBarThin },
-      scope = {
-        -- NOTE: managed by `mini.indentscope`
-        enabled = false,
-        char = ds.icons.misc.VerticalBar,
-        -- highlight = { "TSRainbow1", "TSRainbow2", "TSRainbow3", "TSRainbow4", "TSRainbow5", "TSRainbow6", "TSRainbow7" },
-      },
+      scope = { enabled = false },
       exclude = {
         filetypes = vim.tbl_deep_extend(
           "keep",
