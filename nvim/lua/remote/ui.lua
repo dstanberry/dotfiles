@@ -268,6 +268,7 @@ return {
           opts = { skip = true },
           filter = {
             any = {
+              { event = "notify", find = "No information available" },
               {
                 event = "lsp",
                 cond = function(message)
