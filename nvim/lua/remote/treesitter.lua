@@ -134,11 +134,6 @@ return {
     end,
   },
   {
-    "windwp/nvim-ts-autotag",
-    event = "LazyFile",
-    opts = {},
-  },
-  {
     "HiPhish/rainbow-delimiters.nvim",
     event = "LazyFile",
     config = function()
