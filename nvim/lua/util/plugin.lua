@@ -55,28 +55,6 @@ local init_plugins = function()
   })
 end
 
-local lazy_file = function()
-  vim.api.nvim_create_autocmd("BufReadPost", {
-    once = true,
-    callback = function(args)
-      -- skip if we already entered vim
-      if vim.v.vim_did_enter == 1 then return end
-      -- try to guess the filetype (may change later on during neovim startup)
-      local ft = vim.filetype.match { buf = args.buf }
-      if ft then
-        -- add treesitter highlights and fallback to syntax
-        local lang = vim.treesitter.language.get_lang(ft)
-        if not (lang and pcall(vim.treesitter.start, args.buf, lang)) then vim.bo[args.buf].syntax = ft end
-        vim.cmd [[redraw]]
-      end
-    end,
-  })
-
-  local Event = require "lazy.core.handler.event"
-  Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFile", "BufWritePre" } }
-  Event.mappings["User LazyFile"] = Event.mappings.LazyFile
-end
-
 local browse_remote = function()
   local lines = require("lazy.manage.process").exec { "git", "remote", "-v" }
   local remotes = {}
@@ -108,6 +86,20 @@ end
 
 local setup_autocmds = function()
   local group = ds.augroup "lazy"
+
+  vim.api.nvim_create_autocmd("BufReadPost", {
+    once = true,
+    callback = function(args)
+      if vim.v.vim_did_enter == 1 then return end
+      local ft = vim.filetype.match { buf = args.buf }
+      if ft then
+        local lang = vim.treesitter.language.get_lang(ft)
+        if not (lang and pcall(vim.treesitter.start, args.buf, lang)) then vim.bo[args.buf].syntax = ft end
+        vim.cmd [[redraw]]
+      end
+    end,
+  })
+
   vim.api.nvim_create_autocmd("User", {
     group = group,
     pattern = "VeryLazy",
@@ -138,8 +130,6 @@ local setup_autocmds = function()
     callback = function() vim.opt_local.listchars = {} end,
   })
 end
-
-M.initialized = false
 
 ---@param pkg string
 ---@param path? string
@@ -188,10 +178,8 @@ M.lazy_notify = function()
 
   local orig = vim.notify
   vim.notify = temp
-
   local timer = vim.uv.new_timer()
   local check = assert(vim.uv.new_check())
-
   local replay = function()
     timer:stop()
     check:stop()
@@ -204,7 +192,6 @@ M.lazy_notify = function()
       end
     end)
   end
-
   -- wait till vim.notify has been replaced
   check:start(function()
     if vim.notify ~= temp then replay() end
@@ -231,16 +218,23 @@ M.on_load = function(name, fn)
   end
 end
 
+M.initialized = false
+
 M.setup = function()
   if not ds.setting_enabled "remote_plugins" then return end
   if M.initialized then return end
   M.initialized = true
   bootstrap()
-  lazy_file()
-  setup_autocmds()
-  M.lazy_notify()
-  init_plugins()
+
+  local Event = require "lazy.core.handler.event"
+  Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFile", "BufWritePre" } }
+  Event.mappings["User LazyFile"] = Event.mappings.LazyFile
+
   vim.keymap.set("n", "<localleader>gb", browse_remote, { noremap = true, silent = true, desc = "git: browse remote" })
+
+  M.lazy_notify()
+  setup_autocmds()
+  init_plugins()
 end
 
 return M
