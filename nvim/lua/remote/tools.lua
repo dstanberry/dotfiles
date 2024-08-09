@@ -88,15 +88,6 @@ return {
               end
             end,
           },
-          ["markdownlint-cli2"] = {
-            condition = function(_, ctx)
-              local diag = vim.tbl_filter(
-                function(d) return d.source == "markdownlint" end,
-                vim.diagnostic.get(ctx.buf)
-              )
-              return #diag > 0
-            end,
-          },
           prettierd = {
             env = function(_, ctx)
               local conf = ds.root.detectors.pattern(ctx.buf, {
