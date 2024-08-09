@@ -183,7 +183,7 @@ function -update-prompt() {
 
   # define the primary prompt
   local conditional="${PREFIX}%F{green}${SSH_TTY:+%m}%f%B${SSH_TTY:+ }"
-  local first_line="%F{blue}%B%1~ %b%f${vcs_metadata} %F{244}${cmd_exec_time}%f"
+  local first_line="%F{blue}%B%3~ %b%f${vcs_metadata} %F{244}${cmd_exec_time}%f"
   local last_line=$(printf '%%B\n %s%%b ' ${SUFFIX})
 
   export PROMPT="${conditional}${first_line}${last_line}"
