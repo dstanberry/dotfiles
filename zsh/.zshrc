@@ -50,9 +50,9 @@ autoload -U compinit
 # shell is opened each day.
 _comp_files=(${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache(Nm-20))
 if (( $#_comp_files )); then
-    compinit -i -C -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
+  compinit -i -C -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
 else
-    compinit -i -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
+  compinit -i -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zcompcache"
 fi
 unset _comp_files
 
@@ -323,7 +323,7 @@ vi-cmd () {
   # read the next keystroke, look it up in the `vicmd` keymap and, if successful,
   # evalute the widget bound to it in the context of the `vicmd` keymap.
   zle .read-command -K vicmd &&
-    zle $REPLY -K vicmd
+  zle $REPLY -K vicmd
 }
 
 # make a keyboard widget out of the function above.
@@ -392,10 +392,10 @@ select-word-style bash
 if [ -d "$ZSH_CONFIG_HOME/rc" ]; then
   for RC_FILE in $(find "$ZSH_CONFIG_HOME"/rc -type f | sort -V); do
     case "$(basename $RC_FILE)" in
-      "Path.zsh" ) _evalcache source $RC_FILE;;
-      *) source "$RC_FILE";;
-  esac
-    done
+      "Path.zsh" ) _evalcache source $RC_FILE ;;
+      *) source "$RC_FILE" ;;
+    esac
+  done
 fi
 
 ###############################################################
@@ -484,12 +484,12 @@ function -update-window-title-preexec() {
   # https://github.com/robbyrussell/oh-my-zsh/blob/master/lib/termsupport.zsh
   local TRIMMED=${2[(wr)^(*=*|mosh|ssh|sudo)]}
   if [ -n "$TMUX" ]; then
-  	# inside tmux, show the running command: tmux will prefix it with the
-  	# session name (for context).
-  	-set-tab-and-window-title "$TRIMMED"
+    # inside tmux, show the running command: tmux will prefix it with the
+    # session name (for context).
+    -set-tab-and-window-title "$TRIMMED"
   else
-  	# outside tmux, show $PWD (for context) followed by the running command.
-  	-set-tab-and-window-title "$(-pwd-basename) > $TRIMMED"
+    # outside tmux, show $PWD (for context) followed by the running command.
+    -set-tab-and-window-title "$(-pwd-basename) > $TRIMMED"
   fi
 }
 
