@@ -14,17 +14,18 @@ vim.filetype.add {
     vifmrc = "vim",
   },
   filename = {
-    [".env"] = "dotenv",
+    [".env"] = "sh",
     [".flake8"] = "toml",
     ["tmux.conf"] = "tmux",
     Brewfile = "ruby",
     jenkinsfile = "groovy",
   },
   pattern = {
-    ["%.env%.[%w_.-]+"] = "dotenv",
+    ["%.env%.[%w_.-]+"] = "sh",
     [".*/git/config"] = "gitconfig",
     [".*/git/gitconfig"] = "gitconfig",
     [".*/git/ignore"] = "gitignore",
+    [".*/kitty/.+%.conf"] = "bash",
     [".*"] = {
       function(path, buf)
         return vim.bo[buf] ~= "bigfile" and path and vim.fn.getfsize(path) > 1024 * 1024 * 1.5 and "bigfile" or nil
