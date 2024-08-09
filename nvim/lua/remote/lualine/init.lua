@@ -14,7 +14,6 @@ return {
   end,
   opts = function()
     local util = require "remote.lualine.util"
-
     -- PERF: disable lualine require
     local lualine_require = require "lualine_require"
     lualine_require.require = require
@@ -43,15 +42,15 @@ return {
         lualine_b = {
           {
             util.metadata.root_dir.get,
-            padding = { right = 1 },
             color = { fg = vim.g.ds_colors.overlay1 },
             cond = function() return type(util.metadata.root_dir.get()) == "string" end,
+            padding = { right = 1 },
           },
           {
             "vim.b.gitsigns_blame_line",
-            padding = { right = 1 },
             color = { fg = ds.color.get_color "WinbarFilename", gui = "italic" },
             cond = function() return util.available_width(120) end,
+            padding = { right = 1 },
           },
         },
         lualine_c = {
@@ -72,6 +71,13 @@ return {
         },
         lualine_x = {
           {
+            util.message.noice.get,
+            color = { fg = vim.g.ds_colors.gray2, gui = "italic" },
+            cond = util.message.noice.cond,
+          },
+        },
+        lualine_y = {
+          {
             "diagnostics",
             sources = { "nvim_diagnostic" },
             symbols = {
@@ -91,23 +97,19 @@ return {
             util.lsp.clients.get,
             color = { fg = ds.color.lighten(vim.g.ds_colors.overlay1, 10), gui = "bold" },
           },
+        },
+        lualine_z = {
           {
             "filetype",
-            color = { gui = "bold" },
-          },
-        },
-        lualine_y = {
-          {
-            util.message.noice.get,
-            color = { fg = vim.g.ds_colors.gray2, gui = "italic" },
-            cond = util.message.noice.cond,
-          },
-          {
-            "location",
-            color = { fg = ds.color.get_color "WinbarContext", gui = "bold,italic" },
+            color = { fg = ds.color.get_color "WinbarFilename", gui = "bold" },
           },
           {
             util.metadata.indentation.get,
+            color = { fg = ds.color.get_color "WinbarContext", gui = "bold,italic" },
+            padding = { right = 1 },
+          },
+          {
+            "location",
             color = { fg = ds.color.get_color "WinbarContext", gui = "bold,italic" },
           },
           {
@@ -117,12 +119,11 @@ return {
           {
             "fileformat",
             icons_enabled = true,
-            symbols = { unix = "lf", dos = "crlf", mac = "cr" },
             color = { fg = ds.color.get_color "WinbarContext", gui = "bold,italic" },
             padding = { right = 2 },
+            symbols = { unix = "lf", dos = "crlf", mac = "cr" },
           },
         },
-        lualine_z = {},
       },
       winbar = {
         lualine_a = {
@@ -138,9 +139,9 @@ return {
           },
           {
             util.lsp.symbols.get,
+            color = "Winbar",
             cond = util.lsp.symbols.cond,
             padding = { left = 0 },
-            color = "Winbar",
           },
         },
         lualine_x = {
