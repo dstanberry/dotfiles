@@ -125,3 +125,12 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.colorcolumn = "120"
   end,
 })
+vim.api.nvim_create_autocmd("FileType", {
+  group = ftplugin,
+  callback = function(args)
+    local ft = vim.filetype.match { buf = args.buf }
+    if ft then
+      if not vim.treesitter.language.get_lang(ft) then vim.opt_local.relativenumber = false end
+    end
+  end,
+})

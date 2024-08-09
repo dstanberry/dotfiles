@@ -16,7 +16,6 @@ function M.foldexpr()
   -- checking if treesitter is available (it won't)
   if vim.bo[buf].filetype == "" then return "0" end
   local ok = pcall(vim.treesitter.get_parser, buf)
-  if not ok then vim.opt_local.relativenumber = false end
   if ok then return vim.treesitter.foldexpr() end
   -- no parser available, so mark it as skip
   -- in the next tick, all skip marks will be reset
