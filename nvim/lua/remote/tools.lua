@@ -332,7 +332,7 @@ return {
       disable_defaults = false,
       debug = false,
       command = "silicon",
-      font = "CartographCF Nerd Font=30",
+      font = "Cartograph CF=30",
       background = ds.color.blend(vim.g.ds_colors.purple1, vim.g.ds_colors.bg2, 0.44),
       theme = "kdark",
       line_offset = function(args) return args.line1 end,
