@@ -182,7 +182,7 @@ vim.keymap.set("n", "<localleader><localleader>s", function()
   local file = vim.api.nvim_buf_get_name(0)
   local path = vim.fs.dirname(file)
   ---@diagnostic disable-next-line: redundant-parameter
-  local updated = vim.fn.input("Save as: ", path .. "/")
+  local updated = vim.fn.input("Save as: ", path .. "/", "file")
   if #updated > 0 and updated ~= file then
     vim.cmd.saveas(updated)
     local move = vim.fn.confirm("Delete original file?", "&Yes\n&No")
