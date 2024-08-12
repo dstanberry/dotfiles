@@ -221,7 +221,7 @@ M.md_link = function(bufnr, ns, capture_node, capture_text, range)
   vim.api.nvim_buf_add_highlight(bufnr, ns, "@markup.link.label", range.row_start, range.col_start, range.col_end)
   vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_end, is_email and range.col_end - 1 or range.col_end, {
     virt_text_pos = "inline",
-    virt_text = { { " ", "@markup.link" } },
+    virt_text = { { "", "@markup.link" } },
     end_col = is_email and range.col_end or range.col_start,
     conceal = "",
   })
@@ -257,6 +257,14 @@ end
 local render_header = function(bufnr, ns, row, alignments, range)
   local current_col, col_offset = 1, 0
   local border = {}
+  local prev_extmark = vim.api.nvim_buf_get_extmarks(
+    bufnr,
+    ns,
+    { range.row_start - 1, 0 },
+    { range.row_start - 1, 0 },
+    {}
+  )
+  if prev_extmark and type(prev_extmark) == "table" and vim.tbl_count(prev_extmark) > 0 then return end
   for index, col in ipairs(row) do
     if index == 1 then
       vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {
