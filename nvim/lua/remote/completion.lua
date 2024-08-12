@@ -101,7 +101,9 @@ return {
           format = function(entry, item)
             item.menu = ds.pad(item.kind, "both")
             item.kind = ds.pad(ds.icons.kind[item.kind], "both")
-            return require("tailwindcss-colorizer-cmp").formatter(entry, item)
+            local tailwind_colorizer = require("tailwindcss-colorizer-cmp").formatter(entry, item)
+            if tailwind_colorizer.kind == "XX" then tailwind_colorizer.kind = ds.pad(ds.icons.kind.Color, "both") end
+            return tailwind_colorizer
           end,
         },
         mapping = cmp.mapping.preset.insert {
