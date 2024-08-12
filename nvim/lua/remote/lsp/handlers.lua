@@ -243,7 +243,7 @@ M.setup = function()
       source = true,
     },
     underline = {
-      severity = { min = vim.diagnostic.severity.HINT },
+      severity = { min = vim.diagnostic.severity.WARN },
     },
   }
 
