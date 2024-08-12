@@ -59,6 +59,7 @@ return {
       local dapvt = require "nvim-dap-virtual-text"
 
       dap.defaults.fallback.terminal_win_cmd = "belowright 10new"
+      dap.set_log_level "ERROR"
 
       local _signs = {
         Breakpoint = ds.icons.debug.Breakpoint,

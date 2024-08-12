@@ -379,6 +379,9 @@ return {
         { "<localleader><localleader>l", _swap_right, desc = "smart-splits: swap with right window" },
       }
     end,
+    opts = {
+      log_level = "fatal",
+    },
   },
   {
     "kristijanhusak/vim-dadbod-ui",

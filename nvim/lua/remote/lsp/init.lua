@@ -1,6 +1,3 @@
--- vim.lsp.set_log_level(vim.lsp.log_levels.TRACE)
--- vim.lsp.log.set_format_func(vim.inspect)
-
 return {
   { "Hoffs/omnisharp-extended-lsp.nvim", lazy = true },
   { "seblj/roslyn.nvim", lazy = true },
@@ -13,6 +10,7 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
     },
+    init = function() vim.lsp.set_log_level(vim.lsp.log_levels.OFF) end,
     config = function()
       local lspconfig = require "lspconfig"
       local configs = require "lspconfig.configs"
