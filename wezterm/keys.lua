@@ -66,7 +66,7 @@ function M.setup(config)
     -- panes
     { mods = M.primary_mod, key = "-", action = action.SplitHorizontal { domain = "CurrentPaneDomain" } },
     { mods = M.primary_mod, key = "/", action = action.SplitVertical { domain = "CurrentPaneDomain" } },
-    { mods = M.primary_mod, key = "d", action = action.ActivatePaneDirection "Previous" },
+    { mods = M.primary_mod, key = "d", action = action.ActivatePaneDirection "Prev" },
     { mods = M.primary_mod, key = "f", action = action.ActivatePaneDirection "Next" },
     { mods = M.primary_mod, key = "w", action = action.CloseCurrentPane { confirm = false } },
     { mods = M.primary_mod, key = "z", action = action.TogglePaneZoomState },
