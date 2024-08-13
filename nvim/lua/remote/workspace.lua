@@ -387,6 +387,7 @@ return {
       local _symbols = function() vim.cmd { cmd = "Trouble", args = { "symbols", "toggle" } } end
       local _type_definitions = function() vim.cmd { cmd = "Trouble", args = { "lsp_type_def", "toggle" } } end
       local _diagnostics = function() vim.cmd { cmd = "Trouble", args = { "lsp_diag", "toggle" } } end
+      local _diagnostics_cascade = function() vim.cmd { cmd = "Trouble", args = { "lsp_diag_cascade", "toggle" } } end
       local _location_list = function() vim.cmd { cmd = "Trouble", args = { "loclist", "toggle" } } end
       local _quickfix_list = function() vim.cmd { cmd = "Trouble", args = { "qflist", "toggle" } } end
       local _next = function()
@@ -412,7 +413,8 @@ return {
         { "gR", _references, desc = "trouble: lsp references" },
         { "gS", _symbols, desc = "trouble: lsp document symbols" },
         { "gT", _type_definitions, desc = "trouble: lsp type definitions" },
-        { "gW", _diagnostics, desc = "trouble: workspace diagnostics" },
+        { "gWa", _diagnostics, desc = "trouble: workspace diagnostics" },
+        { "gWf", _diagnostics_cascade, desc = "trouble: filtered diagnostics" },
         { "<localleader>ql", _location_list, desc = "trouble: location list" },
         { "<localleader>qq", _quickfix_list, desc = "trouble: quickfix list" },
         { "<c-up>", _previous, desc = "trouble: previous item" },
@@ -457,6 +459,16 @@ return {
                 },
               },
             },
+          },
+          lsp_diag_cascade = {
+            mode = "diagnostics",
+            filter = function(items)
+              local severity = vim.diagnostic.severity.HINT
+              for _, item in ipairs(items) do
+                severity = math.min(severity, item.severity)
+              end
+              return vim.tbl_filter(function(item) return item.severity == severity end, items)
+            end,
           },
         },
       }
