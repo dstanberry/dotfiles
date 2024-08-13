@@ -56,7 +56,7 @@ config.font_size = 10
 config.default_cursor_style = "SteadyBlock"
 config.cursor_thickness = 4
 config.cell_width = 1.00
-config.line_height = 1.05
+config.line_height = 1.07
 config.underline_position = -5
 config.underline_thickness = 2
 config.command_palette_font_size = 12
@@ -75,8 +75,9 @@ config.window_padding = {
 }
 
 if wezterm.target_triple == "aarch64-apple-darwin" or wezterm.target_triple == "x86_64-apple-darwin" then
-  config.font_size = 14
   config.command_palette_font_size = 14
+  config.font_size = 14
+  config.line_height = 1.05
 end
 
 config.window_close_confirmation = "NeverPrompt"
