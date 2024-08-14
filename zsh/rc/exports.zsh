@@ -167,6 +167,8 @@ fi
 
 # define configuration path for dotnet
 if hash dotnet 2> /dev/null; then
+  export DOTNET_CLI_HOME="${CONFIG_HOME}/dotnet"
+  export DOTNET_CLI_TELEMETRY_OPTOUT=1
   if test -d "/usr/local/share/dotnet"; then
     export DOTNET_ROOT="/usr/local/share/dotnet"
   elif is_gentoo && hash dotnet 2> /dev/null; then

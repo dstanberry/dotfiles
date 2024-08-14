@@ -1,6 +1,10 @@
 angular/
 configstore
 dlv/
+dotnet/.dotnet/
+dotnet/.nuget/packages/
+dotnet/.nuget/NuGet/*
+!dotnet/.nuget/NuGet/NuGet.Config.tmpl
 gh/hosts.yml
 gh-dash/config.private.yml
 git/config
@@ -12,9 +16,8 @@ karabiner/automatic_backups/
 lazygit/state.yml
 lnav/
 macos/Brewfile.lock.json
-.mono/
 npm/
-Nuget/
+NuGet/
 nvim/lua/remote/lazy-lock.json
 nvim/settings.json
 pg/*

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packageSources>
+    <!-- <add key="nuget.org" value="https://api.nuget.org/v3/index.json" protocolVersion="3" /> -->
+  </packageSources>
+<config>
+<!-- NOTE: 1. delete the NuGet.Config in this directory -->
+<!-- 2. create a symlink of the config file at ~/.config/NuGet/NuGet.Config to be in this directory -->
+<!-- 3. dotnet nuget config set globalPackagesFolder $HOME/.config/dotnet/.nuget/packages -->
+<!-- 4. dotnet nuget config set repositoryPath $HOME/Projects/dotnet -->
+<add key="globalPackagesFolder" value="$HOME/.config/dotnet/.nuget/packages" />
+<add key="repositoryPath" value="$HOME/Projects/dotnet" />
+</config>
+</configuration>
