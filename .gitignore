@@ -26,6 +26,7 @@ pg/*
 pgcli/*
 !pgcli/config
 pip/
+terraform/
 tmux/tmux.digests
 wget/
 zsh/rc.private/

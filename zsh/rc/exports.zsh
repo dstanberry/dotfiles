@@ -237,6 +237,12 @@ if hash psql 2> /dev/null; then
   fi
 fi
 
+# define configuration path for terraform
+if hash terraform 2> /dev/null; then
+  export TF_CLI_CONFIG_FILE="${CONFIG_HOME}/terraform/terraformrc"
+  export TF_PLUGIN_CACHE_DIR="${XDG_CACHE_HOME}/terraform/plugins"
+fi
+
 # prevent virtualenv from automatically modifying prompt
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
