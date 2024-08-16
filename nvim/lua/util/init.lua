@@ -337,9 +337,8 @@ end
 ---@param setting string
 ---@return boolean enabled
 function M.setting_enabled(setting)
-  local var = "config_" .. setting
-  if vim.g[var] == nil then return true end
-  return vim.g[var] == true
+  if not vim.g.ds_env.settings or vim.g.ds_env.settings[setting] == nil then return true end
+  return vim.g.ds_env.settings[setting] == true
 end
 
 ---Recursive filesystem walker that traverses `path` and

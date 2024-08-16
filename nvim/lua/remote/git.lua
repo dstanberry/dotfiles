@@ -52,8 +52,8 @@ return {
           end,
         },
       }
-      if vim.g.config_github_enterprise_hostname then
-        options.callbacks[vim.g.config_github_enterprise_hostname] = function(url_data)
+      if vim.g.ds_env.github_hostname then
+        options.callbacks[vim.g.ds_env.github_hostname] = function(url_data)
           url_data = get_relative_filepath(url_data)
           return require("gitlinker.hosts").get_github_type_url(url_data)
         end
@@ -187,7 +187,7 @@ return {
         enable_builtin = true,
         default_to_projects_v2 = false,
         default_merge_method = "squash",
-        github_hostname = vim.g.config_github_enterprise_hostname or "github.com",
+        github_hostname = vim.g.ds_env.github_hostname or "github.com",
         picker = "telescope",
         ssh_aliases = {},
       }

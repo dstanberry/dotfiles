@@ -19,7 +19,7 @@ macos/Brewfile.lock.json
 npm/
 NuGet/
 nvim/lua/remote/lazy-lock.json
-nvim/settings.json
+nvim/dotenv.json
 pg/*
 !pg/psqlrc
 !pg/psqlrc-win
