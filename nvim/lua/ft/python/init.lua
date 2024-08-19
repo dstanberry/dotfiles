@@ -11,7 +11,7 @@ setmetatable(M, {
 
 local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_python_extmarks"
 
-local MD_Q = vim.treesitter.query.parse(
+local Q = vim.treesitter.query.parse(
   "python",
   [[
     (string_start) @string_init
@@ -21,8 +21,8 @@ local MD_Q = vim.treesitter.query.parse(
 ---@param bufnr number
 ---@param tree TSTree
 M.parse_document = function(bufnr, tree)
-  for capture_id, capture_node, _, _ in MD_Q:iter_captures(tree:root()) do
-    local capture_name = MD_Q.captures[capture_id]
+  for capture_id, capture_node, _, _ in Q:iter_captures(tree:root()) do
+    local capture_name = Q.captures[capture_id]
     local capture_text = vim.treesitter.get_node_text(capture_node, bufnr)
     local row_start, col_start, row_end, col_end = capture_node:range()
     if M.render[capture_name] and type(M.render[capture_name]) == "function" then
