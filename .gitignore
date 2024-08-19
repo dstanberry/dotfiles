@@ -1,6 +1,7 @@
 angular/
 configstore
 dlv/
+dotnet/*
 dotnet/.dotnet/
 dotnet/.nuget/packages/
 dotnet/.nuget/NuGet/*
