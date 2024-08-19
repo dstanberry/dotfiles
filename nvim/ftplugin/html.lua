@@ -1,32 +1,25 @@
-vim.opt_local.conceallevel = 2
+local html = require "ft.html"
 
-local NAMESPACE_ID = vim.api.nvim_create_namespace "html_ns_extmarks"
-local group = vim.api.nvim_create_augroup("html_ftplugin", { clear = true })
-
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "TextChanged", "InsertLeave" }, {
+local group = ds.augroup "html_extmarks"
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "ModeChanged" }, {
   group = group,
   pattern = "html",
-  callback = function(args)
-    local bufnr = args.buf or vim.api.nvim_get_current_buf()
-    local language_tree = vim.treesitter.get_parser(bufnr, "html")
-    local syntax_tree = language_tree:parse()
-    local root = syntax_tree[1]:root()
-    local query = vim.treesitter.query.parse(
-      "html",
-      [[
-        ((attribute
-            (attribute_name) @att_name (#eq? @att_name "class")
-            (quoted_attribute_value (attribute_value) @class_value) (#set! @class_value conceal "…")))
-      ]]
-    )
-
-    for _, captures, metadata in query:iter_matches(root, bufnr, root:start(), root:end_(), {}) do
-      local start_row, start_col, end_row, end_col = captures[2]:range()
-      vim.api.nvim_buf_set_extmark(bufnr, NAMESPACE_ID, start_row, start_col, {
-        end_line = end_row,
-        end_col = end_col,
-        conceal = metadata[2].conceal,
-      })
+  callback = vim.schedule_wrap(function(args)
+    if
+      package.loaded["nvim-treesitter"]
+      and vim.api.nvim_get_mode().mode == "n"
+      and vim.bo[args.buf].filetype == "html"
+    then
+      vim.opt_local.conceallevel = 2
+      html.set_extmarks(args.buf)
     end
-  end,
+  end),
+})
+vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
+  group = group,
+  buffer = vim.api.nvim_get_current_buf(),
+  callback = vim.schedule_wrap(function(args)
+    vim.opt_local.conceallevel = 0
+    html.disable_extmarks(args.buf, true)
+  end),
 })
