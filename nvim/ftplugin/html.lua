@@ -3,7 +3,7 @@ local html = require "ft.html"
 local group = ds.augroup "html_extmarks"
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "ModeChanged" }, {
   group = group,
-  pattern = "html",
+  pattern = "*.html",
   callback = vim.schedule_wrap(function(args)
     if
       package.loaded["nvim-treesitter"]

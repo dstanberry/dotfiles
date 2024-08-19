@@ -14,9 +14,10 @@ local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_html_extmarks"
 local Q = vim.treesitter.query.parse(
   "html",
   [[
-    ((attribute
-        (attribute_name) @att_name (#eq? @att_name "class")
-        (quoted_attribute_value (attribute_value) @class_value) @class_values))
+    (attribute
+      (attribute_name) @attr_name
+        (quoted_attribute_value (attribute_value) @class_values)
+    )
   ]]
 )
 
