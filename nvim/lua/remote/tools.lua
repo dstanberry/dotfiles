@@ -193,7 +193,7 @@ return {
       }
     end,
     config = function(_, opts)
-      local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_html_extmarks"
+      local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_neotest_virtual_text"
       vim.diagnostic.config({
         virtual_text = {
           format = function(diagnostic)
