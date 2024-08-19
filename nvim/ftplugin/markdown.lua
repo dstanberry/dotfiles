@@ -10,9 +10,9 @@ vim.opt_local.spell = false
 vim.opt_local.wrap = true
 vim.opt_local.listchars:append "eol: "
 
-local md_extmarks = vim.api.nvim_create_augroup("md_extmarks", { clear = true })
+local group = ds.augroup "markdown_extmarks"
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "ModeChanged" }, {
-  group = md_extmarks,
+  group = group,
   buffer = vim.api.nvim_get_current_buf(),
   callback = vim.schedule_wrap(function(args)
     if
@@ -26,7 +26,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "ModeChanged" }, {
   end),
 })
 vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
-  group = md_extmarks,
+  group = group,
   buffer = vim.api.nvim_get_current_buf(),
   callback = vim.schedule_wrap(function(args)
     vim.opt_local.conceallevel = 0
