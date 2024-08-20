@@ -11,7 +11,7 @@ M.get = function(c)
     NoiceFormatEvent        = { link = "Comment" },
     NoiceFormatKind         = { link = "Comment" },
 
-    NoiceSymbolNormal       = { fg = ds.color.get_color "WinbarContext" },
+    NoiceSymbolNormal       = { link = "WinbarContext" },
     NoiceSymbolSeparator    = { fg = ds.color.blend(c.purple1, c.bg2, 0.38) }
   }
 end
