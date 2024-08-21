@@ -1,4 +1,3 @@
-corepack
 neovim
 pnpm
 yarn
