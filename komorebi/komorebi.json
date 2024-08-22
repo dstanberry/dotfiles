@@ -5,6 +5,7 @@
   "cross_monitor_move_behaviour": "Insert",
   "default_workspace_padding": 5,
   "default_container_padding": 5,
+  "mouse_follows_focus": false,
   "animation": {
     "enabled": true,
     "duration": 250,
