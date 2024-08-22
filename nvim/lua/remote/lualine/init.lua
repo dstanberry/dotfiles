@@ -105,21 +105,21 @@ return {
           },
           {
             util.metadata.indentation.get,
-            color = { fg = ds.color.get_color "WinbarContext", gui = "bold,italic" },
+            color = { fg = ds.color.get_color "WinbarContext", gui = "italic" },
             padding = { right = 1 },
           },
           {
             "location",
-            color = { fg = ds.color.get_color "WinbarContext", gui = "bold,italic" },
+            color = { fg = ds.color.get_color "WinbarContext", gui = "italic" },
           },
           {
             "encoding",
-            color = { fg = ds.color.get_color "WinbarContext", gui = "bold,italic" },
+            color = { fg = ds.color.get_color "WinbarContext", gui = "italic" },
           },
           {
             "fileformat",
             icons_enabled = true,
-            color = { fg = ds.color.get_color "WinbarContext", gui = "bold,italic" },
+            color = { fg = ds.color.get_color "WinbarContext", gui = "italic" },
             padding = { right = 2 },
             symbols = { unix = "lf", dos = "crlf", mac = "cr" },
           },
@@ -129,17 +129,17 @@ return {
         lualine_a = {
           {
             util.git.diffview.get,
-            color = "Winbar",
+            color = "WinbarContext",
             cond = util.git.diffview.cond,
           },
           {
             util.metadata.breadcrumbs.get,
-            color = "Winbar",
+            color = "WinbarContext",
             padding = { right = 0 },
           },
           {
             util.lsp.symbols.get,
-            color = "Winbar",
+            color = "WinbarContext",
             cond = util.lsp.symbols.cond,
             padding = { left = 0 },
           },
@@ -147,7 +147,7 @@ return {
         lualine_x = {
           {
             util.git.merge_conflicts.get,
-            color = "Winbar",
+            color = "WinbarContext",
             cond = util.git.diffview.cond,
           },
         },
@@ -156,19 +156,19 @@ return {
         lualine_a = {
           {
             util.git.diffview.get,
-            color = "Winbar",
+            color = "WinbarContext",
             cond = util.git.diffview.cond,
           },
           {
             util.metadata.breadcrumbs.get,
-            color = "Winbar",
+            color = "WinbarContext",
             padding = { right = 0 },
           },
         },
         lualine_x = {
           {
             util.git.merge_conflicts.get,
-            color = "Winbar",
+            color = "WinbarContext",
             cond = util.git.diffview.cond,
           },
         },
