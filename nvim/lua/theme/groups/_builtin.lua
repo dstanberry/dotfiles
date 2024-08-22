@@ -185,8 +185,8 @@ M.get = function(c)
     Winbar                                     = { fg = ds.color.lighten(c.gray1, 10), bg = c.bg2 },
     WinbarNC                                   = { bg = c.bg2 },
     -- custom winbar highlights
-    WinbarFilename                             = { fg = ds.color.lighten(c.gray2, 5), bg = c.bg2, bold = true },
-    WinbarContext                              = { fg = ds.color.lighten(c.gray1, 15), bg = c.bg2 }
+    WinbarFilename                             = { fg = ds.color.lighten(c.gray2, 5), bold = true },
+    WinbarContext                              = { fg = ds.color.lighten(c.gray1, 15) }
   }
 end
 
