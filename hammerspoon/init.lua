@@ -5,7 +5,7 @@ hs.application.enableSpotlightForNameSearches(true)
 --  Toggle new/existing processes
 local chord = { "ctrl", "alt" }
 local shortcuts = {
-  ["kitty"] = { "1", { "Shell", "New OS Window" } },
+  ["WezTerm"] = { "1", { "Shell", "New Window" } },
   ["Code"] = { "2", { "File", "New Window" } },
   ["Google Chrome"] = { "3", { "File", "New Window" } },
   ["Microsoft Teams"] = { "4" },
