@@ -1,0 +1,14 @@
+# An xterm-256color based TERMINFO that adds the extended underline feature.
+#
+# Install:
+#
+#   /usr/bin/tic -x xterm-256color
+#
+# Setulc=\E[58:2:%p1%{65536}%/%d:%p1%{256}%/%{255}%&%d:%p1%{255}%&%d%;m,
+#
+xterm-256color|xterm with 256 colors,
+  Setulc=\E[58:2:%p1%{65536}%/%d:%p1%{256}%/%{255}%&%d:%p1%{255}%&%d%;m,
+  Smulx=\E[4:%p1%dm,
+  setrgbb=\E[48:2:%p1%d:%p2%d:%p3%dm,
+  setrgbf=\E[38:2:%p1%d:%p2%d:%p3%dm,
+  use=xterm+osc104, use=xterm+256color, use=xterm-new,
