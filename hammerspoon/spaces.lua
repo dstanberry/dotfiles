@@ -81,6 +81,8 @@ local chain = function(movements)
     LastSeenAt = now
     LastSeenWindow = id
 
+    hs.grid.MARGINX = cycleLength == 1 and 0 or 5
+    hs.grid.MARGINY = cycleLength == 1 and 0 or 5
     hs.grid.set(win, movements[sequenceNumber], screen)
     sequenceNumber = sequenceNumber % cycleLength + 1
   end
