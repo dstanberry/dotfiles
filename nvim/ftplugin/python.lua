@@ -1,9 +1,10 @@
 local python = require "ft.python"
 
 local group = ds.augroup "python_extmarks"
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "ModeChanged" }, {
+
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeChanged" }, {
   group = group,
-  buffer = vim.api.nvim_get_current_buf(),
+  pattern = "*.py",
   callback = vim.schedule_wrap(function(args)
     if
       package.loaded["nvim-treesitter"]
@@ -16,6 +17,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "ModeChanged" }, {
 })
 vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
   group = group,
-  buffer = vim.api.nvim_get_current_buf(),
+  pattern = "*.py",
   callback = vim.schedule_wrap(function(args) python.disable_extmarks(args.buf, true) end),
 })

@@ -1,7 +1,8 @@
 local html = require "ft.html"
 
 local group = ds.augroup "html_extmarks"
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "ModeChanged" }, {
+
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeChanged" }, {
   group = group,
   pattern = "*.html",
   callback = vim.schedule_wrap(function(args)
@@ -17,7 +18,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "ModeChanged" }, {
 })
 vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
   group = group,
-  buffer = vim.api.nvim_get_current_buf(),
+  pattern = "*.html",
   callback = vim.schedule_wrap(function(args)
     vim.opt_local.conceallevel = 0
     html.disable_extmarks(args.buf, true)
