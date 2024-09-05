@@ -77,7 +77,7 @@ ds.plugin.on_load(
   function()
     M.symbols._ = require("trouble").statusline {
       mode = "lsp_document_symbols",
-      groups = {},
+      groups = { "" },
       title = false,
       filter = { range = true },
       format = string.format(
