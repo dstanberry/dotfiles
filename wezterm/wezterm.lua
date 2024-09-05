@@ -54,7 +54,7 @@ config.font = wezterm.font_with_fallback {
 }
 config.font_size = 10
 config.default_cursor_style = "SteadyBlock"
-config.cursor_thickness = 4
+config.cursor_thickness = 1
 config.cell_width = 1.00
 config.line_height = 1.07
 config.underline_position = -5
