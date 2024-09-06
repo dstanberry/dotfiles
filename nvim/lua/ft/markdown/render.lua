@@ -9,6 +9,19 @@ local M = {}
 ---@param capture_node TSNode
 ---@param capture_text string
 ---@param range tsRange
+M.block_quote_marker = function(bufnr, ns, capture_node, capture_text, range)
+  vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {
+    end_col = range.col_end,
+    virt_text = { { ds.icons.misc.VerticalBarBold, "@punctuation.special" } },
+    virt_text_pos = "overlay",
+  })
+end
+
+---@param bufnr number
+---@param ns number
+---@param capture_node TSNode
+---@param capture_text string
+---@param range tsRange
 M.checkbox_checked = function(bufnr, ns, capture_node, capture_text, range)
   vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {
     end_col = range.col_start + #capture_text,
@@ -297,7 +310,7 @@ local render_header = function(bufnr, ns, row, alignments, range)
         virt_text_pos = "inline",
         conceal = "",
       })
-      table.insert(border, { ds.icons.table.Dividers[1], "@markup.table" })
+      table.insert(border, { ds.icons.table.Divider[1], "@markup.table" })
       col_offset = col_offset + 1
     else
       local width, real_width = calculate_md_width(col)
@@ -338,7 +351,7 @@ local render_delimiter = function(bufnr, ns, row, alignments, range)
     if index == 1 then
       vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + 1, range.col_start, {
         end_col = range.col_start + 1,
-        virt_text = { { ds.icons.table.Dividers[2], "@markup.table" } },
+        virt_text = { { ds.icons.table.Divider[2], "@markup.table" } },
         virt_text_pos = "inline",
         conceal = "",
       })
@@ -346,7 +359,7 @@ local render_delimiter = function(bufnr, ns, row, alignments, range)
     elseif index == #row then
       vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + 1, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
-        virt_text = { { ds.icons.table.Dividers[3], "@markup.table" } },
+        virt_text = { { ds.icons.table.Divider[3], "@markup.table" } },
         virt_text_pos = "inline",
         conceal = "",
       })
@@ -354,7 +367,7 @@ local render_delimiter = function(bufnr, ns, row, alignments, range)
     elseif col == "|" then
       vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + 1, range.col_start + col_offset, {
         end_col = range.col_start + col_offset + 1,
-        virt_text = { { ds.icons.table.Dividers[4], "@markup.table" } },
+        virt_text = { { ds.icons.table.Divider[4], "@markup.table" } },
         virt_text_pos = "inline",
         conceal = "",
       })
@@ -514,7 +527,7 @@ local render_footer = function(bufnr, ns, row, alignments, range)
         virt_text_pos = "inline",
         conceal = "",
       })
-      table.insert(border, { ds.icons.table.Dividers[5], "@markup.table" })
+      table.insert(border, { ds.icons.table.Divider[5], "@markup.table" })
       col_offset = col_offset + 1
     else
       local width, real_width = calculate_md_width(col)

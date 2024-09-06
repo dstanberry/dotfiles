@@ -8,7 +8,7 @@ M.border = {
 
 M.table = {
   Alignment = { "╼", "╾", "╴", "╶" },
-  Dividers = { "┬", "├", "┤", "┼", "┴" },
+  Divider = { "┬", "├", "┤", "┼", "┴" },
 }
 
 M.diagnostics = {

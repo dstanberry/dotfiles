@@ -27,7 +27,12 @@ local MD_Q = vim.treesitter.query.parse(
         (atx_h5_marker)
         (atx_h6_marker)
       ] @heading)
-      ((block_quote) @block_quote)
+      (block_quote [
+        (block_quote_marker)
+        (block_continuation)
+      ] @block_quote_marker)
+      (inline (block_continuation) @block_quote_marker)
+      (paragraph (block_continuation) @block_quote_marker)
       ((fenced_code_block) @codeblock)
       ((list_marker_dot) @list_marker_dot)
       ((list_marker_minus) @list_marker_minus)
