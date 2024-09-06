@@ -31,7 +31,7 @@ vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
   group = group,
   pattern = "*.md",
   callback = vim.schedule_wrap(function(args)
-    vim.opt_local.conceallevel = bufnr
+    vim.opt_local.conceallevel = 0
     markdown.disable_extmarks(args.buf, true)
   end),
 })
