@@ -7,7 +7,6 @@ return {
       local user = vim.env.USER or "User"
       user = user:sub(1, 1):upper() .. user:sub(2)
       return {
-        model = "gpt-4",
         auto_insert_mode = true,
         show_help = true,
         question_header = string.format("%s %s ", ds.icons.misc.User, user),
