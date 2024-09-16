@@ -10,6 +10,7 @@ gh/hosts.yml
 gh-dash/config.private.yml
 git/config
 github-copilot/
+go/telemetry/
 hammerspoon/hs/
 htop/
 iterm2/
