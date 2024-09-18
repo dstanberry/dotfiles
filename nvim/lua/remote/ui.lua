@@ -204,12 +204,6 @@ return {
         { "<c-f>", _scroll_down, mode = "n", expr = true, desc = "noice: scroll up" },
       }
     end,
-    init = function()
-      vim.api.nvim_create_autocmd("CmdlineChanged", {
-        group = ds.augroup "noice",
-        callback = vim.schedule_wrap(function() vim.cmd "redraw" end),
-      })
-    end,
     opts = {
       cmdline = {
         format = {
