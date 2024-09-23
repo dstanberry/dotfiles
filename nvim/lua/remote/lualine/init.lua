@@ -111,17 +111,19 @@ return {
           {
             "location",
             color = { fg = ds.color.get_color "WinbarContext", gui = "italic" },
+            padding = { right = 1 },
           },
           {
             "encoding",
             color = { fg = ds.color.get_color "WinbarContext", gui = "italic" },
+            padding = { right = 1 },
           },
           {
             "fileformat",
             icons_enabled = true,
+            symbols = { unix = "lf", dos = "crlf", mac = "cr" },
             color = { fg = ds.color.get_color "WinbarContext", gui = "italic" },
             padding = { right = 2 },
-            symbols = { unix = "lf", dos = "crlf", mac = "cr" },
           },
         },
       },
