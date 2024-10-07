@@ -45,13 +45,14 @@ local todo_comment = function(context, aliases, opts)
 end
 
 return {
-  rutil.autopair.create("(", ")", rutil.autopair.punctuation_matched),
-  rutil.autopair.create("{", "}", rutil.autopair.punctuation_matched),
-  rutil.autopair.create("[", "]", rutil.autopair.punctuation_matched),
-  rutil.autopair.create("<", ">", rutil.autopair.punctuation_matched),
-  rutil.autopair.create("'", "'", rutil.autopair.char_matched),
-  rutil.autopair.create('"', '"', rutil.autopair.char_matched),
-  rutil.autopair.create("`", "`", rutil.autopair.char_matched),
+  -- NOTE: handled by `mini.pairs`
+  -- rutil.autopair.create("(", ")", rutil.autopair.punctuation_matched),
+  -- rutil.autopair.create("{", "}", rutil.autopair.punctuation_matched),
+  -- rutil.autopair.create("[", "]", rutil.autopair.punctuation_matched),
+  -- rutil.autopair.create("<", ">", rutil.autopair.punctuation_matched),
+  -- rutil.autopair.create("'", "'", rutil.autopair.char_matched),
+  -- rutil.autopair.create('"', '"', rutil.autopair.char_matched),
+  -- rutil.autopair.create("`", "`", rutil.autopair.char_matched),
   todo_comment({ trig = "todo" }, "TODO"),
   todo_comment({ trig = "note" }, { "NOTE", "INFO" }),
   todo_comment({ trig = "fix" }, { "FIX", "HACK", "BUG", "ISSUE" }),
@@ -85,7 +86,9 @@ return {
   s(
     { trig = "{;", wordTrig = false, hidden = true },
     fmt(
-      "{{\n{}\n}}",
+      -- NOTE: `mini.pairs` will add closing brace
+      -- "{{\n{}\n}}",
+      "{{\n{}\n\n",
       d(1, rutil.saved_text, {}, {
         user_args = {
           {
