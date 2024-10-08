@@ -105,7 +105,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
-  pattern = { "python", "sql" },
+  pattern = { "cs", "python", "sql" },
   callback = function(args)
     vim.bo.expandtab = true
     vim.bo.tabstop = 4
