@@ -91,7 +91,7 @@ M.setup = function(opts)
         },
         ---@diagnostic disable-next-line: missing-fields
         config = opts or {},
-        filewatching = false,
+        filewatching = true,
       }
     end,
   })
