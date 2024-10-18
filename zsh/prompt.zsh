@@ -21,7 +21,7 @@ if [ -f "$CONFIG_HOME/zsh/site-functions/async" ]; then
     zstyle ':vcs_info:git*:*' formats '%F{cyan} %b%m%c%u%f '
     zstyle ':vcs_info:git*:*' actionformats '%B%F{red} %b|%a %8.8i%c%u %f'
 
-    __in_git() {
+    function __in_git() {
       [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]]
     }
 
@@ -83,20 +83,20 @@ if [ -f "$CONFIG_HOME/zsh/site-functions/async" ]; then
   # source $CONFIG_HOME/zsh/site-functions/async
 
   # register async worker
-  -start-async-vcs-info-worker() {
+  function -start-async-vcs-info-worker() {
     async_start_worker vcs_info
     async_register_callback vcs_info -async-vcs-info-callback
   }
 
   # wrapper to print vcs information
-  -get-vcs-info-job() {
+  function -get-vcs-info-job() {
     cd -q $1
     vcs_info
     print ${vcs_info_msg_0_}
   }
 
   # callback when vcs information is ready
-  -async-vcs-info-callback() {
+  function -async-vcs-info-callback() {
     local job=$1
     local return_code=$2
     local stdout=$3
@@ -126,13 +126,13 @@ if [ -f "$CONFIG_HOME/zsh/site-functions/async" ]; then
   }
 
   # schedule worker to get vcs information
-  -vcs-info-run-in-worker() {
+  function -vcs-info-run-in-worker() {
     async_flush_jobs vcs_info
     async_job vcs_info -get-vcs-info-job $PWD
   }
 
   # reset vcs information when PWD changes
-  -clear-vcs-info-on-chpwd() {
+  function -clear-vcs-info-on-chpwd() {
     vcs_info_msg_0_=
   }
 
@@ -189,7 +189,7 @@ function -update-prompt() {
   export PROMPT="${conditional}${first_line}${last_line}"
 }
 
-__calculate_elapsed_time() {
+function __calculate_elapsed_time() {
   local result total_seconds=$1 var=$2
   local days=$(( total_seconds / 60 / 60 / 24 ))
   local hours=$(( total_seconds / 60 / 60 % 24 ))
