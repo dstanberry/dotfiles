@@ -54,12 +54,15 @@ vim.api.nvim_create_autocmd("FileType", {
 -- change background color of manpages, help and quickfix list and use `q` to close
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
-  pattern = { "help", "man", "qf" },
+  pattern = { "checkhealth", "help", "man", "notify", "qf" },
   callback = function(args)
     if vim.bo[args.buf].filetype == "help" or vim.bo[args.buf].filetype == "qf" then
       vim.opt_local.winhighlight = "Normal:NormalSB"
     end
-    vim.keymap.set("n", "q", vim.cmd.close, { buffer = args.buf, silent = true, nowait = true })
+    vim.keymap.set("n", "q", function()
+      vim.cmd.close()
+      pcall(vim.api.nvim_buf_delete, args.buf, { force = true })
+    end, { buffer = args.buf, silent = true })
   end,
 })
 
