@@ -22,7 +22,7 @@ end
 
 ---Unloads a buffer
 ---@param buf number?
-function M.delete_buffer(buf)
+function M.delete(buf)
   buf = buf or 0
   buf = buf == 0 and vim.api.nvim_get_current_buf() or buf
   if vim.bo.modified then

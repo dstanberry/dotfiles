@@ -222,7 +222,7 @@ vim.keymap.set("n", "<bs>q", function() vim.cmd.quit { bang = true } end, { desc
 vim.keymap.set("n", "<bs>Q", function() vim.cmd.quitall { bang = true } end, { desc = "close application" })
 
 -- delete the current buffer
-vim.keymap.set("n", "<bs>z", ds.buffer.delete_buffer, { silent = false, desc = "delete current buffer" })
+vim.keymap.set("n", "<bs>z", ds.buffer.delete, { silent = false, desc = "delete current buffer" })
 
 ---------------------------------------------------------------
 -- => Insert
