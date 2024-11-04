@@ -89,7 +89,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 -- highlighted copied region when yanked
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = ds.augroup "highlight_yank",
-  callback = function() vim.highlight.on_yank() end,
+  callback = function() vim.hl.on_yank() end,
 })
 
 -- define common coding conventions for various programming languages
