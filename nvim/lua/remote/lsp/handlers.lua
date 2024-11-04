@@ -110,8 +110,14 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.definitionProvider then
-    vim.keymap.set("n", "gd", vim.lsp.buf.definition, { buffer = bufnr, desc = "lsp: goto definition" })
-    vim.keymap.set("n", "gt", vim.lsp.buf.type_definition, { buffer = bufnr, desc = "lsp: goto type definition" })
+    local _definition = vim.lsp.buf.definition
+    local _type_definition = vim.lsp.buf.type_definition
+    if ds.plugin.is_loaded "telescope.nvim" then
+      _definition = function() require("telescope.builtin").lsp_definitions { reuse_win = true } end
+      _type_definition = function() require("telescope.builtin").lsp_type_definitions { reuse_win = true } end
+    end
+    vim.keymap.set("n", "gd", _definition, { buffer = bufnr, desc = "lsp: goto definition" })
+    vim.keymap.set("n", "gt", _type_definition, { buffer = bufnr, desc = "lsp: goto type definition" })
   end
 
   if client.server_capabilities.documentFormattingProvider then
@@ -123,7 +129,11 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.documentHighlightProvider then
-    vim.keymap.set("n", "gr", vim.lsp.buf.references, { buffer = bufnr, desc = "lsp: show references" })
+    local _references = vim.lsp.buf.references
+    if ds.plugin.is_loaded "telescope.nvim" then
+      _references = function() require("telescope.builtin").lsp_references() end
+    end
+    vim.keymap.set("n", "gr", _references, { buffer = bufnr, desc = "lsp: show references" })
 
     local doc_highlight = ds.augroup "lsp_dochighlight"
     vim.api.nvim_create_autocmd("CursorHold", {
@@ -249,16 +259,9 @@ M.setup = function()
     },
   }
 
-  local _definitions = function() require("telescope.builtin").lsp_definitions() end
-  local _type_definitions = function() require("telescope.builtin").lsp_type_definitions() end
-  local _references = function() require("telescope.builtin").lsp_references() end
   local _document_symbols = function() require("telescope.builtin").lsp_document_symbols() end
   local _workspace_symbols = function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end
-  vim.lsp.handlers["textDocument/declaration"] = _definitions
-  vim.lsp.handlers["textDocument/definition"] = _definitions
   vim.lsp.handlers["textDocument/documentSymbol"] = _document_symbols
-  vim.lsp.handlers["textDocument/references"] = _references
-  vim.lsp.handlers["textDocument/typeDefinition"] = _type_definitions
   vim.lsp.handlers["workspace/symbol"] = _workspace_symbols
 
   -- TODO: remove after functionality is merged upstream
@@ -279,6 +282,7 @@ M.setup = function()
     return diag
   end
   local diag_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
+  ---@diagnostic disable-next-line: redundant-parameter
   vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
     result.diagnostics = vim.tbl_map(show_related_locations, result.diagnostics)
     diag_handler(err, result, ctx, config)
