@@ -4,6 +4,7 @@
 ---@field color util.color
 ---@field excludes util.excludes
 ---@field fs util.fs
+---@field git util.git
 ---@field hl util.hl
 ---@field icons util.icons
 ---@field plugin util.plugin

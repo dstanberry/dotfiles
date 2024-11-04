@@ -186,6 +186,34 @@ function M.quickfix_delete(bufnr)
   vim.api.nvim_replace_termcodes("<esc>", true, false, true)
 end
 
+---Change the filename (and/or filepath) of the current buffer given that it exists on disk.
+---If supported, the workspace can be updated with the updated filename
+function M.rename()
+  local realpath = function(path) return (vim.uv.fs_realpath(path) or path) end
+  local buf = vim.api.nvim_get_current_buf()
+  local oldfile = assert(realpath(vim.api.nvim_buf_get_name(buf)))
+  local root = assert(realpath(vim.uv.cwd() or "."))
+
+  if oldfile:find(root, 1, true) ~= 1 then root = vim.fn.fnamemodify(oldfile, ":p:h") end
+  local cwd = oldfile:sub(#root + 2)
+
+  vim.ui.input({
+    prompt = "New File Name: ",
+    default = cwd,
+    completion = "file",
+  }, function(newfile)
+    if not newfile or newfile == "" or newfile == cwd then return end
+    newfile = vim.fs.normalize(root .. "/" .. newfile)
+    vim.fn.mkdir(vim.fs.dirname(newfile), "p")
+    require("remote.lsp.handlers").on_rename(oldfile, newfile, function()
+      vim.fn.rename(oldfile, newfile)
+      vim.cmd.edit(newfile)
+      vim.api.nvim_buf_delete(buf, { force = true })
+      vim.fn.delete(oldfile)
+    end)
+  end)
+end
+
 ---Takes the content of the current buffer and displays them in a terminal buffer
 function M.send_to_term()
   local buf = vim.api.nvim_get_current_buf()

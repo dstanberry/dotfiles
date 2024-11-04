@@ -48,7 +48,8 @@ end
 
 ---@param old_fname string
 ---@param new_fname string
-M.on_rename = function(old_fname, new_fname)
+---@param rename_fn? fun()
+M.on_rename = function(old_fname, new_fname, rename_fn)
   local buf = vim.fn.bufnr(old_fname)
   local renamed = false
   for _, c in pairs(vim.lsp.get_clients { bufnr = buf }) do
@@ -63,7 +64,8 @@ M.on_rename = function(old_fname, new_fname)
       end
     end
   end
-  if not renamed then ds.warn("File Rename not supported", { title = "LSP" }) end
+  if rename_fn and type(rename_fn) == "function" then rename_fn() end
+  if not renamed then ds.warn("Workspace cannot be updated to match file rename", { title = "LSP" }) end
 end
 
 ---@param client vim.lsp.Client
