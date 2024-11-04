@@ -355,7 +355,7 @@ return {
         cmdline_popup = {
           border = { style = "single", padding = { 0, 1 } },
           position = { row = 20, col = "50%" },
-          size = { width = 70, height = "auto" },
+          size = { min_width = 70, height = "auto" },
           filter_options = {},
         },
         popupmenu = {
