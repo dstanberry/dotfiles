@@ -4,27 +4,18 @@ return {
     event = { "BufRead Cargo.toml" },
     opts = {
       completion = {
-        cmp = { enabled = true },
+        crates = { enabled = true },
+      },
+      lsp = {
+        enabled = true,
+        actions = true,
+        completion = true,
+        hover = true,
       },
       popup = {
         border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
       },
     },
-    config = function(_, opts)
-      require("crates").setup(opts)
-      ds.plugin.on_load("nvim-cmp", function()
-        vim.api.nvim_create_autocmd("FileType", {
-          group = vim.g.ds_cmp_group,
-          pattern = "Cargo.toml",
-          callback = function()
-            local plugin = require("lazy.core.config").spec.plugins["nvim-cmp"]
-            local sources = require("lazy.core.plugin").values(plugin, "opts", false).sources or {}
-            table.insert(sources, { name = "crates" })
-            require("cmp").setup.buffer { sources = sources }
-          end,
-        })
-      end)
-    end,
   },
   {
     "zbirenbaum/copilot-cmp",

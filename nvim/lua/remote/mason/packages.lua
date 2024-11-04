@@ -21,7 +21,6 @@ return {
   "rust-analyzer",
   "snyk-ls",
   "tailwindcss-language-server",
-  "taplo",
   "terraform-ls",
   "typescript-language-server",
   "vtsls",
