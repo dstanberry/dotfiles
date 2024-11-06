@@ -3,9 +3,12 @@ local M = {}
 
 local util = require "remote.lualine.util"
 local add = util.add
+
 local highlighter = util.highlighter
-local default_hl = highlighter.sanitize "Winbar"
-local fname_hl = highlighter.sanitize "WinbarFilename"
+local dir_hl = highlighter.sanitize "WinbarDirectory"
+local file_hl = highlighter.sanitize "WinbarFilename"
+
+local dir_section = add(highlighter.sanitize "Winbar", { ds.pad("/", "right") })
 
 M.breadcrumbs = {
   get = function()
@@ -32,6 +35,7 @@ M.breadcrumbs = {
         local section
         if #v > 0 then
           local icon, icon_hl = require("mini.icons").get("file", fname)
+
           -- NOTE: octo.nvim
           if parts[1] and parts[1]:match "^octo:" then
             if parts[#parts - 1] == "pull" then
@@ -40,26 +44,28 @@ M.breadcrumbs = {
               icon = ds.icons.git.Issue
             end
           end
+
           -- NOTE: oil.nvim
           if parts[1] and parts[1]:match "^oil:" then
             icon, icon_hl = require("mini.icons").get("directory", path)
           end
+          --
           -- NOTE: nvim-dap
           if fname and fname:match "^DAP" then icon = dap_icons[fname] or icon end
+
+          local hl = highlighter.sanitize(icon_hl)
           if #segments == 0 then
-            section = k == #parts
-                and add(highlighter.sanitize(icon_hl), { ds.pad(icon, "both") }, true) .. add(fname_hl, { v })
-              or add(default_hl, { ds.pad(v, "left") })
+            section = k == #parts and add(hl, { ds.pad(icon, "both") }, true) .. add(file_hl, { v })
+              or add(dir_hl, { ds.pad(v, "left") })
           else
-            section = k == #parts
-                and add(highlighter.sanitize(icon_hl), { ds.pad(icon, "right") }, true) .. add(fname_hl, { v })
-              or add(default_hl, { v })
+            section = k == #parts and add(hl, { ds.pad(icon, "right") }, true) .. add(file_hl, { v })
+              or add(dir_hl, { v })
           end
           table.insert(segments, section)
         end
         return segments
       end)
-      return table.concat(segments, ds.pad("/", "right"))
+      return table.concat(segments, dir_section)
     end
 
     local winid = vim.api.nvim_get_current_win()
