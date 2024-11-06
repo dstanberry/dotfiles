@@ -290,22 +290,17 @@ function M.pad(s, direction, amount, ramount)
   return string.format("%s%s%s", left, s, right)
 end
 
----Perform a benchmark of a given command
----@param cmd string|function
-function M.profile(cmd, times)
-  times = times or 100
-  local args = {}
-  if type(cmd) == "string" then
-    args = { cmd }
-    cmd = vim.cmd
-  end
+---Perform a benchmark of a given lua function
+---@param fn function
+---@param opts? {count?: number, flush?: boolean}
+function M.profile(fn, opts)
+  opts = vim.tbl_extend("force", { count = 100, flush = true }, opts or {})
   local start = vim.uv.hrtime()
-  for _ = 1, times, 1 do
-    local ok = pcall(cmd, unpack(args))
-    if not ok then error("Command failed: " .. tostring(ok) .. " " .. vim.inspect { cmd = cmd, args = args }) end
+  for _ = 1, opts.count, 1 do
+    if opts.flush then jit.flush(fn, true) end
+    fn()
   end
-  ---@diagnostic disable-next-line: discard-returns
-  print(((vim.uv.hrtime() - start) / 1000000 / times) .. "ms")
+  print(((vim.uv.hrtime() - start) / 1e6 / opts.count) .. "ms")
 end
 
 ---Unloads the provided module from memory and re-requires it
