@@ -411,33 +411,6 @@ return {
     },
   },
   {
-    "levouh/tint.nvim",
-    event = "LazyFile",
-    opts = function()
-      return {
-        tint = -10,
-        highlight_ignore_patterns = {
-          "Comment",
-          "NeoTree.*",
-          "Panel.*",
-          "Status.*",
-          "Telescope.*",
-          "Trouble.*",
-          "WinSeparator",
-        },
-        window_ignore_function = function(win_id)
-          if vim.wo[win_id].diff or vim.fn.win_gettype(win_id) ~= "" then return true end
-          local buf = vim.api.nvim_win_get_buf(win_id)
-          local b = vim.bo[buf]
-          local ignore_bt = ds.excludes.bt.wb_disabled
-          local ignore_ft = vim.tbl_deep_extend("keep", ds.excludes.ft.stl_disabled, ds.excludes.ft.wb_disabled)
-          return ds.any(ignore_bt, function(item) return b.bt:match(item) end)
-            or ds.any(ignore_ft, function(item) return b.ft:match(item) end)
-        end,
-      }
-    end,
-  },
-  {
     "folke/todo-comments.nvim",
     event = "LazyFile",
     cmd = { "TodoQuickFix", "TodoTelescope", "TodoTrouble" },
