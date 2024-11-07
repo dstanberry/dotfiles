@@ -97,21 +97,6 @@ function M.foreach(list, callback)
   end
 end
 
----Prints the location and line number of the current stack level
-function M.get_location()
-  local me = debug.getinfo(1, "S")
-  local level = 2
-  local info = debug.getinfo(level, "S")
-  while info and info.source == me.source do
-    level = level + 1
-    info = debug.getinfo(level, "S")
-  end
-  info = info or me
-  local source = info.source:sub(2)
-  source = vim.uv.fs_realpath(source) or source
-  return ("%s:%s"):format(source, info.linedefined)
-end
-
 ---Prints the lua formatted representation of `filepath` as a module
 ---@param filepath string
 ---@return string modname
@@ -192,20 +177,16 @@ function M.reduce(list, callback, acc)
   return acc
 end
 
----@alias util.notifyOpts { lang?: string, title?: string, level?: number, merge?: boolean, location?: string }
+---@alias util.notifyOpts { ft?: string, title?: string, level?: number, merge?: boolean, on_open?: function }
 ---Displays a notification containing a human-readable representation of the object(s) provided
 ---@param msg string|string[]
 ---@param opts? util.notifyOpts
 function M.notify(msg, opts)
+  local notify = vim.in_fast_event() and vim.schedule_wrap(vim.notify) or vim.notify
   opts = opts or {}
   opts.level = opts.level or vim.log.levels.INFO
-  opts.location = opts.location or M.get_location()
-  opts.title = opts.title or ("Debug: " .. opts.location)
-  opts.lang = opts.lang or "lua"
-  if vim.in_fast_event() then return vim.schedule(function() M.notify(msg, opts) end) end
-  opts.location = vim.fn.fnamemodify(opts.location, ":~:.")
+  opts.title = opts.title or ""
   if type(msg) == "table" and opts.merge then
-    ---@diagnostic disable-next-line: return-type-mismatch
     msg = vim.tbl_filter(function(line) return line or false end, msg)
     for k, v in pairs(msg) do
       if type(v) == "table" then msg[k] = vim.inspect(v) end
@@ -213,23 +194,31 @@ function M.notify(msg, opts)
     msg = table.concat(msg, "\n")
   end
   if not opts.merge then msg = vim.inspect(msg) end
-  vim.notify(msg, tonumber(opts.level), {
-    title = opts.title,
-    on_open = function(win)
-      vim.wo[win].conceallevel = 3
-      vim.wo[win].concealcursor = ""
-      vim.wo[win].cursorline = false
-      vim.wo[win].spell = false
+  msg = vim.trim(msg)
+  return notify(msg, opts.level, opts)
+end
 
-      local buf = vim.api.nvim_win_get_buf(win)
-      local ok = pcall(function() vim.treesitter.language.add "markdown" end)
-      if not ok then pcall(require, "nvim-treesitter") end
-      if not pcall(vim.treesitter.start, buf, opts.lang) then
-        vim.bo[buf].filetype = opts.lang
-        vim.bo[buf].syntax = opts.lang
-      end
-    end,
-  })
+---Show a notification with a pretty printed dump of the object(s) with lua treesitter highlighting
+---and the location of the caller
+function M.inspect(...)
+  local len = select("#", ...) ---@type number
+  local obj = { ... } ---@type unknown[]
+  local caller = debug.getinfo(1, "S")
+  for level = 2, 10 do
+    local info = debug.getinfo(level, "S")
+    if
+      info
+      and info.source ~= caller.source
+      and info.what == "Lua"
+      and info.source ~= "lua"
+      and info.source ~= "@" .. vim.env.MYVIMRC
+    then
+      caller = info
+      break
+    end
+  end
+  local title = "Debug: " .. vim.fn.fnamemodify(caller.source:sub(2), ":~:.") .. ":" .. caller.linedefined
+  M.warn(vim.inspect(len == 1 and obj[1] or len > 0 and obj or nil), { title = title, ft = "lua" })
 end
 
 ---Display an informational notification
@@ -261,20 +250,6 @@ function M.error(msg, opts)
   opts.level = vim.log.levels.ERROR
   M.notify(msg, opts)
 end
-
----"Pretty prints" the given arguments and returns them unmodified. The result is shown as a notification
----@param ...? any
-function M.print(...)
-  local value = { ... }
-  if vim.tbl_isempty(value) then
-    value = nil
-  else
-    value = (vim.islist or vim.islist)(value) and vim.tbl_count(value) <= 1 and value[1] or value
-  end
-  M.notify(value, { location = M.get_location() })
-end
-
-vim.print = M.print
 
 ---Adds whitespace to the start, end or both start and end of a string
 ---@param s string

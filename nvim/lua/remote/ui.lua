@@ -385,28 +385,27 @@ return {
     },
   },
   {
-    "rcarriga/nvim-notify",
-    lazy = true,
-    init = function()
-      if not ds.plugin.is_installed "noice.nvim" then
-        vim.api.nvim_create_autocmd("User", {
-          pattern = "VeryLazy",
-          callback = function() vim.notify = require "notify" end,
-        })
-      end
-    end,
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
     opts = {
-      stages = "static",
-      timeout = 3000,
-      background_colour = "Normal",
-      render = function(...)
-        local n = select(2, ...)
-        local style = n.title[1] == "" and "minimal" or "wrapped-compact"
-        require("notify.render")[style](...)
-      end,
-      on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
-      max_height = function() return math.floor(vim.o.lines * 0.75) end,
-      max_width = function() return math.floor(vim.o.columns * 0.75) end,
+      notifier = {
+        enabled = true,
+        timeout = 3000,
+        icons = {
+          error = ds.icons.diagnostics.Error,
+          warn = ds.icons.diagnostics.Warn,
+          info = "",
+          debug = ds.icons.debug.Watches,
+          trace = ds.icons.debug.Continue,
+        },
+        style = "compact",
+      },
+      styles = {
+        notification = {
+          wo = { wrap = true },
+        },
+      },
     },
   },
   {

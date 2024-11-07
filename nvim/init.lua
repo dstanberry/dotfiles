@@ -5,6 +5,8 @@ vim.g.maplocalleader = ","
 
 _G.ds = require "util"
 
+vim.print = ds.inspect
+
 vim.filetype.add {
   extension = {
     jenkinsfile = "groovy",
