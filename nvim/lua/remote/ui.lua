@@ -396,7 +396,6 @@ return {
       end
     end,
     opts = {
-      -- stages = "fade_in_slide_out",
       stages = "static",
       timeout = 3000,
       background_colour = "Normal",
