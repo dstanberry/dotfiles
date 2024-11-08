@@ -102,6 +102,34 @@ local setup_autocmds = function()
   })
 end
 
+local lazy_notify = function()
+  local notifications = {}
+  local function temp(...) table.insert(notifications, vim.F.pack_len(...)) end
+
+  local orig = vim.notify
+  vim.notify = temp
+  local timer = vim.uv.new_timer()
+  local check = assert(vim.uv.new_check())
+  local replay = function()
+    timer:stop()
+    check:stop()
+    if vim.notify == temp then
+      vim.notify = orig -- put back the original notify if needed
+    end
+    vim.schedule(function()
+      for _, notice in ipairs(notifications) do
+        vim.notify(vim.F.unpack_len(notice))
+      end
+    end)
+  end
+  -- wait till vim.notify has been replaced
+  check:start(function()
+    if vim.notify ~= temp then replay() end
+  end)
+  -- or if it took more than 500ms, then something went wrong
+  timer:start(500, 0, replay)
+end
+
 ---@param pkg string
 ---@param path? string
 ---@param opts? { warn?: boolean }
@@ -143,34 +171,6 @@ M.is_loaded = function(name)
   return Config.plugins[name] and Config.plugins[name]._.loaded
 end
 
-M.lazy_notify = function()
-  local notifications = {}
-  local function temp(...) table.insert(notifications, vim.F.pack_len(...)) end
-
-  local orig = vim.notify
-  vim.notify = temp
-  local timer = vim.uv.new_timer()
-  local check = assert(vim.uv.new_check())
-  local replay = function()
-    timer:stop()
-    check:stop()
-    if vim.notify == temp then
-      vim.notify = orig -- put back the original notify if needed
-    end
-    vim.schedule(function()
-      for _, notice in ipairs(notifications) do
-        vim.notify(vim.F.unpack_len(notice))
-      end
-    end)
-  end
-  -- wait till vim.notify has been replaced
-  check:start(function()
-    if vim.notify ~= temp then replay() end
-  end)
-  -- or if it took more than 500ms, then something went wrong
-  timer:start(500, 0, replay)
-end
-
 ---@param name string
 ---@param fn fun(name:string)
 M.on_load = function(name, fn)
@@ -201,7 +201,7 @@ M.setup = function()
   Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFile", "BufWritePre" } }
   Event.mappings["User LazyFile"] = Event.mappings.LazyFile
 
-  M.lazy_notify()
+  lazy_notify()
   setup_autocmds()
   init_plugins()
 end
