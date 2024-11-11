@@ -1,3 +1,11 @@
+local build_cmd ---@type string?
+for _, cmd in ipairs { "make", "cmake" } do
+  if vim.fn.executable(cmd) == 1 then
+    build_cmd = cmd
+    break
+  end
+end
+
 return {
   { "nvim-telescope/telescope-live-grep-args.nvim", lazy = true },
   { "nvim-telescope/telescope-symbols.nvim", lazy = true },
@@ -16,10 +24,9 @@ return {
     dependencies = {
       {
         "nvim-telescope/telescope-fzf-native.nvim",
-        lazy = true,
-        build = vim.fn.executable "make" == 1 and "make"
+        build = (build_cmd ~= "cmake") and "make"
           or "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-        enabled = vim.fn.executable "make" == 1 or vim.fn.executable "cmake" == 1,
+        enabled = build_cmd ~= nil,
         config = function(plugin)
           ds.plugin.on_load("telescope.nvim", function()
             local ok, res = pcall(require("telescope").load_extension, "fzf")
