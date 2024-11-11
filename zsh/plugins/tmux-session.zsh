@@ -64,7 +64,7 @@ fi
         -maxdepth 1 -type d)
       res_b=$(find -L "$XDG_CONFIG_HOME" "${project_dirs[@]}" "${worktree_dirs[@]}" \
         -maxdepth 0 -type d)
-    # shellcheck disable=SC2059
+      # shellcheck disable=SC2059
       selected_dir=$(printf "$res_a""%s\n""$res_b" | sort -V | uniq | FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS-} \
           --height=100% \
           --reverse --header='Create/Open Session' \
