@@ -131,9 +131,6 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
   callback = function(args)
-    local ft = vim.filetype.match { buf = args.buf }
-    if ft then
-      if not vim.treesitter.language.get_lang(ft) then vim.opt_local.relativenumber = false end
-    end
+    if not vim.b[args.buf].ts_highlight then vim.opt_local.relativenumber = false end
   end,
 })
