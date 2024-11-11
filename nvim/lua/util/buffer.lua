@@ -20,32 +20,51 @@ function M.create_scratch(filetype)
   }, function(ft) return create_buf(ft) end)
 end
 
----Unloads a buffer
----@param buf number?
-function M.delete(buf)
-  buf = buf or 0
+---@class util.buffer.delete.Opts
+---@field buf? number Buffer to delete. Defaults to the current buffer
+---@field force? boolean Delete the buffer even if it is modified
+---@field filter? fun(buf: number): boolean Filter buffers to delete
+---@field wipe? boolean Wipe the buffer instead of deleting it (see `:h :bwipeout`)
+
+--- Delete and unload a buffer:
+--- - either the current buffer if `buf` is not provided
+--- - or the buffer `buf` if it is a number
+--- - or every buffer for which `buf` returns true if it is a function
+---@param opts? number|util.buffer.delete.Opts
+function M.delete(opts)
+  opts = opts or {}
+  opts = type(opts) == "number" and { buf = opts } or opts
+  opts = type(opts) == "function" and { filter = opts } or opts ---@cast opts util.buffer.delete.Opts
+  if type(opts.filter) == "function" then
+    for _, b in ipairs(vim.tbl_filter(opts.filter, vim.api.nvim_list_bufs())) do
+      if vim.bo[b].buflisted then M.delete(vim.tbl_extend("force", {}, opts, { buf = b, filter = false })) end
+    end
+    return
+  end
+  local buf = opts.buf or 0
   buf = buf == 0 and vim.api.nvim_get_current_buf() or buf
-  if vim.bo.modified then
-    local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
-    if choice == 0 or choice == 3 then return end
-    if choice == 1 then vim.cmd.write() end
-  end
-  local wins = vim.tbl_filter(function(win) return vim.api.nvim_win_get_buf(win) == buf end, vim.api.nvim_list_wins())
-  for _, win in ipairs(wins) do
-    vim.api.nvim_win_call(win, function()
-      if not vim.api.nvim_win_is_valid(win) or vim.api.nvim_win_get_buf(win) ~= buf then return end
-      local alt = vim.fn.bufnr "#"
-      if alt >= 0 and alt ~= buf and vim.bo[alt].buflisted then
-        vim.api.nvim_win_set_buf(win, alt)
-        return
-      end
-      local has_previous = pcall(vim.cmd, "bprevious")
-      if has_previous and buf ~= vim.api.nvim_win_get_buf(win) then return end
-      local new_buf = vim.api.nvim_create_buf(true, false)
-      vim.api.nvim_win_set_buf(win, new_buf)
-    end)
-  end
-  if vim.api.nvim_buf_is_valid(buf) then pcall(vim.cmd, "bdelete! " .. buf) end
+  vim.api.nvim_buf_call(buf, function()
+    if vim.bo.modified and not opts.force then
+      local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+      if choice == 0 or choice == 3 then return end
+      if choice == 1 then vim.cmd.write() end
+    end
+    for _, win in ipairs(vim.fn.win_findbuf(buf)) do
+      vim.api.nvim_win_call(win, function()
+        if not vim.api.nvim_win_is_valid(win) or vim.api.nvim_win_get_buf(win) ~= buf then return end
+        local alt = vim.fn.bufnr "#"
+        if alt ~= buf and vim.fn.buflisted(alt) == 1 then
+          vim.api.nvim_win_set_buf(win, alt)
+          return
+        end
+        local has_previous = pcall(vim.cmd, "bprevious")
+        if has_previous and buf ~= vim.api.nvim_win_get_buf(win) then return end
+        local new_buf = vim.api.nvim_create_buf(true, false)
+        vim.api.nvim_win_set_buf(win, new_buf)
+      end)
+    end
+    if vim.api.nvim_buf_is_valid(buf) then pcall(vim.cmd, (opts.wipe and "bwipeout! " or "bdelete! ") .. buf) end
+  end)
 end
 
 ---@alias util.buffer_startLine {start_line: number, start_col: number} {row,col} mark-indexed position.
