@@ -1,5 +1,5 @@
 -- stylua: ignore
----@type util.theme_palette
+---@type util.theme.palette
 ---@diagnostic disable-next-line: missing-fields
 local c = {
   bg0      = "#1f2021",

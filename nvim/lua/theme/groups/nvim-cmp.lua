@@ -1,7 +1,7 @@
 local M = {}
 
----@param c util.theme_palette
----@return util.theme_hl
+---@param c util.theme.palette
+---@return util.theme.hl
 M.get = function(c)
   local BLUE = ds.color.lighten(c.blue2, 15)
   local BLUE_DARK = ds.color.darken(c.blue2, 35)

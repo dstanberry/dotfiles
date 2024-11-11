@@ -1,7 +1,7 @@
 local M = {}
 
----@param c util.theme_palette
----@return util.theme_hl
+---@param c util.theme.palette
+---@return util.theme.hl
 M.get = function(c)
   local GREEN = ds.color.blend(c.green1, c.bg2, 0.66)
   -- stylua: ignore

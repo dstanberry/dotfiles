@@ -6,7 +6,7 @@ M.themes = {}
 M._initialized = false
 
 --- Defines highlight groups using the provided color palette
----@param c util.theme_palette
+---@param c util.theme.palette
 M.apply = function(c)
   local root = "theme/groups"
   local groups = {}
@@ -49,8 +49,8 @@ M.apply = function(c)
 end
 
 ---Sets the active neovim theme based on the provided `colorscheme`
----@param t util.theme_name
----@param b? util.theme_bg
+---@param t util.theme.name
+---@param b? util.theme.mode
 M.load = function(t, b)
   b = b or "dark"
   if not M._initialized then
@@ -68,8 +68,8 @@ M.load = function(t, b)
   if t and M.themes[t] then
     if vim.g.colors_name then vim.cmd "highlight clear" end
     vim.o.background = "dark"
-    vim.g.colors_name = t ---@type util.theme_name
-    vim.g.ds_colors = M.themes[t] ---@type util.theme_palette
+    vim.g.colors_name = t ---@type util.theme.name
+    vim.g.ds_colors = M.themes[t] ---@type util.theme.palette
     M.apply(vim.g.ds_colors)
   end
 end

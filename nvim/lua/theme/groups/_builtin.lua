@@ -1,7 +1,7 @@
 local M = {}
 
----@param c util.theme_palette
----@return util.theme_hl
+---@param c util.theme.palette
+---@return util.theme.hl
 M.get = function(c)
   -- |mini.align| `=<bs>fn==1<cr>t` 
   -- stylua: ignore

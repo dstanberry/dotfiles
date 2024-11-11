@@ -20,7 +20,7 @@ function M.create_scratch(filetype)
   }, function(ft) return create_buf(ft) end)
 end
 
----@class util.buffer.delete.Opts
+---@class util.buffer.delete.opts
 ---@field buf? number Buffer to delete. Defaults to the current buffer
 ---@field force? boolean Delete the buffer even if it is modified
 ---@field filter? fun(buf: number): boolean Filter buffers to delete
@@ -30,11 +30,11 @@ end
 --- - either the current buffer if `buf` is not provided
 --- - or the buffer `buf` if it is a number
 --- - or every buffer for which `buf` returns true if it is a function
----@param opts? number|util.buffer.delete.Opts
+---@param opts? number|util.buffer.delete.opts
 function M.delete(opts)
   opts = opts or {}
   opts = type(opts) == "number" and { buf = opts } or opts
-  opts = type(opts) == "function" and { filter = opts } or opts ---@cast opts util.buffer.delete.Opts
+  opts = type(opts) == "function" and { filter = opts } or opts ---@cast opts util.buffer.delete.opts
   if type(opts.filter) == "function" then
     for _, b in ipairs(vim.tbl_filter(opts.filter, vim.api.nvim_list_bufs())) do
       if vim.bo[b].buflisted then M.delete(vim.tbl_extend("force", {}, opts, { buf = b, filter = false })) end
@@ -67,12 +67,12 @@ function M.delete(opts)
   end)
 end
 
----@alias util.buffer_startLine {start_line: number, start_col: number} {row,col} mark-indexed position.
----@alias util.buffer_endLine {start_line: number, start_col: number} {row,col} mark-indexed position.
----@alias util.buffer_selection { selected_lines: string[], start_pos: util.buffer_startLine, end_pos: util.buffer_endLine }
+---@alias util.buffer.selection.start {start_line: number, start_col: number} {row,col} mark-indexed position.
+---@alias util.buffer.selection.end {start_line: number, start_col: number} {row,col} mark-indexed position.
+---@alias util.buffer.selection.opts { selected_lines: string[], start_pos: util.buffer.selection.start, end_pos: util.buffer.selection.end }
 
 ---Captures the currently selected region of text
----@return util.buffer_selection # Table containing the selection (accuracy is not guaranteed)
+---@return util.buffer.selection.opts # Table containing the selection (accuracy is not guaranteed)
 ---and two row-column tuples of the start and end of the range
 function M.get_line_selection()
   local start_char, end_char = "'<", "'>"
@@ -93,7 +93,7 @@ function M.get_line_selection()
 end
 
 ---Captures the currently selected region of text
----@return string|string[]|table, util.buffer_selection #Table containing each line of the selected range
+---@return string|string[]|table, util.buffer.selection.opts #Table containing each line of the selected range
 ---(accuracy is guaranteed) and a table containing the two row-column tuples of the start and end of the range
 function M.get_visual_selection()
   local res = M.get_line_selection()
@@ -120,7 +120,7 @@ function M.get_visual_selection()
   return selection, range
 end
 
----@class ListBufsSpec
+---@class util.buffer.filter.opts
 ---@field loaded? boolean Filter out buffers that aren't loaded.
 ---@field listed? boolean Filter out buffers that aren't listed.
 ---@field no_hidden? boolean Filter out buffers that are hidden.
@@ -129,13 +129,13 @@ end
 ---@field options? table<string, any> Filter out buffers that don't match a given map of options.
 ---@field vars? table<string, any> Filter out buffers that don't match a given map of variables.
 
----@param opt? ListBufsSpec
+---@param opts? util.buffer.filter.opts
 ---@return integer[] #Buffer numbers of matched buffers.
-function M.list_buffers(opt)
-  opt = opt or {}
+function M.filter(opts)
+  opts = opts or {}
   local bufs
-  if opt.no_hidden or opt.tabpage then
-    local wins = opt.tabpage and vim.api.nvim_tabpage_list_wins(opt.tabpage) or vim.api.nvim_list_wins()
+  if opts.no_hidden or opts.tabpage then
+    local wins = opts.tabpage and vim.api.nvim_tabpage_list_wins(opts.tabpage) or vim.api.nvim_list_wins()
     local bufnr
     local seen = {}
     bufs = {}
@@ -148,16 +148,16 @@ function M.list_buffers(opt)
     bufs = vim.api.nvim_list_bufs()
   end
   return vim.tbl_filter(function(bufnr)
-    if opt.loaded and not vim.api.nvim_buf_is_loaded(bufnr) then return false end
-    if opt.listed and not vim.bo[bufnr].buflisted then return false end
-    if opt.pattern and not vim.api.nvim_buf_get_name(bufnr):match(opt.pattern) then return false end
-    if opt.options then
-      for name, value in pairs(opt.options) do
+    if opts.loaded and not vim.api.nvim_buf_is_loaded(bufnr) then return false end
+    if opts.listed and not vim.bo[bufnr].buflisted then return false end
+    if opts.pattern and not vim.api.nvim_buf_get_name(bufnr):match(opts.pattern) then return false end
+    if opts.options then
+      for name, value in pairs(opts.options) do
         if vim.bo[bufnr][name] ~= value then return false end
       end
     end
-    if opt.vars then
-      for name, value in pairs(opt.vars) do
+    if opts.vars then
+      for name, value in pairs(opts.vars) do
         if vim.b[bufnr][name] ~= value then return false end
       end
     end
@@ -165,10 +165,10 @@ function M.list_buffers(opt)
   end, bufs)
 end
 
----@alias util.buffer_lsp_range_params { textDocument: { uri: string }, range: { start: number, end: number } }
+---@alias util.buffer.lsp.range_params { textDocument: { uri: string }, range: { start: number, end: number } }
 
 --- Custom implementation of `vim.lsp.util.make_range_params()`
----@return util.buffer_lsp_range_params
+---@return util.buffer.lsp.range_params
 function M.make_lsp_range_params(range)
   local params = {}
   ds.foreach({ "start", "end" }, function(v, k)

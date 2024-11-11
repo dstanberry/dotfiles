@@ -3,7 +3,7 @@
 vim.api.nvim_create_user_command(
   "GHEI",
   vim.schedule_wrap(function()
-    local bufs = ds.buffer.list_buffers { listed = true }
+    local bufs = ds.buffer.filter { listed = true }
     if #bufs == 1 then
       local path = vim.api.nvim_buf_get_name(bufs[1])
       local fname = vim.fs.basename(path)
@@ -22,7 +22,7 @@ vim.api.nvim_create_user_command(
 vim.api.nvim_create_user_command(
   "GHEPR",
   vim.schedule_wrap(function()
-    local bufs = ds.buffer.list_buffers { listed = true }
+    local bufs = ds.buffer.filter { listed = true }
     if #bufs == 1 then
       local path = vim.api.nvim_buf_get_name(bufs[1])
       local fname = vim.fs.basename(path)

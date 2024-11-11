@@ -3,7 +3,7 @@ local M = {}
 
 local _cache = {}
 
----@type util.theme_hl
+---@type util.theme.hl
 local highlight_groups = setmetatable({}, {
   ---@param name string
   ---@param args? vim.api.keyset.highlight
@@ -28,7 +28,7 @@ M.add = function(name, args)
 end
 
 --- Sets and caches highlight groups
----@param groups util.theme_hl
+---@param groups util.theme.hl
 M.set = function(groups)
   for k, v in pairs(groups) do
     highlight_groups[k] = v
@@ -37,7 +37,7 @@ M.set = function(groups)
 end
 
 --- Returns a copy of currently cached highlight group definitions
----@return util.theme_hl
+---@return util.theme.hl
 M.get = function() return vim.deepcopy(_cache) end
 
 return M

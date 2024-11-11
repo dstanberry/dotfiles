@@ -4,12 +4,12 @@ local M = setmetatable({}, {
   __call = function(m) return m.get() end,
 })
 
----@alias util.root_fn fun(buf: number): (string|string[])
----@alias util.root_spec string|string[]|util.root_fn
+---@alias util.root.detector_fn fun(buf: number): (string|string[])
+---@alias util.root.resolver_spec string|string[]|util.root.detector_fn
 
----@class util.root_dirs
+---@class util.root.dirs
 ---@field paths string[]
----@field spec util.root_spec
+---@field spec util.root.resolver_spec
 
 ---@type table<number, string>
 M.cached_roots = {}
@@ -41,11 +41,11 @@ local bufpath = function(buf) return realpath(vim.api.nvim_buf_get_name(assert(b
 ---@diagnostic disable-next-line: unused-local, unused-function
 local cwd = function() return realpath(vim.uv.cwd()) end
 
----@return util.root_dirs[]
+---@return util.root.dirs[]
 function M.detectors.cwd() return { vim.uv.cwd() } end
 
 ---@param buf number
----@return util.root_dirs[]
+---@return util.root.dirs[]
 function M.detectors.lsp(buf)
   local filepath = bufpath(buf)
   if not filepath then return {} end
@@ -65,7 +65,7 @@ end
 
 ---@param buf number
 ---@param patterns string[]|string
----@return util.root_dirs[]
+---@return util.root.dirs[]
 function M.detectors.pattern(buf, patterns)
   patterns = type(patterns) == "string" and { patterns } or patterns
   local filepath = bufpath(buf) or vim.uv.cwd()
@@ -79,8 +79,8 @@ function M.detectors.pattern(buf, patterns)
   return pattern and { vim.fs.dirname(pattern) } or {}
 end
 
----@param spec util.root_spec
----@return util.root_fn
+---@param spec util.root.resolver_spec
+---@return util.root.detector_fn
 function M.resolve(spec)
   if M.detectors[spec] then
     return M.detectors[spec]
@@ -90,14 +90,14 @@ function M.resolve(spec)
   return function(buf) return M.detectors.pattern(buf, spec) end
 end
 
----@param opts? { buf?: number, spec?: util.root_spec[], all?: boolean }
----@return util.root_dirs[]
+---@param opts? { buf?: number, spec?: util.root.resolver_spec[], all?: boolean }
+---@return util.root.dirs[]
 function M.detect(opts)
   opts = opts or {}
   opts.buf = (opts.buf == nil or opts.buf == 0) and vim.api.nvim_get_current_buf() or opts.buf
   opts.spec = opts.spec or M.cached_specs[opts.buf] or default_spec
 
-  local ret = {} ---@type util.root_dirs[]
+  local ret = {} ---@type util.root.dirs[]
   for _, spec in ipairs(opts.spec) do
     local paths = M.resolve(spec)(opts.buf)
     paths = paths or {}

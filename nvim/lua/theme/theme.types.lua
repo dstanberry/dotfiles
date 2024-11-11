@@ -1,4 +1,4 @@
----@class util.theme_palette
+---@class util.theme.palette
 ---@field aqua0 string
 ---@field aqua1 string
 ---@field aqua2 string
@@ -54,6 +54,6 @@
 ---@field overlay0 string
 ---@field overlay1 string
 
----@alias util.theme_bg "light"|"dark"
----@alias util.theme_hl table<string,vim.api.keyset.highlight>
----@alias util.theme_name "kdark"|"catppuccin-frappe"|"catppuccin-mocha"
+---@alias util.theme.mode "light"|"dark"
+---@alias util.theme.hl table<string,vim.api.keyset.highlight>
+---@alias util.theme.name "kdark"|"catppuccin-frappe"|"catppuccin-mocha"
