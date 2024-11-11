@@ -392,6 +392,10 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
+    keys = {
+      { "]]", function() require("snacks").words.jump(vim.v.count1) end, desc = "snacks: goto next reference" },
+      { "[[", function() require("snacks").words.jump(-vim.v.count1) end, desc = "snacks: goto prev reference" },
+    },
     opts = {
       notifier = {
         enabled = true,
@@ -405,6 +409,7 @@ return {
         },
         style = "compact",
       },
+      words = { enabled = true },
       styles = {
         notification = {
           wo = { wrap = true },
