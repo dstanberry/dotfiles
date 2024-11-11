@@ -69,7 +69,7 @@ end
 
 ---@alias util.buffer.selection.start {start_line: number, start_col: number} {row,col} mark-indexed position.
 ---@alias util.buffer.selection.end {start_line: number, start_col: number} {row,col} mark-indexed position.
----@alias util.buffer.selection.opts { selected_lines: string[], start_pos: util.buffer.selection.start, end_pos: util.buffer.selection.end }
+---@alias util.buffer.selection.opts {selected_lines: string[], start_pos: util.buffer.selection.start, end_pos: util.buffer.selection.end}
 
 ---Captures the currently selected region of text
 ---@return util.buffer.selection.opts # Table containing the selection (accuracy is not guaranteed)
@@ -165,7 +165,7 @@ function M.filter(opts)
   end, bufs)
 end
 
----@alias util.buffer.lsp.range_params { textDocument: { uri: string }, range: { start: number, end: number } }
+---@alias util.buffer.lsp.range_params {textDocument: { uri: string }, range: { start: number, end: number }}
 
 --- Custom implementation of `vim.lsp.util.make_range_params()`
 ---@return util.buffer.lsp.range_params

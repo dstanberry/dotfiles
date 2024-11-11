@@ -26,7 +26,7 @@ end
 
 ---@private
 ---@alias util.ui.sign.type "mark"|"sign"|"fold"|"git"
----@alias util.ui.sign.spec {name:string, text:string, texthl:string, priority:number, type: util.ui.sign.type}
+---@alias util.ui.sign.spec {name: string, text: string, texthl: string, priority: number, type: util.ui.sign.type}
 
 local sign_opts = {
   left = { "mark", "sign" },
