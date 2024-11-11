@@ -8,6 +8,8 @@ local skip_check = assert(vim.uv.new_check())
 ---@return integer|string fold-level
 function M.foldexpr()
   local buf = vim.api.nvim_get_current_buf()
+  -- don't use folds if treesitter highlighting not available
+  if not vim.b[buf].ts_highlight then return "0" end
   -- still in the same tick and no parser
   if M.skip_foldexpr[buf] then return "0" end
   -- don't use treesitter folds for non-file buffers
