@@ -245,6 +245,7 @@ return {
           },
         },
         hover = { enabled = true },
+        progress = { view = "notify" },
         signature = {
           enabled = true,
           opts = {
@@ -358,14 +359,8 @@ return {
           size = { min_width = 70, height = "auto" },
           filter_options = {},
         },
-        popupmenu = {
-          relative = "editor",
-          border = { style = "single", padding = { 0, 1 } },
-          position = { row = 23, col = "50%" },
-          size = { width = 70, height = 10 },
-          win_options = {
-            winhighlight = { Normal = "Normal", FloatBorder = "NoiceCmdlinePopupBorder" },
-          },
+        notify = {
+          replace = true,
         },
         mini = {
           timeout = 1000,
@@ -374,6 +369,15 @@ return {
           win_options = {
             winblend = vim.api.nvim_get_option_value("winblend", { scope = "global" }),
             winhighlight = { FloatBorder = "Comment" },
+          },
+        },
+        popupmenu = {
+          relative = "editor",
+          border = { style = "single", padding = { 0, 1 } },
+          position = { row = 23, col = "50%" },
+          size = { width = 70, height = 10 },
+          win_options = {
+            winhighlight = { Normal = "Normal", FloatBorder = "NoiceCmdlinePopupBorder" },
           },
         },
         split = {
