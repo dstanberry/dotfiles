@@ -42,7 +42,6 @@ M.ft = {
     -- plugin filetypes
     "copilot-chat",
     "dap-repl",
-    "dbee",
     "dbui",
     "DiffviewFileHistory",
     "dbout",

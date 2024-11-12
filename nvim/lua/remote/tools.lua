@@ -432,33 +432,4 @@ return {
       end)
     end,
   },
-  {
-    "kndndrj/nvim-dbee",
-    enabled = false,
-    dependencies = { "MattiasMTS/cmp-dbee" },
-    cmd = { "Dbee" },
-    keys = {
-      { "<localleader>db", "<cmd>Dbee toggle<cr>", desc = "dbee: toggle interface" },
-    },
-    build = function() require("dbee").install "curl" end,
-    config = function()
-      require("dbee").setup {
-        sources = {
-          require("dbee.sources").FileSource:new(vim.fs.joinpath(vim.fn.stdpath "data", "db", "connections.json")),
-        },
-      }
-      ds.plugin.on_load("nvim-cmp", function()
-        vim.api.nvim_create_autocmd("FileType", {
-          group = vim.g.ds_cmp_group,
-          pattern = "sql",
-          callback = function()
-            local plugin = require("lazy.core.config").spec.plugins["nvim-cmp"]
-            local sources = require("lazy.core.plugin").values(plugin, "opts", false).sources or {}
-            table.insert(sources, { name = "cmp-dbee" })
-            require("cmp").setup.buffer { sources = sources }
-          end,
-        })
-      end)
-    end,
-  },
 }

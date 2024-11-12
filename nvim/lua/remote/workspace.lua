@@ -81,13 +81,6 @@ return {
             },
             {
               text = ds.pad(ds.icons.groups.Sql, "right") .. "DATABASE VIEWER",
-              filetype = "dbee",
-              highlight = "PanelHeading",
-              separator = true,
-              text_align = "center",
-            },
-            {
-              text = ds.pad(ds.icons.groups.Sql, "right") .. "DATABASE VIEWER",
               filetype = "dbui",
               highlight = "PanelHeading",
               separator = true,
