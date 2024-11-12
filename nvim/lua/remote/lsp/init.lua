@@ -6,7 +6,7 @@ return {
   { "mickael-menu/zk-nvim", lazy = true },
   {
     "neovim/nvim-lspconfig",
-    event = { "LazyFile", "VeryLazy" },
+    event = "LazyFile",
     dependencies = {
       "williamboman/mason.nvim",
     },
