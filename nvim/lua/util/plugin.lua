@@ -17,7 +17,10 @@ local bootstrap = function()
 end
 
 local init_plugins = function()
-  require("lazy").setup("remote", {
+  require("lazy").setup {
+    spec = {
+      { import = "remote" },
+    },
     defaults = { lazy = true },
     root = vim.fs.joinpath(vim.fn.stdpath "data", "lazy"),
     lockfile = vim.fs.joinpath(vim.fn.stdpath "config", "lua", "remote", "lazy-lock.json"),
@@ -34,16 +37,15 @@ local init_plugins = function()
         end,
       },
     },
-    install = { missing = true },
     diff = { cmd = "terminal_git" },
     performance = {
       cache = { enabled = true },
       rtp = {
         disabled_plugins = {
           "gzip",
-          "matchit",
+          -- "matchit",
           -- "matchparen",
-          "netrwPlugin",
+          -- "netrwPlugin",
           "rplugin",
           "tarPlugin",
           "tohtml",
@@ -52,7 +54,7 @@ local init_plugins = function()
         },
       },
     },
-  })
+  }
 end
 
 local setup_autocmds = function()
@@ -189,6 +191,7 @@ M.on_load = function(name, fn)
   end
 end
 
+---@private
 M.initialized = false
 
 M.setup = function()
