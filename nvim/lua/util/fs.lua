@@ -36,12 +36,14 @@ end
 ---Utility function to read a file on disk
 ---@param file string
 ---@param mode? openmode
+---@param resume boolean
 ---@return file*?
 ---@return string? errmsg
-function M.read(file, mode)
+function M.read(file, mode, resume)
   mode = vim.F.if_nil(mode, "r")
-  local fd = io.open(file, "r")
-  if not fd then vim.notify(("Could not open file (%s)"):format(file), vim.log.levels.ERROR) end
+  resume = resume or false
+  local fd = io.open(file, mode)
+  if not (fd or resume) then vim.notify(("Could not open file (%s)"):format(file), vim.log.levels.ERROR) end
   if fd then
     local data = fd:read "*a"
     fd.close()
@@ -52,13 +54,12 @@ end
 ---Utility function to write to a file on disk
 ---@param file string
 ---@param data string|number
-function M.write(file, data)
-  local fd = io.open(file, "w")
-  if not fd then vim.notify(("Could not open file (%s)"):format(file), vim.log.levels.ERROR) end
-  if fd then
-    fd:write(data)
-    fd:close()
-  end
+function M.write(file, data, mode)
+  mode = vim.F.if_nil(mode, "w")
+  vim.fn.mkdir(vim.fn.fnamemodify(file, ":h"), "p")
+  local fd = assert(io.open(file, mode))
+  fd:write(data)
+  fd:close()
 end
 
 return M
