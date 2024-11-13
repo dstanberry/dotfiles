@@ -54,7 +54,6 @@ M.ft = {
     "NeogitStatus",
     "noice",
     "octo_panel",
-    -- "oil",
     "TelescopePrompt",
     "toggleterm",
     "trouble",
