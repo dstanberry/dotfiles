@@ -1,1 +1,1 @@
-require("util").reload("theme").load "kdark"
+require("theme").load "kdark"

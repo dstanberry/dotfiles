@@ -1,1 +1,1 @@
-require("util").reload("theme").load "catppuccin-mocha"
+require("theme").load "catppuccin-mocha"
