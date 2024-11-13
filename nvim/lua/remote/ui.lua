@@ -1,5 +1,100 @@
 return {
   {
+    "nvimdev/dashboard-nvim",
+    lazy = false,
+    opts = function()
+      local logo = [[
+          ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+          ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+          ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+          ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+          ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+          ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝
+      ]]
+      logo = table.concat(vim.split(logo, "\n"), string.rep(" ", 8) .. "\n")
+      logo = string.rep("\n", 10) .. logo .. "\n\n"
+      local opts = {
+        theme = "doom",
+        hide = { statusline = true },
+        config = {
+          header = vim.split(logo, "\n"),
+          center = {
+            {
+              action = 'lua require("remote.telescope.util").files.project()',
+              desc = " Find File",
+              icon = ds.pad(ds.icons.misc.Magnify, "right"),
+              key = "f",
+            },
+            {
+              action = "ene | startinsert",
+              desc = " New File",
+              icon = ds.pad(ds.icons.documents.File, "right"),
+              key = "n",
+            },
+            {
+              action = 'lua require("remote.telescope.util").grep.dynamic()',
+              desc = " Find Text",
+              icon = ds.pad(ds.icons.misc.Data, "right"),
+              key = "g",
+            },
+            {
+              action = 'lua require("remote.telescope.util").files.nvim_config()',
+              desc = " Find Config File",
+              icon = ds.pad(ds.icons.misc.Gear, "right"),
+              key = "c",
+            },
+            {
+              action = 'lua require("persistence").load()',
+              desc = " Restore Session",
+              icon = ds.pad(ds.icons.misc.Revolve, "right"),
+              key = "r",
+            },
+            {
+              action = "Lazy",
+              desc = " Lazy Plugin Manager",
+              icon = ds.pad(ds.icons.misc.Sleep, "right"),
+              key = "l",
+            },
+            {
+              action = function() vim.api.nvim_input "<cmd>qa<cr>" end,
+              desc = " Quit",
+              icon = ds.pad(ds.icons.misc.Exit, "right"),
+              key = "q",
+            },
+          },
+          footer = function()
+            local stats = require("lazy").stats()
+            local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+            return {
+              string.format(
+                "%s Neovim loaded %d/%d plugins in %dms",
+                ds.icons.misc.Event,
+                stats.loaded,
+                stats.count,
+                ms
+              ),
+            }
+          end,
+        },
+      }
+      for _, button in ipairs(opts.config.center) do
+        button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
+        button.key_format = "  %s"
+      end
+      -- open dashboard after closing lazy
+      if vim.o.filetype == "lazy" then
+        vim.api.nvim_create_autocmd("WinClosed", {
+          pattern = tostring(vim.api.nvim_get_current_win()),
+          once = true,
+          callback = function()
+            vim.schedule(function() vim.api.nvim_exec_autocmds("UIEnter", { group = "dashboard" }) end)
+          end,
+        })
+      end
+      return opts
+    end,
+  },
+  {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     keys = function()

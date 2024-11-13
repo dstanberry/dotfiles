@@ -19,6 +19,7 @@ M.ft = {
 
     -- plugin filetypes
     "copilot-chat",
+    "dashboard",
     "dbui",
     "DiffviewFiles",
     "gitcommit",
