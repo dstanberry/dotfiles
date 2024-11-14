@@ -49,8 +49,10 @@ function M.blend(foreground, background, alpha)
   return string.format("#%02x%02x%02x", blendChannel(1), blendChannel(2), blendChannel(3))
 end
 
----@param hex string
----@param amount integer
+---@param hex string hexadecimal color formatted as `#rrggbb``
+---@param amount integer amout to adjust by
+--- - `amount` < 1 : adjusted to 1 - amount
+--- - `amount` >=1 : adjusted to 1 - (amount / 100)
 ---@return string color
 function M.darken(hex, amount)
   if amount < 1 then
@@ -63,9 +65,10 @@ function M.darken(hex, amount)
   return rgb_to_hex(rgb)
 end
 
----@param name string
----@param bg? boolean
----@return string?
+---@param name string highlight group name
+---@param bg? boolean return the background color if `true` otherwise return the
+---foreground color
+---@return string? #hexadecimal color formatted as `#rrggbb`
 function M.get_color(name, bg)
   local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
   local color = nil
@@ -81,8 +84,10 @@ function M.get_color(name, bg)
   return color and string.format("#%06x", color) or nil
 end
 
----@param hex string
----@param amount integer
+---@param hex string hexadecimal color formatted as `#rrggbb``
+---@param amount integer amout to adjust by
+--- - `amount` < 1 : adjusted to 1 - amount
+--- - `amount` >=1 : adjusted to 1 - (amount / 100)
 ---@return string color
 function M.lighten(hex, amount)
   if amount < 1 then
@@ -95,6 +100,8 @@ function M.lighten(hex, amount)
   return rgb_to_hex(rgb)
 end
 
+--- If supported, change the background color of the terminal emulator to match the
+--- current `colorscheme`
 function M.sync_term_bg()
   local group = ds.augroup "terminal_emulator"
 
