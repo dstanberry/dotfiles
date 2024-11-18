@@ -5,6 +5,18 @@ local M = {}
 M.get = function(c)
   -- stylua: ignore
   return {
+    -- dashboard
+    SnacksDashboardHeader     = { fg = c.magenta0 },
+    SnacksDashboardFooter     = { fg = c.blue0 },
+
+    SnacksDashboardSpecial    = { fg = c.fg_conceal },
+
+    SnacksDashboardDesc       = { fg = c.overlay1 },
+    SnacksDashboardKey        = { fg = c.rose0 },
+    SnacksDashboardIcon       = { fg = c.overlay1, bold = true },
+    SnacksDashboardShortCut   = { fg = c.overlay1 },
+
+    -- notifier
     SnacksNormal              = { fg = c.white, bg = c.bg0 },
 
     SnacksNotifierTrace       = { fg   = c.white, bg = c.bg0 },

@@ -19,7 +19,6 @@ M.ft = {
 
     -- plugin filetypes
     "copilot-chat",
-    "dashboard",
     "dbui",
     "DiffviewFiles",
     "gitcommit",
@@ -29,6 +28,7 @@ M.ft = {
     "NeogitStatus",
     "noice",
     "oil",
+    "snacks_dashboard",
     "TelescopePrompt",
     "toggleterm",
     "trouble",
