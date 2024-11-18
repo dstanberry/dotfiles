@@ -38,8 +38,8 @@ return {
           left_mouse_command = "buffer %d",
           ---@diagnostic disable-next-line: assign-type-mismatch
           right_mouse_command = nil,
-          middle_mouse_command = function(buf) ds.buffer.delete() end,
-          close_command = function(buf) ds.buffer.delete() end,
+          middle_mouse_command = function(buf) ds.buffer.delete(buf) end,
+          close_command = function(buf) ds.buffer.delete(buf) end,
           buffer_close_icon = ds.icons.misc.Close,
           close_icon = ds.icons.misc.CloseBold,
           hover = { enabled = true, reveal = { "close" } },
