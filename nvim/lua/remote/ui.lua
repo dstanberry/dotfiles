@@ -392,10 +392,27 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     lazy = false,
-    keys = {
-      { "]]", function() require("snacks").words.jump(vim.v.count1) end, desc = "snacks: goto next reference" },
-      { "[[", function() require("snacks").words.jump(-vim.v.count1) end, desc = "snacks: goto prev reference" },
-    },
+    keys = function()
+      local git_opts = {}
+      if ds.has "wsl" then git_opts.open = function(url) vim.system { "cmd.exe", "/c", "start", url } end end
+      if vim.g.ds_env.github_hostname then
+        git_opts.url_patterns = {
+          [vim.g.ds_env.github_hostname] = {
+            branch = "/tree/{branch}",
+            file = "/blob/{branch}/{file}#L{line}",
+          },
+        }
+      end
+      local git_y_opts = vim.deepcopy(git_opts)
+      git_y_opts.open = function(url) vim.fn.setreg("+", url) end
+      -- stylua: ignore
+      return {
+        { "]]", function() require("snacks").words.jump(vim.v.count1) end, desc = "lsp: goto next reference" },
+        { "[[", function() require("snacks").words.jump(-vim.v.count1) end, desc = "lsp: goto prev reference" },
+        {"<localleader>go", function() require("snacks").gitbrowse.open(git_opts) end, desc = "git: open in browser", mode = { "n", "v" },},
+        {"<localleader>gy", function() require("snacks").gitbrowse.open(git_y_opts) end, desc = "git: copy remote url", mode = { "n", "v" },},
+      }
+    end,
     opts = {
       dashboard = {
         enabled = true,
@@ -451,6 +468,7 @@ return {
           { section = "startup" },
         },
       },
+      gitbrowse = { enabled = true },
       notifier = {
         enabled = true,
         timeout = 3000,

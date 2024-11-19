@@ -167,9 +167,6 @@ vim.keymap.set("n", "<localleader><localleader>e", function()
   return (":edit %s%s"):format(path, "/")
 end, { silent = false, expr = true, replace_keycodes = true, desc = "create/edit file relative to current document" })
 
--- browse the git repository the current buffer belongs to in a (web browser, etc.)
-vim.keymap.set("n", "<localleader><localleader>g", ds.git.browse_remote, { silent = true, desc = "browse git remote" })
-
 -- prepare to call |ds.reload()| on the current lua file
 vim.keymap.set("n", "<localleader><localleader>r", function()
   if vim.bo.filetype ~= "lua" then error "reload utility only available for lua modules" end
