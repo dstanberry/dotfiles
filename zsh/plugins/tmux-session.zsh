@@ -86,7 +86,7 @@ fi
     (
       exec </dev/tty; exec <&1;
       if [[ -z "$TMUX" ]]; then
-       { tmux new-session -As "$session_name" -c "$selected_dir" } || tmux
+       { tmux new-session -As "$session_name" -c "$selected_dir" >/dev/null } || tmux
       else
         if ! tmux list-sessions | sed -E 's/:.*$//' | grep -q "^$session_name$"; then
           (TMUX='' tmux new-session -Ad -s "$session_name" -c "$selected_dir")
