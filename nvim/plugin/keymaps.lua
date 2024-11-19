@@ -273,7 +273,7 @@ vim.keymap.set("v", "<c-w><c-x>", function()
       title = "Execution Context (expr)"
       eval_ok, eval_result = pcall(expr)
       if not eval_ok then ds.error({ "Chunk executed:", text, "Result", eval_result }, { title = title }) end
-      ds.info({ "Chunk executed:", text, "Result", eval_result or "<No output>" }, { title = title, merge = true })
+      ds.info({ "Chunk executed:", text, "Result", eval_result or "<No output>" }, { title = title })
       return
     end
     local lines = vim.deepcopy(selection)
@@ -283,7 +283,7 @@ vim.keymap.set("v", "<c-w><c-x>", function()
       title = "Execution Context (block-expr)"
       eval_ok, eval_result = pcall(expr)
       if not eval_ok then ds.error({ "Chunk executed:", text, "Result", eval_result }, { title = title }) end
-      ds.info({ "Chunk executed:", text, "Result", eval_result or "<No output>" }, { title = title, merge = true })
+      ds.info({ "Chunk executed:", text, "Result", eval_result or "<No output>" }, { title = title })
       return
     end
     local errmsg
@@ -292,7 +292,7 @@ vim.keymap.set("v", "<c-w><c-x>", function()
     title = "Execution Context (block)"
     eval_ok, eval_result = pcall(expr)
     if not eval_ok then ds.error({ "Chunk executed:", text, "Result", eval_result }, { title = title }) end
-    ds.info({ "Chunk executed:", text, "Result", eval_result or "<No output>" }, { title = title, merge = true })
+    ds.info({ "Chunk executed:", text, "Result", eval_result or "<No output>" }, { title = title })
   end
   local lines = ds.buffer.get_visual_selection()
   local selection = table.concat(lines)

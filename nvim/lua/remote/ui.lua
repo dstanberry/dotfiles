@@ -319,7 +319,7 @@ return {
         },
         {
           view = "notify",
-          opts = { title = "", merge = true },
+          opts = { title = "" },
           filter = {
             any = {
               { event = "msg_showmode" },
@@ -412,6 +412,31 @@ return {
         {"<localleader>go", function() require("snacks").gitbrowse.open(git_opts) end, desc = "git: open in browser", mode = { "n", "v" },},
         {"<localleader>gy", function() require("snacks").gitbrowse.open(git_y_opts) end, desc = "git: copy remote url", mode = { "n", "v" },},
       }
+    end,
+    init = function()
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          ---@diagnostic disable-next-line: duplicate-set-field
+          vim.print = function(...) Snacks.debug.inspect(...) end
+
+          ds.info = function(msg, opts)
+            opts = opts or {}
+            opts.title = opts.title or "Info"
+            Snacks.notify.info(msg, opts)
+          end
+          ds.warn = function(msg, opts)
+            opts = opts or {}
+            opts.title = opts.title or "Warning"
+            Snacks.notify.warn(msg, opts)
+          end
+          ds.error = function(msg, opts)
+            opts = opts or {}
+            opts.title = opts.title or "Error"
+            Snacks.notify.error(msg, opts)
+          end
+        end,
+      })
     end,
     opts = {
       dashboard = {

@@ -1,11 +1,8 @@
 if vim.loader then vim.loader.enable() end
-
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
 _G.ds = require "util"
-
-vim.print = ds.inspect
 
 vim.cmd.colorscheme "kdark"
 

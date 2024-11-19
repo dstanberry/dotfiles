@@ -48,7 +48,7 @@ M.config = {
       if response.err then
         ds.error(
           "`fixusings` failed:\n" .. response.err.data.message .. "\n" .. response.err.data.stack,
-          { title = "Lsp: roslyn", ft = "markdown", merge = true }
+          { title = "Lsp: roslyn", ft = "markdown" }
         )
       elseif response.result.Changes then
         local edits = {}

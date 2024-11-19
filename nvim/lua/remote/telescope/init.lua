@@ -37,14 +37,14 @@ return {
                   function()
                     ds.info(
                       "Rebuilding `telescope-fzf-native.nvim` done.\nPlease restart Neovim.",
-                      { title = "telescope.nvim", merge = true }
+                      { title = "telescope.nvim" }
                     )
                   end
                 )
               else
                 ds.error(
                   "Failed to load `telescope-fzf-native.nvim`:\n" .. res,
-                  { title = "telescope.nvim", ft = "markdown", merge = true }
+                  { title = "telescope.nvim", ft = "markdown" }
                 )
               end
             end

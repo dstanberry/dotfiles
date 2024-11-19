@@ -134,7 +134,7 @@ function M.list()
   lines[#lines + 1] = "```lua"
   lines[#lines + 1] = "root_detectors = " .. vim.inspect(spec)
   lines[#lines + 1] = "```"
-  ds.info(lines, { title = "Root Workspace(s)", ft = "markdown", merge = true })
+  ds.info(lines, { title = "Root Workspace(s)", ft = "markdown" })
 end
 
 ---Return the root directory for the current document based on:
