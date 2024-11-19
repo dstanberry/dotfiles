@@ -2,7 +2,7 @@ return {
   { "tiagovla/scope.nvim", lazy = true },
   {
     "akinsho/bufferline.nvim",
-    event = "VeryLazy",
+    event = "LazyFile",
     keys = {
       { "<leader>bg", ":BufferLineGroupToggle ", desc = "bufferline: toggle group" },
       { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = "bufferline: toggle pin" },
