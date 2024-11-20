@@ -86,11 +86,5 @@ ds.plugin.setup {
         }
       end,
     })
-
-    vim.api.nvim_create_autocmd("FileType", {
-      group = group,
-      pattern = "lazy",
-      callback = function() vim.opt_local.listchars = {} end,
-    })
   end,
 }
