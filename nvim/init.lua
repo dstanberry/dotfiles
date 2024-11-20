@@ -1,4 +1,5 @@
 if vim.loader then vim.loader.enable() end
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
@@ -10,24 +11,9 @@ ds.fs.load_settings()
 
 ds.plugin.setup {
   autocmds = function()
-    local group = ds.augroup "lazy"
-
-    vim.api.nvim_create_autocmd("BufReadPost", {
-      once = true,
-      callback = function(args)
-        if vim.v.vim_did_enter == 1 then return end
-        local ft = vim.filetype.match { buf = args.buf }
-        if ft then
-          local lang = vim.treesitter.language.get_lang(ft)
-          if not (lang and pcall(vim.treesitter.start, args.buf, lang)) then vim.bo[args.buf].syntax = ft end
-          vim.cmd [[redraw]]
-        end
-      end,
-    })
-
     vim.api.nvim_create_autocmd("User", {
-      group = group,
       pattern = "VeryLazy",
+      once = true,
       callback = function()
         ds.fs.load_dirhash(vim.env.SHELL)
         ds.root.setup()
@@ -76,12 +62,6 @@ ds.plugin.setup {
             [".*/git/gitconfig"] = "gitconfig",
             [".*/git/ignore"] = "gitignore",
             [".*/kitty/.+%.conf"] = "bash",
-            [".*"] = {
-              function(path, buf)
-                return vim.bo[buf] ~= "bigfile" and path and vim.fn.getfsize(path) > 1024 * 1024 * 1.5 and "bigfile"
-                  or nil
-              end,
-            },
           },
         }
       end,
