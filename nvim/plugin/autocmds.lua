@@ -66,15 +66,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- simplify ui for large files
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  group = ftplugin,
-  pattern = "bigfile",
-  callback = vim.schedule_wrap(
-    function(args) vim.bo[args.buf].syntax = vim.filetype.match { buf = args.buf } or "" end
-  ),
-})
-
 -- disable line numbers and enusre filetype is set for terminal windows
 vim.api.nvim_create_autocmd("TermOpen", {
   group = ds.augroup "termui",
