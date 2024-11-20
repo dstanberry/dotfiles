@@ -6,19 +6,20 @@ M.get = function(c)
   local BLUE = ds.color.lighten(c.blue2, 15)
   local BLUE_DARK = ds.color.darken(c.blue2, 35)
   -- stylua: ignore
-  local groups = {
+  return {
     CmpGhostText                 = { link = "Comment" },
-    CmpItemAbbrDefault           = { fg = c.white },
-    CmpItemAbbrDeprecatedDefault = { fg = c.white },
-    CmpItemAbbrMatchDefault      = { fg = BLUE, bold = true },
-    CmpItemAbbrMatchFuzzyDefault = { fg = c.orange0, bold = true },
-    CmpItemMenu                  = { fg = BLUE_DARK },
+
+    CmpItemAbbr                  = { fg = c.white },
+    CmpItemAbbrDeprecated        = { fg = c.white },
+    CmpItemAbbrMatch             = { fg = BLUE, bold = true },
+    CmpItemAbbrMatchFuzzy        = { fg = c.orange0, bold = true },
+
+    CmpItemKindCopilot           = { fg = c.green0 },
+    CmpItemKindDefault           = { fg = c.white },
 
     CmpItemKindClass             = { link = "@lsp.type.class" },
     CmpItemKindConstant          = { link = "@constant" },
     CmpItemKindConstructor       = { link = "@constructor" },
-    CmpItemKindCopilot           = { fg = c.green0 },
-    CmpItemKindDefault           = { fg = c.white },
     CmpItemKindEnum              = { link = "@lsp.type.enum" },
     CmpItemKindEnumMember        = { link = "@lsp.type.enumMember" },
     CmpItemKindEvent             = { link = "@boolean" },
@@ -40,16 +41,9 @@ M.get = function(c)
     CmpItemKindUnit              = { link = "SpecialChar" },
     CmpItemKindValue             = { link = "@markup" },
     CmpItemKindVariable          = { link = "@property" },
-    CmpItemMenuDefault           = { link = "@property" },
+
+    CmpItemMenu                  = { fg = BLUE_DARK },
   }
-  -- cmp highlights won't apply until after the plugin is loaded
-  ds.plugin.on_load("nvim-cmp", function() ds.hl.set(groups) end)
-  -- cmp could clear one or more of these highlight groups when the colorscheme changes
-  vim.api.nvim_create_autocmd("ColorScheme", {
-    group = ds.hl.autocmd_group,
-    callback = function() ds.hl.set(groups) end,
-  })
-  return groups
 end
 
 return M
