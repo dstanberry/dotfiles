@@ -494,6 +494,8 @@ return {
         },
       },
       gitbrowse = { enabled = true },
+      bigfile = { enabled = true },
+      quickfile = { enabled = true },
       notifier = {
         enabled = true,
         timeout = 3000,
