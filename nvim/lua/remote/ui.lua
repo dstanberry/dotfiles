@@ -405,10 +405,26 @@ return {
       end
       local git_y_opts = vim.deepcopy(git_opts)
       git_y_opts.open = function(url) vim.fn.setreg("+", url) end
+      local lazygit_opts = {
+        theme = {
+          [241] = { fg = "Special" },
+          defaultFgColor = { fg = "Normal" },
+          activeBorderColor = { fg = "Function", bold = true },
+          inactiveBorderColor = { fg = "Comment" },
+          optionsTextColor = { fg = "Function" },
+          selectedLineBgColor = { bg = "Visual" },
+          unstagedChangesColor = { fg = "DiagnosticError" },
+          cherryPickedCommitBgColor = { bg = "default" },
+          cherryPickedCommitFgColor = { fg = "Identifier" },
+          searchingActiveBorderColor = { fg = "MatchParen", bold = true },
+        },
+      }
       -- stylua: ignore
       return {
         { "]]", function() require("snacks").words.jump(vim.v.count1) end, desc = "lsp: goto next reference" },
         { "[[", function() require("snacks").words.jump(-vim.v.count1) end, desc = "lsp: goto prev reference" },
+        {"<leader>gg", function() require("snacks").lazygit.open(lazygit_opts) end, desc = "git: lazygit",},
+        {"<leader>gl", function() require("snacks").lazygit.log_file(lazygit_opts) end, desc = "git: lazygit log",},
         {"<localleader>go", function() require("snacks").gitbrowse.open(git_opts) end, desc = "git: open in browser", mode = { "n", "v" },},
         {"<localleader>gy", function() require("snacks").gitbrowse.open(git_y_opts) end, desc = "git: copy remote url", mode = { "n", "v" },},
       }
