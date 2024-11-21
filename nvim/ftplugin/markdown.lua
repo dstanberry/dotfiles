@@ -1,15 +1,5 @@
 local markdown = require "ft.markdown"
 
-vim.opt_local.formatlistpat = [=[^\s*\d\+\.\s\+\|^\s*[-*+>]\s\+\|^\[^\ze[^\]]\+\]:]=]
-vim.opt_local.iskeyword:append "-"
-vim.opt_local.breakindent = true
-vim.opt_local.breakindentopt = "min:5,list:-1"
-vim.opt_local.concealcursor = "n"
-vim.opt_local.conceallevel = 2
-vim.opt_local.spell = false
-vim.opt_local.wrap = true
-vim.opt_local.listchars:append "eol: "
-
 local group = ds.augroup "markdown_extmarks"
 local bufnr = vim.api.nvim_get_current_buf()
 
