@@ -21,15 +21,11 @@ git:
     useConfig: false
   autoFetch: true
   autoRefresh: true
-  diffContextSize: 3
   disableForcePushing: false
   overrideGpg: true
   skipHookPrefix: WIP
 gui:
   border: "rounded"
-  commit:
-    autoWrapCommitMessage: true
-    autoWrapWidth: 72
   commitLength:
     show: true
   enlargedSideViewLocation: 'top'
@@ -53,12 +49,12 @@ gui:
       - blue
     selectedLineBgColor:
       - "#48525e"
-    selectedRangeBgColor:
-      - "#48525e"
     unstagedChangesColor:
       - red
+    cherryPickedCommitBgColor:
+      - default
     cherryPickedCommitFgColor:
-      - blue
+      - magenta
   mouseEvents: true
   scrollHeight: 2
   scrollPastBottom: true
