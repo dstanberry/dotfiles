@@ -439,6 +439,13 @@ return {
       })
     end,
     opts = {
+      styles = {
+        notification = { wo = { wrap = true } },
+      },
+      bigfile = { enabled = true },
+      gitbrowse = { enabled = true },
+      quickfile = { enabled = true },
+      words = { enabled = true },
       dashboard = {
         enabled = true,
         preset = {
@@ -493,9 +500,6 @@ return {
           { section = "startup" },
         },
       },
-      gitbrowse = { enabled = true },
-      bigfile = { enabled = true },
-      quickfile = { enabled = true },
       notifier = {
         enabled = true,
         timeout = 3000,
@@ -507,12 +511,6 @@ return {
           trace = ds.icons.debug.Continue,
         },
         style = "compact",
-      },
-      words = { enabled = true },
-      styles = {
-        notification = {
-          wo = { wrap = true },
-        },
       },
     },
   },
