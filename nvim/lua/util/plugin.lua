@@ -60,10 +60,7 @@ M.on_load = function(name, fn)
   end
 end
 
----@private
-M.initialized = false
-
-local lazy_notify = function()
+local delay_notifications = function()
   local notifications = {}
   local function temp(...) table.insert(notifications, vim.F.pack_len(...)) end
 
@@ -91,11 +88,15 @@ local lazy_notify = function()
   timer:start(500, 0, replay)
 end
 
+---@private
+M.initialized = false
+
 M.setup = function(opts)
-  if not ds.setting_enabled "remote_plugins" then return end
-  if M.initialized then return end
+  if not ds.setting_enabled "remote_plugins" or M.initialized then return end
   M.initialized = true
   opts = opts or {}
+
+  delay_notifications()
 
   local lazypath = vim.fs.joinpath(vim.fn.stdpath "data", "lazy", "lazy.nvim")
   if not vim.uv.fs_stat(lazypath) then
@@ -114,9 +115,7 @@ M.setup = function(opts)
   Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFile", "BufWritePre" } }
   Event.mappings["User LazyFile"] = Event.mappings.LazyFile
 
-  lazy_notify()
-
-  if opts.autocmds then opts.autocmds() end
+  if opts.on_init and type(opts.on_init) == "function" then opts.on_init() end
 
   require("lazy").setup {
     spec = {

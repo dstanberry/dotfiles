@@ -10,7 +10,7 @@ vim.cmd.colorscheme "kdark"
 ds.fs.load_settings()
 
 ds.plugin.setup {
-  autocmds = function()
+  on_init = function()
     vim.api.nvim_create_autocmd("User", {
       pattern = "VeryLazy",
       once = true,
