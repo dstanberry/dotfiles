@@ -206,51 +206,23 @@ return {
     end,
     opts = {
       cmdline = {
+        -- stylua: ignore
         format = {
-          cmdline = { title = "" },
-          filter = { title = "" },
-          help = { title = "" },
-          lua = { title = "" },
-          input = { title = "", view = "cmdline_popup", lang = "text" },
-          search_down = { title = "", view = "cmdline", lang = "regex" },
-          search_up = { title = "", view = "cmdline", lang = "regex" },
-          substitute = {
-            title = "",
-            pattern = "^:'?<?,?'?>?%%?s/",
-            icon = ds.icons.misc.ArrowSwap,
-            ft = "regex",
-            kind = "search",
-            view = "cmdline",
-          },
-          IncRename = {
-            title = "",
-            pattern = "^:%s*IncRename%s+",
-            icon = ds.icons.misc.Pencil,
-            conceal = true,
-            opts = {
-              relative = "cursor",
-              size = { min_width = 20 },
-              position = { row = -3, col = 0 },
-            },
-          },
+          search_down = {  lang = "regex", view = "cmdline" },
+          search_up = {  lang = "regex", view = "cmdline" },
+          substitute = { kind = "search", pattern = "^:'?<?,?'?>?%%?s/", icon = ds.icons.misc.ArrowSwap, lang = "regex", view = "cmdline" },
         },
       },
       lsp = {
         documentation = {
-          enabled = true,
           opts = {
             border = { style = ds.icons.border.Default },
             position = { row = 2 },
             win_options = { winhighlight = { FloatBorder = "FloatBorderSB" } },
           },
         },
-        hover = { enabled = true },
-        progress = { view = "notify" },
         signature = {
-          enabled = true,
-          opts = {
-            position = { row = 2 },
-          },
+          opts = { position = { row = 2 } },
         },
         override = {
           ["cmp.entry.get_documentation"] = true,
@@ -261,129 +233,36 @@ return {
       routes = {
         {
           opts = { skip = true },
+          event = "msg_show",
           filter = {
             any = {
-              { event = "notify", find = "No information available" },
-              {
-                event = "lsp",
-                cond = function(message)
-                  local content = message:content()
-                  local skipped = {
-                    "unknown command",
-                    "Ruff encountered a problem",
-                  }
-                  for _, pattern in ipairs(skipped) do
-                    if vim.bo[vim.api.nvim_get_current_buf()].filetype == "python" and content:find(pattern) then
-                      return true
-                    end
-                  end
-                  return false
-                end,
-              },
+              { find = "%d+L, %d+B" },
+              { find = "; after #%d+" },
+              { find = "; before #%d+" },
+              { kind = "search_count" },
             },
           },
         },
         {
-          opts = { skip = true },
-          filter = {
-            any = {
-              { event = "msg_show", find = "%d+ change" },
-              { event = "msg_show", find = "%d+ line" },
-              { event = "msg_show", find = "%d+ lines, %d+ bytes" },
-              { event = "msg_show", find = "%d+ more line" },
-              { event = "msg_show", find = "%d+L, %d+B" },
-              { event = "msg_show", find = "search hit" },
-              { event = "msg_show", find = "written" },
-              { event = "msg_show", kind = "search_count" },
-            },
-          },
-        },
-        {
+          filter = { event = "msg_show", min_height = 10 },
           view = "cmdline_output",
-          opts = { lang = "lua" },
-          filter = {
-            any = {
-              { event = "msg_show", min_height = 10 },
-              { event = "notify", min_height = 10 },
-            },
-          },
         },
-        {
-          view = "mini",
-          filter = {
-            any = {
-              { event = "msg_show", find = "^E486:" },
-              { event = "msg_show", find = "^Hunk %d+ of %d" },
-            },
-          },
-        },
-        {
-          view = "notify",
-          opts = { title = "" },
-          filter = {
-            any = {
-              { event = "msg_showmode" },
-              { kind = { "emsg", "echo", "echomsg" } },
-            },
-          },
-        },
-        {
-          view = "notify",
-          filter = {
-            any = {
-              { warning = true },
-              { event = "msg_show", find = "^Warn" },
-              { event = "msg_show", find = "^W%d+:" },
-              { event = "msg_show", find = "^No hunks$" },
-            },
-          },
-        },
-        {
-          view = "notify",
-          filter = {
-            any = {
-              { error = true },
-              { event = "msg_show", find = "^E%d+:" },
-              { event = "msg_show", find = "^Error" },
-            },
-          },
-        },
-      },
-      commands = {
-        history = { view = "split" },
       },
       views = {
         cmdline_popup = {
-          border = { style = "single", padding = { 0, 1 } },
-          position = { row = 20, col = "50%" },
-          size = { min_width = 70, height = "auto" },
-          filter_options = {},
-        },
-        notify = {
-          replace = true,
+          border = { style = "single" },
+          position = { col = "50%", row = 20 },
+          size = { height = "auto", min_width = 70 },
         },
         mini = {
-          timeout = 1000,
           position = { row = -2 },
-          border = { style = "rounded" },
-          win_options = {
-            winblend = vim.api.nvim_get_option_value("winblend", { scope = "global" }),
-            winhighlight = { FloatBorder = "Comment" },
-          },
+          win_options = { winblend = 0 },
         },
         popupmenu = {
-          relative = "editor",
-          border = { style = "single", padding = { 0, 1 } },
+          border = { style = "single" },
           position = { row = 23, col = "50%" },
           size = { width = 70, height = 10 },
-          win_options = {
-            winhighlight = { Normal = "Normal", FloatBorder = "NoiceCmdlinePopupBorder" },
-          },
-        },
-        split = {
-          win_options = {
-            winhighlight = { Normal = "NormalSB" },
-          },
+          win_options = { winhighlight = { Normal = "Normal", FloatBorder = "NoiceCmdlinePopupBorder" } },
         },
       },
     },
