@@ -464,6 +464,19 @@ return {
     },
   },
   {
+    "echasnovski/mini.operators",
+    keys = {
+      { "<leader>ss", desc = "mini.operators: apply sort on <pattern>" },
+    },
+    opts = {
+      evaluate = { prefix = "" },
+      exchange = { prefix = "" },
+      multiply = { prefix = "" },
+      replace = { prefix = "" },
+      sort = { prefix = "<leader>ss" },
+    },
+  },
+  {
     "echasnovski/mini.pairs",
     event = "LazyFile",
     opts = {
