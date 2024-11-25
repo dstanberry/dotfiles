@@ -18,16 +18,11 @@ return {
         },
         custom_textobjects = {
           a = ai.gen_spec.argument(), -- object/function [a]rgument
-          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }, {}), -- [c]lass
+          c = ai.gen_spec.treesitter { a = "@class.outer", i = "@class.inner" }, -- [c]lass
           d = { "%f[%d]%d+" }, -- [d]igits
-          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }, {}), --[f]unction
+          f = ai.gen_spec.treesitter { a = "@function.outer", i = "@function.inner" }, --[f]unction
           e = { -- word with cas[e]
-            {
-              "%u[%l%d]+%f[^%l%d]",
-              "%f[%S][%l%d]+%f[^%l%d]",
-              "%f[%P][%l%d]+%f[^%l%d]",
-              "^[%l%d]+%f[^%l%d]",
-            },
+            { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
             "^().*()$",
           },
           g = function(ai_type) -- whole buffer
@@ -43,7 +38,7 @@ return {
             local to_col = math.max(vim.fn.getline(end_line):len(), 1)
             return { from = { line = start_line, col = 1 }, to = { line = end_line, col = to_col } }
           end,
-          i = function(ai_type) -- i for indent. "a" is line-wise, "i" is character-wise
+          i = function(ai_type) -- indentation
             local spaces = (" "):rep(vim.o.tabstop)
             local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
             local indents = {}
@@ -71,10 +66,10 @@ return {
             end
             return ret
           end,
-          o = ai.gen_spec.treesitter({ -- lo[o]ps, c[o]nditions within loop
+          o = ai.gen_spec.treesitter { -- lo[o]ps, c[o]nditions within loop
             a = { "@block.outer", "@conditional.outer", "@loop.outer" },
             i = { "@block.inner", "@conditional.inner", "@loop.inner" },
-          }, {}),
+          },
           t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- [t]ags (html)
           u = ai.gen_spec.function_call(), -- function [u]sage
           U = ai.gen_spec.function_call { name_pattern = "[%w_]" }, -- function [u]sage without dot in function name
@@ -531,6 +526,16 @@ return {
     end,
   },
   {
+    "echasnovski/mini.splitjoin",
+    keys = {
+      { "gj", desc = "mini.splitjoin: join arguments" },
+      { "gJ", desc = "mini.splitjoin: split arguments" },
+    },
+    opts = {
+      mappings = { toggle = "", split = "gJ", join = "gj" },
+    },
+  },
+  {
     "echasnovski/mini.surround",
     keys = function(_, keys)
       local opts = ds.plugin.get_opts "mini.surround"
@@ -556,16 +561,6 @@ return {
         replace = "<leader>sr",
         update_n_lines = "<leader>sn",
       },
-    },
-  },
-  {
-    "echasnovski/mini.splitjoin",
-    keys = {
-      { "gj", desc = "mini.splitjoin: join arguments" },
-      { "gJ", desc = "mini.splitjoin: split arguments" },
-    },
-    opts = {
-      mappings = { toggle = "", split = "gJ", join = "gj" },
     },
   },
 }
