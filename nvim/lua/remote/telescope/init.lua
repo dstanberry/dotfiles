@@ -76,7 +76,7 @@ return {
         { "<localleader>fe", util.browse.current_directory, desc = "telescope: browse current directory" },
         -- misc
         { "<leader>fk", util.misc.help_tags, desc = "telescope: help pages" },
-        { "<leader>z=", util.misc.spell_suggest, desc = "telescope: help pages" },
+        { "<leader>fz", util.misc.spell_suggest, desc = "telescope: spelling suggestions" },
       }
     end,
     opts = function()
