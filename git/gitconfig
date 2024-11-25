@@ -15,19 +15,16 @@
 	ack = grep --break --heading
 	amend = commit --amend --verbose
 	count = !git --no-pager log --oneline | wc -l
-	prune-br = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch --delete"
 	dupes = !git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40
-	no-edit = commit --amend --no-edit
 	reword = commit --amend --only --verbose --
+	rollback = !sh -c 'git reset --merge HEAD~${1-1}' -
+	shoehorn = commit --amend --no-edit
 	staged = diff --cached --ignore-submodules=dirty
 	uncommit = reset --soft HEAD^
 	unstage = restore --staged --patch
 
 	files = !git diff --name-only $(git merge-base HEAD "$GIT_REVIEW_BASE")
 	state = !git diff --stat $(git merge-base HEAD "$GIT_REVIEW_BASE")
-
-	fixup = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup
-	ri = !git log -n 50 --pretty=format:'%h %s' --no-merges | fzf | cut -c -7 | xargs -o git rebase --interactive
 
 	jump = !$HOME/.config/git/git-jump
 	flog = !$HOME/.config/git/fuzzy-log
@@ -36,7 +33,6 @@
 	min-graph = !git --paginate log --graph --all --simplify-by-decoration
 	prev = !git --paginate log -1
 
-	rollback = !sh -c 'git reset --merge HEAD~${1-1}' -
 
 	; review = "!nvim -c \"DiffviewOpen origin/HEAD...HEAD\""
 	review= "!nvim -c \"DiffviewFileHistory --range=origin/HEAD...HEAD --right-only --no-merges\""
@@ -75,13 +71,13 @@
     hunk-header-line-number-style = bold dim
 	line-numbers-left-style = "#5f5f5f"
 	line-numbers-right-style = "#5f5f5f"
-	line-numbers-minus-style = "#F75149"
-	line-numbers-plus-style = "#3FB950"
+	line-numbers-minus-style = "#f75149"
+	line-numbers-plus-style = "#3fb950"
 	line-numbers-zero-style = 243
-	plus-style = syntax "#132E1F"
-	minus-style = syntax "#36191C"
+	plus-style = syntax "#132E1f"
+	minus-style = syntax "#36191c"
 	minus-emph-style = syntax "#882728"
-	plus-emph-style = syntax "#226D33"
+	plus-emph-style = syntax "#226d33"
 	syntax-theme = kdark
 
 [diff]
