@@ -1,6 +1,6 @@
 # Dotfiles
 
-![neovim](https://github.com/dstanberry/dotfiles/wiki/assets/vim.png)
+![nvim](https://github.com/user-attachments/assets/9759ad18-dac3-4325-9645-8ad30ea8c530)
 
 The schema is constructed such that it adheres to the XDG Base Directory
 Specification.
