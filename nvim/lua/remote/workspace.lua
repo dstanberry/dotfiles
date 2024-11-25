@@ -263,7 +263,7 @@ return {
       end
 
       return {
-        { "<leader>sr", mode = { "n", "v" }, _far, desc = "gruf-far: search/replace in files" },
+        { "<leader>s/", mode = { "n", "v" }, _far, desc = "gruf-far: search/replace in files" },
       }
     end,
   },

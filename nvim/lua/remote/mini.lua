@@ -533,8 +533,7 @@ return {
   {
     "echasnovski/mini.surround",
     keys = function(_, keys)
-      local plugin = require("lazy.core.config").spec.plugins["mini.surround"]
-      local opts = require("lazy.core.plugin").values(plugin, "opts", false)
+      local opts = ds.plugin.get_opts "mini.surround"
       local mappings = {
         { opts.mappings.add, desc = "mini.surround: add surrounding", mode = { "n", "v" } },
         { opts.mappings.delete, desc = "mini.surround: delete surrounding" },
@@ -549,13 +548,13 @@ return {
     end,
     opts = {
       mappings = {
-        add = "ysa",
-        delete = "ysd",
-        find = "ysf",
-        find_left = "ysF",
-        highlight = "ysh",
-        replace = "ysr",
-        update_n_lines = "ysn",
+        add = "<leader>sa",
+        delete = "<leader>sd",
+        find = "<leader>sf",
+        find_left = "<leader>sF",
+        highlight = "<leader>sh",
+        replace = "<leader>sr",
+        update_n_lines = "<leader>sn",
       },
     },
   },

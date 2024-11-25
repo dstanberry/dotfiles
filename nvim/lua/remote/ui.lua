@@ -511,6 +511,7 @@ return {
             { pattern = "lsp", icon = " ", color = "red" },
             { pattern = "notes", icon = " ", color = "purple" },
             { pattern = "quickfix", icon = " ", color = "grey" },
+            { pattern = "substitute", icon = " ", color = "green" },
             { pattern = "test", icon = " ", color = "yellow" },
             { pattern = "trouble", icon = " ", color = "yellow" },
             -- primary actions
@@ -568,7 +569,7 @@ return {
             { "<leader>f", group = "find" },
             { "<leader>g", group = "git" },
             { "<leader>m", group = "notes (markdown)" },
-            { "<leader>s", group = "search" },
+            { "<leader>s", group = "substitute" },
             { "<leader>q", group = "session" },
             { "<localleader>,", group = "command" },
             { "<localleader>d", group = "database" },
