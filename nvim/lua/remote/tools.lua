@@ -423,10 +423,9 @@ return {
           group = vim.g.ds_cmp_group,
           pattern = "sql",
           callback = function()
-            local plugin = require("lazy.core.config").spec.plugins["nvim-cmp"]
-            local sources = require("lazy.core.plugin").values(plugin, "opts", false).sources or {}
-            table.insert(sources, { name = "vim-dadbod-completion" })
-            require("cmp").setup.buffer { sources = sources }
+            local cmp_opts = ds.plugin.get_opts "nvim-cmp"
+            table.insert(cmp_opts.sources, { name = "vim-dadbod-completion" })
+            require("cmp").setup.buffer { sources = cmp_opts.sources }
           end,
         })
       end)

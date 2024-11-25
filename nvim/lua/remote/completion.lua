@@ -48,10 +48,9 @@ return {
             if not (args.data and args.data.client_id) then return end
             local client = vim.lsp.get_client_by_id(args.data.client_id)
             if client and client.name == "copilot" then copilot_cmp._on_insert_enter {} end
-            local plugin = require("lazy.core.config").spec.plugins["nvim-cmp"]
-            local sources = require("lazy.core.plugin").values(plugin, "opts", false).sources or {}
-            table.insert(sources, { name = "copilot", priority = 100, group_index = 1 })
-            require("cmp").setup.buffer { sources = sources }
+            local cmp_opts = ds.plugin.get_opts "nvim-cmp"
+            table.insert(cmp_opts.sources, { name = "copilot", priority = 100, group_index = 1 })
+            require("cmp").setup.buffer { sources = cmp_opts.sources }
           end,
         })
       end)
