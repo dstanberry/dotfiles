@@ -33,15 +33,18 @@ vim.o.relativenumber = true -- show line numbers relative to current line
 vim.o.ruler = false -- disable showing cursor position in/below statusline
 vim.o.scrolloff = 3 -- rows: begin scrolling before reaching viewport boundary
 if ds.has "win32" then -- use powershell on windows OS
-  vim.o.shell = "pwsh -NoLogo"
+  vim.o.shell = "pwsh"
   vim.o.shellcmdflag = table.concat({
     "-NoLogo",
-    "-NoProfile",
+    "-NonInteractive",
     "-ExecutionPolicy RemoteSigned",
-    "-Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
+    "-Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();",
+    "$PSDefaultParameterValues['Out-File:Encoding']='utf8';",
+    "$PSStyle.OutputRendering='plaintext';",
+    "Remove-Alias -Force -ErrorAction SilentlyContinue tee;",
   }, " ")
-  vim.o.shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait"
-  vim.o.shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode"
+  vim.o.shellredir = [[2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode]]
+  vim.o.shellpipe = [[2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode]]
   vim.o.shellquote = ""
   vim.o.shellxquote = ""
 end
