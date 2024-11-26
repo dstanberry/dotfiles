@@ -102,6 +102,7 @@ return {
             vertical = { preview_height = 0.7 },
           },
           file_ignore_patterns = util.misc.ignore_patterns,
+          history = { path = vim.fs.joinpath(vim.fn.stdpath "cache", "telescope_history") },
           mappings = {
             i = {
               ["<a-t>"] = util.switch_focus,
