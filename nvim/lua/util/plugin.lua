@@ -115,7 +115,13 @@ M.setup = function(opts)
   Event.mappings.LazyFile = { id = "LazyFile", event = { "BufReadPost", "BufNewFile", "BufWritePre" } }
   Event.mappings["User LazyFile"] = Event.mappings.LazyFile
 
-  if opts.on_init and type(opts.on_init) == "function" then opts.on_init() end
+  if opts.on_init and type(opts.on_init) == "function" then
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "VeryLazy",
+      once = true,
+      callback = opts.on_init,
+    })
+  end
 
   require("lazy").setup {
     spec = {
