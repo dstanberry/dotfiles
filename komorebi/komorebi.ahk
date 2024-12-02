@@ -27,8 +27,8 @@ Komorebic(cmd) {
 ; Manage window focus
 #^!a::Komorebic("focus left")
 #^!g::Komorebic("focus right")
-#^!PgUp::Komorebic("focus up")
-#^!PgDn::Komorebic("focus down")
+#^!w::Komorebic("focus up")
+#^!s::Komorebic("focus down")
 
 ; Manage window stacks
 #^!z::Komorebic("stack left")
