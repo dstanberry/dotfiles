@@ -41,15 +41,19 @@ local sign_opts = {
   refresh = 50,
 }
 
----@type table<number,table<number,util.ui.sign.spec[]>>
-local cache = {}
+local cache = {} ---@type table<string,string>
+local icon_cache = {} ---@type table<string,string>
+local sign_cache = {}
 local cache_enabled = false
 
 local cache_signs = function()
   if cache_enabled then return end
   cache_enabled = true
   local timer = assert(vim.uv.new_timer())
-  timer:start(sign_opts.refresh, sign_opts.refresh, function() cache = {} end)
+  timer:start(sign_opts.refresh, sign_opts.refresh, function()
+    cache = {}
+    sign_cache = {}
+  end)
 end
 
 ---@param name string
@@ -60,19 +64,19 @@ local is_git_sign = function(name)
 end
 
 ---@param sign? util.ui.sign.spec
----@param len? number
-local get_icon = function(sign, len)
-  sign = sign or {}
-  len = len or 2
-  local text = vim.fn.strcharpart(sign.text or "", 0, len) ---@type string
-  text = text .. string.rep(" ", len - vim.fn.strchars(text))
-  return sign.texthl and ("%#" .. sign.texthl .. "#" .. text .. "%*") or text
+local get_icon = function(sign)
+  if not sign then return "  " end
+  local key = (sign.text or "") .. (sign.texthl or "")
+  if icon_cache[key] then return icon_cache[key] end
+  local text = vim.fn.strcharpart(sign.text or "", 0, 2) ---@type string
+  text = text .. string.rep(" ", 2 - vim.fn.strchars(text))
+  icon_cache[key] = sign.texthl and ("%#" .. sign.texthl .. "#" .. text .. "%*") or text
+  return icon_cache[key]
 end
 
 ---@param buf number
 ---@return util.ui.sign.spec[]
 local get_buf_signs = function(buf)
-  if cache[buf] then return cache[buf] end
   local signs = {} ---@type util.ui.sign.spec[]
   -- extmarks
   local extmarks = vim.api.nvim_buf_get_extmarks(buf, -1, 0, -1, { details = true, type = "sign" })
@@ -98,8 +102,6 @@ local get_buf_signs = function(buf)
       table.insert(signs[lnum], { text = mark.mark:sub(2), texthl = "DiagnosticHint", type = "mark" })
     end
   end
-  -- update cache
-  cache[buf] = signs
   return signs
 end
 
@@ -108,8 +110,13 @@ end
 ---@param lnum number
 ---@return util.ui.sign.spec[]
 local get_signs = function(win, buf, lnum)
-  local signs = get_buf_signs(buf)[lnum] or {}
-  -- fold signs
+  local buf_signs = sign_cache[buf]
+  if not buf_signs then
+    buf_signs = get_buf_signs(buf)
+    sign_cache[buf] = buf_signs
+  end
+  local signs = buf_signs[lnum] or {}
+  -- folds
   vim.api.nvim_win_call(win, function()
     if vim.fn.foldclosed(vim.v.lnum) >= 0 then
       signs[#signs + 1] = { text = vim.opt.fillchars:get().foldclose or "", texthl = "Folded", type = "fold" }
@@ -124,37 +131,50 @@ end
 ---Determine what content is shown in the editor gutter and the order, e.g. sign, fold and number
 ---@return string
 function M.statuscolumn()
-  cache_signs()
-  local win = vim.g.statusline_winid
-  local buf = vim.api.nvim_win_get_buf(win)
-  local is_file = vim.bo[buf].buftype == ""
-  local show_signs = vim.wo[win].signcolumn ~= "no"
-  local components = { "", "", "" } -- left, middle, right
-  if show_signs then
-    local signs = get_signs(win, buf, vim.v.lnum)
-    ---@param types util.ui.sign.type[]
-    local function find(types)
-      for _, t in ipairs(types) do
-        for _, s in ipairs(signs) do
-          if s.type == t then return s end
+  local _get = function()
+    if not cache_enabled then cache_signs() end
+    local win = vim.g.statusline_winid
+    local buf = vim.api.nvim_win_get_buf(win)
+    local is_file = vim.bo[buf].buftype == ""
+    local show_signs = vim.wo[win].signcolumn ~= "no"
+    local components = { "", "", "" } -- left, middle, right
+    if show_signs then
+      local signs = get_signs(win, buf, vim.v.lnum)
+      ---@param types util.ui.sign.type[]
+      local function find(types)
+        for _, t in ipairs(types) do
+          for _, s in ipairs(signs) do
+            if s.type == t then return s end
+          end
         end
       end
+      local left = find(sign_opts.left)
+      local right = find(sign_opts.right)
+      if sign_opts.folds.git_hl then
+        local git = find { "git" }
+        if git and left and left.type == "fold" then left.texthl = git.texthl end
+        if git and right and right.type == "fold" then right.texthl = git.texthl end
+      end
+      components[1] = left and get_icon(left) or "  "
+      components[3] = is_file and (right and get_icon(right) or "  ") or ""
     end
-    local left = find(sign_opts.left)
-    local right = find(sign_opts.right)
-    if sign_opts.folds.git_hl then
-      local git = find { "git" }
-      if git and left and left.type == "fold" then left.texthl = git.texthl end
-      if git and right and right.type == "fold" then right.texthl = git.texthl end
-    end
-    components[1] = get_icon(left)
-    components[3] = is_file and get_icon(right) or ""
+    local is_num = vim.wo[win].number
+    local is_relnum = vim.wo[win].relativenumber
+    if (is_num or is_relnum) and vim.v.virtnum == 0 then components[2] = "%=%l " end
+    if vim.v.virtnum ~= 0 then components[2] = "%= " end
+    return table.concat(components, "")
   end
-  local is_num = vim.wo[win].number
-  local is_relnum = vim.wo[win].relativenumber
-  if (is_num or is_relnum) and vim.v.virtnum == 0 then components[2] = "%=%l " end
-  if vim.v.virtnum ~= 0 then components[2] = "%= " end
-  return table.concat(components, "")
+  -- use cache if available
+  local win = vim.g.statusline_winid
+  local buf = vim.api.nvim_win_get_buf(win)
+  local key = ("%d:%d:%d"):format(win, buf, vim.v.lnum)
+  if cache[key] then return cache[key] end
+  local ok, ret = pcall(_get)
+  if ok then
+    cache[key] = ret
+    return ret
+  end
+  return ""
 end
 
 return M
