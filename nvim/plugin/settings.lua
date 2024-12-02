@@ -93,7 +93,6 @@ vim.opt.fillchars = { -- define glyphs used for vertical separators and statusli
   foldopen = "",
   foldsep = " ",
 }
-
 vim.opt.foldexpr = "v:lua.require('util.ui').foldexpr()" -- define the function used to calculate the fold level
 vim.opt.foldlevel = 99 -- define the fold level
 vim.opt.foldmethod = "expr" -- define how the fold level is calculated
