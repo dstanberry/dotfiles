@@ -145,6 +145,7 @@ M.misc = {
   HalfBlockUpper = "▀",
   Image = "󰥶",
   Key = "",
+  Language = "",
   Layer = "",
   LeftArrow = "",
   LeftArrowCircled = "",
