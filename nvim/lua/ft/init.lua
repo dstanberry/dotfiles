@@ -51,16 +51,16 @@ local defaults = {
     wo = { colorcolumn = "120" },
   },
   markdown = {
+    bo = { formatlistpat = [=[^\s*\d\+\.\s\+\|^\s*[-*+>]\s\+\|^\[^\ze[^\]]\+\]:]=] },
     wo = {
-      formatlistpat = [=[^\s*\d\+\.\s\+\|^\s*[-*+>]\s\+\|^\[^\ze[^\]]\+\]:]=],
-      iskeyword = vim.opt_global.iskeyword:append "-",
       breakindent = true,
       breakindentopt = "min:5,list:-1",
       concealcursor = "n",
       conceallevel = 2,
+      iskeyword = vim.opt.iskeyword:append "-",
+      listchars = vim.opt.listchars:append "eol: ",
       spell = false,
       wrap = true,
-      listchars = { "eol: " },
     },
   },
   python = {
@@ -114,16 +114,13 @@ M.setup = function(buf)
   buf = buf or vim.api.nvim_get_current_buf()
   local ft = vim.bo[buf].filetype or ""
   local opts = defaults[ft] or {}
-
   for _, win in ipairs(vim.fn.win_findbuf(buf)) do
     if not vim.api.nvim_win_is_valid(win) or vim.api.nvim_win_get_buf(win) ~= buf then return end
     if not vim.b[buf].ts_highlight then
       opts = vim.tbl_deep_extend("force", opts, { wo = { relativenumber = false } })
-      return
     end
     M.wo(win, opts.wo)
   end
-
   M.bo(buf, opts.bo)
 end
 
