@@ -23,6 +23,10 @@ ds.plugin.setup {
         vim.g.projects_dir = vim.env.projects_dir and vim.fs.normalize(vim.env.projects_dir)
           or vim.fs.joinpath(vim.env.HOME, "Projects")
 
+        for _, dir in ipairs { "backup", "shada", "swap", "undo" } do
+          vim.fn.mkdir(vim.fs.joinpath(vim.fn.stdpath "cache", dir), "p")
+        end
+
         vim.o.clipboard = "unnamedplus"
         if ds.has "wsl" then
           -- NOTE: May require `Beta: Use Unicode UTF-8 for global language support`
