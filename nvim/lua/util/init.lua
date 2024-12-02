@@ -4,7 +4,6 @@
 ---@field color util.color
 ---@field excludes util.excludes
 ---@field fs util.fs
----@field git util.git
 ---@field hl util.hl
 ---@field icons util.icons
 ---@field plugin util.plugin
@@ -14,8 +13,8 @@ local M = {}
 
 setmetatable(M, {
   __index = function(t, k)
-    t[k] = require(string.format("util.%s", k))
-    return t[k]
+    t[k] = require("util." .. k)
+    return rawget(t, k)
   end,
 })
 

@@ -5,8 +5,8 @@ local M = {}
 
 setmetatable(M, {
   __index = function(t, k)
-    t[k] = require(string.format("ft.markdown.%s", k))
-    return t[k]
+    t[k] = require("ft.markdown." .. k)
+    return rawget(t, k)
   end,
 })
 

@@ -7,8 +7,8 @@ local M = {}
 
 setmetatable(M, {
   __index = function(t, k)
-    t[k] = require(string.format("remote.lualine.components.%s", k))
-    return t[k]
+    t[k] = require("remote.lualine.components." .. k)
+    return rawget(t, k)
   end,
 })
 

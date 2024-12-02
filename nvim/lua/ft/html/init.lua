@@ -4,8 +4,8 @@ local M = {}
 
 setmetatable(M, {
   __index = function(t, k)
-    t[k] = require(string.format("ft.html.%s", k))
-    return t[k]
+    t[k] = require("ft.html." .. k)
+    return rawget(t, k)
   end,
 })
 

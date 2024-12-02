@@ -7,8 +7,8 @@ local M = {}
 
 setmetatable(M, {
   __index = function(t, k)
-    t[k] = require(string.format("remote.telescope.util.%s", k))
-    return t[k]
+    t[k] = require("remote.telescope.util." .. k)
+    return rawget(t, k)
   end,
 })
 
