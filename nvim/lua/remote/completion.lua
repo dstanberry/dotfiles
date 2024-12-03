@@ -1,23 +1,5 @@
 return {
   {
-    "Saecki/crates.nvim",
-    event = { "BufRead Cargo.toml" },
-    opts = {
-      completion = {
-        crates = { enabled = true },
-      },
-      lsp = {
-        enabled = true,
-        actions = true,
-        completion = true,
-        hover = true,
-      },
-      popup = {
-        border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
-      },
-    },
-  },
-  {
     "zbirenbaum/copilot-cmp",
     event = "LazyFile",
     dependencies = {
