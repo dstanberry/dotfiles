@@ -30,14 +30,8 @@ return {
       },
       sections = {
         lualine_a = {
-          {
-            function() return ds.icons.misc.VerticalBarBold end,
-            padding = { left = 0, right = 0 },
-          },
-          {
-            util.git.branch.get,
-            padding = { right = 2 },
-          },
+          { function() return ds.icons.misc.VerticalBarBold end, padding = { left = 0, right = 0 } },
+          { util.git.branch.get, padding = { right = 2 } },
         },
         lualine_b = {
           {
@@ -93,86 +87,30 @@ return {
               hint = { fg = ds.color.get_color "DiagnosticVirtualTextHint" },
             },
           },
-          {
-            util.lsp.clients.get,
-            color = { fg = ds.color.lighten(vim.g.ds_colors.overlay1, 10), gui = "bold" },
-          },
+          { util.lsp.clients.get },
+          { "location" },
+          { util.metadata.indentation.get },
+          { "encoding" },
+          { "fileformat", icons_enabled = true, symbols = { unix = "lf", dos = "crlf", mac = "cr" } },
+          { "filetype", color = { gui = "bold" } },
         },
-        lualine_z = {
-          {
-            "filetype",
-            color = { fg = ds.color.get_color "WinbarFilename", gui = "bold" },
-          },
-          {
-            util.metadata.indentation.get,
-            color = { fg = ds.color.get_color "WinbarContext", gui = "italic" },
-            padding = { right = 1 },
-          },
-          {
-            "location",
-            color = { fg = ds.color.get_color "WinbarContext", gui = "italic" },
-            padding = { right = 1 },
-          },
-          {
-            "encoding",
-            color = { fg = ds.color.get_color "WinbarContext", gui = "italic" },
-            padding = { right = 1 },
-          },
-          {
-            "fileformat",
-            icons_enabled = true,
-            symbols = { unix = "lf", dos = "crlf", mac = "cr" },
-            color = { fg = ds.color.get_color "WinbarContext", gui = "italic" },
-            padding = { right = 2 },
-          },
-        },
+        lualine_z = {},
       },
       winbar = {
         lualine_a = {
-          {
-            util.git.diffview.get,
-            color = "WinbarContext",
-            cond = util.git.diffview.cond,
-          },
-          {
-            util.metadata.breadcrumbs.get,
-            color = "WinbarContext",
-            padding = { right = 0 },
-          },
-          {
-            util.lsp.symbols.get,
-            color = "WinbarContext",
-            cond = util.lsp.symbols.cond,
-            padding = { left = 0 },
-          },
+          { util.git.diffview.get, color = "WinbarContext", cond = util.git.diffview.cond },
+          { util.metadata.breadcrumbs.get, color = "WinbarContext", padding = { right = 0 } },
+          { util.lsp.symbols.get, color = "WinbarContext", cond = util.lsp.symbols.cond, padding = { left = 0 } },
         },
-        lualine_x = {
-          {
-            util.git.merge_conflicts.get,
-            color = "WinbarContext",
-            cond = util.git.diffview.cond,
-          },
-        },
+        lualine_x = { { util.git.merge_conflicts.get, color = "WinbarContext", cond = util.git.diffview.cond } },
       },
       inactive_winbar = {
         lualine_a = {
-          {
-            util.git.diffview.get,
-            color = "WinbarContext",
-            cond = util.git.diffview.cond,
-          },
-          {
-            util.metadata.breadcrumbs.get,
-            color = "WinbarContext",
-            padding = { right = 0 },
-          },
+          { util.git.diffview.get, color = "WinbarContext", cond = util.git.diffview.cond },
+          { util.metadata.breadcrumbs.get, color = "WinbarContext", padding = { right = 0 } },
         },
         lualine_x = {
-          {
-            util.git.merge_conflicts.get,
-            color = "WinbarContext",
-            cond = util.git.diffview.cond,
-          },
+          { util.git.merge_conflicts.get, color = "WinbarContext", cond = util.git.diffview.cond },
         },
       },
     }
