@@ -90,25 +90,7 @@ return {
       { "@", "@<c-x><c-o>", mode = "i", ft = "octo", silent = true },
       { "#", "#<c-x><c-o>", mode = "i", ft = "octo", silent = true },
     },
-    init = function()
-      vim.treesitter.language.register("markdown", "octo")
-
-      ds.plugin.on_load("nvim-cmp", function()
-        vim.api.nvim_create_autocmd("FileType", {
-          group = vim.g.ds_cmp_group,
-          pattern = "octo",
-          callback = function()
-            require("cmp").setup.buffer {
-              sources = {
-                { name = "buffer", keyword_length = 5, max_item_count = 5 },
-                { name = "git" },
-                { name = "luasnip" },
-              },
-            }
-          end,
-        })
-      end)
-    end,
+    init = function() vim.treesitter.language.register("markdown", "octo") end,
     opts = function()
       vim.api.nvim_create_autocmd("ExitPre", {
         group = ds.augroup "octo_exitpre",

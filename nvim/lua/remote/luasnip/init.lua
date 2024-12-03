@@ -5,6 +5,8 @@ return {
     local _next_jump = function()
       if require("luasnip").expand_or_locally_jumpable() then
         require("luasnip").expand_or_jump()
+        local blink = package.loaded["blink.cmp"]
+        if blink then vim.schedule(function() blink.hide() end) end
       else
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<tab>", true, true, true), "n", true)
       end

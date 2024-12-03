@@ -1,127 +1,110 @@
 return {
   {
-    "zbirenbaum/copilot-cmp",
+    "zbirenbaum/copilot.lua",
+    build = ":Copilot auth",
     event = "LazyFile",
-    dependencies = {
-      "zbirenbaum/copilot.lua",
-      build = ":Copilot auth",
-      cmd = "Copilot",
-      opts = {
-        suggestion = { enabled = false },
-        panel = { enabled = false },
-        filetypes = { ["*"] = true },
-        server_opts_overrides = {
-          settings = {
-            advanced = {
-              debug = { acceptselfSignedCertificate = true },
-            },
-          },
+    cmd = "Copilot",
+    opts = {
+      filetypes = { ["*"] = true },
+      panel = { enabled = false },
+      suggestion = { enabled = false },
+      server_opts_overrides = {
+        settings = {
+          advanced = { debug = { acceptselfSignedCertificate = true } },
         },
       },
     },
-    opts = {},
-    config = function(_, opts)
-      local copilot_cmp = require "copilot_cmp"
-      copilot_cmp.setup(opts)
-      ds.plugin.on_load("nvim-cmp", function()
-        vim.api.nvim_create_autocmd("LspAttach", {
-          group = vim.g.ds_cmp_group,
-          callback = function(args)
-            if not (args.data and args.data.client_id) then return end
-            local client = vim.lsp.get_client_by_id(args.data.client_id)
-            if client and client.name == "copilot" then copilot_cmp._on_insert_enter {} end
-            local cmp_opts = ds.plugin.get_opts "nvim-cmp"
-            table.insert(cmp_opts.sources, { name = "copilot", priority = 100, group_index = 1 })
-            require("cmp").setup.buffer { sources = cmp_opts.sources }
-          end,
-        })
-      end)
-    end,
   },
   {
-    "hrsh7th/nvim-cmp",
+    "saghen/blink.cmp",
+    version = false,
+    build = "cargo build --release",
     event = "InsertEnter",
     dependencies = {
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-path",
-      "roobert/tailwindcss-colorizer-cmp.nvim",
+      "giuxtaposition/blink-cmp-copilot",
       "saadparwaiz1/cmp_luasnip",
-      "L3MON4D3/LuaSnip",
+      "kristijanhusak/vim-dadbod-completion",
+      { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
     },
-    opts = function()
-      local cmp = require "cmp"
-      vim.g.ds_cmp_group = ds.augroup "cmp_sources"
-      return {
-        enabled = function()
-          local context = require "cmp.config.context"
-          local buftype = vim.api.nvim_get_option_value("buftype", { buf = 0 })
-          if vim.api.nvim_get_mode().mode == "c" then
-            return true
-          elseif buftype == "prompt" then
-            return false
-          else
-            return not context.in_treesitter_capture "comment" and not context.in_syntax_group "Comment"
-          end
+    opts_extend = {
+      "sources.completion.enabled_providers",
+      "sources.compat",
+    },
+    opts = {
+      accept = { auto_brackets = { enabled = true } },
+      appearance = { kind_icons = ds.icons.kind },
+      highlight = { use_nvim_cmp_as_default = false },
+      completion = {
+        menu = {
+          draw = {
+            treesitter = true,
+            columns = { { "kind_icon" }, { "label", "label_description" }, { "kind" } },
+            components = { kind_icon = { width = { fill = true } } },
+          },
+          border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+          winblend = vim.o.pumblend,
+        },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 200,
+          window = {
+            border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+            winblend = vim.o.pumblend,
+          },
+        },
+        ghost_text = { enabled = true },
+      },
+      keymap = {
+        ["<c-space>"] = { "show", "show_documentation", "hide_documentation" },
+        ["<c-c>"] = { "hide", "fallback" },
+        ["<c-d>"] = { "scroll_documentation_down", "fallback" },
+        ["<c-f>"] = { "scroll_documentation_up", "fallback" },
+        ["<cr>"] = { "accept", "fallback" },
+        ["<up>"] = { "select_prev", "fallback" },
+        ["<down>"] = { "select_next", "fallback" },
+      },
+      nerd_font_variant = "mono",
+      sources = {
+        compat = { "luasnip" },
+        completion = { enabled_providers = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "path" } },
+        providers = {
+          copilot = { name = "copilot", kind = "Copilot", module = "blink-cmp-copilot" },
+          dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
+          lsp = { fallback_for = { "lazydev" } },
+          lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
+        },
+      },
+      snippets = {
+        expand = function(snippet) require("luasnip").lsp_expand(snippet) end,
+        active = function(filter)
+          if filter and filter.direction then return require("luasnip").jumpable(filter.direction) end
+          return require("luasnip").in_snippet()
         end,
-        experimental = {
-          ghost_text = { hl_group = "CmpGhostText" },
-        },
-        ---@diagnostic disable-next-line: missing-fields
-        formatting = {
-          fields = { "kind", "abbr", "menu" },
-          format = function(entry, item)
-            item.menu = ds.pad(item.kind, "both")
-            item.kind = ds.pad(ds.icons.kind[item.kind], "both")
-            local tailwind_colorizer = require("tailwindcss-colorizer-cmp").formatter(entry, item)
-            if tailwind_colorizer.kind == "XX" then tailwind_colorizer.kind = ds.pad(ds.icons.kind.Color, "both") end
-            return tailwind_colorizer
-          end,
-        },
-        mapping = cmp.mapping.preset.insert {
-          -- NOTE: superceded by noice.nvim
-          -- ["<c-d>"] = cmp.mapping.scroll_docs(4),
-          -- ["<c-f>"] = cmp.mapping.scroll_docs(-4),
-          ["<c-space>"] = cmp.mapping.complete(),
-          ["<c-@>"] = cmp.mapping.complete(),
-          ["<c-c>"] = cmp.mapping.close(),
-          ["<cr>"] = function(fallback)
-            local confirm_opts = { select = true, behavior = cmp.ConfirmBehavior.Insert }
-            if cmp.core.view:visible() or vim.fn.pumvisible() == 1 then
-              if vim.api.nvim_get_mode().mode == "i" then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-g>u", true, true, true), "n", false)
-              end
-              if cmp.confirm(confirm_opts) then return end
+        jump = function(direction) require("luasnip").jump(direction) end,
+      },
+    },
+    config = function(_, opts)
+      local enabled = opts.sources.completion.enabled_providers
+      for _, source in ipairs(opts.sources.compat or {}) do
+        opts.sources.providers[source] = vim.tbl_deep_extend(
+          "force",
+          { name = source, module = "blink.compat.source" },
+          opts.sources.providers[source] or {}
+        )
+        if type(enabled) == "table" and not vim.tbl_contains(enabled, source) then table.insert(enabled, source) end
+      end
+      for _, provider in pairs(opts.sources.providers or {}) do
+        if provider.kind then
+          require("blink.cmp.types").CompletionItemKind[provider.kind] = provider.kind
+          provider.transform_items = function(_, items)
+            for _, item in ipairs(items) do
+              item.kind = provider.kind or item.kind
             end
-            return fallback()
-          end,
-        },
-        snippet = {
-          expand = function(args)
-            pcall(function() require("luasnip").lsp_expand(args.body) end)
-          end,
-        },
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "luasnip" },
-          { name = "path" },
-        }, {
-          { name = "buffer", keyword_length = 5, max_view_entries = 5 },
-        }),
-        view = {
-          entries = { name = "custom", selection_order = "near_cursor" },
-        },
-        window = {
-          completion = {
-            border = ds.icons.border.Default,
-            winhighlight = "Normal:FloatBorder,FloatBorder:FloatBorderSB,CursorLine:PmenuSel",
-          },
-          documentation = {
-            border = ds.icons.border.Default,
-            winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorderSB",
-          },
-        },
-      }
+            return items
+          end
+        end
+      end
+      require("blink.cmp").setup(opts)
     end,
   },
 }

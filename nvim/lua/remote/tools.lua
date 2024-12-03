@@ -387,7 +387,6 @@ return {
     "kristijanhusak/vim-dadbod-ui",
     enabled = true,
     dependencies = {
-      "kristijanhusak/vim-dadbod-completion",
       "tpope/vim-dadbod",
     },
     cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection" },
@@ -416,19 +415,6 @@ return {
           vim.opt_local.relativenumber = false
         end,
       })
-    end,
-    config = function()
-      ds.plugin.on_load("nvim-cmp", function()
-        vim.api.nvim_create_autocmd("FileType", {
-          group = vim.g.ds_cmp_group,
-          pattern = "sql",
-          callback = function()
-            local cmp_opts = ds.plugin.get_opts "nvim-cmp"
-            table.insert(cmp_opts.sources, { name = "vim-dadbod-completion" })
-            require("cmp").setup.buffer { sources = cmp_opts.sources }
-          end,
-        })
-      end)
     end,
   },
 }

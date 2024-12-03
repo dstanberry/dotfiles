@@ -15,13 +15,13 @@ function M.execute_command(opts)
 end
 
 M.get_client_capabilities = function()
-  local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+  local ok, blink = pcall(require, "blink.cmp")
   return vim.deepcopy(
     vim.tbl_deep_extend(
       "force",
       {},
       vim.lsp.protocol.make_client_capabilities(),
-      ok and cmp_nvim_lsp.default_capabilities() or {}
+      ok and blink.get_lsp_capabilities() or {}
     )
   )
 end
