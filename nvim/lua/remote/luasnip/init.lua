@@ -30,7 +30,7 @@ return {
       if require("luasnip").in_snippet() and require("luasnip").choice_active() then
         require("luasnip").change_choice(-1)
       else
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-d>", true, true, true), "n", true)
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-f>", true, true, true), "n", true)
       end
     end
 
