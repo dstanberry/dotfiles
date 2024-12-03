@@ -143,7 +143,7 @@ return {
           relative = "editor",
           prefer_width = 60,
           win_options = {
-            winblend = 0,
+            winblend = vim.o.pumblend,
             winhighlight = "NormalFloat:Normal,FloatBorder:DiagnosticInfo",
           },
         },
@@ -256,7 +256,7 @@ return {
         },
         mini = {
           position = { row = -2 },
-          win_options = { winblend = 0 },
+          win_options = { winblend = vim.o.pumblend },
         },
         popupmenu = {
           border = { style = "single" },
@@ -443,7 +443,7 @@ return {
         win_config = {
           border = "none",
           maxheight = 20,
-          winblend = 0,
+          winblend = vim.o.pumblend,
           winhighlight = "Normal:NormalSB",
         },
       },

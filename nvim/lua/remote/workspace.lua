@@ -213,7 +213,7 @@ return {
         max_width = math.floor(vim.o.columns * 0.6),
         max_height = math.floor(vim.o.lines * 0.4),
         win_options = {
-          winblend = 0,
+          winblend = vim.o.pumblend,
           cursorline = false,
           number = false,
           relativenumber = false,
