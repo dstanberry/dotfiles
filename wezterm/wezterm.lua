@@ -50,7 +50,6 @@ wezterm.add_to_config_reload_watch_list(config.color_scheme_dirs[1] .. config.co
 config.font = wezterm.font_with_fallback {
   { family = "Cartograph CF", weight = "Light" },
   { family = "Symbols Nerd Font" },
-  { family = "LegacyComputing" },
 }
 config.font_size = 10
 config.default_cursor_style = "SteadyBlock"
