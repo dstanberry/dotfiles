@@ -3,25 +3,18 @@ local M = {}
 M.config = {
   settings = {
     Lua = {
-      codeLens = {
-        enable = true,
-      },
+      codeLens = { enable = true },
       completion = {
         callSnippet = "Replace",
         showWord = "Disable",
-        -- keywordSnippet = "Disable",
       },
       diagnostics = {
         enable = true,
         disable = { "cast-local-type", "missing-parameter", "param-type-mismatch" },
         globals = { "ds" },
       },
-      doc = {
-        privateName = { "^_" },
-      },
-      format = {
-        enable = false,
-      },
+      doc = { privateName = { "^_" } },
+      format = { enable = false },
       hint = {
         enable = true,
         paramType = true,
@@ -29,6 +22,11 @@ M.config = {
         arrayIndex = "Disable",
         paramName = "Disable",
         semicolon = "Disable",
+      },
+      hover = { expandAlias = false },
+      type = {
+        castNumberToInteger = true,
+        inferParamType = true,
       },
       workspace = {
         checkThirdParty = false,
