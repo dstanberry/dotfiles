@@ -74,9 +74,7 @@ function M.edit()
   local buf = vim.api.nvim_get_current_buf()
   local file = realpath(vim.api.nvim_buf_get_name(buf))
   local root = assert(realpath(vim.uv.cwd() or "."))
-
   if file:find(root, 1, true) ~= 1 then root = vim.fs.dirname(file) end
-
   vim.ui.input({
     prompt = "File Name: ",
     default = vim.fs.joinpath(root, ""),
@@ -231,10 +229,8 @@ function M.rename()
   local buf = vim.api.nvim_get_current_buf()
   local oldfile = assert(realpath(vim.api.nvim_buf_get_name(buf)))
   local root = assert(realpath(vim.uv.cwd() or "."))
-
   if oldfile:find(root, 1, true) ~= 1 then root = vim.fs.dirname(oldfile) end
   local cwd = oldfile:sub(#root + 2)
-
   vim.ui.input({
     prompt = "New File Name: ",
     default = cwd,
@@ -256,18 +252,15 @@ end
 function M.send_to_term()
   local buf = vim.api.nvim_get_current_buf()
   local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-
   vim.wo.number = false
   vim.wo.relativenumber = false
   vim.wo.statuscolumn = ""
   vim.wo.signcolumn = "no"
   vim.opt.listchars = { space = " " }
-
   while #lines > 0 and vim.trim(lines[#lines]) == "" do
     lines[#lines] = nil
   end
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, {})
-
   vim.api.nvim_chan_send(vim.api.nvim_open_term(buf, {}), table.concat(lines, "\r\n"))
   vim.keymap.set("n", "q", "<cmd>qa!<cr>", { buffer = buf, silent = true })
   vim.api.nvim_create_autocmd("TextChanged", { buffer = buf, command = "normal! G$" })
