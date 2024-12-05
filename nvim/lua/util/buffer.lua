@@ -77,11 +77,10 @@ end
 function M.get_line_selection()
   local start_char, end_char = "'<", "'>"
   vim.cmd "normal! "
-  local offset_encoding = vim.lsp.util._get_offset_encoding(0)
   local start_line, start_col = unpack(vim.fn.getpos(start_char), 2, 3)
   local end_line, end_col = unpack(vim.fn.getpos(end_char), 2, 3)
   if end_col > 0 then
-    end_col = vim.lsp.util.character_offset(0, end_line, end_col, offset_encoding)
+    end_col = vim.lsp.util.character_offset(0, end_line, end_col, "utf-16")
     if end_col == 0 then end_col = #vim.api.nvim_buf_get_lines(0, end_line - 1, end_line, false)[1] + 1 end
   end
   local selected_lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
