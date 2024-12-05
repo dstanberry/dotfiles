@@ -58,7 +58,7 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
-    event = "BufReadPost",
+    event = "LazyFile",
     opts = {
       enable = true,
       multiline_threshold = 4,
