@@ -162,10 +162,7 @@ vim.keymap.set("o", "L", "g_", { desc = "to end of line" })
 vim.keymap.set("n", "<localleader><localleader>c", ":<up>", { silent = false, desc = "run last command" })
 
 -- create/edit file within the current directory
-vim.keymap.set("n", "<localleader><localleader>e", function()
-  local path = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
-  return (":edit %s%s"):format(path, "/")
-end, { silent = false, expr = true, replace_keycodes = true, desc = "create/edit file relative to current document" })
+vim.keymap.set("n", "<localleader><localleader>e", ds.buffer.edit, { silent = false, desc = "edit file" })
 
 -- prepare to call |ds.reload()| on the current lua file
 vim.keymap.set("n", "<localleader><localleader>r", function()

@@ -67,6 +67,27 @@ function M.delete(opts)
   end)
 end
 
+local realpath = function(path) return (vim.uv.fs_realpath(path) or path) end
+
+---Edit a new file relative to the same directory as the current buffer
+function M.edit()
+  local buf = vim.api.nvim_get_current_buf()
+  local file = realpath(vim.api.nvim_buf_get_name(buf))
+  local root = assert(realpath(vim.uv.cwd() or "."))
+
+  if file:find(root, 1, true) ~= 1 then root = vim.fs.dirname(file) end
+
+  vim.ui.input({
+    prompt = "File Name: ",
+    default = vim.fs.joinpath(root, ""),
+    completion = "file",
+  }, function(newfile)
+    if not newfile or newfile == "" or newfile == file:sub(#root + 2) then return end
+    newfile = vim.fs.normalize(vim.fs.joinpath(root, newfile))
+    vim.cmd.edit(newfile)
+  end)
+end
+
 ---@alias util.buffer.selection.start {start_line: number, start_col: number} {row,col} mark-indexed position.
 ---@alias util.buffer.selection.end {start_line: number, start_col: number} {row,col} mark-indexed position.
 ---@alias util.buffer.selection.opts {selected_lines: string[], start_pos: util.buffer.selection.start, end_pos: util.buffer.selection.end}
@@ -207,12 +228,11 @@ end
 ---Change the filename (and/or filepath) of the current buffer given that it exists on disk.
 ---If supported, the workspace can be updated with the updated filename
 function M.rename()
-  local realpath = function(path) return (vim.uv.fs_realpath(path) or path) end
   local buf = vim.api.nvim_get_current_buf()
   local oldfile = assert(realpath(vim.api.nvim_buf_get_name(buf)))
   local root = assert(realpath(vim.uv.cwd() or "."))
 
-  if oldfile:find(root, 1, true) ~= 1 then root = vim.fn.fnamemodify(oldfile, ":p:h") end
+  if oldfile:find(root, 1, true) ~= 1 then root = vim.fs.dirname(oldfile) end
   local cwd = oldfile:sub(#root + 2)
 
   vim.ui.input({
@@ -221,7 +241,7 @@ function M.rename()
     completion = "file",
   }, function(newfile)
     if not newfile or newfile == "" or newfile == cwd then return end
-    newfile = vim.fs.normalize(root .. "/" .. newfile)
+    newfile = vim.fs.normalize(vim.fs.joinpath(root, newfile))
     vim.fn.mkdir(vim.fs.dirname(newfile), "p")
     require("remote.lsp.handlers").on_rename(oldfile, newfile, function()
       vim.fn.rename(oldfile, newfile)
