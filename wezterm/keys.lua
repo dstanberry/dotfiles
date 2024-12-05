@@ -1,5 +1,7 @@
 ---@diagnostic disable: inject-field, missing-fields, undefined-field, assign-type-mismatch
 local wezterm = require "wezterm" --[[@as wezterm]]
+local io = require "io"
+local os = require "os"
 
 local M = {}
 
@@ -47,6 +49,25 @@ function M.move_or_resize(action, mods, key, direction, ignore_process)
   }
 end
 
+wezterm.on("edit-scrollback-in-nvim", function(win, pane)
+  local text = pane:get_lines_as_escapes(pane:get_dimensions().scrollback_rows)
+  local name = os.tmpname()
+  local f = io.open(name, "w+")
+  if f then
+    f:write(text)
+    f:flush()
+    f:close()
+  end
+  win:perform_action(
+    wezterm.action.SpawnCommandInNewWindow {
+      args = { "nvim", "-c", [=["lua require('util.buffer').send_to_term()"]=], name },
+    },
+    pane
+  )
+  wezterm.sleep_ms(1000)
+  os.remove(name)
+end)
+
 ---@param config WeztermConfig
 function M.setup(config)
   config.disable_default_key_bindings = true
@@ -56,6 +77,7 @@ function M.setup(config)
     { mods = M.primary_mod, key = ")", action = wezterm.action.IncreaseFontSize },
     -- scrollback
     { mods = M.primary_mod, key = "d", action = wezterm.action.ScrollByPage(0.5) },
+    { mods = M.primary_mod, key = "e", action = wezterm.action.EmitEvent "edit-scrollback-in-nvim" },
     { mods = M.primary_mod, key = "f", action = wezterm.action.ScrollByPage(-0.5) },
     { mods = M.primary_mod, key = "t", action = wezterm.action.SpawnTab "CurrentPaneDomain" },
     -- clipboard
