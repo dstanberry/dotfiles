@@ -42,7 +42,13 @@ M.get = function(c)
     SnacksNotifierError       = { fg   = c.white, bg = c.bg0 },
     SnacksNotifierBorderError = { fg   = c.bg0, bg   = c.bg0 },
     SnacksNotifierIconError   = { link = "DiagnosticError" },
-    SnacksNotifierTitleError  = { fg = ds.color.get_color "DiagnosticError", bg = c.bg0 }
+    SnacksNotifierTitleError  = { fg = ds.color.get_color "DiagnosticError", bg = c.bg0 },
+
+    -- scratch
+    SnacksScratchTitle        = { link = "SnacksDashboardHeader" },
+    SnacksScratchFooter       = { link = "SnacksDashboardFooter" },
+    SnacksScratchDesc         = { link = "SnacksDashboardDesc" },
+    SnacksScratchKey          = { link = "SnacksDashboardKey" }
   }
 end
 

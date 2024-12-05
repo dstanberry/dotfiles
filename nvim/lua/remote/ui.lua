@@ -323,6 +323,7 @@ return {
     opts = {
       styles = {
         notification = { wo = { wrap = true } },
+        scratch = { wo = { winhighlight = "NormalFloat:Normal,FloatBorder:FloatBorderSB" } },
       },
       bigfile = { enabled = true },
       gitbrowse = { enabled = true },
