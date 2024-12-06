@@ -51,6 +51,44 @@ function M.read(file, mode, resume)
   end
 end
 
+---Recursive filesystem walker that traverses `path` and
+---applies a provided function `fn` to each file or directory it encounters
+---@param path string
+---@param fn fun(path: string, name:string, type:util.fs.walker.filetype)
+function M.walk(path, fn)
+  M.walker(path, function(child, name, type)
+    if type == "directory" then M.walk(child, fn) end
+    fn(child, name, type)
+  end)
+end
+
+---@alias util.fs.walker.filetype "file"|"directory"|"link"
+---Filesystem walker that iterates over each file or directory in a given `path`,
+---applying the function `fn` to each, and stops if `fn` returns `false`.
+---@param path string
+---@param fn fun(path: string, name:string, type:util.fs.walker.filetype):boolean?
+function M.walker(path, fn)
+  if not vim.uv.fs_stat(path) then
+    local rtpaths = vim.api.nvim_list_runtime_paths()
+    for _, rtp in ipairs(rtpaths) do
+      local check = rtp .. "/" .. path
+      if vim.uv.fs_stat(check) then
+        path = check
+        break
+      elseif vim.uv.fs_stat(rtp .. "/lua/" .. path) then
+        path = rtp .. "/lua/" .. path
+      end
+    end
+  end
+  local handle = vim.uv.fs_scandir(path)
+  while handle do
+    local name, t = vim.uv.fs_scandir_next(handle)
+    if not name then break end
+    local fname = path .. "/" .. name
+    if fn(fname, name, t or vim.uv.fs_stat(fname).type) == false then break end
+  end
+end
+
 ---Utility function to write to a file on disk
 ---@param file string
 ---@param data string|number

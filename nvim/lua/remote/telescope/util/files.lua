@@ -20,7 +20,7 @@ end
 
 function M.plugin_spec()
   local files = {}
-  ds.walk("remote", function(path, name, type)
+  ds.fs.walk("remote", function(path, name, type)
     if (type == "file" or type == "link") and name:match "%.lua$" then
       if name == "init.lua" or vim.fs.dirname(path):match "remote$" then files[path] = path end
     end

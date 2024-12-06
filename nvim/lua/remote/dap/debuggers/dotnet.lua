@@ -18,7 +18,7 @@ M.setup = function()
         return coroutine.create(function(_c)
           local root = ds.root.get()
           local dlls = {}
-          ds.walk(root, function(path, name, type)
+          ds.fs.walk(root, function(path, name, type)
             if
               (type == "file" or type == "link")
               and path:match "/bin/Debug/"

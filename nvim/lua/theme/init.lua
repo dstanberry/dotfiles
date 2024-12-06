@@ -38,7 +38,7 @@ end
 ---@param theme util.theme.name
 ---@param c util.theme.palette
 M.apply = function(theme, c)
-  ds.walk(N.dirs.root .. N.dirs.groups, function(path, name, type)
+  ds.fs.walk(N.dirs.root .. N.dirs.groups, function(path, name, type)
     if (type == "file" or type == "link") and name:match "%.lua$" then
       name = path:match(N.dirs.root .. N.dirs.groups .. "/(.*)"):sub(1, -5):gsub("/", ".")
       table.insert(N.groups, name)

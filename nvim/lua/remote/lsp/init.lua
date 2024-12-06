@@ -39,7 +39,7 @@ return {
       }
 
       handlers.setup()
-      ds.walk(root, function(path, name, type)
+      ds.fs.walk(root, function(path, name, type)
         if (type == "file" or type == "link") and name:match "%.lua$" then
           name = name:sub(1, -5)
           local fname = path:match(root .. "/(.*)"):sub(1, -5):gsub("/", ".")
