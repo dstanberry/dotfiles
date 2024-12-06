@@ -1,4 +1,4 @@
--- HACK: ...until the nested string wierdness is resolved in `gh/config.sml'
+-- HACK: ...until the nested string wierdness is resolved in `gh/config.yml'
 -- [G]it[H]ub [E]dit [I]ssue
 vim.api.nvim_create_user_command(
   "GHEI",
@@ -17,7 +17,7 @@ vim.api.nvim_create_user_command(
   {}
 )
 
--- HACK: ...until the nested string wierdness is resolved in `gh/config.sml'
+-- HACK: ...until the nested string wierdness is resolved in `gh/config.yml'
 -- [G]it[H]ub [E]dit [P]ull [R]equest
 vim.api.nvim_create_user_command(
   "GHEPR",
