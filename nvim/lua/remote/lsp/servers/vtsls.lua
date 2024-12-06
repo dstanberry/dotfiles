@@ -73,12 +73,12 @@ M.config = {
         table.insert(files, 1, "Enter new path...")
         vim.ui.select(files, {
           prompt = "Select move destination:",
-          format_item = function(f) return vim.fn.fnamemodify(f, ":~:.") end,
+          format_item = function(f) vim.fs.dirname(f) end,
         }, function(f)
           if f and f:find "^enter new path" then
             vim.ui.input({
               prompt = "Enter move destination:",
-              default = vim.fn.fnamemodify(fname, ":h") .. "/",
+              default = vim.fs.joinpath(vim.fs.dirname(fname), ""),
               completion = "file",
             }, function(new_fname) return new_fname and move(new_fname) end)
           elseif f then

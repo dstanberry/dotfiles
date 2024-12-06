@@ -56,7 +56,7 @@ end
 ---@param data string|number
 function M.write(file, data, mode)
   mode = vim.F.if_nil(mode, "w")
-  vim.fn.mkdir(vim.fn.fnamemodify(file, ":h"), "p")
+  vim.fn.mkdir(vim.fs.dirname(file), "p")
   local fd = assert(io.open(file, mode))
   fd:write(data)
   fd:close()

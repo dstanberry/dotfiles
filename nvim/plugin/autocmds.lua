@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
   callback = function(args)
     if args.match:match "^%w%w+:[\\/][\\/]" then return end
     local file = vim.uv.fs_realpath(args.match) or args.match
-    vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
+    vim.fn.mkdir(vim.fs.dirname(file), "p")
   end,
 })
 
