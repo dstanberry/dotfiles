@@ -66,8 +66,7 @@ function M.darken(hex, amount)
 end
 
 ---@param name string highlight group name
----@param bg? boolean return the background color if `true` otherwise return the
----foreground color
+---@param bg? boolean return the background color if `true` otherwise return the foreground color
 ---@return string? #hexadecimal color formatted as `#rrggbb`
 function M.get_color(name, bg)
   local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
@@ -100,8 +99,7 @@ function M.lighten(hex, amount)
   return rgb_to_hex(rgb)
 end
 
---- If supported, change the background color of the terminal emulator to match the
---- current `colorscheme`
+--- If supported, change the background color of the terminal emulator to match the current `colorscheme`
 function M.sync_term_bg()
   local group = ds.augroup "terminal_emulator"
 
