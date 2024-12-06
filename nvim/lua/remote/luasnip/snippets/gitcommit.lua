@@ -4,17 +4,11 @@ require("remote.luasnip.nodes").setup_snip_env()
 local function make(trigger, name)
   return s(
     { trig = trigger, name = "commit prefix", dscr = "Commit category" },
-    fmt("{} {}\n\n{}", {
-      c(1, {
-        sn(nil, fmt("{}({}):", { t(name), i(1, "scope") })),
-        t(name .. ":"),
-      }),
-      i(2, "title"),
-      i(0),
-    }),
-    {
-      condition = conds.line_begin,
-    }
+    fmt(
+      "{} {}\n\n{}",
+      { c(1, { sn(nil, fmt("{}({}):", { t(name), i(1, "scope") })), t(name .. ":") }), i(2, "title"), i(0) }
+    ),
+    { condition = conds.line_begin }
   )
 end
 

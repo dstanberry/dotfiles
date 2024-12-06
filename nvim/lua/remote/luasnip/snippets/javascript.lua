@@ -128,7 +128,14 @@ return {
       i(4),
     })
   ),
-  s({ trig = "switch", name = "switch statement", dscr = "Switch statement (recursive)" }, rutil.switch_case_node),
+  s(
+    { trig = "switch", name = "switch statement", dscr = "Switch statement (recursive)" },
+    fmta("<keyword> (<expression>) {\n<case>\n}", {
+      keyword = t "switch",
+      expression = i(1, "expression"),
+      case = isn(2, { t "\t", rutil.get_case_node(1) }, "$PARENT_INDENT\t"),
+    })
+  ),
   s(
     { trig = "try", name = "try - catch", dscr = "Try - catch block" },
     fmt("try {{\n{}\ncatch ({}) {{\n\t{}\n}}", {

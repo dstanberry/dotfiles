@@ -40,11 +40,7 @@ return {
       sn(nil, fmt("import {}", { r(1, "module") })),
       sn(nil, fmt("from {} import {}", { i(1, "namespace"), r(2, "module") })),
     }),
-  }, {
-    stored = {
-      ["module"] = i(nil, "module"),
-    },
-  }),
+  }, { stored = { ["module"] = i(nil, "module") } }),
   s(
     { trig = "dcl", name = "(data) class", dscr = "Declare <data>class" },
     fmt("{}class {}({}):\n\tdef __init__(self{}):{}", {
@@ -125,7 +121,5 @@ return {
       sn(nil, fmt("print({})", { i(1) })),
       sn(nil, fmta([[print(f"<>{<>}")]], { i(1), i(2) })),
     }),
-  }, {
-    condition = conds.line_begin,
-  }),
+  }, { condition = conds.line_begin }),
 }

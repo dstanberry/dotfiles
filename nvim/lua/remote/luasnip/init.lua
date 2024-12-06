@@ -6,7 +6,7 @@ return {
       if require("luasnip").expand_or_locally_jumpable() then
         require("luasnip").expand_or_jump()
         local blink = package.loaded["blink.cmp"]
-        if blink then vim.schedule(function() blink.hide() end) end
+        if blink then blink.hide() end
       else
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<tab>", true, true, true), "n", true)
       end
@@ -36,14 +36,11 @@ return {
       end
     end
 
-    local _dynamic_update = function() require("remote.luasnip.util").dynamic_node_external_update(1) end
-
     return {
       { "<tab>", _next_jump, silent = true, mode = { "i", "s" } },
       { "<s-tab>", _previous_jump, silent = true, mode = { "i", "s" } },
       { "<c-d>", _next_choice, silent = true, mode = { "i", "s" } },
       { "<c-f>", _previous_choice, silent = true, mode = { "i", "s" } },
-      { "<c-t>", _dynamic_update, silent = true, mode = { "i", "s" } },
     }
   end,
   config = function()
@@ -75,7 +72,7 @@ return {
     luasnip.filetype_extend("typescriptreact", { "javascript" })
 
     require("luasnip.loaders.from_lua").lazy_load {
-      paths = { ("%s/lua/remote/luasnip/snippets/"):format(vim.fn.stdpath "config") },
+      paths = { vim.fs.joinpath(vim.fn.stdpath "config", "lua", "remote", "luasnip", "snippets") },
     }
   end,
 }
