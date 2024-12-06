@@ -134,8 +134,8 @@ end, { desc = "join with line below" })
 -- maintain direction when cycling between searches
 vim.keymap.set("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "next occurence" })
 vim.keymap.set("n", "N", "'nN'[v:searchforward].'zv'", { expr = true, desc = "previous occurence" })
-vim.keymap.set({ "x", "o" }, "n", "'Nn'[v:searchforward]", { expr = true, desc = "next occurence" })
-vim.keymap.set({ "n", "x", "o" }, "N", "'nN'[v:searchforward]", { expr = true, desc = "previous occurence" })
+vim.keymap.set({ "o", "x" }, "n", "'Nn'[v:searchforward]", { expr = true, desc = "next occurence" })
+vim.keymap.set({ "n", "o", "x" }, "N", "'nN'[v:searchforward]", { expr = true, desc = "previous occurence" })
 
 -- insert newline without entering insert mode
 vim.keymap.set("n", "o", "o<esc>", { desc = "insert line below" })
@@ -166,7 +166,10 @@ vim.keymap.set("n", "<localleader><localleader>e", ds.buffer.edit, { silent = fa
 
 -- prepare to call |ds.reload()| on the current lua file
 vim.keymap.set("n", "<localleader><localleader>r", function()
-  if vim.bo.filetype ~= "lua" then error "reload utility only available for lua modules" end
+  if vim.bo.filetype ~= "lua" then
+    ds.warn "Reload utility only available for lua modules"
+    return
+  end
   local file = vim.api.nvim_buf_get_name(0)
   local mod = ds.get_module(file)
   local shift = ""
@@ -256,8 +259,6 @@ vim.keymap.set("v", "<c-w><c-r>", function()
   local selection = table.concat(lines)
   return (":<c-u>%%s/%s/"):format(selection)
 end, { silent = false, expr = true, replace_keycodes = true, desc = "replace occurences of selection" })
-
--- ds.info(vim.lsp.buf.list_workspace_folders(), { title = "LSP Workspace(s)" })
 
 -- execute selected text (for vim/lua files)
 vim.keymap.set("v", "<c-w><c-x>", function()
