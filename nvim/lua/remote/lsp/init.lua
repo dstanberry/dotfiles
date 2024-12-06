@@ -32,7 +32,7 @@ return {
         html = { init_options = { provideFormatter = false } },
         terraformls = {},
       }
-      local default_opts = {
+      local defaults = {
         capabilities = handlers.get_client_capabilities(),
         on_attach = handlers.on_attach,
         flags = { debounce_text_changes = 150 },
@@ -41,24 +41,20 @@ return {
       handlers.setup()
       ds.walk(root, function(path, name, type)
         if (type == "file" or type == "link") and name:match "%.lua$" then
-          local m = path:match(root .. "/(.*)"):sub(1, -5):gsub("/", ".")
           name = name:sub(1, -5)
-          local mod = require(root:gsub("/", ".") .. "." .. m)
-          local mod_enabled = true
-          if mod.enabled ~= nil then mod_enabled = mod.enabled end
-          if mod_enabled then
-            if mod.default_config then require("lspconfig.configs")[name] = mod.default_config end
-            local config = vim.F.if_nil(mod.config, {})
-            local server_opts = vim.tbl_deep_extend("force", default_opts, config)
-            if mod.register_default_config and not configs[name] then configs[name] = { default_config = config } end
-            if mod.setup then mod.setup(server_opts) end
-            if not mod.defer_setup then servers = vim.tbl_deep_extend("force", servers, { [name] = config }) end
+          local fname = path:match(root .. "/(.*)"):sub(1, -5):gsub("/", ".")
+          local mod = require(root:gsub("/", ".") .. "." .. fname)
+          if mod.disabled then return end
+          if mod.default_config then
+            configs[name] = vim.tbl_deep_extend("force", configs[name] or {}, { default_config = mod.default_config })
           end
+          mod.config = vim.tbl_deep_extend("force", defaults, mod.config or {})
+          if mod.setup then mod.setup(mod.config) end
+          if mod.defer_setup then return end
+          servers = vim.tbl_deep_extend("force", servers, { [name] = mod.config })
         end
       end)
-      for srv, config in pairs(servers) do
-        if config then lspconfig[srv].setup(vim.tbl_deep_extend("force", default_opts, config)) end
-      end
+      ds.foreach(servers, function(config, server) lspconfig[server].setup(config) end)
     end,
   },
   {

@@ -1,6 +1,6 @@
 local M = {}
 
-M.enabled = false
+M.disabled = true
 
 M.config = {
   settings = {

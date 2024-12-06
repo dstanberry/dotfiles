@@ -126,7 +126,7 @@ end
 
 local get_previous_heading = function(data)
   local current_pos = vim.api.nvim_win_get_cursor(0)
-  local previous = vim.F.if_nil(data[1], { level = 0, index = 0 })
+  local previous = data[1] or { level = 0, index = 0 }
   for i = 1, #data do
     if data[i].start_row > current_pos[1] then return previous end
     previous = data[i]
@@ -282,15 +282,17 @@ M.set_extmarks = function(bufnr)
   vim.api.nvim_buf_clear_namespace(bufnr, NAMESPACE_ID, 0, -1)
 
   local root_parser = vim.treesitter.get_parser(bufnr)
-  root_parser:parse(true)
-  root_parser:for_each_tree(function(TStree, language_tree)
-    local tree_language = language_tree:lang()
-    if tree_language == "markdown" then
-      M.parse_md(bufnr, TStree)
-    elseif tree_language == "markdown_inline" then
-      M.parse_md_inline(bufnr, TStree)
-    end
-  end)
+  if root_parser then
+    root_parser:parse(true)
+    root_parser:for_each_tree(function(TStree, language_tree)
+      local tree_language = language_tree:lang()
+      if tree_language == "markdown" then
+        M.parse_md(bufnr, TStree)
+      elseif tree_language == "markdown_inline" then
+        M.parse_md_inline(bufnr, TStree)
+      end
+    end)
+  end
 end
 
 return M

@@ -183,8 +183,8 @@ end
 ---@param ramount? number #Repeat pad `n` times to the right of string
 ---@return string result
 function M.pad(s, direction, amount, ramount)
-  amount = vim.F.if_nil(amount, 1)
-  ramount = vim.F.if_nil(ramount, amount)
+  amount = amount or 1
+  ramount = ramount or amount
   local left = (direction == "left" or direction == "both") and string.rep(" ", amount) or ""
   local right = (direction == "right" or direction == "both") and string.rep(" ", ramount) or ""
   return string.format("%s%s%s", left, s, right)

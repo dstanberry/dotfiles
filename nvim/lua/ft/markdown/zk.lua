@@ -89,7 +89,7 @@ M.new = function(opts)
         opts.title = vim.fn.input "Title: "
         if opts.title == "" or opts.title == nil then return end
       end
-      opts.title = vim.F.if_nil(opts.title, selection.value.label)
+      opts.title = opts.title or selection.value.label
       zk.new(opts)
     end,
   })

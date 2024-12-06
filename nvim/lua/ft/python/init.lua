@@ -50,11 +50,13 @@ M.set_extmarks = function(bufnr)
   vim.api.nvim_buf_clear_namespace(bufnr, NAMESPACE_ID, 0, -1)
 
   local root_parser = vim.treesitter.get_parser(bufnr)
-  root_parser:parse(true)
-  root_parser:for_each_tree(function(TStree, language_tree)
-    local tree_language = language_tree:lang()
-    if tree_language == "python" then M.parse_document(bufnr, TStree) end
-  end)
+  if root_parser then
+    root_parser:parse(true)
+    root_parser:for_each_tree(function(TStree, language_tree)
+      local tree_language = language_tree:lang()
+      if tree_language == "python" then M.parse_document(bufnr, TStree) end
+    end)
+  end
 end
 
 return M

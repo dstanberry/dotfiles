@@ -1,6 +1,6 @@
 local M = {}
 
-M.enabled = not ds.has "win32"
+M.disabled = ds.has "win32"
 
 M.initialized = false
 

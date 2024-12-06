@@ -7,7 +7,7 @@ local util = require "remote.lualine.util"
 M.noice = {
   get = function()
     local text = require("noice").api.status.search.get()
-    local query = vim.F.if_nil(text:match "%/(.-)%s", text:match "%?(.-)%s")
+    local query = text:match "%/(.-)%s" or text:match "%?(.-)%s" or ""
     local counter = text:match "%d+%/%d+"
     return string.format("%s %s [%s]", ds.icons.misc.Magnify, query, counter)
   end,

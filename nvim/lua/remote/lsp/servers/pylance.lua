@@ -1,33 +1,29 @@
 local M = {}
 
--- M.enabled = false
-
 M.default_config = {
-  default_config = {
-    filetypes = { "python" },
-    cmd = { "pylance", "--stdio" },
-    root_dir = function(...)
-      return require("lspconfig.util").root_pattern(unpack {
-        "pyproject.toml",
-        "setup.py",
-        "setup.cfg",
-        "requirements.txt",
-        "Pipfile",
-      })(...)
-    end,
-    single_file_support = true,
-    settings = {
-      python = {
-        telemetry = {
-          telemetryLevel = "off",
-        },
+  filetypes = { "python" },
+  cmd = { "pylance", "--stdio" },
+  root_dir = function(...)
+    return require("lspconfig.util").root_pattern(unpack {
+      "pyproject.toml",
+      "setup.py",
+      "setup.cfg",
+      "requirements.txt",
+      "Pipfile",
+    })(...)
+  end,
+  single_file_support = true,
+  settings = {
+    python = {
+      telemetry = {
+        telemetryLevel = "off",
       },
     },
-    description = [[
+  },
+  description = [[
       https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance
       `pylance`, Fast, feature-rich language support for Python
       ]],
-  },
 }
 
 M.config = {

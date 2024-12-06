@@ -201,9 +201,9 @@ function M.make_lsp_range_params(range)
 end
 
 ---Delete current line or selected range from quickfix list
----@param bufnr integer?
-function M.quickfix_delete(bufnr)
-  bufnr = vim.F.if_nil(bufnr, vim.api.nvim_get_current_buf())
+---@param buf integer?
+function M.quickfix_delete(buf)
+  buf = buf or vim.api.nvim_get_current_buf()
   local qfl = vim.fn.getqflist()
   local line = unpack(vim.api.nvim_win_get_cursor(0))
   if string.lower(vim.api.nvim_get_mode().mode) == "v" then
@@ -219,7 +219,7 @@ function M.quickfix_delete(bufnr)
     table.remove(qfl, line)
   end
   vim.fn.setqflist({}, "r", { items = qfl })
-  vim.fn.setpos(".", { bufnr, line, 1, 0 })
+  vim.fn.setpos(".", { buf, line, 1, 0 })
   vim.api.nvim_replace_termcodes("<esc>", true, false, true)
 end
 

@@ -40,7 +40,7 @@ end
 ---@return file*?
 ---@return string? errmsg
 function M.read(file, mode, resume)
-  mode = vim.F.if_nil(mode, "r")
+  mode = mode or "r"
   resume = resume or false
   local fd = io.open(file, mode)
   if not (fd or resume) then vim.notify(("Could not open file (%s)"):format(file), vim.log.levels.ERROR) end
@@ -55,7 +55,7 @@ end
 ---@param file string
 ---@param data string|number
 function M.write(file, data, mode)
-  mode = vim.F.if_nil(mode, "w")
+  mode = mode or "w"
   vim.fn.mkdir(vim.fs.dirname(file), "p")
   local fd = assert(io.open(file, mode))
   fd:write(data)
