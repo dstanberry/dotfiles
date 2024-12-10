@@ -443,27 +443,6 @@ return {
     },
   },
   {
-    "echasnovski/mini.indentscope",
-    event = "LazyFile",
-    init = function()
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = vim.tbl_deep_extend(
-          "keep",
-          ds.excludes.ft.stl_disabled,
-          ds.excludes.ft.wb_disabled,
-          ds.excludes.ft.wb_empty,
-          { "checkhealth", "diff", "git" },
-          { "log", "markdown", "txt" }
-        ),
-        callback = function() vim.b.miniindentscope_disable = true end,
-      })
-    end,
-    opts = {
-      symbol = ds.icons.misc.VerticalBar,
-      options = { try_as_border = true },
-    },
-  },
-  {
     "echasnovski/mini.operators",
     keys = {
       { "<leader>ss", desc = "mini.operators: apply sort on <pattern>" },

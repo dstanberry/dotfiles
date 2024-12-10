@@ -3,13 +3,6 @@ local M = {}
 ---@param c util.theme.palette
 ---@return util.theme.hl
 M.get = function(c)
-  local CYAN = "#73c1b9"
-  local CYAN_LIGHT = "#80d3dd"
-  local PINK = "#dec7d0"
-  local ORANGE = "#e09696"
-  local YELLOW = "#ffdca8"
-  local MAGENTA = "#9086a4"
-  local MAGENTA_LIGHT = "#bfafc4"
   -- stylua: ignore
   return {
     -- treesitter highlighting
@@ -125,15 +118,6 @@ M.get = function(c)
     TreesitterContext               = { link = "Normal" },
     TreesitterContextLineNumber     = { link = "LineNr" },
     TreesitterContextSeparator      = { link = "NonText" },
-
-    -- rainbow-delimiters.nvim
-    ["TSRainbow1"]                  = { fg = CYAN },
-    ["TSRainbow2"]                  = { fg = ORANGE },
-    ["TSRainbow3"]                  = { fg = MAGENTA },
-    ["TSRainbow4"]                  = { fg = CYAN_LIGHT },
-    ["TSRainbow5"]                  = { fg = PINK },
-    ["TSRainbow6"]                  = { fg = MAGENTA_LIGHT },
-    ["TSRainbow7"]                  = { fg = YELLOW }
   }
 end
 
