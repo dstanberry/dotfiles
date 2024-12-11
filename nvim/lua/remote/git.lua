@@ -6,12 +6,12 @@ return {
       local signs = require "gitsigns"
       signs.setup {
         signs = {
-          add = { text = ds.icons.misc.VerticalBarThin },
-          change = { text = ds.icons.misc.VerticalBarThin },
+          add = { text = ds.icons.misc.VerticalBarMiddle },
+          change = { text = ds.icons.misc.VerticalBarMiddle },
           delete = { text = ds.icons.misc.CaretRight },
           topdelete = { text = ds.icons.misc.CaretRight },
           changedelete = { text = ds.icons.misc.VerticalBarSemi },
-          untracked = { text = ds.icons.misc.VerticalBarSplit },
+          untracked = { text = ds.icons.misc.VerticalBarMiddleDashed },
         },
         status_formatter = function(status)
           local added = ""

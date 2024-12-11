@@ -170,10 +170,11 @@ M.misc = {
   User = "",
   VerticalBar = "▎",
   VerticalBarBold = "▊",
+  VerticalBarMiddle = "│",
+  VerticalBarMiddleDashed = "┊",
+  VerticalBarRight = "▕",
   VerticalBarSemi = "▍",
-  VerticalBarSplit = "┊",
-  VerticalBarThin = "│",
-  VerticalBarVeryThin = "▕",
+  VerticalBarThin = "▏",
   Watch = "",
 }
 

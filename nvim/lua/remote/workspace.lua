@@ -60,7 +60,7 @@ return {
             return ds.pad(ds.icons.diagnostics.Warn, "left")
           end,
           indicator = {
-            icon = ds.pad(ds.icons.misc.VerticalBarThin, "right"),
+            icon = ds.pad(ds.icons.misc.VerticalBarMiddle, "right"),
             style = "none",
           },
           get_element_icon = function(element)

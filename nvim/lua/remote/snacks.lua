@@ -91,7 +91,7 @@ return {
         },
       },
       indent = {
-        indent = { blank = "·", char = ds.icons.misc.VerticalBar, hl = "NonText" },
+        indent = { blank = "·", char = ds.icons.misc.VerticalBarThin, hl = "NonText" },
         scope = {
           char = ds.icons.misc.VerticalBar,
           underline = true,

@@ -166,7 +166,7 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     event = "LazyFile",
     opts = {
-      indent = { char = ds.icons.misc.VerticalBarThin },
+      indent = { char = ds.icons.misc.VerticalBarMiddle },
       scope = { enabled = false },
       exclude = {
         filetypes = vim.tbl_deep_extend(
@@ -331,7 +331,7 @@ return {
     "lukas-reineke/virt-column.nvim",
     event = "BufReadPre",
     opts = {
-      char = ds.icons.misc.VerticalBarVeryThin,
+      char = ds.icons.misc.VerticalBarRight,
     },
   },
   {
