@@ -56,7 +56,7 @@ config.default_cursor_style = "SteadyBlock"
 config.cursor_thickness = 1
 config.cell_width = 1.00
 config.line_height = 1.07
-config.underline_position = -5
+config.underline_position = -1
 config.underline_thickness = 2
 config.command_palette_font_size = 12
 
