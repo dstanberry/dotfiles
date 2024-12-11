@@ -27,7 +27,7 @@ return {
       { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
     },
     opts_extend = {
-      "sources.completion.enabled_providers",
+      "sources.default",
       "sources.compat",
     },
     opts = {
@@ -66,11 +66,10 @@ return {
       nerd_font_variant = "mono",
       sources = {
         compat = { "luasnip" },
-        completion = { enabled_providers = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "path" } },
+        default = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "path" },
         providers = {
           copilot = { name = "copilot", kind = "Copilot", module = "blink-cmp-copilot" },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
-          lsp = { fallback_for = { "lazydev" } },
           lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
         },
       },
@@ -84,7 +83,7 @@ return {
       },
     },
     config = function(_, opts)
-      local enabled = opts.sources.completion.enabled_providers
+      local enabled = opts.sources.default
       for _, source in ipairs(opts.sources.compat or {}) do
         opts.sources.providers[source] = vim.tbl_deep_extend(
           "force",
