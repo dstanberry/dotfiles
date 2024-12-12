@@ -50,13 +50,13 @@ return {
         ghost_text = { enabled = true },
       },
       keymap = {
-        ["<c-space>"] = { "show", "show_documentation", "hide_documentation" },
-        ["<c-c>"] = { "hide", "fallback" },
-        ["<c-d>"] = { "scroll_documentation_down", "fallback" },
-        ["<c-f>"] = { "scroll_documentation_up", "fallback" },
         ["<cr>"] = { "accept", "fallback" },
         ["<up>"] = { "select_prev", "fallback" },
         ["<down>"] = { "select_next", "fallback" },
+        ["<c-space>"] = { "show", "show_documentation", "hide_documentation" },
+        ["<c-c>"] = { "hide", "fallback" },
+        ["<c-d>"] = {},
+        ["<c-f>"] = {},
       },
       sources = {
         cmdline = {},

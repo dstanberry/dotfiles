@@ -166,6 +166,18 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
+    keys = function()
+      local _scroll_up = function()
+        if not require("noice.lsp").scroll(4) then return "<c-d>" end
+      end
+      local _scroll_down = function()
+        if not require("noice.lsp").scroll(-4) then return "<c-f>" end
+      end
+      return {
+        { "<c-d>", _scroll_up, mode = "n", expr = true, desc = "noice: scroll down" },
+        { "<c-f>", _scroll_down, mode = "n", expr = true, desc = "noice: scroll up" },
+      }
+    end,
     opts = {
       cmdline = {
         -- stylua: ignore
