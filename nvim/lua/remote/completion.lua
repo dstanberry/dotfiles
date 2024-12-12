@@ -26,15 +26,10 @@ return {
       "kristijanhusak/vim-dadbod-completion",
       { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
     },
-    opts_extend = {
-      "sources.default",
-      "sources.compat",
-    },
     opts = {
-      accept = { auto_brackets = { enabled = true } },
-      appearance = { kind_icons = ds.icons.kind },
-      highlight = { use_nvim_cmp_as_default = false },
+      appearance = { use_nvim_cmp_as_default = false, kind_icons = ds.icons.kind },
       completion = {
+        accept = { auto_brackets = { enabled = true } },
         menu = {
           draw = {
             treesitter = true,
@@ -63,12 +58,11 @@ return {
         ["<up>"] = { "select_prev", "fallback" },
         ["<down>"] = { "select_next", "fallback" },
       },
-      nerd_font_variant = "mono",
       sources = {
-        compat = { "luasnip" },
-        default = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "path" },
+        cmdline = {},
+        default = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "luasnip", "path" },
         providers = {
-          copilot = { name = "copilot", kind = "Copilot", module = "blink-cmp-copilot" },
+          copilot = { name = "copilot", module = "blink-cmp-copilot", kind = "Copilot" },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
           lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
         },
@@ -83,24 +77,21 @@ return {
       },
     },
     config = function(_, opts)
-      local enabled = opts.sources.default
-      for _, source in ipairs(opts.sources.compat or {}) do
-        opts.sources.providers[source] = vim.tbl_deep_extend(
-          "force",
-          { name = source, module = "blink.compat.source" },
-          opts.sources.providers[source] or {}
-        )
-        if type(enabled) == "table" and not vim.tbl_contains(enabled, source) then table.insert(enabled, source) end
-      end
       for _, provider in pairs(opts.sources.providers or {}) do
         if provider.kind then
-          require("blink.cmp.types").CompletionItemKind[provider.kind] = provider.kind
-          provider.transform_items = function(_, items)
+          local transform_items = provider.transform_items
+          local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
+          local kind_idx = #CompletionItemKind + 1
+          CompletionItemKind[kind_idx] = provider.kind
+          CompletionItemKind[provider.kind] = kind_idx
+          provider.transform_items = function(ctx, items)
+            items = transform_items and transform_items(ctx, items) or items
             for _, item in ipairs(items) do
-              item.kind = provider.kind or item.kind
+              item.kind = kind_idx or item.kind
             end
             return items
           end
+          provider.kind = nil
         end
       end
       require("blink.cmp").setup(opts)
