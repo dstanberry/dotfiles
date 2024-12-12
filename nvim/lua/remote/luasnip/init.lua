@@ -2,38 +2,43 @@ return {
   "L3MON4D3/LuaSnip",
   lazy = true,
   keys = function()
+    local fallback = function(key)
+      local keycode = vim.api.nvim_replace_termcodes(key or "", true, true, true)
+      vim.api.nvim_feedkeys(keycode, "i", true)
+    end
+
     local _next_jump = function()
       if require("luasnip").expand_or_locally_jumpable() then
         require("luasnip").expand_or_jump()
         local blink = package.loaded["blink.cmp"]
         if blink then blink.hide() end
-      else
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<tab>", true, true, true), "n", true)
+        return
       end
+      fallback "<tab>"
     end
 
     local _previous_jump = function()
       if require("luasnip").in_snippet() and require("luasnip").jumpable(-1) then
         require("luasnip").jump(-1)
-      else
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<s-tab>", true, true, true), "n", true)
+        return
       end
+      fallback "<s-tab>"
     end
 
     local _next_choice = function()
       if require("luasnip").in_snippet() and require("luasnip").choice_active() then
         require("luasnip").change_choice(1)
-      else
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-d>", true, true, true), "n", true)
+        return
       end
+      fallback "<c-d>"
     end
 
     local _previous_choice = function()
       if require("luasnip").in_snippet() and require("luasnip").choice_active() then
         require("luasnip").change_choice(-1)
-      else
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-f>", true, true, true), "n", true)
+        return
       end
+      fallback "<c-f>"
     end
 
     return {
