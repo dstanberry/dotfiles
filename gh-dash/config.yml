@@ -2,7 +2,7 @@ prSections:
   - title: My Pull Requests
     filters: is:open author:@me
   - title: Needs My Review
-    filters: is:pr is:open archived:false sort:updated-desc user:akinsho
+    filters: is:pr is:open archived:false sort:updated-desc review-requested:@me
 issuesSections:
   - title: Created by Me
     filters: is:open author:@me
