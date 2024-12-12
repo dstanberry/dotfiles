@@ -4,16 +4,13 @@ return {
     priority = 1000,
     lazy = false,
     keys = function()
-      local git_opts = {}
-      if ds.has "wsl" then git_opts.open = function(url) vim.system { "cmd.exe", "/c", "start", url } end end
-      if vim.g.ds_env.github_hostname then
-        git_opts.url_patterns = {
-          [vim.g.ds_env.github_hostname] = { branch = "/tree/{branch}", file = "/blob/{branch}/{file}#L{line}" },
-        }
-      end
-      local git_y_opts = vim.deepcopy(git_opts)
-      git_y_opts.open = function(url) vim.fn.setreg("+", url) end
-      local lazygit_opts = {
+      local ghe = vim.g.ds_env.github_hostname
+      local browse = {
+        open = ds.has "wsl" and function(url) vim.system { "cmd.exe", "/c", "start", url } end,
+        url_patterns = ghe and { [ghe] = { branch = "/tree/{branch}", file = "/blob/{branch}/{file}#L{line}" } },
+      }
+      local opts2 = { url_pattern = browse.url_patterns, open = function(url) vim.fn.setreg("+", url) end }
+      local lazygit = {
         theme = {
           [241] = { fg = "Special" },
           defaultFgColor = { fg = "Normal" },
@@ -31,10 +28,10 @@ return {
       return {
         { "]]", function() require("snacks").words.jump(vim.v.count1) end, desc = "lsp: goto next reference" },
         { "[[", function() require("snacks").words.jump(-vim.v.count1) end, desc = "lsp: goto prev reference" },
-        {"<leader>gg", function() require("snacks").lazygit.open(lazygit_opts) end, desc = "git: lazygit",},
-        {"<leader>gl", function() require("snacks").lazygit.log_file(lazygit_opts) end, desc = "git: lazygit log",},
-        {"<localleader>go", function() require("snacks").gitbrowse.open(git_opts) end, desc = "git: open in browser", mode = { "n", "v" },},
-        {"<localleader>gy", function() require("snacks").gitbrowse.open(git_y_opts) end, desc = "git: copy remote url", mode = { "n", "v" },},
+        {"<leader>gg", function() require("snacks").lazygit.open(lazygit) end, desc = "git: lazygit",},
+        {"<leader>gl", function() require("snacks").lazygit.log_file(lazygit) end, desc = "git: lazygit log",},
+        {"<localleader>go", function() require("snacks").gitbrowse.open(browse) end, desc = "git: open in browser", mode = { "n", "v" },},
+        {"<localleader>gy", function() require("snacks").gitbrowse.open(opts2) end, desc = "git: copy remote url", mode = { "n", "v" },},
       }
     end,
     init = function()
