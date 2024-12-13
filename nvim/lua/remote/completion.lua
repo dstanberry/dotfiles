@@ -32,7 +32,7 @@ return {
         accept = { auto_brackets = { enabled = true } },
         menu = {
           draw = {
-            treesitter = true,
+            treesitter = { "lsp" },
             columns = { { "kind_icon" }, { "label", "label_description" }, { "kind" } },
             components = { kind_icon = { width = { fill = true } } },
           },
