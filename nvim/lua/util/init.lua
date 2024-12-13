@@ -1,6 +1,5 @@
 ---@class util
 ---@field buffer util.buffer
----@field callback util.callback
 ---@field color util.color
 ---@field excludes util.excludes
 ---@field fs util.fs
