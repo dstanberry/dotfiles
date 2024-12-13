@@ -403,6 +403,7 @@ return {
             { "<leader>m", group = "notes (markdown)" },
             { "<leader>s", group = "substitute" },
             { "<leader>q", group = "session" },
+            { "<leader>w", group = "window" },
             { "<localleader>,", group = "command" },
             { "<localleader>d", group = "database" },
             { "<localleader>f", group = "find" },

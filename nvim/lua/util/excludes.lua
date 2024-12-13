@@ -27,6 +27,7 @@ M.ft = {
     "noice",
     "oil",
     "snacks_dashboard",
+    "snacks_notif_history",
     "TelescopePrompt",
     "toggleterm",
     "trouble",

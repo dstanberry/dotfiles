@@ -63,11 +63,16 @@ M.get = function(c)
     SnacksNotifierIconError     = { link = "DiagnosticError" },
     SnacksNotifierTitleError    = { fg = ds.color.get_color "DiagnosticError", bg = c.bg0 },
 
+    SnacksNotifierHistory       = { fg = c.fg1, bg = c.bg0 },
+    SnacksNotifierHistoryTitle  = { fg = c.blue0, bg = c.bg0, bold = true },
+
     -- scratch
-    SnacksScratchTitle          = { link = "SnacksDashboardHeader" },
-    SnacksScratchFooter         = { link = "SnacksDashboardFooter" },
-    SnacksScratchDesc           = { link = "SnacksDashboardDesc" },
-    SnacksScratchKey            = { link = "SnacksDashboardKey" }
+    SnacksScratchTitle          = { fg = c.magenta0, bg = c.bg0, bold = true },
+    SnacksScratchFooter         = { fg = c.blue0, bg = c.bg0, bold = true },
+    SnacksScratchDesc           = { fg = c.overlay1, bg = c.bg0, bold = true },
+    SnacksScratchKey            = { fg = c.rose0, bg = c.bg0, bold = true},
+
+    SnacksScratchCursorLine     = { bg = ds.color.lighten(c.bg0, 40) },
   }
 end
 
