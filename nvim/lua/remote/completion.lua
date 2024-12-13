@@ -77,6 +77,8 @@ return {
       },
     },
     config = function(_, opts)
+      -- better icon for tailwind-css
+      opts.appearance.kind_icons.Color = string.rep(ds.icons.misc.Block, 2)
       for _, provider in pairs(opts.sources.providers or {}) do
         if provider.kind then
           local transform_items = provider.transform_items

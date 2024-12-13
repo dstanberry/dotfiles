@@ -119,6 +119,7 @@ M.markdown = {
 
 M.misc = {
   ArrowSwap = " ",
+  Block = "█",
   Calendar = "",
   CaretRight = "",
   CheckFilled = "",
