@@ -74,7 +74,9 @@ return {
       },
       bigfile = { enabled = true },
       gitbrowse = { enabled = true },
+      notifier = { style = "compact" },
       quickfile = { enabled = true },
+      scroll = { enabled = true },
       words = { enabled = true },
       dashboard = {
         preset = {
@@ -89,19 +91,12 @@ return {
             { key = "q", action = function() vim.api.nvim_input "<cmd>qa<cr>" end, icon = ds.pad(ds.icons.misc.Exit, "right"), desc = " Quit" },
           },
         },
-        sections = {
-          { section = "header" },
-          { section = "keys", gap = 1, padding = 1 },
-          { section = "startup" },
-        },
+        sections = { { section = "header" }, { section = "keys", gap = 1, padding = 1 }, { section = "startup" } },
       },
       indent = {
         indent = { blank = "·", char = ds.icons.misc.VerticalBarThin, hl = "NonText" },
-        scope = {
-          char = ds.icons.misc.VerticalBar,
-          underline = true,
-          hl = vim.tbl_map(function(i) return "SnacksIndent" .. i end, vim.fn.range(1, 8)),
-        },
+        -- stylua: ignore
+        scope = { char = ds.icons.misc.VerticalBar, underline = true, hl = vim.tbl_map(function(i) return "SnacksIndent" .. i end, vim.fn.range(1, 8)) },
         filter = function(buf)
           local filetypes = vim.tbl_deep_extend(
             "keep",
@@ -114,17 +109,6 @@ return {
           if vim.tbl_contains(filetypes, vim.bo[buf].filetype) then vim.b[buf].snacks_indent = false end
           return vim.g.snacks_indent ~= false and vim.b[buf].snacks_indent ~= false and vim.bo[buf].buftype == ""
         end,
-      },
-      notifier = {
-        timeout = 3000,
-        style = "compact",
-        icons = {
-          error = ds.icons.diagnostics.Error,
-          warn = ds.icons.diagnostics.Warn,
-          info = "",
-          debug = ds.icons.debug.Watches,
-          trace = ds.icons.debug.Continue,
-        },
       },
     },
   },
