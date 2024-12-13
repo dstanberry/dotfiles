@@ -3,7 +3,7 @@
 SetTitleMatchMode 3
 DetectHiddenWindows true
 
-; Legend
+; INFO: Legend
 ; # Left Win
 ; ^ Ctrl
 ; ! Alt
@@ -12,17 +12,38 @@ DetectHiddenWindows true
 Komorebic(cmd) {
     RunWait(format("komorebic.exe {}", cmd), , "Hide")
 }
+
+; NOTE: ALT
+; Manage active window
+!q::Komorebic("close")
+; !m::Komorebic("minimize")
+
+; NOTE: LWIN + CTRL
+
 ; Reload Configuration
-^!r::Komorebic("reload-configuration")
+#^r::Komorebic("reload-configuration")
+
+; Resize windows
+#^=::Komorebic("resize-axis horizontal increase")
+#^-::Komorebic("resize-axis horizontal decrease")
+#^+=::Komorebic("resize-axis vertical increase")
+#^+-::Komorebic("resize-axis vertical decrease")
+
+; NOTE: LWIN + CTRL + ALT
+
+; Restart Komorebi
 #^!`:: {
   try Komorebic("stop")
   Komorebic("start")
 }
-#^!LShift::Komorebic("quick-load")
 
-; Manage active window
-!q::Komorebic("close")
-; !m::Komorebic("minimize")
+; Manipulate windows
+#^!1::Komorebic("retile")
+#^!2::Komorebic("toggle-float")
+#^!3::Komorebic("toggle-monocle")
+
+; Load 'quicksave' file for current monitor
+#^!LShift::Komorebic("quick-load")
 
 ; Manage window focus
 #^!a::Komorebic("focus left")
@@ -46,17 +67,6 @@ Komorebic(cmd) {
 #^!Right::Komorebic("move right")
 #^!Down::Komorebic("move down")
 #^!Up::Komorebic("move up")
-
-; Resize windows
-#^=::Komorebic("resize-axis horizontal increase")
-#^-::Komorebic("resize-axis horizontal decrease")
-#^+=::Komorebic("resize-axis vertical increase")
-#^+-::Komorebic("resize-axis vertical decrease")
-
-; Manipulate windows
-^!f::Komorebic("toggle-float")
-^!m::Komorebic("toggle-monocle")
-^!t::Komorebic("retile")
 
 ; Manage workspace focus
 #^!e::Komorebic("focus-workspace 0")
