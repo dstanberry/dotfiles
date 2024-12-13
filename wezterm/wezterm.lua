@@ -15,22 +15,14 @@ if wezterm.target_triple:find "windows" then
     config.default_domain = wsl_domains[1].name
   end
 
-  table.insert(launch_menu, {
-    label = "PowerShell",
-    args = { "pwsh.exe", "-NoLogo" },
-  })
+  table.insert(launch_menu, { label = "PowerShell", args = { "pwsh.exe", "-NoLogo" } })
   for _, vs in ipairs(wezterm.glob("Microsoft Visual Studio/20*", "C:/Program Files")) do
     local year = vs:gsub("Microsoft Visual Studio/", "")
     table.insert(launch_menu, {
       label = ("Developer Powershell for VS %s"):format(year),
-      args = {
-        "cmd.exe",
-        "/k",
-        ("C:/Program Files (x86)/%s/BuildTools/VC/Auxiliary/Build/vcvars64.bat"):format(vs),
-      },
+      args = { "cmd.exe", "/k", ("C:/Program Files (x86)/%s/BuildTools/VC/Auxiliary/Build/vcvars64.bat"):format(vs) },
     })
   end
-
   config.launch_menu = launch_menu
 end
 
@@ -47,10 +39,7 @@ config.color_scheme_dirs = { wezterm.home_dir .. "/colors" }
 config.color_scheme = "kdark"
 wezterm.add_to_config_reload_watch_list(config.color_scheme_dirs[1] .. config.color_scheme .. ".toml")
 
-config.font = wezterm.font_with_fallback {
-  { family = "Cartograph CF", weight = "Light" },
-  { family = "Symbols Nerd Font" },
-}
+config.font = wezterm.font_with_fallback { { family = "Cartograph CF", weight = "Light" } }
 config.font_size = 10
 config.default_cursor_style = "SteadyBlock"
 config.cursor_thickness = 1
@@ -66,12 +55,7 @@ config.enable_kitty_keyboard = true
 config.adjust_window_size_when_changing_font_size = false
 
 config.window_decorations = "RESIZE"
-config.window_padding = {
-  left = 2,
-  right = 0,
-  top = 10,
-  bottom = 1,
-}
+config.window_padding = { left = 2, right = 0, top = 10, bottom = 1 }
 
 if wezterm.target_triple == "aarch64-apple-darwin" or wezterm.target_triple == "x86_64-apple-darwin" then
   config.command_palette_font_size = 14
