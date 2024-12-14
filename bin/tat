@@ -69,7 +69,7 @@ elif [[ $# -eq 1 ]]; then
       --preview '(glow -s dark {1}/README.md ||
             bat --style=plain {1}/README.md ||
             cat {1}/README.md ||
-            eza -lh --icons {1} ||
+            eza -lh --color=always --icons --git {1} ||
             ls -lh {1}) 2> /dev/null')
     if [ "$dir" == "" ]; then
       exit 0

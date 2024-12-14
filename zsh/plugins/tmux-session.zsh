@@ -71,7 +71,7 @@ fi
           --preview '(glow -s dark {1}/README.md ||
             bat --style=plain {1}/README.md ||
             cat {1}/README.md ||
-            eza -lh --icons {1} ||
+            eza -lh --color=always --icons --git {1} ||
             ls -lh {1}) 2> /dev/null'" $(__fzfcmd))
       setopt localoptions pipefail no_aliases 2> /dev/null
       if [[ -z "$selected_dir" ]]; then
