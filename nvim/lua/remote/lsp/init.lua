@@ -59,7 +59,6 @@ return {
   },
   {
     "rachartier/tiny-code-action.nvim",
-    event = "LspAttach",
     keys = {
       { "gA", function() require("tiny-code-action").code_action() end, desc = "tiny-code-action: code action" },
     },
@@ -70,11 +69,8 @@ return {
         layout_strategy = "vertical",
         layout_config = {
           height = 25,
-          preview_height = function(_, _, max_lines)
-            local lines = math.floor(max_lines * 0.5)
-            return math.max(lines, 10)
-          end,
           prompt_position = "bottom",
+          preview_height = function(_, _, max_lines) return math.max(math.floor(max_lines * 0.5), 10) end,
         },
       },
     },
@@ -84,9 +80,7 @@ return {
     event = "LspAttach",
     opts = {
       blend = { factor = 0.15 },
-      options = {
-        throttle = 50,
-      },
+      options = { throttle = 50 },
     },
   },
 }
