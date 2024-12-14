@@ -30,13 +30,14 @@ return {
         { "]]", function() require("snacks").words.jump(vim.v.count1) end, desc = "lsp: goto next reference" },
         { "[[", function() require("snacks").words.jump(-vim.v.count1) end, desc = "lsp: goto prev reference" },
         -- git
-        {"<leader>gg", function() require("snacks").lazygit.open(lazygit) end, desc = "git: lazygit",},
-        {"<leader>gl", function() require("snacks").lazygit.log_file(lazygit) end, desc = "git: lazygit log",},
-        {"<localleader>go", function() require("snacks").gitbrowse.open(browse) end, desc = "git: open in browser", mode = { "n", "v" },},
-        {"<localleader>gy", function() require("snacks").gitbrowse.open(opts2) end, desc = "git: copy remote url", mode = { "n", "v" },},
-        -- windows
+        { "<leader>gg", function() require("snacks").lazygit.open(lazygit) end, desc = "git: lazygit" },
+        { "<leader>gl", function() require("snacks").lazygit.log_file(lazygit) end, desc = "git: lazygit log" },
+        { "<localleader>go", function() require("snacks").gitbrowse.open(browse) end, desc = "git: open in browser", mode = { "n", "v" } },
+        { "<localleader>gy", function() require("snacks").gitbrowse.open(opts2) end, desc = "git: copy remote url", mode = { "n", "v" } },
+        -- window
         { "<leader>wn", function() Snacks.notifier.show_history() end, desc = "messages: show notifications" },
-        { "<leader>ws", function() Snacks.scratch.select() end, desc = "scratchpad: select note" },
+        { "<leader>ws", function() Snacks.scratch.select() end, desc = "snacks: select scratchpad" },
+        { "<leader>wz", function() Snacks.zen.zen() end, desc = "snacks: zen mode" },
       }
     end,
     init = function()
