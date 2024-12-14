@@ -301,9 +301,6 @@ bindkey '^x^x' edit-command-line
 # do history expansion on space
 bindkey ' ' magic-space
 
-# live grep
-bindkey -s ^f "rf\n"
-
 # make (c-z) toggle between bg and fg for processes
 function fg-bg() {
   if [[ $#BUFFER -eq 0 ]]; then

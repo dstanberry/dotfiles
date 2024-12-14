@@ -139,9 +139,9 @@ if hash fzf 2> /dev/null; then
   # define default behaviour for fzf-tmux
   export FZF_TMUX_OPTS="-p 90%"
 
-  # load tmux session manager
-  test -s "${ZSH_CONFIG_HOME}/plugins/tmux-session.zsh" \
-    && source "${ZSH_CONFIG_HOME}/plugins/tmux-session.zsh"
+  # load fzf extras
+  test -s "${ZSH_CONFIG_HOME}/plugins/fzf.zsh" \
+    && source "${ZSH_CONFIG_HOME}/plugins/fzf.zsh"
 fi
 
 # define mocOS specific options

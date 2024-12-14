@@ -19,6 +19,30 @@ fi
 {
   [[ -o interactive ]] || return 0
 
+  # CTRL-f - recursively search the current directory for a provided pattern
+  fzf-rg-widget() {
+    rm -f /tmp/rg-fzf-{r,f}
+    RG_PREFIX="rg --column --line-number --no-heading --color=always --smart-case "
+    INITIAL_QUERY="${*:-}"
+    fzf --ansi --height="100%" --disabled --query "$INITIAL_QUERY" \
+      --bind "start:reload($RG_PREFIX {q})+unbind(ctrl-r)" \
+      --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+      --bind "ctrl-f:unbind(change,ctrl-f)+change-prompt(fzf )+enable-search+rebind(ctrl-r)+transform-query(echo {q} > /tmp/rg-fzf-r; cat /tmp/rg-fzf-f)" \
+      --bind "ctrl-r:unbind(ctrl-r)+change-prompt(ripgrep )+disable-search+reload($RG_PREFIX {q} || true)+rebind(change,ctrl-f)+transform-query(echo {q} > /tmp/rg-fzf-f; cat /tmp/rg-fzf-r)" \
+      --bind 'enter:become(nvim {1} +{2})' \
+      --color "hl:-1:underline,hl+:-1:underline:reverse" \
+      --prompt 'ripgrep ' \
+      --delimiter : \
+      --header '╱ CTRL-R (ripgrep mode) ╱ CTRL-F (fzf mode) ╱' \
+      --preview 'bat --style=numbers {1} --highlight-line {2}' \
+      --preview-window 'up,60%,border-bottom,+{2}+3/3,~3'
+  }
+
+  zle     -N            fzf-rg-widget
+  bindkey -M emacs '^F' fzf-rg-widget
+  bindkey -M vicmd '^F' fzf-rg-widget
+  bindkey -M viins '^F' fzf-rg-widget
+
   # CTRL-P - start a tmux session at the selected directory
   fzf-session-widget() {
     local project_dirs worktree_dirs worktree_list
@@ -72,7 +96,7 @@ fi
             bat --style=plain {1}/README.md ||
             cat {1}/README.md ||
             eza -lh --color=always --icons --git {1} ||
-            ls -lh {1}) 2> /dev/null'" $(__fzfcmd))
+      ls -lh {1}) 2> /dev/null'" $(__fzfcmd))
       setopt localoptions pipefail no_aliases 2> /dev/null
       if [[ -z "$selected_dir" ]]; then
         zle redisplay
@@ -80,13 +104,13 @@ fi
       fi
       session_name="$(basename "$selected_dir" | tr . _)"
       [ -z "$selected_dir" ] && return 1
-    } always {
+      } always {
       zle reset-prompt
     }
     (
       exec </dev/tty; exec <&1;
       if [[ -z "$TMUX" ]]; then
-       { tmux new-session -As "$session_name" -c "$selected_dir" >/dev/null } || tmux
+        { tmux new-session -As "$session_name" -c "$selected_dir" >/dev/null } || tmux
       else
         if ! tmux list-sessions | sed -E 's/:.*$//' | grep -q "^$session_name$"; then
           (TMUX='' tmux new-session -Ad -s "$session_name" -c "$selected_dir")
@@ -102,7 +126,7 @@ fi
   bindkey -M emacs '^P' fzf-session-widget
   bindkey -M vicmd '^P' fzf-session-widget
   bindkey -M viins '^P' fzf-session-widget
-} always {
+  } always {
   eval $__fzf_tmux_session_bindings_custom_options
   'unset' '__fzf_tmux_session_bindings_custom_options'
 }
