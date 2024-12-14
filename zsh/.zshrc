@@ -512,7 +512,7 @@ function -record-command() {
 add-zsh-hook preexec -record-command
 
 ###############################################################
-# _Custom
+# Extras
 ###############################################################
 # check for machine-specific rc files and source them if available
 if [ -d "$ZSH_CONFIG_HOME/rc.private" ]; then
@@ -520,18 +520,3 @@ if [ -d "$ZSH_CONFIG_HOME/rc.private" ]; then
     source "$RC_FILE"
   done
 fi
-
-# kitty shell integration
-if test -e "$HOME/Git/kitty/shell-integration/kitty.zsh"; then
-  source "$HOME/Git/kitty/shell-integration/kitty.zsh";
-fi
-
-###############################################################
-# fstab (tmpfs for WSL)
-###############################################################
-# ensure tmpfs is mounted
-# if is_wsl; then
-#   if ! mount | grep -E "^[^ ]* on /tmp " >/dev/null; then
-#     sudo mount -t tmpfs tmpfs /tmp -o defaults,nodev,nosuid,noatime,size=10g
-#   fi
-# fi
