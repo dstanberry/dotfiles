@@ -3,14 +3,11 @@ local M = {}
 M.default_config = {
   filetypes = { "python" },
   cmd = { "pylance", "--stdio" },
-  root_dir = function(...)
-    return require("lspconfig.util").root_pattern(unpack {
-      "pyproject.toml",
-      "setup.py",
-      "setup.cfg",
-      "requirements.txt",
-      "Pipfile",
-    })(...)
+  root_dir = function(fname)
+    return ds.root.detectors.pattern(
+      fname,
+      { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile" }
+    )[1]
   end,
   single_file_support = true,
   settings = {

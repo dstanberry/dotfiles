@@ -1,37 +1,28 @@
 local M = {}
 
-local get_cmd = function(project_modules)
-  local angularls_path = ds.plugin.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server")
+local get_cmd = function(root)
+  local path = ds.plugin.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server")
   return {
     vim.fn.exepath "ngserver",
     "--stdio",
     "--tsProbeLocations",
-    table.concat({
-      vim.fs.joinpath(angularls_path, "node_modules", "@angular", "language-service", "node_modules"),
-      project_modules,
-    }, ","),
+    table.concat({ vim.fs.joinpath(path, "node_modules", "@angular", "language-service", "node_modules"), root }, ","),
     "--ngProbeLocations",
-    table.concat({
-      vim.fs.joinpath(angularls_path, "node_modules", "@angular", "language-service", "node_modules"),
-      project_modules,
-    }, ","),
+    table.concat({ vim.fs.joinpath(path, "node_modules", "@angular", "language-service", "node_modules"), root }, ","),
   }
 end
 
 local goto_template_or_component = function(bufnr)
   local params = vim.lsp.util.make_position_params(0)
   vim.lsp.buf_request(bufnr, "angular/getTemplateLocationForComponent", params, function(_, result)
-    if result then vim.lsp.util.jump_to_location(result, "utf-8") end
+    if result then vim.lsp.util.show_document(result, "utf-8", { focus = true }) end
   end)
   vim.lsp.buf_request(bufnr, "angular/getComponentsWithTemplateFile", params, function(_, result)
     if result then
       if #result == 1 then
-        vim.lsp.util.jump_to_location(result[1], "utf-8")
+        vim.lsp.util.show_document(result[1], "utf-8", { focus = true })
       else
-        vim.fn.setqflist({}, " ", {
-          title = "Components",
-          items = vim.lsp.util.locations_to_items(result, "utf-8"),
-        })
+        vim.fn.setqflist({}, " ", { title = "Components", items = vim.lsp.util.locations_to_items(result, "utf-8") })
       end
     end
   end)

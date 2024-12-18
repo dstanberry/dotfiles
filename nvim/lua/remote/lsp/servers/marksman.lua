@@ -1,11 +1,7 @@
 local M = {}
 
 M.config = {
-  root_dir = function(fname)
-    return require("lspconfig.util").root_pattern(".marksman.toml", ".zk")(fname)
-      or require("lspconfig.util").find_git_ancestor(fname)
-      or vim.uv.cwd()
-  end,
+  root_dir = function(fname) return ds.root.detectors.pattern(fname, { ".marksman.toml", ".zk", ".git" })[1] end,
 }
 
 return M

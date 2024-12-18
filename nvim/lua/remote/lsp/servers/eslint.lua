@@ -10,7 +10,6 @@ M.config = {
       local diag = vim.diagnostic.get(bufnr, { namespace = vim.lsp.diagnostic.get_namespace(client.id) })
       if #diag > 0 then vim.cmd "EslintFixAll" end
     end
-
     vim.keymap.set("n", "<leader>lF", _fix, { buffer = bufnr, desc = "eslint: fix all problems" })
   end,
 }

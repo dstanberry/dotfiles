@@ -63,12 +63,12 @@ function M.detectors.lsp(buf)
   end, roots)
 end
 
----@param buf number
+---@param buf number|string bufnr or filename
 ---@param patterns string[]|string
 ---@return util.root.dirs[]
 function M.detectors.pattern(buf, patterns)
   patterns = type(patterns) == "string" and { patterns } or patterns
-  local filepath = bufpath(buf) or vim.uv.cwd()
+  local filepath = type(buf) == "number" and (bufpath(buf) or vim.uv.cwd()) or tostring(buf)
   local pattern = vim.fs.find(function(name)
     for _, p in ipairs(patterns) do
       if name == p then return true end
