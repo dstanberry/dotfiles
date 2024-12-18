@@ -75,6 +75,9 @@ export PROJECTS_DIR="${HOME}/Projects"
 # define the default manpager
 export MANPAGER='nvim +Man!'
 
+# define location of zettelkasten vault
+export ZK_NOTEBOOK_DIR="${HOME}/Documents/_notes/zettelkasten/vault"
+
 # define location of eza config
 if hash eza 2> /dev/null; then
 	export EZA_CONFIG_DIR="${CONFIG_HOME}/eza"
