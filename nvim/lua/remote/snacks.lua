@@ -68,6 +68,7 @@ return {
     opts = {
       -- stylua: ignore
       styles = {
+        input = { row = 19 },
         notification = { wo = { wrap = true } },
         -- HACK: unable to unlink `SnacksNotifierHistoryTitle`
         ["notification.history"] = { wo = { cursorline = false, winhighlight = "FloatBorder:FloatBorderSB,Title:SnacksNotifierHistoryTitle" } },
@@ -75,6 +76,7 @@ return {
       },
       bigfile = { enabled = true },
       gitbrowse = { enabled = true },
+      input = { enabled = true },
       notifier = { style = "compact" },
       quickfile = { enabled = true },
       scroll = { enabled = true },
