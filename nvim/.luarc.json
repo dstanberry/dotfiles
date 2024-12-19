@@ -4,6 +4,7 @@
     "cast-local-type",
     "duplicate-doc-field",
     "inject-field",
+    "missing-fields",
     "missing-parameter",
     "param-type-mismatch"
   ]
