@@ -1,6 +1,5 @@
 return {
   "nvim-lualine/lualine.nvim",
-  url = "https://github.com/dstanberry/lualine.nvim",
   event = "VeryLazy",
   init = function()
     vim.g.lualine_laststatus = vim.o.laststatus
@@ -102,14 +101,18 @@ return {
           { util.metadata.breadcrumbs.get, color = "WinbarContext", padding = { right = 0 } },
           { util.lsp.symbols.get, color = "WinbarContext", cond = util.lsp.symbols.cond, padding = { left = 0 } },
         },
-        lualine_x = { { util.git.merge_conflicts.get, color = "WinbarContext", cond = util.git.diffview.cond } },
+        lualine_b = {
+          { function() return "%=" end, color = "WinbarContext" },
+          { util.git.merge_conflicts.get, color = "WinbarContext", cond = util.git.diffview.cond },
+        },
       },
       inactive_winbar = {
         lualine_a = {
           { util.git.diffview.get, color = "WinbarContext", cond = util.git.diffview.cond },
           { util.metadata.breadcrumbs.get, color = "WinbarContext", padding = { right = 0 } },
         },
-        lualine_x = {
+        lualine_b = {
+          { function() return "%=" end, color = "WinbarContext" },
           { util.git.merge_conflicts.get, color = "WinbarContext", cond = util.git.diffview.cond },
         },
       },
