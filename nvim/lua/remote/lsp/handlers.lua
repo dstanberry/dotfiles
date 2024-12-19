@@ -112,7 +112,7 @@ M.on_attach = function(client, bufnr)
   if client.server_capabilities.definitionProvider then
     local _definition = vim.lsp.buf.definition
     local _type_definition = vim.lsp.buf.type_definition
-    if ds.plugin.is_loaded "telescope.nvim" then
+    if ds.plugin.is_installed "telescope.nvim" then
       _definition = function() require("telescope.builtin").lsp_definitions { reuse_win = true } end
       _type_definition = function() require("telescope.builtin").lsp_type_definitions { reuse_win = true } end
     end
@@ -130,7 +130,7 @@ M.on_attach = function(client, bufnr)
 
   if client.server_capabilities.documentHighlightProvider then
     local _references = vim.lsp.buf.references
-    if ds.plugin.is_loaded "telescope.nvim" then
+    if ds.plugin.is_installed "telescope.nvim" then
       _references = function() require("telescope.builtin").lsp_references() end
     end
     vim.keymap.set("n", "gr", _references, { buffer = bufnr, desc = "lsp: show references" })
