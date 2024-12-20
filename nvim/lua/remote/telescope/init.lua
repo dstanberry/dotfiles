@@ -17,6 +17,13 @@ return {
   {
     "nvim-telescope/telescope-ui-select.nvim",
     lazy = true,
+    init = function()
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.select = function(...)
+        require("lazy").load { plugins = { "telescope-ui-select.nvim" } }
+        return vim.ui.select(...)
+      end
+    end,
     config = function() require("telescope").load_extension "ui-select" end,
   },
   {
