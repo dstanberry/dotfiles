@@ -66,12 +66,10 @@ return {
       })
     end,
     opts = {
-      -- stylua: ignore
       styles = {
         input = { row = 19 },
         notification = { wo = { wrap = true } },
-        -- HACK: unable to unlink `SnacksNotifierHistoryTitle`
-        ["notification.history"] = { wo = { cursorline = false, winhighlight = "FloatBorder:FloatBorderSB,Title:SnacksNotifierHistoryTitle" } },
+        ["notification.history"] = { wo = { cursorline = false, winhighlight = "FloatBorder:FloatBorderSB" } },
         scratch = { wo = { winhighlight = "FloatBorder:FloatBorderSB,CursorLine:SnacksScratchCursorLine" } },
       },
       bigfile = { enabled = true },
