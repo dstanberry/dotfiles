@@ -183,19 +183,19 @@ return {
       },
       views = {
         cmdline_popup = {
-          border = { style = "single" },
+          border = { style = "rounded" },
           position = { col = "50%", row = 20 },
           size = { height = "auto", min_width = 70 },
+        },
+        cmdline_popupmenu = {
+          border = { style = "rounded" },
+          position = { row = 23, col = "50%" },
+          size = { width = 70, height = 10 },
+          win_options = { winhighlight = { Normal = "Normal", FloatBorder = "NoiceCmdlinePopupBorder" } },
         },
         mini = {
           position = { row = -2 },
           win_options = { winblend = vim.o.pumblend },
-        },
-        popupmenu = {
-          border = { style = "single" },
-          position = { row = 23, col = "50%" },
-          size = { width = 70, height = 10 },
-          win_options = { winhighlight = { Normal = "Normal", FloatBorder = "NoiceCmdlinePopupBorder" } },
         },
       },
     },
