@@ -50,13 +50,12 @@ return {
         ghost_text = { enabled = true },
       },
       keymap = {
+        preset = "none",
         ["<cr>"] = { "accept", "fallback" },
         ["<up>"] = { "select_prev", "fallback" },
         ["<down>"] = { "select_next", "fallback" },
         ["<c-space>"] = { "show", "show_documentation", "hide_documentation" },
         ["<c-c>"] = { "hide", "fallback" },
-        ["<c-d>"] = {},
-        ["<c-f>"] = {},
       },
       sources = {
         cmdline = {},
@@ -64,7 +63,7 @@ return {
         providers = {
           copilot = { name = "copilot", module = "blink-cmp-copilot", kind = "Copilot" },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
-          lazydev = { name = "LazyDev", module = "lazydev.integrations.blink" },
+          lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
         },
       },
       snippets = {
