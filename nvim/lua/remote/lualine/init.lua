@@ -86,7 +86,7 @@ return {
               hint = { fg = ds.color.get_color "DiagnosticVirtualTextHint" },
             },
           },
-          { util.lsp.clients.get },
+          { util.lsp.clients.get, padding = { right = 0 } },
           { "location" },
           { util.metadata.indentation.get },
           { "encoding" },

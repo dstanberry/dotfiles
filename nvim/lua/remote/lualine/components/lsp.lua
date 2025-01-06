@@ -20,7 +20,7 @@ M.clients = {
         end
       end
     end)
-    icon = highlighter.sanitize "Structure" .. ds.icons.misc.Pc .. highlighter.reset
+    icon = highlighter.sanitize "Structure" .. ds.icons.misc.Extensions .. highlighter.reset
     if #clients == 1 then
       c = ds.pad(icon, "right") .. clients[1]:lower()
     elseif #clients > 1 then

@@ -137,6 +137,7 @@ M.misc = {
   Ellipses = "⋯",
   Event = "⚡",
   Exit = "",
+  Extensions = "",
   FilledCircle = "●",
   FilledCircleLarge = "⬤",
   FoldClosed = "",
