@@ -28,6 +28,7 @@ pg/*
 pgcli/*
 !pgcli/config
 pip/
+snyk/
 terraform/
 tmux/tmux.digests
 wget/
