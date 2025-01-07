@@ -95,8 +95,11 @@ return {
       },
       indent = {
         indent = { blank = "·", char = ds.icons.misc.VerticalBarThin, hl = "NonText" },
-        -- stylua: ignore
-        scope = { char = ds.icons.misc.VerticalBar, underline = true, hl = vim.tbl_map(function(i) return "SnacksIndent" .. i end, vim.fn.range(1, 8)) },
+        scope = {
+          char = ds.icons.misc.VerticalBar,
+          underline = true,
+          hl = vim.tbl_map(function(i) return "SnacksIndent" .. i end, vim.fn.range(1, 8)),
+        },
         filter = function(buf)
           local filetypes = vim.tbl_deep_extend(
             "keep",
