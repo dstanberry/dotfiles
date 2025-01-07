@@ -15,6 +15,7 @@ return {
       },
     },
   },
+  { "xzbdmw/colorful-menu.nvim", lazy = true },
   {
     "saghen/blink.cmp",
     version = false,
@@ -33,7 +34,7 @@ return {
         menu = {
           draw = {
             treesitter = { "lsp" },
-            columns = { { "kind_icon" }, { "label", "label_description" }, { "kind" } },
+            columns = { { "kind_icon" }, { "label", "label_description", gap = 1 }, { "kind" } },
             components = { kind_icon = { width = { fill = true } } },
           },
           border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
@@ -76,8 +77,20 @@ return {
       },
     },
     config = function(_, opts)
+      local ok, colors = pcall(require, "colorful-menu")
+      if ok then
+        -- better highlights for completion items
+        opts.completion.menu.draw = {
+          columns = { { "kind_icon" }, { "label", gap = 1 }, { "kind" } },
+          components = {
+            label = { text = colors.blink_components_text, highlight = colors.blink_components_highlight },
+            kind_icon = { width = { fill = true } },
+          },
+        }
+      end
       -- better icon for tailwind-css
       opts.appearance.kind_icons.Color = string.rep(ds.icons.misc.Block, 2)
+      -- kind icon overrides
       for _, provider in pairs(opts.sources.providers or {}) do
         if provider.kind then
           local transform_items = provider.transform_items

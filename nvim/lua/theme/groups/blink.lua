@@ -3,7 +3,6 @@ local M = {}
 ---@param c util.theme.palette
 ---@return util.theme.hl
 M.get = function(c)
-  local BLUE = ds.color.lighten(c.blue2, 15)
   -- stylua: ignore
   return {
     BlinkCmpDocBorder         = { link = "FloatBorderSB" },
@@ -13,7 +12,7 @@ M.get = function(c)
 
     BlinkCmpLabel             = { fg = c.white },
     BlinkCmpLabelDeprecated   = { fg = c.red3 },
-    BlinkCmpLabelMatch        = { fg = BLUE, bold = true },
+    BlinkCmpLabelMatch        = { bold = true },
 
     BlinkCmpKindCopilot       = { link = "Macro" },
     BlinkCmpKindDefault       = { fg = c.white },
