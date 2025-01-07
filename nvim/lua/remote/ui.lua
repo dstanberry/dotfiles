@@ -116,11 +116,6 @@ return {
       diffview.init()
     end,
   },
-  {
-    "smjonas/inc-rename.nvim",
-    cmd = "IncRename",
-    opts = { hl_group = "Substitute" },
-  },
   { "MunifTanjim/nui.nvim", lazy = true },
   {
     "folke/noice.nvim",

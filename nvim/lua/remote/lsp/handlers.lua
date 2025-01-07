@@ -160,15 +160,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.renameProvider then
-    if ds.plugin.is_loaded "inc-rename.nvim" then
-      local _rename = function()
-        local inc_rename = require "inc_rename"
-        return ":" .. inc_rename.config.cmd_name .. " " .. vim.fn.expand "<cword>"
-      end
-      vim.keymap.set("n", "g<leader>", _rename, { buffer = bufnr, expr = true, desc = "lsp: rename" })
-    else
-      vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr, desc = "lsp: rename" })
-    end
+    vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr, desc = "lsp: rename symbol" })
   end
 
   if client.supports_method "workspace/willRenameFiles" then
