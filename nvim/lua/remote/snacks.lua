@@ -74,7 +74,6 @@ return {
       },
       bigfile = { enabled = true },
       gitbrowse = { enabled = true },
-      input = { enabled = true },
       notifier = { style = "compact" },
       quickfile = { enabled = true },
       scroll = { enabled = true },
@@ -110,6 +109,13 @@ return {
           if vim.tbl_contains(filetypes, vim.bo[buf].filetype) then vim.b[buf].snacks_indent = false end
           return vim.g.snacks_indent ~= false and vim.b[buf].snacks_indent ~= false and vim.bo[buf].buftype == ""
         end,
+      },
+      input = {
+        enabled = true,
+        win = {
+          keys = { i_cw = { "<c-w>", "delete_word", mode = "i" } },
+          actions = { delete_word = function() vim.cmd "normal! diw<cr>" end },
+        },
       },
     },
   },
