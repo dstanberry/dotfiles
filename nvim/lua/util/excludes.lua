@@ -27,9 +27,10 @@ M.ft = {
     "noice",
     "oil",
     "snacks_dashboard",
+    "snacks_input",
     "snacks_notif_history",
+    "snacks_terminal",
     "TelescopePrompt",
-    "toggleterm",
     "trouble",
   },
   wb_disabled = {
@@ -50,8 +51,8 @@ M.ft = {
     "mason",
     "noice",
     "octo_panel",
+    "snacks_terminal",
     "TelescopePrompt",
-    "toggleterm",
     "trouble",
   },
   wb_empty = {
