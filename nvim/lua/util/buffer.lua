@@ -73,14 +73,17 @@ local realpath = function(path) return (vim.uv.fs_realpath(path) or path) end
 function M.edit()
   local buf = vim.api.nvim_get_current_buf()
   local file = realpath(vim.api.nvim_buf_get_name(buf))
-  local root = assert(realpath(vim.uv.cwd() or "."))
-  if file:find(root, 1, true) ~= 1 then root = vim.fs.dirname(file) end
+  local root = assert(realpath(vim.fs.dirname(file) or vim.uv.cwd() or "."))
   vim.ui.input({
     prompt = "File Name: ",
     default = vim.fs.joinpath(root, ""),
     completion = "file",
   }, function(newfile)
     if not newfile or newfile == "" or newfile == file:sub(#root + 2) then return end
+    if newfile:sub(#root + 2) == "" then
+      ds.warn "Filename not provided!"
+      return
+    end
     newfile = vim.fs.normalize(vim.fs.joinpath(root, newfile))
     vim.cmd.edit(newfile)
   end)
@@ -228,15 +231,18 @@ end
 function M.rename()
   local buf = vim.api.nvim_get_current_buf()
   local oldfile = assert(realpath(vim.api.nvim_buf_get_name(buf)))
-  local root = assert(realpath(vim.uv.cwd() or "."))
-  if oldfile:find(root, 1, true) ~= 1 then root = vim.fs.dirname(oldfile) end
-  local cwd = oldfile:sub(#root + 2)
+  local root = assert(realpath(vim.fs.dirname(oldfile) or vim.uv.cwd() or "."))
+  local filename = oldfile:sub(#root + 2)
   vim.ui.input({
     prompt = "New File Name: ",
-    default = cwd,
+    default = vim.fs.joinpath(root, ""),
     completion = "file",
   }, function(newfile)
-    if not newfile or newfile == "" or newfile == cwd then return end
+    if not newfile or newfile == "" or newfile == filename then return end
+    if newfile:sub(#root + 2) == "" then
+      ds.warn "Filename not provided!"
+      return
+    end
     newfile = vim.fs.normalize(vim.fs.joinpath(root, newfile))
     vim.fn.mkdir(vim.fs.dirname(newfile), "p")
     require("remote.lsp.handlers").on_rename(oldfile, newfile, function()
