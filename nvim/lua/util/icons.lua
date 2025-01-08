@@ -120,6 +120,7 @@ M.markdown = {
 M.misc = {
   ArrowSwap = " ",
   Block = "█",
+  BrailleBlank = "⠀", -- U+2800
   Calendar = "",
   CaretRight = "",
   CheckFilled = "",
