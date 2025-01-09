@@ -84,7 +84,6 @@ function M.edit()
       ds.warn "Filename not provided!"
       return
     end
-    newfile = vim.fs.normalize(vim.fs.joinpath(root, newfile))
     vim.cmd.edit(newfile)
   end)
 end
