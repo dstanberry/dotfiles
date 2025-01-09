@@ -172,7 +172,14 @@ end
 ---@param capture_text string
 ---@param range tsRange
 M.heading = function(bufnr, ns, capture_node, capture_text, range)
-  local highlight_groups = { "@markup.heading", "@markup.heading.sub", "@variable.builtin" }
+  local highlight_groups = {
+    "@markup.heading.1",
+    "@markup.heading.2",
+    "@markup.heading.3",
+    "@markup.heading.4",
+    "@markup.heading.5",
+    "@markup.heading.6",
+  }
   local headings = {
     ds.icons.markdown.H1,
     ds.icons.markdown.H2,

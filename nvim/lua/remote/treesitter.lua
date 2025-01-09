@@ -137,7 +137,7 @@ return {
       vim.g.rainbow_delimiters = {
         strategy = { [""] = require("rainbow-delimiters").strategy["global"] },
         query = { [""] = "rainbow-delimiters" },
-        highlight = { "TSRainbow1", "TSRainbow2", "TSRainbow3", "TSRainbow4", "TSRainbow5", "TSRainbow6", "TSRainbow7" },
+        highlight = vim.tbl_map(function(i) return "SnacksIndent" .. i end, vim.fn.range(1, 8)),
       }
     end,
   },
