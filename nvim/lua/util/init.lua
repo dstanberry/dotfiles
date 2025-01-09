@@ -77,6 +77,18 @@ function M.debounce(callback, delay)
   end
 end
 
+---Combines multiple number-indexed tables into a single table.
+---@param ... table
+---@return table
+function M.extend(...)
+  local tables = { ... } -- {table1, table2, table3, ...}
+  local result = {}
+  for _, t in ipairs(tables) do
+    table.move(t, 1, #t, #result + 1, result)
+  end
+  return result
+end
+
 ---Iterate over each key-value pair in the provided table and apply the callback function.
 ---If the keys in the table are all numeric, it will perform an ordered iteration over each pair.
 ---Otherwise the order will not be guaranteed
