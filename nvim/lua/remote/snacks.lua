@@ -101,8 +101,7 @@ return {
           hl = vim.tbl_map(function(i) return "SnacksIndent" .. i end, vim.fn.range(1, 8)),
         },
         filter = function(buf)
-          local filetypes = vim.tbl_deep_extend(
-            "keep",
+          local filetypes = ds.extend(
             ds.excludes.ft.stl_disabled,
             ds.excludes.ft.wb_disabled,
             ds.excludes.ft.wb_empty,
