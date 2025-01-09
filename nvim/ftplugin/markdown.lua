@@ -1,30 +1,30 @@
 local markdown = require "ft.markdown"
 
-local group = ds.augroup "markdown_extmarks"
 local bufnr = vim.api.nvim_get_current_buf()
 
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeChanged" }, {
-  group = group,
-  pattern = "*.md",
-  callback = vim.schedule_wrap(function(args)
-    if
-      package.loaded["nvim-treesitter"]
-      and vim.api.nvim_get_mode().mode == "n"
-      and vim.bo[args.buf].filetype == "markdown"
-    then
-      vim.opt_local.conceallevel = 2
-      markdown.set_extmarks(args.buf)
-    end
-  end),
-})
-vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
-  group = group,
-  pattern = "*.md",
-  callback = vim.schedule_wrap(function(args)
-    vim.opt_local.conceallevel = 0
-    markdown.disable_extmarks(args.buf, true)
-  end),
-})
+-- local group = ds.augroup "markdown_extmarks"
+-- vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeChanged" }, {
+--   group = group,
+--   pattern = "*.md",
+--   callback = vim.schedule_wrap(function(args)
+--     if
+--       package.loaded["nvim-treesitter"]
+--       and vim.api.nvim_get_mode().mode == "n"
+--       and vim.bo[args.buf].filetype == "markdown"
+--     then
+--       vim.opt_local.conceallevel = 2
+--       markdown.set_extmarks(args.buf)
+--     end
+--   end),
+-- })
+-- vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
+--   group = group,
+--   pattern = "*.md",
+--   callback = vim.schedule_wrap(function(args)
+--     vim.opt_local.conceallevel = 0
+--     markdown.disable_extmarks(args.buf, true)
+--   end),
+-- })
 
 if package.loaded["nvim-treesitter"] then
   local _adjacent = function() markdown.insert_adjacent_heading(bufnr) end
