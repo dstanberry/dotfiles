@@ -243,7 +243,6 @@ function M.rename()
       ds.warn "Filename not provided!"
       return
     end
-    newfile = vim.fs.normalize(vim.fs.joinpath(root, newfile))
     vim.fn.mkdir(vim.fs.dirname(newfile), "p")
     require("remote.lsp.handlers").on_rename(oldfile, newfile, function()
       vim.fn.rename(oldfile, newfile)
