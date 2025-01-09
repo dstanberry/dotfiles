@@ -274,7 +274,7 @@ end
 M.disable_extmarks = function(bufnr, clear_buf)
   local line = vim.fn.line "."
   if clear_buf then return pcall(vim.api.nvim_buf_clear_namespace, bufnr, NAMESPACE_ID, 0, -1) end
-  pcall(vim.api.nvim_buf_clear_namespace, bufnr, NAMESPACE_ID, line - 1, line + 1)
+  pcall(vim.api.nvim_buf_clear_namespace, bufnr, NAMESPACE_ID, line - 1, line)
 end
 
 ---@param bufnr number

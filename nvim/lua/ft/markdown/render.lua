@@ -99,19 +99,21 @@ M.codeblock = function(bufnr, ns, capture_node, capture_text, range)
   })
 
   for i, line in ipairs(lines) do
-    local line_width = widths[i] - range.col_start
-    local position, overflow = calculate_block_width(line)
-    local col = line_width < 0 and range.col_start + line_width or range.col_start
+    if widths[i] then
+      local line_width = widths[i] - range.col_start
+      local position, overflow = calculate_block_width(line)
+      local col = line_width < 0 and range.col_start + line_width or range.col_start
 
-    vim.api.nvim_buf_add_highlight(0, ns, "@markup.codeblock", range.row_start + i, range.col_start, -1)
-    vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + i, col, {
-      virt_text = { { string.rep(" ", 1), "@markup.codeblock" } },
-      virt_text_pos = "inline",
-    })
-    vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + i, position, {
-      virt_text = { { string.rep(" ", max_width - line_width - overflow), "@markup.codeblock" } },
-      virt_text_pos = "inline",
-    })
+      vim.api.nvim_buf_add_highlight(0, ns, "@markup.codeblock", range.row_start + i, range.col_start, -1)
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + i, col, {
+        virt_text = { { string.rep(" ", 1), "@markup.codeblock" } },
+        virt_text_pos = "inline",
+      })
+      vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start + i, position, {
+        virt_text = { { string.rep(" ", max_width - line_width - overflow), "@markup.codeblock" } },
+        virt_text_pos = "inline",
+      })
+    end
   end
 end
 
