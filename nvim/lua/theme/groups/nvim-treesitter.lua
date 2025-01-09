@@ -109,8 +109,12 @@ M.get = function(c)
     -- custom treesitter extended highlighting
     ["@markup.codeblock"]             = { link = "@markup.raw.markdown_inline"},
     ["@markup.dash"]                  = { fg = c.overlay0, bold = true },
-    ["@markup.heading"]               = { link = "htmlH1" },
-    ["@markup.heading.sub"]           = { link = "htmlH2" },
+    ["@markup.heading.1"]             = { link = "htmlH1" },
+    ["@markup.heading.2"]             = { link = "htmlH2" },
+    ["@markup.heading.3"]             = { link = "@variable.builtin" },
+    ["@markup.heading.4"]             = { link = "@variable.builtin" },
+    ["@markup.heading.5"]             = { link = "@variable.builtin" },
+    ["@markup.heading.6"]             = { link = "@variable.builtin" },
     ["@markup.table"]                 = { link = "@punctuation.special" },
     ["@variable.member.yaml"]         = { fg = c.aqua1 },
 
