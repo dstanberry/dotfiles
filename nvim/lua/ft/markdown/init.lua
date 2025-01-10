@@ -1,5 +1,4 @@
 ---@class ft.markdown
----@field render ft.markdown.render
 ---@field zk ft.markdown.zk
 local M = {}
 
@@ -9,8 +8,6 @@ setmetatable(M, {
     return rawget(t, k)
   end,
 })
-
-local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_markdown_extmarks"
 
 local MD_Q = vim.treesitter.query.parse(
   "markdown",
@@ -27,32 +24,10 @@ local MD_Q = vim.treesitter.query.parse(
         (atx_h5_marker)
         (atx_h6_marker)
       ] @heading)
-      (block_quote [
-        (block_quote_marker)
-        (block_continuation)
-      ] @block_quote_marker)
-      (inline (block_continuation) @block_quote_marker)
-      (paragraph (block_continuation) @block_quote_marker)
-      ((fenced_code_block) @codeblock)
       ((list_marker_dot) @list_marker_dot)
       ((list_marker_minus) @list_marker_minus)
-      ((pipe_table) @md_table)
       ((task_list_marker_checked) @checkbox_checked)
       ((task_list_marker_unchecked) @checkbox_unchecked)
-      ((thematic_break) @dash)
-    ]]
-)
-
-local MD_INLINE_Q = vim.treesitter.query.parse(
-  "markdown_inline",
-  [[
-      ([
-        (email_autolink)
-        (image)
-        (inline_link)
-        (shortcut_link)
-      ] @md_link)
-      ((code_span) @code_span)
     ]]
 )
 
@@ -92,6 +67,7 @@ local get_all_headings = function(bufnr)
   local data = {}
   local root
   local root_parser = vim.treesitter.get_parser(bufnr)
+  if not root_parser then return end
   root_parser:parse(true)
   root_parser:for_each_tree(function(TStree, language_tree)
     local tree_language = language_tree:lang()
@@ -125,6 +101,7 @@ local get_all_headings = function(bufnr)
 end
 
 local get_previous_heading = function(data)
+  if not data then return end
   local current_pos = vim.api.nvim_win_get_cursor(0)
   local previous = data[1] or { level = 0, index = 0 }
   for i = 1, #data do
@@ -136,6 +113,7 @@ end
 
 local insert_heading = function(data, previous_heading, text)
   local target_row, target_end, cursor_target
+  if not (data and previous_heading) then return end
   if previous_heading.index ~= #data then
     target_row = data[previous_heading.index + 1].start_row
     target_end = target_row
@@ -153,7 +131,7 @@ end
 ---@param bufnr number
 M.insert_adjacent_heading = function(bufnr)
   local data = get_all_headings(bufnr)
-  local previous_heading = get_previous_heading(data)
+  local previous_heading = get_previous_heading(data) or 0
   previous_heading.level = math.max(previous_heading.level, 2)
   local text_ready = string.rep("#", previous_heading.level) .. " "
   insert_heading(data, previous_heading, text_ready)
@@ -162,7 +140,7 @@ end
 ---@param bufnr number
 M.insert_inner_heading = function(bufnr)
   local data = get_all_headings(bufnr)
-  local previous_heading = get_previous_heading(data)
+  local previous_heading = get_previous_heading(data) or 0
   previous_heading.level = math.max(previous_heading.level, 1)
   previous_heading.level = math.min(previous_heading.level, 5)
   local text_ready = string.rep("#", previous_heading.level + 1) .. " "
@@ -172,7 +150,7 @@ end
 ---@param bufnr number
 M.insert_outer_heading = function(bufnr)
   local data = get_all_headings(bufnr)
-  local previous_heading = get_previous_heading(data)
+  local previous_heading = get_previous_heading(data) or 0
   previous_heading.level = math.max(previous_heading.level, 3)
   previous_heading.level = math.min(previous_heading.level, 7)
   local text_ready = string.rep("#", previous_heading.level - 1) .. " "
@@ -206,7 +184,6 @@ M.toggle_bullet = function()
   else
     vim.api.nvim_buf_set_lines(0, line_start - 1, line_end, true, newlines)
   end
-  M.set_extmarks()
 end
 
 M.toggle_checkbox = function()
@@ -227,71 +204,6 @@ M.toggle_checkbox = function()
     vim.api.nvim_buf_set_lines(0, line_start - 1, line_end, true, newlines)
   else
     vim.api.nvim_buf_set_lines(0, line_start - 1, line_end, true, newlines)
-  end
-  M.set_extmarks()
-end
-
----@param bufnr number
----@param tree TSTree
-M.parse_md = function(bufnr, tree)
-  for capture_id, capture_node, _, _ in MD_Q:iter_captures(tree:root()) do
-    local capture_name = MD_Q.captures[capture_id]
-    local capture_text = vim.treesitter.get_node_text(capture_node, bufnr)
-    local row_start, col_start, row_end, col_end = capture_node:range()
-    if M.render[capture_name] and type(M.render[capture_name]) == "function" then
-      M.render[capture_name](
-        bufnr,
-        NAMESPACE_ID,
-        capture_node,
-        capture_text,
-        { row_start = row_start, col_start = col_start, row_end = row_end, col_end = col_end }
-      )
-    end
-  end
-end
-
----@param bufnr number
----@param tree TSTree
-M.parse_md_inline = function(bufnr, tree)
-  for capture_id, capture_node, _, _ in MD_INLINE_Q:iter_captures(tree:root()) do
-    local capture_name = MD_INLINE_Q.captures[capture_id]
-    local capture_text = vim.treesitter.get_node_text(capture_node, bufnr)
-    local row_start, col_start, row_end, col_end = capture_node:range()
-    if M.render[capture_name] and type(M.render[capture_name]) == "function" then
-      M.render[capture_name](
-        bufnr,
-        NAMESPACE_ID,
-        capture_node,
-        capture_text,
-        { row_start = row_start, col_start = col_start, row_end = row_end, col_end = col_end }
-      )
-    end
-  end
-end
-
----@param bufnr number
----@param clear_buf? boolean
-M.disable_extmarks = function(bufnr, clear_buf)
-  local line = vim.fn.line "."
-  if clear_buf then return pcall(vim.api.nvim_buf_clear_namespace, bufnr, NAMESPACE_ID, 0, -1) end
-  pcall(vim.api.nvim_buf_clear_namespace, bufnr, NAMESPACE_ID, line - 1, line)
-end
-
----@param bufnr number
-M.set_extmarks = function(bufnr)
-  vim.api.nvim_buf_clear_namespace(bufnr, NAMESPACE_ID, 0, -1)
-
-  local root_parser = vim.treesitter.get_parser(bufnr)
-  if root_parser then
-    root_parser:parse(true)
-    root_parser:for_each_tree(function(TStree, language_tree)
-      local tree_language = language_tree:lang()
-      if tree_language == "markdown" then
-        M.parse_md(bufnr, TStree)
-      elseif tree_language == "markdown_inline" then
-        M.parse_md_inline(bufnr, TStree)
-      end
-    end)
   end
 end
 
