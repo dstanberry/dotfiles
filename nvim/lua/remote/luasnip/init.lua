@@ -2,10 +2,10 @@ return {
   "L3MON4D3/LuaSnip",
   lazy = true,
   keys = function()
-    local fallback = function(key)
-      local keycode = vim.api.nvim_replace_termcodes(key or "", true, true, true)
-      vim.api.nvim_feedkeys(keycode, "i", true)
-    end
+    local fallback = vim.schedule_wrap(function(keys)
+      local sequence = vim.api.nvim_replace_termcodes(keys or "", true, true, true)
+      vim.api.nvim_feedkeys(sequence, "i", true)
+    end)
 
     local _next_jump = function()
       if require("luasnip").expand_or_locally_jumpable() then
@@ -42,8 +42,8 @@ return {
     end
 
     return {
-      { "<tab>", _next_jump, silent = true, mode = { "i", "s" } },
-      { "<s-tab>", _previous_jump, silent = true, mode = { "i", "s" } },
+      { "<tab>", _next_jump, expr = true, silent = true, mode = { "i", "s" } },
+      { "<s-tab>", _previous_jump, expr = true, silent = true, mode = { "i", "s" } },
       { "<c-d>", _next_choice, silent = true, mode = { "i", "s" } },
       { "<c-f>", _previous_choice, silent = true, mode = { "i", "s" } },
     }
