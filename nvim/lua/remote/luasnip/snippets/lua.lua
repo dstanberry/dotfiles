@@ -76,8 +76,8 @@ return {
     })
   ),
   s(
-    { trig = "ok", name = "require check", dscr = "Check error after `|require(...)|` call" },
-    fmt([[local {}, {} = pcall(require,"{}")\nif not {} then\n\treturn\nend]], {
+    { trig = "ok", name = "require check", dscr = "Check if import was successful" },
+    fmt('local {}, {} = pcall(require,"{}")\nif not {} then\n\treturn\nend', {
       i(1, "ok"),
       d(3, rutil.repeat_node_segment, { 2 }, { user_args = { "." } }),
       i(2, "mod"),
