@@ -8,10 +8,9 @@ adjust-underline-position = 2
 adjust-underline-thickness = 2
 
 # Theme
+background-opacity = 1
 theme = kdark
 window-theme = dark
-background-opacity = 1
-cursor-invert-fg-bg = true
 
 # Keybinds
 keybind = clear
@@ -40,6 +39,7 @@ keybind = ctrl+shift+s=write_screen_file:open
 mouse-hide-while-typing = true
 
 # Behavior
+confirm-close-surface = false
 copy-on-select = clipboard
 shell-integration-features = cursor,sudo,no-title
 
@@ -47,7 +47,9 @@ shell-integration-features = cursor,sudo,no-title
 gtk-single-instance = true
 gtk-tabs-location = top
 gtk-wide-tabs = false
+
 macos-titlebar-style = hidden
+
 window-decoration = true
 window-padding-balance = true
 window-padding-y = 2,0
