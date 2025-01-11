@@ -2,12 +2,11 @@ return {
   "L3MON4D3/LuaSnip",
   lazy = true,
   keys = function()
-    local fallback = vim.schedule_wrap(function(keys)
-      local sequence = vim.api.nvim_replace_termcodes(keys or "", true, true, true)
-      vim.api.nvim_feedkeys(sequence, "i", true)
-    end)
+    local fallback = function(keys)
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys or "", true, true, true), "n", true)
+    end
 
-    local _next_jump = function()
+    local _next_jump = vim.schedule_wrap(function()
       if require("luasnip").expand_or_locally_jumpable() then
         require("luasnip").expand_or_jump()
         local blink = package.loaded["blink.cmp"]
@@ -15,15 +14,15 @@ return {
         return
       end
       fallback "<tab>"
-    end
+    end)
 
-    local _previous_jump = function()
+    local _previous_jump = vim.schedule_wrap(function()
       if require("luasnip").in_snippet() and require("luasnip").jumpable(-1) then
         require("luasnip").jump(-1)
         return
       end
-      fallback "<s-tab>"
-    end
+      fallback "<c-d>" -- <s-tab> equivalent to <c-d>
+    end)
 
     local _next_choice = function()
       if require("luasnip").in_snippet() and require("luasnip").choice_active() then
@@ -42,8 +41,8 @@ return {
     end
 
     return {
-      { "<tab>", _next_jump, expr = true, silent = true, mode = { "i", "s" } },
-      { "<s-tab>", _previous_jump, expr = true, silent = true, mode = { "i", "s" } },
+      { "<tab>", _next_jump, silent = true, mode = { "i", "s" } },
+      { "<s-tab>", _previous_jump, silent = true, mode = { "i", "s" } },
       { "<c-d>", _next_choice, silent = true, mode = { "i", "s" } },
       { "<c-f>", _previous_choice, silent = true, mode = { "i", "s" } },
     }
