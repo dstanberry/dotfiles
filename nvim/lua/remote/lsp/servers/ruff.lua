@@ -4,7 +4,7 @@ M.config = {
   cmd_env = { RUFF_TRACE = "messages" },
   init_options = {
     settings = {
-      logLevel = "error",
+      logLevel = "warn",
     },
   },
   on_attach = function(client, bufnr)
