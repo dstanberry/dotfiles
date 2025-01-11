@@ -80,7 +80,7 @@ function M.edit()
     completion = "file",
   }, function(newfile)
     if not newfile or newfile == "" or newfile == file:sub(#root + 2) then return end
-    if newfile:sub(#root + 2) == "" then
+    if ds.replace(newfile, root, "") == "" or newfile:sub(#newfile) == "/" then
       ds.warn "Filename not provided!"
       return
     end
@@ -238,7 +238,7 @@ function M.rename()
     completion = "file",
   }, function(newfile)
     if not newfile or newfile == "" or newfile == filename then return end
-    if newfile:sub(#root + 2) == "" then
+    if ds.replace(newfile, root, "") == "" or newfile:sub(#newfile) == "/" then
       ds.warn "Filename not provided!"
       return
     end
