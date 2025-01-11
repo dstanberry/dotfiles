@@ -292,30 +292,6 @@ _npm_config() {
 }
 _evalcache _npm_config
 
-# support custom sub-commands
-pip() {
-  local PKG=$CONFIG_HOME/shared/packages/pip.txt
-  if is_darwin; then
-    PKG=$CONFIG_HOME/shared/packages/pip-macos.txt
-  fi
-  if [ "$1" = "save" ]; then
-    if hash pipdeptree 2>/dev/null; then
-      command pipdeptree --user --warn silence | grep -E '^\w+' > "$PKG"
-    else
-      echo "unable to find pipdeptree. try running 'pip install pipdeptree'"
-      return 1
-    fi
-  elif [ "$1" = "load" ]; then
-    if [ "$EUID" -eq 0 ]; then
-      echo "pip load is not supported for root user"
-      exit 1
-    fi
-    command pip install --user --requirement "$PKG" --upgrade
-  else
-    command pip "$@"
-  fi
-}
-
 # poor man's rg runtime configuration
 rg() {
   command rg --colors line:fg:yellow \
