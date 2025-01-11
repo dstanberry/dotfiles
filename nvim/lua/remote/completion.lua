@@ -23,7 +23,6 @@ return {
     event = "InsertEnter",
     dependencies = {
       "giuxtaposition/blink-cmp-copilot",
-      "saadparwaiz1/cmp_luasnip",
       "kristijanhusak/vim-dadbod-completion",
       { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
     },
