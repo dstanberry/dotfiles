@@ -6,7 +6,7 @@ ULOCAL="/usr/local/bin"
 LOCAL="${HOME}/.local/bin"
 
 # include directory in PATH
-NEWPATH=$ULOCAL:$PATH:$LOCAL
+NEWPATH=$LOCAL:$ULOCAL:$PATH
 unset ULOCAL
 unset LOCAL
 
