@@ -61,6 +61,7 @@ ds.plugin.setup {
         [".*/git/gitconfig"] = "gitconfig",
         [".*/git/ignore"] = "gitignore",
         [".*/kitty/.+%.conf"] = "bash",
+        ["requirements[%w_.-]+%.txt"] = "requirements",
       },
     }
   end,
