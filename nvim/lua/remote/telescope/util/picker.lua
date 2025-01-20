@@ -14,10 +14,19 @@ M.create = function(theme, content, opts)
   local theme_opts
   if theme == "cursor" then
     theme_opts = require("telescope.themes").get_cursor {}
-  elseif theme == "dropdown" then
-    theme_opts = require("telescope.themes").get_dropdown {}
   elseif theme == "ivy" then
     theme_opts = require("telescope.themes").get_ivy {}
+  elseif theme == "dropdown" then
+    theme_opts = require("telescope.themes").get_dropdown {
+      layout_config = {
+        height = function(self, _, max_lines)
+          local results = #self.finder.results
+          local PADDING = 4
+          local LIMIT = math.floor(max_lines / 2)
+          return (results <= (LIMIT - PADDING) and results + PADDING or LIMIT)
+        end,
+      },
+    }
   end
   opts = opts or {}
   pickers

@@ -81,8 +81,9 @@ end
 ---@param opts? table additional options
 M.new = function(opts)
   opts = opts or {}
-  opts.title = opts.title or "Notes (create from template)"
+  opts.title = "Notes (create from template)"
   tu.picker.create("dropdown", templates, {
+    title = opts.title,
     callback = function(selection)
       opts.dir = selection.value.directory
       if selection.value.ask_for_title and not opts.title then
