@@ -3,7 +3,7 @@ return {
   {
     "MeanderingProgrammer/render-markdown.nvim",
     enabled = true,
-    ft = { "markdown" },
+    ft = { "copilot-chat", "markdown" },
     opts = {
       dash = { width = 80 },
       code = {

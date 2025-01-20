@@ -8,11 +8,19 @@ return {
       user = user:sub(1, 1):upper() .. user:sub(2)
       return {
         auto_insert_mode = true,
+        highlight_headers = false,
         show_help = true,
-        question_header = string.format("%s %s ", ds.icons.misc.User, user),
-        answer_header = string.format("%s %s ", ds.icons.kind.Copilot, "Copilot"),
+        answer_header = string.format(" %s %s ", ds.icons.kind.Copilot, "Copilot"),
+        question_header = string.format(" %s %s ", ds.icons.misc.User, user),
+        error_header = "> [!ERROR] Error",
+        separator = "---",
         window = {
-          width = 0.4,
+          layout = "float",
+          relative = "cursor",
+          width = 1,
+          height = 0.4,
+          row = 1,
+          border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
         },
         selection = function(source)
           local select = require "CopilotChat.select"
@@ -24,8 +32,13 @@ return {
       local _toggle = function() require("CopilotChat").toggle() end
       local _clear = function() return require("CopilotChat").reset() end
       local _chat = function()
-        local input = vim.fn.input "Ask Copilot: "
-        if input ~= "" then require("CopilotChat").ask(input) end
+        local actions = require "CopilotChat.actions"
+        local prompt_actions =
+          vim.tbl_deep_extend("keep", { prompt = "Copilot Quick Actions" }, actions.prompt_actions())
+        require("CopilotChat.integrations.telescope").pick(prompt_actions, {
+          layout_strategy = "vertical",
+          layout_config = { height = 35, prompt_position = "top" },
+        })
       end
 
       return {

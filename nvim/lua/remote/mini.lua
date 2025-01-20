@@ -483,6 +483,11 @@ return {
             return "`\n```" .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
           end
         end
+        if vim.bo.filetype == "copilot-chat" then
+          if _o == "`" and before:match "^%s*``" then
+            return "`\n```" .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
+          end
+        end
         if opts.skip_next and next ~= "" and next:match(opts.skip_next) then return _o end
         if opts.skip_ts and #opts.skip_ts > 0 then
           local ok, captures = pcall(vim.treesitter.get_captures_at_pos, 0, cursor[1] - 1, math.max(cursor[2] - 1, 0))
