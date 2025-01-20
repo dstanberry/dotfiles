@@ -36,7 +36,7 @@ return {
         { "<localleader>gy", function() require("snacks").gitbrowse.open(opts2) end, desc = "git: copy remote url", mode = { "n", "v" } },
         -- window
         { "<leader>wn", function() Snacks.notifier.show_history() end, desc = "messages: show notifications" },
-        { "<leader>ws", function() Snacks.scratch.select() end, desc = "snacks: select scratchpad" },
+        { "<leader>ws", function() require("remote.snacks.scratch").select() end, desc = "snacks: select scratchpad" },
         { "<leader>wz", function() Snacks.zen.zen() end, desc = "snacks: zen mode" },
       }
     end,

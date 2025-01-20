@@ -39,7 +39,7 @@ M.create = function(theme, content, opts)
       },
       previewer = opts.previewer or nil,
       sorter = conf.generic_sorter(theme_opts),
-      attach_mappings = function(bufnr, _)
+      attach_mappings = function(bufnr, map)
         actions.select_default:replace(function()
           local selection
           if opts.multi_select then
@@ -53,6 +53,16 @@ M.create = function(theme, content, opts)
           end
           if opts.callback then opts.callback(selection) end
         end)
+        if opts.mappings and type(opts.mappings) == "table" then
+          for k, v in pairs(opts.mappings) do
+            if v and v.keymap and v.action then
+              map(v.mode or "i", v.keymap, function()
+                local selection = action_state.get_selected_entry()
+                v.action(bufnr, actions, selection)
+              end)
+            end
+          end
+        end
         return true
       end,
     })
