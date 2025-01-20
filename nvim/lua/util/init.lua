@@ -93,8 +93,8 @@ end
 ---If the keys in the table are all numeric, it will perform an ordered iteration over each pair.
 ---Otherwise the order will not be guaranteed
 ---@generic T:table
----@param callback fun(item: T, key: any)
 ---@param list table<any, T>
+---@param callback fun(item: T, key: any)
 function M.foreach(list, callback)
   if tbl_keys_numeric(list) then
     for i, v in ipairs(list) do
