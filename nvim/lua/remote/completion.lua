@@ -82,8 +82,6 @@ return {
           },
         }
       end
-      -- better icon for tailwind-css
-      opts.appearance.kind_icons.Color = string.rep(ds.icons.misc.Block, 2)
       -- kind icon overrides
       for _, provider in pairs(opts.sources.providers or {}) do
         if provider.kind then
