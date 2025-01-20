@@ -175,6 +175,11 @@ return {
             word = false,
             cyclic = true,
           },
+          augend.constant.new {
+            elements = { "[ ]", "[x]" },
+            word = false,
+            cyclic = true,
+          },
           ordinal_numbers,
           weekdays,
           months,
