@@ -37,6 +37,10 @@ gui:
     "main": "#b5e4ff"
     "master": "#b5e4ff"
     "develop": "#4ed1a1"
+  branchColorPatterns:
+    "feat/.+": "#d08770"
+    "feature/.+": "#d08770"
+    "fix/.+": "#a76369"
   theme:
     defaultFgColor:
       - default
