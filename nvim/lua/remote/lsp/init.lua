@@ -38,6 +38,7 @@ return {
         flags = { debounce_text_changes = 150 },
       }
 
+      ds.foreach(servers, function(config, s) servers[s] = vim.tbl_deep_extend("force", defaults, config or {}) end)
       handlers.setup()
       ds.fs.walk(root, function(path, name, type)
         if (type == "file" or type == "link") and name:match "%.lua$" then
