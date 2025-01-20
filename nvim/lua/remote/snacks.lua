@@ -69,7 +69,9 @@ return {
       styles = {
         input = { row = 19 },
         notification = { wo = { wrap = true } },
-        ["notification.history"] = { wo = { cursorline = false, winhighlight = "FloatBorder:FloatBorderSB" } },
+        notification_history = {
+          wo = { cursorline = false, winhighlight = "FloatBorder:FloatBorderSB,Title:SnacksNotifierHistoryTitle" },
+        },
         scratch = { wo = { winhighlight = "FloatBorder:FloatBorderSB,CursorLine:SnacksScratchCursorLine" } },
       },
       bigfile = { enabled = true },
