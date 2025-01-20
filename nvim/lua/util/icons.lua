@@ -44,12 +44,12 @@ M.debug = {
 M.documents = {
   File = "",
   Files = "",
-  MultipleFolders = "󰉓",
   FolderClosed = "󰉋",
   FolderEmpty = "󱞞",
   FolderOpened = "󰝰",
   FolderOutlineClosed = "",
   FolderOutlineOpened = "",
+  Project = "",
 }
 
 M.git = {
