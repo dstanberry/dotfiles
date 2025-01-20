@@ -4,26 +4,10 @@ return {
     priority = 1000,
     lazy = false,
     keys = function()
-      local ghe = vim.g.ds_env.github_hostname
-      local browse = {
-        open = ds.has "wsl" and function(url) vim.system { "cmd.exe", "/c", "start", url } end,
-        url_patterns = ghe and { [ghe] = { branch = "/tree/{branch}", file = "/blob/{branch}/{file}#L{line}" } },
-      }
-      local opts2 = { url_pattern = browse.url_patterns, open = function(url) vim.fn.setreg("+", url) end }
-      local lazygit = {
-        theme = {
-          [241] = { fg = "Special" },
-          defaultFgColor = { fg = "Normal" },
-          activeBorderColor = { fg = "Function", bold = true },
-          inactiveBorderColor = { fg = "Comment" },
-          optionsTextColor = { fg = "Function" },
-          selectedLineBgColor = { bg = "Visual" },
-          unstagedChangesColor = { fg = "DiagnosticError" },
-          cherryPickedCommitBgColor = { bg = "default" },
-          cherryPickedCommitFgColor = { fg = "Identifier" },
-          searchingActiveBorderColor = { fg = "MatchParen", bold = true },
-        },
-      }
+      local gitbrowse_config = require "remote.snacks.gitbrowse"
+      local browse = gitbrowse_config.browse
+      local copy = gitbrowse_config.copy_url
+      local lazygit = gitbrowse_config.lazygit
       -- stylua: ignore
       return {
         -- lsp
@@ -33,7 +17,7 @@ return {
         { "<leader>gg", function() require("snacks").lazygit.open(lazygit) end, desc = "git: lazygit" },
         { "<leader>gl", function() require("snacks").lazygit.log_file(lazygit) end, desc = "git: lazygit log" },
         { "<localleader>go", function() require("snacks").gitbrowse.open(browse) end, desc = "git: open in browser", mode = { "n", "v" } },
-        { "<localleader>gy", function() require("snacks").gitbrowse.open(opts2) end, desc = "git: copy remote url", mode = { "n", "v" } },
+        { "<localleader>gy", function() require("snacks").gitbrowse.open(copy) end, desc = "git: copy remote url", mode = { "n", "v" } },
         -- window
         { "<leader>wn", function() Snacks.notifier.show_history() end, desc = "messages: show notifications" },
         { "<leader>ws", function() require("remote.snacks.scratch").select() end, desc = "snacks: select scratchpad" },
@@ -41,29 +25,10 @@ return {
       }
     end,
     init = function()
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "VeryLazy",
-        callback = function()
-          ---@diagnostic disable-next-line: duplicate-set-field
-          vim.print = function(...) Snacks.debug.inspect(...) end
-
-          ds.info = function(msg, opts)
-            opts = opts or {}
-            opts.title = opts.title or "Info"
-            Snacks.notify.info(msg, opts)
-          end
-          ds.warn = function(msg, opts)
-            opts = opts or {}
-            opts.title = opts.title or "Warning"
-            Snacks.notify.warn(msg, opts)
-          end
-          ds.error = function(msg, opts)
-            opts = opts or {}
-            opts.title = opts.title or "Error"
-            Snacks.notify.error(msg, opts)
-          end
-        end,
-      })
+      vim.api.nvim_create_autocmd(
+        "User",
+        { pattern = "VeryLazy", callback = require("remote.snacks.notify").init_notify }
+      )
     end,
     opts = {
       styles = {
@@ -82,18 +47,7 @@ return {
       scroll = { enabled = true },
       words = { enabled = true },
       dashboard = {
-        preset = {
-          -- stylua: ignore
-          keys = {
-            { key = "f", action = require("remote.telescope.util").files.project, icon = ds.pad(ds.icons.misc.Magnify, "right"), desc = " Find File" },
-            { key = "n", action = ":ene | startinsert", icon = ds.pad(ds.icons.documents.File, "right"), desc = " New File" },
-            { key = "g", action = require("remote.telescope.util").grep.dynamic, icon = ds.pad(ds.icons.misc.Data, "right"), desc = " Find Text" },
-            { key = "r", action = function() require("persistence").load() end, icon = ds.pad(ds.icons.misc.Revolve, "right"), desc = " Restore Session" },
-            { key = "c", action = require("remote.telescope.util").files.nvim_config, icon = ds.pad(ds.icons.misc.Gear, "right"), desc = " Configuration File" },
-            { key = "l", action = ":Lazy", icon = ds.pad(ds.icons.misc.Extensions, "right"), desc = " Plugin Manager" },
-            { key = "q", action = function() vim.api.nvim_input "<cmd>qa<cr>" end, icon = ds.pad(ds.icons.misc.Exit, "right"), desc = " Quit" },
-          },
-        },
+        preset = require("remote.snacks.dashboard").default_preset,
         sections = { { section = "header" }, { section = "keys", gap = 1, padding = 1 }, { section = "startup" } },
       },
       indent = {
