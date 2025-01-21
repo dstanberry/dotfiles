@@ -110,10 +110,12 @@ M.wo = function(win, wo)
 end
 
 ---@param buf number
-M.setup = function(buf)
+---@param opts? table
+M.setup = function(buf, opts)
   buf = buf or vim.api.nvim_get_current_buf()
+  opts = opts or {}
   local ft = vim.bo[buf].filetype or ""
-  local opts = defaults[ft] or {}
+  opts = defaults[ft] or opts
   for _, win in ipairs(vim.fn.win_findbuf(buf)) do
     if not vim.api.nvim_win_is_valid(win) or vim.api.nvim_win_get_buf(win) ~= buf then return end
     if not vim.b[buf].ts_highlight then

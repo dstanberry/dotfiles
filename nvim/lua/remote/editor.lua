@@ -8,12 +8,12 @@ return {
       user = user:sub(1, 1):upper() .. user:sub(2)
       return {
         auto_insert_mode = true,
-        highlight_headers = false,
+        highlight_headers = true,
         show_help = true,
         answer_header = string.format(" %s %s ", ds.icons.kind.Copilot, "Copilot"),
         question_header = string.format(" %s %s ", ds.icons.misc.User, user),
         error_header = "> [!ERROR] Error",
-        separator = "---",
+        separator = "───",
         window = {
           layout = "float",
           relative = "cursor",
@@ -52,9 +52,11 @@ return {
       require("CopilotChat").setup(opts)
       vim.api.nvim_create_autocmd("BufEnter", {
         pattern = "copilot-chat",
-        callback = function()
-          vim.opt_local.relativenumber = false
-          vim.opt_local.number = false
+        callback = function(args)
+          require("ft").setup(
+            args.buf,
+            { wo = { cursorline = false, number = false, relativenumber = false, winhighlight = "Title:PMenuSBar" } }
+          )
         end,
       })
       ds.plugin.on_load("telescope.nvim", function()
