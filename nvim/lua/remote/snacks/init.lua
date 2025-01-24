@@ -20,6 +20,7 @@ return {
         -- window
         { "<leader>wn", function() Snacks.notifier.show_history() end, desc = "messages: show notifications" },
         { "<leader>ws", function() require("remote.snacks.scratch").select() end, desc = "snacks: select scratchpad" },
+        { "<leader>wt", function() Snacks.terminal.toggle() end, desc = "snacks: toggle terminal" },
         { "<leader>wz", function() Snacks.zen.zen() end, desc = "snacks: zen mode" },
       }
     end,
@@ -37,6 +38,7 @@ return {
           wo = { cursorline = false, winhighlight = "FloatBorder:FloatBorderSB,Title:SnacksNotifierHistoryTitle" },
         },
         scratch = { wo = { winhighlight = "FloatBorder:FloatBorderSB,CursorLine:SnacksScratchCursorLine" } },
+        terminal = { wo = { winbar = "" } },
       },
       bigfile = { enabled = true },
       gitbrowse = { enabled = true },
