@@ -7,17 +7,16 @@ return {
       local gitbrowse_config = require "remote.snacks.gitbrowse"
       local browse = gitbrowse_config.browse
       local copy = gitbrowse_config.copy_url
-      local lazygit = gitbrowse_config.lazygit
       -- stylua: ignore
       return {
         -- lsp
-        { "]]", function() require("snacks").words.jump(vim.v.count1) end, desc = "lsp: goto next reference" },
-        { "[[", function() require("snacks").words.jump(-vim.v.count1) end, desc = "lsp: goto prev reference" },
+        { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "lsp: goto next reference" },
+        { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "lsp: goto prev reference" },
         -- git
-        { "<leader>gg", function() require("snacks").lazygit.open(lazygit) end, desc = "git: lazygit" },
-        { "<leader>gl", function() require("snacks").lazygit.log_file(lazygit) end, desc = "git: lazygit log" },
-        { "<localleader>go", function() require("snacks").gitbrowse.open(browse) end, desc = "git: open in browser", mode = { "n", "v" } },
-        { "<localleader>gy", function() require("snacks").gitbrowse.open(copy) end, desc = "git: copy remote url", mode = { "n", "v" } },
+        { "<leader>gg", function() Snacks.lazygit.open() end, desc = "git: lazygit" },
+        { "<leader>gl", function() Snacks.lazygit.log_file() end, desc = "git: lazygit log" },
+        { "<localleader>go", function() Snacks.gitbrowse.open(browse) end, desc = "git: open in browser", mode = { "n", "v" } },
+        { "<localleader>gy", function() Snacks.gitbrowse.open(copy) end, desc = "git: copy remote url", mode = { "n", "v" } },
         -- window
         { "<leader>wn", function() Snacks.notifier.show_history() end, desc = "messages: show notifications" },
         { "<leader>ws", function() require("remote.snacks.scratch").select() end, desc = "snacks: select scratchpad" },
@@ -49,6 +48,16 @@ return {
       dashboard = {
         preset = require("remote.snacks.dashboard").default_preset,
         sections = { { section = "header" }, { section = "keys", gap = 1, padding = 1 }, { section = "startup" } },
+      },
+      lazygit = {
+        theme = require("remote.snacks.lazygit").theme,
+        win = {
+          keys = {
+            cj = { "<c-j>", "ctrl_j", expr = true, mode = "t" },
+            ck = { "<c-k>", "ctrl_k", expr = true, mode = "t" },
+          },
+          actions = { ctrl_j = function() return "<c-j>" end, ctrl_k = function() return "<c-k>" end },
+        },
       },
       indent = {
         indent = { blank = "·", char = ds.icons.misc.VerticalBarThin, hl = "NonText" },
