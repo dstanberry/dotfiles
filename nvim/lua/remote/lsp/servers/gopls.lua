@@ -4,7 +4,6 @@ M.config = {
   settings = {
     gopls = {
       analyses = {
-        fieldalignment = false,
         fillreturns = true,
         nilness = true,
         nonewvars = true,
