@@ -9,25 +9,6 @@ for _, cmd in ipairs { "make", "cmake" } do
 end
 
 return {
-  { "nvim-telescope/telescope-live-grep-args.nvim", lazy = true },
-  { "nvim-telescope/telescope-symbols.nvim", lazy = true },
-  {
-    "nvim-telescope/telescope-file-browser.nvim",
-    lazy = true,
-    config = function() require("telescope").load_extension "file_browser" end,
-  },
-  {
-    "nvim-telescope/telescope-ui-select.nvim",
-    lazy = true,
-    init = function()
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.select = function(...)
-        require("lazy").load { plugins = { "telescope-ui-select.nvim" } }
-        return vim.ui.select(...)
-      end
-    end,
-    config = function() require("telescope").load_extension "ui-select" end,
-  },
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
@@ -62,35 +43,9 @@ return {
       },
     },
     cmd = "Telescope",
-    keys = function()
-      return {
-        -- file
-        { "<leader><leader>", util.files.project, desc = "telescope: find files (project)" },
-        { "<leader>ff", util.files.default, desc = "telescope: find files" },
-        { "<leader>fl", util.files.plugin_spec, desc = "telescope: find files (remote plugin spec)" },
-        { "<leader>fp", util.files.plugins, desc = "telescope: find files (remote plugins)" },
-        { "<leader>fr", util.files.recent, desc = "telescope: find files (recently used)" },
-        { "<localleader><leader>", util.files.nvim_config, desc = "telescope: find files (neovim config)" },
-        -- grep
-        { "<leader>f/", util.grep.register, desc = "telescope: find word (last searched)" },
-        { "<leader>fb", util.grep.buffer, desc = "telescope: find in buffer" },
-        { "<leader>fg", util.grep.dynamic, desc = "telescope: live grep" },
-        { "<localleader>fg", util.grep.dynamic_args, desc = "telescope: find in files (grep with args)" },
-        -- lsp
-        { "<leader>fw", util.misc.lsp_buffer_diagnostics, desc = "telescope: lsp diagnostics (buffer)" },
-        { "<leader>fW", util.misc.lsp_workspace_diagnostics, desc = "telescope: lsp diagnostics (workspace)" },
-        -- tree
-        { "<leader>fe", util.browse.project, desc = "telescope: browse project" },
-        { "<localleader>fe", util.browse.current_directory, desc = "telescope: browse current directory" },
-        -- misc
-        { "<leader>fk", util.misc.help_tags, desc = "telescope: help pages" },
-        { "<leader>fz", util.misc.spell_suggest, desc = "telescope: spelling suggestions" },
-      }
-    end,
     opts = function()
       local actions = require "telescope.actions"
       local layout = require "telescope.actions.layout"
-      local themes = require "telescope.themes"
 
       return {
         defaults = {
@@ -228,6 +183,7 @@ return {
             layout_config = { height = 40, prompt_position = "bottom" },
           },
           lsp_workspace_symbols = {
+            symbols = util.lsp_symbols_filter(),
             layout_strategy = "vertical",
             layout_config = { height = 40, prompt_position = "bottom" },
             path_display = { "shorten" },
@@ -242,50 +198,10 @@ return {
           },
         },
         extensions = {
-          file_browser = {
-            theme = "ivy",
-            grouped = true,
-            hidden = true,
-            sorting_strategy = "ascending",
-          },
           fzf = {
             case_mode = "smart_case",
             override_file_sorter = true,
             override_generic_sorter = false,
-          },
-          live_grep_args = {
-            auto_quoting = true,
-            layout_strategy = "vertical",
-            mappings = {
-              i = {
-                ["<c-g>"] = actions.to_fuzzy_refine,
-                ["<c-k>"] = function(...) require("telescope-live-grep-args.actions").quote_prompt()(...) end,
-                ["<c-i>"] = function(...)
-                  require("telescope-live-grep-args.actions").quote_prompt { postfix = " --iglob " }(...)
-                end,
-              },
-              n = {
-                ["<c-g>"] = actions.to_fuzzy_refine,
-                ["<c-k>"] = function(...) require("telescope-live-grep-args.actions").quote_prompt()(...) end,
-                ["<c-i>"] = function(...)
-                  require("telescope-live-grep-args.actions").quote_prompt { postfix = " --iglob " }(...)
-                end,
-              },
-            },
-          },
-          ["ui-select"] = {
-            themes.get_dropdown {
-              previewer = false,
-              layout_config = {
-                height = function(self, _, max_lines)
-                  local results = #self.finder.results
-                  local PADDING = 4
-                  local LIMIT = math.floor(max_lines / 2)
-                  return (results <= (LIMIT - PADDING) and results + PADDING or LIMIT)
-                end,
-                prompt_position = "top",
-              },
-            },
           },
         },
       }

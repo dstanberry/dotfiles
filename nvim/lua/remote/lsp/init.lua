@@ -12,7 +12,7 @@ return {
   { "seblj/roslyn.nvim", lazy = true },
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },
-  { "mickael-menu/zk-nvim", lazy = true },
+  { "mickael-menu/zk-nvim", lazy = true, url = "https://github.com/pkazmier/zk-nvim", branch = "snacks-picker" },
   {
     "neovim/nvim-lspconfig",
     event = "LazyFile",

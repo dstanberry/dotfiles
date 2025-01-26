@@ -11,14 +11,14 @@ M.config = {
     keys = {
       {
         key = "f",
-        action = require("remote.telescope.util").files.project,
+        action = function() Snacks.picker.files() end,
         icon = ds.pad(ds.icons.misc.Magnify, "right"),
         desc = " Find File",
       },
       { key = "n", action = ":ene | startinsert", icon = ds.pad(ds.icons.documents.File, "right"), desc = " New File" },
       {
         key = "g",
-        action = require("remote.telescope.util").grep.dynamic,
+        action = function() Snacks.picker.grep() end,
         icon = ds.pad(ds.icons.misc.Data, "right"),
         desc = " Find Text",
       },
@@ -30,7 +30,7 @@ M.config = {
       },
       {
         key = "c",
-        action = require("remote.telescope.util").files.nvim_config,
+        action = function() Snacks.picker.files { cwd = tostring(vim.fn.stdpath "config") } end,
         icon = ds.pad(ds.icons.misc.Gear, "right"),
         desc = " Configuration File",
       },

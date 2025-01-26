@@ -12,6 +12,10 @@ M.get = function(c)
   local MAGENTA_LIGHT = "#bfafc4"
   local YELLOW_LIGHT = "#f0e7b9"
 
+  local GRAY = ds.color.darken(c.gray0, 10)
+  local GRAY_DARK = ds.color.darken(c.gray0, 25)
+  local BLUE = ds.color.darken(c.blue1, 43)
+
   -- stylua: ignore
   return {
     -- dashboard
@@ -65,6 +69,27 @@ M.get = function(c)
 
     SnacksNotifierHistory       = { fg = c.fg1, bg = c.bg0 },
     SnacksNotifierHistoryTitle  = { fg = c.blue0, bg = c.bg0, bold = true },
+
+    -- picker
+    SnacksPicker                = { bg = GRAY_DARK },
+    SnacksPickerBorder          = { fg = GRAY_DARK, bg = GRAY_DARK },
+
+    SnacksPickerBoxTitle        = { fg = c.bg2, bg = c.red1, bold = true },
+
+    SnacksPickerInputBorder     = { fg = c.red1, bg = GRAY_DARK },
+    SnacksPickerInputTitle      = { fg = c.bg2, bg = c.red1, bold = true },
+
+    SnacksPickerList            = { bg = GRAY_DARK },
+    SnacksPickerListCursorLine  = { bg = BLUE, bold = true },
+
+    SnacksPickerPreview         = { bg = c.bg0 },
+    SnacksPickerPreviewBorder   = { fg = c.bg0, bg = c.bg0 },
+    SnacksPickerPreviewTitle    = { fg = c.bg2, bg = c.bg0, bold = true },
+
+    SnacksPickerMatch           = { fg = c.orange0, bold = true },
+    SnacksPickerDir             = { fg = c.gray2 },
+    SnacksPickerPrompt          = { fg = c.green2, bold = true },
+    SnacksPickerSelected        = { fg = c.magenta1},
 
     -- scratch
     SnacksScratchTitle          = { fg = c.magenta0, bg = c.bg0, bold = true },

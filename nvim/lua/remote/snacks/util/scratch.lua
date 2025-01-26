@@ -2,8 +2,10 @@
 local M = {}
 
 M.select = function()
-  local widths = { 0, 0, 0, 0 }
   local items = require("snacks").scratch.list()
+  local widths = { 0, 0, 0, 0 }
+
+  if not items or #items == 0 then return Snacks.scratch.open() end
   for _, item in ipairs(items) do
     item.icon = item.icon or Snacks.util.icon(item.ft, "filetype")
     item.branch = item.branch and ("branch:%s"):format(item.branch) or ""
@@ -13,38 +15,36 @@ M.select = function()
     widths[3] = math.max(widths[3], vim.api.nvim_strwidth(item.name))
     widths[4] = math.max(widths[4], vim.api.nvim_strwidth(item.branch))
   end
-  require("remote.telescope.util.picker").create("dropdown", items, {
-    title = "Select Scratch Buffer",
-    mappings = {
-      {
-        keymap = "<c-d>",
-        action = function(bufnr, actions, selection)
-          if not (bufnr and actions) then return end
-          if selection and selection.value then
-            local item = selection.value
-            os.remove(item.file)
-            ds.info(("Deleted %s scratch file "):format(item.ft))
-            actions.close(bufnr)
-            vim.schedule(M.select)
-          end
-        end,
+
+  Snacks.picker.pick {
+    source = "select",
+    items = items,
+    layout = {
+      preset = "select",
+      preview = false,
+      layout = { height = math.floor(math.min(vim.o.lines * 0.6 - 10, #items) + 0.5) + 1 },
+    },
+    win = {
+      input = {
+        keys = { ["<c-d>"] = { "delete_scratch", mode = { "i", "n" } } },
       },
     },
-    entry_maker = function(item)
-      local parts = { item.cwd, item.icon, item.name, item.branch }
-      for i, part in ipairs(parts) do
-        parts[i] = part .. string.rep(" ", widths[i] - vim.api.nvim_strwidth(part))
-      end
-      item.label = table.concat(parts, " ")
-      return { ordinal = item.label, display = item.label, value = item }
-    end,
-    callback = function(selection)
-      if selection and selection.value then
-        local item = selection.value
-        require("snacks").scratch.open { icon = item.icon, file = item.file, name = item.name, ft = item.ft }
-      end
-    end,
-  })
+    actions = {
+      confirm = function(picker, item)
+        picker:close()
+        vim.schedule(
+          function() Snacks.scratch.open { icon = item.icon, file = item.file, name = item.name, ft = item.ft } end
+        )
+      end,
+      delete_scratch = function(picker, item)
+        if not (picker and item) then return end
+        os.remove(item.file)
+        ds.info(("Deleted %s scratch file "):format(item.ft))
+        picker:close()
+        vim.schedule(M.select)
+      end,
+    },
+  }
 end
 
 return M

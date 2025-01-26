@@ -8,7 +8,7 @@ local init_zk = function()
   if M.initialized then return end
   M.initialized = true
   require("zk").setup {
-    picker = "telescope",
+    picker = "snacks_picker",
     lsp = {
       config = {
         name = "zk",

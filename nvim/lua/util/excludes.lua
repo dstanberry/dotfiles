@@ -29,8 +29,11 @@ M.ft = {
     "snacks_dashboard",
     "snacks_input",
     "snacks_notif_history",
+    "snacks_picker_input",
+    "snacks_picker_list",
     "snacks_terminal",
     "TelescopePrompt",
+    "TelescopeResults",
     "trouble",
   },
   wb_disabled = {

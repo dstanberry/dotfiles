@@ -8,11 +8,29 @@ return {
     keys = function()
       local browse = util.gitbrowse.browse
       local copy = util.gitbrowse.copy_url
+      local lazy_rtp = vim.fs.joinpath(vim.fn.stdpath "data", "lazy")
+      local nvim_path = tostring(vim.fn.stdpath "config")
       -- stylua: ignore
       return {
         -- lsp
         { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "lsp: goto next reference" },
         { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "lsp: goto prev reference" },
+        -- files
+        { "<leader><leader>", function() Snacks.picker.files() end, desc = "picker: find files" },
+        { "<leader>f;", function() Snacks.picker.command_history() end, desc = "picker: find word (last searched)" },
+        { "<leader>f/", function() Snacks.picker.registers() end, desc = "picker: find word (last searched)" },
+        { "<leader>fb", function() Snacks.picker.grep_buffers() end, desc = "picker: find in buffers (grep)" },
+        { "<leader>fB", function() Snacks.picker.buffers() end, desc = "picker: find files (buffers)" },
+        { "<leader>fk", function() Snacks.picker.help() end, desc = "picker: help pages" },
+        ---@diagnostic disable-next-line: undefined-field
+        { "<leader>fl", function() Snacks.picker.lazy() end, desc = "picker: find plugin specs" },
+        { "<leader>fp", function () Snacks.picker.files { cwd = lazy_rtp } end, desc = "picker: find remote plugins" },
+        ---@diagnostic disable-next-line: undefined-field
+        { "<leader>ft", function () Snacks.picker.todo_comments() end, desc = "picker: find todo comments" },
+        ---@diagnostic disable-next-line: undefined-field
+        { "<leader>fz", function () Snacks.picker.spelling() end, desc = "picker: spelling suggestionz" },
+        { "<localleader><leader>", function() Snacks.picker.files { cwd = nvim_path } end, desc = "picker: find config files" },
+        { "<localleader>fg", function() Snacks.picker.grep() end, desc = "picker: find in files (grep)" },
         -- git
         { "<leader>gg", function() Snacks.lazygit.open() end, desc = "git: lazygit" },
         { "<leader>gl", function() Snacks.lazygit.log_file() end, desc = "git: lazygit log" },
@@ -20,27 +38,30 @@ return {
         { "<localleader>gy", function() Snacks.gitbrowse.open(copy) end, desc = "git: copy remote url", mode = { "n", "v" } },
         -- window
         { "<leader>wn", function() Snacks.notifier.show_history() end, desc = "messages: show notifications" },
-        { "<leader>ws", function() util.scratch.select() end, desc = "snacks: select scratchpad" },
-        { "<leader>wt", function() Snacks.terminal.toggle() end, desc = "snacks: toggle terminal" },
-        { "<leader>wz", function() Snacks.zen.zen() end, desc = "snacks: zen mode" },
+        { "<leader>ws", function() util.scratch.select() end, desc = "notes: select scratchpad" },
+        { "<leader>wt", function() Snacks.terminal.toggle() end, desc = "terminal: toggle split" },
+        { "<leader>wz", function() Snacks.zen.zen() end, desc = "zen: toggle window" },
       }
     end,
     init = function() util.on_init() end,
-    opts = {
-      -- buffer/window options
-      styles = util.styles,
-      -- plugins using default config
-      bigfile = { enabled = true },
-      gitbrowse = { enabled = true },
-      quickfile = { enabled = true },
-      scroll = { enabled = true },
-      words = { enabled = true },
-      -- plugins with custom config
-      dashboard = util.dashboard.config,
-      indent = util.indent.config,
-      input = { win = { keys = { i_jk = { "jk", { "cmp_close", "cancel" }, mode = "i" } } } },
-      lazygit = util.lazygit.config,
-      notifier = { style = "compact" },
-    },
+    opts = function()
+      return {
+        -- buffer/window options
+        styles = util.styles,
+        -- plugins using default config
+        bigfile = { enabled = true },
+        gitbrowse = { enabled = true },
+        quickfile = { enabled = true },
+        scroll = { enabled = true },
+        words = { enabled = true },
+        -- plugins with custom config
+        dashboard = util.dashboard.config,
+        indent = util.indent.config,
+        input = { win = { keys = { i_jk = { "jk", { "cmp_close", "cancel" }, mode = "i" } } } },
+        lazygit = util.lazygit.config,
+        notifier = { style = "compact" },
+        picker = util.picker.config(),
+      }
+    end,
   },
 }

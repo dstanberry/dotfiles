@@ -112,9 +112,9 @@ M.on_attach = function(client, bufnr)
   if client.server_capabilities.definitionProvider then
     local _definition = vim.lsp.buf.definition
     local _type_definition = vim.lsp.buf.type_definition
-    if ds.plugin.is_installed "telescope.nvim" then
-      _definition = function() require("telescope.builtin").lsp_definitions { reuse_win = true } end
-      _type_definition = function() require("telescope.builtin").lsp_type_definitions { reuse_win = true } end
+    if ds.plugin.is_installed "snacks.nvim" then
+      _definition = function() Snacks.picker.lsp_definitions() end
+      _type_definition = function() Snacks.picker.lsp_type_definitions { reuse_win = true } end
     end
     vim.keymap.set("n", "gd", _definition, { buffer = bufnr, desc = "lsp: goto definition" })
     vim.keymap.set("n", "gt", _type_definition, { buffer = bufnr, desc = "lsp: goto type definition" })
@@ -130,9 +130,7 @@ M.on_attach = function(client, bufnr)
 
   if client.server_capabilities.documentHighlightProvider then
     local _references = vim.lsp.buf.references
-    if ds.plugin.is_installed "telescope.nvim" then
-      _references = function() require("telescope.builtin").lsp_references() end
-    end
+    if ds.plugin.is_installed "snacks.nvim" then _references = function() Snacks.picker.lsp_references() end end
     vim.keymap.set("n", "gr", _references, { buffer = bufnr, desc = "lsp: show references" })
 
     local doc_highlight = ds.augroup "lsp_dochighlight"
@@ -251,10 +249,13 @@ M.setup = function()
     },
   }
 
-  local _document_symbols = function() require("telescope.builtin").lsp_document_symbols() end
-  local _workspace_symbols = function() require("telescope.builtin").lsp_dynamic_workspace_symbols() end
-  vim.lsp.handlers["textDocument/documentSymbol"] = _document_symbols
-  vim.lsp.handlers["workspace/symbol"] = _workspace_symbols
+  if ds.plugin.is_installed "snacks.nvim" then
+    local _document_symbols = function() Snacks.picker.lsp_symbols() end
+    ---@diagnostic disable-next-line: undefined-field
+    local _workspace_symbols = function() Snacks.picker.lsp_workspace_symbols() end
+    vim.lsp.handlers["textDocument/documentSymbol"] = _document_symbols
+    vim.lsp.handlers["workspace/symbol"] = _workspace_symbols
+  end
 
   -- TODO: remove after functionality is merged upstream
   -- https://github.com/neovim/neovim/issues/19649#issuecomment-1327287313

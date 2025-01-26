@@ -4,6 +4,7 @@
 ---@field lazygit remote.snacks.util.lazygit
 ---@field indent remote.snacks.util.indent
 ---@field notify remote.snacks.util.notify
+---@field picker remote.snacks.util.picker
 ---@field scratch remote.snacks.util.scratch
 local M = {}
 
