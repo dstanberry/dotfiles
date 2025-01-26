@@ -8,6 +8,13 @@ M.browse = {
   url_patterns = ghe and { [ghe] = { branch = "/tree/{branch}", file = "/blob/{branch}/{file}#L{line}" } },
 }
 
-M.copy_url = { url_pattern = M.browse.url_patterns, open = function(url) vim.fn.setreg("+", url) end }
+M.copy_url = {
+  notify = false,
+  url_pattern = M.browse.url_patterns,
+  open = function(url)
+    vim.fn.setreg("+", url)
+    ds.info("URL copied to clipboard.\n\n" .. url)
+  end,
+}
 
 return M
