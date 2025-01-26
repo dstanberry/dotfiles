@@ -12,23 +12,18 @@ setmetatable(M, {
   end,
 })
 
-function M.collect_all(...)
+function M.collect_available(prompt_bufnr)
   local actions = require "telescope.actions"
+  local action_state = require "telescope.actions.state"
 
   if package.loaded["trouble"] then
-    return require("trouble.sources.telescope").open(...)
+    return require("trouble.sources.telescope").open(prompt_bufnr)
   else
-    return actions.send_to_qflist(...) + actions.open_qflist(...)
-  end
-end
-
-function M.collect_selected(...)
-  local actions = require "telescope.actions"
-
-  if package.loaded["trouble"] then
-    return require("trouble.sources.telescope").open(...)
-  else
-    return actions.send_selected_to_qflist(...) + actions.open_qflist(...)
+    local picker = action_state.get_current_picker(prompt_bufnr)
+    if #vim.tbl_keys(picker:get_multi_selection()) > 0 then
+      return actions.send_selected_to_qflist(prompt_bufnr) + actions.open_qflist(prompt_bufnr)
+    end
+    return actions.send_to_qflist(prompt_bufnr) + actions.open_qflist(prompt_bufnr)
   end
 end
 
@@ -146,7 +141,7 @@ function M.set_prompt_to_entry_value(prompt_bufnr)
   state.get_current_picker(prompt_bufnr):reset_prompt(entry.ordinal)
 end
 
-function M.switch_focus(prompt_bufnr)
+function M.toggle_focus(prompt_bufnr)
   local actions = require "telescope.actions"
   local state = require "telescope.actions.state"
 
@@ -162,7 +157,7 @@ function M.switch_focus(prompt_bufnr)
     }
   end
   local _close = function() actions.close(prompt_bufnr) end
-  vim.keymap.set({ "i", "n" }, "<a-t>", _to_prompt, { buffer = bufnr })
+  vim.keymap.set("n", "/", _to_prompt, { buffer = bufnr })
   vim.keymap.set({ "i", "n" }, "q", _close, { buffer = bufnr })
   vim.cmd.lua { args = { ("vim.api.nvim_set_current_win(%s)"):format(winid) }, mods = { noautocmd = true } }
 end

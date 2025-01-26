@@ -112,7 +112,6 @@ return {
           history = { path = vim.fs.joinpath(vim.fn.stdpath "cache", "telescope_history") },
           mappings = {
             i = {
-              ["<a-t>"] = util.switch_focus,
               ["<a-y>"] = util.set_prompt_to_entry_value,
               ["<c-down>"] = actions.cycle_history_next,
               ["<c-up>"] = actions.cycle_history_prev,
@@ -124,18 +123,17 @@ return {
               ["<c-t>"] = actions.select_tab,
               ["<c-v>"] = actions.select_vertical,
               ["<c-x>"] = actions.select_horizontal,
+              ["<c-q>"] = util.collect_available,
               ["<c-n>"] = false,
               ["<c-u>"] = false,
               ["jk"] = actions.close,
-              ["<a-q>"] = util.collect_selected,
-              ["<c-q>"] = util.collect_all,
             },
             n = {
-              ["<a-t>"] = util.switch_focus,
               ["<c-d>"] = actions.preview_scrolling_down,
               ["<c-f>"] = actions.preview_scrolling_up,
-              ["yy"] = util.set_prompt_to_entry_value,
+              ["/"] = util.toggle_focus,
               ["q"] = actions.close,
+              ["yy"] = util.set_prompt_to_entry_value,
             },
           },
         },
@@ -174,8 +172,8 @@ return {
           live_grep = {
             layout_strategy = "vertical",
             mappings = {
-              i = { ["<c-f>"] = actions.to_fuzzy_refine },
-              n = { ["<c-f>"] = actions.to_fuzzy_refine },
+              i = { ["<c-g>"] = actions.to_fuzzy_refine },
+              n = { ["<c-g>"] = actions.to_fuzzy_refine },
             },
           },
           git_branches = {
@@ -215,8 +213,8 @@ return {
             layout_config = { height = 40, prompt_position = "bottom" },
             path_display = { "shorten" },
             mappings = {
-              i = { ["<c-f>"] = actions.to_fuzzy_refine },
-              n = { ["<c-f>"] = actions.to_fuzzy_refine },
+              i = { ["<c-g>"] = actions.to_fuzzy_refine },
+              n = { ["<c-g>"] = actions.to_fuzzy_refine },
             },
           },
           lsp_references = {
@@ -260,14 +258,14 @@ return {
             layout_strategy = "vertical",
             mappings = {
               i = {
-                ["<c-f>"] = actions.to_fuzzy_refine,
+                ["<c-g>"] = actions.to_fuzzy_refine,
                 ["<c-k>"] = function(...) require("telescope-live-grep-args.actions").quote_prompt()(...) end,
                 ["<c-i>"] = function(...)
                   require("telescope-live-grep-args.actions").quote_prompt { postfix = " --iglob " }(...)
                 end,
               },
               n = {
-                ["<c-f>"] = actions.to_fuzzy_refine,
+                ["<c-g>"] = actions.to_fuzzy_refine,
                 ["<c-k>"] = function(...) require("telescope-live-grep-args.actions").quote_prompt()(...) end,
                 ["<c-i>"] = function(...)
                   require("telescope-live-grep-args.actions").quote_prompt { postfix = " --iglob " }(...)
