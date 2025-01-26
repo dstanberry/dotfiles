@@ -1,3 +1,4 @@
+---@class remote.snacks.util.gitbrowse
 local M = {}
 
 local ghe = vim.g.ds_env.github_hostname

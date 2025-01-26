@@ -1,6 +1,7 @@
+---@class remote.snacks.util.notify
 local M = {}
 
-M.init_notify = function()
+M.setup = function()
   ---@diagnostic disable-next-line: duplicate-set-field
   vim.print = function(...) Snacks.debug.inspect(...) end
 
