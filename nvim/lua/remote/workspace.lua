@@ -202,10 +202,12 @@ return {
       skip_confirm_for_simple_edits = true,
       columns = { "icon" },
       keymaps = {
+        ["<a-h>"] = { "actions.toggle_hidden", mode = "n" },
         ["<c-h>"] = false,
         ["<c-t>"] = { "actions.select", opts = { tab = true }, desc = "oil: open in a new tab" },
         ["<c-s>"] = { "actions.select", opts = { vertical = true }, desc = "oil: open in a vertical split" },
         ["-"] = "actions.parent",
+        ["g."] = false,
         ["q"] = "actions.close",
       },
       float = {
@@ -213,10 +215,11 @@ return {
         max_width = math.floor(vim.o.columns * 0.6),
         max_height = math.floor(vim.o.lines * 0.4),
         win_options = {
-          winblend = vim.o.pumblend,
           cursorline = false,
           number = false,
           relativenumber = false,
+          winblend = vim.o.pumblend,
+          winhighlight = "Title:OilFloatTitle",
         },
       },
       keymaps_help = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
