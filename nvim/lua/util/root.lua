@@ -1,7 +1,7 @@
 ---@class util.root
 ---@overload fun(): string
 local M = setmetatable({}, {
-  __call = function(m) return m.get() end,
+  __call = function(m, ...) return m.get(...) end,
 })
 
 ---@alias util.root.detector_fn fun(buf: number): (string|string[])
