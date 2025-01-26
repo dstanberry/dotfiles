@@ -73,13 +73,13 @@ M.config = function()
     win = {
       input = {
         keys = vim.tbl_extend("force", trouble.keys, {
-          ["jk"] = { "close", mode = "i" },
-          ["<c-/>"] = { "toggle_help", mode = "i" },
-          ["<c-n>"] = false,
-          ["<c-u>"] = { "<c-s-u>", expr = true, mode = "i" },
           ["<a-c>"] = { "toggle_cwd", mode = { "i", "n" } },
+          ["<c-/>"] = { "toggle_help", mode = { "i", "n" } },
           ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
           ["<c-f>"] = { "preview_scroll_up", mode = { "i", "n" } },
+          ["<c-n>"] = false,
+          ["<c-u>"] = { "<c-s-u>", expr = true, mode = "i" },
+          ["jk"] = { "close", mode = "i" },
         }),
       },
     },
