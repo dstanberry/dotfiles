@@ -8,7 +8,6 @@ return {
       popup = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
     },
   },
-  { "Hoffs/omnisharp-extended-lsp.nvim", lazy = true },
   { "seblj/roslyn.nvim", lazy = true },
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },
@@ -57,24 +56,6 @@ return {
       end)
       ds.foreach(servers, function(config, server) lspconfig[server].setup(config) end)
     end,
-  },
-  {
-    "rachartier/tiny-code-action.nvim",
-    keys = {
-      { "gA", function() require("tiny-code-action").code_action() end, desc = "tiny-code-action: code action" },
-    },
-    opts = {
-      backend = "delta",
-      backend_opts = { use_git_config = true },
-      telescope_opts = {
-        layout_strategy = "vertical",
-        layout_config = {
-          height = 25,
-          prompt_position = "bottom",
-          preview_height = function(_, _, max_lines) return math.max(math.floor(max_lines * 0.5), 10) end,
-        },
-      },
-    },
   },
   {
     "rachartier/tiny-inline-diagnostic.nvim",

@@ -14,7 +14,6 @@ return {
   "lua-language-server",
   "marksman",
   "npm-groovy-lint",
-  "omnisharp",
   "powershell-editor-services",
   "pylance",
   "roslyn",
