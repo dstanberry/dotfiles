@@ -8,19 +8,20 @@ M.get = function(c)
   local BLUE = ds.color.darken(c.blue1, 43)
   -- stylua: ignore
   return {
-    TelescopePromptBorder = { fg = GRAY, bg = GRAY },
     TelescopePreviewBorder = { fg = c.bg0, bg = c.bg0 },
-    TelescopeResultsBorder = { fg = GRAY_DARK, bg = GRAY_DARK },
-
-    TelescopePromptTitle = { fg = c.bg2, bg = c.red1, bold = true },
+    TelescopePreviewNormal = { fg = c.green2, bg = c.bg0 },
     TelescopePreviewTitle = { fg = c.bg0 },
+
+    TelescopePromptBorder = { fg = GRAY, bg = GRAY },
+    TelescopePromptCounter = { fg = c.gray1 },
+    TelescopePromptNormal = { bg = GRAY },
+    TelescopePromptPrefix = { fg = c.green2 },
+    TelescopePromptTitle = { fg = c.bg2, bg = c.red1, bold = true },
+
+    TelescopeResultsBorder = { fg = GRAY_DARK, bg = GRAY_DARK },
+    TelescopeResultsNormal = { bg = GRAY_DARK },
     TelescopeResultsTitle = { fg = GRAY_DARK },
 
-    TelescopePromptCounter = { fg = c.gray1 },
-    TelescopePromptPrefix = { fg = c.green2 },
-    TelescopePromptNormal = { bg = GRAY },
-    TelescopePreviewNormal = { fg = c.green2, bg = c.bg0 },
-    TelescopeResultsNormal = { bg = GRAY_DARK },
     TelescopeMatching = { fg = c.orange0, bold = true },
     TelescopeMultiSelection = { fg = c.magenta1 },
     TelescopeSelection = { bg = BLUE, bold = true },

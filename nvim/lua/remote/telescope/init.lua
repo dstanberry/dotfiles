@@ -1,3 +1,5 @@
+local util = require "remote.telescope.util"
+
 local build_cmd ---@type string?
 for _, cmd in ipairs { "make", "cmake" } do
   if vim.fn.executable(cmd) == 1 then
@@ -61,7 +63,6 @@ return {
     },
     cmd = "Telescope",
     keys = function()
-      local util = require "remote.telescope.util"
       return {
         -- file
         { "<leader><leader>", util.files.project, desc = "telescope: find files (project)" },
@@ -87,7 +88,6 @@ return {
       }
     end,
     opts = function()
-      local util = require "remote.telescope.util"
       local actions = require "telescope.actions"
       local layout = require "telescope.actions.layout"
       local themes = require "telescope.themes"
