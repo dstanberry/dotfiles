@@ -198,7 +198,7 @@ return {
   {
     "folke/todo-comments.nvim",
     event = "LazyFile",
-    cmd = { "TodoQuickFix", "TodoTelescope", "TodoTrouble" },
+    cmd = { "TodoQuickFix", "TodoTrouble" },
     opts = {
       signs = false,
       sign_priority = 0,

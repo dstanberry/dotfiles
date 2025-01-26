@@ -161,34 +161,19 @@ return {
     "ThePrimeagen/harpoon",
     branch = "harpoon2",
     keys = function()
-      local telescope_picker = function(files)
-        local file_paths = {}
-        for _, item in ipairs(files.items) do
-          table.insert(file_paths, item.value)
-        end
-        require("telescope")
-          .new(require("telescope.themes").get_ivy {}, {
-            prompt_title = "Harpoon (marks)",
-            finder = require("telescope.finders").new_table { results = file_paths },
-            previewer = require("telescope.config").values.file_previewer {},
-            sorter = require("telescope.sorters").get_generic_fuzzy_sorter(),
-            layout_config = { height = 30, prompt_position = "top" },
-          })
-          :find()
+      local toggle_menu = function()
+        local harpoon = require "harpoon"
+        harpoon.ui:toggle_quick_menu(harpoon:list())
       end
 
       local keys = {
         { "<leader>h", desc = "+harpoon" },
         { "<leader>ha", function() require("harpoon"):list():add() end, desc = "harpoon: mark file" },
-        { "<leader>hf", function() telescope_picker(require("harpoon"):list()) end, desc = "harpoon: find marks" },
+        { "<leader>hf", function() toggle_menu() end, desc = "harpoon: find marks" },
       }
-
       for i = 1, 5 do
-        table.insert(keys, {
-          "<leader>h" .. i,
-          function() require("harpoon"):list():select(i) end,
-          desc = "harpoon: goto " .. i,
-        })
+        -- stylua: ignore
+        table.insert(keys, { "<leader>h" .. i, function() require("harpoon"):list():select(i) end, desc = "harpoon: goto " .. i })
       end
       return keys
     end,

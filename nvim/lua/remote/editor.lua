@@ -33,11 +33,12 @@ return {
       local _clear = function() return require("CopilotChat").reset() end
       local _chat = function()
         local actions = require "CopilotChat.actions"
-        local prompt_actions =
-          vim.tbl_deep_extend("keep", { prompt = "Copilot Quick Actions" }, actions.prompt_actions())
-        require("CopilotChat.integrations.telescope").pick(prompt_actions, {
-          layout_strategy = "vertical",
-          layout_config = { height = 35, prompt_position = "top" },
+        local items = vim.tbl_deep_extend("keep", { prompt = "Copilot Quick Actions" }, actions.prompt_actions())
+        require("CopilotChat.integrations.snacks").pick(items, {
+          layout = {
+            preset = "vertical",
+            layout = { height = math.floor(math.min(vim.o.lines * 0.6 - 10, #items.actions) + 0.5) + 1 },
+          },
         })
       end
 
@@ -59,21 +60,6 @@ return {
           )
         end,
       })
-      ds.plugin.on_load("telescope.nvim", function()
-        vim.keymap.set({ "n", "v" }, "<leader>cd", function()
-          local actions = require "CopilotChat.actions"
-          local help = actions.help_actions()
-          if not help then
-            print "no diagnostics found on the current line"
-            return
-          end
-          require("CopilotChat.integrations.telescope").pick(help)
-        end, { desc = "copilot: show diagnostics help" })
-        vim.keymap.set({ "n", "v" }, "<leader>cp", function()
-          local actions = require "CopilotChat.actions"
-          require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
-        end, { desc = "copilot: show available actions" })
-      end)
     end,
   },
   {
