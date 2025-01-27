@@ -6,9 +6,7 @@ local M = {}
 local trouble = ds.plugin.is_installed "trouble.nvim"
     and {
       actions = require("trouble.sources.snacks").actions,
-      keys = {
-        ["<c-q>"] = { "trouble_open", mode = { "i", "n" } },
-      },
+      keys = { ["<c-q>"] = { "trouble_open", mode = { "i", "n" } } },
     }
   or { actions = {}, keys = {} }
 
@@ -49,12 +47,6 @@ local kind_filter = {
 M.config = function()
   local layouts = require "snacks.picker.config.layouts"
 
-  layouts.vscode.layout.row = 2
-  layouts.vscode.layout.border = ds.map(
-    ds.icons.border.Default,
-    function(icon) return { icon, "SnacksPickerBorderSB" } end
-  )
-
   layouts.telescope_wide = vim.deepcopy(layouts.telescope)
   ---@diagnostic disable-next-line: assign-type-mismatch
   layouts.telescope_wide.layout.backdrop = true
@@ -70,6 +62,12 @@ M.config = function()
 
   layouts.vertical_wide = vim.deepcopy(layouts.vertical_compact)
   layouts.vertical_wide.layout.height = 0.7
+
+  layouts.vscode.layout.row = 2
+  layouts.vscode.layout.border = ds.map(
+    ds.icons.border.Default,
+    function(icon) return { icon, "SnacksPickerBorderSB" } end
+  )
 
   return {
     prompt = ds.pad(ds.icons.misc.Prompt, "right"),

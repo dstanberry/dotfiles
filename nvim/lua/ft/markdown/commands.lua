@@ -1,22 +1,19 @@
 local markdown = require "ft.markdown"
 
-local find_orphaned =
-  function() markdown.zk.edit({ orphan = true, excludeHrefs = { "resources" } }, { title = "Notes (orphaned)" }) end
-
 local find_recent = function() markdown.zk.edit({ createdAfter = "2 weeks ago" }, { title = "Notes (recent)" }) end
+
+local find_orphaned = function()
+  markdown.zk.edit({ orphan = true, excludeHrefs = { "resources" } }, { title = "Notes (orphaned)" })
+end
 
 local find_templated = function(template)
   markdown.zk.edit({ hrefs = { template }, sort = { "created" } }, { title = string.format("Notes (%s)", template) })
 end
 
 vim.api.nvim_create_user_command("ZkOrphans", find_orphaned, {})
-
 vim.api.nvim_create_user_command("ZkRecent", find_recent, {})
-
 vim.api.nvim_create_user_command("ZkDaily", function() find_templated "journal" end, {})
-
 vim.api.nvim_create_user_command("ZkMeeting", function() find_templated "inbox" end, {})
-
 vim.api.nvim_create_user_command("ZkResource", function() find_templated "resources" end, {})
 
 vim.api.nvim_create_user_command("ZkGrep", function(opts)
