@@ -45,6 +45,7 @@ ds.plugin.setup {
         jenkinsfile = "groovy",
         json = "jsonc",
         mdx = "markdown.mdx",
+        tf = "terraform",
         vifm = "vim",
         vifmrc = "vim",
       },
