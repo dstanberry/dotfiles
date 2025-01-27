@@ -6,7 +6,7 @@ local M = {}
 ---@param ns number
 ---@param capture_node TSNode
 ---@param capture_text string
----@param range tsRange
+---@param range { start_row: integer, start_col: integer, end_row: integer, end_col: integer }
 M.string_init = function(bufnr, ns, capture_node, capture_text, range)
   local pre = capture_text:gsub([["]], "")
   if pre == "f" then

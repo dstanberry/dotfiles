@@ -6,7 +6,7 @@ local M = {}
 ---@param ns number
 ---@param capture_node TSNode
 ---@param capture_text string
----@param range tsRange
+---@param range { start_row: integer, start_col: integer, end_row: integer, end_col: integer }
 M.class_values = function(bufnr, ns, capture_node, capture_text, range)
   local attr_name = vim.treesitter.get_node_text(capture_node:parent():prev_named_sibling(), bufnr)
   if attr_name == "class" then
