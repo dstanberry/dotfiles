@@ -17,7 +17,6 @@ return {
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "main",
     cmd = "CopilotChat",
     keys = function()
       local _toggle = function() require("CopilotChat").toggle() end
@@ -35,8 +34,8 @@ return {
 
       return {
         { "<leader>c", mode = { "n", "v" }, "", desc = "+copilot" },
-        { "<leader>cc", mode = { "n", "v" }, _toggle, desc = "copilot: toggle chat" },
         { "<leader>ca", mode = { "n", "v" }, _chat, desc = "copilot: quick chat" },
+        { "<leader>cc", mode = { "n", "v" }, _toggle, desc = "copilot: toggle chat" },
         { "<leader>cx", mode = { "n", "v" }, _clear, desc = "copilot: clear history" },
       }
     end,
@@ -54,6 +53,25 @@ return {
     opts = function()
       local user = vim.env.USER or "User"
       user = user:sub(1, 1):upper() .. user:sub(2)
+
+      local prompts = {
+        -- programming
+        Documentation = "Please provide documentation for the following code.",
+        Explain = "Please explain how the following code works.",
+        FixError = "Please explain the error in the following text and provide a solution.",
+        Lint = "Please explain the linting errors and provide suggestions to fix them.",
+        Names = "Please provide better names for the following variables and functions.",
+        Refactor = "Please refactor the following code to improve its clarity and readability.",
+        Review = "Please review the following code and provide suggestions for improvement.",
+        Security = "Please analyze this code for potential security vulnerabilities and suggest fixes.",
+        Tests = "Please explain how the selected code works, then generate unit tests for it.",
+        -- note taking
+        Concise = "Please rewrite the following text to make it more concise.",
+        Grammar = "Please improve the grammar and wording of the following text.",
+        Spelling = "Please correct any grammar and spelling errors in the following text.",
+        Summarize = "Please summarize the following text.",
+      }
+
       return {
         auto_insert_mode = true,
         highlight_headers = true,
@@ -62,6 +80,7 @@ return {
         question_header = string.format(" %s %s ", ds.icons.misc.User, user),
         error_header = "> [!ERROR] Error",
         separator = "───",
+        prompts = prompts,
         window = {
           layout = "float",
           relative = "cursor",
