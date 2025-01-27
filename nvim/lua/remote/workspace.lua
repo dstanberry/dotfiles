@@ -273,7 +273,6 @@ return {
       local _quickfix_list = function() vim.cmd { cmd = "Trouble", args = { "qflist", "toggle" } } end
       local _next = function()
         if require("trouble").is_open() then
-          ---@diagnostic disable-next-line: missing-fields
           require("trouble").next { skip_groups = true, jump = true }
         else
           pcall(vim.cmd.cnext)
@@ -281,7 +280,6 @@ return {
       end
       local _previous = function()
         if require("trouble").is_open() then
-          ---@diagnostic disable-next-line: missing-fields
           require("trouble").prev { skip_groups = true, jump = true }
         else
           pcall(vim.cmd.cprevious)
