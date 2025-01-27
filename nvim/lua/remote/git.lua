@@ -90,8 +90,8 @@ return {
       { "@", "@<c-x><c-o>", mode = "i", ft = "octo", silent = true },
       { "#", "#<c-x><c-o>", mode = "i", ft = "octo", silent = true },
     },
-    init = function() vim.treesitter.language.register("markdown", "octo") end,
-    opts = function()
+    init = function()
+      vim.treesitter.language.register("markdown", "octo")
       vim.api.nvim_create_autocmd("ExitPre", {
         group = ds.augroup "octo_exitpre",
         callback = function()
@@ -102,15 +102,15 @@ return {
           end
         end,
       })
-      return {
-        use_local_fs = false,
-        enable_builtin = true,
-        default_to_projects_v2 = false,
-        default_merge_method = "squash",
-        github_hostname = vim.g.ds_env.github_hostname or "github.com",
-        picker = "telescope",
-        ssh_aliases = {},
-      }
     end,
+    opts = {
+      use_local_fs = false,
+      enable_builtin = true,
+      default_to_projects_v2 = false,
+      default_merge_method = "squash",
+      github_hostname = vim.g.ds_env.github_hostname or "github.com",
+      picker = "telescope",
+      ssh_aliases = {},
+    },
   },
 }
