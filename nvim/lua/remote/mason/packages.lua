@@ -41,7 +41,6 @@ return {
   -- formatters
   "beautysh",
   "black",
-  "csharpier",
   "gofumpt",
   "goimports",
   "markdown-toc",

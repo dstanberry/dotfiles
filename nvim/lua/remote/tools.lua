@@ -47,7 +47,6 @@ return {
       return {
         formatters_by_ft = {
           bash = { "shfmt" },
-          -- cs = { "csharpier" },
           go = { "goimports", "gofumpt" },
           groovy = { "npm-groovy-lint" },
           html = { "prettierd", "prettier", stop_after_first = true },
@@ -79,10 +78,6 @@ return {
           beautysh = {
             args = { "-i", "2", "-" },
           },
-          -- csharpier = {
-          --   command = "dotnet-csharpier",
-          --   args = { "--write-stdout" },
-          -- },
           ["markdown-toc"] = {
             condition = function(_, ctx)
               for _, line in ipairs(vim.api.nvim_buf_get_lines(ctx.buf, 0, -1, false)) do
