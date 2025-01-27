@@ -119,7 +119,7 @@ M.config = function()
       },
       lazy = {
         prompt = ds.pad(ds.icons.misc.Prompt, "both"),
-        layout = { preset = "telescope_wide" },
+        layout = { preset = "vertical_wide" },
       },
       registers = {
         layout = { preset = "vscode", preview = true },
