@@ -139,6 +139,18 @@ return {
     end,
   },
   {
+    "iamcco/markdown-preview.nvim",
+    build = function()
+      require("lazy").load { plugins = { "markdown-preview.nvim" } }
+      vim.fn["mkdp#util#install"]()
+    end,
+    cmd = { "MarkdownPreview", "MarkdownPreviewStop", "MarkdownPreviewToggle" },
+    keys = {
+      { "<leader>mp", "<cmd>MarkdownPreviewToggle<cr>", ft = "markdown", desc = "preview: show in browser" },
+    },
+    config = function() vim.cmd [[do FileType]] end,
+  },
+  {
     "nvim-neotest/neotest",
     dependencies = {
       "nvim-neotest/nvim-nio",
