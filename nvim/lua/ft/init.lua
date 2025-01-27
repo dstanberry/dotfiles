@@ -25,7 +25,7 @@ M.setup = function(buf, opts)
   for _, win in ipairs(vim.fn.win_findbuf(buf)) do
     if not vim.api.nvim_win_is_valid(win) or vim.api.nvim_win_get_buf(win) ~= buf then return end
     local ok, parser = pcall(vim.treesitter.get_parser, buf)
-    opts = vim.tbl_deep_extend("force", opts, {
+    opts = vim.tbl_deep_extend("keep", opts, {
       wo = { relativenumber = vim.b[buf].ts_highlight or (ok and parser ~= nil) },
     })
     M.wo(win, opts.wo)
