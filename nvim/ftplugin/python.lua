@@ -1,5 +1,4 @@
 local python = require "ft.python"
-
 local group = ds.augroup "python_extmarks"
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeChanged" }, {
@@ -15,6 +14,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeCh
     end
   end),
 })
+
 vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
   group = group,
   pattern = "*.py",
