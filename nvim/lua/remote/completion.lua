@@ -1,20 +1,4 @@
 return {
-  {
-    "zbirenbaum/copilot.lua",
-    build = ":Copilot auth",
-    event = "LazyFile",
-    cmd = "Copilot",
-    opts = {
-      filetypes = { ["*"] = true },
-      panel = { enabled = false },
-      suggestion = { enabled = false },
-      server_opts_overrides = {
-        settings = {
-          advanced = { debug = { acceptselfSignedCertificate = true } },
-        },
-      },
-    },
-  },
   { "xzbdmw/colorful-menu.nvim", lazy = true },
   {
     "saghen/blink.cmp",
