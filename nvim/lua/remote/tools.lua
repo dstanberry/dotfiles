@@ -314,7 +314,6 @@ return {
         names = vim.tbl_filter(function(name)
           local linter = lint.linters[name]
           if not linter then ds.warn("Linter not found: " .. name) end
-          ---@diagnostic disable-next-line: undefined-field
           return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
         end, names)
 

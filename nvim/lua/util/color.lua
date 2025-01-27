@@ -73,10 +73,8 @@ function M.get_color(name, bg)
   local color = nil
   if hl then
     if bg then
-      ---@diagnostic disable-next-line: undefined-field
       color = hl.bg or hl.background
     else
-      ---@diagnostic disable-next-line: undefined-field
       color = hl.fg or hl.foreground
     end
   end

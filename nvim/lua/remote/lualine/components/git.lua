@@ -9,7 +9,6 @@ M.branch = {
   get = function()
     local icon = ds.pad(ds.icons.git.Branch, "right")
     if package.loaded["gitsigns"] then
-      ---@diagnostic disable-next-line: undefined-field
       local branch = vim.b.gitsigns_head
       if not branch or #branch == 0 then return ds.pad(ds.icons.misc.Orbit, "right") end
       return icon .. branch
@@ -20,7 +19,6 @@ M.branch = {
 
 M.diff = {
   get = function()
-    ---@diagnostic disable-next-line: undefined-field
     local gitsigns = vim.b.gitsigns_status_dict
     if gitsigns then
       return {

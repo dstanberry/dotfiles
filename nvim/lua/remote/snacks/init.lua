@@ -22,12 +22,9 @@ return {
         { "<leader>fb", function() Snacks.picker.grep_buffers() end, desc = "picker: find in buffers (grep)" },
         { "<leader>fB", function() Snacks.picker.buffers() end, desc = "picker: find files (buffers)" },
         { "<leader>fk", function() Snacks.picker.help() end, desc = "picker: help pages" },
-        ---@diagnostic disable-next-line: undefined-field
         { "<leader>fl", function() Snacks.picker.lazy() end, desc = "picker: find plugin specs" },
         { "<leader>fp", function () Snacks.picker.files { cwd = lazy_rtp } end, desc = "picker: find remote plugins" },
-        ---@diagnostic disable-next-line: undefined-field
         { "<leader>ft", function () Snacks.picker.todo_comments() end, desc = "picker: find todo comments" },
-        ---@diagnostic disable-next-line: undefined-field
         { "<leader>fz", function () Snacks.picker.spelling() end, desc = "picker: spelling suggestionz" },
         { "<localleader><leader>", function() Snacks.picker.files { cwd = nvim_path } end, desc = "picker: find config files" },
         { "<localleader>fe", function() util.picker.file_browser() end, desc = "picker: find files (relative to current buffer)" },

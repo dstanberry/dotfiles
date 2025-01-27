@@ -1,4 +1,3 @@
----@diagnostic disable: undefined-field
 ---@class remote.lualine.component.message
 local M = {}
 
