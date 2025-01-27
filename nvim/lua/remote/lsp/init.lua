@@ -5,7 +5,7 @@ return {
     opts = {
       completion = { crates = { enabled = true } },
       lsp = { enabled = true, actions = true, completion = true, hover = true },
-      popup = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
+      popup = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
     },
   },
   { "seblj/roslyn.nvim", lazy = true },

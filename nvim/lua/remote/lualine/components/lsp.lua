@@ -46,7 +46,7 @@ M.symbols = {
       local margin = 10
       if util.available_width(#bc + #raw_symbols + margin) then return symbols end
       local raw_parts = vim.split(raw_symbols, sep)
-      local trimmed_parts = ds.reduce(raw_parts, function(acc, part)
+      local trimmed_parts = ds.tbl_reduce(raw_parts, function(acc, part)
         table.insert(acc, part)
         local new_s = table.concat(acc, sep)
         if not util.available_width(#bc + #new_s + margin) then

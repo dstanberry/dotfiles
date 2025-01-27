@@ -17,49 +17,11 @@ setmetatable(M, {
   end,
 })
 
-local tbl_keys_numeric = function(list)
-  for k, _ in pairs(list) do
-    if type(k) ~= "number" then return false end
-  end
-  return true
-end
-
----Check if any of the key-value pairs in a given table satisfies the provided condition
----and returns true if the condition is satisfied at least once. Returns false otherwise
----@generic T: table
----@param list T[] | table
----@param callback fun(value: any, key: string | number)
-function M.any(list, callback)
-  for k, v in pairs(list) do
-    if callback(v, k) then return true end
-  end
-  return false
-end
-
 ---Creates (and clears if previously defined) a new autocommand group.
 ---The autocommand will be prefixed with "ds_" to avoid namespace collisions
 ---@param name string
 ---@return number
 function M.augroup(name) return vim.api.nvim_create_augroup("ds_" .. name, { clear = true }) end
-
----Searches for a partial match of a string `needle` in a list `haystack`
----@param haystack string[]
----@param needle string
----@return boolean, number # Returns true if found and the position in the list
-function M.contains(haystack, needle)
-  local found = false
-  local pos = -1
-  for k, v in pairs(haystack) do
-    local safe_v = string.gsub(v, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
-    local match = string.match(needle, safe_v) or ""
-    if v == needle or #match > 0 then
-      found = true
-      pos = k
-      break
-    end
-  end
-  return found, pos
-end
 
 ---Limit the rate at which the provided function `callback` will execute
 ---by delaying it's execution for `delay` milliseconds
@@ -89,6 +51,40 @@ function M.extend(...)
   return result
 end
 
+---Prints the lua formatted representation of `filepath` as a module
+---@param filepath string
+---@return string modname
+function M.get_module(filepath)
+  local mod, sep
+  sep = ds.has "win32" and "\\" or "/"
+  mod = (filepath:match "lua%S(.+)%.lua$" or ""):format(sep):gsub(sep, "."):gsub("%.init", "")
+  return mod or ""
+end
+
+---Wrapper for Vim's `|has|`feature detection function
+---@param feature string
+---@return boolean
+function M.has(feature) return vim.fn.has(feature) > 0 end
+
+---Check if any of the key-value pairs in a given table satisfies the provided condition
+---and returns true if the condition is satisfied at least once. Returns false otherwise
+---@generic T: table
+---@param list T[] | table
+---@param callback fun(value: any, key: string | number)
+function M.tbl_any(list, callback)
+  for k, v in pairs(list) do
+    if callback(v, k) then return true end
+  end
+  return false
+end
+
+local tbl_keys_numeric = function(list)
+  for k, _ in pairs(list) do
+    if type(k) ~= "number" then return false end
+  end
+  return true
+end
+
 ---Iterate over each key-value pair in the provided table and apply the callback function.
 ---If the keys in the table are all numeric, it will perform an ordered iteration over each pair.
 ---Otherwise the order will not be guaranteed
@@ -107,59 +103,38 @@ function M.foreach(list, callback)
   end
 end
 
----Prints the lua formatted representation of `filepath` as a module
----@param filepath string
----@return string modname
-function M.get_module(filepath)
-  local mod, sep
-  sep = ds.has "win32" and "\\" or "/"
-  mod = (filepath:match "lua%S(.+)%.lua$" or ""):format(sep):gsub(sep, "."):gsub("%.init", "")
-  return mod or ""
-end
-
----Wrapper for Vim's `|has|`feature detection function
----@param feature string
----@return boolean
-function M.has(feature) return vim.fn.has(feature) > 0 end
-
----Creates a new table populated with the results of calling a provided function
----on every key-value pair in the calling table when the key is a string
----@generic T: table, S
----@param list T[] | table
----@param callback fun(acc: S, item: T, key: string): S
----@return S
-function M.kmap(list, callback)
-  return M.kreduce(list, function(acc, v, k)
-    table.insert(acc, callback(v, k))
-    return acc
-  end, {})
-end
-
----Converts a list of items into a value by iterating over each pair and when the key is a string
----transform the pair with a callback function
----@generic T: table, S
----@param list T[] | table
----@param callback fun(acc: S, item: T, key: string): S
----@param acc S?
----@return S
-function M.kreduce(list, callback, acc)
-  for k, v in pairs(list) do
-    if type(k) == "string" then acc = callback(acc, v, k) end
-  end
-  return acc
-end
-
+--- @deprecated Use |vim.tbl_map()|
+---
 ---Creates a new table populated with the results of calling a provided function
 ---on every key-value pair in the calling table
 ---@generic T: table
 ---@param list T[] | table
 ---@param callback fun(item: T, key: string | number, list): T
 ---@return T[] #A new table with each key-value pair being the result of the callback function
-function M.map(list, callback)
-  return M.reduce(list, function(acc, v, k)
+function M.tbl_map(callback, list)
+  return M.tbl_reduce(list, function(acc, v, k)
     table.insert(acc, callback(v, k))
     return acc
   end, {})
+end
+
+---Searches for a partial match of a string `needle` in a list `haystack`
+---@param haystack string[]
+---@param needle string
+---@return boolean, number # Returns true if found and the position in the list
+function M.tbl_match(haystack, needle)
+  local found = false
+  local pos = -1
+  for k, v in pairs(haystack) do
+    local safe_v = string.gsub(v, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
+    local match = string.match(needle, safe_v) or ""
+    if v == needle or #match > 0 then
+      found = true
+      pos = k
+      break
+    end
+  end
+  return found, pos
 end
 
 ---Converts a list of items into a value by iterating over each pair and transforming them
@@ -171,7 +146,7 @@ end
 ---@param callback fun(acc: S, item: T, key: string | number): S
 ---@param acc S?
 ---@return S
-function M.reduce(list, callback, acc)
+function M.tbl_reduce(list, callback, acc)
   acc = acc or {}
   if tbl_keys_numeric(list) then
     for i, v in ipairs(list) do

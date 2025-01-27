@@ -239,7 +239,7 @@ M.setup = function()
     --- @class vim.diagnostic.Opts.Float
     ---@field border? string | table[]
     float = {
-      border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+      border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
       focusable = false,
       show_header = true,
       source = true,

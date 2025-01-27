@@ -20,7 +20,7 @@ return {
           width = 1,
           height = 0.4,
           row = 1,
-          border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+          border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
         },
         selection = function(source)
           local select = require "CopilotChat.select"

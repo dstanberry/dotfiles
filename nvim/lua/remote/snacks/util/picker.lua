@@ -64,9 +64,9 @@ M.config = function()
   layouts.vertical_wide.layout.height = 0.7
 
   layouts.vscode.layout.row = 2
-  layouts.vscode.layout.border = ds.map(
-    ds.icons.border.Default,
-    function(icon) return { icon, "SnacksPickerBorderSB" } end
+  layouts.vscode.layout.border = vim.tbl_map(
+    function(icon) return { icon, "SnacksPickerBorderSB" } end,
+    ds.icons.border.Default
   )
 
   return {

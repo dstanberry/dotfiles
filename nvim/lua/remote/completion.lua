@@ -36,14 +36,14 @@ return {
             columns = { { "kind_icon" }, { "label", "label_description", gap = 1 }, { "kind" } },
             components = { kind_icon = { width = { fill = true } } },
           },
-          border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+          border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
           winblend = vim.o.pumblend,
         },
         documentation = {
           auto_show = true,
           auto_show_delay_ms = 200,
           window = {
-            border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+            border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
             winblend = vim.o.pumblend,
           },
         },

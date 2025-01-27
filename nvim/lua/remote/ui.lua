@@ -192,7 +192,7 @@ return {
       return {
         preset = "helix",
         win = {
-          border = ds.map(ds.icons.border.Default, function(icon) return { icon, "WhichKeyBorder" } end),
+          border = vim.tbl_map(function(icon) return { icon, "WhichKeyBorder" } end, ds.icons.border.Default),
           title = false,
         },
         keys = { scroll_down = "<c-d>", scroll_up = "<c-f>" },

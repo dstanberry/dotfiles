@@ -31,7 +31,7 @@ M.breadcrumbs = {
     local format_sections = function(path, fname)
       local parts = path and vim.split(path, "/") or {}
       table.insert(parts, fname)
-      local segments = ds.reduce(parts, function(segments, v, k)
+      local segments = ds.tbl_reduce(parts, function(segments, v, k)
         local section
         if #v > 0 then
           local icon, icon_hl = require("mini.icons").get("file", fname)
@@ -72,7 +72,7 @@ M.breadcrumbs = {
     local buf = vim.api.nvim_win_get_buf(winid)
     local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
 
-    if ds.contains(ds.excludes.ft.wb_empty, ft) then return " " end
+    if ds.tbl_match(ds.excludes.ft.wb_empty, ft) then return " " end
 
     local filepath = vim.fs.normalize(vim.api.nvim_buf_get_name(buf))
     local dirpath, filename = (filepath):match "^(.+)/(.+)$"

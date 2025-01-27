@@ -13,7 +13,7 @@ return {
       local bufferline = require "bufferline"
       bufferline.setup {
         highlights = function(defaults)
-          local hl = ds.reduce(defaults.highlights, function(highlight, attrs, name)
+          local hl = ds.tbl_reduce(defaults.highlights, function(highlight, attrs, name)
             local formatted = name:lower()
             local is_group = formatted:match "group"
             local is_offset = formatted:match "offset"
@@ -196,7 +196,7 @@ return {
         ["q"] = "actions.close",
       },
       float = {
-        border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+        border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
         max_width = math.floor(vim.o.columns * 0.6),
         max_height = math.floor(vim.o.lines * 0.4),
         win_options = {
@@ -207,9 +207,11 @@ return {
           winhighlight = "Title:OilFloatTitle",
         },
       },
-      keymaps_help = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
-      preview = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
-      ssh = { border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end) },
+      keymaps_help = {
+        border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
+      },
+      preview = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
+      ssh = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
     },
     keys = function()
       local _open = function() require("oil").open(ds.root.get()) end
@@ -309,7 +311,7 @@ return {
       local preview_opts = {
         type = "float",
         relative = "editor",
-        border = ds.map(ds.icons.border.Default, function(icon) return { icon, "FloatBorderSB" } end),
+        border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
         position = { 0.5, 0.5 },
         size = { width = 0.6, height = 0.5 },
         zindex = 200,
