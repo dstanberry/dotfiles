@@ -30,6 +30,7 @@ return {
         ---@diagnostic disable-next-line: undefined-field
         { "<leader>fz", function () Snacks.picker.spelling() end, desc = "picker: spelling suggestionz" },
         { "<localleader><leader>", function() Snacks.picker.files { cwd = nvim_path } end, desc = "picker: find config files" },
+        { "<localleader>fe", function() util.picker.file_browser() end, desc = "picker: find files (relative to current buffer)" },
         { "<localleader>fg", function() Snacks.picker.grep() end, desc = "picker: find in files (grep)" },
         -- git
         { "<leader>gg", function() Snacks.lazygit.open() end, desc = "git: lazygit" },

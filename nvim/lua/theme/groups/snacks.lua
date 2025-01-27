@@ -91,6 +91,9 @@ M.get = function(c)
     SnacksPickerPrompt          = { fg = c.green2, bold = true },
     SnacksPickerSelected        = { fg = c.magenta1},
 
+    -- custom user-defined group
+    SnacksPickerBorderSB        = { fg = c.overlay0, bg = GRAY_DARK },
+
     -- scratch
     SnacksScratchTitle          = { fg = c.magenta0, bg = c.bg0, bold = true },
     SnacksScratchFooter         = { fg = c.blue0, bg = c.bg0, bold = true },

@@ -49,6 +49,12 @@ local kind_filter = {
 M.config = function()
   local layouts = require "snacks.picker.config.layouts"
 
+  layouts.vscode.layout.row = 2
+  layouts.vscode.layout.border = ds.map(
+    ds.icons.border.Default,
+    function(icon) return { icon, "SnacksPickerBorderSB" } end
+  )
+
   layouts.telescope_wide = vim.deepcopy(layouts.telescope)
   ---@diagnostic disable-next-line: assign-type-mismatch
   layouts.telescope_wide.layout.backdrop = true
@@ -152,5 +158,7 @@ M.config = function()
     },
   }
 end
+
+M.file_browser = function() Snacks.picker.files { cwd = vim.fn.expand "%:p:h", layout = { preset = "vscode" } } end
 
 return M
