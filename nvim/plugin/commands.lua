@@ -42,48 +42,6 @@ vim.api.nvim_create_user_command(
   { nargs = "?", complete = "filetype" }
 )
 
-vim.api.nvim_create_user_command("Glow", function()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local ft = vim.api.nvim_get_option_value("filetype", { buf = bufnr })
-
-  if ft ~= "markdown" then
-    error(("Previewer not valid for '%s' files"):format(ft))
-    return
-  end
-
-  local width = vim.api.nvim_get_option_value("columns", {})
-  local height = vim.api.nvim_get_option_value("lines", {})
-  local win_height = math.ceil(height * 0.8 - 4)
-  local win_width = math.ceil(width * 0.8)
-  local row = math.ceil((height - win_height) / 2 - 1)
-  local col = math.ceil((width - win_width) / 2)
-
-  local opts = {
-    style = "minimal",
-    relative = "editor",
-    width = win_width,
-    height = win_height,
-    row = row,
-    col = col,
-    border = "none",
-  }
-
-  local buf = vim.api.nvim_create_buf(false, true)
-  local win = vim.api.nvim_open_win(buf, true, opts)
-
-  local close_win = function() vim.api.nvim_win_close(win, true) end
-
-  vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = buf })
-  vim.api.nvim_set_option_value("filetype", "md_preview", { buf = buf })
-  vim.api.nvim_set_option_value("winblend", 0, { win = win })
-  vim.keymap.set("n", "q", close_win, { buffer = buf, silent = true })
-  vim.keymap.set("n", "<esc>", close_win, { buffer = buf, silent = true })
-
-  local path = vim.api.nvim_buf_get_name(bufnr)
-  path = vim.fs.normalize(path)
-  vim.fn.termopen(string.format("glow %s", vim.fn.shellescape(path)))
-end, {})
-
 vim.api.nvim_create_user_command("ToggleWord", function()
   local lut = {
     ["correct"] = "incorrect",
