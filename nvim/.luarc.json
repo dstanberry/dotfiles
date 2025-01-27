@@ -6,7 +6,8 @@
     "inject-field",
     "missing-fields",
     "missing-parameter",
-    "param-type-mismatch"
+    "param-type-mismatch",
+    "undefined-field"
   ],
   "diagnostics.globals": ["ds", "Snacks"]
 }

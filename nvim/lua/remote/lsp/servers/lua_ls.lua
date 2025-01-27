@@ -28,6 +28,7 @@ M.config = {
         castNumberToInteger = true,
         inferParamType = true,
       },
+      unusedLocalExclude = { "_*" },
       workspace = {
         checkThirdParty = false,
         library = {},
