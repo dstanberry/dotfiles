@@ -67,7 +67,6 @@ return {
           map("n", "<leader>gr", signs.reset_hunk, { desc = "gitsigns: reset hunk" })
           map("n", "<leader>gS", signs.stage_buffer, { desc = "gitsigns: stage buffer" })
           map("n", "<leader>gs", signs.stage_hunk, { desc = "gitsigns: stage hunk" })
-          map("n", "<leader>gu", signs.undo_stage_hunk, { desc = "gitsigns: unstage Hunk" })
         end,
       }
     end,
