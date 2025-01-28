@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/v0.1.28/schema.json",
-  "app_specific_configuration_path": "$Env:KOMOREBI_CONFIG_HOME/applications.yaml",
+  "app_specific_configuration_path": "$Env:KOMOREBI_CONFIG_HOME/applications.json",
   "window_hiding_behaviour": "Cloak",
   "cross_monitor_move_behaviour": "Insert",
   "default_workspace_padding": 5,
@@ -13,10 +13,8 @@
     "fps": 140
   },
   "border": true,
-  "border_implementation": "Windows",
-  "border_offset": 0,
-  "border_style": "Rounded",
-  "border_width": 2,
+  "border_offset": -1,
+  "border_width": 5,
   "border_colours": {
     "single": "#97b6e5",
     "stack": "#f7768e",
@@ -26,7 +24,6 @@
   "stackbar": {
     "height": 20,
     "mode": "OnStack",
-    "label": "Title",
     "tabs": {
       "width": 200,
       "focused_text": "#f7768e",

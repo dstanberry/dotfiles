@@ -13,15 +13,21 @@ Komorebic(cmd) {
     RunWait(format("komorebic.exe {}", cmd), , "Hide")
 }
 
-; NOTE: ALT
-; Manage active window
-!q::Komorebic("close")
-; !m::Komorebic("minimize")
-
-; NOTE: LWIN + CTRL
-
 ; Reload Configuration
 #^r::Komorebic("reload-configuration")
+; Restart Komorebi
+#^!`:: {
+  try Komorebic("stop")
+  Komorebic("start")
+}
+
+; Load 'quicksave' file for current monitor
+#^!LShift::Komorebic("quick-load")
+
+; Change window layout
+#^!1::Komorebic("retile")
+#^!2::Komorebic("toggle-float")
+#^!3::Komorebic("toggle-monocle")
 
 ; Resize windows
 #^=::Komorebic("resize-axis horizontal increase")
@@ -29,27 +35,17 @@ Komorebic(cmd) {
 #^+=::Komorebic("resize-axis vertical increase")
 #^+-::Komorebic("resize-axis vertical decrease")
 
-; NOTE: LWIN + CTRL + ALT
-
-; Restart Komorebi
-#^!`:: {
-  try Komorebic("stop")
-  Komorebic("start")
-}
-
-; Manipulate windows
-#^!1::Komorebic("retile")
-#^!2::Komorebic("toggle-float")
-#^!3::Komorebic("toggle-monocle")
-
-; Load 'quicksave' file for current monitor
-#^!LShift::Komorebic("quick-load")
-
-; Manage window focus
+; Change window focus
 #^!a::Komorebic("focus left")
 #^!g::Komorebic("focus right")
 #^!w::Komorebic("focus up")
 #^!s::Komorebic("focus down")
+
+; Move windows
+#^!Left::Komorebic("move left")
+#^!Right::Komorebic("move right")
+#^!Down::Komorebic("move down")
+#^!Up::Komorebic("move up")
 
 ; Manage window stacks
 #^!z::Komorebic("stack left")
@@ -58,20 +54,18 @@ Komorebic(cmd) {
 #^!c::Komorebic("stack down")
 #^!BackSpace::Komorebic("unstack")
 
-; Manage window focus within a stack
+; Change window focus within a stack
 #^!d::Komorebic("cycle-stack previous")
 #^!f::Komorebic("cycle-stack next")
 
-; Move windows
-#^!Left::Komorebic("move left")
-#^!Right::Komorebic("move right")
-#^!Down::Komorebic("move down")
-#^!Up::Komorebic("move up")
-
-; Manage workspace focus
+; Change workspace focus
 #^!e::Komorebic("focus-workspace 0")
 #^!r::Komorebic("focus-workspace 1")
 
 ; Move windows between workspaces
 #^!q::Komorebic("move-to-workspace 0")
 #^!t::Komorebic("move-to-workspace 1")
+
+; App shortcuts
+!q::Komorebic("close")
+; !m::Komorebic("minimize")

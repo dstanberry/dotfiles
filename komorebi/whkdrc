@@ -1,0 +1,53 @@
+.shell powershell
+
+# Reload whkd configuration
+win + ctrl + r                 : komorebic reload-configuration
+win+ ctrl + alt + oem_3        : taskkill /f /im whkd.exe; Start-Process whkd -WindowStyle hidden
+
+# Load cached monitor layout
+win + ctrl + alt + (           : komorebic quick-load
+
+# Change window layout
+win + ctrl + alt + 1           : komorebic retile
+win + ctrl + alt + 2           : komorebic toggle-float
+win + ctrl + alt + 3           : komorebic toggle-monocle
+
+# Resize windows
+win + ctrl + oem_plus          : komorebic resize-axis horizontal increase
+win + ctrl + oem_minus         : komorebic resize-axis horizontal decrease
+win + ctrl + shift + oem_plus  : komorebic resize-axis vertical increase
+win + ctrl + shift + oem_minus : komorebic resize-axis vertical decrease
+
+# Change window focus
+win + ctrl + alt + a           : komorebic focus left
+win + ctrl + alt + g           : komorebic focus right
+win + ctrl + alt + w           : komorebic focus up
+win + ctrl + alt + s           : komorebic focus down
+
+# Move windows
+win + ctrl + alt + left        : komorebic move left
+win + ctrl + alt + right       : komorebic move right
+win + ctrl + alt + down        : komorebic move down
+win + ctrl + alt + up          : komorebic move up
+
+# Manage window stacks
+win + ctrl + alt + z           : komorebic stack left
+win + ctrl + alt + b           : komorebic stack right
+win + ctrl + alt + v           : komorebic stack up
+win + ctrl + alt + c           : komorebic stack down
+win + ctrl + alt + backspace   : komorebic unstack
+
+# Change window focus within a stack
+win + ctrl + alt + d           : komorebic cycle-stack previous
+win + ctrl + alt + f           : komorebic cycle-stack next
+
+# Change workspace focus
+win + ctrl + alt + e           : komorebic focus-workspace 0
+win + ctrl + alt + r           : komorebic focus-workspace 1
+
+# Move windows between workspaces
+win + ctrl + alt + q           : komorebic move-to-workspace 0
+win + ctrl + alt + t           : komorebic move-to-workspace 1
+
+# App shortcuts
+alt + q                        : komorebic close
