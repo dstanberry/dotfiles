@@ -13,7 +13,13 @@ return {
   { "b0o/schemastore.nvim", lazy = true, version = false },
   { "mickael-menu/zk-nvim", lazy = true, url = "https://github.com/pkazmier/zk-nvim", branch = "snacks-picker" },
   {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "LspAttach",
+    opts = { blend = { factor = 0.15 }, options = { throttle = 50 } },
+  },
+  {
     "neovim/nvim-lspconfig",
+    commit = "1f941b3",
     event = "LazyFile",
     dependencies = {
       "williamboman/mason.nvim",
@@ -56,13 +62,5 @@ return {
       end)
       ds.foreach(servers, function(config, server) lspconfig[server].setup(config) end)
     end,
-  },
-  {
-    "rachartier/tiny-inline-diagnostic.nvim",
-    event = "LspAttach",
-    opts = {
-      blend = { factor = 0.15 },
-      options = { throttle = 50 },
-    },
   },
 }
