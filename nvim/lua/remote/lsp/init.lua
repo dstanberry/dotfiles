@@ -14,6 +14,7 @@ return {
   { "mickael-menu/zk-nvim", lazy = true, url = "https://github.com/pkazmier/zk-nvim", branch = "snacks-picker" },
   {
     "neovim/nvim-lspconfig",
+    commit = "1f941b3",
     event = "LazyFile",
     dependencies = {
       "williamboman/mason.nvim",
