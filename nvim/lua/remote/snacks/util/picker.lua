@@ -157,6 +157,29 @@ M.config = function()
   }
 end
 
-M.file_browser = function() Snacks.picker.files { cwd = vim.fn.expand "%:p:h", layout = { preset = "vscode" } } end
+M.file_browser = function()
+  local cwd = vim.fn.expand "%:p:h"
+  Snacks.picker.files {
+    cwd = cwd,
+    layout = { preset = "vscode" },
+    actions = {
+      parent = {
+        action = function(picker, _)
+          cwd = vim.loop.fs_realpath(vim.fs.joinpath(cwd, ".."))
+          picker:set_cwd(cwd)
+          picker:find()
+        end,
+      },
+    },
+    win = {
+      input = {
+        keys = {
+          ["<c-w>"] = { "parent", mode = "i" },
+          ["-"] = { "parent", mode = "n" },
+        },
+      },
+    },
+  }
+end
 
 return M
