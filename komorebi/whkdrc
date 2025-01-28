@@ -8,9 +8,9 @@ win+ ctrl + alt + oem_3        : taskkill /f /im whkd.exe; Start-Process whkd -W
 win + ctrl + alt + (           : komorebic quick-load
 
 # Change window layout
-win + ctrl + alt + 1           : komorebic retile
-win + ctrl + alt + 2           : komorebic toggle-float
-win + ctrl + alt + 3           : komorebic toggle-monocle
+win + ctrl + alt + 1           : komorebic toggle-float
+win + ctrl + alt + 2           : komorebic toggle-monocle
+# win + ctrl + alt + 3           : komorebic retile
 
 # Resize windows
 win + ctrl + oem_plus          : komorebic resize-axis horizontal increase
