@@ -19,7 +19,6 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    commit = "1f941b3",
     event = "LazyFile",
     dependencies = {
       "williamboman/mason.nvim",
