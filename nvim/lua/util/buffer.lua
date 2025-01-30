@@ -97,7 +97,7 @@ end
 ---and two row-column tuples of the start and end of the range
 function M.get_line_selection()
   local start_char, end_char = "'<", "'>"
-  vim.cmd "normal! "
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<esc>", false, true, true), "nx", false)
   local start_line, start_col = unpack(vim.fn.getpos(start_char), 2, 3)
   local end_line, end_col = unpack(vim.fn.getpos(end_char), 2, 3)
   if end_col > 0 then
