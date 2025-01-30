@@ -147,7 +147,7 @@ M.setup = function(opts)
           "gzip",
           -- "matchit",
           -- "matchparen",
-          -- "netrwPlugin",
+          "netrwPlugin",
           "rplugin",
           "tarPlugin",
           "tohtml",
