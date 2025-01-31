@@ -3,6 +3,7 @@ return {
   {
     "akinsho/bufferline.nvim",
     event = "LazyFile",
+    lazy = vim.fn.argc(-1) == 0,
     keys = {
       { "<leader>bg", ":BufferLineGroupToggle ", desc = "bufferline: toggle group" },
       { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = "bufferline: toggle pin" },
