@@ -95,7 +95,7 @@ return {
               text_align = "center",
             },
             {
-              text = ds.pad(ds.icons.misc.Magnify, "right") .. "Find | Replace",
+              text = ds.pad(ds.icons.misc.Magnify, "right") .. "FIND / REPLACE",
               filetype = "grug-far",
               highlight = "PanelHeading",
               separator = true,
