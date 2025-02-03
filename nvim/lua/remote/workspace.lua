@@ -108,6 +108,10 @@ return {
               separator = true,
               text_align = "center",
             },
+            {
+              filetype = "snacks_layout_box",
+              separator = true,
+            },
           },
           groups = {
             items = {
