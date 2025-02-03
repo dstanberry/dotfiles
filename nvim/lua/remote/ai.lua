@@ -75,6 +75,7 @@ return {
       return {
         auto_insert_mode = true,
         highlight_headers = true,
+        show_folds = false,
         show_help = true,
         answer_header = string.format(" %s %s ", ds.icons.kind.Copilot, "Copilot"),
         question_header = string.format(" %s %s ", ds.icons.misc.User, user),
