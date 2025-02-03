@@ -10,58 +10,19 @@ local trouble = ds.plugin.is_installed "trouble.nvim"
     }
   or { actions = {}, keys = {} }
 
-local kind_filter = {
-  help = false,
-  markdown = false,
-  default = {
-    "Class",
-    "Constructor",
-    "Enum",
-    "Field",
-    "Function",
-    "Interface",
-    "Method",
-    "Module",
-    "Namespace",
-    "Package",
-    "Property",
-    "Struct",
-    "Trait",
-  },
-  lua = {
-    "Class",
-    "Constructor",
-    "Enum",
-    "Field",
-    "Function",
-    "Interface",
-    "Method",
-    "Module",
-    "Namespace",
-    "Property",
-    "Struct",
-    "Trait",
-  },
-}
-
 M.config = function()
   local layouts = require "snacks.picker.config.layouts"
 
-  layouts.telescope_wide = vim.deepcopy(layouts.telescope)
   ---@diagnostic disable-next-line: assign-type-mismatch
-  layouts.telescope_wide.layout.backdrop = true
-  layouts.telescope_wide.layout[1][1].title = ""
-  layouts.telescope_wide.layout[1][2].border = "top"
-  layouts.telescope_wide.layout[1][2].height = 2
-  layouts.telescope_wide.layout[2].width = 0.6
+  layouts.telescope.layout.backdrop = true
+  layouts.telescope.layout[1][1].title = ""
+  layouts.telescope.layout[1][2].border = "top"
+  layouts.telescope.layout[1][2].height = 2
+  layouts.telescope.layout[2].width = 0.6
 
-  layouts.vertical_compact = vim.deepcopy(layouts.vertical)
-  layouts.vertical_compact.layout.min_width = 120
-  layouts.vertical_compact.layout.height = 0.5
-  layouts.vertical_compact.layout[3].height = 0.7
-
-  layouts.vertical_wide = vim.deepcopy(layouts.vertical_compact)
-  layouts.vertical_wide.layout.height = 0.7
+  layouts.vertical.layout.height = 0.7
+  layouts.vertical.layout.min_width = 120
+  layouts.vertical.layout[3].height = 0.7
 
   layouts.vscode.layout.row = 0
   layouts.vscode.layout.border = vim.tbl_map(
@@ -98,61 +59,24 @@ M.config = function()
       end,
     }),
     sources = {
-      buffers = {
-        layout = { preset = "vertical_compact" },
-      },
-      command_history = {
-        layout = { preset = "vscode" },
-      },
-      files = {
-        prompt = ds.pad(ds.icons.misc.Prompt, "both"),
-        layout = { preset = "telescope_wide" },
-      },
-      grep = {
-        layout = { preset = "vertical_wide" },
-      },
-      grep_buffers = {
-        layout = { preset = "ivy" },
-      },
-      help = {
-        layout = { preset = "ivy" },
-      },
-      lazy = {
-        prompt = ds.pad(ds.icons.misc.Prompt, "both"),
-        layout = { preset = "vertical_wide" },
-      },
-      registers = {
-        layout = { preset = "vscode", preview = true },
-      },
-      spelling = {
-        layout = { preset = "vscode" },
-      },
-      todo_comments = {
-        layout = { preset = "vertical_wide" },
-      },
-      lsp_declarations = {
-        layout = { preset = "vertical_wide" },
-      },
-      lsp_definitions = {
-        layout = { preset = "vertical_wide" },
-      },
-      lsp_implementations = {
-        layout = { preset = "vertical_wide" },
-      },
-      lsp_references = {
-        layout = { preset = "vertical_wide" },
-      },
-      lsp_symbols = {
-        filter = kind_filter,
-        layout = { preset = "vertical_wide" },
-      },
-      lsp_type_definitions = {
-        layout = { preset = "vertical_wide" },
-      },
-      lsp_workspace_symbols = {
-        filter = kind_filter,
-        layout = { preset = "vertical_wide" },
-      },
+      buffers = { layout = "ivy" },
+      command_history = { layout = "vscode" },
+      files = { prompt = ds.pad(ds.icons.misc.Prompt, "both"), layout = "telescope" },
+      git_log = { layout = "vertical" },
+      grep = { layout = "vertical" },
+      grep_buffers = { layout = "ivy" },
+      help = { layout = "ivy" },
+      lazy = { prompt = ds.pad(ds.icons.misc.Prompt, "both"), layout = "vertical" },
+      lsp_declarations = { layout = "vertical" },
+      lsp_definitions = { layout = "vertical" },
+      lsp_implementations = { layout = "vertical" },
+      lsp_references = { layout = "vertical" },
+      lsp_symbols = { layout = "vertical" },
+      lsp_type_definitions = { layout = "vertical" },
+      lsp_workspace_symbols = { layout = "vertical" },
+      registers = { layout = { preset = "vscode", preview = true } },
+      spelling = { layout = "vscode" },
+      todo_comments = { layout = "vertical" },
     },
   }
 end
@@ -161,7 +85,7 @@ M.file_browser = function()
   local cwd = vim.fn.expand "%:p:h"
   Snacks.picker.files {
     cwd = cwd,
-    layout = { preset = "vscode" },
+    layout = "vscode",
     actions = {
       parent = {
         action = function(picker, _)
