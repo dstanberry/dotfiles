@@ -32,9 +32,9 @@ M.config = {
         key = "c",
         action = function() Snacks.picker.files { cwd = tostring(vim.fn.stdpath "config") } end,
         icon = ds.pad(ds.icons.misc.Gear, "right"),
-        desc = " Configuration File",
+        desc = " Editor Config",
       },
-      { key = "l", action = ":Lazy", icon = ds.pad(ds.icons.misc.Extensions, "right"), desc = " Plugin Manager" },
+      { key = "l", action = ":Lazy", icon = ds.pad(ds.icons.misc.Extensions, "right"), desc = " Plugins" },
       {
         key = "q",
         action = function() vim.api.nvim_input "<cmd>qa<cr>" end,
