@@ -13,6 +13,11 @@ local trouble = ds.plugin.is_installed "trouble.nvim"
 M.config = function()
   local layouts = require "snacks.picker.config.layouts"
 
+  layouts.select.layout.border = vim.tbl_map(
+    function(icon) return { icon, "SnacksPickerBorderSB" } end,
+    ds.icons.border.Default
+  )
+
   ---@diagnostic disable-next-line: assign-type-mismatch
   layouts.telescope.layout.backdrop = true
   layouts.telescope.layout[1][1].title = ""
