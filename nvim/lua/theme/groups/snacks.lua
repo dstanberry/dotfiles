@@ -77,7 +77,7 @@ M.get = function(c)
     SnacksPickerBoxTitle        = { fg = c.bg2, bg = c.red1, bold = true },
 
     SnacksPickerInputBorder     = { fg = c.red1, bg = GRAY_DARK },
-    SnacksPickerInputTitle      = { fg = c.bg2, bg = c.red1, bold = true },
+    SnacksPickerInputTitle      = { fg = c.red1, bg = GRAY_DARK, bold = true },
 
     SnacksPickerList            = { bg = GRAY_DARK },
     SnacksPickerListCursorLine  = { bg = BLUE, bold = true },
@@ -92,7 +92,7 @@ M.get = function(c)
     SnacksPickerSelected        = { fg = c.magenta1},
 
     -- custom user-defined group
-    SnacksPickerBorderSB        = { fg = c.overlay0, bg = GRAY_DARK },
+    SnacksPickerBorderSB        = { fg = ds.color.blend(c.overlay0, GRAY_DARK, 0.2), bg = GRAY_DARK },
 
     -- scratch
     SnacksScratchTitle          = { fg = c.magenta0, bg = c.bg0, bold = true },
