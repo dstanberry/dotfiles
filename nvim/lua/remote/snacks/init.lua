@@ -49,6 +49,7 @@ return {
         styles = util.styles,
         -- plugins using default config
         bigfile = { enabled = true },
+        explorer = { replace_netrw = true },
         gitbrowse = { enabled = true },
         quickfile = { enabled = true },
         scroll = { enabled = true },

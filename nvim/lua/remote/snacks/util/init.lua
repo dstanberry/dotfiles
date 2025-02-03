@@ -22,14 +22,6 @@ M.on_init = function()
     pattern = "VeryLazy",
     callback = M.notify.setup,
   })
-  vim.api.nvim_create_autocmd("BufEnter", {
-    group = M.augroup,
-    once = true,
-    callback = function()
-      local dir = vim.fn.argv(0) --[[@as string]]
-      if dir ~= "" and vim.fn.isdirectory(dir) == 1 then Snacks.picker.explorer { cwd = dir } end
-    end,
-  })
 end
 
 M.styles = {
