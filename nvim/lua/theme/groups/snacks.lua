@@ -73,6 +73,7 @@ M.get = function(c)
     -- picker
     SnacksPicker                = { bg = GRAY_DARK },
     SnacksPickerBorder          = { fg = GRAY_DARK, bg = GRAY_DARK },
+    SnacksPickerBorderSB        = { fg = ds.color.blend(c.overlay0, GRAY_DARK, 0.2), bg = GRAY_DARK },
 
     SnacksPickerBoxTitle        = { fg = c.bg2, bg = c.red1, bold = true },
 
@@ -86,13 +87,14 @@ M.get = function(c)
     SnacksPickerPreviewBorder   = { fg = c.bg0, bg = c.bg0 },
     SnacksPickerPreviewTitle    = { fg = c.bg2, bg = c.bg0, bold = true },
 
-    SnacksPickerMatch           = { fg = c.orange0, bold = true },
     SnacksPickerDir             = { fg = c.gray2 },
+    SnacksPickerFlag            = { fg = c.red1, bg = GRAY_DARK, bold = true, italic = true },
+    SnacksPickerMatch           = { fg = c.orange0, bold = true },
+    SnacksPickerPickWin         = { fg = GRAY, bg = c.overlay0, bold = true, italic = true },
+    SnacksPickerPickWinCurrent  = { fg = GRAY, bg = c.magenta0, bold = true, italic = true },
     SnacksPickerPrompt          = { fg = c.green2, bold = true },
     SnacksPickerSelected        = { fg = c.magenta1},
-
-    -- custom user-defined group
-    SnacksPickerBorderSB        = { fg = ds.color.blend(c.overlay0, GRAY_DARK, 0.2), bg = GRAY_DARK },
+    SnacksPickerToggle          = { fg = GRAY_DARK, bg = c.red1, bold = true, italic = true },
 
     -- scratch
     SnacksScratchTitle          = { fg = c.magenta0, bg = c.bg0, bold = true },
