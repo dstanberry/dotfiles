@@ -15,13 +15,13 @@ M.config = {
         icon = ds.pad(ds.icons.misc.Magnify, "right"),
         desc = " Find File",
       },
-      { key = "n", action = ":ene | startinsert", icon = ds.pad(ds.icons.documents.File, "right"), desc = " New File" },
       {
         key = "g",
         action = function() Snacks.picker.grep() end,
         icon = ds.pad(ds.icons.misc.Data, "right"),
         desc = " Find Text",
       },
+      { key = "n", action = ":ene | startinsert", icon = ds.pad(ds.icons.documents.File, "right"), desc = " New File" },
       {
         key = "r",
         action = function() require("persistence").load() end,
@@ -32,7 +32,7 @@ M.config = {
         key = "c",
         action = function() Snacks.picker.files { cwd = tostring(vim.fn.stdpath "config") } end,
         icon = ds.pad(ds.icons.misc.Gear, "right"),
-        desc = " Editor Config",
+        desc = " User Config",
       },
       { key = "l", action = ":Lazy", icon = ds.pad(ds.icons.misc.Extensions, "right"), desc = " Plugins" },
       {
