@@ -2,6 +2,7 @@ if vim.loader then vim.loader.enable() end
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
+vim.g.health = { style = "float" }
 
 _G.ds = require "util"
 ds.fs.load_settings()
