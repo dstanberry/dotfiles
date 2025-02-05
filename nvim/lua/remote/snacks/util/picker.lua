@@ -5,7 +5,9 @@ local M = {}
 
 local trouble = ds.plugin.is_installed "trouble.nvim"
     and {
-      actions = { trouble_open = function(...) return require("trouble.sources.snacks").actions(...) end },
+      actions = {
+        trouble_open = function(...) return require("trouble.sources.snacks").actions.trouble_open.action(...) end,
+      },
       keys = { ["<c-q>"] = { "trouble_open", mode = { "i", "n" } } },
     }
   or { actions = {}, keys = {} }

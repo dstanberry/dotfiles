@@ -304,11 +304,6 @@ return {
         { "<c-down>", _next, desc = "trouble: next item" },
       }
     end,
-    init = function()
-      vim.api.nvim_create_autocmd("QuickFixCmdPost", {
-        callback = function() vim.cmd "Trouble qflist open" end,
-      })
-    end,
     opts = function()
       local preview_opts = {
         type = "float",
