@@ -3,6 +3,30 @@ local M = {}
 
 ---@module "snacks"
 
+local flash = ds.plugin.is_installed "flash.nvim"
+    and {
+      actions = {
+        flash = function(picker)
+          require("flash").jump {
+            pattern = "^",
+            label = { after = { 0, 0 } },
+            search = {
+              mode = "search",
+              exclude = {
+                function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "snacks_picker_list" end,
+              },
+            },
+            action = function(match)
+              local idx = picker.list:row2idx(match.pos[1])
+              picker.list:_move(idx, true, true)
+            end,
+          }
+        end,
+      },
+      keys = { ["<a-s>"] = { "flash", mode = { "i", "n" } }, ["s"] = { "flash" } },
+    }
+  or { actions = {}, keys = {} }
+
 local trouble = ds.plugin.is_installed "trouble.nvim"
     and {
       actions = {
@@ -44,7 +68,7 @@ M.config = function()
     },
     win = {
       input = {
-        keys = vim.tbl_extend("force", trouble.keys, {
+        keys = vim.tbl_extend("force", flash.keys, trouble.keys, {
           ["<a-c>"] = { "toggle_cwd", mode = { "i", "n" } },
           ["<c-/>"] = { "toggle_help", mode = { "i", "n" } },
           ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
@@ -55,7 +79,7 @@ M.config = function()
         }),
       },
     },
-    actions = vim.tbl_extend("force", trouble.actions, {
+    actions = vim.tbl_extend("force", flash.actions, trouble.actions, {
       ---@param p snacks.Picker
       toggle_cwd = function(p)
         local root = ds.root.get { buf = p.input.filter.current_buf, normalize = true }
