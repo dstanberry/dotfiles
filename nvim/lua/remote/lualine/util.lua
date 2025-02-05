@@ -35,6 +35,11 @@ M.highlighter = {
   reset = "%*",
 }
 
+M.separator = {
+  left = function() return M.highlighter.sanitize "StatusLineContext" .. "╲" .. M.highlighter.reset end,
+  right = function() return M.highlighter.sanitize "StatusLineContext" .. "╱" .. M.highlighter.reset end,
+}
+
 M.theme = function()
   return {
     command = {

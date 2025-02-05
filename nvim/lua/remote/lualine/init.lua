@@ -24,13 +24,14 @@ return {
         theme = util.theme,
         globalstatus = true,
         disabled_filetypes = { statusline = ds.excludes.ft.stl_disabled, winbar = ds.excludes.ft.wb_disabled },
-        component_separators = " ",
-        section_separators = " ",
+        component_separators = "",
+        section_separators = "",
       },
       sections = {
         lualine_a = {
-          { function() return ds.icons.misc.VerticalBarBold end, padding = { left = 0, right = 0 } },
-          { util.git.branch.get, padding = { right = 2 } },
+          { function() return ds.icons.misc.VerticalBarBold end, padding = { left = 0 } },
+          { util.git.branch.get },
+          { util.separator.left, padding = { left = 0, right = 1 } },
         },
         lualine_b = {
           {
@@ -38,6 +39,11 @@ return {
             color = { fg = vim.g.ds_colors.overlay1 },
             cond = function() return type(util.metadata.root_dir.get()) == "string" end,
             padding = { right = 1 },
+          },
+          {
+            util.separator.left,
+            cond = function() return type(util.metadata.root_dir.get()) == "string" end,
+            padding = { left = 0, right = 1 },
           },
           {
             "vim.b.gitsigns_blame_line",
@@ -68,6 +74,7 @@ return {
             color = { fg = vim.g.ds_colors.gray2, gui = "italic" },
             cond = util.message.noice.cond,
           },
+          { util.separator.right, cond = util.message.noice.cond, padding = { right = 1 } },
         },
         lualine_y = {
           {
@@ -86,11 +93,21 @@ return {
               hint = { fg = ds.color.get_color "DiagnosticVirtualTextHint" },
             },
           },
+          {
+            util.separator.right,
+            cond = function() return #vim.diagnostic.count() > 0 end,
+            padding = { left = 0, right = 1 },
+          },
           { util.lsp.clients.get, padding = { right = 0 } },
+          { util.separator.right, padding = { left = 1, right = 0 } },
           { "location" },
+          { util.separator.right, padding = { left = 0, right = 0 } },
           { util.metadata.indentation.get },
+          { util.separator.right, padding = { left = 0, right = 0 } },
           { "encoding" },
+          { util.separator.right, padding = { left = 0, right = 0 } },
           { "fileformat", icons_enabled = true, symbols = { unix = "lf", dos = "crlf", mac = "cr" } },
+          { util.separator.right, padding = { left = 0, right = 0 } },
           { "filetype", color = { gui = "bold" } },
         },
         lualine_z = {},

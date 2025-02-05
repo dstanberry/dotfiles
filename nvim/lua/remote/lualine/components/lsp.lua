@@ -9,23 +9,17 @@ M.clients = {
     local winid = vim.api.nvim_get_current_win()
     local buf = vim.api.nvim_win_get_buf(winid)
     local clients = {}
-    local c, ai, icon
+    local c, ai
     ds.foreach(vim.lsp.get_clients { bufnr = buf }, function(client)
       if client and client.name then
         if client.name == "copilot" then
-          icon = highlighter.sanitize "Macro" .. ds.icons.kind.Copilot .. highlighter.reset
-          ai = ds.pad(icon, "right") .. client.name
+          ai = ds.pad(highlighter.sanitize "Macro" .. ds.icons.kind.Copilot .. highlighter.reset, "right")
         else
           table.insert(clients, client.name)
         end
       end
     end)
-    icon = highlighter.sanitize "Structure" .. ds.icons.misc.Extensions .. highlighter.reset
-    if #clients == 1 then
-      c = ds.pad(icon, "right") .. clients[1]:lower()
-    elseif #clients > 1 then
-      c = ds.pad(icon, "right") .. #clients .. " clients"
-    end
+    c = ds.pad(highlighter.sanitize "Macro" .. ds.icons.misc.Extensions .. highlighter.reset, "right") .. #clients
     if ai then c = (c or "") .. ds.pad(ai, "left", 2) end
     return c
   end,
