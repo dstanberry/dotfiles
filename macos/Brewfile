@@ -64,9 +64,9 @@ brew "silicon"
 brew "sqlcmd"
 brew "sqlparse"
 brew "sqlite-utils"
-brew "tmux"
+brew "tmux", args: ["HEAD"]
 brew "tree"
-brew "tree-sitter"
+brew "tree-sitter", args: ["HEAD"]
 brew "virtualenv"
 brew "vivid"
 brew "wget"
