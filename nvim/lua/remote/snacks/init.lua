@@ -51,6 +51,7 @@ return {
         bigfile = { enabled = true },
         explorer = { replace_netrw = true },
         gitbrowse = { enabled = true },
+        image = {},
         notifier = { style = "compact" },
         quickfile = { enabled = true },
         scroll = { enabled = true },
