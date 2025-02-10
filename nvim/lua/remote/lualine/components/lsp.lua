@@ -13,13 +13,13 @@ M.clients = {
     ds.foreach(vim.lsp.get_clients { bufnr = buf }, function(client)
       if client and client.name then
         if client.name == "copilot" then
-          ai = ds.pad(highlighter.sanitize "Macro" .. ds.icons.kind.Copilot .. highlighter.reset, "right")
+          ai = ds.pad(highlighter.sanitize "Conceal" .. ds.icons.kind.Copilot .. highlighter.reset, "right")
         else
           table.insert(clients, client.name)
         end
       end
     end)
-    c = ds.pad(highlighter.sanitize "Macro" .. ds.icons.misc.Extensions .. highlighter.reset, "right") .. #clients
+    c = highlighter.sanitize "Conceal" .. ds.icons.misc.Extensions .. " " .. #clients .. highlighter.reset
     if ai then c = (c or "") .. ds.pad(ai, "left", 2) end
     return c
   end,
