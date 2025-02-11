@@ -51,7 +51,7 @@ return {
         bigfile = { enabled = true },
         explorer = { replace_netrw = true },
         gitbrowse = { enabled = true },
-        image = {},
+        image = { force = not (ds.has "win32" or ds.has "wsl") },
         notifier = { style = "compact" },
         quickfile = { enabled = true },
         scroll = { enabled = true },
