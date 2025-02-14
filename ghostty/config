@@ -1,6 +1,6 @@
 # Fonts
-font-family = "Symbols Nerd Font Mono"
 font-family = "Cartograph CF"
+# font-family = "Symbols Nerd Font Mono"
 font-size = 14
 
 adjust-cell-height = 5%
