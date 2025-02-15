@@ -56,10 +56,7 @@
       "workspaces": [
         {
           "name": "primary",
-          "layout_rules": {
-            "1": "VerticalStack",
-            "3": "UltrawideVerticalStack"
-          }
+          "layout": "UltrawideVerticalStack"
         }
       ]
     }
