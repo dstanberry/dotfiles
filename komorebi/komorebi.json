@@ -16,6 +16,7 @@
   "border_offset": -1,
   "border_width": 5,
   "border_colours": {
+    "floating": "#97b6e5",
     "single": "#97b6e5",
     "stack": "#f7768e",
     "monocle": "#7f849c",
