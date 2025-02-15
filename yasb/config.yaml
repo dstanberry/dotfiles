@@ -156,7 +156,6 @@ widgets:
         - { icon: "\uea83", launch: "cmd /c Explorer" }
         - {icon: "\ueae6", launch: "C:\\Program Files\\PowerToys\\PowerToys.exe"}
         - { icon: "\uea85", launch: "cmd /c wt" }
-        - { icon: "\udb80\ude39",launch: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" }
   weather:
     type: "yasb.weather.WeatherWidget"
     options:
