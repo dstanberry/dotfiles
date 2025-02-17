@@ -44,6 +44,9 @@ M.styles = {
       winhighlight = "FloatBorder:FloatBorderSB,CursorLine:SnacksScratchCursorLine",
     },
   },
+  snacks_image = {
+    border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
+  },
   terminal = {
     wo = {
       winbar = "",
