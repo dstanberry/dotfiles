@@ -225,7 +225,7 @@ return {
       default_to_projects_v2 = false,
       default_merge_method = "squash",
       github_hostname = vim.g.ds_env.github_hostname or "github.com",
-      picker = "telescope",
+      picker = "snacks",
       ssh_aliases = {},
     },
   },
