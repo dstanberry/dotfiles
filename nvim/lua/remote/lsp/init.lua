@@ -11,18 +11,43 @@ return {
   { "seblj/roslyn.nvim", lazy = true },
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },
-  { "mickael-menu/zk-nvim", lazy = true },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "LspAttach",
     opts = { blend = { factor = 0.15 }, options = { throttle = 50 } },
   },
   {
+    "mickael-menu/zk-nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    event = { "BufRead *.md" },
+    keys = function()
+      local keymap = require "ft.markdown.keymaps"
+      local keys = {}
+      for k, v in pairs(keymap) do
+        table.insert(keys, { k, v[1], desc = v[2] or "", mode = v[3] or "n" })
+      end
+      return keys
+    end,
+    opts = {
+      picker = "snacks_picker",
+      lsp = {
+        config = {
+          cmd = { "zk", "lsp" },
+          name = "zk",
+          root_dir = vim.env.ZK_NOTEBOOK_DIR,
+        },
+      },
+      auto_attach = {
+        enabled = true,
+        filetypes = { "markdown" },
+      },
+    },
+    config = function(_, opts) require("zk").setup(opts) end,
+  },
+  {
     "neovim/nvim-lspconfig",
     event = "LazyFile",
-    dependencies = {
-      "williamboman/mason.nvim",
-    },
+    dependencies = { "williamboman/mason.nvim" },
     init = function() vim.lsp.set_log_level(vim.lsp.log_levels.OFF) end,
     config = function()
       local lspconfig = require "lspconfig"
