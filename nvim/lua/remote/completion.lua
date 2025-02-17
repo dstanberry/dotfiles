@@ -41,8 +41,8 @@ return {
         ["<c-space>"] = { "show", "show_documentation", "hide_documentation" },
         ["<c-c>"] = { "hide", "fallback" },
       },
+      cmdline = { enabled = false },
       sources = {
-        cmdline = {},
         default = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "path" },
         providers = {
           copilot = { name = "copilot", module = "blink-cmp-copilot", kind = "Copilot" },
