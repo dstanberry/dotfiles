@@ -4,6 +4,8 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 vim.g.health = { style = "float" }
 
+if vim.env.VSCODE then vim.g.vscode = true end
+
 _G.ds = require "util"
 ds.fs.load_settings()
 
