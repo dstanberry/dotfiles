@@ -18,6 +18,7 @@ return {
   },
   {
     "mickael-menu/zk-nvim",
+    enabled = not ds.has "win32",
     dependencies = { "williamboman/mason.nvim" },
     event = { "BufRead *.md" },
     keys = function()
