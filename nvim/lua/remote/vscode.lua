@@ -24,6 +24,7 @@ vim.keymap.set("n", "u", "<cmd>call VSCodeNotify('undo')<cr>")
 -- editor naviagtion
 vim.keymap.set("n", "<left>", "<cmd>call VSCodeNotify('workbench.action.previousEditor')<cr>")
 vim.keymap.set("n", "<right>", "<cmd>call VSCodeNotify('workbench.action.nextEditor')<cr>")
+vim.keymap.set("n", "<leader>wt", [[<cmd>lua require('vscode').action('workbench.action.terminal.toggleTerminal')<cr>]])
 -- file navigation
 vim.keymap.set("n", "<leader><space>", "<cmd>Find<cr>")
 vim.keymap.set("n", "<localleader>fg", [[<cmd>lua require('vscode').action('workbench.action.findInFiles')<cr>]])
