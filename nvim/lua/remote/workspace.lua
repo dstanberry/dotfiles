@@ -4,6 +4,8 @@ return {
     event = "LazyFile",
     lazy = vim.fn.argc(-1) == 0,
     keys = {
+      { "<left>", "<cmd>BufferLineCycleNext<cr>", desc = "bufferline: goto next buffer" },
+      { "<right>", "<cmd>BufferLineCyclePrev<cr>", desc = "bufferline: goto previous buffer" },
       { "<leader>bg", ":BufferLineGroupToggle ", desc = "bufferline: toggle group" },
       { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = "bufferline: toggle pin" },
       { "<leader>bP", "<cmd>BufferLineGroupClose ungrouped<cr>", desc = "bufferline: delete all non-pinned buffers" },

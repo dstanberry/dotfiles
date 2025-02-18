@@ -10,23 +10,9 @@ vim.keymap.set("n", "<up>", "<c-y>", { desc = "scroll up" })
 vim.keymap.set("n", "<down>", "<c-e>", { desc = "scroll down" })
 
 -- switch to next buffer
-vim.keymap.set("n", "<right>", function()
-  local ok, bufferline = pcall(require, "bufferline")
-  if not ok then
-    vim.cmd.bnext()
-    return
-  end
-  bufferline.cycle(1)
-end, { desc = "next buffer" })
+vim.keymap.set("n", "<right>", vim.cmd.bnext, { desc = "next buffer" })
 -- switch to previous buffer
-vim.keymap.set("n", "<left>", function()
-  local ok, bufferline = pcall(require, "bufferline")
-  if not ok then
-    vim.cmd.bprevious()
-    return
-  end
-  bufferline.cycle(-1)
-end, { desc = "previous buffer" })
+vim.keymap.set("n", "<left>", vim.cmd.bprevious, { desc = "previous buffer" })
 
 -- switch to next tab
 vim.keymap.set("n", "<tab>", vim.cmd.tabnext, { desc = "next tab" })
