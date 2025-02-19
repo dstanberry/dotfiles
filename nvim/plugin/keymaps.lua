@@ -345,21 +345,29 @@ end, { silent = false, expr = true, replace_keycodes = true })
 -- exit command mode
 vim.keymap.set("c", "jk", "<c-c>", { desc = "leave command-line mode" })
 
--- populate command line with path to parent dir of current buffer
-vim.keymap.set(
-  "c",
-  "%H",
-  function() return vim.fs.dirname(vim.api.nvim_buf_get_name(0)) .. "/" end,
-  { silent = false, expr = true, replace_keycodes = true, desc = "insert path to parent directory" }
-)
+-- populate command line with filepath to parent directory of current buffer
+vim.keymap.set("c", "%h", function() return vim.fs.dirname(vim.api.nvim_buf_get_name(0)) .. "/" end, {
+  silent = false,
+  expr = true,
+  replace_keycodes = true,
+  desc = "insert path to parent directory",
+})
 
--- populate command line with path to file of current buffer
-vim.keymap.set(
-  "c",
-  "%P",
-  function() return vim.fs.normalize(vim.api.nvim_buf_get_name(0)) end,
-  { silent = false, expr = true, replace_keycodes = true, desc = "insert filepath" }
-)
+-- populate command line with filname of current buffer
+vim.keymap.set("c", "%f", function() return vim.fs.basename(vim.api.nvim_buf_get_name(0)) end, {
+  silent = false,
+  expr = true,
+  replace_keycodes = true,
+  desc = "insert filename",
+})
+
+-- populate command line with filepath of current buffer
+vim.keymap.set("c", "%p", function() return vim.fs.normalize(vim.api.nvim_buf_get_name(0)) end, {
+  silent = false,
+  expr = true,
+  replace_keycodes = true,
+  desc = "insert filepath",
+})
 
 ---------------------------------------------------------------
 -- => Terminal
