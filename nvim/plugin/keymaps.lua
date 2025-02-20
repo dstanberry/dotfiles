@@ -46,6 +46,11 @@ vim.keymap.set(
 
 -- show highlight information for word under cursor
 vim.keymap.set("n", "<c-w><c-i>", vim.show_pos, { desc = "show highlights for word under cursor" })
+-- show tresitter AST for current buffer
+vim.keymap.set("n", "<c-w>`", function()
+  vim.treesitter.inspect_tree()
+  vim.api.nvim_input "I"
+end, { desc = "inspect treesitter tree" })
 
 -- shift current line down
 vim.keymap.set("n", "<c-w><c-j>", ":m .+1<cr>==", { desc = "move line down" })
