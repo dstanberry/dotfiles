@@ -6,7 +6,6 @@ return {
     priority = 1000,
     lazy = false,
     keys = function()
-      local browse = util.gitbrowse.browse
       local copy = util.gitbrowse.copy_url
       local lazy_rtp = vim.fs.joinpath(vim.fn.stdpath "data", "lazy")
       local nvim_path = tostring(vim.fn.stdpath "config")
@@ -33,7 +32,7 @@ return {
         -- git
         { "<leader>gg", function() Snacks.lazygit.open() end, desc = "git: lazygit" },
         { "<leader>gl", function() Snacks.lazygit.log_file() end, desc = "git: lazygit log" },
-        { "<localleader>go", function() Snacks.gitbrowse.open(browse) end, desc = "git: open in browser", mode = { "n", "v" } },
+        { "<localleader>go", function() Snacks.gitbrowse.open() end, desc = "git: open in browser", mode = { "n", "v" } },
         { "<localleader>gy", function() Snacks.gitbrowse.open(copy) end, desc = "git: copy remote url", mode = { "n", "v" } },
         -- window
         { "<leader>wn", function() Snacks.notifier.show_history() end, desc = "messages: show notifications" },
@@ -50,7 +49,7 @@ return {
         -- plugins using default config
         bigfile = { enabled = true },
         explorer = { replace_netrw = true },
-        gitbrowse = { enabled = true },
+        gitbrowse = util.gitbrowse.config,
         image = { force = not (ds.has "win32" or ds.has "wsl"), doc = { inline = false } },
         notifier = { style = "compact" },
         quickfile = { enabled = true },
