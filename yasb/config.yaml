@@ -164,20 +164,21 @@ widgets:
       api_key: "3bf4cf9a7c3f40d6b31174128242807"
       update_interval: 600
       hide_decimal: true
+      units: "imperial"
       location: "USA St. Paul 55102"
       callbacks:
         on_left: "toggle_label"
       icons:
-        sunnyDay: " \udb81\udd99"
-        clearNight: " \udb81\udd99"
+        sunnyDay: " \ue30d"
+        clearNight: " \ue32b"
         cloudyDay: " \udb81\udd99"
-        cloudyNight: " \udb81\udd99"
-        rainyDay: " \udb81\udd99"
-        rainyNight: " \udb81\udd99"
-        snowyIcyDay: " \udb81\udd99"
-        snowyIcyNight: " \udb81\udd99"
-        blizzard: " \udb81\udd99"
-        default: " \udb81\udd99"
+        cloudyNight: " \ue311"
+        rainyDay: " \udb81\ude7e"
+        rainyNight: " \udb81\ude7e"
+        snowyIcyDay: " \udb81\udd98"
+        snowyIcyNight: " \udb81\udd98"
+        blizzard: " \uebaa"
+        default: " \uebaa"
 
   media:
     type: "yasb.media.MediaWidget"
