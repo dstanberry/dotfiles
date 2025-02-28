@@ -35,6 +35,7 @@ return {
       local _repl = function() require("dap").repl.toggle { height = 15 } end
       local _stop = function() require("dap").terminate() end
       local _ui = function() require("dapui").toggle() end
+      local _watch = function() require("dapui").elements.watches.add() end
 
       return {
         { "<leader>db", _breakpoint, desc = "dap: toggle breakpoint" },
@@ -51,6 +52,7 @@ return {
         { "<leader>dt", _repl, desc = "dap: toggle repl" },
         { "<leader>dT", _stop, desc = "dap: terminate" },
         { "<leader>du", _ui, desc = "dap: toggle ui" },
+        { "<leader>dw", _watch, desc = "dap: add to watches" },
       }
     end,
     config = function()
