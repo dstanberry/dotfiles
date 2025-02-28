@@ -1,16 +1,18 @@
 {
-  "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/v0.1.33/schema.json",
+  "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/v0.1.34/schema.json",
   "app_specific_configuration_path": "$Env:KOMOREBI_CONFIG_HOME/applications.json",
   "window_hiding_behaviour": "Cloak",
+  "cross_boundary_behaviour": "Monitor",
   "cross_monitor_move_behaviour": "Insert",
   "default_workspace_padding": 5,
   "default_container_padding": 5,
+  "floating_window_aspect_ratio": "Ultrawide",
   "mouse_follows_focus": false,
   "animation": {
     "enabled": true,
     "duration": 250,
-    "style": "Linear",
-    "fps": 140
+    "fps": 140,
+    "style": "Linear"
   },
   "border": true,
   "border_offset": -1,
@@ -24,14 +26,15 @@
   },
   "stackbar": {
     "height": 20,
-    "mode": "OnStack",
+    "mode": "Never",
+    "label": "Title",
     "tabs": {
       "width": 200,
       "focused_text": "#f7768e",
       "unfocused_text": "#5a5a5a",
       "background": "#373737",
       "font_family": "Futura PT",
-      "font_size": 14
+      "font_size": 16
     }
   },
   "display_index_preferences": {
@@ -45,9 +48,10 @@
       "workspaces": [
         {
           "name": "portrait",
-          "layout_rules": {
-            "1": "Rows",
-            "4": "Grid"
+          "layout": "Rows",
+          "window_container_behaviour_rules": {
+            "0": "Create",
+            "2": "Append"
           }
         }
       ]
@@ -56,7 +60,11 @@
       "workspaces": [
         {
           "name": "primary",
-          "layout": "UltrawideVerticalStack"
+          "layout": "UltrawideVerticalStack",
+          "window_container_behaviour_rules": {
+            "0": "Create",
+            "3": "Append"
+          }
         }
       ]
     }
