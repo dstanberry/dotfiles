@@ -120,7 +120,7 @@ local get_signs = function(win, buf, lnum)
   vim.api.nvim_win_call(win, function()
     if vim.fn.foldclosed(vim.v.lnum) >= 0 then
       signs[#signs + 1] = { text = vim.opt.fillchars:get().foldclose or "", texthl = "Folded", type = "fold" }
-    elseif not M.skip_foldexpr[buf] and tostring(vim.treesitter.foldexpr(vim.v.lnum)):sub(1, 1) == ">" then
+    elseif not M.skip_foldexpr[buf] and vim.fn.foldlevel(lnum) > vim.fn.foldlevel(lnum - 1) then
       signs[#signs + 1] = { text = vim.opt.fillchars:get().foldopen or "", type = "fold" }
     end
   end)
