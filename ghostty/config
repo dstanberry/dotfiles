@@ -35,6 +35,9 @@ keybind = ctrl+shift+i=inspector:toggle
 keybind = ctrl+shift+r=reload_config
 keybind = ctrl+shift+s=write_screen_file:open
 
+keybind = ctrl+shift+backspace=decrease_font_size:1
+keybind = ctrl+shift+delete=increase_font_size:1
+
 # Mouse
 mouse-hide-while-typing = true
 
