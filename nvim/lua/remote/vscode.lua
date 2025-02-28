@@ -21,6 +21,11 @@ Config.options.defaults.cond = function(plugin) return vim.tbl_contains(enabled,
 -- keep undo/redo lists in sync with vscode
 vim.keymap.set("n", "<c-r>", "<cmd>call VSCodeNotify('redo')<cr>")
 vim.keymap.set("n", "u", "<cmd>call VSCodeNotify('undo')<cr>")
+-- editor layout
+vim.keymap.set("n", "<c-left>", "<cmd>call VSCodeNotify('workbench.action.decreaseViewSize')<cr>")
+vim.keymap.set("n", "<c-right>", "<cmd>call VSCodeNotify('workbench.action.increaseViewSize')<cr>")
+vim.keymap.set("n", "<c-backspace>", "<cmd>call VSCodeNotify('editor.action.fontZoomOut')<cr>")
+vim.keymap.set("n", "<c-delete>", "<cmd>call VSCodeNotify('editor.action.fontZoomIn')<cr>")
 -- editor naviagtion
 vim.keymap.set("n", "<left>", "<cmd>call VSCodeNotify('workbench.action.previousEditor')<cr>")
 vim.keymap.set("n", "<right>", "<cmd>call VSCodeNotify('workbench.action.nextEditor')<cr>")
