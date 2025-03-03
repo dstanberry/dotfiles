@@ -62,23 +62,8 @@ M.config = function()
   )
 
   return {
+    icons = { kinds = vim.tbl_deep_extend("keep", ds.icons.kind, ds.icons.type) },
     prompt = ds.pad(ds.icons.misc.Prompt, "right"),
-    icons = {
-      kinds = vim.tbl_deep_extend("keep", ds.icons.kind, ds.icons.type),
-    },
-    win = {
-      input = {
-        keys = vim.tbl_extend("force", flash.keys, trouble.keys, {
-          ["<a-c>"] = { "toggle_cwd", mode = { "i", "n" } },
-          ["<c-/>"] = { "toggle_help", mode = { "i", "n" } },
-          ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
-          ["<c-f>"] = { "preview_scroll_up", mode = { "i", "n" } },
-          ["<c-n>"] = false,
-          ["<c-u>"] = { "<c-s-u>", expr = true, mode = "i" },
-          ["jk"] = { "close", mode = "i" },
-        }),
-      },
-    },
     actions = vim.tbl_extend("force", flash.actions, trouble.actions, {
       ---@param p snacks.Picker
       toggle_cwd = function(p)
@@ -108,6 +93,19 @@ M.config = function()
       registers = { layout = { preset = "vscode", preview = true } },
       spelling = { layout = { preset = "vscode" } },
       todo_comments = { layout = { preset = "vertical" } },
+    },
+    win = {
+      input = {
+        keys = vim.tbl_extend("force", flash.keys, trouble.keys, {
+          ["<a-c>"] = { "toggle_cwd", mode = { "i", "n" } },
+          ["<c-/>"] = { "toggle_help", mode = { "i", "n" } },
+          ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },
+          ["<c-f>"] = { "preview_scroll_up", mode = { "i", "n" } },
+          ["<c-n>"] = false,
+          ["<c-u>"] = { "<c-s-u>", expr = true, mode = "i" },
+          ["jk"] = { "close", mode = "i" },
+        }),
+      },
     },
   }
 end
