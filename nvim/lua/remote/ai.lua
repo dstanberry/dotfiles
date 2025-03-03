@@ -19,18 +19,9 @@ return {
     "CopilotC-Nvim/CopilotChat.nvim",
     cmd = "CopilotChat",
     keys = function()
-      local _toggle = function() require("CopilotChat").toggle() end
+      local _chat = function() require("CopilotChat").select_prompt() end
       local _clear = function() return require("CopilotChat").reset() end
-      local _chat = function()
-        local actions = require "CopilotChat.actions"
-        local items = vim.tbl_deep_extend("keep", { prompt = "Copilot Quick Actions" }, actions.prompt_actions())
-        require("CopilotChat.integrations.snacks").pick(items, {
-          layout = {
-            preset = "vertical",
-            layout = { height = math.floor(math.min(vim.o.lines * 0.6 - 10, #items.actions) + 0.5) + 1 },
-          },
-        })
-      end
+      local _toggle = function() require("CopilotChat").toggle() end
 
       return {
         { "<leader>c", mode = { "n", "v" }, "", desc = "+copilot" },
