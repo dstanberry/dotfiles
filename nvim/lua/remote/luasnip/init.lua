@@ -2,72 +2,35 @@ return {
   "L3MON4D3/LuaSnip",
   lazy = true,
   keys = function()
-    local fallback = function(keys)
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys or "", true, true, true), "n", true)
-    end
-
-    local _next_jump = vim.schedule_wrap(function()
-      if require("luasnip").expand_or_locally_jumpable() then
-        require("luasnip").expand_or_jump()
-        local blink = package.loaded["blink.cmp"]
-        if blink then blink.hide() end
-        return
-      end
-      fallback "<tab>"
-    end)
-
-    local _previous_jump = vim.schedule_wrap(function()
-      if require("luasnip").in_snippet() and require("luasnip").jumpable(-1) then
-        require("luasnip").jump(-1)
-        return
-      end
-      fallback "<c-d>" -- <s-tab> equivalent to <c-d>
-    end)
-
-    local _next_choice = function()
-      if require("luasnip").in_snippet() and require("luasnip").choice_active() then
-        require("luasnip").change_choice(1)
-        return
-      end
-      fallback "<c-d>"
-    end
-
-    local _previous_choice = function()
-      if require("luasnip").in_snippet() and require("luasnip").choice_active() then
-        require("luasnip").change_choice(-1)
-        return
-      end
-      fallback "<c-f>"
-    end
-
+    local actions = require "remote.luasnip.actions"
     return {
-      { "<tab>", _next_jump, silent = true, mode = { "i", "s" } },
-      { "<s-tab>", _previous_jump, silent = true, mode = { "i", "s" } },
-      { "<c-d>", _next_choice, silent = true, mode = { "i", "s" } },
-      { "<c-f>", _previous_choice, silent = true, mode = { "i", "s" } },
+      { "<tab>", function() actions.jump_to_next "<tab>" end, silent = true, mode = { "i", "s" } },
+      { "<s-tab>", function() actions.jump_to_previous "<c-d>" end, silent = true, mode = { "i", "s" } },
+      { "<c-d>", function() actions.next_choice "<c-d>" end, silent = true, mode = { "i", "s" } },
+      { "<c-f>", function() actions.previous_choice "<c-f>" end, silent = true, mode = { "i", "s" } },
     }
   end,
-  config = function()
+  opts = {
+    keep_roots = true,
+    link_roots = true,
+    link_children = true,
+    enable_autosnippets = true,
+    updateevents = "TextChanged,TextChangedI",
+    region_check_events = "CursorHold,InsertLeave",
+    delete_check_events = "TextChanged,InsertEnter",
+    store_selection_keys = "<c-x>",
+  },
+  config = function(_, opts)
     local luasnip = require "luasnip"
-    local types = require "luasnip.util.types"
-
-    luasnip.config.setup {
-      keep_roots = true,
-      link_roots = true,
-      link_children = true,
-      enable_autosnippets = true,
-      updateevents = "TextChanged,TextChangedI",
-      region_check_events = "CursorHold,InsertLeave",
-      delete_check_events = "TextChanged,InsertEnter",
-      store_selection_keys = "<c-x>",
-      ext_opts = {
-        [types.choiceNode] = {
-          active = {
-            virt_text = { { ds.pad(ds.icons.misc.Layer, "both"), "Constant" } },
-          },
+    local i = require("luasnip.util.types").choiceNode
+    opts.ext_opts = {
+      [i] = {
+        active = {
+          virt_text = { { ds.pad(ds.icons.misc.Layer, "both"), "Constant" } },
         },
       },
     }
+    luasnip.config.setup(opts)
 
     luasnip.filetype_extend("javascript.jsx", { "javascript" })
     luasnip.filetype_extend("javascriptreact", { "javascript" })
