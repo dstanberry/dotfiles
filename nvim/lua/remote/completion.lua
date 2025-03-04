@@ -43,7 +43,7 @@ return {
       },
       cmdline = { enabled = false },
       sources = {
-        default = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "path" },
+        default = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "path", "snippets" },
         providers = {
           copilot = { name = "copilot", module = "blink-cmp-copilot", kind = "Copilot" },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
