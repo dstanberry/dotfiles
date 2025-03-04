@@ -5,10 +5,10 @@ require("remote.luasnip.nodes").setup_snip_env()
 
 return {
   s({
-    trig = "ignore",
+    trig = "ign",
     name = "disable formatting",
     dscr = "Disable `stylua` formatting for the next region",
-  }, { t "-- stylua: ignore" }),
+  }, { t "-- stylua: ignore" }, { condition = conds.line_begin }),
   s(
     { trig = "req", name = "require statement", dscr = "Require statement" },
     fmt([[local {} = require("{}")]], {
