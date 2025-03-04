@@ -45,9 +45,12 @@ return {
       sources = {
         default = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "path", "snippets" },
         providers = {
+          buffer = { score_offset = 10 },
           copilot = { name = "copilot", module = "blink-cmp-copilot", kind = "Copilot" },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
           lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
+          path = { score_offset = 10 },
+          snippets = { score_offset = 90 },
         },
       },
       snippets = {
