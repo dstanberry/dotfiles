@@ -471,19 +471,14 @@ return {
       local open = pairs.open
       ---@diagnostic disable-next-line: duplicate-set-field
       pairs.open = function(pair, neigh_pattern)
-        if vim.fn.getcmdline() ~= "" then return open(pair, neigh_pattern) end
+        if vim.fn.getcmdline() ~= "" or vim.fn.getcmdpos() >= 1 then return open(pair, neigh_pattern) end
         local _o, _c = pair:sub(1, 1), pair:sub(2, 2)
         local line = vim.api.nvim_get_current_line()
         local cursor = vim.api.nvim_win_get_cursor(0)
         local next = line:sub(cursor[2] + 1, cursor[2] + 1)
         local before = line:sub(1, cursor[2])
-        if vim.bo.filetype == "markdown" then
-          if not opts.markdown then return _o end
-          if _o == "`" and before:match "^%s*``" then
-            return "`\n```" .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
-          end
-        end
-        if vim.bo.filetype == "copilot-chat" then
+        if vim.tbl_contains({ "copilot-chat", "markdown" }, vim.bo.filetype) then
+          if not opts[vim.bo.filetype] then return _o end
           if _o == "`" and before:match "^%s*``" then
             return "`\n```" .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
           end
