@@ -465,6 +465,17 @@ return {
       skip_unbalanced = true,
       markdown = false,
     },
+    init = function()
+      vim.api.nvim_create_user_command("PairsDisable", function(args)
+        vim[args.bang and "g" or "b"].minipairs_disable = true
+        print "Disabled auto pairs"
+      end, { desc = "mini.pairs: disable auto pairs", bang = true })
+      vim.api.nvim_create_user_command("PairsEnable", function()
+        vim.b.minipairs_disable = false
+        vim.g.minipairs_disable = false
+        print "Enabled auto pairs"
+      end, { desc = "mini.pairs: enable auto pairs" })
+    end,
     config = function(_, opts)
       local pairs = require "mini.pairs"
       pairs.setup(opts)
@@ -497,24 +508,6 @@ return {
         end
         return open(pair, neigh_pattern)
       end
-      vim.api.nvim_create_user_command("PairsDisable", function(args)
-        if args.bang then
-          vim.b.minipairs_disable = true
-        else
-          vim.g.minipairs_disable = true
-        end
-        print "Disabled auto pairs"
-      end, {
-        desc = "mini.pairs: disable auto pairs",
-        bang = true,
-      })
-      vim.api.nvim_create_user_command("PairsEnable", function()
-        vim.b.minipairs_disable = false
-        vim.g.minipairs_disable = false
-        print "Enabled auto pairs"
-      end, {
-        desc = "mini.pairs: enable auto pairs",
-      })
     end,
   },
   {
