@@ -135,4 +135,26 @@ M.file_browser = function()
   }
 end
 
+M.git_diff_tree = function()
+  Snacks.picker.pick {
+    layout = "ivy",
+    preview = "file",
+    title = "Git Branch Modification(s)",
+    finder = function(opts, ctx)
+      local root = Snacks.git.get_root()
+      return require("snacks.picker.source.proc").proc({
+        opts,
+        {
+          cmd = "git",
+          args = { "diff-tree", "--no-commit-id", "--name-only", "--diff-filter=d", "HEAD@{u}..HEAD", "-r" },
+          transform = function(item)
+            item.cwd = root
+            item.file = item.text
+          end,
+        },
+      }, ctx)
+    end,
+  }
+end
+
 return M

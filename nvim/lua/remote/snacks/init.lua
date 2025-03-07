@@ -30,6 +30,7 @@ return {
         { "<localleader>fe", function() util.picker.file_browser() end, desc = "picker: find files (relative to current buffer)" },
         { "<localleader>fg", function() Snacks.picker.grep() end, desc = "picker: find in files (grep)" },
         -- git
+        { "<leader>gf", function() util.picker.git_diff_tree() end, desc = "git: diff tree" },
         { "<leader>gg", function() Snacks.lazygit.open() end, desc = "git: lazygit" },
         { "<leader>gl", function() Snacks.lazygit.log_file() end, desc = "git: lazygit log" },
         { "<localleader>go", function() Snacks.gitbrowse.open() end, desc = "git: open in browser", mode = { "n", "v" } },
