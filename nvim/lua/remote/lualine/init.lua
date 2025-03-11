@@ -105,9 +105,11 @@ return {
           { util.metadata.indentation.get },
           { util.separator.right, padding = { left = 0, right = 0 } },
           { "encoding" },
-          { util.separator.right, padding = { left = 0, right = 0 } },
+          -- stylua: ignore
+          { util.separator.right, padding = { left = 0, right = 0 }, cond = function() return vim.bo.filetype ~= "" end },
           { "fileformat", icons_enabled = true, symbols = { unix = "lf", dos = "crlf", mac = "cr" } },
-          { util.separator.right, padding = { left = 0, right = 0 } },
+          -- stylua: ignore
+          { util.separator.right, padding = { left = 0, right = 0 }, cond = function() return vim.bo.filetype ~= "" end },
           { "filetype", color = { gui = "bold" } },
         },
         lualine_z = {},
