@@ -9,6 +9,7 @@ return {
   "emmet-language-server",
   "eslint-lsp",
   "gopls",
+  "helm-ls",
   "html-lsp",
   "json-lsp",
   "lua-language-server",

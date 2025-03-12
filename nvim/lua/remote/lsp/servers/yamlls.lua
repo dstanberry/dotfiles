@@ -5,6 +5,9 @@ M.config = {
     new_config.settings.yaml.schemas =
       vim.tbl_deep_extend("force", new_config.settings.yaml.schemas or {}, require("schemastore").yaml.schemas())
   end,
+  on_attach = function(_, bufnr)
+    if vim.bo[bufnr].filetype == "helm" then vim.schedule(function() vim.cmd "LspStop ++force yamlls" end) end
+  end,
   capabilities = {
     textDocument = {
       foldingRange = { dynamicRegistration = false, lineFoldingOnly = true },

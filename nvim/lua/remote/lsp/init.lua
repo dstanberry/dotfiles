@@ -59,6 +59,7 @@ return {
         bashls = {},
         cmake = {},
         cssls = { init_options = { provideFormatter = false } },
+        helm_ls = {},
         html = { init_options = { provideFormatter = false } },
         terraformls = {},
       }
