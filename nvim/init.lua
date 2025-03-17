@@ -66,9 +66,9 @@ ds.plugin.setup {
         [".*/git/ignore"] = "gitignore",
         [".*/kitty/.+%.conf"] = "bash",
         ["requirements[%w_.-]+%.txt"] = "requirements",
-        [".*%.y[a]ml"] = function(path, _, ext)
+        [".*%.y[a]ml"] = function(path, _)
           local root = vim.fs.find({ "Chart.yaml", "Chart.yml" }, { path = path, upward = true })[1]
-          return root and "helm" or ext
+          return root and "helm" or "yaml"
         end,
       },
     }
