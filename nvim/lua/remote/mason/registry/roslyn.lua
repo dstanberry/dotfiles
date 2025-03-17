@@ -1,8 +1,24 @@
 local Pkg = require "mason-core.package"
 local platform = require "mason-core.platform"
-local _ = require "mason-core.functional"
-local github = require "mason-core.managers.github"
-local path = require "mason-core.path"
+
+local domain_api = {
+  feeds = "https://feeds.dev.azure.com/azure-public/vside/_apis/packaging/Feeds",
+  pkgs = "https://pkgs.dev.azure.com/azure-public/vside/_apis/packaging/feeds",
+}
+
+local systems = {
+  darwin_arm64 = "osx-arm64",
+  darwin_x64 = "osx-x64",
+  linux_arm64 = "linux-arm64",
+  linux_x64 = "linux-x64",
+  win_arm64 = "win-arm64",
+  win_x64 = "win-x64",
+}
+
+local system = ds.tbl_reduce(systems, function(acc, v, k)
+  if platform.is[k] then return v end
+  return acc
+end) or systems.linux_x64
 
 return Pkg.new {
   name = "roslyn",
@@ -13,27 +29,41 @@ return Pkg.new {
   ---@async
   ---@param ctx InstallContext
   install = function(ctx)
-    github
-      .unzip_release_file({
-        repo = "Crashdummyy/roslynLanguageServer",
-        asset_file = _.coalesce(
-          _.when(platform.is.darwin_arm64, "microsoft.codeanalysis.languageserver.osx-arm64.zip"),
-          _.when(platform.is.darwin_x64, "microsoft.codeanalysis.languageserver.osx-x64.zip"),
-          _.when(platform.is.linux_arm64, "microsoft.codeanalysis.languageserver.linux-arm64.zip"),
-          _.when(platform.is.linux_x64, "microsoft.codeanalysis.languageserver.linux-x64.zip"),
-          _.when(platform.is.win_arm64, "microsoft.codeanalysis.languageserver.win-arm64.zip"),
-          _.when(platform.is.win_x64, "microsoft.codeanalysis.languageserver.win-x64.zip")
-        ),
-      })
-      .with_receipt()
+    local get_package_info = function()
+      local online_package_info = vim.fn.system {
+        "curl",
+        "-s",
+        string.format("%s/vs-impl/packages?packageNameQuery=%s&api-version=7.1", domain_api.feeds, system),
+      }
+      return vim.json.decode(online_package_info).value[1]
+    end
+
+    local artifact_metadata = get_package_info()
+    local download_artifact = string.format(
+      [[
+        curl -s "%s/%s/nuget/packages/%s/versions/%s/content?&api-version=7.1-preview.1" --location --output "roslyn.zip"
+      ]],
+      domain_api.pkgs,
+      vim.split(artifact_metadata.url, "/")[9],
+      artifact_metadata.name,
+      artifact_metadata.versions[1].normalizedVersion
+    )
+    ctx.receipt:with_primary_source(ctx.receipt.unmanaged)
+    ctx.spawn.bash { "-c", download_artifact:gsub("\n", " ") }
+    ctx.spawn.unzip { "roslyn.zip" }
     ctx:link_bin(
       "roslyn",
       ctx:write_shell_exec_wrapper(
         "roslyn",
-        ("dotnet %q"):format(path.concat {
-          ctx.package:get_install_path(),
-          "Microsoft.CodeAnalysis.LanguageServer.dll",
-        })
+        ("dotnet %q"):format(
+          vim.fs.joinpath(
+            ctx.package:get_install_path(),
+            "content",
+            "LanguageServer",
+            "linux-x64",
+            "Microsoft.CodeAnalysis.LanguageServer.dll"
+          )
+        )
       )
     )
   end,
