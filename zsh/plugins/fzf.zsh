@@ -49,10 +49,10 @@ fi
     local res_a res_b selected_dir session_name
     {
       # shellcheck disable=SC2153
-      for f in "$HOME/Git"/*; do
-        if [ -d "$f" ]; then
-          if [ -d "$f/worktrees" ] || [ -d "$f/.git/worktrees" ]; then
-            worktree_list=$(git -C "$f" worktree list 2> /dev/null | awk '{print $1}')
+      for d in "$HOME/Git"/*; do
+        if [ -d "$d" ]; then
+          if [ -d "$d/worktrees" ] || [ -d "$d/.git/worktrees" ]; then
+            worktree_list=$(git -C "$d" worktree list 2> /dev/null | awk '{print $1}')
             if [ -n "$worktree_list" ]; then
               # shellcheck disable=SC2066
               for w in "$worktree_list"; do
@@ -63,15 +63,15 @@ fi
         fi
       done
       # shellcheck disable=SC2153
-      for f in "$HOME/Projects"/*/*; do
-        if [ -d "$f" ]; then
+      for d in "$HOME/Projects"/*/*; do
+        if [ -d "$d" ]; then
           if [ -z "$project_dirs" ]; then
-            project_dirs="$f"
+            project_dirs="$d"
           else
-            project_dirs="$project_dirs $f"
+            project_dirs="$project_dirs $d"
           fi
-          if [ -d "$f/worktrees" ] || [ -d "$f/.git/worktrees" ]; then
-            worktree_list=$(git -C "$f" worktree list 2> /dev/null | awk '{print $1}')
+          if [ -d "$d/worktrees" ] || [ -d "$d/.git/worktrees" ]; then
+            worktree_list=$(git -C "$d" worktree list 2> /dev/null | awk '{print $1}')
             if [ -n "$worktree_list" ]; then
               # shellcheck disable=SC2066
               for w in "$worktree_list"; do
