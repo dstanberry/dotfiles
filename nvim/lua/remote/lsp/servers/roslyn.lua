@@ -85,13 +85,10 @@ M.setup = function(opts)
     once = true,
     callback = function()
       require("roslyn").setup {
-        exe = {
-          vim.fn.exepath "dotnet",
-          ds.plugin.get_pkg_path("roslyn", "Microsoft.CodeAnalysis.LanguageServer.dll"),
-        },
+        exe = vim.fn.exepath "roslyn",
         ---@diagnostic disable-next-line: missing-fields
         config = opts or {},
-        filewatching = true,
+        filewatching = "auto",
       }
     end,
   })

@@ -30,23 +30,36 @@ return Pkg.new {
   ---@param ctx InstallContext
   install = function(ctx)
     local get_package_info = function()
-      local online_package_info = vim.fn.system {
+      local latest_package = vim.fn.system {
         "curl",
         "-s",
         string.format("%s/vs-impl/packages?packageNameQuery=%s&api-version=7.1", domain_api.feeds, system),
       }
-      return vim.json.decode(online_package_info).value[1]
+      local package_metadata = vim.json.decode(latest_package).value[1]
+      local package_versions = vim.fn.system {
+        "curl",
+        "-s",
+        package_metadata.url .. "/versions?isListed=True&api-version=7.1",
+      }
+      local package_versions_metadata = vim.json.decode(package_versions).value
+      for _, v in ipairs(package_versions_metadata) do
+        if v.normalizedVersion and v.normalizedVersion:match "^5%.0%.0%-1%.25111%.6" then
+          package_metadata = v
+          break
+        end
+      end
+      return package_metadata
     end
 
-    local artifact_metadata = get_package_info()
+    local package_metadata = get_package_info()
     local download_artifact = string.format(
       [[
         curl -s "%s/%s/nuget/packages/%s/versions/%s/content?&api-version=7.1-preview.1" --location --output "roslyn.zip"
       ]],
       domain_api.pkgs,
-      vim.split(artifact_metadata.url, "/")[9],
-      artifact_metadata.name,
-      artifact_metadata.versions[1].normalizedVersion
+      vim.split(package_metadata.url, "/")[9],
+      "Microsoft.CodeAnalysis.LanguageServer." .. system,
+      package_metadata.normalizedVersion
     )
     ctx.receipt:with_primary_source(ctx.receipt.unmanaged)
     ctx.spawn.bash { "-c", download_artifact:gsub("\n", " ") }
