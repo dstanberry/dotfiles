@@ -49,7 +49,7 @@ return {
     "neovim/nvim-lspconfig",
     event = "LazyFile",
     dependencies = { "williamboman/mason.nvim" },
-    init = function() vim.lsp.set_log_level(vim.lsp.log_levels.OFF) end,
+    init = function() vim.lsp.set_log_level(vim.lsp.log_levels.ERROR) end,
     config = function()
       local lspconfig = require "lspconfig"
       local configs = require "lspconfig.configs"
