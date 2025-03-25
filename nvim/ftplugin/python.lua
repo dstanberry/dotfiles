@@ -1,3 +1,5 @@
+if vim.g.vscode then return end
+
 local python = require "ft.python"
 local group = ds.augroup "python_extmarks"
 

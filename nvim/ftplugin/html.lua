@@ -1,3 +1,5 @@
+if vim.g.vscode then return end
+
 local html = require "ft.html"
 
 local group = ds.augroup "html_extmarks"
