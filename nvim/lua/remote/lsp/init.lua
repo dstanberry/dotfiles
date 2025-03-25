@@ -8,7 +8,7 @@ return {
       popup = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
     },
   },
-  -- { "seblj/roslyn.nvim", lazy = true },
+  { "seblj/roslyn.nvim", lazy = true, url = "https://github.com/dstanberry/roslyn.nvim" },
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },
   {

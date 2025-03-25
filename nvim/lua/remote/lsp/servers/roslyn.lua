@@ -1,7 +1,5 @@
 local M = {}
 
-M.disabled = true
-
 M.config = {
   settings = {
     ["csharp|completion"] = {
