@@ -1,3 +1,5 @@
+if vim.g.vscode then return end
+
 local markdown = require "ft.markdown"
 
 local bufnr = vim.api.nvim_get_current_buf()
