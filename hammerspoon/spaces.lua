@@ -88,69 +88,31 @@ local chain = function(movements)
   end
 end
 
-local moveToSpace = function(space)
-  local win = hs.window.focusedWindow()
-  local screen = win:screen()
-  local spaceID = hs.spaces.spacesForScreen(screen)[space]
-  spaces.moveWindowToSpace(win:id(), spaceID)
-  hs.alert.show(win:title() .. " moved to Desktop " .. space)
-end
-
-local getPrevSpace = function(screen)
-  local activeSpace = spaces.activeSpaceOnScreen(screen)
-  local availableSpaces = hs.spaces.spacesForScreen(screen)
-  local prevSpace
-  for i, s in ipairs(availableSpaces) do
-    if s == activeSpace then prevSpace = i - 1 end
+local getSpaceId = function(spaceNumber)
+  local spaceNames = hs.spaces.missionControlSpaceNames()
+  local spaceName = "Desktop " .. spaceNumber
+  for _, desktop in pairs(spaceNames) do
+    for i, name in pairs(desktop) do
+      if spaceNumber == name:sub(-1) or name:lower():match(spaceName:lower()) then return i end
+    end
   end
-  if prevSpace < 1 then prevSpace = #availableSpaces end
-  return prevSpace
+  return nil
 end
 
-local getNextSpace = function(screen)
-  local activeSpace = spaces.activeSpaceOnScreen(screen)
-  local availableSpaces = hs.spaces.spacesForScreen(screen)
-  local nextSpace
-  for i, s in ipairs(availableSpaces) do
-    if s == activeSpace then nextSpace = i + 1 end
+local moveToSpace = function(spaceNumber)
+  local spaceName = "Desktop " .. spaceNumber
+  local spaceId = getSpaceId(spaceNumber)
+  if spaceId then
+    local focusedWindow = hs.window.focusedWindow()
+    if focusedWindow then
+      hs.spaces.moveWindowToSpace(focusedWindow:id(), spaceId)
+    else
+      hs.alert.show "No focused window"
+    end
+  else
+    hs.alert.show("Space not found: " .. spaceName)
   end
-  if nextSpace > #availableSpaces then nextSpace = 1 end
-  return nextSpace
 end
-
-local moveOneSpaceWest = function()
-  local win = hs.window.focusedWindow()
-  local screen = win:screen()
-  local prevSpace = getPrevSpace(screen)
-  local spaceID = hs.spaces.spacesForScreen(screen)[prevSpace]
-  spaces.moveWindowToSpace(win:id(), spaceID)
-  hs.alert.show(win:title() .. " moved to Desktop " .. prevSpace)
-end
-
-local moveOneSpaceEast = function()
-  local win = hs.window.focusedWindow()
-  local screen = win:screen()
-  local nextSpace = getNextSpace(screen)
-  local spaceID = hs.spaces.spacesForScreen(screen)[nextSpace]
-  spaces.moveWindowToSpace(win:id(), spaceID)
-  hs.alert.show(win:title() .. " moved to Desktop " .. nextSpace)
-end
-
--- local gotoOneSpaceWest = function()
---   local win = hs.window.focusedWindow()
---   local screen = win:screen()
---   local prevSpace = getPrevSpace(screen)
---   local spaceID = hs.spaces.spacesForScreen(screen)[prevSpace]
---   spaces.gotoSpace(spaceID)
--- end
-
--- local gotoOneSpaceEast = function()
---   local win = hs.window.focusedWindow()
---   local screen = win:screen()
---   local nextSpace = getNextSpace(screen)
---   local spaceID = hs.spaces.spacesForScreen(screen)[nextSpace]
---   spaces.gotoSpace(spaceID)
--- end
 
 hs.hotkey.bind(PREFIX_ACTION, "=", chain { GRID.fullScreen })
 hs.hotkey.bind(PREFIX_ACTION, "up", chain { GRID.topHalf, GRID.topLeft, GRID.topRight })
@@ -169,18 +131,9 @@ hs.hotkey.bind(
 -- NOTE: Stop at 7 because Ctrl-Option-Cmd-8 inverts colors
 hs.hotkey.bind(HYPER_PREFIX_ACTION, "1", function() moveToSpace(1) end)
 hs.hotkey.bind(HYPER_PREFIX_ACTION, "2", function() moveToSpace(2) end)
-hs.hotkey.bind(HYPER_PREFIX_ACTION, "3", function() moveToSpace(3) end)
-hs.hotkey.bind(HYPER_PREFIX_ACTION, "4", function() moveToSpace(4) end)
-hs.hotkey.bind(HYPER_PREFIX_ACTION, "5", function() moveToSpace(5) end)
 
 hs.hotkey.bind(HYPER_PREFIX_ACTION, "left", function() hs.window.frontmostWindow():moveOneScreenWest(nil, true) end)
 hs.hotkey.bind(HYPER_PREFIX_ACTION, "right", function() hs.window.frontmostWindow():moveOneScreenEast(nil, true) end)
-
--- hs.hotkey.bind(HYPER_PREFIX_ACTION, "e", gotoOneSpaceWest)
--- hs.hotkey.bind(HYPER_PREFIX_ACTION, "r", gotoOneSpaceEast)
-
-hs.hotkey.bind(HYPER_PREFIX_ACTION, "a", moveOneSpaceWest)
-hs.hotkey.bind(HYPER_PREFIX_ACTION, "g", moveOneSpaceEast)
 
 hs.hotkey.bind(HYPER_PREFIX_ACTION, "d", function()
   local switcher = switchers[hs.window.focusedWindow():screen():id()]
