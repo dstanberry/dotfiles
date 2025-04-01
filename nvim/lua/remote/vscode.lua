@@ -19,16 +19,16 @@ Config.options.change_detection.enabled = false
 Config.options.defaults.cond = function(plugin) return vim.tbl_contains(enabled, plugin.name) or plugin.vscode end
 
 -- keep undo/redo lists in sync with vscode
-vim.keymap.set("n", "<c-r>", "<cmd>call VSCodeNotify('redo')<cr>")
-vim.keymap.set("n", "u", "<cmd>call VSCodeNotify('undo')<cr>")
+vim.keymap.set("n", "<c-r>", [[<cmd>lua require('vscode').action('redo')<cr>]])
+vim.keymap.set("n", "u", [[<cmd>lua require('vscode').action('undo')<cr>]])
 -- editor layout
-vim.keymap.set("n", "<c-left>", "<cmd>call VSCodeNotify('workbench.action.decreaseViewSize')<cr>")
-vim.keymap.set("n", "<c-right>", "<cmd>call VSCodeNotify('workbench.action.increaseViewSize')<cr>")
-vim.keymap.set("n", "<c-backspace>", "<cmd>call VSCodeNotify('editor.action.fontZoomOut')<cr>")
-vim.keymap.set("n", "<c-delete>", "<cmd>call VSCodeNotify('editor.action.fontZoomIn')<cr>")
+vim.keymap.set("n", "<c-left>", [[<cmd>lua require('vscode').action('workbench.action.decreaseViewSize')<cr>]])
+vim.keymap.set("n", "<c-right>", [[<cmd>lua require('vscode').action('workbench.action.increaseViewSize')<cr>]])
+vim.keymap.set("n", "<c-backspace>", [[<cmd>lua require('vscode').action('editor.action.fontZoomOut')<cr>]])
+vim.keymap.set("n", "<c-delete>", [[<cmd>lua require('vscode').action('editor.action.fontZoomIn')<cr>]])
 -- editor naviagtion
-vim.keymap.set("n", "<left>", "<cmd>call VSCodeNotify('workbench.action.previousEditor')<cr>")
-vim.keymap.set("n", "<right>", "<cmd>call VSCodeNotify('workbench.action.nextEditor')<cr>")
+vim.keymap.set("n", "<left>", [[<cmd>lua require('vscode').action('workbench.action.previousEditor')<cr>]])
+vim.keymap.set("n", "<right>", [[<cmd>lua require('vscode').action('workbench.action.nextEditor')<cr>]])
 vim.keymap.set("n", "<leader>wt", [[<cmd>lua require('vscode').action('workbench.action.terminal.toggleTerminal')<cr>]])
 -- file navigation
 vim.keymap.set("n", "<leader><space>", "<cmd>Find<cr>")
