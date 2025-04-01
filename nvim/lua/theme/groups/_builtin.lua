@@ -176,7 +176,8 @@ M.get = function(c)
     StatusLine                                 = { fg = c.fg0, bg = c.gray0 },
     StatusLineNC                               = { fg = c.gray1, bg = c.gray0 },
     -- custom statusline highlighting
-    StatusLineContext                          = { fg = ds.color.lighten(c.bg4, 25) },
+    StatusLineContext                          = { fg = ds.color.lighten(c.bg4, 25), bg = c.gray0 },
+    StatusLineSpecial                          = { fg = c.fg_conceal, bg = c.gray0 },
 
     -- tabline highlighting
     TabLine                                    = { fg = c.gray1, bg = c.bg2 },
