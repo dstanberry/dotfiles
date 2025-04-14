@@ -110,13 +110,6 @@ vim.keymap.set("n", "FF", function()
   end
 end, { silent = false, desc = "trim trailing whitespace" })
 
--- disable `gr-default` keymaps
-vim.keymap.set("n", "gr", "gr", { nowait = true })
-vim.keymap.del({ "n", "x" }, "gra")
-vim.keymap.del("n", "gri")
-vim.keymap.del("n", "grn")
-vim.keymap.del("n", "grr")
-
 -- move to the beginning of the current line
 vim.keymap.set("n", "H", "^", { desc = "goto start of line" })
 -- move to the end of the current line
