@@ -1,6 +1,5 @@
 eza
 cargo-update
 git-delta
-silicon
 tokei
 tree-sitter-cli

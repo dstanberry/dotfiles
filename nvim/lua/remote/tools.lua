@@ -322,33 +322,6 @@ return {
     end,
   },
   {
-    "michaelrommel/nvim-silicon",
-    cmd = "Silicon",
-    keys = function()
-      local _screenshot = function()
-        local _, range = ds.buffer.get_visual_selection()
-        local left = range[1][1] or 1
-        local right = range[2][1] or 1
-        vim.cmd { cmd = "Silicon", range = { left + 1, right + 1 } }
-      end
-
-      return {
-        { "<leader>sc", _screenshot, mode = "v", desc = "silicon: screenshot selection" },
-      }
-    end,
-    opts = {
-      disable_defaults = false,
-      debug = false,
-      command = "silicon",
-      font = "Cartograph CF=30",
-      background = ds.color.blend(vim.g.ds_colors.purple1, vim.g.ds_colors.bg2, 0.44),
-      theme = "kdark",
-      line_offset = function(args) return args.line1 end,
-      window_title = function() return vim.fs.basename(vim.api.nvim_buf_get_name(0)) end,
-    },
-    config = function(_, opts) require("silicon").setup(opts) end,
-  },
-  {
     "vuki656/package-info.nvim",
     event = { "BufRead package.json" },
     opts = {
