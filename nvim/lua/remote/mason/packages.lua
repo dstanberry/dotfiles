@@ -6,6 +6,8 @@ return {
   "clangd",
   "cmake-language-server",
   "css-lsp",
+  "docker-compose-language-service",
+  "dockerfile-language-server",
   "emmet-language-server",
   "eslint-lsp",
   "gopls",
@@ -34,6 +36,7 @@ return {
   "js-debug-adapter",
   "netcoredbg",
   -- linters
+  "hadolint",
   "markdownlint-cli2",
   "shellcheck",
   "snyk",

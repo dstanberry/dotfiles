@@ -59,6 +59,8 @@ return {
         bashls = {},
         cmake = {},
         cssls = { init_options = { provideFormatter = false } },
+        docker_compose_language_service = {},
+        dockerls = {},
         helm_ls = {},
         html = { init_options = { provideFormatter = false } },
         terraformls = {},
