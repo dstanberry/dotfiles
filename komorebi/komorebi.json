@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/v0.1.35/schema.json",
+  "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/v0.1.36/schema.json",
   "app_specific_configuration_path": [
     "$Env:KOMOREBI_CONFIG_HOME/applications.json",
     "$Env:KOMOREBI_CONFIG_HOME/custom-apps.json"
@@ -21,11 +21,12 @@
   "border_offset": -1,
   "border_width": 5,
   "border_colours": {
+    "unfocused": "#59595e",
+    "unfocused_locked": "#94628a",
     "floating": "#97b6e5",
     "single": "#97b6e5",
     "stack": "#f7768e",
-    "monocle": "#7f849c",
-    "unfocused": "#373737"
+    "monocle": "#7f849c"
   },
   "stackbar": {
     "height": 20,

@@ -25,6 +25,7 @@ Komorebic(cmd) {
 #^!LShift::Komorebic("quick-load")
 
 ; Change window layout
+#^!0::Komorebic("toggle-lock")
 #^!1::Komorebic("toggle-float")
 #^!2::Komorebic("toggle-monocle")
 ; #^!3::Komorebic("retile")
