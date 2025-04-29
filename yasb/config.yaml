@@ -44,7 +44,6 @@ bars:
       center: [
         "clock",
         "apps",
-        "weather"
       ]
       right: [
         "media",
@@ -156,29 +155,6 @@ widgets:
         - { icon: "\uea83", launch: "cmd /c Explorer" }
         - {icon: "\ueae6", launch: "C:\\Program Files\\PowerToys\\PowerToys.exe"}
         - { icon: "\uea85", launch: "cmd /c wt" }
-  weather:
-    type: "yasb.weather.WeatherWidget"
-    options:
-      label: "{location}: <span>{icon}</span> {temp}"
-      label_alt: "{location}: Min {min_temp}, Max {max_temp}, Humidity {humidity}"
-      api_key: "3bf4cf9a7c3f40d6b31174128242807"
-      update_interval: 600
-      hide_decimal: true
-      units: "imperial"
-      location: "USA St. Paul 55102"
-      callbacks:
-        on_left: "toggle_label"
-      icons:
-        sunnyDay: " \ue30d"
-        clearNight: " \ue32b"
-        cloudyDay: " \udb81\udd99"
-        cloudyNight: " \ue311"
-        rainyDay: " \udb81\ude7e"
-        rainyNight: " \udb81\ude7e"
-        snowyIcyDay: " \udb81\udd98"
-        snowyIcyNight: " \udb81\udd98"
-        blizzard: " \uebaa"
-        default: " \uebaa"
 
   media:
     type: "yasb.media.MediaWidget"
