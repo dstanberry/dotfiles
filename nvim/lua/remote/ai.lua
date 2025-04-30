@@ -64,6 +64,7 @@ return {
         highlight_headers = true,
         show_folds = false,
         show_help = true,
+        model = "gpt-4o",
         answer_header = string.format(" %s %s ", ds.icons.kind.Copilot, "Copilot"),
         question_header = string.format(" %s %s ", ds.icons.misc.User, user),
         error_header = "> [!ERROR] Error",
