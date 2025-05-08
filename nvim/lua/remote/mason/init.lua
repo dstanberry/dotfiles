@@ -1,6 +1,6 @@
 return {
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     build = ":MasonUpdate",
     cmd = "Mason",
     opts = {
@@ -36,13 +36,19 @@ return {
       require("mason").setup(opts)
       local mason_registry = require "mason-registry"
       local tools = require "remote.mason.packages" or {}
+      local pending = {}
       for _, tool in ipairs(tools) do
-        local pkg = mason_registry.get_package(tool)
-        if not pkg:is_installed() then pkg:install() end
+        if not mason_registry.is_installed(tool) then table.insert(pending, tool) end
       end
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "mason",
-        callback = function() vim.opt_local.cursorline = false end,
+        callback = function()
+          vim.opt_local.cursorline = false
+          for _, tool in ipairs(pending) do
+            local pkg = mason_registry.get_package(tool)
+            if not pkg:is_installed() then pkg:install() end
+          end
+        end,
       })
     end,
   },
