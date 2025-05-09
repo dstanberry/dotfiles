@@ -23,7 +23,7 @@ M.config = {
       },
       {
         key = "n",
-        desc = " New File",
+        desc = "New File",
         action = ":ene | startinsert",
         icon = ds.pad(ds.icons.documents.File, "right"),
       },
