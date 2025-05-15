@@ -38,7 +38,12 @@ M.config = {
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.renameProvider = false
     require("remote.lsp.handlers").on_attach(client, bufnr)
-    vim.keymap.set("n", "go", function() goto_template_or_component(bufnr) end)
+    vim.keymap.set(
+      "n",
+      "go",
+      function() goto_template_or_component(bufnr) end,
+      { buffer = bufnr, desc = "lsp: to component/template" },
+    )
   end,
 }
 
