@@ -42,7 +42,7 @@ M.config = {
       "n",
       "go",
       function() goto_template_or_component(bufnr) end,
-      { buffer = bufnr, desc = "lsp: to component/template" },
+      { buffer = bufnr, desc = "lsp: to component/template" }
     )
   end,
 }
