@@ -67,20 +67,24 @@ return {
       ctx.spawn.bash { "-c", download_artifact:gsub("\n", " ") }
       ctx.spawn.unzip { "roslyn.zip" }
       ctx:link_bin(
-        "roslyn",
+        "roslyn-language-server",
         ctx:write_shell_exec_wrapper(
-          "roslyn",
-          ("dotnet %q"):format(
+          "roslyn-language-server",
+          table.concat({
+            "dotnet",
             vim.fs.joinpath(
               basedir,
               "packages",
               "roslyn",
               "content",
               "LanguageServer",
-              "linux-x64",
+              system,
               "Microsoft.CodeAnalysis.LanguageServer.dll"
-            )
-          )
+            ),
+            "--logLevel=Information",
+            "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
+            "--stdio",
+          }, " ")
         )
       )
     end,

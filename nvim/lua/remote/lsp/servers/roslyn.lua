@@ -85,10 +85,9 @@ M.setup = function(opts)
     once = true,
     callback = function()
       require("roslyn").setup {
-        exe = vim.fn.exepath "roslyn",
-        ---@diagnostic disable-next-line: missing-fields
-        config = opts or {},
-        filewatching = "auto",
+        config = vim.tbl_deep_extend("force", opts or {}, {
+          cmd = { vim.fn.exepath "roslyn-language-server" },
+        }),
       }
     end,
   })
