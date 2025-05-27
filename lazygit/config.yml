@@ -72,7 +72,7 @@ customCommands:
     command: "git diff {{.SelectedFile.Name}}"
     description: "Open diff"
     context: "global"
-    subprocess: true
+    output: terminal
 keybinding:
   universal:
     createRebaseOptionsMenu: "X"
