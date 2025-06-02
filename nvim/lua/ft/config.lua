@@ -89,4 +89,12 @@ return {
     bo = { expandtab = true, shiftwidth = 2 },
     wo = { colorcolumn = "120", foldmethod = "marker" },
   },
+  -- misc
+  checkhealth = {
+    wo = {
+      number = false,
+      relativenumber = false,
+      winhighlight = "FloatBorder:FloatBorderSB",
+    },
+  },
 }

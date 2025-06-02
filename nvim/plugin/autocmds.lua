@@ -18,6 +18,18 @@ vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
   end,
 })
 
+-- add a border to checkhealth floating windows
+vim.api.nvim_create_autocmd("CmdlineLeavePre", {
+  group = ftplugin,
+  callback = function()
+    local cmd = vim.split(vim.fn.getcmdline() or "", " ")
+    if cmd[1] == "che" or "checkhealth" then
+      -- vim.o.winborder = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default)
+      vim.o.winborder = "solid"
+    end
+  end,
+})
+
 -- change background color of manpages, help and quickfix list and use `q` to close
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
@@ -25,6 +37,9 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function(args)
     if vim.tbl_contains({ "help", "qf" }, vim.bo[args.buf].filetype) then
       vim.opt_local.winhighlight = "Normal:NormalSB"
+    end
+    if vim.tbl_contains({ "checkhealth" }, vim.bo[args.buf].filetype) and #vim.o.winborder > 0 then
+      vim.o.winborder = ""
     end
     vim.keymap.set("n", "q", function()
       vim.cmd.close()
