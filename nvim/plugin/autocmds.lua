@@ -22,11 +22,12 @@ vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
 vim.api.nvim_create_autocmd("CmdlineLeavePre", {
   group = ftplugin,
   callback = function()
+    local ft, capture_group = "checkhealth", {}
     local cmd = vim.split(vim.fn.getcmdline() or "", " ")
-    if cmd[1] == "che" or "checkhealth" then
-      -- vim.o.winborder = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default)
-      vim.o.winborder = "solid"
+    for i = 1, #ft do
+      if i > 2 then table.insert(capture_group, (ft):sub(1, i)) end
     end
+    if vim.tbl_contains(capture_group, cmd) then vim.o.winborder = "solid" end
   end,
 })
 
