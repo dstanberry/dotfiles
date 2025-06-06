@@ -1,3 +1,4 @@
+---@class remote.lsp.config
 local M = {}
 
 local ts_settings = {
@@ -39,6 +40,8 @@ M.config = {
     javascript = ts_settings,
     typescript = ts_settings,
   },
+  ---@param client vim.lsp.Client
+  ---@param bufnr integer
   on_attach = function(client, bufnr)
     local handlers = require "remote.lsp.handlers"
 
@@ -48,14 +51,15 @@ M.config = {
       local action, uri, range = unpack(command.arguments)
 
       local function move(new_fname)
-        client.request("workspace/executeCommand", {
+        client:request("workspace/executeCommand", {
           command = command.command,
           arguments = { action, uri, range, new_fname },
         })
       end
 
       local fname = vim.uri_to_fname(uri)
-      client.request("workspace/executeCommand", {
+      if not range then return end
+      client:request("workspace/executeCommand", {
         command = "typescript.tsserverRequest",
         arguments = {
           "getMoveToRefactoringFileSuggestions",

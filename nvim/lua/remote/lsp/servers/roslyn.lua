@@ -1,3 +1,4 @@
+---@class remote.lsp.config
 local M = {}
 
 M.config = {
@@ -43,7 +44,11 @@ M.config = {
           UniqueIdentifier = "Remove unnecessary usings",
         },
       }
-      local response = client.request_sync("codeAction/resolve", request, 1500, bufnr)
+      local response = client:request_sync("codeAction/resolve", request, 1500, bufnr)
+      if not response then
+        ds.error("`fixusings` failed: no response from server", { title = "Lsp: roslyn", ft = "markdown" })
+        return
+      end
       ds.info { response }
       if response.err then
         ds.error(

@@ -1,3 +1,4 @@
+---@class remote.lsp.config
 local M = {}
 
 M.config = {

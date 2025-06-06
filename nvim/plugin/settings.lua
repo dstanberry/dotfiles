@@ -75,6 +75,7 @@ vim.o.wrap = true -- enable line wrapping
 vim.o.wrapmargin = 8 -- define right margin before wrapping text
 
 vim.opt.complete:append "kspell" -- include dictionary in completion matches
+vim.opt.completeitemalign = "kind,abbr,menu" -- define the alignment and display order of popup menu items
 vim.opt.completeopt = "menuone,noselect" -- use popup menu to show possible completions
 vim.opt.diffopt = { -- define diff options
   "internal",

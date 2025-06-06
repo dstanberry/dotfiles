@@ -1,5 +1,11 @@
 local M = {}
 
+---@class remote.lsp.config
+---@field disabled? boolean
+---@field defer_setup? boolean
+---@field config? vim.lsp.ClientConfig
+---@field default_config? vim.lsp.ClientConfig
+
 ---@class LspCommand: lsp.ExecuteCommandParams
 ---@field open? boolean
 ---@field handler? lsp.Handler
@@ -14,6 +20,7 @@ function M.execute_command(opts)
   end
 end
 
+---@return lsp.ClientCapabilities
 M.get_client_capabilities = function()
   local ok, blink = pcall(require, "blink.cmp")
   return vim.deepcopy(
@@ -27,9 +34,9 @@ M.get_client_capabilities = function()
 end
 
 ---@param opts? { method?: fun(...) }
+---@return elem_or_list<fun(client: vim.lsp.Client, init_result: lsp.InitializeResult)>
 M.on_init = function(opts)
   opts = opts or {}
-  ---@param client vim.lsp.Client
   return function(client)
     local default_request = client.rpc.request
     function client.rpc.request(method, params, handler, ...)
@@ -53,9 +60,9 @@ M.on_rename = function(old_fname, new_fname, rename_fn)
   local buf = vim.fn.bufnr(old_fname)
   local renamed = false
   for _, c in pairs(vim.lsp.get_clients { bufnr = buf }) do
-    if c.supports_method "workspace/willRenameFiles" then
+    if c:supports_method "workspace/willRenameFiles" then
       ---@diagnostic disable-next-line: invisible
-      local res = c.request_sync("workspace/willRenameFiles", {
+      local res = c:request_sync("workspace/willRenameFiles", {
         files = { { oldUri = vim.uri_from_fname(old_fname), newUri = vim.uri_from_fname(new_fname) } },
       }, 1000, 0)
       if res and res.result then
@@ -161,7 +168,7 @@ M.on_attach = function(client, bufnr)
     vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr, desc = "lsp: rename symbol" })
   end
 
-  if client.supports_method "workspace/willRenameFiles" then
+  if client:supports_method "workspace/willRenameFiles" then
     local _rename = function()
       vim.ui.input({ prompt = "New filename: " }, function(name)
         if not name then return end
@@ -202,8 +209,8 @@ M.on_attach = function(client, bufnr)
   vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "lsp: show documents symbols" })
   vim.keymap.set("n", "gw", _symbols, { buffer = bufnr, desc = "lsp: show workspace symbols" })
 
-  local _previous = function() vim.diagnostic.jump { count = -1, float = true } end
-  local _next = function() vim.diagnostic.jump { count = 1, float = true } end
+  local _previous = function() vim.diagnostic.jump { count = -1 } end
+  local _next = function() vim.diagnostic.jump { count = 1 } end
   vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr, desc = "lsp: show line diagnostics" })
   vim.keymap.set("n", "gn", _next, { buffer = bufnr, desc = "lsp: next diagnostic" })
   vim.keymap.set("n", "gp", _previous, { buffer = bufnr, desc = "lsp: previous diagnostic" })
@@ -243,6 +250,9 @@ M.setup = function()
       focusable = false,
       show_header = true,
       source = true,
+    },
+    jump = {
+      on_jump = function(_, bufnr) vim.diagnostic.open_float { bufnr = bufnr, scope = "cursor", focus = false } end,
     },
     underline = {
       severity = { min = vim.diagnostic.severity.WARN },

@@ -1,3 +1,4 @@
+---@class remote.lsp.config
 local M = {}
 
 local get_cmd = function(root)

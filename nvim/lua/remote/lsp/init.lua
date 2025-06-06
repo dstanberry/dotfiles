@@ -77,7 +77,7 @@ return {
         if (type == "file" or type == "link") and name:match "%.lua$" then
           name = name:sub(1, -5)
           local fname = path:match(root .. "/(.*)"):sub(1, -5):gsub("/", ".")
-          local mod = require(root:gsub("/", ".") .. "." .. fname)
+          local mod = require(root:gsub("/", ".") .. "." .. fname) ---@type remote.lsp.config
           if mod.disabled then return end
           if mod.default_config then
             configs[name] = vim.tbl_deep_extend("force", configs[name] or {}, { default_config = mod.default_config })

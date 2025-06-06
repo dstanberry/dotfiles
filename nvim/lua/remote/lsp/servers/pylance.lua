@@ -1,3 +1,4 @@
+---@class remote.lsp.config
 local M = {}
 
 M.default_config = {
@@ -74,7 +75,7 @@ M.config = {
           if not input or #input == 0 then return end
           params.newName = input
           local handler = client.handlers["textDocument/rename"] or vim.lsp.handlers["textDocument/rename"]
-          client.request("textDocument/rename", params, handler, bufnr)
+          client:request("textDocument/rename", params, handler, bufnr)
         end)
       end
     end
