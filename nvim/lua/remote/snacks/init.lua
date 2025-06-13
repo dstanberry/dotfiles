@@ -14,6 +14,7 @@ return {
         -- lsp
         { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "lsp: goto next reference" },
         { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "lsp: goto prev reference" },
+        { "<localleader>fl", function() Snacks.picker.lsp_config() end, desc = "lsp: show config" },
         -- files
         { "<leader><leader>", function() Snacks.picker.files() end, desc = "picker: find files" },
         { "<leader>f;", function() Snacks.picker.command_history() end, desc = "picker: find word (last searched)" },
@@ -30,7 +31,8 @@ return {
         { "<localleader>fe", function() util.picker.file_browser() end, desc = "picker: find files (relative to current buffer)" },
         { "<localleader>fg", function() Snacks.picker.grep() end, desc = "picker: find in files (grep)" },
         -- git
-        { "<leader>gf", function() util.picker.git_diff_tree() end, desc = "git: diff tree" },
+        { "<leader>gd", function() util.picker.git_diff_tree() end, desc = "git: diff tree" },
+        { "<leader>gf", function() Snacks.picker.git_status() end, desc = "git: show changed files" },
         { "<leader>gg", function() Snacks.lazygit.open() end, desc = "git: lazygit" },
         { "<leader>gl", function() Snacks.lazygit.log_file() end, desc = "git: lazygit log" },
         { "<localleader>go", function() Snacks.gitbrowse.open() end, desc = "git: open in browser", mode = { "n", "v" } },
