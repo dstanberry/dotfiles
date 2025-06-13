@@ -22,9 +22,13 @@ end
 
 ---@param name string
 M.get_opts = function(name)
-  local plugin = require("lazy.core.config").spec.plugins[name]
+  local Plugin = {}
+  local ok, Config = pcall(require, "lazy.core.config")
+  if not ok then return Plugin end
+  local plugin = Config.spec.plugins[name]
   if not plugin then return {} end
-  local Plugin = require "lazy.core.plugin"
+  ok, Plugin = pcall(require, "lazy.core.plugin")
+  if not ok then return {} end
   return Plugin.values(plugin, "opts", false)
 end
 
