@@ -129,9 +129,9 @@ M.on_attach = function(client, bufnr)
 
   if client.server_capabilities.documentFormattingProvider then
     -- INFO: skip keymap assignment if already defined
-    local _format = function() vim.lsp.buf.format { async = true } end
     if vim.fn.maparg "ff" == "" then
-      vim.keymap.set("n", "ff", _format, { buffer = bufnr, desc = "lsp: format document" })
+      local _format = function() vim.lsp.buf.format { async = true } end
+      vim.keymap.set({ "n", "v" }, "ff", _format, { buffer = bufnr, desc = "lsp: format document" })
     end
   end
 

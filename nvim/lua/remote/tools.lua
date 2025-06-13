@@ -9,7 +9,7 @@ return {
       local _format = function() require("conform").format { async = true, lsp_format = "fallback" } end
 
       return {
-        { "ff", _format, desc = "conform: format document" },
+        { "ff", mode = { "n", "v" }, _format, desc = "conform: format document" },
       }
     end,
     init = function()
