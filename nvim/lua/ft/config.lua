@@ -26,6 +26,10 @@ return {
     bo = { expandtab = true, shiftwidth = 2 },
     wo = { colorcolumn = "80" },
   },
+  javascriptreact = {
+    bo = { expandtab = true, shiftwidth = 2 },
+    wo = { colorcolumn = "80" },
+  },
   json = {
     bo = { expandtab = true, shiftwidth = 2 },
     wo = { colorcolumn = "120", conceallevel = 0 },
@@ -78,6 +82,10 @@ return {
     wo = { colorcolumn = "80", relativenumber = false },
   },
   typescript = {
+    bo = { expandtab = true, shiftwidth = 2 },
+    wo = { colorcolumn = "80" },
+  },
+  typescriptreact = {
     bo = { expandtab = true, shiftwidth = 2 },
     wo = { colorcolumn = "80" },
   },

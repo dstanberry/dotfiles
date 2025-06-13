@@ -32,10 +32,8 @@ return {
     }
     luasnip.config.setup(opts)
 
-    luasnip.filetype_extend("javascript.jsx", { "javascript" })
     luasnip.filetype_extend("javascriptreact", { "javascript" })
     luasnip.filetype_extend("typescript", { "javascript" })
-    luasnip.filetype_extend("typescript.tsx", { "javascript" })
     luasnip.filetype_extend("typescriptreact", { "javascript" })
 
     require("luasnip.loaders.from_lua").lazy_load {
