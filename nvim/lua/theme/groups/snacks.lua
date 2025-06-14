@@ -18,6 +18,8 @@ M.get = function(c)
 
   -- stylua: ignore
   return {
+    SnacksNormal                = { fg = c.white, bg = c.bg0 },
+
     -- dashboard
     SnacksDashboardHeader       = { fg = c.magenta0 },
     SnacksDashboardFooter       = { fg = c.blue0 },
@@ -40,32 +42,30 @@ M.get = function(c)
     SnacksIndent8               = { fg = YELLOW_LIGHT },
 
     -- notifier
-    SnacksNormal                = { fg = c.white, bg = c.bg0 },
-
-    SnacksNotifierTrace         = { fg   = c.white, bg = c.bg0 },
-    SnacksNotifierBorderTrace   = { fg   = c.bg0, bg   = c.bg0 },
+    SnacksNotifierTrace         = { fg   = c.white },
+    SnacksNotifierBorderTrace   = { fg = ds.color.get_color "DiagnosticHint" },
     SnacksNotifierIconTrace     = { link = "DiagnosticHint" },
-    SnacksNotifierTitleTrace    = { fg = ds.color.get_color "DiagnosticHint", bg = c.bg0 },
+    SnacksNotifierTitleTrace    = { fg = ds.color.get_color "DiagnosticHint" },
 
-    SnacksNotifierDebug         = { fg   = c.white, bg = c.bg0 },
-    SnacksNotifierBorderDebug   = { fg   = c.bg0, bg   = c.bg0 },
+    SnacksNotifierDebug         = { fg   = c.white },
+    SnacksNotifierBorderDebug   = { fg = ds.color.get_color "DiagnosticHint" },
     SnacksNotifierIconDebug     = { link = "DiagnosticHint" },
-    SnacksNotifierTitleDebug    = { fg = ds.color.get_color "DiagnosticHint", bg = c.bg0 },
+    SnacksNotifierTitleDebug    = { fg = ds.color.get_color "DiagnosticHint" },
 
-    SnacksNotifierInfo          = { fg   = c.white, bg = c.bg0 },
-    SnacksNotifierBorderInfo    = { fg   = c.bg0, bg   = c.bg0 },
+    SnacksNotifierInfo          = { fg   = c.white },
+    SnacksNotifierBorderInfo    = { fg = ds.color.get_color "DiagnosticInfo" },
     SnacksNotifierIconInfo      = { link = "DiagnosticInfo" },
-    SnacksNotifierTitleInfo     = { fg = ds.color.get_color "DiagnosticInfo", bg = c.bg0 },
+    SnacksNotifierTitleInfo     = { fg = ds.color.get_color "DiagnosticInfo" },
 
-    SnacksNotifierWarn          = { fg   = c.white, bg = c.bg0 },
-    SnacksNotifierBorderWarn    = { fg   = c.bg0, bg   = c.bg0 },
+    SnacksNotifierWarn          = { fg   = c.white },
+    SnacksNotifierBorderWarn    = { fg = ds.color.get_color "DiagnosticWarn" },
     SnacksNotifierIconWarn      = { link = "DiagnosticWarn" },
-    SnacksNotifierTitleWarn     = { fg = ds.color.get_color "DiagnosticWarn", bg = c.bg0 },
+    SnacksNotifierTitleWarn     = { fg = ds.color.get_color "DiagnosticWarn" },
 
-    SnacksNotifierError         = { fg   = c.white, bg = c.bg0 },
-    SnacksNotifierBorderError   = { fg   = c.bg0, bg   = c.bg0 },
+    SnacksNotifierError         = { fg   = c.white },
+    SnacksNotifierBorderError   = { fg = ds.color.get_color "DiagnosticError" },
     SnacksNotifierIconError     = { link = "DiagnosticError" },
-    SnacksNotifierTitleError    = { fg = ds.color.get_color "DiagnosticError", bg = c.bg0 },
+    SnacksNotifierTitleError    = { fg = ds.color.get_color "DiagnosticError" },
 
     SnacksNotifierHistory       = { fg = c.fg1, bg = c.bg0 },
     SnacksNotifierHistoryTitle  = { fg = c.blue0, bg = c.bg0, bold = true },

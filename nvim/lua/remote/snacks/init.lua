@@ -54,7 +54,7 @@ return {
         explorer = { replace_netrw = true },
         gitbrowse = util.gitbrowse.config,
         image = { force = not (ds.has "win32" or ds.has "wsl"), doc = { inline = false } },
-        notifier = { style = "compact" },
+        notifier = { style = "compact", margin = { top = 1, right = 1, bottom = 2 } },
         quickfile = { enabled = true },
         scroll = { enabled = true },
         words = { enabled = true },
