@@ -17,13 +17,6 @@ setmetatable(M, {
 
 M.augroup = ds.augroup "snacks"
 
-M.on_init = function()
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "VeryLazy",
-    callback = M.notify.setup,
-  })
-end
-
 M.styles = {
   input = {
     row = 19,

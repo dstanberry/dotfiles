@@ -44,7 +44,12 @@ return {
         { "<leader>wz", function() Snacks.zen.zen() end, desc = "zen: toggle window" },
       }
     end,
-    init = function() util.on_init() end,
+    init = function()
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = util.notify.setup,
+      })
+    end,
     opts = function()
       return {
         -- buffer/window options
@@ -65,6 +70,11 @@ return {
         lazygit = util.lazygit.config,
         picker = util.picker.config(),
       }
+    end,
+    config = function(_, opts)
+      local notify = vim.notify
+      require("snacks").setup(opts)
+      if ds.plugin.is_installed "noice.nvim" then vim.notify = notify end
     end,
   },
 }
