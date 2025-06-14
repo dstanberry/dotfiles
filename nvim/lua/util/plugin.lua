@@ -1,6 +1,13 @@
 ---@class util.plugin
 local M = {}
 
+---@param ... any
+M.deep_merge = function(...)
+  local ok, Util = pcall(require, "lazy.core.util")
+  if not ok then return vim.tbl_deep_extend("force", ...) end
+  return Util.merge(...)
+end
+
 ---@param pkg string
 ---@param path? string
 ---@param opts? { warn?: boolean }
@@ -62,6 +69,16 @@ M.on_load = function(name, fn)
       end,
     })
   end
+end
+
+---@generic R
+---@param fn fun():R?
+---@param opts? string|{msg:string, on_error:fun(msg)}
+---@return R
+M.try_catch = function(fn, opts)
+  local ok, Util = pcall(require, "lazy.core.util")
+  if not ok then return opts end
+  return Util.try(fn, opts)
 end
 
 local delay_notifications = function()

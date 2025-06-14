@@ -2,6 +2,7 @@
 ---@field buffer util.buffer
 ---@field color util.color
 ---@field excludes util.excludes
+---@field format util.format
 ---@field fs util.fs
 ---@field hl util.hl
 ---@field icons util.icons

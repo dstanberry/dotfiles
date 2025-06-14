@@ -18,6 +18,12 @@ vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
   end,
 })
 
+-- automatically try to format the document when saving a file
+vim.api.nvim_create_autocmd("BufWritePre", {
+  group = filesystem,
+  callback = function(event) ds.format.format { buf = event.buf } end,
+})
+
 -- add a border to checkhealth floating windows
 vim.api.nvim_create_autocmd("CmdlineLeavePre", {
   group = ftplugin,

@@ -3,35 +3,35 @@ return {
   { "gennaro-tedesco/nvim-jqx", ft = "json" },
   {
     "stevearc/conform.nvim",
-    event = "BufWritePre",
+    lazy = true,
+    cmd = "ConformInfo",
     cmd = "ConformInfo",
     keys = function()
-      local _format = function() require("conform").format { async = true, lsp_format = "fallback" } end
-
+      local _format = function() ds.format.format { force = true } end
+      local _formatInjected = function() require("conform").format { formatters = { "injected" }, timeout_ms = 3000 } end
       return {
         { "ff", mode = { "n", "v" }, _format, desc = "conform: format document" },
+        { "fj", mode = { "n", "v" }, _formatInjected, desc = "conform: format injected language(s)" },
       }
     end,
     init = function()
-      vim.g.conform_slow_formatters = {}
-      vim.api.nvim_create_user_command("FormatDisable", function(args)
-        if args.bang then
-          vim.b.conform_formatting_disabled = true
-        else
-          vim.g.conform_formatting_disabled = true
-        end
-        print "Disabled auto-format on save."
-      end, {
-        desc = "conform: disable auto-format on save for this buffer",
-        bang = true,
-      })
-
-      vim.api.nvim_create_user_command("FormatEnable", function()
-        vim.b.conform_formatting_disabled = false
-        vim.g.conform_formatting_disabled = false
-        print "Enabled auto-format on save."
-      end, {
-        desc = "conform: enable auto-format on save for this buffer",
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "VeryLazy",
+        callback = function()
+          ds.format.register {
+            name = "conform.nvim",
+            priority = 100,
+            primary = true,
+            format = function(buf) require("conform").format { bufnr = buf } end,
+            sources = function(buf)
+              local ret = require("conform").list_formatters(buf)
+              ---@param v conform.FormatterInfo
+              return vim.tbl_map(function(v) return v.name end, ret)
+            end,
+          }
+          ds.format.toggle():map "f<delete>"
+          ds.format.toggle(true):map "f<backspace>"
+        end,
       })
     end,
     opts = function()
@@ -43,8 +43,8 @@ return {
         end
         return select(1, ...)
       end
-
       return {
+        default_format_opts = { async = false, quiet = false, lsp_format = "fallback", timeout_ms = 3000 },
         formatters_by_ft = {
           bash = { "shfmt" },
           go = { "goimports", "gofumpt" },
@@ -114,22 +114,6 @@ return {
             end,
           },
         },
-        format_on_save = function(buf)
-          if vim.g.conform_formatting_disabled or vim.b[buf].conform_formatting_disabled then return end
-          if vim.g.conform_slow_formatters[vim.bo[buf].filetype] then return end
-
-          local on_format = function(err)
-            if err and err:match "timeout$" then vim.g.conform_slow_formatters[vim.bo[buf].filetype] = true end
-          end
-
-          vim.api.nvim_exec_autocmds("User", { pattern = "FormatPre" })
-
-          return { timeout_ms = 2500, lsp_format = "fallback" }, on_format
-        end,
-        format_after_save = function(buf)
-          if not vim.g.conform_slow_formatters[vim.bo[buf].filetype] then return end
-          return { lsp_format = "fallback" }
-        end,
       }
     end,
   },
