@@ -10,6 +10,8 @@ return {
       "kristijanhusak/vim-dadbod-completion",
       { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
     },
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
     opts = {
       appearance = { use_nvim_cmp_as_default = false, kind_icons = ds.icons.kind },
       completion = {
@@ -39,6 +41,7 @@ return {
         ["<up>"] = { "select_prev", "fallback" },
         ["<down>"] = { "select_next", "fallback" },
         ["<c-space>"] = { "show", "show_documentation", "hide_documentation" },
+        ["<c-e>"] = { "cancel", "fallback" },
         ["<c-c>"] = { "hide", "fallback" },
       },
       cmdline = { enabled = false },
@@ -59,6 +62,7 @@ return {
         preset = "luasnip",
       },
     },
+    ---@param opts blink.cmp.Config | { sources: { compat: string[] } }
     config = function(_, opts)
       local ok, colors = pcall(require, "colorful-menu")
       if ok then
