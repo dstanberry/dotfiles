@@ -88,6 +88,7 @@ M.get = function(c)
     SnacksPickerPreviewTitle    = { fg = c.bg2, bg = c.bg0, bold = true },
 
     SnacksPickerDir             = { fg = c.gray2 },
+    SnacksPickerSearch          = { fg = c.orange0, bold = true },
     SnacksPickerFlag            = { fg = c.red1, bg = GRAY_DARK, bold = true, italic = true },
     SnacksPickerMatch           = { fg = c.orange0, bold = true },
     SnacksPickerPickWin         = { fg = GRAY, bg = c.overlay0, bold = true, italic = true },
