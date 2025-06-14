@@ -36,6 +36,7 @@ local trouble = ds.plugin.is_installed "trouble.nvim"
     }
   or { actions = {}, keys = {} }
 
+---@return snacks.picker.Config
 M.config = function()
   local layouts = require "snacks.picker.config.layouts"
 
@@ -60,13 +61,13 @@ M.config = function()
     function(icon) return { icon, "SnacksPickerBorderSB" } end,
     ds.icons.border.Default
   )
-
+  ---@module 'snacks.nvim'
+  ---@type snacks.picker.Config
   return {
     icons = { kinds = vim.tbl_deep_extend("keep", ds.icons.kind, ds.icons.type) },
     prompt = ds.pad(ds.icons.misc.Prompt, "right"),
     actions = vim.tbl_extend("force", flash.actions, trouble.actions, {
-      ---@param p snacks.Picker
-      toggle_cwd = function(p)
+      toggle_cwd = function(p) ---@param p snacks.Picker
         local root = ds.root.get { buf = p.input.filter.current_buf, normalize = true }
         local cwd = vim.fs.normalize((vim.uv or vim.loop).cwd() or ".")
         local current = p:cwd()
@@ -112,24 +113,33 @@ M.config = function()
   }
 end
 
+local resize_layout_height = function(picker)
+  local layout = vim.deepcopy(picker.resolved_layout)
+  layout.layout.height = math.floor(math.min(vim.o.lines * 0.8 - 10, #picker.list.items) + 0.5)
+  picker:set_layout(layout)
+end
+
 M.file_browser = function()
   local cwd = vim.fn.expand "%:p:h"
   Snacks.picker.files {
     cwd = cwd,
     layout = "vscode",
+    on_show = function(picker)
+      picker:find { on_done = vim.schedule_wrap(function() resize_layout_height(picker) end) }
+    end,
     actions = {
       parent = {
         action = function(picker, _)
           cwd = vim.loop.fs_realpath(vim.fs.joinpath(cwd, ".."))
           picker:set_cwd(cwd)
-          picker:find()
+          picker:find { on_done = vim.schedule_wrap(function() resize_layout_height(picker) end) }
         end,
       },
     },
     win = {
       input = {
         keys = {
-          ["<c-w>"] = { "parent", mode = "i" },
+          ["<a-c>"] = false,
           ["-"] = { "parent", mode = "n" },
         },
       },
