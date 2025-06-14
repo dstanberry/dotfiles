@@ -5,8 +5,8 @@ M.setup = function()
 
   dap.adapters.netcoredbg = {
     type = "executable",
-    args = { "--interpreter=vscode" },
     command = vim.fn.exepath "netcoredbg",
+    args = { "--interpreter=vscode" },
     options = { detached = false },
   }
   dap.configurations.cs = {
