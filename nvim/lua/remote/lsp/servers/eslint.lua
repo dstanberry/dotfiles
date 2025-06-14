@@ -6,12 +6,9 @@ M.config = {
     workingDirectories = { mode = "auto" },
   },
   on_attach = function(client, bufnr)
-    require("remote.lsp.handlers").on_attach(client, bufnr)
-    local _fix = function()
-      local diag = vim.diagnostic.get(bufnr, { namespace = vim.lsp.diagnostic.get_namespace(client.id) })
-      if #diag > 0 then vim.cmd "EslintFixAll" end
-    end
-    vim.keymap.set("n", "<leader>lF", _fix, { buffer = bufnr, desc = "eslint: fix all problems" })
+    local handlers = require "remote.lsp.handlers"
+    handlers.on_attach(client, bufnr)
+    ds.format.register(handlers.formatter { name = "eslint: lsp", primary = false, priority = 200, filter = "eslint" })
   end,
 }
 
