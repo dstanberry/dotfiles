@@ -147,10 +147,7 @@ M.on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.documentFormattingProvider then
-    -- INFO: skip keymap assignment if already defined
-    if vim.fn.maparg "ff" == "" then
-      vim.keymap.set({ "n", "v" }, "ff", ds.format.format, { buffer = bufnr, desc = "lsp: format document" })
-    end
+    ds.plugin.keymap_set({ "n", "v" }, "ff", ds.format.format, { buffer = bufnr, desc = "lsp: format document" })
   end
 
   if client.server_capabilities.documentHighlightProvider then

@@ -71,6 +71,31 @@ M.on_load = function(name, fn)
   end
 end
 
+---@param mode string | string[]
+---@param lhs string
+---@param rhs string|function
+---@param opts? vim.keymap.set.Opts
+M.keymap_set = function(mode, lhs, rhs, opts)
+  local modes = type(mode) == "string" and { mode } or mode
+  local ok, Handler = pcall(require, "lazy.core.handler")
+  if not ok then
+    if vim.fn.maparg "ff" == "" then
+      vim.keymap.set(modes, lhs, rhs, opts)
+      return
+    end
+  end
+  local keys = Handler.handlers.keys ---@cast keys LazyKeysHandler
+  modes = vim.tbl_filter(function(m) ---@param m string
+    return not (keys.have and keys:have(lhs, m))
+  end, modes)
+  if #modes > 0 then
+    opts = opts or {}
+    opts.silent = opts.silent ~= false
+    if opts.remap and not vim.g.vscode then opts.remap = nil end
+    vim.keymap.set(modes, lhs, rhs, opts)
+  end
+end
+
 ---@generic R
 ---@param fn fun():R?
 ---@param opts? string|{msg:string, on_error:fun(msg)}
