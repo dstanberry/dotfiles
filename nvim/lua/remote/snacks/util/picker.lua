@@ -115,7 +115,7 @@ end
 
 local resize_layout_height = function(picker)
   local layout = vim.deepcopy(picker.resolved_layout)
-  layout.layout.height = math.floor(math.min(vim.o.lines * 0.8 - 10, #picker.list.items) + 0.5)
+  layout.layout.height = math.floor(math.min(vim.o.lines * 0.8 - 10, #picker.list.items + 3) + 0.5)
   picker:set_layout(layout)
 end
 
@@ -125,7 +125,11 @@ M.file_browser = function()
     cwd = cwd,
     layout = "vscode",
     on_show = function(picker)
-      picker:find { on_done = vim.schedule_wrap(function() resize_layout_height(picker) end) }
+      picker:find {
+        on_done = function()
+          vim.defer_fn(function() resize_layout_height(picker) end, 50)
+        end,
+      }
     end,
     actions = {
       parent = {
