@@ -5,7 +5,6 @@ return {
     "stevearc/conform.nvim",
     lazy = true,
     cmd = "ConformInfo",
-    cmd = "ConformInfo",
     keys = function()
       local _format = function() ds.format.format { force = true } end
       local _formatInjected = function() require("conform").format { formatters = { "injected" }, timeout_ms = 3000 } end
@@ -20,8 +19,9 @@ return {
         callback = function()
           ds.format.register {
             name = "conform.nvim",
-            priority = 100,
+            modname = "conform",
             primary = true,
+            priority = 100,
             format = function(buf) require("conform").format { bufnr = buf } end,
             sources = function(buf)
               local ret = require("conform").list_formatters(buf)

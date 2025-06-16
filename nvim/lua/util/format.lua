@@ -6,11 +6,13 @@ local M = setmetatable({}, {
 
 ---@class util.format.formatter
 ---@field name string
+---@field modname? string
 ---@field primary? boolean
 ---@field format fun(bufnr:number)
 ---@field sources fun(bufnr:number):string[]
 ---@field priority number
 
+M.default_formatter = {} ---@type {name?: string, modname?: string}
 M.formatters = {} ---@type util.format.formatter[]
 
 ---@param enable? boolean
@@ -54,7 +56,12 @@ M.format = function(opts)
 end
 
 M.formatexpr = function()
-  if ds.plugin.is_installed "conform.nvim" then return require("conform").formatexpr() end
+  if M.default_formatter.name and M.default_formatter.modname then
+    if ds.plugin.is_installed(M.default_formatter.name) then
+      local ok, _mod = pcall(require, M.default_formatter.modname)
+      if ok and _mod.formatexpr then return _mod.formatexpr() end
+    end
+  end
   return vim.lsp.formatexpr { timeout_ms = 3000 }
 end
 
@@ -91,6 +98,10 @@ end
 
 ---@param formatter util.format.formatter
 M.register = function(formatter)
+  M.default_formatter = formatter.primary and {
+    module = formatter.name,
+    modname = formatter.modname,
+  } or M.default_formatter
   M.formatters[#M.formatters + 1] = formatter
   table.sort(M.formatters, function(a, b) return a.priority > b.priority end)
 end
@@ -113,9 +124,10 @@ end
 
 ---@param buf? boolean
 M.toggle = function(buf)
+  local name = M.default_formatter.modname or "lsp"
   return Snacks.toggle {
     name = "auto format (" .. (buf and "buffer" or "global") .. ")",
-    wk_desc = { enabled = "conform: disable ", disabled = "conform: enable " },
+    wk_desc = { enabled = name .. ": disable ", disabled = name .. ": enable " },
     get = function()
       if not buf then return vim.g.autoformat == nil or vim.g.autoformat end
       return ds.format.enabled()
