@@ -51,7 +51,6 @@ return {
       })
     end,
     opts = function()
-      ---@module 'snacks.nvim'
       ---@type snacks.Config
       return {
         -- buffer/window options
