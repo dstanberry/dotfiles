@@ -309,14 +309,6 @@ return {
     end,
   },
   {
-    "vuki656/package-info.nvim",
-    event = { "BufRead package.json" },
-    opts = {
-      package_manager = "npm",
-      colors = {},
-    },
-  },
-  {
     "mrjones2014/smart-splits.nvim",
     keys = function()
       local _resize_left = function() require("smart-splits").resize_left(1) end
