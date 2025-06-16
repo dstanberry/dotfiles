@@ -1,14 +1,5 @@
 # shellcheck disable=SC2148
 
-# poor man's ag runtime configuration
-ag() {
-  emulate -L zsh
-  command ag --pager="less -iFMRSX -x4" \
-    --color-path=34\;3 \
-    --color-line-number=33 \
-    --color-match=35\;1\;4 "$@"
-}
-
 # support custom sub-commands
 cargo() {
   local PKG=$CONFIG_HOME/shared/packages/cargo.txt
