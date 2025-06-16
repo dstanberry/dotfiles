@@ -10,7 +10,6 @@ return {
       "kristijanhusak/vim-dadbod-completion",
       { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
     },
-    ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
       appearance = { use_nvim_cmp_as_default = false, kind_icons = ds.icons.kind },
@@ -34,6 +33,9 @@ return {
           },
         },
         ghost_text = { enabled = true },
+        trigger = {
+          show_on_trigger_character = true,
+        },
       },
       keymap = {
         preset = "none",
