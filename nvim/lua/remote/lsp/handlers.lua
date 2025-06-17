@@ -252,8 +252,7 @@ M.format = function(opts)
     vim.lsp.buf.format(opts)
     return
   end
-  local plugin_opts = ds.plugin.get_opts(default_fmt.name).format
-  opts = vim.tbl_deep_extend("force", {}, opts or {}, plugin_opts)
+  opts = vim.tbl_deep_extend("force", {}, opts or {}, ds.plugin.get_opts(default_fmt.name).default_format_opts or {})
   local ok, fmt = pcall(require, default_fmt.modname)
   if ok then
     opts.formatters = {}
