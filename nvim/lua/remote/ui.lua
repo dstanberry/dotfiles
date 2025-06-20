@@ -91,6 +91,7 @@ return {
       code = {
         border = "block",
         highlight = "@markup.codeblock",
+        highlight_border = "@markup.codeblock",
         highlight_inline = "@markup.raw.markdown_inline",
         left_pad = 2,
         min_width = 80,
@@ -106,6 +107,10 @@ return {
         width = "block",
         min_width = 80,
         icons = vim.tbl_map(function(i) return ds.pad(ds.icons.markdown["H" .. i], "right") end, vim.fn.range(1, 8)),
+      },
+      pipe_table = {
+        head = "@markup.table",
+        row = "@markup.table",
       },
     },
   },
