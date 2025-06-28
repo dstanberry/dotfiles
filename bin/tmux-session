@@ -18,7 +18,7 @@ elif [[ $# -eq 1 ]]; then
   #--------------------------------------------------------------
   # session launcher
   #--------------------------------------------------------------
-  elif [ "$1" == "session" ]; then
+  elif [ "$1" == "new" ]; then
     project_dirs=""
     worktree_dirs=""
     # shellcheck disable=SC2153
@@ -77,7 +77,7 @@ elif [[ $# -eq 1 ]]; then
   #--------------------------------------------------------------
   # persistent flaating window across all sessions
   #--------------------------------------------------------------
-  elif [ "$1" == "float" ]; then
+  elif [ "$1" == "toggle-float" ]; then
     current_client="$(tmux display-message -p -F "#{session_name}")"
     if [ "$current_client" == "float-repl" ]; then
       tmux detach-client
@@ -102,9 +102,9 @@ elif [[ $# -eq 1 ]]; then
       | xargs tmux display-menu -T "Switch session"
     exit 0
   #--------------------------------------------------------------
-  # helper to goto next session
+  # goto next session
   #--------------------------------------------------------------
-  elif [ "$1" == "switch-client-next" ]; then
+  elif [ "$1" == "next" ]; then
     if not_in_tmux; then
       echo "command only available within tmux"
       exit 1
@@ -132,9 +132,9 @@ elif [[ $# -eq 1 ]]; then
     fi
     exit 0
   #--------------------------------------------------------------
-  # helper to goto previous session
+  # goto previous session
   #--------------------------------------------------------------
-  elif [ "$1" == "switch-client-previous" ]; then
+  elif [ "$1" == "previous" ]; then
     if not_in_tmux; then
       echo "command only available within tmux"
       exit 1
