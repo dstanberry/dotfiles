@@ -7,6 +7,10 @@ return {
     bo = { expandtab = true, shiftwidth = 4, softtabstop = 4, tabstop = 4 },
     wo = { colorcolumn = "120" },
   },
+  css = {
+    bo = { expandtab = true, shiftwidth = 2 },
+    wo = { colorcolumn = "80" },
+  },
   gitcommit = {
     bo = { swapfile = false, textwidth = 72, undofile = false },
     wo = {
@@ -22,13 +26,17 @@ return {
     bo = { expandtab = true, shiftwidth = 4, softtabstop = 4, tabstop = 4 },
     wo = { colorcolumn = "80" },
   },
+  html = {
+    bo = { expandtab = true, shiftwidth = 2 },
+    wo = { colorcolumn = "80" },
+  },
   javascript = {
     bo = { expandtab = true, shiftwidth = 2 },
     wo = { colorcolumn = "80" },
   },
   javascriptreact = {
     bo = { expandtab = true, shiftwidth = 2 },
-    wo = { colorcolumn = "80" },
+    wo = { colorcolumn = "120" },
   },
   json = {
     bo = { expandtab = true, shiftwidth = 2 },
@@ -87,7 +95,7 @@ return {
   },
   typescriptreact = {
     bo = { expandtab = true, shiftwidth = 2 },
-    wo = { colorcolumn = "80" },
+    wo = { colorcolumn = "120" },
   },
   zsh = {
     bo = { expandtab = true, shiftwidth = 2 },
