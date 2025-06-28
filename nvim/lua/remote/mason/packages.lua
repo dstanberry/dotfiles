@@ -36,6 +36,7 @@ return {
   "js-debug-adapter",
   "netcoredbg",
   -- linters
+  "dotenv-linter",
   "hadolint",
   "markdownlint-cli2",
   "shellcheck",

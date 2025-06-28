@@ -422,6 +422,8 @@ return {
       },
       -- stylua: ignore
       file = {
+        [".env"]                = { glyph = "", hl = "MiniIconsYellow" },
+        [".env.local"]          = { glyph = "", hl = "MiniIconsGrey" },
         [".eslintrc.js"]        = { glyph = "󰱺", hl = "MiniIconsYellow" },
         [".eslintrc.json"]      = { glyph = "󰱺", hl = "MiniIconsYellow" },
         [".node-version"]       = { glyph = "", hl = "MiniIconsGreen" },

@@ -102,6 +102,7 @@ return {
             end,
           },
           shfmt = {
+            condition = function(_, ctx) return not vim.fs.basename(vim.api.nvim_buf_get_name(ctx.buf)):match "^%.env" end,
             prepend_args = { "-i", "2", "-ci", "-sr", "-s", "-bn" },
           },
           sqlfluff = {
@@ -255,12 +256,18 @@ return {
       linters_by_ft = {
         dockerfile = { "hadolint" },
         markdown = { "markdownlint-cli2" },
-        sh = { "shellcheck" },
+        sh = { "dotenv_linter", "shellcheck" },
         sql = { "sqlfluff" },
         terraform = { "terraform_validate" },
         tf = { "terraform_validate" },
       },
       linters = {
+        dotenv_linter = {
+          condition = function(ctx) return vim.fs.basename(ctx.filename):match "^%.env" end,
+        },
+        shellcheck = {
+          condition = function(ctx) return not vim.fs.basename(ctx.filename):match "^%.env" end,
+        },
         sqlfluff = {
           args = { "lint", "--format=json", "--dialect=postgres", "--exclude-rules=L044,LT02,LT12" },
         },
@@ -298,7 +305,6 @@ return {
           if not linter then ds.warn("Linter not found: " .. name) end
           return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
         end, names)
-
         if #names > 0 then lint.try_lint(names) end
       end
 
