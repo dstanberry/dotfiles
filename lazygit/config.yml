@@ -63,7 +63,7 @@ gui:
   scrollHeight: 2
   scrollPastBottom: true
   showBottomLine: false
-  showCommandLog: false
+  showCommandLog: true
   nerdFontsVersion: "3"
   skipStashWarning: true
   skipDiscardChangeWarning: false
