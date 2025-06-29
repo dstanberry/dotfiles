@@ -43,6 +43,7 @@ return {
         end
         return select(1, ...)
       end
+      ---@type conform.setupOpts
       return {
         default_format_opts = { async = false, quiet = false, lsp_format = "fallback", timeout_ms = 3000 },
         formatters_by_ft = {
@@ -76,6 +77,7 @@ return {
           yaml = { "yamlfmt" },
           zsh = { "beautysh" },
         },
+        ---@type table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
         formatters = {
           beautysh = {
             args = { "-i", "2", "-" },
@@ -85,6 +87,7 @@ return {
               for _, line in ipairs(vim.api.nvim_buf_get_lines(ctx.buf, 0, -1, false)) do
                 if line:find "<!%-%- toc %-%->" then return true end
               end
+              return false
             end,
           },
           prettierd = {
