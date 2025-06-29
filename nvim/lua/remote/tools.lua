@@ -48,6 +48,7 @@ return {
         default_format_opts = { async = false, quiet = false, lsp_format = "fallback", timeout_ms = 3000 },
         formatters_by_ft = {
           bash = { "shfmt" },
+          css = { "prettierd", "prettier", stop_after_first = true },
           go = { "goimports", "gofumpt" },
           groovy = { "npm-groovy-lint" },
           html = { "prettierd", "prettier", stop_after_first = true },
@@ -67,6 +68,7 @@ return {
           -- python = { "injected", "black" },
           python = { "black" },
           rust = { "rustfmt" },
+          scss = { "prettierd", "prettier", stop_after_first = true },
           sh = { "shfmt" },
           sql = { "sqlfluff" },
           terraform = { "terraform_fmt" },
