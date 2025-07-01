@@ -70,7 +70,7 @@ return {
         error_header = "> [!ERROR] Error",
         separator = "───",
         prompts = prompts,
-        window = {
+        window = vim.o.columns > 180 and { layout = "vertical" } or {
           layout = "float",
           relative = "cursor",
           width = 1,
