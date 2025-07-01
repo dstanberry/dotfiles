@@ -1,0 +1,76 @@
+{
+  "default": true,
+
+  "emphasis-style": {
+    "style": "asterisk"
+  },
+  "heading-style": {
+    "style": "atx"
+  },
+  "hr-style": {
+    "style": "---"
+  },
+  "line-length": {
+    "line_length": 80,
+    "code_block_line_length": 120,
+    "code_blocks": false,
+    "tables": false
+  },
+  "no-hard-tabs": {
+    "code_blocks": false
+  },
+  "no-inline-html": {
+    "allowed_elements": [
+      "h1",
+      "h2",
+      "h3",
+      "h4",
+      "h5",
+      "h6",
+      "p",
+      "div",
+      "blockquote",
+      "pre",
+      "b",
+      "i",
+      "strong",
+      "em",
+      "tt",
+      "code",
+      "ins",
+      "del",
+      "sup",
+      "sub",
+      "kbd",
+      "samp",
+      "q",
+      "var",
+      "ol",
+      "ul",
+      "li",
+      "dl",
+      "dt",
+      "dd",
+      "table",
+      "thead",
+      "tbody",
+      "tfoot",
+      "tr",
+      "td",
+      "th",
+      "br",
+      "hr",
+      "a"
+    ]
+  },
+  "single-h1": {
+    "level": 1,
+    "front_matter_title": "^\\s*title:"
+  },
+  "ul-style": {
+    "style": "dash"
+  },
+  "ul-indent": {
+    "indent": 2
+  }
+}

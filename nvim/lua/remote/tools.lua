@@ -35,14 +35,7 @@ return {
       })
     end,
     opts = function()
-      local function first(bufnr, ...)
-        local conform = require "conform"
-        for i = 1, select("#", ...) do
-          local formatter = select(i, ...)
-          if conform.get_formatter_info(formatter, bufnr).available then return formatter end
-        end
-        return select(1, ...)
-      end
+      local function first(bufnr, ...) end
       ---@type conform.setupOpts
       return {
         default_format_opts = { async = false, quiet = false, lsp_format = "fallback", timeout_ms = 3000 },
@@ -58,12 +51,8 @@ return {
           json = { "prettierd", "prettier", stop_after_first = true },
           jsonc = { "prettierd", "prettier", stop_after_first = true },
           lua = { "stylua" },
-          markdown = function(bufnr)
-            return { first(bufnr, "prettierd", "prettier"), "markdownlint-cli2", "markdown-toc" }
-          end,
-          ["markdown.mdx"] = function(bufnr)
-            return { first(bufnr, "prettierd", "prettier"), "markdownlint-cli2", "markdown-toc" }
-          end,
+          markdown = { "prettier", "markdownlint-cli2", "markdown-toc" },
+          ["markdown.mdx"] = { "prettier", "markdownlint-cli2", "markdown-toc" },
           psql = { "sqlfluff" },
           -- python = { "injected", "black" },
           python = { "black" },
@@ -92,18 +81,84 @@ return {
               return false
             end,
           },
-          prettierd = {
-            env = function(_, ctx)
-              local conf = ds.root.detectors.pattern(ctx.buf, {
+          ["markdownlint-cli2"] = {
+            prepend_args = function(_, ctx)
+              local patterns = {
+                ".markdownlint-cli2.jsonc",
+                ".markdownlint-cli2.yaml",
+                ".markdownlint-cli2.cjs",
+                ".markdownlint-cli2.mjs",
+                ".markdownlint.jsonc",
+                ".markdownlint.json",
+                ".markdownlint.yaml",
+                ".markdownlint.yml",
+                ".markdownlint.cjs",
+                ".markdownlint.mjs",
+                "package.json",
+              }
+              local conf
+              ds.foreach(patterns, function(v, _)
+                if not conf then
+                  conf = ds.root.detectors.pattern(ctx.buf, { v })[1]
+                  if conf then conf = vim.fs.joinpath(conf, v) end
+                end
+              end)
+              return {
+                "--config",
+                conf or vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, "shared", "formatters", "def.markdownlint.json"),
+              }
+            end,
+          },
+          prettier = {
+            prepend_args = function(_, ctx)
+              local patterns = {
                 ".prettierrc",
+                ".prettierrc.jsonc",
                 ".prettierrc.json",
                 ".prettierrc.yaml",
                 ".prettierrc.js",
                 ".prettierrc.mjs",
                 ".prettierrc.cjs",
                 ".prettierrc.toml",
-              })[1] or ""
-              return conf == "" and nil or { PRETTIERD_DEFAULT_CONFIG = conf }
+                "package.json",
+              }
+              local conf
+              ds.foreach(patterns, function(v, _)
+                if not conf then
+                  conf = ds.root.detectors.pattern(ctx.buf, { v })[1]
+                  if conf then conf = vim.fs.joinpath(conf, v) end
+                end
+              end)
+              return {
+                "--config",
+                conf or vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, "shared", "formatters", "prettierrc.json"),
+              }
+            end,
+          },
+          prettierd = {
+            env = function(_, ctx)
+              local patterns = {
+                ".prettierrc",
+                ".prettierrc.jsonc",
+                ".prettierrc.json",
+                ".prettierrc.yaml",
+                ".prettierrc.js",
+                ".prettierrc.mjs",
+                ".prettierrc.cjs",
+                ".prettierrc.toml",
+                "package.json",
+              }
+              local conf
+              ds.foreach(patterns, function(v, _)
+                if not conf then
+                  conf = ds.root.detectors.pattern(ctx.buf, { v })[1]
+                  if conf then conf = vim.fs.joinpath(conf, v) end
+                end
+              end)
+              return {
+                PRETTIERD_DEFAULT_CONFIG = conf
+                  or vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, "shared", "formatters", "prettierrc.json"),
+              }
             end,
           },
           shfmt = {
@@ -115,10 +170,10 @@ return {
           },
           stylua = {
             args = function(_, ctx)
-              local root = ds.root.detectors.pattern(ctx.buf, { "stylua.toml" })[1] or ""
-              local path = root == "" and vim.fs.joinpath(vim.fn.stdpath "config", "stylua.toml")
-                or vim.fs.joinpath(root, "stylua.toml")
-              return { "--config-path", path, "--stdin-filepath", "$FILENAME", "-" }
+              local conf = ds.root.detectors.pattern(ctx.buf, { "stylua.toml" })[1]
+              conf = conf and vim.fs.joinpath(conf, "stylua.toml")
+                or vim.fs.joinpath(vim.fn.stdpath "config", "stylua.toml")
+              return { "--config-path", conf, "--stdin-filepath", "$FILENAME", "-" }
             end,
           },
         },
