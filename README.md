@@ -5,8 +5,9 @@
 The schema is constructed such that it adheres to the XDG Base Directory
 Specification.
 
-The `.config` directory is maintained as a worktree linked to a git bare repository.
-To setup the environment, a number of one-time tasks will need to be executed:
+The `.config` directory is maintained as a worktree linked to a git bare
+repository. To setup the environment, a number of one-time tasks will need to be
+executed:
 
 Clone the repository:
 
@@ -29,13 +30,13 @@ export XDG_CONFIG_HOME="${HOME}/.config"
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh/"
 ```
 
-**_Note:_**
+***Note:***
 
-Machine specific settings can be defined within zsh/rc.private/ if
-desired. The directory will be created automatically if it does not exist. In
-particular during startup neovim will check if the current shell has a
-file called `hashes.zsh` (depending on the running shell) and
-will define each path as an environment variable within the editor.
+Machine specific settings can be defined within zsh/rc.private/ if desired. The
+directory will be created automatically if it does not exist. In particular
+during startup neovim will check if the current shell has a file called
+`hashes.zsh` (depending on the running shell) and will define each path as an
+environment variable within the editor.
 
 ```zsh
 # (example content of hashes.zsh)
@@ -43,8 +44,8 @@ hash -d proj=/home/<user>/Projects/foo/bar
 ...
 ```
 
-Git: Have the global `.gitconfig` file include the configurations
-maintained here.
+Git: Have the global `.gitconfig` file include the configurations maintained
+here.
 
 ```gitconfig
 [include]
