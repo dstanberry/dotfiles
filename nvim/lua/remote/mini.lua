@@ -66,13 +66,25 @@ return {
             end
             return ret
           end,
+          k = ai.gen_spec.treesitter { -- [k]ey where [k] = v
+            a = { "@assignment.outer", "@key.inner" },
+            i = { "@assignment.lhs", "@key.inner" },
+          },
           o = ai.gen_spec.treesitter { -- lo[o]ps, c[o]nditions within loop
             a = { "@block.outer", "@conditional.outer", "@loop.outer" },
             i = { "@block.inner", "@conditional.inner", "@loop.inner" },
           },
-          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- [t]ags (html)
+          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" }, -- html [t]ags
           u = ai.gen_spec.function_call(), -- function [u]sage
           U = ai.gen_spec.function_call { name_pattern = "[%w_]" }, -- function [u]sage without dot in function name
+          v = ai.gen_spec.treesitter { -- [value] where k = [v]
+            a = { "@assignment.outer", "@value.inner", "@return.outer" },
+            i = { "@assignment.rhs", "@value.inner", "@return.inner" },
+          },
+          x = { -- html/[x]ml attribute
+            { "<(%w-)%f[^<%w][^<>]->.-</%1>" },
+            { "%f[%w]%w+=()%b{}()", '%f[%w]%w+=()%b""()', "%f[%w]%w+=()%b''()" },
+          },
         },
       }
     end,

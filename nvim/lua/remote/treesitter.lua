@@ -36,11 +36,30 @@ return {
         move = {
           enable = true,
           -- NOTE: matches mnemonic used in |mini.ai| configuration
-          -- f[u]nction parameter | [f]unction | [c]lass
-          goto_next_start = { ["]u"] = "@parameter.inner", ["]c"] = "@class.outer", ["]f"] = "@function.outer" },
-          goto_next_end = { ["]U"] = "@parameter.inner", ["]C"] = "@class.outer", ["]F"] = "@function.outer" },
-          goto_previous_start = { ["[u"] = "@parameter.inner", ["[c"] = "@class.outer", ["[f"] = "@function.outer" },
-          goto_previous_end = { ["[U"] = "@parameter.inner", ["[C"] = "@class.outer", ["[F"] = "@function.outer" },
+          goto_next_start = {
+            ["]b"] = "@codeblock.outer",
+            ["]c"] = "@class.outer",
+            ["]f"] = "@function.outer",
+            ["]u"] = "@parameter.inner",
+          },
+          goto_next_end = {
+            ["]B"] = "@codeblock.outer",
+            ["]C"] = "@class.outer",
+            ["]F"] = "@function.outer",
+            ["]U"] = "@parameter.inner",
+          },
+          goto_previous_start = {
+            ["]b"] = "@codeblock.outer",
+            ["[c"] = "@class.outer",
+            ["[f"] = "@function.outer",
+            ["[u"] = "@parameter.inner",
+          },
+          goto_previous_end = {
+            ["]B"] = "@codeblock.outer",
+            ["[C"] = "@class.outer",
+            ["[F"] = "@function.outer",
+            ["[U"] = "@parameter.inner",
+          },
         },
         swap = {
           enable = true,
