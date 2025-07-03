@@ -144,6 +144,7 @@ end
 ---@field loaded? boolean Filter out buffers that aren't loaded.
 ---@field listed? boolean Filter out buffers that aren't listed.
 ---@field no_hidden? boolean Filter out buffers that are hidden.
+---@field no_terminal? boolean Filter out buffers that are terminals.
 ---@field tabpage? integer Filter out buffers that are not displayed in a given tabpage.
 ---@field pattern? string Filter out buffers whose name does not match a given lua pattern.
 ---@field options? table<string, any> Filter out buffers that don't match a given map of options.
@@ -168,8 +169,11 @@ function M.filter(opts)
     bufs = vim.api.nvim_list_bufs()
   end
   return vim.tbl_filter(function(bufnr)
-    if opts.loaded and not vim.api.nvim_buf_is_loaded(bufnr) then return false end
+    if opts.loaded and not (vim.api.nvim_buf_is_loaded(bufnr) and vim.api.nvim_buf_is_valid(bufnr)) then
+      return false
+    end
     if opts.listed and not vim.bo[bufnr].buflisted then return false end
+    if opts.no_terminal and vim.bo[bufnr].buftype == "terminal" then return false end
     if opts.pattern and not vim.api.nvim_buf_get_name(bufnr):match(opts.pattern) then return false end
     if opts.options then
       for name, value in pairs(opts.options) do
