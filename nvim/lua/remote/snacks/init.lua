@@ -51,8 +51,7 @@ return {
       })
     end,
     opts = function()
-      ---@type snacks.Config
-      return {
+      return { ---@type snacks.Config
         -- buffer/window options
         styles = util.styles,
         -- plugins using default config
