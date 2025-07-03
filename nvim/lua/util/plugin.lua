@@ -17,7 +17,7 @@ M.get_pkg_path = function(pkg, path, opts)
   opts.warn = opts.warn == nil and true or opts.warn
   path = path or ""
   local ret = vim.fs.joinpath(root, "packages", pkg, path)
-  if opts.warn and not vim.loop.fs_stat(ret) then
+  if opts.warn and not vim.uv.fs_stat(ret) then
     vim.notify(
       ("Package path not found for **%s**:\n- `%s`\nYou may need to force update the package."):format(pkg, path),
       vim.log.levels.WARN,

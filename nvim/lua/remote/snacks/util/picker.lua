@@ -69,7 +69,7 @@ M.config = function()
     actions = vim.tbl_extend("force", flash.actions, trouble.actions, {
       toggle_cwd = function(p) ---@param p snacks.Picker
         local root = ds.root.get { buf = p.input.filter.current_buf, normalize = true }
-        local cwd = vim.fs.normalize((vim.uv or vim.loop).cwd() or ".")
+        local cwd = vim.fs.normalize(vim.uv.cwd() or ".")
         local current = p:cwd()
         p:set_cwd(current == root and cwd or root)
         p:find()
@@ -122,7 +122,7 @@ M.file_browser = function()
     actions = {
       parent = {
         action = function(picker, _)
-          cwd = vim.loop.fs_realpath(vim.fs.joinpath(cwd, ".."))
+          cwd = vim.uv.fs_realpath(vim.fs.joinpath(cwd, ".."))
           picker:set_cwd(cwd)
           picker:find()
         end,
