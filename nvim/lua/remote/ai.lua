@@ -27,6 +27,7 @@ return {
         { "<leader>c", mode = { "n", "v" }, "", desc = "+copilot" },
         { "<leader>ca", mode = { "n", "v" }, _chat, desc = "copilot: quick chat" },
         { "<leader>cc", mode = { "n", "v" }, _toggle, desc = "copilot: toggle chat" },
+        { "<leader>cm", function() vim.cmd "CopilotChatModels" end, desc = "copilot: select model" },
         { "<leader>cx", mode = { "n", "v" }, _clear, desc = "copilot: clear history" },
       }
     end,
