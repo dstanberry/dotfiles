@@ -322,30 +322,6 @@ M.setup = function()
     vim.lsp.handlers["textDocument/documentSymbol"] = _document_symbols
     vim.lsp.handlers["workspace/symbol"] = _workspace_symbols
   end
-
-  -- TODO: remove after functionality is merged upstream
-  -- https://github.com/neovim/neovim/issues/19649#issuecomment-1327287313
-  -- neovim does not currently correctly report the related locations for diagnostics.
-  local show_related_locations = function(diag)
-    local related_info = diag.relatedInformation
-    if not related_info or #related_info == 0 then return diag end
-    for _, info in ipairs(related_info) do
-      diag.message = ("%s\n%s(%d:%d)%s"):format(
-        diag.message,
-        vim.fs.basename(info.location.uri),
-        info.location.range.start.line + 1,
-        info.location.range.start.character + 1,
-        info.message and info.message ~= "" and (": %s"):format(info.message) or ""
-      )
-    end
-    return diag
-  end
-  local diag_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
-  ---@diagnostic disable-next-line: redundant-parameter
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
-    result.diagnostics = vim.tbl_map(show_related_locations, result.diagnostics)
-    diag_handler(err, result, ctx, config)
-  end
 end
 
 return M
