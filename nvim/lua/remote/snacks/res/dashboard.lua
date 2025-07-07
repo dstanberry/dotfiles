@@ -1,4 +1,4 @@
----@class remote.snacks.util.dashboard
+---@class remote.snacks.res.dashboard
 local M = {}
 
 M.config = {

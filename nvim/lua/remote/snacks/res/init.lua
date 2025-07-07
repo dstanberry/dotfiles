@@ -1,16 +1,16 @@
----@class remote.snacks.util
----@field dashboard remote.snacks.util.dashboard
----@field gitbrowse remote.snacks.util.gitbrowse
----@field lazygit remote.snacks.util.lazygit
----@field indent remote.snacks.util.indent
----@field notify remote.snacks.util.notify
----@field picker remote.snacks.util.picker
----@field scratch remote.snacks.util.scratch
+---@class remote.snacks.res
+---@field dashboard remote.snacks.res.dashboard
+---@field gitbrowse remote.snacks.res.gitbrowse
+---@field lazygit remote.snacks.res.lazygit
+---@field indent remote.snacks.res.indent
+---@field notify remote.snacks.res.notify
+---@field picker remote.snacks.res.picker
+---@field scratch remote.snacks.res.scratch
 local M = {}
 
 setmetatable(M, {
   __index = function(t, k)
-    t[k] = require("remote.snacks.util." .. k)
+    t[k] = require("remote.snacks.res." .. k)
     return rawget(t, k)
   end,
 })

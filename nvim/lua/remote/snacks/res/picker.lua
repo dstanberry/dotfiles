@@ -1,4 +1,4 @@
----@class remote.snacks.util.picker
+---@class remote.snacks.res.picker
 local M = {}
 
 ---@module "snacks"

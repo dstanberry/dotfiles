@@ -1,4 +1,4 @@
----@class remote.snacks.util.indent
+---@class remote.snacks.res.indent
 local M = {}
 
 M.config = {

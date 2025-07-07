@@ -1,4 +1,4 @@
----@class remote.snacks.util.notify
+---@class remote.snacks.res.notify
 local M = {}
 
 M.setup = function()

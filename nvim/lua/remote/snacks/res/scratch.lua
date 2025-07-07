@@ -1,4 +1,4 @@
----@class remote.snacks.util.scratch
+---@class remote.snacks.res.scratch
 local M = {}
 
 M.select = function()
