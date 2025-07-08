@@ -20,7 +20,8 @@ return {
     "mickael-menu/zk-nvim",
     enabled = not ds.has "win32",
     dependencies = { "williamboman/mason.nvim" },
-    event = { "BufRead " .. vim.env.ZK_NOTEBOOK_DIR .. "/**/*.md" },
+    event = (vim.env.ZK_NOTEBOOK_DIR and vim.env.ZK_NOTEBOOK_DIR ~= "")
+      and { "BufRead " .. vim.env.ZK_NOTEBOOK_DIR .. "/**/*.md" },
     keys = function()
       local keymap = require "ft.markdown.keymaps"
       local keys = {}
