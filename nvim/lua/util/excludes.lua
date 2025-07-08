@@ -32,8 +32,6 @@ M.ft = {
     "snacks_picker_input",
     "snacks_picker_list",
     "snacks_terminal",
-    "TelescopePrompt",
-    "TelescopeResults",
     "trouble",
   },
   wb_disabled = {
@@ -56,7 +54,6 @@ M.ft = {
     "octo_panel",
     "oil",
     "snacks_terminal",
-    "TelescopePrompt",
     "trouble",
   },
   wb_empty = {
