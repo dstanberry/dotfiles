@@ -20,6 +20,7 @@ M.formatters = {} ---@type util.format.formatter[]
 M.enable = function(enable, buf)
   if enable == nil then enable = true end
   if buf then
+    buf = vim.api.nvim_get_current_buf()
     vim.b.autoformat = enable
   else
     vim.g.autoformat = enable
