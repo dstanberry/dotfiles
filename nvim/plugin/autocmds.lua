@@ -24,21 +24,25 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   callback = function(event) ds.format.format { buf = event.buf } end,
 })
 
--- change background color of manpages, help and quickfix list and use `q` to close
+-- change the default background color of certain filetypes
+vim.api.nvim_create_autocmd("FileType", {
+  group = ftplugin,
+  pattern = { "help", "qf" },
+  callback = function(args) vim.opt_local.winhighlight = "Normal:NormalSB" end,
+})
+
+-- use `q` to close buffers associated with certain filetypes
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
   pattern = { "checkhealth", "help", "man", "notify", "qf" },
   callback = function(args)
-    if vim.tbl_contains({ "help", "qf" }, vim.bo[args.buf].filetype) then
-      vim.opt_local.winhighlight = "Normal:NormalSB"
-    end
-    if vim.tbl_contains({ "checkhealth" }, vim.bo[args.buf].filetype) and #vim.o.winborder > 0 then
-      vim.o.winborder = ""
-    end
-    vim.keymap.set("n", "q", function()
-      vim.cmd.close()
-      pcall(vim.api.nvim_buf_delete, args.buf, { force = true })
-    end, { buffer = args.buf, silent = true })
+    vim.bo[args.buf].buflisted = false
+    vim.schedule(function()
+      vim.keymap.set("n", "q", function()
+        vim.cmd.close()
+        pcall(vim.api.nvim_buf_delete, args.buf, { force = true })
+      end, { buffer = args.buf, silent = true, desc = "close buffer" })
+    end)
   end,
 })
 
