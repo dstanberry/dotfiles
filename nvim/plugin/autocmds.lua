@@ -28,13 +28,13 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
   pattern = { "help", "qf" },
-  callback = function(args) vim.opt_local.winhighlight = "Normal:NormalSB" end,
+  callback = function() vim.opt_local.winhighlight = "Normal:NormalSB" end,
 })
 
 -- use `q` to close buffers associated with certain filetypes
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
-  pattern = { "checkhealth", "help", "man", "notify", "qf" },
+  pattern = ds.ft.quick_close,
   callback = function(args)
     vim.bo[args.buf].buflisted = false
     vim.schedule(function()

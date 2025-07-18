@@ -35,7 +35,7 @@ M.diffview = {
     local winid = vim.api.nvim_get_current_win()
     local buf = vim.api.nvim_win_get_buf(winid)
     local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-    if ds.tbl_match(ds.excludes.ft.wb_empty, ft) then return " " end
+    if ds.tbl_match(ds.ft.empty.winbar, ft) then return " " end
     return add(highlighter.sanitize "@variable.builtin", { vim.api.nvim_buf_get_var(buf, "diffview_label") }, true)
   end,
   cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
@@ -69,7 +69,7 @@ M.merge_conflicts = {
     local buf = vim.api.nvim_win_get_buf(winid)
     local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
 
-    if ds.tbl_match(ds.excludes.ft.wb_empty, ft) then return " " end
+    if ds.tbl_match(ds.ft.empty.winbar, ft) then return " " end
     return string.format("%s%s", format_label(winid, buf), highlighter.reset)
   end,
 }

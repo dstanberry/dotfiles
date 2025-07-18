@@ -1,22 +1,15 @@
----@class util.excludes
+---@class util.ft
+---@field disabled table<string, string[]> --- Filetypes disabled for specific UI components
+---@field empty table<string, string[]> --- Filetypes considered empty for specific UI components
+---@field quick_close string[] --- Filetypes that can be closed quickly with 'q'
 local M = {}
 
-M.bt = {
-  stl_disabled = {},
-  wb_disabled = {
-    "terminal",
-    "nofile",
-    "prompt",
-  },
-}
-
-M.ft = {
-  stl_disabled = {
+M.disabled = {
+  statusline = {
     -- builtin filetypes
     "help",
     "qf",
     "term",
-
     -- plugin filetypes
     "copilot-chat",
     "dbui",
@@ -34,13 +27,12 @@ M.ft = {
     "snacks_terminal",
     "trouble",
   },
-  wb_disabled = {
+  winbar = {
     -- builtin filetypes
     "help",
     "gitcommit",
     "qf",
     "term",
-
     -- plugin filetypes
     "copilot-chat",
     "dap-repl",
@@ -56,14 +48,31 @@ M.ft = {
     "snacks_terminal",
     "trouble",
   },
-  wb_empty = {
+}
+
+M.empty = {
+  statusline = {},
+  winbar = {
     -- builtin filetypes
     "help",
-
     -- plugin filetypes
     "DiffviewFilePanel",
     "DiffviewFiles",
   },
+}
+
+M.quick_close = {
+  -- builtin filetypes
+  "checkhealth",
+  "help",
+  "man",
+  "notify",
+  "qf",
+  -- plugin filetypes
+  "dbout",
+  "neotest-output",
+  "neotest-output-panel",
+  "neotest-summary",
 }
 
 return M

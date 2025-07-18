@@ -14,9 +14,9 @@ M.config = {
   },
   filter = function(buf)
     local filetypes = ds.extend(
-      ds.excludes.ft.stl_disabled,
-      ds.excludes.ft.wb_disabled,
-      ds.excludes.ft.wb_empty,
+      ds.ft.disabled.statusline,
+      ds.ft.disabled.winbar,
+      ds.ft.empty.winbar,
       { "checkhealth", "diff", "git" },
       { "log", "markdown", "txt" }
     )

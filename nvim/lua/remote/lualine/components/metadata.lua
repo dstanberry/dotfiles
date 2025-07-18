@@ -72,7 +72,7 @@ M.breadcrumbs = {
     local buf = vim.api.nvim_win_get_buf(winid)
     local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
 
-    if ds.tbl_match(ds.excludes.ft.wb_empty, ft) then return " " end
+    if ds.tbl_match(ds.ft.empty.winbar, ft) then return " " end
 
     local filepath = vim.fs.normalize(vim.api.nvim_buf_get_name(buf))
     local dirpath, filename = (filepath):match "^(.+)/(.+)$"

@@ -71,8 +71,8 @@ M.symbols = {
     return not (
       fname:match "%[Scratch%]$"
       or vim.bo[buf].ft:match "dapui_"
-      or vim.tbl_contains(ds.excludes.ft.wb_empty, vim.bo[buf].ft)
-      or vim.tbl_contains(ds.excludes.ft.wb_disabled, vim.bo[buf].ft)
+      or vim.tbl_contains(ds.ft.empty.winbar, vim.bo[buf].ft)
+      or vim.tbl_contains(ds.ft.disabled.winbar, vim.bo[buf].ft)
     )
   end,
 }

@@ -23,7 +23,7 @@ return {
       options = {
         theme = util.theme,
         globalstatus = true,
-        disabled_filetypes = { statusline = ds.excludes.ft.stl_disabled, winbar = ds.excludes.ft.wb_disabled },
+        disabled_filetypes = { statusline = ds.ft.disabled.statusline, winbar = ds.ft.disabled.winbar },
         component_separators = "",
         section_separators = "",
       },

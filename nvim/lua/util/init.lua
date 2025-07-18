@@ -1,7 +1,7 @@
 ---@class util
 ---@field buffer util.buffer
 ---@field color util.color
----@field excludes util.excludes
+---@field ft util.ft
 ---@field format util.format
 ---@field fs util.fs
 ---@field hl util.hl
