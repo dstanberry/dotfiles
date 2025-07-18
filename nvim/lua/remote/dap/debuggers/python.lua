@@ -4,18 +4,34 @@ local initialize = function(bufnr)
   if not M.initialized then
     M.initialized = true
 
+    local dap = require "dap"
     local py = require "dap-python"
-    local filepath = ds.has "win32" and ds.plugin.get_pkg_path("debugpy", "venv/Scripts/pythonw.exe")
-      or ds.plugin.get_pkg_path("debugpy", "venv/bin/python")
 
     local _method = function() py.test_method() end
     local _class = function() py.test_class() end
 
-    py.setup(filepath, { console = "integratedTerminal", include_configs = true, pythonPath = filepath })
+    local pypath = ds.has "win32" and { "Scipts", ".exe" } or { "bin", "" }
+    local _, venv_path = ds.root.detectors.pattern(bufnr, { "env", "venv" })
+    local interpreter = ds.plugin.get_pkg_path("debugpy", vim.fs.joinpath("venv", pypath[1], "python" .. pypath[2]))
+
+    if venv_path then
+      dap.configurations.python = {
+        {
+          type = "debugpy",
+          name = "Python: Current File (workspace venv)",
+          request = "launch",
+          program = "${file}",
+          console = "integratedTerminal",
+          python = vim.fs.joinpath(venv_path, pypath[1], "python" .. pypath[2]),
+        },
+      }
+    end
+
+    py.setup(interpreter, { console = "integratedTerminal", include_configs = true, pythonPath = interpreter })
 
     vim.keymap.set("n", "<leader>dp", "", { buffer = bufnr, desc = "+dap: python" })
-    vim.keymap.set("n", "<leader>dpm", _method, { buffer = bufnr, desc = "python: debug method" })
-    vim.keymap.set("n", "<leader>dpc", _class, { buffer = bufnr, desc = "python: debug class" })
+    vim.keymap.set("n", "<leader>dpm", _method, { buffer = bufnr, desc = "python: test method above cursor" })
+    vim.keymap.set("n", "<leader>dpc", _class, { buffer = bufnr, desc = "python: test class above cursor" })
   end
 end
 
