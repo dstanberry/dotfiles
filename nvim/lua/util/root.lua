@@ -65,7 +65,7 @@ end
 
 ---@param buf number|string bufnr or filename
 ---@param patterns string[]|string
----@return util.root.dirs[]
+---@return util.root.dirs[], string?
 function M.detectors.pattern(buf, patterns)
   patterns = type(patterns) == "string" and { patterns } or patterns
   local filepath = type(buf) == "number" and (bufpath(buf) or vim.uv.cwd()) or tostring(buf)
@@ -76,7 +76,7 @@ function M.detectors.pattern(buf, patterns)
     end
     return false
   end, { path = filepath, upward = true })[1]
-  return pattern and { vim.fs.dirname(pattern) } or {}
+  return pattern and { vim.fs.dirname(pattern) }, pattern or {}
 end
 
 ---@param spec util.root.resolver_spec
