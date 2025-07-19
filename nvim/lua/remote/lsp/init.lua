@@ -57,7 +57,6 @@ return {
       local handlers = require "remote.lsp.handlers"
       local root = "remote/lsp/servers"
       local servers = {
-        bashls = {},
         cmake = {},
         cssls = { init_options = { provideFormatter = false } },
         docker_compose_language_service = {},
