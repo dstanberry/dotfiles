@@ -3,9 +3,8 @@ local M = {}
 
 M.config = {
   on_attach = function(_, bufnr)
-    if vim.api.nvim_buf_get_name(bufnr):match "%.env" then
-      vim.schedule(function() vim.cmd "LspStop ++force bashls" end)
-    end
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    if vim.fs.basename(fname):match "^%.env" then vim.schedule(function() vim.cmd "LspStop bashls" end) end
   end,
 }
 
