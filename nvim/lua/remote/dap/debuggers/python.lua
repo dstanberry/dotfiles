@@ -11,8 +11,14 @@ local initialize = function(bufnr)
     local _class = function() py.test_class() end
 
     local pypath = ds.has "win32" and { "Scipts", ".exe" } or { "bin", "" }
-    local _, venv_path = ds.root.detectors.pattern(bufnr, { "env", "venv" })
+    local venv_path
     local interpreter = ds.plugin.get_pkg_path("debugpy", vim.fs.joinpath("venv", pypath[1], "python" .. pypath[2]))
+    ds.foreach({ "env", "venv" }, function(v, _)
+      if not venv_path then
+        venv_path = ds.root.detectors.pattern(bufnr, { v })[1]
+        if venv_path then venv_path = vim.fs.joinpath(venv_path, v) end
+      end
+    end)
 
     if venv_path then
       dap.configurations.python = {
