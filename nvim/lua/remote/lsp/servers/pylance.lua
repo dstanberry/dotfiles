@@ -30,24 +30,25 @@ M.config = {
     python = {
       analysis = {
         addImport = { exactMatchOnly = true },
+        autoSearchPaths = true,
         autoFormatStrings = true,
         autoImportCompletions = true,
         autoImportUserSymbols = true,
         completeFunctionParens = true,
-        diagnosticMode = "workspace", -- "workspace" | "openFilesOnly"
+        diagnosticMode = "workspace", ---@type "workspace"|"openFilesOnly"
         enablePytestExtra = false,
         enablePytestSupport = true,
-        importFormat = "absolute", --"absolute" | "relative"
+        importFormat = "absolute", ---@type "absolute"|"relative"
         indexing = true,
         inlayHints = {
-          variableTypes = true,
+          callArgumentNames = "partial", ---@type "off"|"partial"|"all"
           functionReturnTypes = true,
-          callArgumentNames = true,
           pytestParameters = true,
+          variableTypes = true,
         },
-        logLevel = "Warning", -- "Trace" | "Information" | "Warning" | "Error"
+        logLevel = "Warning", ---@type "Trace"|"Information"|"Warning"|"Error"
         stubPath = "typings",
-        typeCheckingMode = "basic", -- "basic" | "strict" | "off"
+        typeCheckingMode = "basic", ---@type "off"|"basic"|"standard"|"strict"
         useLibraryCodeForTypes = true,
       },
       telemetry = {
