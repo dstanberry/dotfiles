@@ -3,8 +3,8 @@ local M = {}
 ---@class remote.lsp.config
 ---@field disabled? boolean
 ---@field defer_setup? boolean
----@field config? vim.lsp.ClientConfig
----@field default_config? vim.lsp.ClientConfig
+---@field config? vim.lsp.ClientConfig|lspconfig.Config
+---@field default_config? vim.lsp.ClientConfig|lspconfig.Config|{ root_dir: fun(fname: string): string|nil }
 
 ---@class LspCommand: lsp.ExecuteCommandParams
 ---@field open? boolean

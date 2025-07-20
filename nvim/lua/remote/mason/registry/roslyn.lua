@@ -28,7 +28,6 @@ return {
   licenses = { "Microsoft" },
   source = {
     id = ("pkg:mason/github/microsoft/roslyn@%s"):format(version),
-    ---@param ctx InstallContext
     install = function(ctx)
       local get_package_info = function()
         local latest_package = vim.fn.system {

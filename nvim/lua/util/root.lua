@@ -65,7 +65,7 @@ end
 
 ---@param buf number|string bufnr or filename
 ---@param patterns string[]|string
----@return util.root.dirs[]
+---@return string[]
 function M.detectors.pattern(buf, patterns)
   patterns = type(patterns) == "string" and { patterns } or patterns
   local filepath = type(buf) == "number" and (bufpath(buf) or vim.uv.cwd()) or tostring(buf)

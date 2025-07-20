@@ -1,8 +1,6 @@
 ---@class remote.snacks.res.picker
 local M = {}
 
----@module "snacks"
-
 local flash = ds.plugin.is_installed "flash.nvim"
     and {
       actions = {

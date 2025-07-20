@@ -7,7 +7,7 @@ return {
   licenses = { "Microsoft" },
   source = {
     id = "pkg:mason/github/microsoft/pylance-release@2025.4.103",
-    ---@param ctx InstallContext
+    ---@module "mason.nvim"
     install = function(ctx)
       local download_artifact = [[
       curl -s -c cookies.txt 'https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance' > /dev/null &&
