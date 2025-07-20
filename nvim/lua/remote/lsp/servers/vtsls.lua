@@ -43,7 +43,47 @@ M.config = {
   on_attach = function(client, bufnr)
     local handlers = require "remote.lsp.handlers"
 
+    local _organize = handlers.run_code_action["source.organizeImports"]
+    local _missing = handlers.run_code_action["source.addMissingImports.ts"]
+    local _unused = handlers.run_code_action["source.removeUnused.ts"]
+    local _fix = handlers.run_code_action["source.fixAll.ts"]
+
     handlers.on_attach(client, bufnr)
+
+    local _source = function()
+      local params = vim.lsp.util.make_range_params()
+      handlers.execute_command {
+        command = "typescript.goToSourceDefinition",
+        arguments = { params.textDocument.uri, params.position },
+        open = true,
+      }
+    end
+
+    local _refs = function()
+      handlers.execute_command {
+        command = "typescript.findAllReferences",
+        arguments = { vim.uri_from_bufnr(0) },
+        open = true,
+      }
+    end
+
+    ds.format.register(handlers.formatter {
+      name = "vtsls: organizeImports",
+      primary = false,
+      priority = 200,
+      filter = "ruff",
+      format = _organize,
+    })
+
+    vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (typescript)" })
+
+    vim.keymap.set("n", "<leader>ld", _source, { buffer = bufnr, desc = "typescript: goto source definition" })
+    vim.keymap.set("n", "<leader>lr", _refs, { buffer = bufnr, desc = "typescript: show file references" })
+
+    vim.keymap.set("n", "<leader>lo", _organize, { buffer = bufnr, desc = "typescript: organize imports" })
+    vim.keymap.set("n", "<leader>lm", _missing, { buffer = bufnr, desc = "typescript: add missing imports" })
+    vim.keymap.set("n", "<leader>lu", _unused, { buffer = bufnr, desc = "typescript: remove unused imports" })
+    vim.keymap.set("n", "<leader>lf", _fix, { buffer = bufnr, desc = "typescript: fix all problems" })
 
     client.commands["_typescript.moveToFileRefactoring"] = function(command, _)
       local action, uri, range = unpack(command.arguments)
@@ -70,57 +110,27 @@ M.config = {
           },
         },
       }, function(_, result)
-        ---@type string[]
-        local files = result.body.files
+        local files = (result and result.body) and result.body.files or {} ---@type string[]
         table.insert(files, 1, "Enter new path...")
         vim.ui.select(files, {
           prompt = "Select move destination:",
-          format_item = function(f) vim.fs.dirname(f) end,
+          format_item = function(f) return f:find "^Enter new path" and f or vim.fn.fnamemodify(f, ":~:.") end,
         }, function(f)
-          if f and f:find "^enter new path" then
+          if not f or vim.trim(f) == "" then return end
+          if f:find "^Enter new path" then
             vim.ui.input({
               prompt = "Enter move destination:",
               default = vim.fs.joinpath(vim.fs.dirname(fname), ""),
               completion = "file",
-            }, function(new_fname) return new_fname and move(new_fname) end)
-          elseif f then
+            }, function(new_fname)
+              if new_fname then move(new_fname) end
+            end)
+          else
             move(f)
           end
         end)
       end)
     end
-
-    local _source = function()
-      local params = vim.lsp.util.make_range_params()
-      handlers.execute_command {
-        command = "typescript.goToSourceDefinition",
-        arguments = { params.textDocument.uri, params.position },
-        open = true,
-      }
-    end
-
-    local _refs = function()
-      handlers.execute_command {
-        command = "typescript.findAllReferences",
-        arguments = { vim.uri_from_bufnr(0) },
-        open = true,
-      }
-    end
-
-    local _organize = handlers.run_code_action["source.organizeImports"]
-    local _missing = handlers.run_code_action["source.addMissingImports.ts"]
-    local _unused = handlers.run_code_action["source.removeUnused.ts"]
-    local _fix = handlers.run_code_action["source.fixAll.ts"]
-
-    vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (typescript)" })
-
-    vim.keymap.set("n", "<leader>ld", _source, { buffer = bufnr, desc = "typescript: goto source definition" })
-    vim.keymap.set("n", "<leader>lr", _refs, { buffer = bufnr, desc = "typescript: show file references" })
-
-    vim.keymap.set("n", "<leader>lo", _organize, { buffer = bufnr, desc = "typescript: organize imports" })
-    vim.keymap.set("n", "<leader>lm", _missing, { buffer = bufnr, desc = "typescript: add missing imports" })
-    vim.keymap.set("n", "<leader>lu", _unused, { buffer = bufnr, desc = "typescript: remove unused imports" })
-    vim.keymap.set("n", "<leader>lf", _fix, { buffer = bufnr, desc = "typescript: fix all problems" })
   end,
 }
 

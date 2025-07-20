@@ -11,14 +11,23 @@ M.config = {
   on_attach = function(client, bufnr)
     local handlers = require "remote.lsp.handlers"
 
+    local _organize = handlers.run_code_action["source.organizeImports"]
+
     client.server_capabilities.hoverProvider = false
     client.server_capabilities.documentFormattingProvider = false
+
     handlers.on_attach(client, bufnr)
 
-    vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (ruff)" })
+    ds.format.register(handlers.formatter {
+      name = "ruff: organizeImports",
+      primary = false,
+      priority = 200,
+      filter = "ruff",
+      format = _organize,
+    })
 
-    local _organize = handlers.run_code_action["source.organizeImports"]
-    vim.keymap.set("n", "<leader>lo", _organize, { buffer = bufnr, desc = "typescript: organize imports" })
+    vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (python)" })
+    vim.keymap.set("n", "<leader>lo", _organize, { buffer = bufnr, desc = "python: organize imports" })
   end,
 }
 

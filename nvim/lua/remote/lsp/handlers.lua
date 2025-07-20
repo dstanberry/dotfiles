@@ -248,18 +248,21 @@ M.run_code_action = setmetatable({}, {
 ---@param opts? LspClientFilter
 M.format = function(opts)
   local default_fmt = ds.format.default_formatter
+  local ok, fmt = pcall(require, default_fmt.modname)
   if not (default_fmt.name and default_fmt.modname) then
+    if not ok then
+      ds.warn(
+        "Failed to load formatter `" .. default_fmt.name .. "`\nFalling back to native lsp formatter.",
+        { title = "LSP: Formatting" }
+      )
+    end
     vim.lsp.buf.format(opts)
     return
   end
   opts = vim.tbl_deep_extend("force", {}, opts or {}, ds.plugin.get_opts(default_fmt.name).default_format_opts or {})
-  local ok, fmt = pcall(require, default_fmt.modname)
   if ok then
     opts.formatters = {}
     fmt.format(opts)
-  else
-    ds.warn("Failed to load formatter " .. default_fmt.name, { title = "LSP: Formatting" })
-    vim.lsp.buf.format(opts)
   end
 end
 
