@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -35,10 +35,10 @@ Download and read more at
 #    (of initial lorem implementation)
 #  * The EMACS spook function
 
-from argparse import ArgumentParser
-from random import shuffle, choice
-from textwrap import fill
 import sys
+from argparse import ArgumentParser
+from random import choice, shuffle
+from textwrap import fill
 
 SHORTNAME = "lorem"
 PROGRAM = "Lorem Ipsum Generator (%s)" % SHORTNAME
