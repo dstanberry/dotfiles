@@ -24,6 +24,28 @@ local traverse_tree = function(bufnr, callback)
 end
 
 ---@param bufnr number
+---@param def "method"|"class"
+---@param end_row? number
+---@return TSNode[]
+M.get_defs = function(bufnr, def, end_row)
+  local query_tree = vim.treesitter.query.parse(
+    "python",
+    [[
+      (function_definition name: (identifier) @method)
+      (class_definition name: (identifier) @class)
+    ]]
+  )
+  local nodes = {}
+  traverse_tree(bufnr, function(tree) ---@param tree TSTree
+    for id, node in query_tree:iter_captures(tree:root(), bufnr, 0, end_row) do
+      local text = vim.treesitter.get_node_text(node, bufnr)
+      if query_tree.captures[id] == def then nodes[text] = node end
+    end
+  end)
+  return vim.tbl_keys(nodes)
+end
+
+---@param bufnr number
 ---@param tree TSTree
 M.parse_document = function(bufnr, tree)
   local query_tree = vim.treesitter.query.parse("python", [[(string_start) @string_init]])

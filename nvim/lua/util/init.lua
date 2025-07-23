@@ -104,6 +104,20 @@ function M.foreach(list, callback)
   end
 end
 
+--- Reverse a list in place.
+--- This function modifies the input list by reversing its elements.
+--- @generic T
+--- @param list T[] The list to be reversed. Must be a table with sequential numeric keys.
+--- @return T[] The reversed list (same reference as the input list).
+function M.reverse(list)
+  local len = #list
+  for i = 1, math.floor(len * 0.5) do
+    local opposite = len - i + 1
+    list[i], list[opposite] = list[opposite], list[i]
+  end
+  return list
+end
+
 --- @deprecated Use |vim.tbl_map()|
 ---
 ---Creates a new table populated with the results of calling a provided function
