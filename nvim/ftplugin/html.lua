@@ -23,6 +23,6 @@ vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
   pattern = "*.html",
   callback = vim.schedule_wrap(function(args)
     vim.opt_local.conceallevel = 0
-    html.disable_extmarks(args.buf, true)
+    html.reset_extmarks(args.buf, true)
   end),
 })

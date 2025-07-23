@@ -20,5 +20,5 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeCh
 vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
   group = group,
   pattern = "*.py",
-  callback = vim.schedule_wrap(function(args) python.disable_extmarks(args.buf, true) end),
+  callback = vim.schedule_wrap(function(args) python.reset_extmarks(args.buf, true) end),
 })
