@@ -76,7 +76,7 @@ M.config = function()
     sources = {
       buffers = { layout = { preset = "ivy" } },
       command_history = { layout = { preset = "vscode" } },
-      explorer = { layout = { auto_hide = { "input" } } },
+      explorer = { hidden = true, ignored = true, layout = { auto_hide = { "input" } } },
       files = { prompt = ds.pad(ds.icons.misc.Prompt, "both"), layout = { preset = "telescope" } },
       git_log = { layout = { preset = "vertical" } },
       git_status = { layout = { preset = "select" } },

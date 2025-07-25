@@ -74,6 +74,7 @@ return {
             return require("mini.icons").get(element.directory and "directory" or "file", element.path)
           end,
           offsets = {
+            { text = "", filetype = "snacks_picker_list", padding = 1 },
             {
               text = ds.pad(ds.icons.groups.StackFrame, "right") .. "DEBUGGER",
               filetype = "dapui_scopes",
