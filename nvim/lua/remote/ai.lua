@@ -150,7 +150,7 @@ return {
             end,
           },
         },
-        window = vim.o.columns > 180 and { layout = "vertical" } or {
+        window = vim.o.columns > 180 and { layout = "vertical", width = 82 } or {
           layout = "float",
           relative = "cursor",
           border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
