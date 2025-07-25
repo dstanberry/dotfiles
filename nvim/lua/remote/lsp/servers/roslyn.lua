@@ -1,6 +1,8 @@
 ---@class remote.lsp.config
 local M = {}
 
+M.defer_setup = true
+
 M.config = {
   settings = {
     ["csharp|completion"] = {
@@ -31,9 +33,11 @@ M.config = {
     },
   },
   on_attach = function(client, bufnr)
-    require("remote.lsp.handlers").on_attach(client, bufnr)
+    local handlers = require "remote.lsp.handlers"
+
     local _unused = function()
       if not (client and bufnr) then return end
+
       local request = {
         kind = "quickfix",
         data = {
@@ -45,11 +49,12 @@ M.config = {
         },
       }
       local response = client:request_sync("codeAction/resolve", request, 1500, bufnr)
+
       if not response then
         ds.error("`fixusings` failed: no response from server", { title = "Lsp: roslyn", ft = "markdown" })
         return
       end
-      ds.info { response }
+
       if response.err then
         ds.error(
           "`fixusings` failed:\n" .. response.err.data.message .. "\n" .. response.err.data.stack,
@@ -76,12 +81,12 @@ M.config = {
       end
     end
 
+    handlers.on_attach(client, bufnr)
+
     vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (csharp)" })
-    vim.keymap.set("n", "<leader>lu", _unused, { buffer = bufnr, desc = "typescript: remove unused imports" })
+    vim.keymap.set("n", "<leader>lu", _unused, { buffer = bufnr, desc = "dotnet: remove unused imports" })
   end,
 }
-
-M.defer_setup = true
 
 M.setup = function(opts)
   vim.api.nvim_create_autocmd("BufReadPre", {

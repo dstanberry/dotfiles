@@ -1,11 +1,9 @@
 ---@class remote.lsp.config
 local M = {}
 
-local ts_settings = {
+local defaults = {
   updateImportsOnFileMove = { enabled = "always" },
-  suggest = {
-    completeFunctionCalls = true,
-  },
+  suggest = { completeFunctionCalls = true },
   inlayHints = {
     enumMemberValues = { enabled = true },
     functionLikeReturnTypes = { enabled = true },
@@ -37,18 +35,15 @@ M.config = {
         },
       },
     },
-    javascript = ts_settings,
-    typescript = ts_settings,
+    javascript = defaults,
+    typescript = defaults,
   },
   on_attach = function(client, bufnr)
     local handlers = require "remote.lsp.handlers"
-
     local _organize = handlers.run_code_action["source.organizeImports"]
     local _missing = handlers.run_code_action["source.addMissingImports.ts"]
     local _unused = handlers.run_code_action["source.removeUnused.ts"]
     local _fix = handlers.run_code_action["source.fixAll.ts"]
-
-    handlers.on_attach(client, bufnr)
 
     local _source = function()
       local params = vim.lsp.util.make_range_params()
@@ -66,6 +61,8 @@ M.config = {
         open = true,
       }
     end
+
+    handlers.on_attach(client, bufnr)
 
     ds.format.register(handlers.formatter {
       name = "vtsls: organizeImports",

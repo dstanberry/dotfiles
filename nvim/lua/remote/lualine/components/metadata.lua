@@ -104,6 +104,7 @@ M.root_dir = {
       return result
     end
   end,
+  cond = function() return type(M.root_dir.get()) == "string" end,
 }
 
 return M

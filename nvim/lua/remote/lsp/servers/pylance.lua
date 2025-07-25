@@ -59,6 +59,24 @@ M.config = {
   on_attach = function(client, bufnr)
     local handlers = require "remote.lsp.handlers"
 
+    local _method = function()
+      local _, range = ds.buffer.get_visual_selection()
+      local params = ds.buffer.make_lsp_range_params(range)
+      handlers.execute_command {
+        command = "pylance.extractMethod",
+        arguments = { vim.uri_from_bufnr(bufnr):gsub("file://", ""), params.range },
+      }
+    end
+
+    local _variable = function()
+      local _, range = ds.buffer.get_visual_selection()
+      local params = ds.buffer.make_lsp_range_params(range)
+      handlers.execute_command {
+        command = "pylance.extractVariable",
+        arguments = { vim.uri_from_bufnr(bufnr):gsub("file://", ""), params.range },
+      }
+    end
+
     handlers.on_attach(client, bufnr)
 
     vim.lsp.handlers["workspace/executeCommand"] = function(_, result)
@@ -79,24 +97,6 @@ M.config = {
           client:request("textDocument/rename", params, handler, bufnr)
         end)
       end
-    end
-
-    local _method = function()
-      local _, range = ds.buffer.get_visual_selection()
-      local params = ds.buffer.make_lsp_range_params(range)
-      handlers.execute_command {
-        command = "pylance.extractMethod",
-        arguments = { vim.uri_from_bufnr(bufnr):gsub("file://", ""), params.range },
-      }
-    end
-
-    local _variable = function()
-      local _, range = ds.buffer.get_visual_selection()
-      local params = ds.buffer.make_lsp_range_params(range)
-      handlers.execute_command {
-        command = "pylance.extractVariable",
-        arguments = { vim.uri_from_bufnr(bufnr):gsub("file://", ""), params.range },
-      }
     end
 
     vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (python)" })

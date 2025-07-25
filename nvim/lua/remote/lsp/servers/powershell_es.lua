@@ -1,6 +1,8 @@
 ---@class remote.lsp.config
 local M = {}
 
+M.defer_setup = not ds.has "win32"
+
 -- stylua: ignore
 local command_fmt = {
   "%s/PowerShellEditorServices/Start-EditorServices.ps1",
@@ -47,7 +49,5 @@ M.config = {
     },
   },
 }
-
-M.defer_setup = not ds.has "win32"
 
 return M

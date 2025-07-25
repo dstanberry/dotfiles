@@ -15,9 +15,11 @@ end
 
 local goto_template_or_component = function(bufnr)
   local params = vim.lsp.util.make_position_params(0)
+
   vim.lsp.buf_request(bufnr, "angular/getTemplateLocationForComponent", params, function(_, result)
     if result then vim.lsp.util.show_document(result, "utf-8", { focus = true }) end
   end)
+
   vim.lsp.buf_request(bufnr, "angular/getComponentsWithTemplateFile", params, function(_, result)
     if result then
       if #result == 1 then
@@ -33,18 +35,19 @@ M.config = {
   on_new_config = function(new_config)
     local root_dir = ds.root.detectors.pattern(0, { "node_modules" })[1] or vim.uv.cwd()
     local node_modules = vim.fs.joinpath(root_dir, "node_modules")
+
     new_config.cmd = get_cmd(node_modules)
   end,
   on_attach = function(client, bufnr)
+    local handlers = require "remote.lsp.handlers"
+    local _switch = function() goto_template_or_component(bufnr) end
+
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.renameProvider = false
-    require("remote.lsp.handlers").on_attach(client, bufnr)
-    vim.keymap.set(
-      "n",
-      "go",
-      function() goto_template_or_component(bufnr) end,
-      { buffer = bufnr, desc = "lsp: to component/template" }
-    )
+
+    handlers.on_attach(client, bufnr)
+
+    vim.keymap.set("n", "go", _switch, { buffer = bufnr, desc = "lsp: to component/template" })
   end,
 }
 

@@ -10,7 +10,6 @@ M.config = {
   },
   on_attach = function(client, bufnr)
     local handlers = require "remote.lsp.handlers"
-
     local _organize = handlers.run_code_action["source.organizeImports"]
 
     client.server_capabilities.hoverProvider = false

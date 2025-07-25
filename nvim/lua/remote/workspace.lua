@@ -144,7 +144,7 @@ return {
               {
                 name = "Unit Tests",
                 -- icon =ds.icons.groups.Lab,
-                highlight = { fg = vim.g.ds_colors.yellow0 },
+                highlight = { fg = vim.g.ds_colors.rose1 },
                 auto_close = false,
                 matcher = function(buf)
                   return buf.name:match "_spec%."

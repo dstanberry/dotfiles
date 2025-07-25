@@ -37,12 +37,12 @@ return {
           {
             util.metadata.root_dir.get,
             color = { fg = vim.g.ds_colors.overlay1 },
-            cond = function() return type(util.metadata.root_dir.get()) == "string" end,
+            cond = util.metadata.root_dir.cond,
             padding = { right = 1 },
           },
           {
             util.separator.left,
-            cond = function() return type(util.metadata.root_dir.get()) == "string" end,
+            cond = util.metadata.root_dir.cond,
             padding = { left = 0, right = 1 },
           },
           {
