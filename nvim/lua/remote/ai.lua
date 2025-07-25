@@ -47,20 +47,40 @@ return {
       user = user:sub(1, 1):upper() .. user:sub(2)
       local prompts = {
         -- programming
-        Diagnostics = {
-          context = { "diagnostics", "buffers" },
-          prompt = "Fix all LSP warnings and errors and provide suggestions to resolve them.",
+        Explain = {
+          context = { "buffer" },
+          prompt = [[Provide a high-level overview of what the code does, including its key functions or classes and
+           their roles. Summarize the logic flow, highlight any notable or complex segments, and specify the expected
+           input and output with examples.]],
         },
-        Lint = "Please explain the linting errors and provide suggestions to resolve them.",
-        Names = "Please provide better names for the following variables and functions.",
-        Refactor = "Please refactor the following code to improve its performance and readability.",
-        Security = "Please analyze this code for potential security vulnerabilities and suggest how it can be resolved.",
-        Tests = "Please explain how the selected code works, then generate unit tests for it.",
+        Fix = {
+          context = { "diagnostics", "buffers" },
+          prompt = [[Analyze the code for issues and provide suggestions on how it can be resolved using clear and
+          efficient solutions. The analysis should address syntax errors, logical errors, diagnostic errors,
+          performance ineffificiences, security vulnerabilities, code style, adherence to modern best practices,
+          and any other potential issues.]],
+        },
+        Names = {
+          context = { "buffers" },
+          prompt = [[Analyze the declared variables, objects and types, and suggest more descriptive and meaningful
+          names that improve code readability and maintainability. Follow modern best practices and recommendations
+          for the language]],
+        },
+        Refactor = {
+          context = { "buffers" },
+          prompt = [[Refactor the code to enhance readability, maintainability, and efficiency. Focus on organizing the
+          structure, using clear and consistent naming, removing redundancies, simplifying logic, implementing robust
+          error handling, and improving comments or documentation for clarity.]],
+        },
+        Tests = {
+          context = { "buffers" },
+          prompt = [[Generate unit tests using modern best practices for writing maintainable and effective unit tests
+          in this language, ensuring proper use of AAA (Arrange-Act-Assert), test isolation, and clear assertions]],
+        },
         -- note taking
-        Concise = "Please rewrite the following text to make it more concise.",
-        Grammar = "Please improve the grammar and wording of the following text.",
-        Spelling = "Please correct any grammar and spelling errors in the following text.",
-        Summarize = "Please summarize the following text.",
+        Concise = "Rewrite the following text to make it more concise.",
+        Grammar = "Improve the grammar and wording of the following text.",
+        Spelling = "Correct any grammar and spelling errors in the following text.",
       }
 
       return { ---@type CopilotChat.config
