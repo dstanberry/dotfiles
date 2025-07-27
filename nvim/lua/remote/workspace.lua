@@ -74,7 +74,6 @@ return {
             return require("mini.icons").get(element.directory and "directory" or "file", element.path)
           end,
           offsets = {
-            { text = "", filetype = "snacks_picker_list", padding = 1 },
             {
               text = ds.pad(ds.icons.groups.StackFrame, "right") .. "DEBUGGER",
               filetype = "dapui_scopes",
@@ -97,6 +96,12 @@ return {
               text_align = "center",
             },
             {
+              text = ds.pad(ds.icons.groups.Tree, "right") .. "EXPLORER",
+              filetype = "snacks_layout_box",
+              highlight = "PanelHeading",
+              separator = true,
+            },
+            {
               text = ds.pad(ds.icons.misc.Magnify, "right") .. "FIND / REPLACE",
               filetype = "grug-far",
               highlight = "PanelHeading",
@@ -109,10 +114,6 @@ return {
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
-            },
-            {
-              filetype = "snacks_layout_box",
-              separator = true,
             },
           },
           groups = {
