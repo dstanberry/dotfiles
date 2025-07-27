@@ -13,19 +13,23 @@ local get_cmd = function(root)
   }
 end
 
-local goto_template_or_component = function(bufnr)
-  local params = vim.lsp.util.make_position_params(0)
+local goto_template_or_component = function(bufnr, offset_encoding)
+  local params = vim.lsp.util.make_position_params(0, offset_encoding)
 
   vim.lsp.buf_request(bufnr, "angular/getTemplateLocationForComponent", params, function(_, result)
-    if result then vim.lsp.util.show_document(result, "utf-8", { focus = true }) end
+    if result then vim.lsp.util.show_document(result, offset_encoding, { focus = true }) end
   end)
 
   vim.lsp.buf_request(bufnr, "angular/getComponentsWithTemplateFile", params, function(_, result)
     if result then
       if #result == 1 then
-        vim.lsp.util.show_document(result[1], "utf-8", { focus = true })
+        vim.lsp.util.show_document(result[1], offset_encoding, { focus = true })
       else
-        vim.fn.setqflist({}, " ", { title = "Components", items = vim.lsp.util.locations_to_items(result, "utf-8") })
+        vim.fn.setqflist(
+          {},
+          " ",
+          { title = "Components", items = vim.lsp.util.locations_to_items(result, offset_encoding) }
+        )
       end
     end
   end)
@@ -40,7 +44,7 @@ M.config = {
   end,
   on_attach = function(client, bufnr)
     local handlers = require "remote.lsp.handlers"
-    local _switch = function() goto_template_or_component(bufnr) end
+    local _switch = function() goto_template_or_component(bufnr, client.offset_encoding) end
 
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.renameProvider = false

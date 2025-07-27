@@ -77,7 +77,7 @@ M.config = {
             },
           })
         end
-        vim.lsp.util.apply_text_edits(edits, bufnr, "utf-8")
+        vim.lsp.util.apply_text_edits(edits, bufnr, client.offset_encoding)
       end
     end
 

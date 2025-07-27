@@ -46,7 +46,7 @@ M.config = {
     local _fix = handlers.run_code_action["source.fixAll.ts"]
 
     local _source = function()
-      local params = vim.lsp.util.make_range_params()
+      local params = vim.lsp.util.make_range_params(0, client.offset_encoding)
       handlers.execute_command {
         command = "typescript.goToSourceDefinition",
         arguments = { params.textDocument.uri, params.position },
