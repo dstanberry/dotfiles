@@ -24,7 +24,7 @@ M.config = {
       {
         key = "n",
         desc = "New File",
-        action = ":ene | startinsert",
+        action = ":ene | startinsert | lua require('bufferline')",
         icon = ds.pad(ds.icons.documents.File, "right"),
       },
       {
