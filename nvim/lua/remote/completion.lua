@@ -10,8 +10,7 @@ return {
       "kristijanhusak/vim-dadbod-completion",
       { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
     },
-    ---@type blink.cmp.Config
-    opts = {
+    opts = { ---@type blink.cmp.Config
       appearance = { use_nvim_cmp_as_default = false, kind_icons = ds.icons.kind },
       completion = {
         accept = { auto_brackets = { enabled = true } },
@@ -39,6 +38,8 @@ return {
       },
       keymap = {
         preset = "none",
+        ["<tab>"] = { ds.snippet.map { "jump", "ai" }, "fallback" },
+        ["<s-tab>"] = { "snippet_backward", "fallback" },
         ["<cr>"] = { "accept", "fallback" },
         ["<up>"] = { "select_prev", "fallback" },
         ["<down>"] = { "select_next", "fallback" },
@@ -51,9 +52,15 @@ return {
         default = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "path", "snippets" },
         providers = {
           buffer = { score_offset = 10 },
-          copilot = { name = "copilot", module = "blink-cmp-copilot", kind = "Copilot" },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
           lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
+          copilot = {
+            name = "copilot",
+            module = "blink-cmp-copilot",
+            kind = "Copilot",
+            async = true,
+            score_offset = 100,
+          },
           path = {
             score_offset = 10,
             enabled = function() return not vim.tbl_contains({ "copilot-chat" }, vim.bo.filetype) end,
@@ -62,6 +69,9 @@ return {
       },
       snippets = {
         preset = "luasnip",
+        active = function(filter) return ds.snippet.active(filter) end,
+        expand = function(snippet) return ds.snippet.expand(snippet) end,
+        jump = function(direction) return ds.snippet.jump(direction) end,
       },
     },
     ---@param opts blink.cmp.Config | { sources: { compat: string[] } }

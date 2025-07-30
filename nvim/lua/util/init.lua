@@ -8,6 +8,7 @@
 ---@field icons util.icons
 ---@field plugin util.plugin
 ---@field root util.root
+---@field snippet util.snippet
 ---@field ui util.ui
 local M = {}
 
