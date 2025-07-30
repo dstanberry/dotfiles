@@ -65,5 +65,5 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- define common conventions for various filetypes
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
-  callback = function(args) require("ft").setup(args.buf) end,
+  callback = function(args) ds.ft.set_options(args.buf) end,
 })

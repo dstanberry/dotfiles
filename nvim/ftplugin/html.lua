@@ -1,7 +1,5 @@
 if vim.g.vscode then return end
 
-local html = require "ft.html"
-
 local group = ds.augroup "html_extmarks"
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeChanged" }, {
@@ -14,7 +12,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeCh
       and vim.bo[args.buf].filetype == "html"
     then
       vim.opt_local.conceallevel = 2
-      html.set_extmarks(args.buf)
+      ds.ft.html.set_extmarks(args.buf)
     end
   end),
 })
@@ -23,6 +21,6 @@ vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
   pattern = "*.html",
   callback = vim.schedule_wrap(function(args)
     vim.opt_local.conceallevel = 0
-    html.reset_extmarks(args.buf, true)
+    ds.ft.html.reset_extmarks(args.buf, true)
   end),
 })

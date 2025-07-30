@@ -1,5 +1,6 @@
 ---@class util.icons
 local M = {}
+
 M.border = {
   CompactRound = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
   CompactSquare = { "┌", "─", "┐", "│", "┘", "─", "└", "│" },

@@ -1,4 +1,4 @@
-return {
+return { ---@class ft.defaults
   bash = {
     bo = { expandtab = true, shiftwidth = 2 },
     wo = { colorcolumn = "80" },

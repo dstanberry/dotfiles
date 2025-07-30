@@ -15,6 +15,7 @@ local M = setmetatable({}, {
 M.default_formatter = {} ---@type {name?: string, modname?: string}
 M.formatters = {} ---@type util.format.formatter[]
 
+---Enable/Disable auto-formatting either globally or only for the current buffer.
 ---@param enable? boolean
 ---@param buf? boolean
 M.enable = function(enable, buf)
@@ -29,6 +30,7 @@ M.enable = function(enable, buf)
   M.list(buf)
 end
 
+---Checks if aoto-formatting is enabled for the current buffer or globally.
 ---@param buf? number
 M.enabled = function(buf)
   buf = (buf == nil or buf == 0) and vim.api.nvim_get_current_buf() or buf
@@ -38,6 +40,7 @@ M.enabled = function(buf)
   return gaf == nil or gaf
 end
 
+---Format the current buffer using the available formatters.
 ---@param opts? {force?:boolean, buf?:number}
 M.format = function(opts)
   opts = opts or {}
@@ -56,6 +59,7 @@ M.format = function(opts)
   if not done and opts and opts.force then ds.warn("No formatter available", { title = "LSP: Formatting" }) end
 end
 
+---Interface between the built-in client formatter and `formatexpr`.
 M.formatexpr = function()
   if M.default_formatter.name and M.default_formatter.modname then
     if ds.plugin.is_installed(M.default_formatter.name) then
@@ -66,6 +70,7 @@ M.formatexpr = function()
   return vim.lsp.formatexpr { timeout_ms = 3000 }
 end
 
+---Lists the available formatters and their status for the current buffer or globally.
 ---@param buf? number
 M.list = function(buf)
   buf = buf or vim.api.nvim_get_current_buf()
@@ -97,6 +102,7 @@ M.list = function(buf)
   )
 end
 
+---Register a new formatter.
 ---@param formatter util.format.formatter
 M.register = function(formatter)
   M.default_formatter = formatter.primary and {
@@ -107,6 +113,7 @@ M.register = function(formatter)
   table.sort(M.formatters, function(a, b) return a.priority > b.priority end)
 end
 
+---Resolves the available formatters for the current buffer or globally.
 ---@param buf? number
 ---@return (util.format.formatter | {active:boolean,resolved:string[]})[]
 M.resolve = function(buf)
@@ -123,6 +130,7 @@ M.resolve = function(buf)
   end, M.formatters)
 end
 
+---Toggles auto-formatting either globally or only for the current buffer.
 ---@param buf? boolean
 M.toggle = function(buf)
   local name = M.default_formatter.modname or "lsp"

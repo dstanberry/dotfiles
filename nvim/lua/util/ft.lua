@@ -1,8 +1,18 @@
----@class util.ft
+---@class util.ft: ft.core
 ---@field disabled table<string, string[]> --- Filetypes disabled for specific UI components
 ---@field empty table<string, string[]> --- Filetypes considered empty for specific UI components
 ---@field quick_close string[] --- Filetypes that can be closed quickly with 'q'
 local M = {}
+
+local core = require "ft"
+
+setmetatable(M, {
+  __index = function(t, k)
+    if core[k] then return core[k] end
+    t[k] = require("ft." .. k)
+    return t[k]
+  end,
+})
 
 M.disabled = {
   statusline = {

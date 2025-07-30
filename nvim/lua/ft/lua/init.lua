@@ -1,3 +1,4 @@
+---@class ft.lua
 local M = {}
 
 local sep = string.match(package.config, "^[^\n]")

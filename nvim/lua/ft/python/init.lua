@@ -12,18 +12,6 @@ setmetatable(M, {
 local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_python_extmarks"
 
 ---@param bufnr number
----@param callback function
-local traverse_tree = function(bufnr, callback)
-  local root_parser = vim.treesitter.get_parser(bufnr)
-  if not root_parser then return end
-  root_parser:parse(true)
-  root_parser:for_each_tree(function(TStree, language_tree)
-    local tree_language = language_tree:lang()
-    if tree_language == "python" then callback(TStree) end
-  end)
-end
-
----@param bufnr number
 ---@param def "method"|"class"
 ---@param end_row? number
 ---@return TSNode[]
@@ -36,7 +24,7 @@ M.get_defs = function(bufnr, def, end_row)
     ]]
   )
   local nodes = {}
-  traverse_tree(bufnr, function(tree) ---@param tree TSTree
+  ds.ft.treesitter.parse("python", bufnr, function(tree) ---@param tree TSTree
     for id, node in query_tree:iter_captures(tree:root(), bufnr, 0, end_row) do
       local text = vim.treesitter.get_node_text(node, bufnr)
       if query_tree.captures[id] == def then nodes[text] = node end
@@ -76,7 +64,7 @@ end
 ---@param bufnr number
 M.set_extmarks = function(bufnr)
   vim.api.nvim_buf_clear_namespace(bufnr, NAMESPACE_ID, 0, -1)
-  traverse_tree(bufnr, function(tree) M.parse_document(bufnr, tree) end)
+  ds.ft.treesitter.parse("python", bufnr, function(tree) M.parse_document(bufnr, tree) end)
 end
 
 return M

@@ -150,6 +150,7 @@ end
 ---@field options? table<string, any> Filter out buffers that don't match a given map of options.
 ---@field vars? table<string, any> Filter out buffers that don't match a given map of variables.
 
+---Returns a list of buffers that match the given filter options.
 ---@param opts? util.buffer.filter.opts
 ---@return integer[] #Buffer numbers of matched buffers.
 function M.filter(opts)

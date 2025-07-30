@@ -1,6 +1,5 @@
 if vim.g.vscode then return end
 
-local python = require "ft.python"
 local group = ds.augroup "python_extmarks"
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeChanged" }, {
@@ -12,7 +11,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeCh
       and vim.api.nvim_get_mode().mode == "n"
       and vim.bo[args.buf].filetype == "python"
     then
-      python.set_extmarks(args.buf)
+      ds.ft.python.set_extmarks(args.buf)
     end
   end),
 })
@@ -20,5 +19,5 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeCh
 vim.api.nvim_create_autocmd({ "BufLeave", "InsertEnter" }, {
   group = group,
   pattern = "*.py",
-  callback = vim.schedule_wrap(function(args) python.reset_extmarks(args.buf, true) end),
+  callback = vim.schedule_wrap(function(args) ds.ft.python.reset_extmarks(args.buf, true) end),
 })

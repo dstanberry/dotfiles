@@ -13,13 +13,13 @@ local highlight_groups = setmetatable({}, {
   end,
 })
 
---- Autocmd group id to be used for `ColorScheme` events
+---Autocmd group id to be used for `ColorScheme` events
 M.autocmd_group = ds.augroup "theme_highlights"
 
---- Used by `mini.hipatterns` to toggle live preview of highlight groups by name
+---Used by `mini.hipatterns` to toggle live preview of highlight groups by name
 M.show_preview = false
 
---- Adds a new or updates an existing highlight group
+---Adds a new or updates an existing highlight group
 ---@param name string
 ---@param args? vim.api.keyset.highlight
 function M.add(name, args)
@@ -27,7 +27,7 @@ function M.add(name, args)
   _cache[name] = args
 end
 
---- Sets and caches highlight groups
+---Sets and caches highlight groups
 ---@param groups util.theme.hl
 function M.set(groups)
   for k, v in pairs(groups) do
@@ -36,7 +36,7 @@ function M.set(groups)
   end
 end
 
---- Returns a copy of currently cached highlight group definitions
+---Returns a copy of currently cached highlight group definitions
 ---@return util.theme.hl
 function M.get() return vim.deepcopy(_cache) end
 

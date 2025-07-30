@@ -16,6 +16,9 @@ M.cached_roots = {}
 ---@type table<number, string>
 M.cached_specs = {}
 
+---Detects the root directories of a given file/buffer using specific algorithm.
+---@alias util.root.detectors.kind fun(buf?: number|string, patterns?: string[]|string): string[]
+---@type table<string, util.root.detectors.kind>
 M.detectors = {}
 
 local default_spec = { "lsp", { ".git" }, "cwd" }
@@ -41,10 +44,12 @@ local bufpath = function(buf) return realpath(vim.api.nvim_buf_get_name(assert(b
 ---@diagnostic disable-next-line: unused-local, unused-function
 local cwd = function() return realpath(vim.uv.cwd()) end
 
+---Detects the root directories based on the current working directory.
 ---@return util.root.dirs[]
 function M.detectors.cwd() return { vim.uv.cwd() } end
 
----@param buf number
+---Detects the root directories based on LSP workspace folders or root_dir.
+---@param buf number Buffer number
 ---@return util.root.dirs[]
 function M.detectors.lsp(buf)
   local filepath = bufpath(buf)
@@ -63,9 +68,10 @@ function M.detectors.lsp(buf)
   end, roots)
 end
 
----@param buf number|string bufnr or filename
----@param patterns string[]|string
----@return string[]
+---Detects the root directories based on patterns.
+---@param buf number|string Buffer number or filename
+---@param patterns string[]|string Patterns to match
+---@return string[] List of detected root directories
 function M.detectors.pattern(buf, patterns)
   patterns = type(patterns) == "string" and { patterns } or patterns
   local filepath = type(buf) == "number" and (bufpath(buf) or vim.uv.cwd()) or tostring(buf)
@@ -79,8 +85,9 @@ function M.detectors.pattern(buf, patterns)
   return pattern and { vim.fs.dirname(pattern) } or {}
 end
 
----@param spec util.root.resolver_spec
----@return util.root.detector_fn
+---Resolves a detector function based on the given specification.
+---@param spec util.root.resolver_spec Specification for the detector
+---@return util.root.detector_fn Resolved detector function
 function M.resolve(spec)
   if M.detectors[spec] then
     return M.detectors[spec]
@@ -90,8 +97,8 @@ function M.resolve(spec)
   return function(buf) return M.detectors.pattern(buf, spec) end
 end
 
+---Detects root directories based on the provided options.
 ---@param opts? { buf?: number, spec?: util.root.resolver_spec[], all?: boolean }
----@return util.root.dirs[]
 function M.detect(opts)
   opts = opts or {}
   opts.buf = (opts.buf == nil or opts.buf == 0) and vim.api.nvim_get_current_buf() or opts.buf
@@ -116,6 +123,7 @@ function M.detect(opts)
   return ret
 end
 
+---Lists the detected root directories.
 function M.list()
   local spec = M.cached_specs[vim.api.nvim_get_current_buf()] or default_spec
   local roots = M.detect { all = true }
@@ -157,6 +165,7 @@ function M.get(opts)
   return (ds.has "win32" and ret) and ret:gsub("/", "\\") or ret
 end
 
+---Sets up the root module by creating necessary autocommands and user commands.
 function M.setup()
   vim.api.nvim_create_autocmd({ "LspAttach", "BufWritePost", "DirChanged" }, {
     group = ds.augroup "root_cache",

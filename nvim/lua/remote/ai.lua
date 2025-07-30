@@ -44,7 +44,7 @@ return {
       vim.api.nvim_create_autocmd("BufEnter", {
         pattern = "copilot-chat",
         callback = function(args)
-          require("ft").setup(
+          ds.ft.set_options(
             args.buf,
             { wo = { cursorline = false, number = false, relativenumber = false, winhighlight = "Title:PMenuSBar" } }
           )

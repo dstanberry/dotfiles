@@ -38,7 +38,7 @@ local initialize = function(bufnr)
         request = "launch",
         console = "integratedTerminal",
         code = function()
-          local methods = require("ft.python").get_defs(bufnr, "method")
+          local methods = ds.ft.python.get_defs(bufnr, "method")
           local ok, params = pcall(ds.fs.read, "/tmp/env.json", "r")
           local mod = ([=[runpy.run_path("${file}")["%s"](%s)]=]):format("%s", ok and vim.json.encode(params) or "{}")
           return coroutine.create(function(_c)
@@ -58,7 +58,7 @@ local initialize = function(bufnr)
         request = "launch",
         console = "integratedTerminal",
         code = function()
-          local methods = require("ft.python").get_defs(bufnr, "method")
+          local methods = ds.ft.python.get_defs(bufnr, "method")
           local mod = [=[runpy.run_path("${file}")["%s"]()]=]
           return coroutine.create(function(_c)
             if #methods == 1 then return coroutine.resume(_c, methods[1]) end

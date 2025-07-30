@@ -12,18 +12,6 @@ setmetatable(M, {
 local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_html_extmarks"
 
 ---@param bufnr number
----@param callback function
-local traverse_tree = function(bufnr, callback)
-  local root_parser = vim.treesitter.get_parser(bufnr)
-  if not root_parser then return end
-  root_parser:parse(true)
-  root_parser:for_each_tree(function(TStree, language_tree)
-    local tree_language = language_tree:lang()
-    if tree_language == "html" then callback(TStree) end
-  end)
-end
-
----@param bufnr number
 ---@param tree TSTree
 M.parse_document = function(bufnr, tree)
   local query_tree = vim.treesitter.query.parse(
@@ -62,7 +50,7 @@ end
 ---@param bufnr number
 M.set_extmarks = function(bufnr)
   vim.api.nvim_buf_clear_namespace(bufnr, NAMESPACE_ID, 0, -1)
-  traverse_tree(bufnr, function(tree) M.parse_document(bufnr, tree) end)
+  ds.ft.treesitter.parse("html", bufnr, function(tree) M.parse_document(bufnr, tree) end)
 end
 
 return M

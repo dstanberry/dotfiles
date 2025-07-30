@@ -32,6 +32,7 @@ local saturate = function(rgb, amount)
   return c
 end
 
+---Blends two colors together based on the alpha value.
 ---@param foreground string foreground color
 ---@param background string background color
 ---@param alpha number|string number between 0 and 1. 0 results in bg, 1 results in fg
@@ -49,6 +50,7 @@ function M.blend(foreground, background, alpha)
   return string.format("#%02x%02x%02x", blendChannel(1), blendChannel(2), blendChannel(3))
 end
 
+---Adjusts the brightness of a color by a given amount.
 ---@param hex string hexadecimal color formatted as `#rrggbb``
 ---@param amount integer amout to adjust by
 --- - `amount` < 1 : adjusted to 1 - amount
@@ -65,6 +67,7 @@ function M.darken(hex, amount)
   return rgb_to_hex(rgb)
 end
 
+---Retrieves the color of a highlight group.
 ---@param name string highlight group name
 ---@param bg? boolean return the background color if `true` otherwise return the foreground color
 ---@return string? #hexadecimal color formatted as `#rrggbb`
@@ -81,6 +84,7 @@ function M.get_color(name, bg)
   return color and string.format("#%06x", color) or nil
 end
 
+---Adjusts the brightness of a color by a given amount.
 ---@param hex string hexadecimal color formatted as `#rrggbb``
 ---@param amount integer amout to adjust by
 --- - `amount` < 1 : adjusted to 1 - amount
