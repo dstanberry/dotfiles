@@ -68,15 +68,15 @@ return {
     event = "LazyFile",
     keys = function()
       local _jump = function() require("flash").jump() end
-      local _treesitter = function() require("flash").treesitter() end
       local _remote = function() require("flash").remote() end
+      local _treesitter = function() require("flash").treesitter() end
       local _treesitter_search = function() require("flash").treesitter_search() end
 
       return {
         { "r", mode = "o", _remote, desc = "flash: do operation on <pattern>" },
+        { "R", mode = { "o", "x" }, _treesitter_search, desc = "flash: do (treesitter) operation on <pattern>" },
         { "s", mode = { "n", "o", "x" }, _jump, desc = "flash: jump to <pattern>" },
         { "S", mode = { "n", "o", "x" }, _treesitter, desc = "flash: select treesitter node" },
-        { "R", mode = { "n", "o", "x" }, _treesitter_search, desc = "flash: do (treesitter) operation on <pattern>" },
       }
     end,
     opts = {
