@@ -1,7 +1,4 @@
----@class util.ft: ft.core
----@field disabled table<string, string[]> --- Filetypes disabled for specific UI components
----@field empty table<string, string[]> --- Filetypes considered empty for specific UI components
----@field quick_close string[] --- Filetypes that can be closed quickly with 'q'
+---@class util.ft: util.ft.base
 local M = {}
 
 local core = require "ft"
@@ -14,6 +11,8 @@ setmetatable(M, {
   end,
 })
 
+---Filetypes disabled for specific UI components
+---@type table<string, string[]>
 M.disabled = {
   statusline = {
     -- builtin filetypes
@@ -60,6 +59,8 @@ M.disabled = {
   },
 }
 
+---Filetypes considered empty for specific UI components
+---@type table<string, string[]>
 M.empty = {
   statusline = {},
   winbar = {
@@ -71,6 +72,8 @@ M.empty = {
   },
 }
 
+---Filetypes that can be closed quickly with 'q'
+---@type string[]
 M.quick_close = {
   -- builtin filetypes
   "checkhealth",

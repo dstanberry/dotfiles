@@ -1,8 +1,6 @@
 ---@class util.snippet
 local M = {}
 
----@alias Placeholder {n:number, text:string}
-
 ---Replace nested placeholders in a snippet with LSP placeholders.
 ---@param snippet string # The snippet string containing placeholders.
 ---@return string # The snippet with placeholders replaced.
@@ -23,9 +21,11 @@ function M._preview(snippet)
     or M._replace(snippet, function(placeholder) return M._preview(placeholder.text) end):gsub("%$0", "")
 end
 
+---@alias util.snippet.placeholder {n:number, text:string}
+
 ---Replace placeholders in a snippet using a custom function.
 ---@param snippet string # The snippet string containing placeholders.
----@param fn fun(placeholder: Placeholder): string # Function to process each placeholder.
+---@param fn fun(placeholder: util.snippet.placeholder): string # Function to process each placeholder.
 ---@return string # The snippet with placeholders replaced.
 function M._replace(snippet, fn)
   return snippet:gsub("%$%b{}", function(m)

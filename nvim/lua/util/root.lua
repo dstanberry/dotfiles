@@ -4,12 +4,12 @@ local M = setmetatable({}, {
   __call = function(m, ...) return m.get(...) end,
 })
 
----@alias util.root.detector_fn fun(buf: number): (string|string[])
----@alias util.root.resolver_spec string|string[]|util.root.detector_fn
+---@alias util.root.resolver.func fun(buf: number): (string|string[])
+---@alias util.root.resolver.spec string|string[]|util.root.resolver.func
 
 ---@class util.root.dirs
 ---@field paths string[]
----@field spec util.root.resolver_spec
+---@field spec util.root.resolver.spec
 
 ---@type table<number, string>
 M.cached_roots = {}
@@ -86,8 +86,8 @@ function M.detectors.pattern(buf, patterns)
 end
 
 ---Resolves a detector function based on the given specification.
----@param spec util.root.resolver_spec Specification for the detector
----@return util.root.detector_fn Resolved detector function
+---@param spec util.root.resolver.spec Specification for the detector
+---@return util.root.resolver.func Resolved detector function
 function M.resolve(spec)
   if M.detectors[spec] then
     return M.detectors[spec]
@@ -98,7 +98,7 @@ function M.resolve(spec)
 end
 
 ---Detects root directories based on the provided options.
----@param opts? { buf?: number, spec?: util.root.resolver_spec[], all?: boolean }
+---@param opts? { buf?: number, spec?: util.root.resolver.spec[], all?: boolean }
 function M.detect(opts)
   opts = opts or {}
   opts.buf = (opts.buf == nil or opts.buf == 0) and vim.api.nvim_get_current_buf() or opts.buf

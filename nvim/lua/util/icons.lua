@@ -1,17 +1,25 @@
 ---@class util.icons
 local M = {}
 
+---@alias util.icons.glyph string
+
+---Box drawing characters for window borders.
+---@type table<string, util.icons.glyph[]>
 M.border = {
   CompactRound = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
   CompactSquare = { "┌", "─", "┐", "│", "┘", "─", "└", "│" },
   Default = { "🭽", "▔", "🭾", "▕", "🭿", "▁", "🭼", "▏" },
 }
 
+---Box drawing characters for tables.
+---@type table<string, util.icons.glyph[]>
 M.table = {
   Alignment = { "╼", "╾", "╴", "╶" },
   Divider = { "┬", "├", "┤", "┼", "┴" },
 }
 
+---Diagnostic icons for Neovim's LSP, similar to `util.icons.status`
+---@type table<string, util.icons.glyph>
 M.diagnostics = {
   Error = "",
   Warn = "",
@@ -19,6 +27,8 @@ M.diagnostics = {
   Info = "",
 }
 
+---Debugging related icons.
+---@type table<string, util.icons.glyph>
 M.debug = {
   Breakpoint = "",
   BreakpointActive = "",
@@ -42,6 +52,8 @@ M.debug = {
   Watches = "",
 }
 
+---Document/File related icons.
+---@type table<string, util.icons.glyph>
 M.documents = {
   File = "",
   Files = "",
@@ -53,6 +65,8 @@ M.documents = {
   Project = "",
 }
 
+---Git related icons.
+---@type table<string, util.icons.glyph>
 M.git = {
   Branch = "",
   Commit = "",
@@ -66,6 +80,8 @@ M.git = {
   TextRemoved = "",
 }
 
+---Icons used to convey groupings or categories.
+---@type table<string, util.icons.glyph>
 M.groups = {
   Book = "",
   Diff = "",
@@ -76,6 +92,8 @@ M.groups = {
   Tree = "󰙅",
 }
 
+---Icons representing various programming constructs and elements.
+---@type table<string, util.icons.glyph>
 M.kind = {
   Class = "",
   Color = "",
@@ -106,6 +124,8 @@ M.kind = {
   Variable = "",
 }
 
+---Markdown related icons.
+---@type table<string, util.icons.glyph>
 M.markdown = {
   Checked = "󰄲",
   Unchecked = "󰄱",
@@ -118,6 +138,8 @@ M.markdown = {
   ListMinus = "•",
 }
 
+---Miscellaneous icons for various purposes.
+---@type table<string, util.icons.glyph>
 M.misc = {
   ArrowSwap = " ",
   Block = "█",
@@ -182,6 +204,8 @@ M.misc = {
   Watch = "",
 }
 
+---Status icons for Neovim's LSP, similar to `util.icons.diagnostics`
+---@type table<string, util.icons.glyph>
 M.status = {
   Error = "",
   Hint = "󰌶",
@@ -189,6 +213,8 @@ M.status = {
   Warn = "󰳤",
 }
 
+---Icons representing scalar and two-dimensional data types.
+---@type table<string, util.icons.glyph>
 M.type = {
   Array = "",
   Boolean = "󰨙",

@@ -1,4 +1,4 @@
----@class ft.core
+---@class util.ft.base
 ---@field defaults ft.defaults
 ---@field html ft.html
 ---@field lua ft.lua
