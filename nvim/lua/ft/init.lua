@@ -1,4 +1,5 @@
 ---@class util.ft.base
+---@field css ft.css
 ---@field defaults ft.defaults
 ---@field html ft.html
 ---@field lua ft.lua

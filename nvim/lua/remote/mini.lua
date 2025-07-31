@@ -264,7 +264,6 @@ return {
 
       local vtext = ds.pad(ds.icons.misc.FilledCircleLarge, "right")
       local style = "full" -- "full" | "compact"
-      local tailwind_colors = require("ft.css.colors").tailwind
       local filetypes = { "css", "html" }
 
       local colors ---@type util.theme.palette
@@ -393,7 +392,7 @@ return {
           local match = data.full_match
           local color, shade = match:match "[%w-]+%-([a-z%-]+)%-(%d+)"
           shade = tonumber(shade)
-          local bg = vim.tbl_get(tailwind_colors, color, shade)
+          local bg = vim.tbl_get(ds.ft.css.tailwind(), color, shade)
           if bg then
             local hl = "MiniHipatternsTailwind" .. color .. shade
             vim.api.nvim_set_hl(0, hl, { fg = "#" .. bg })

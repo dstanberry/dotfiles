@@ -1,6 +1,5 @@
-local M = {}
-
-M.tailwind = {
+---@type table<ft.css.tailwind.shade, ft.css.tailwind.colors>
+return {
   slate = {
     [50] = "f8fafc",
     [100] = "f1f5f9",
@@ -288,5 +287,3 @@ M.tailwind = {
     [950] = "4c0519",
   },
 }
-
-return M
