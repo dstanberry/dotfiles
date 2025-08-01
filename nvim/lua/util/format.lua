@@ -18,7 +18,7 @@ M.formatters = {} ---@type util.format.formatter[]
 ---Enable/Disable auto-formatting either globally or only for the current buffer.
 ---@param enable? boolean
 ---@param buf? boolean
-M.enable = function(enable, buf)
+function M.enable(enable, buf)
   if enable == nil then enable = true end
   if buf then
     buf = vim.api.nvim_get_current_buf()
@@ -32,7 +32,7 @@ end
 
 ---Checks if aoto-formatting is enabled for the current buffer or globally.
 ---@param buf? number
-M.enabled = function(buf)
+function M.enabled(buf)
   buf = (buf == nil or buf == 0) and vim.api.nvim_get_current_buf() or buf
   local gaf = vim.g.autoformat
   local baf = vim.b[buf].autoformat
@@ -42,7 +42,7 @@ end
 
 ---Format the current buffer using the available formatters.
 ---@param opts? {force?:boolean, buf?:number}
-M.format = function(opts)
+function M.format(opts)
   opts = opts or {}
   local buf = opts.buf or vim.api.nvim_get_current_buf()
   if not ((opts and opts.force) or M.enabled(buf)) then return end
@@ -60,7 +60,7 @@ M.format = function(opts)
 end
 
 ---Interface between the built-in client formatter and `formatexpr`.
-M.formatexpr = function()
+function M.formatexpr()
   if M.default_formatter.name and M.default_formatter.modname then
     if ds.plugin.is_installed(M.default_formatter.name) then
       local ok, _mod = pcall(require, M.default_formatter.modname)
@@ -72,7 +72,7 @@ end
 
 ---Lists the available formatters and their status for the current buffer or globally.
 ---@param buf? number
-M.list = function(buf)
+function M.list(buf)
   buf = buf or vim.api.nvim_get_current_buf()
   local gaf = vim.g.autoformat == nil or vim.g.autoformat
   local baf = vim.b[buf].autoformat
@@ -98,13 +98,13 @@ M.list = function(buf)
   if not have then lines[#lines + 1] = "\n***No formatters available for this buffer.***" end
   ds[enabled and "info" or "warn"](
     table.concat(lines, "\n"),
-    { title = "LSP: Formatting (" .. (enabled and "enabled" or "disabled") .. ")" }
+    { id = "util.format", title = "LSP: Formatting (" .. (enabled and "enabled" or "disabled") .. ")" }
   )
 end
 
 ---Register a new formatter.
 ---@param formatter util.format.formatter
-M.register = function(formatter)
+function M.register(formatter)
   M.default_formatter = formatter.primary and {
     module = formatter.name,
     modname = formatter.modname,
@@ -116,7 +116,7 @@ end
 ---Resolves the available formatters for the current buffer or globally.
 ---@param buf? number
 ---@return (util.format.formatter | {active:boolean,resolved:string[]})[]
-M.resolve = function(buf)
+function M.resolve(buf)
   buf = buf or vim.api.nvim_get_current_buf()
   local have_primary = false
   return vim.tbl_map(function(formatter) ---@param formatter util.format.formatter
@@ -130,18 +130,28 @@ M.resolve = function(buf)
   end, M.formatters)
 end
 
----Toggles auto-formatting either globally or only for the current buffer.
----@param buf? boolean
-M.toggle = function(buf)
+---@alias util_format.toggle.map fun(string, vim.keymap.set.Opts)
+---@alias util.format.toggle.opts {desc: string, enabled:string, disabled: string, map:util_format.toggle.map, set:fun(state:boolean), get:fun():boolean}
+
+---Generates a configuration table for keymaps to toggle auto-formatting functionality.
+---@param curbuf? boolean
+---@return util.format.toggle.opts
+function M.make_toggle_opts(curbuf)
   local name = M.default_formatter.modname or "lsp"
-  return Snacks.toggle {
-    name = "auto format (" .. (buf and "buffer" or "global") .. ")",
-    wk_desc = { enabled = name .. ": disable ", disabled = name .. ": enable " },
-    get = function()
-      if not buf then return vim.g.autoformat == nil or vim.g.autoformat end
-      return ds.format.enabled()
-    end,
-    set = function(state) ds.format.enable(state, buf) end,
+  local desc = ("auto format (%s)"):format((curbuf and "buffer" or "global"))
+  local status = function() return not curbuf and (vim.g.autoformat == nil or vim.g.autoformat) or M.enabled() end
+
+  ---@type util.format.toggle.opts
+  return {
+    enabled = name .. ": disable ",
+    disabled = name .. ": enable ",
+    desc = desc,
+    get = status,
+    set = function(state) M.enable(state, curbuf) end,
+    -- stylua: ignore
+    map = function(lhs, opts)
+      opts = vim.tbl_deep_extend("force", { mode = "n", desc = ("%s: toggle %s"):format(name, desc) }, opts or {})
+      vim.keymap.set( opts.mode, lhs, function() M.enable(not status(), curbuf) end, { desc = opts.desc, noremap = true, silent = true }) end,
   }
 end
 

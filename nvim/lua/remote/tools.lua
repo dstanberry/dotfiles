@@ -17,6 +17,10 @@ return {
       vim.api.nvim_create_autocmd("User", {
         pattern = "VeryLazy",
         callback = function()
+          local keys = {
+            { key = "f<backspace>", opts = ds.format.make_toggle_opts(true) },
+            { key = "f<delete>", opts = ds.format.make_toggle_opts() },
+          }
           ds.format.register {
             name = "conform.nvim",
             modname = "conform",
@@ -29,8 +33,20 @@ return {
               return vim.tbl_map(function(v) return v.name end, ret)
             end,
           }
-          ds.format.toggle():map "f<delete>"
-          ds.format.toggle(true):map "f<backspace>"
+          ds.foreach(keys, function(entry)
+            ---@type util.format.toggle.opts
+            local opts = vim.tbl_extend("force", {}, entry.opts)
+            if ds.plugin.is_installed "snacks.nvim" then
+              Snacks.toggle({
+                wk_desc = { enabled = opts.enabled, disabled = opts.disabled },
+                name = opts.desc,
+                get = opts.get,
+                set = opts.set,
+              }):map(entry.key)
+            else
+              if opts.map and type(opts.map) == "function" then opts.map(entry.key) end
+            end
+          end)
         end,
       })
     end,
