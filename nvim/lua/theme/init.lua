@@ -1,14 +1,20 @@
 local M = {}
 
-local N = {
-  cache = {},
-  dirs = {
-    groups = "/theme/groups/",
-    palettes = "/theme/palette/",
-    root = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":h:h"),
-  },
-  groups = {},
+---@private
+local N = {}
+
+---@type table<string, fun(theme: util.theme.name, data?: util.theme.cache): string|nil|util.theme.cache>
+N.cache = {}
+
+---@type { groups: string, palettes: string, root: string }
+N.dirs = {
+  groups = "/theme/groups/",
+  palettes = "/theme/palette/",
+  root = vim.fn.fnamemodify(debug.getinfo(1, "S").source:sub(2), ":h:h"),
 }
+
+---@type util.theme.hl[]
+N.groups = {}
 
 ---@param theme util.theme.name
 N.cache.file = function(theme) return vim.fn.stdpath "cache" .. "/colorscheme-" .. theme .. ".json" end
@@ -28,11 +34,8 @@ end
 ---@param data util.theme.cache
 N.cache.write = function(theme, data) pcall(ds.fs.write, N.cache.file(theme), vim.json.encode(data), "w+") end
 
-N.cache.clear = function()
-  for _, style in ipairs { "kdark", "catppuccin-frappe", "catppuccin-mocha" } do
-    vim.uv.fs_unlink(N.cache.file(style))
-  end
-end
+---@param theme util.theme.name
+N.cache.clear = function(theme) vim.uv.fs_unlink(N.cache.file(theme)) end
 
 --- Defines highlight groups using the provided color palette
 ---@param theme util.theme.name
@@ -93,13 +96,23 @@ M.load = function(theme, bg)
   bg = bg or "dark"
   local t = vim.split(theme, "-")
   local path = N.dirs.palettes .. table.concat(t, "/")
-  if not vim.uv.fs_stat(N.dirs.root .. path .. ".lua") then return end
+  if not (vim.uv.fs_stat(N.dirs.root .. path .. ".lua") or pcall(require, path)) then return end
   local _bg = vim.o.background
   if _bg ~= bg then vim.o.background = bg end
   if vim.g.colors_name then vim.cmd "highlight clear" end
   vim.g.colors_name = theme ---@type util.theme.name
   vim.g.ds_colors = require(path) ---@type util.theme.palette
   M.apply(theme, vim.g.ds_colors)
+end
+
+---Clears the neovim cache for all colorschemes in the colors directory
+M.clear_cache = function()
+  ds.fs.walk("colors", function(_, name, type)
+    if (type == "file" or type == "link") and name:match "%.lua$" then
+      local theme = name:sub(1, -5)
+      N.cache.clear(theme)
+    end
+  end)
 end
 
 return M
