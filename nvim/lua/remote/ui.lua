@@ -227,11 +227,13 @@ return {
             { pattern = "regex", icon = " ", color = "yellow" },
             { pattern = "workspace", icon = " ", color = "yellow" },
             -- overrides
-            { pattern = "harpoon", icon = "󰛢 ", color = "cyan" },
-            { plugin = "grug-far", icon = " ", color = "blue" },
-            { pattern = "find", icon = " ", color = "green" },
-            { pattern = "search", icon = " ", color = "green" },
             { pattern = "buffer", icon = " ", color = "purple" },
+            { pattern = "find", icon = " ", color = "green" },
+            { pattern = "git", icon = " ", color = "green" },
+            { pattern = "harpoon", icon = "󰛢 ", color = "cyan" },
+            { pattern = "octo", icon = " ", color = "green" },
+            { pattern = "search", icon = " ", color = "green" },
+            { plugin = "grug-far", icon = " ", color = "blue" },
             -- secondary actions
             { pattern = "create", icon = " ", color = "green" },
             { pattern = "insert", icon = " ", color = "cyan" },
