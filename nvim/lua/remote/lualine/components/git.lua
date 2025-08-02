@@ -8,7 +8,7 @@ local highlighter = util.highlighter
 M.branch = {
   get = function()
     local icon = ds.pad(ds.icons.git.Branch, "right")
-    if package.loaded["gitsigns"] then
+    if package.loaded.gitsigns then
       local branch = vim.b.gitsigns_head
       if not branch or #branch == 0 then return ds.pad(ds.icons.misc.Orbit, "right") end
       return icon .. branch
@@ -38,7 +38,7 @@ M.diffview = {
     if ds.tbl_match(ds.ft.empty.winbar, ft) then return " " end
     return add(highlighter.sanitize "@variable.builtin", { vim.api.nvim_buf_get_var(buf, "diffview_label") }, true)
   end,
-  cond = function() return package.loaded["diffview"] and require("diffview.lib").get_current_view() ~= nil end,
+  cond = function() return package.loaded.diffview and require("diffview.lib").get_current_view() ~= nil end,
 }
 
 M.merge_conflicts = {

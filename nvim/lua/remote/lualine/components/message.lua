@@ -11,7 +11,7 @@ M.noice = {
     return string.format("%s %s [%s]", ds.icons.misc.Magnify, query, counter)
   end,
   cond = function()
-    return package.loaded["noice"] and require("noice").api.status.search.has() and util.available_width(80)
+    return package.loaded.noice and require("noice").api.status.search.has() and util.available_width(80)
   end,
 }
 
