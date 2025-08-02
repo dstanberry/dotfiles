@@ -177,7 +177,7 @@ return {
       { "<localleader>p", "", desc = "octo: +pull request", ft = "octo" },
       { "<localleader>pr", "", desc = "octo: +rebase", ft = "octo" },
       { "<localleader>ps", "", desc = "octo: +squash", ft = "octo" },
-      { "<localleader>v", "", desc = "octo: +review", ft = "octo" },
+      { "<localleader>v", "", desc = "octo: +review", ft = { "octo", "octo_panel" } },
       { "<localleader>g", "", desc = "octo: +go to issue", ft = "octo" },
       -- trigger completion menu
       { "@", "@<c-x><c-o>", mode = "i", ft = "octo", silent = true },
