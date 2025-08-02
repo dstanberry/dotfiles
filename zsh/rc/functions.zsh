@@ -110,7 +110,8 @@ git() {
   elif [ "$1" = "wta" ]; then
     local branches=("${(@f)$(git branch | cut -c 3-)}")
     git_root=$(command git rev-parse --path-format=absolute --git-common-dir)
-    wt_path="$git_root/$2"
+    dir_name="${2//\//-}"
+    wt_path="$git_root/$dir_name"
     if (($branches[(Ie)$2])); then
       command git worktree add "$wt_path" "$2"
     else
