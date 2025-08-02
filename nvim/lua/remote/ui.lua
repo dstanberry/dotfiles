@@ -133,8 +133,8 @@ return {
   },
   {
     "kevinhwang91/nvim-ufo",
-    event = "LazyFile",
     dependencies = { "kevinhwang91/promise-async" },
+    event = "LazyFile",
     keys = {
       { "zp", function() require("ufo").peekFoldedLinesUnderCursor() end, desc = "ufo: peek content within fold" },
     },
