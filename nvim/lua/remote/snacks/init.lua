@@ -3,6 +3,7 @@ local res = require "remote.snacks.res"
 return {
   {
     "folke/snacks.nvim",
+    url = "https://github.com/dstanberry/snacks.nvim",
     priority = 1000,
     lazy = false,
     keys = function()
