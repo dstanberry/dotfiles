@@ -1,41 +1,16 @@
-# depends on dlvhdr/gh-dash and benelan/gh-fzf
 editor:
 git_protocol: ssh
 glamour_style: dark
 pager:
 prompt: enabled
 aliases:
-  co: |
-    !gh pr list | fzf --ansi --preview 'gh pr view {1}' --header-lines 3 | awk '{print $1}' | xargs gh pr checkout 2> /dev/null || true
   diff: pr diff
-  merge: pr merge
-  add: issue create --title
-  close: issue close
-  edit: issue edit
-  mine: issue list --author @me
-  del: |
-    !gh api -X DELETE "repos/$GITUSER/$1"
-  status: |
-    !gh api graphql -f emoji="${1%% *}" -f msg="${1#* }" -f query='
-      mutation ($msg: String!, $emoji: String) {
-        changeUserStatus(input:{message:$msg,emoji:$emoji}) {
-          status { message, emoji }
-        }
-      }'
-  orgs: |
-    !gh api --paginate graphql -f query='
-    query {
-      viewer {
-        id
-        name
-        organizations(first: 100) {
-          nodes {
-            id
-            name
-          }
-        }
-      }
-    } ' --jq '.data.viewer.organizations[][] | .id + " " + .name'
+  mine: pr list --author @me
+  review: |
+    !gh pr list \
+    | fzf --ansi --height '100%' --preview 'gh pr view {1}' --header-lines 3 \
+    | awk '{print $1}' \
+    | xargs -I {} sh -c 'gh pr checkout "$1" && nvim -c ":Octo pr edit ${1#"#"}"' -- {} 2> /dev/null || true
   repos: |
     !gh api --paginate graphql -f owner="$1" -f query='
       query($owner: String!, $per_page: Int = 100, $endCursor: String) {
@@ -47,22 +22,4 @@ aliases:
         }
       }
     ' --jq '.data.repositoryOwner.repositories.nodes[].nameWithOwner' | sort
-  # HACK:...until the nested string wierdness is resolved see `nvim/plugins/commands.lua`
-  # benelan/gh-fzf customizations
-  _fzf: |
-    !FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
-        --height=100%
-        --bind='ctrl-i:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEI {1}\"\"\")+abort'
-        --bind='ctrl-p:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEPR {1}\"\"\")+abort'
-        " gh fzf $*
-  fi: |
-    !FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
-        --height=100%
-        --bind='ctrl-e:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEI {1}\"\"\")+abort'
-        " gh fzf issue $*
-  fp: |
-    !FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS
-        --height=100%
-        --bind='ctrl-e:execute(tmux new-window -c \"#{pane_current_path}\" \"nvim +\"\"GHEPR {1}\"\"\")+abort'
-        " gh fzf pr $*
 version: "1"
