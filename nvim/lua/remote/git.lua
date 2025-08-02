@@ -119,86 +119,72 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = "LazyFile",
-    config = function()
-      local signs = require "gitsigns"
-      signs.setup {
-        signs = {
-          add = { text = ds.icons.misc.VerticalBarMiddle },
-          change = { text = ds.icons.misc.VerticalBarMiddle },
-          delete = { text = ds.icons.misc.CaretRight },
-          topdelete = { text = ds.icons.misc.CaretRight },
-          changedelete = { text = ds.icons.misc.VerticalBarSemi },
-          untracked = { text = ds.icons.misc.VerticalBarMiddleDashed },
-        },
-        status_formatter = function(status)
-          local added = ""
-          local changed = ""
-          local removed = ""
-          if status.added and status.added > 0 then added = ds.pad(ds.icons.git.TextAdded, "right") .. status.added end
-          if status.changed and status.changed > 0 then
-            changed = ds.pad(ds.icons.git.TextChanged, "both") .. status.changed
-          end
-          if status.removed and status.removed > 0 then
-            removed = ds.pad(ds.icons.git.TextRemoved, "both") .. status.removed
-          end
-          return added .. changed .. removed
-        end,
-        numhl = false,
-        update_debounce = 1000,
-        current_line_blame = true,
-        current_line_blame_formatter = ds.icons.git.Commit .. " <author>, <author_time:%R>",
-        current_line_blame_opts = {
-          virt_text = false,
-          virt_text_pos = "eol",
-          delay = 150,
-        },
-        on_attach = function(bufnr)
-          local function map(mode, l, r, opts)
-            opts = opts or {}
-            opts.buffer = bufnr
-            vim.keymap.set(mode, l, r, opts)
-          end
+    opts = {
+      numhl = false,
+      update_debounce = 1000,
+      current_line_blame = true,
+      current_line_blame_formatter = ds.icons.git.Commit .. " <author>, <author_time:%R>",
+      current_line_blame_opts = { virt_text = false, virt_text_pos = "eol", delay = 150 },
+      signs = {
+        add = { text = ds.icons.misc.VerticalBarMiddle },
+        change = { text = ds.icons.misc.VerticalBarMiddle },
+        delete = { text = ds.icons.misc.CaretRight },
+        topdelete = { text = ds.icons.misc.CaretRight },
+        changedelete = { text = ds.icons.misc.VerticalBarSemi },
+        untracked = { text = ds.icons.misc.VerticalBarMiddleDashed },
+      },
+      status_formatter = function(status)
+        local added = ""
+        local changed = ""
+        local removed = ""
+        if status.added and status.added > 0 then added = ds.pad(ds.icons.git.TextAdded, "right") .. status.added end
+        if status.changed and status.changed > 0 then
+          changed = ds.pad(ds.icons.git.TextChanged, "both") .. status.changed
+        end
+        if status.removed and status.removed > 0 then
+          removed = ds.pad(ds.icons.git.TextRemoved, "both") .. status.removed
+        end
+        return added .. changed .. removed
+      end,
+      on_attach = function(bufnr)
+        local gs = package.loaded.gitsigns
+        local function map(mode, lhs, rhs, desc) vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc }) end
 
-          local _next = function()
-            if vim.wo.diff then
-              vim.cmd.normal { "]c", bang = true }
-            else
-              signs.nav_hunk "next"
-            end
+        local _next = function()
+          if vim.wo.diff then
+            vim.cmd.normal { "]c", bang = true }
+          else
+            gs.nav_hunk "next"
           end
-          local _prev = function()
-            if vim.wo.diff then
-              vim.cmd.normal { "[c", bang = true }
-            else
-              signs.nav_hunk "prev"
-            end
+        end
+        local _prev = function()
+          if vim.wo.diff then
+            vim.cmd.normal { "[c", bang = true }
+          else
+            gs.nav_hunk "prev"
           end
+        end
 
-          map("n", "[h", _prev, { desc = "gitsigns: previous hunk" })
-          map("n", "[H", function() signs.nav_hunk "first" end, { desc = "gitsigns: goto first hunk" })
-          map("n", "]h", _next, { desc = "gitsigns: next hunk" })
-          map("n", "]H", function() signs.nav_hunk "last" end, { desc = "gitsigns: goto last hunk" })
-          map(
-            "n",
-            "<localleader>gb",
-            function() signs.blame_line { full = true } end,
-            { desc = "gitsigns: blame line" }
-          )
-          map("n", "<localleader>gp", signs.preview_hunk, { desc = "gitsigns: preview Hunk" })
-          map("n", "<localleader>gr", signs.reset_hunk, { desc = "gitsigns: reset hunk" })
-          map("n", "<localleader>gR", signs.reset_buffer, { desc = "gitsigns: reset buffer" })
-          map("n", "<localleader>gs", signs.stage_hunk, { desc = "gitsigns: stage hunk" })
-          map("n", "<localleader>gS", signs.stage_buffer, { desc = "gitsigns: stage buffer" })
-        end,
-      }
-    end,
+        map("n", "[h", _prev, "gitsigns: previous hunk")
+        map("n", "]h", _next, "gitsigns: next hunk")
+        map("n", "[H", function() gs.nav_hunk "first" end, "gitsigns: goto first hunk")
+        map("n", "]H", function() gs.nav_hunk "last" end, "gitsigns: goto last hunk")
+        map("n", "<localleader>gb", function() gs.blame_line { full = true } end, "gitsigns: blame line")
+        map("n", "<localleader>gp", gs.preview_hunk, "gitsigns: preview Hunk")
+        map("n", "<localleader>gr", gs.reset_hunk, "gitsigns: reset hunk")
+        map("n", "<localleader>gR", gs.reset_buffer, "gitsigns: reset buffer")
+        map("n", "<localleader>gs", gs.stage_hunk, "gitsigns: stage hunk")
+        map("n", "<localleader>gS", gs.stage_buffer, "gitsigns: stage buffer")
+      end,
+    },
   },
   {
     "pwntester/octo.nvim",
     event = { { event = "BufReadCmd", pattern = "octo://*" } },
     cmd = "Octo",
     keys = {
-      { "<leader>go", function() vim.cmd "Octo" end, desc = "octo: manage github issues and pull requests " },
+      { "<leader>gp", function() vim.cmd "Octo pr list" end, desc = "octo: list pull requests" },
+      { "<leader>gP", function() vim.cmd "Octo pr search" end, desc = "octo: search pull requests" },
       -- prefix
       { "<leader>a", "", desc = "octo: +assignee", ft = "octo" },
       { "<leader>c", "", desc = "octo: +comment/code", ft = "octo" },
