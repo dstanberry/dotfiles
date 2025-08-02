@@ -178,12 +178,17 @@ return {
           map("n", "[H", function() signs.nav_hunk "first" end, { desc = "gitsigns: goto first hunk" })
           map("n", "]h", _next, { desc = "gitsigns: next hunk" })
           map("n", "]H", function() signs.nav_hunk "last" end, { desc = "gitsigns: goto last hunk" })
-          map("n", "<leader>gb", function() signs.blame_line { full = true } end, { desc = "gitsigns: blame line" })
-          map("n", "<leader>gp", signs.preview_hunk, { desc = "gitsigns: preview Hunk" })
-          map("n", "<leader>gR", signs.reset_buffer, { desc = "gitsigns: reset buffer" })
-          map("n", "<leader>gr", signs.reset_hunk, { desc = "gitsigns: reset hunk" })
-          map("n", "<leader>gS", signs.stage_buffer, { desc = "gitsigns: stage buffer" })
-          map("n", "<leader>gs", signs.stage_hunk, { desc = "gitsigns: stage hunk" })
+          map(
+            "n",
+            "<localleader>gb",
+            function() signs.blame_line { full = true } end,
+            { desc = "gitsigns: blame line" }
+          )
+          map("n", "<localleader>gp", signs.preview_hunk, { desc = "gitsigns: preview Hunk" })
+          map("n", "<localleader>gr", signs.reset_hunk, { desc = "gitsigns: reset hunk" })
+          map("n", "<localleader>gR", signs.reset_buffer, { desc = "gitsigns: reset buffer" })
+          map("n", "<localleader>gs", signs.stage_hunk, { desc = "gitsigns: stage hunk" })
+          map("n", "<localleader>gS", signs.stage_buffer, { desc = "gitsigns: stage buffer" })
         end,
       }
     end,
