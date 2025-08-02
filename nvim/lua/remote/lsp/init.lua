@@ -8,6 +8,18 @@ return {
       popup = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
     },
   },
+  { "Bilal2453/luvit-meta", lazy = true }, -- plugin will never be loaded
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = function()
+      return {
+        library = {
+          { path = "luvit-meta/library", words = { "vim%.uv" } },
+        },
+      }
+    end,
+  },
   { "seblj/roslyn.nvim", lazy = true },
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },

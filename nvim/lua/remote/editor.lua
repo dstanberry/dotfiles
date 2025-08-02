@@ -86,19 +86,6 @@ return {
       },
     },
   },
-  -- Plugin will never be loaded
-  { "Bilal2453/luvit-meta", lazy = true },
-  {
-    "folke/lazydev.nvim",
-    ft = "lua",
-    opts = function()
-      return {
-        library = {
-          { path = "luvit-meta/library", words = { "vim%.uv" } },
-        },
-      }
-    end,
-  },
   {
     "folke/ts-comments.nvim",
     event = "LazyFile",
