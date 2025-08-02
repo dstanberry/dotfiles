@@ -4,6 +4,7 @@ vim.g.snacks_animate = false
 
 local enabled = {
   "dial.nvim",
+  "flash.nvim",
   "lazy.nvim",
   "mini.ai",
   "mini.pairs",
@@ -27,8 +28,8 @@ vim.keymap.set("n", "<c-right>", [[<cmd>lua require('vscode').action('workbench.
 vim.keymap.set("n", "<c-backspace>", [[<cmd>lua require('vscode').action('editor.action.fontZoomOut')<cr>]])
 vim.keymap.set("n", "<c-delete>", [[<cmd>lua require('vscode').action('editor.action.fontZoomIn')<cr>]])
 -- editor naviagtion
-vim.keymap.set("n", "<left>", [[<cmd>lua require('vscode').action('workbench.action.previousEditor')<cr>]])
-vim.keymap.set("n", "<right>", [[<cmd>lua require('vscode').action('workbench.action.nextEditor')<cr>]])
+vim.keymap.set("n", "<left>", [[<cmd>lua require('vscode').call('workbench.action.previousEditorInGroup')<cr>]])
+vim.keymap.set("n", "<right>", [[<cmd>lua require('vscode').call('workbench.action.nextEditorInGroup')<cr>]])
 vim.keymap.set("n", "<leader>wt", [[<cmd>lua require('vscode').action('workbench.action.terminal.toggleTerminal')<cr>]])
 -- file navigation
 vim.keymap.set("n", "<leader><space>", "<cmd>Find<cr>")
