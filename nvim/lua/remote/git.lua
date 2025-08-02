@@ -14,107 +14,90 @@ return {
         { "<localleader>gh", ":'<'>DiffviewFileHistory<cr>", desc = "diffview: file history", mode = "v" },
       }
     end,
-    config = function()
-      local diffview = require "diffview"
-      local lazy = require "diffview.lazy"
-      local lib = lazy.require "diffview.lib"
-      local Diff2Hor = lazy.access("diffview.scene.layouts.diff_2_hor", "Diff2Hor")
-      local Diff2Ver = lazy.access("diffview.scene.layouts.diff_2_ver", "Diff2Ver")
-      local Diff3 = lazy.access("diffview.scene.layouts.diff_3", "Diff3")
-      local Diff4 = lazy.access("diffview.scene.layouts.diff_4", "Diff4")
+    opts = {
+      diff_binaries = false,
+      use_icons = true,
+      enhanced_diff_hl = true,
+      icons = {
+        folder_closed = ds.pad(ds.icons.documents.FolderOutlineClosed, "right"),
+        folder_open = ds.pad(ds.icons.documents.FolderOutlineClosed, "right"),
+      },
+      signs = {
+        fold_closed = ds.icons.misc.FoldClosed,
+        fold_open = ds.icons.misc.FoldOpened,
+      },
+      view = {
+        default = { layout = "diff2_horizontal" },
+        file_history = { layout = "diff2_horizontal" },
+        merge_tool = { layout = "diff3_mixed" },
+      },
+      file_panel = {
+        listing_style = "list",
+        win_config = {
+          position = "left",
+          width = 35,
+          height = 10,
+          win_opts = { winhighlight = "Normal:NormalSB" },
+        },
+      },
+      file_history_panel = {
+        win_config = {
+          position = "bottom",
+          width = 35,
+          height = 20,
+          win_opts = { winhighlight = "Normal:NormalSB" },
+        },
+      },
+      keymaps = {
+        view = { q = function() return require("diffview").close() end },
+        file_panel = { q = function() return require("diffview").close() end },
+        file_history_panel = { q = function() return require("diffview").close() end },
+        option_panel = { q = function() return require("diffview").close() end },
+      },
+      hooks = {
+        diff_buf_read = function(bufnr, _)
+          local lazy = require "diffview.lazy"
+          local lib = lazy.require "diffview.lib"
+          local view = lib.get_current_view()
 
-      diffview.setup {
-        diff_binaries = false,
-        use_icons = true,
-        enhanced_diff_hl = true,
-        icons = {
-          folder_closed = ds.pad(ds.icons.documents.FolderOutlineClosed, "right"),
-          folder_open = ds.pad(ds.icons.documents.FolderOutlineClosed, "right"),
-        },
-        signs = {
-          fold_closed = ds.icons.misc.FoldClosed,
-          fold_open = ds.icons.misc.FoldOpened,
-        },
-        view = {
-          default = { layout = "diff2_horizontal" },
-          file_history = { layout = "diff2_horizontal" },
-          merge_tool = { layout = "diff3_mixed" },
-        },
-        file_panel = {
-          listing_style = "list",
-          win_config = {
-            position = "left",
-            width = 35,
-            height = 10,
-            win_opts = { winhighlight = "Normal:NormalSB" },
-          },
-        },
-        file_history_panel = {
-          win_config = {
-            position = "bottom",
-            width = 35,
-            height = 20,
-            win_opts = { winhighlight = "Normal:NormalSB" },
-          },
-        },
-        hooks = {
-          diff_buf_read = function(bufnr, _)
-            vim.opt_local.colorcolumn = ""
-            vim.opt_local.relativenumber = false
+          if not view.cur_entry then return end
 
-            local view = lib.get_current_view()
-            local file = view.cur_entry
-            local target = ""
-            if file then
-              local layout = file.layout
-              if layout:instanceof(Diff2Hor.__get()) or layout:instanceof(Diff2Ver.__get()) then
-                if bufnr == layout.a.file.bufnr then
-                  target = "Previous"
-                elseif bufnr == layout.b.file.bufnr then
-                  target = "Current"
-                end
-              elseif layout:instanceof(Diff3.__get()) then
-                vim.api.nvim_buf_set_var(bufnr, "diffview_view", "merge")
-                if bufnr == layout.a.file.bufnr then
-                  target = "Current"
-                  vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.a.file.winbar)
-                elseif bufnr == layout.b.file.bufnr then
-                  target = "Result"
-                  vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.b.file.winbar)
-                elseif bufnr == layout.c.file.bufnr then
-                  target = "Incoming"
-                  vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.c.file.winbar)
-                end
-              elseif layout:instanceof(Diff4.__get()) then
-                vim.api.nvim_buf_set_var(bufnr, "diffview_view", "merge")
-                if bufnr == layout.a.file.bufnr then
-                  target = "Current"
-                  vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.a.file.winbar)
-                elseif bufnr == layout.b.file.bufnr then
-                  target = "Result"
-                  vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.b.file.winbar)
-                elseif bufnr == layout.c.file.bufnr then
-                  target = "Incoming"
-                  vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.c.file.winbar)
-                elseif bufnr == layout.d.file.bufnr then
-                  target = "Common Ancestor"
-                  vim.api.nvim_buf_set_var(bufnr, "diffview_info", layout.d.file.winbar)
-                end
+          local layout = view.cur_entry.layout
+          local layouts = setmetatable({}, {
+            __index = function(t, key)
+              local path = key:gsub("(%d)", "_%1_"):gsub("_$", ""):lower()
+              local diffview_layout = lazy.access("diffview.scene.layouts." .. path, key)
+              rawset(t, key, diffview_layout.__get())
+              return t[key]
+            end,
+          })
+
+          local function set_buf_vars(buf, view_type, label, winbar)
+            vim.api.nvim_buf_set_var(buf, "diffview_label", label)
+            vim.api.nvim_buf_set_var(buf, "diffview_view", view_type)
+            if winbar then vim.api.nvim_buf_set_var(buf, "diffview_info", winbar) end
+          end
+
+          vim.opt_local.colorcolumn = ""
+          vim.opt_local.relativenumber = false
+          vim.api.nvim_buf_set_var(bufnr, "bufid", "diffview")
+
+          if layout:instanceof(layouts.Diff2Hor) or layout:instanceof(layouts.Diff2Ver) then
+            vim.api.nvim_buf_set_var(bufnr, "diffview_label", bufnr == layout.a.file.bufnr and "Previous" or "Current")
+          elseif layout:instanceof(layouts.Diff3) or layout:instanceof(layouts.Diff4) then
+            local files = { layout.a.file, layout.b.file, layout.c and layout.c.file, layout.d and layout.d.file }
+            local labels = { "Current", "Result", "Incoming", layout:instanceof(layouts.Diff4) and "Common Ancestor" }
+
+            for i, f in ipairs(files) do
+              if f and bufnr == f.bufnr then
+                set_buf_vars(bufnr, "merge", labels[i], f.winbar)
+                break
               end
-              vim.api.nvim_buf_set_var(bufnr, "bufid", "diffview")
-              vim.api.nvim_buf_set_var(bufnr, "diffview_label", target)
             end
-          end,
-        },
-        keymaps = {
-          view = { q = diffview.close },
-          file_panel = { q = diffview.close },
-          file_history_panel = { q = diffview.close },
-          option_panel = { q = diffview.close },
-        },
-      }
-      diffview.init()
-    end,
+          end
+        end,
+      },
+    },
   },
   {
     "lewis6991/gitsigns.nvim",
