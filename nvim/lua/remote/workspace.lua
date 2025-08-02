@@ -1,7 +1,7 @@
 return {
   {
     "akinsho/bufferline.nvim",
-    event = "LazyFile",
+    event = { "LazyFile", { event = "BufReadCmd", pattern = "octo://*" } },
     lazy = vim.fn.argc(-1) == 0,
     keys = {
       { "<left>", "<cmd>BufferLineCyclePrev<cr>", desc = "bufferline: goto next buffer" },
