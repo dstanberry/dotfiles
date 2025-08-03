@@ -246,24 +246,21 @@ return {
   },
   {
     "MagicDuck/grug-far.nvim",
-    opts = { headerMaxWidth = 80 },
     cmd = "GrugFar",
     keys = function()
-      local _far = function()
+      local _finder = function()
         local grug = require "grug-far"
         local ext = vim.bo.buftype == "" and vim.fn.expand "%:e"
-        grug.open {
-          transient = true,
-          prefills = {
-            filesFilter = ext and ext ~= "" and "*." .. ext or nil,
-          },
-        }
+        grug.open { transient = true, prefills = { filesFilter = ext and ext ~= "" and "*." .. ext or nil } }
       end
 
       return {
-        { "<leader>s/", mode = { "n", "v" }, _far, desc = "gruf-far: search/replace in files" },
+        { "<leader>s/", mode = { "n", "v" }, _finder, desc = "gruf-far: search/replace in files" },
       }
     end,
+    opts = {
+      headerMaxWidth = 80,
+    },
   },
   {
     "folke/trouble.nvim",
