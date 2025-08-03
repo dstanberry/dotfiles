@@ -4,6 +4,19 @@ return {
     build = ":Copilot auth",
     event = "LazyFile",
     cmd = "Copilot",
+    init = function()
+      ds.snippet.ai = function()
+        if
+          require("copilot.suggestion").is_visible()
+          or (package.loaded["blink.cmp"] and package.loaded["blink.cmp"].is_ghost_text_visible())
+        then
+          local chord = vim.api.nvim_replace_termcodes("<c-g>u", true, true, true)
+          if vim.api.nvim_get_mode().mode == "i" then vim.api.nvim_feedkeys(chord, "n", false) end
+          require("copilot.suggestion").accept()
+          return true
+        end
+      end
+    end,
     opts = {
       filetypes = { ["*"] = true },
       panel = { enabled = false },
@@ -32,15 +45,6 @@ return {
       }
     end,
     init = function()
-      ds.snippet.ai = function()
-        if require("copilot.suggestion").is_visible() or require("blink.cmp").is_ghost_text_visible() then
-          local chord = vim.api.nvim_replace_termcodes("<c-g>u", true, true, true)
-          if vim.api.nvim_get_mode().mode == "i" then vim.api.nvim_feedkeys(chord, "n", false) end
-          require("copilot.suggestion").accept()
-          return true
-        end
-      end
-
       vim.api.nvim_create_autocmd("BufEnter", {
         pattern = "copilot-chat",
         callback = function(args)
