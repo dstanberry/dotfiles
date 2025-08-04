@@ -105,6 +105,11 @@ end
 ---Register a new formatter.
 ---@param formatter util.format.formatter
 function M.register(formatter)
+  local exists = vim.tbl_filter(
+    function(f) return f.name == formatter.name and (f.modname == formatter.modname or not f.modname) end,
+    M.formatters
+  )
+  if #exists > 0 then return end
   M.default_formatter = formatter.primary and {
     module = formatter.name,
     modname = formatter.modname,
