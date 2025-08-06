@@ -244,26 +244,6 @@ vim.keymap.set("i", "?", "?<c-g>u")
 vim.keymap.set("i", "jk", "<esc>")
 
 ---------------------------------------------------------------
--- => Select
----------------------------------------------------------------
--- (if possible) jump to the next snippet marker or fallback to default `<tab>` behaviour
-vim.keymap.set(
-  "s",
-  "<tab>",
-  function() return vim.snippet.active { direction = 1 } and "<cmd>lua vim.snippet.jump(1)<cr>" or "<tab>" end,
-  { expr = true, desc = "jump to next snippet marker or <tab>" }
-)
-
--- (if possible) jump to the previous snippet marker or fallback to default `<s-tab>` behaviour
--- `<c-d>` behaves the same as `<s-tab>` in insert mode, so we use it here as well.
-vim.keymap.set(
-  { "i", "s" },
-  "<s-tab>",
-  function() return vim.snippet.active { direction = -1 } and "<cmd>lua vim.snippet.jump(-1)<cr>" or "<c-d>" end,
-  { expr = true, desc = "jump to previous snippet marker or <s-tab>" }
-)
-
----------------------------------------------------------------
 -- => Visual
 ---------------------------------------------------------------
 -- move between windows.
