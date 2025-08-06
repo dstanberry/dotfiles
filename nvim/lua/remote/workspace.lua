@@ -187,6 +187,13 @@ return {
     end,
   },
   {
+    "vhyrro/luarocks.nvim",
+    priority = 1000,
+    opts = {
+      rocks = { "tiktoken_core" },
+    },
+  },
+  {
     "stevearc/oil.nvim",
     opts = {
       default_file_explorer = true,

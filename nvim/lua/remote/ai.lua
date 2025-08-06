@@ -35,6 +35,7 @@ return {
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
+    build = "make tiktoken",
     cmd = "CopilotChat",
     keys = function()
       local _chat = function() require("CopilotChat").select_prompt() end
@@ -60,12 +61,12 @@ return {
     opts = {
       agent = "copilot",
       model = "gpt-4.1",
-      auto_follow_cursor = false,
+      auto_follow_cursor = true,
       auto_insert_mode = false,
       insert_at_end = false,
-      highlight_headers = true,
       show_folds = false,
       show_help = true,
+      highlight_headers = true,
       separator = "───",
       headers = {
         assistant = string.format(" %s %s ", ds.icons.kind.Copilot, "Copilot"),
