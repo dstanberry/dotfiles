@@ -10,18 +10,31 @@ return {
       "kristijanhusak/vim-dadbod-completion",
       { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
     },
+
     opts = { ---@type blink.cmp.Config
       appearance = { use_nvim_cmp_as_default = false, kind_icons = ds.icons.kind },
       completion = {
         accept = { auto_brackets = { enabled = true } },
         menu = {
-          draw = {
-            treesitter = { "lsp" },
-            columns = { { "kind_icon" }, { "label", "label_description", gap = 1 }, { "kind" } },
-            components = { kind_icon = { width = { fill = true } } },
-          },
           border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
           winblend = vim.o.pumblend,
+          draw = {
+            columns = { { "kind_icon" }, { "label", "label_description", gap = 1 }, { "kind" } },
+            components = { kind_icon = { width = { fill = true } } },
+            treesitter = { "lsp" },
+          },
+          direction_priority = function()
+            local ctx = require("blink.cmp").get_context()
+            local item = require("blink.cmp").get_selected_item()
+            if ctx == nil or item == nil then return { "s", "n" } end
+            local item_text = item.textEdit ~= nil and item.textEdit.newText or item.insertText or item.label
+            local is_multi_line = item_text:find "\n" ~= nil
+            if is_multi_line or vim.g.blink_cmp_upwards_ctx_id == ctx.id then
+              vim.g.blink_cmp_upwards_ctx_id = ctx.id
+              return { "n", "s" }
+            end
+            return { "s", "n" }
+          end,
         },
         documentation = {
           auto_show = true,
@@ -32,9 +45,7 @@ return {
           },
         },
         ghost_text = { enabled = true },
-        trigger = {
-          show_on_trigger_character = true,
-        },
+        trigger = { show_on_trigger_character = true },
       },
       keymap = {
         preset = "none",
@@ -44,7 +55,7 @@ return {
         ["<up>"] = { "select_prev", "fallback" },
         ["<down>"] = { "select_next", "fallback" },
         ["<c-space>"] = { "show", "show_documentation", "hide_documentation" },
-        ["<c-e>"] = { "cancel", "fallback" },
+        ["<esc>"] = { "cancel", "fallback" },
         ["<c-c>"] = { "hide", "fallback" },
       },
       cmdline = { enabled = false },
@@ -76,8 +87,8 @@ return {
     },
     ---@param opts blink.cmp.Config | { sources: { compat: string[] } }
     config = function(_, opts)
-      local ok, colors = pcall(require, "colorful-menu")
-      if ok then
+      if ds.plugin.is_installed "colorful-menu.nvim" then
+        local colors = require "colorful-menu"
         -- better highlights for completion items
         opts.completion.menu.draw = {
           columns = { { "kind_icon" }, { "label", gap = 1 }, { "kind" } },
