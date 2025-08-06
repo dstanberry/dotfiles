@@ -59,6 +59,7 @@ M.config = function()
     function(icon) return { icon, "SnacksPickerBorderSB" } end,
     ds.icons.border.Default
   )
+
   ---@module 'snacks.nvim'
   ---@type snacks.picker.Config
   return {
@@ -117,6 +118,23 @@ M.file_browser = function()
   Snacks.picker.files {
     cwd = cwd,
     layout = "vscode",
+    -- TODO: add dynamic height when upstream implements a better API for it
+    -- on_show = function(picker)
+    --   picker.matcher.task:on("done", function()
+    --     if picker.closed then return end
+    --     local item_count = picker:count()
+    --     if item_count > 0 then
+    --       local layout = vim.deepcopy(picker.resolved_layout)
+    --       local curheight = layout.layout.height < 1 and math.floor(vim.o.lines * layout.layout.height - 5)
+    --         or layout.layout.height
+    --       local newheight = math.min(curheight, item_count + 3)
+    --       if layout.layout.height ~= newheight then
+    --         layout.layout.height = newheight
+    --         picker:set_layout(layout)
+    --       end
+    --     end
+    --   end)
+    -- end,
     actions = {
       parent = {
         action = function(picker, _)
