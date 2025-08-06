@@ -42,15 +42,12 @@ end
 
 ---@return lsp.ClientCapabilities
 M.get_client_capabilities = function()
-  local ok, blink = pcall(require, "blink.cmp")
-  return vim.deepcopy(
-    vim.tbl_deep_extend(
-      "force",
-      {},
-      vim.lsp.protocol.make_client_capabilities(),
-      ok and blink.get_lsp_capabilities() or {}
-    )
-  )
+  local extras = {}
+  if ds.plugin.is_installed "blink.cmp" then
+    local ok, blink_cmp = pcall(require, "blink.cmp")
+    extras = ok and blink_cmp.get_lsp_capabilities() or {}
+  end
+  return vim.deepcopy(vim.tbl_deep_extend("force", {}, vim.lsp.protocol.make_client_capabilities(), extras))
 end
 
 ---@param opts? { method?: fun(...) }

@@ -10,9 +10,11 @@ return {
       "kristijanhusak/vim-dadbod-completion",
       { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
     },
-
     opts = { ---@type blink.cmp.Config
-      appearance = { use_nvim_cmp_as_default = false, kind_icons = ds.icons.kind },
+      appearance = {
+        use_nvim_cmp_as_default = false,
+        kind_icons = ds.icons.kind, ---@type table<string, util.icons.glyph>
+      },
       completion = {
         accept = { auto_brackets = { enabled = true } },
         menu = {
@@ -24,8 +26,9 @@ return {
             treesitter = { "lsp" },
           },
           direction_priority = function()
-            local ctx = require("blink.cmp").get_context()
-            local item = require("blink.cmp").get_selected_item()
+            local blink_cmp = require "blink.cmp"
+            local ctx = blink_cmp.get_context()
+            local item = blink_cmp.get_selected_item()
             if ctx == nil or item == nil then return { "s", "n" } end
             local item_text = item.textEdit ~= nil and item.textEdit.newText or item.insertText or item.label
             local is_multi_line = item_text:find "\n" ~= nil
@@ -49,7 +52,7 @@ return {
       },
       keymap = {
         preset = "none",
-        ["<tab>"] = { ds.snippet.map { "jump", "ai" }, "fallback" },
+        ["<tab>"] = { ds.snippet.coalesce { "jump", "ai" }, "fallback" },
         ["<s-tab>"] = { "snippet_backward", "fallback" },
         ["<cr>"] = { "accept", "fallback" },
         ["<up>"] = { "select_prev", "fallback" },
@@ -87,6 +90,8 @@ return {
     },
     ---@param opts blink.cmp.Config | { sources: { compat: string[] } }
     config = function(_, opts)
+      local blink_cmp = require "blink.cmp"
+
       if ds.plugin.is_installed "colorful-menu.nvim" then
         local colors = require "colorful-menu"
         -- better highlights for completion items
@@ -98,6 +103,7 @@ return {
           },
         }
       end
+
       -- kind icon overrides
       for _, provider in pairs(opts.sources.providers or {}) do
         if provider.kind then
@@ -116,7 +122,23 @@ return {
           provider.kind = nil
         end
       end
-      require("blink.cmp").setup(opts)
+
+      blink_cmp.setup(opts)
+
+      --- @param options? { callback?: fun() }
+      ds.cmp.hide = function(options) blink_cmp.hide(options or {}) end
+      --- @param options? { callback?: fun() }
+      ds.cmp.cancel = function(options) blink_cmp.cancel(options or {}) end
+      --- @param options? blink.cmp.CompletionListAcceptOpts
+      ds.cmp.confirm = function(options) blink_cmp.accept(options or {}) end
+      --- @param options? { providers?: string[], initial_selected_item_idx?: number, callback?: fun() }
+      ds.cmp.show = function(options) blink_cmp.show(options or {}) end
+      ---@param component? "documentation"|"ghost_text"|"menu"|"signature"
+      ds.cmp.visible = function(component)
+        component = component or "menu"
+        local func = ("is_%s_visible"):format(component)
+        return blink_cmp[func] and type(blink_cmp[func]) == "function" and blink_cmp[func]() or false
+      end
     end,
   },
 }

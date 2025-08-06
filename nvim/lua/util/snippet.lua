@@ -86,10 +86,10 @@ end
 ---@param actions string[] # List of action names to map.
 ---@param fallback? string|fun() # Optional fallback function or string to execute if no action succeeds.
 ---@return fun(): boolean|string|nil # A function that executes the mapped actions or fallback.
-function M.map(actions, fallback)
+function M.coalesce(actions, fallback)
   return function()
     for _, name in ipairs(actions) do
-      if M[name] then
+      if M[name] and type(M[name]) == "function" then
         local ret = M[name]()
         if ret then return true end
       end

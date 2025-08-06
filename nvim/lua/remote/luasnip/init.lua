@@ -52,9 +52,8 @@ return {
       if direction == 1 then
         if luasnip.expand_or_locally_jumpable() then
           vim.schedule(function()
-            local blink = package.loaded["blink.cmp"]
+            ds.cmp.hide()
             luasnip.expand_or_jump()
-            if blink then blink.hide() end
           end)
           return true
         end

@@ -1,9 +1,10 @@
 ---@class util
 ---@field buffer util.buffer
+---@field cmp util.cmp
 ---@field color util.color
----@field ft util.ft
 ---@field format util.format
 ---@field fs util.fs
+---@field ft util.ft
 ---@field hl util.hl
 ---@field icons util.icons
 ---@field plugin util.plugin

@@ -6,11 +6,18 @@ return {
     cmd = "Copilot",
     init = function()
       ds.snippet.ai = function()
-        local blink_cmp = package.loaded["blink.cmp"]
-        if require("copilot.suggestion").is_visible() or (blink_cmp and blink_cmp.is_ghost_text_visible()) then
+        local copilot = require "copilot.suggestion"
+        if copilot.is_visible() then
           local chord = vim.api.nvim_replace_termcodes("<c-g>u", true, true, true)
           if vim.api.nvim_get_mode().mode == "i" then vim.api.nvim_feedkeys(chord, "n", false) end
-          require("copilot.suggestion").accept()
+          copilot.accept()
+          return true
+        end
+        if ds.cmp.visible "menu" and ds.cmp.visible "ghost_text" then
+          vim.schedule(function()
+            ds.cmp.confirm()
+            ds.cmp.show()
+          end)
           return true
         end
       end
