@@ -31,7 +31,7 @@ function M.augroup(name) return vim.api.nvim_create_augroup("ds_" .. name, { cle
 ---@param delay number
 ---@return function
 function M.debounce(callback, delay)
-  local timer = vim.uv.new_timer()
+  local timer = assert(vim.uv.new_timer()) ---@type uv_timer_t
   return function(...)
     local argv = vim.F.pack_len(...)
     timer:start(delay, 0, function()

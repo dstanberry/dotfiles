@@ -131,11 +131,10 @@ local delay_notifications = function()
   local function temp(...) table.insert(notifications, vim.F.pack_len(...)) end
 
   vim.notify = temp
-  local timer = vim.uv.new_timer()
+  local timer = assert(vim.uv.new_timer()) ---@type uv_timer_t
   local check = assert(vim.uv.new_check())
 
   local function replay()
-    if not (timer and check) then return end
     timer:stop()
     check:stop()
     if vim.notify == temp then
@@ -152,7 +151,7 @@ local delay_notifications = function()
     if vim.notify ~= temp then replay() end
   end)
   -- or if it took more than 500ms, then something went wrong
-  if timer then timer:start(500, 0, replay) end
+  timer:start(500, 0, replay)
 end
 
 ---@private
