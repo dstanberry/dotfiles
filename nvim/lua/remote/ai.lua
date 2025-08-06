@@ -54,7 +54,7 @@ return {
     end,
     opts = {
       agent = "copilot",
-      model = "gpt-4o",
+      model = "gpt-4.1",
       auto_follow_cursor = false,
       auto_insert_mode = false,
       insert_at_end = false,
