@@ -75,6 +75,13 @@ return {
           end,
           offsets = {
             {
+              text = ds.pad(ds.icons.kind.Copilot, "right") .. "COPILOT CHAT",
+              filetype = "copilot-chat",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+            {
               text = ds.pad(ds.icons.groups.StackFrame, "right") .. "DEBUGGER",
               filetype = "dapui_scopes",
               highlight = "PanelHeading",
