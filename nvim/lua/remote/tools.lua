@@ -197,6 +197,19 @@ return {
     end,
   },
   {
+    "HakonHarnes/img-clip.nvim",
+    cmd = "PasteImage",
+    opts = {
+      default = {
+        dir_path = function()
+          local bufnr = vim.api.nvim_get_current_buf()
+          local root = ds.root.detectors.lsp(bufnr)[1] or vim.uv.cwd()
+          return vim.fs.joinpath(root, "assets")
+        end,
+      },
+    },
+  },
+  {
     "iamcco/markdown-preview.nvim",
     build = function()
       require("lazy").load { plugins = { "markdown-preview.nvim" } }
