@@ -202,6 +202,25 @@ return {
   },
   {
     "stevearc/oil.nvim",
+    keys = function()
+      local _open = function() require("oil").open(ds.root.get()) end
+      local _float = function() require("oil").toggle_float() end
+
+      return {
+        { "-", _open, desc = "oil: browse project" },
+        { "<leader>-", _float, desc = "oil: browse parent directory" },
+      }
+    end,
+    init = function()
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "OilActionsPost",
+        callback = function(event)
+          if event.data.actions.type == "move" then
+            require("remote.lsp.handlers").on_rename(event.data.actions.src_url, event.data.actions.dest_url)
+          end
+        end,
+      })
+    end,
     opts = {
       default_file_explorer = true,
       autosave_changes = false,
@@ -209,17 +228,19 @@ return {
       skip_confirm_for_simple_edits = true,
       columns = { "icon" },
       keymaps = {
-        ["<a-h>"] = { "actions.toggle_hidden", mode = "n" },
+        ["<a-c>"] = "actions.open_cwd",
+        ["<a-h>"] = "actions.toggle_hidden",
         ["<c-h>"] = false,
-        ["<c-t>"] = { "actions.select", opts = { tab = true }, desc = "oil: open in a new tab" },
-        ["<c-s>"] = { "actions.select", opts = { vertical = true }, desc = "oil: open in a vertical split" },
+        ["<c-t>"] = { "actions.select", opts = { tab = true } },
+        ["<c-s>"] = { "actions.select", opts = { vertical = true } },
         ["-"] = "actions.parent",
+        ["_"] = false,
         ["g."] = false,
         ["q"] = "actions.close",
       },
       float = {
         border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
-        max_width = math.floor(vim.o.columns * 0.6),
+        max_width = math.floor(vim.o.columns * 0.35),
         max_height = math.floor(vim.o.lines * 0.4),
         win_options = {
           cursorline = false,
@@ -235,15 +256,6 @@ return {
       preview = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
       ssh = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
     },
-    keys = function()
-      local _open = function() require("oil").open(ds.root.get()) end
-      local _float = function() require("oil").toggle_float() end
-
-      return {
-        { "-", _open, desc = "oil: browse project" },
-        { "<leader>-", _float, desc = "oil: browse parent directory" },
-      }
-    end,
   },
   {
     "folke/persistence.nvim",
