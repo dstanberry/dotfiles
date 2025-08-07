@@ -1,6 +1,179 @@
 return {
   { "MunifTanjim/nui.nvim", lazy = true },
   {
+    "akinsho/bufferline.nvim",
+    event = { "LazyFile", { event = "BufReadCmd", pattern = "octo://*" } },
+    lazy = vim.fn.argc(-1) == 0,
+    keys = {
+      { "<left>", "<cmd>BufferLineCyclePrev<cr>", desc = "bufferline: goto next buffer" },
+      { "<right>", "<cmd>BufferLineCycleNext<cr>", desc = "bufferline: goto previous buffer" },
+      { "<leader>bg", ":BufferLineGroupToggle ", desc = "bufferline: toggle group" },
+      { "<leader>bp", "<cmd>BufferLineTogglePin<cr>", desc = "bufferline: toggle pin" },
+      { "<leader>bP", "<cmd>BufferLineGroupClose ungrouped<cr>", desc = "bufferline: delete all non-pinned buffers" },
+    },
+    config = function()
+      local bufferline_groups = require "bufferline.groups"
+      local bufferline = require "bufferline"
+      bufferline.setup {
+        highlights = function(defaults)
+          local hl = ds.tbl_reduce(defaults.highlights, function(highlight, attrs, name)
+            local formatted = name:lower()
+            local is_group = formatted:match "group"
+            local is_offset = formatted:match "offset"
+            local is_separator = formatted:match "separator"
+            if not is_group or (is_group and is_separator) then attrs.bg = vim.g.ds_colors.bg2 end
+            if is_separator and not (is_group or is_offset) then attrs.fg = vim.g.ds_colors.bg2 end
+            highlight[name] = attrs
+            return highlight
+          end)
+          hl.buffer_selected.italic = false
+          hl.buffer_visible.bold = true
+          hl.buffer_visible.italic = false
+          hl.buffer_visible.fg = vim.g.ds_colors.gray1
+          hl.tab_selected.bold = true
+          hl.tab_selected.fg = vim.g.ds_colors.red1
+          return hl
+        end,
+        options = {
+          style_preset = { bufferline.style_preset.minimal },
+          mode = "buffers",
+          numbers = "none",
+          left_mouse_command = "buffer %d",
+          ---@diagnostic disable-next-line: assign-type-mismatch
+          right_mouse_command = nil,
+          middle_mouse_command = function(buf) ds.buffer.delete(buf) end,
+          close_command = function(buf) ds.buffer.delete(buf) end,
+          buffer_close_icon = ds.icons.misc.Close .. ds.icons.misc.BrailleBlank,
+          close_icon = ds.icons.misc.CloseBold .. ds.icons.misc.BrailleBlank,
+          hover = { enabled = true, reveal = { "close" } },
+          left_trunc_marker = ds.icons.misc.LeftArrowCircled,
+          right_trunc_marker = ds.icons.misc.RightArrowCircled,
+          max_name_length = 20,
+          color_icons = true,
+          show_buffer_close_icons = true,
+          show_close_icon = false,
+          show_tab_indicators = true,
+          separator_style = "thin",
+          always_show_bufferline = true,
+          sort_by = "insert_after_current",
+          diagnostics = "nvim_lsp",
+          diagnostics_update_in_insert = false,
+          diagnostics_indicator = function(_, _, _, ctx)
+            if ctx.buffer:current() then return "" end
+            return ds.pad(ds.icons.diagnostics.Warn, "left")
+          end,
+          indicator = {
+            icon = ds.pad(ds.icons.misc.VerticalBarMiddle, "right"),
+            style = "none",
+          },
+          get_element_icon = function(element)
+            local mini_icons = package.loaded["mini.icons"]
+            if not mini_icons then return ds.icons.status.Error end
+            if element.filetype == "octo" or element.path:match "^octo:" then
+              return mini_icons.get("extension", element.filetype)
+            end
+            return mini_icons.get(element.directory and "directory" or "file", element.path)
+          end,
+          offsets = {
+            {
+              text = ds.pad(ds.icons.kind.Copilot, "right") .. "COPILOT CHAT",
+              filetype = "copilot-chat",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+            {
+              text = ds.pad(ds.icons.groups.Sql, "right") .. "DATABASE VIEWER",
+              filetype = "dbui",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+            {
+              text = ds.pad(ds.icons.groups.StackFrame, "right") .. "DEBUGGER",
+              filetype = "dapui_scopes",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+            {
+              text = ds.pad(ds.icons.groups.Diff, "right") .. "DIFF VIEW",
+              filetype = "DiffviewFiles",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+            {
+              text = ds.pad(ds.icons.groups.Tree, "right") .. "EXPLORER",
+              filetype = "snacks_layout_box",
+              highlight = "PanelHeading",
+              separator = true,
+            },
+            {
+              text = ds.pad(ds.icons.misc.Magnify, "right") .. "FIND / REPLACE",
+              filetype = "grug-far",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+            {
+              text = ds.pad(ds.icons.groups.Tree, "right") .. "SYMBOLS",
+              filetype = "trouble",
+              highlight = "PanelHeading",
+              separator = true,
+              text_align = "center",
+            },
+          },
+          groups = {
+            items = {
+              {
+                name = "Notes",
+                -- icon =ds.icons.groups.Book,
+                highlight = { fg = vim.g.ds_colors.overlay1 },
+                auto_close = false,
+                matcher = function(buf)
+                  return (vim.env.ZK_NOTEBOOK_DIR and vim.env.ZK_NOTEBOOK_DIR ~= "")
+                      and vim.startswith(buf.path, vim.env.ZK_NOTEBOOK_DIR)
+                    or buf.path:match "zettelkasten"
+                end,
+                separator = {
+                  style = bufferline_groups.separator.pill,
+                },
+              },
+              {
+                name = "SQL",
+                -- icon =ds.icons.groups.Sql,
+                auto_close = false,
+                highlight = { fg = vim.g.ds_colors.orange0 },
+                matcher = function(buf) return buf.name:match "%.sql$" end,
+                separator = {
+                  style = bufferline_groups.separator.pill,
+                },
+              },
+              {
+                name = "Unit Tests",
+                -- icon =ds.icons.groups.Lab,
+                highlight = { fg = vim.g.ds_colors.rose1 },
+                auto_close = false,
+                matcher = function(buf)
+                  return buf.name:match "_spec%."
+                    or buf.name:match "%.spec"
+                    or buf.name:match "_test%."
+                    or buf.name:match "%.test"
+                end,
+                separator = {
+                  style = bufferline_groups.separator.pill,
+                },
+              },
+              bufferline_groups.builtin.pinned:with { icon = ds.icons.groups.Pinned },
+              bufferline_groups.builtin.ungrouped,
+            },
+          },
+        },
+      }
+    end,
+  },
+  {
     "folke/noice.nvim",
     event = "VeryLazy",
     keys = function()
@@ -185,6 +358,63 @@ return {
         return result
       end,
       provider_selector = function() return { "treesitter", "indent" } end,
+    },
+  },
+  {
+    "stevearc/oil.nvim",
+    keys = function()
+      local _open = function() require("oil").open(ds.root.get()) end
+      local _float = function() require("oil").toggle_float() end
+
+      return {
+        { "-", _open, desc = "oil: browse project" },
+        { "<leader>-", _float, desc = "oil: browse parent directory" },
+      }
+    end,
+    init = function()
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "OilActionsPost",
+        callback = function(event)
+          if event.data.actions.type == "move" then
+            require("remote.lsp.handlers").on_rename(event.data.actions.src_url, event.data.actions.dest_url)
+          end
+        end,
+      })
+    end,
+    opts = {
+      default_file_explorer = true,
+      autosave_changes = false,
+      delete_to_trash = false,
+      skip_confirm_for_simple_edits = true,
+      columns = { "icon" },
+      keymaps = {
+        ["<a-c>"] = "actions.open_cwd",
+        ["<a-h>"] = "actions.toggle_hidden",
+        ["<c-h>"] = false,
+        ["<c-t>"] = { "actions.select", opts = { tab = true } },
+        ["<c-s>"] = { "actions.select", opts = { vertical = true } },
+        ["-"] = "actions.parent",
+        ["_"] = false,
+        ["g."] = false,
+        ["q"] = "actions.close",
+      },
+      float = {
+        border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
+        max_width = math.floor(vim.o.columns * 0.35),
+        max_height = math.floor(vim.o.lines * 0.4),
+        win_options = {
+          cursorline = false,
+          number = false,
+          relativenumber = false,
+          winblend = vim.o.pumblend,
+          winhighlight = "Title:OilFloatTitle",
+        },
+      },
+      keymaps_help = {
+        border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
+      },
+      preview = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
+      ssh = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
     },
   },
   {

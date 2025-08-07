@@ -5,7 +5,7 @@ return {
     build = ":TSUpdate",
     lazy = vim.fn.argc(-1) == 0,
     event = { "LazyFile", "VeryLazy" },
-    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
+    cmd = { "TSInstall", "TSUpdate", "TSUpdateSync" },
     keys = {
       { "=", desc = "treesitter: increment selection" },
       { "<bs>", desc = "treesitter: decrement selection", mode = "x" },
