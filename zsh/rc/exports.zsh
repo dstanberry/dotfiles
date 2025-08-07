@@ -272,3 +272,13 @@ if hash zoxide 2> /dev/null; then
   # _evalcache zoxide init --cmd cd zsh
   _evalcache zoxide init zsh
 fi
+
+# load uv configuration when available
+if hash uv 2> /dev/null; then
+  export UV_CACHE_DIR="${XDG_CACHE_HOME}/uv"
+  if [ ! -d "${UV_CACHE_DIR}" ]; then
+    mkdir -p "${UV_CACHE_DIR}"
+  fi
+  _evalcache uv generate-shell-completion zsh
+  _evalcache uvx --generate-shell-completion zsh
+fi

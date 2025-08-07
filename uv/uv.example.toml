@@ -1,0 +1,2 @@
+index-url = "https://my.private.repo/simple"
+trusted-host = ["my.private.repo"]

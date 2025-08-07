@@ -31,6 +31,7 @@ pip/
 snyk/
 terraform/
 tmux/tmux.digests
+uv/uv.toml
 wget/
 yasb/yasb.log
 zsh/rc.private/

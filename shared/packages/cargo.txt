@@ -3,3 +3,4 @@ cargo-update
 git-delta
 tokei
 tree-sitter-cli
+--git https://github.com/astral-sh/uv uv
