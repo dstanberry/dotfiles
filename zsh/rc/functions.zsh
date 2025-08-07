@@ -13,7 +13,10 @@ cargo() {
       echo "cargo load is not supported for root user"
       exit 1
     fi
-    < "$PKG" xargs "cargo" install
+    while IFS= read -r line; do
+      [ -n "$line" ] && cargo install ${(z)line}
+
+    done < "$PKG"
   else
     command cargo "$@"
   fi
@@ -95,7 +98,10 @@ gem() {
       echo "gem load is not supported for root user"
       exit 1
     fi
-    < "$PKG" xargs "gem" install
+    while IFS= read -r line; do
+      [ -n "$line" ] && gem install ${(z)line}
+
+    done < "$PKG"
   else
     command gem "$@"
   fi
@@ -143,10 +149,9 @@ go() {
       echo "go load is not supported for root user"
       exit 1
     fi
-    # < "$PKG" xargs "go" install
-    while read -r line
-    do
-      go install "$line"
+    while IFS= read -r line; do
+      [ -n "$line" ] && go install ${(z)line}
+
     done < "$PKG"
   else
     command go "$@"
@@ -210,7 +215,9 @@ luarocks() {
       echo "luarocks load is not supported for root user"
       exit 1
     fi
-    < "$PKG" xargs "luarocks" --tree="${XDG_DATA_HOME}/luarocks" install
+    while IFS= read -r line; do
+      [ -n "$line" ] && luarocks --tree="${XDG_DATA_HOME}/luarocks" install ${(z)line}
+    done < "$PKG"
   else
     command luarocks "$@"
   fi
@@ -260,7 +267,9 @@ npm() {
       echo "npm load is not supported for root user"
       exit 1
     fi
-    < "$PKG" xargs "npm" install -g
+    while IFS= read -r line; do
+      [ -n "$line" ] && npm install -g ${(z)line}
+    done < "$PKG"
   else
     command npm "$@"
   fi
