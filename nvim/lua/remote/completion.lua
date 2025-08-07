@@ -11,10 +11,7 @@ return {
       { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
     },
     opts = { ---@type blink.cmp.Config
-      appearance = {
-        use_nvim_cmp_as_default = false,
-        kind_icons = ds.icons.kind, ---@type table<string, util.icons.glyph>
-      },
+      appearance = { use_nvim_cmp_as_default = false, kind_icons = ds.icons.kind },
       completion = {
         accept = { auto_brackets = { enabled = true } },
         menu = {

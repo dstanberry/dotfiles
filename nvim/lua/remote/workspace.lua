@@ -66,12 +66,12 @@ return {
             style = "none",
           },
           get_element_icon = function(element)
+            local mini_icons = package.loaded["mini.icons"]
+            if not mini_icons then return ds.icons.status.Error end
             if element.filetype == "octo" or element.path:match "^octo:" then
-              ---@diagnostic disable-next-line: return-type-mismatch
-              return require("mini.icons").get("extension", element.filetype)
+              return mini_icons.get("extension", element.filetype)
             end
-            ---@diagnostic disable-next-line: return-type-mismatch
-            return require("mini.icons").get(element.directory and "directory" or "file", element.path)
+            return mini_icons.get(element.directory and "directory" or "file", element.path)
           end,
           offsets = {
             {

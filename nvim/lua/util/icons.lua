@@ -1,10 +1,7 @@
 ---@class util.icons
 local M = {}
 
----@alias util.icons.glyph string
-
 ---Box drawing characters for window borders.
----@type table<string, util.icons.glyph[]>
 M.border = {
   CompactRound = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
   CompactSquare = { "┌", "─", "┐", "│", "┘", "─", "└", "│" },
@@ -12,14 +9,12 @@ M.border = {
 }
 
 ---Box drawing characters for tables.
----@type table<string, util.icons.glyph[]>
 M.table = {
   Alignment = { "╼", "╾", "╴", "╶" },
   Divider = { "┬", "├", "┤", "┼", "┴" },
 }
 
 ---Diagnostic icons for Neovim's LSP, similar to `util.icons.status`
----@type table<string, util.icons.glyph>
 M.diagnostics = {
   Error = "",
   Warn = "",
@@ -28,7 +23,6 @@ M.diagnostics = {
 }
 
 ---Debugging related icons.
----@type table<string, util.icons.glyph>
 M.debug = {
   Breakpoint = "",
   BreakpointActive = "",
@@ -53,7 +47,6 @@ M.debug = {
 }
 
 ---Document/File related icons.
----@type table<string, util.icons.glyph>
 M.documents = {
   File = "",
   Files = "",
@@ -66,7 +59,6 @@ M.documents = {
 }
 
 ---Git related icons.
----@type table<string, util.icons.glyph>
 M.git = {
   Branch = "",
   Commit = "",
@@ -81,7 +73,6 @@ M.git = {
 }
 
 ---Icons used to convey groupings or categories.
----@type table<string, util.icons.glyph>
 M.groups = {
   Book = "",
   Diff = "",
@@ -93,7 +84,6 @@ M.groups = {
 }
 
 ---Icons representing various programming constructs and elements.
----@type table<string, util.icons.glyph>
 M.kind = {
   Class = "",
   Color = "",
@@ -125,7 +115,6 @@ M.kind = {
 }
 
 ---Markdown related icons.
----@type table<string, util.icons.glyph>
 M.markdown = {
   Checked = "󰄲",
   Unchecked = "󰄱",
@@ -139,7 +128,6 @@ M.markdown = {
 }
 
 ---Miscellaneous icons for various purposes.
----@type table<string, util.icons.glyph>
 M.misc = {
   ArrowSwap = " ",
   Block = "█",
@@ -205,7 +193,6 @@ M.misc = {
 }
 
 ---Status icons for Neovim's LSP, similar to `util.icons.diagnostics`
----@type table<string, util.icons.glyph>
 M.status = {
   Error = "",
   Hint = "󰌶",
@@ -214,7 +201,6 @@ M.status = {
 }
 
 ---Icons representing scalar and two-dimensional data types.
----@type table<string, util.icons.glyph>
 M.type = {
   Array = "",
   Boolean = "󰨙",

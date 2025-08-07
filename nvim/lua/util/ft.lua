@@ -53,7 +53,6 @@ M.disabled = {
     "mason",
     "noice",
     "octo_panel",
-    "oil",
     "snacks_terminal",
     "trouble",
   },

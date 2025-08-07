@@ -30,11 +30,15 @@ M.breadcrumbs = {
 
     local format_sections = function(path, fname)
       local parts = path and vim.split(path, "/") or {}
+      local mini_icons = package.loaded["mini.icons"]
       table.insert(parts, fname)
       local segments = ds.tbl_reduce(parts, function(segments, v, k)
         local section
         if #v > 0 then
-          local icon, icon_hl = require("mini.icons").get("file", fname)
+          local icon, icon_hl = ds.icons.status.Error, "Error"
+          if mini_icons then
+            icon, icon_hl = mini_icons.get("file", fname)
+          end
 
           -- NOTE: octo.nvim
           if parts[1] and parts[1]:match "^octo:" then
@@ -44,12 +48,13 @@ M.breadcrumbs = {
               icon = ds.icons.git.Issue
             end
           end
-
           -- NOTE: oil.nvim
           if parts[1] and parts[1]:match "^oil:" then
-            icon, icon_hl = require("mini.icons").get("directory", path)
+            if mini_icons then
+              icon, icon_hl = mini_icons.get("directory", path)
+            end
+            file_hl = dir_hl
           end
-          --
           -- NOTE: nvim-dap
           if fname and fname:match "^DAP" then icon = dap_icons[fname] or icon end
 
