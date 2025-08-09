@@ -1,26 +1,5 @@
 return {
   {
-    "ThePrimeagen/harpoon",
-    branch = "harpoon2",
-    keys = function()
-      local toggle_menu = function()
-        local harpoon = require "harpoon"
-        harpoon.ui:toggle_quick_menu(harpoon:list())
-      end
-
-      local keys = {
-        { "<leader>h", desc = "+harpoon" },
-        { "<leader>ha", function() require("harpoon"):list():add() end, desc = "harpoon: mark file" },
-        { "<leader>hf", function() toggle_menu() end, desc = "harpoon: find marks" },
-      }
-      for i = 1, 5 do
-        -- stylua: ignore
-        table.insert(keys, { "<leader>h" .. i, function() require("harpoon"):list():select(i) end, desc = "harpoon: goto " .. i })
-      end
-      return keys
-    end,
-  },
-  {
     "vhyrro/luarocks.nvim",
     priority = 1000,
     lazy = false,
