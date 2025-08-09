@@ -28,7 +28,7 @@ return {
   "typescript-language-server",
   "vtsls",
   "yaml-language-server",
-  "zk",
+  not ds.has "win32" and "zk",
   -- debuggers
   "codelldb",
   "debugpy",

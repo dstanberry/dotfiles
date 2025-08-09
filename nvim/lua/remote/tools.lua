@@ -28,10 +28,7 @@ return {
   },
   {
     "nvim-neotest/neotest",
-    dependencies = {
-      "nvim-neotest/nvim-nio",
-      "nvim-neotest/neotest-python",
-    },
+    dependencies = { "nvim-neotest/nvim-nio", "nvim-neotest/neotest-python" },
     keys = function()
       ---@diagnostic disable-next-line: missing-fields
       local _debug = function() require("neotest").run.run { vim.fn.expand "%", strategy = "dap" } end

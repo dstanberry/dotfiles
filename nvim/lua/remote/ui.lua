@@ -128,7 +128,6 @@ return {
             items = {
               {
                 name = "Notes",
-                -- icon =ds.icons.groups.Book,
                 highlight = { fg = vim.g.ds_colors.overlay1 },
                 auto_close = false,
                 matcher = function(buf)
@@ -142,7 +141,6 @@ return {
               },
               {
                 name = "SQL",
-                -- icon =ds.icons.groups.Sql,
                 auto_close = false,
                 highlight = { fg = vim.g.ds_colors.orange0 },
                 matcher = function(buf) return buf.name:match "%.sql$" end,
@@ -152,7 +150,6 @@ return {
               },
               {
                 name = "Unit Tests",
-                -- icon =ds.icons.groups.Lab,
                 highlight = { fg = vim.g.ds_colors.rose1 },
                 auto_close = false,
                 matcher = function(buf)
@@ -257,7 +254,6 @@ return {
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    enabled = true,
     ft = { "copilot-chat", "markdown", "octo" },
     opts = {
       dash = { width = 80 },

@@ -1,4 +1,8 @@
 return {
+  { "Bilal2453/luvit-meta", lazy = true },
+  { "seblj/roslyn.nvim", lazy = true },
+  { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
+  { "b0o/schemastore.nvim", lazy = true, version = false },
   {
     "Saecki/crates.nvim",
     event = { "BufRead Cargo.toml" },
@@ -8,22 +12,16 @@ return {
       popup = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
     },
   },
-  { "Bilal2453/luvit-meta", lazy = true }, -- plugin will never be loaded
   {
     "folke/lazydev.nvim",
     ft = "lua",
-    opts = function()
-      return {
-        library = {
-          { path = "luvit-meta/library", words = { "vim%.uv" } },
-          { path = "snacks.nvim", words = { "Snacks" } },
-        },
-      }
-    end,
+    opts = {
+      library = {
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+        { path = "snacks.nvim", words = { "Snacks" } },
+      },
+    },
   },
-  { "seblj/roslyn.nvim", lazy = true },
-  { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
-  { "b0o/schemastore.nvim", lazy = true, version = false },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "LspAttach",
