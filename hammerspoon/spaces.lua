@@ -25,22 +25,7 @@ hs.window.switcher.ui.showSelectedThumbnail = false
 hs.window.switcher.ui.titleBackgroundColor = { 0, 0, 0, 0 }
 hs.window.switcher.ui.showTitles = false
 
--- include minimized/hidden windows, current Space & screen only
-local switchers = setmetatable({}, {
-  __index = function(t, key)
-    local switcher =
-      hs.window.switcher.new(hs.window.filter.new({}):setCurrentSpace(true):setScreens(key):setDefaultFilter {
-        rejectTitles = {
-          "Microsoft Teams Notification",
-        },
-      })
-    rawset(t, key, switcher)
-    return switcher
-  end,
-})
-
 local PREFIX_ACTION = { "cmd" }
--- local CTRL_PREFIX_ACTION = { "cmd", "ctrl" }
 local HYPER_PREFIX_ACTION = { "ctrl", "cmd", "alt" }
 
 local GRID = {
@@ -58,6 +43,40 @@ local GRID = {
   bottomLeft = "0,6 6x6",
   fullScreen = "0,0 12x12",
 }
+
+local SPACE_MOVEMENT_CONFIG = {
+  mouseOffset = { x = 5, y = 12 },
+  delays = { switch = 0.2, release = 0.5 },
+  inProgress = false,
+}
+
+local SPACE_DIRECTIONS = setmetatable({
+  previous = {
+    key = "e",
+    edgeMessage = "Currently at left-most space.",
+    edgeCheck = function(current, available) return current == available[1] end,
+  },
+  next = {
+    key = "r",
+    edgeMessage = "Currently at right-most space.",
+    edgeCheck = function(current, available) return current == available[#available] end,
+  },
+}, { __index = function() error "Invalid space direction" end })
+
+-- include minimized/hidden windows, current Space & screen only
+local SWITCHERS = setmetatable({}, {
+  __index = function(t, key)
+    local switcher =
+      hs.window.switcher.new(hs.window.filter.new({}):setCurrentSpace(true):setScreens(key):setDefaultFilter {
+        rejectTitles = {
+          "Microsoft Teams Notification",
+          "Window",
+        },
+      })
+    rawset(t, key, switcher)
+    return switcher
+  end,
+})
 
 local chain = function(movements)
   local chainResetInterval = 2 -- seconds
@@ -88,58 +107,62 @@ local chain = function(movements)
   end
 end
 
-local getSpaceId = function(spaceNumber)
-  local spaceNames = hs.spaces.missionControlSpaceNames()
-  local spaceName = "Desktop " .. spaceNumber
-  for _, desktop in pairs(spaceNames) do
-    for i, name in pairs(desktop) do
-      if spaceNumber == name:sub(-1) or name:lower():match(spaceName:lower()) then return i end
-    end
-  end
-  return nil
-end
+local moveToSpace = function(keys, direction)
+  if SPACE_MOVEMENT_CONFIG.inProgress then return end
+  SPACE_MOVEMENT_CONFIG.inProgress = true
 
-local moveToSpace = function(spaceNumber)
-  local spaceName = "Desktop " .. spaceNumber
-  local spaceId = getSpaceId(spaceNumber)
-  if spaceId then
-    local focusedWindow = hs.window.focusedWindow()
-    if focusedWindow then
-      hs.spaces.moveWindowToSpace(focusedWindow:id(), spaceId)
-    else
-      hs.alert.show "No focused window"
-    end
-  else
-    hs.alert.show("Space not found: " .. spaceName)
+  local directionConfig = SPACE_DIRECTIONS[direction]
+  local win = hs.window.focusedWindow()
+  local availableSpaces = hs.spaces.spacesForScreen()
+  local currentSpace = hs.spaces.focusedSpace()
+
+  if directionConfig.edgeCheck(currentSpace, availableSpaces) then
+    hs.alert.show(directionConfig.edgeMessage)
+    SPACE_MOVEMENT_CONFIG.inProgress = false
+    return
   end
+
+  if not win then
+    SPACE_MOVEMENT_CONFIG.inProgress = false
+    return
+  end
+
+  win:unminimize()
+  win:raise()
+
+  local frame = win:frame()
+  local clickPos =
+    hs.geometry.point(frame.x + SPACE_MOVEMENT_CONFIG.mouseOffset.x, frame.y + SPACE_MOVEMENT_CONFIG.mouseOffset.y)
+  local centerPos = hs.geometry.point(frame.x + frame.w / 2, frame.y + frame.h / 2)
+
+  hs.mouse.absolutePosition(clickPos)
+  hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseDown, clickPos):post()
+  hs.timer.doAfter(SPACE_MOVEMENT_CONFIG.delays.switch, function()
+    hs.eventtap.event.newKeyEvent(keys, directionConfig.key, true):post()
+    hs.timer.doAfter(0.1, function() hs.eventtap.event.newKeyEvent(keys, directionConfig.key, false):post() end)
+  end)
+  hs.timer.doAfter(SPACE_MOVEMENT_CONFIG.delays.release, function()
+    hs.eventtap.event.newMouseEvent(hs.eventtap.event.types.leftMouseUp, clickPos):post()
+    hs.mouse.absolutePosition(centerPos)
+    win:raise()
+    win:focus()
+    SPACE_MOVEMENT_CONFIG.inProgress = false
+  end)
 end
 
 hs.hotkey.bind(PREFIX_ACTION, "=", chain { GRID.fullScreen })
-hs.hotkey.bind(PREFIX_ACTION, "up", chain { GRID.topHalf, GRID.topLeft, GRID.topRight })
 hs.hotkey.bind(PREFIX_ACTION, "down", chain { GRID.bottomHalf, GRID.bottomLeft, GRID.bottomRight })
-hs.hotkey.bind(
-  PREFIX_ACTION,
-  "right",
-  chain { GRID.rightHalf, GRID.topRight, GRID.bottomRight, GRID.rightTwoThirds, GRID.rightThird }
-)
-hs.hotkey.bind(
-  PREFIX_ACTION,
-  "left",
-  chain { GRID.leftHalf, GRID.topLeft, GRID.bottomLeft, GRID.leftTwoThirds, GRID.leftThird }
-)
-
--- NOTE: Stop at 7 because Ctrl-Option-Cmd-8 inverts colors
-hs.hotkey.bind(HYPER_PREFIX_ACTION, "1", function() moveToSpace(1) end)
-hs.hotkey.bind(HYPER_PREFIX_ACTION, "2", function() moveToSpace(2) end)
+hs.hotkey.bind(PREFIX_ACTION, "up", chain { GRID.topHalf, GRID.topLeft, GRID.topRight })
+-- stylua: ignore
+hs.hotkey.bind(PREFIX_ACTION, "left", chain { GRID.leftHalf, GRID.topLeft, GRID.bottomLeft, GRID.leftTwoThirds, GRID.leftThird })
+-- stylua: ignore
+hs.hotkey.bind(PREFIX_ACTION, "right", chain { GRID.rightHalf, GRID.topRight, GRID.bottomRight, GRID.rightTwoThirds, GRID.rightThird })
 
 hs.hotkey.bind(HYPER_PREFIX_ACTION, "left", function() hs.window.frontmostWindow():moveOneScreenWest(nil, true) end)
 hs.hotkey.bind(HYPER_PREFIX_ACTION, "right", function() hs.window.frontmostWindow():moveOneScreenEast(nil, true) end)
 
-hs.hotkey.bind(HYPER_PREFIX_ACTION, "d", function()
-  local switcher = switchers[hs.window.focusedWindow():screen():id()]
-  switcher:previous()
-end)
-hs.hotkey.bind(HYPER_PREFIX_ACTION, "f", function()
-  local switcher = switchers[hs.window.focusedWindow():screen():id()]
-  switcher:next()
-end)
+hs.hotkey.bind(HYPER_PREFIX_ACTION, "d", function() SWITCHERS[hs.window.focusedWindow():screen():id()]:previous() end)
+hs.hotkey.bind(HYPER_PREFIX_ACTION, "f", function() SWITCHERS[hs.window.focusedWindow():screen():id()]:next() end)
+
+hs.hotkey.bind(HYPER_PREFIX_ACTION, "c", function() moveToSpace(HYPER_PREFIX_ACTION, "previous") end)
+hs.hotkey.bind(HYPER_PREFIX_ACTION, "v", function() moveToSpace(HYPER_PREFIX_ACTION, "next") end)
