@@ -227,11 +227,6 @@ function M.replace(str, pattern, repl, n)
   return string.gsub(str, pattern, repl, n)
 end
 
-function M.match(str, pattern, init)
-  pattern = string.gsub(pattern, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
-  return string.match(str, pattern, init)
-end
-
 ---Provides a machine-local way of disabling various custom configuration options/settings
 ---@param setting string
 ---@return boolean enabled

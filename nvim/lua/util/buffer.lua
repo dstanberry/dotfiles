@@ -173,7 +173,7 @@ end
 
 ---@alias util.buffer.lsp.range_params {textDocument: { uri: string }, range: { start: number, end: number }}
 
---- Custom implementation of `vim.lsp.util.make_range_params()`
+---Custom implementation of `vim.lsp.util.make_range_params()`
 ---@return util.buffer.lsp.range_params
 function M.make_lsp_range_params(range)
   local params = {}
