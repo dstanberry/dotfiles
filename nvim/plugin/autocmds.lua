@@ -8,7 +8,8 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     if vim.o.buftype ~= "nofile" then vim.cmd "checktime" end
   end,
 })
--- create director(y/ies) in path when saving a file
+
+-- create directories in path if necessary when saving a file
 vim.api.nvim_create_autocmd({ "BufWritePre", "FileWritePre" }, {
   group = filesystem,
   callback = function(args)
