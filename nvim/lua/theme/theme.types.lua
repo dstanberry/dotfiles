@@ -54,7 +54,7 @@
 ---@field overlay0 string
 ---@field overlay1 string
 
----@alias util.theme.name "kdark"|"catppuccin-frappe"|"catppuccin-mocha"
+---@alias util.theme.name string
 ---@alias util.theme.mode "light"|"dark"
 ---@alias util.theme.hl table<string,vim.api.keyset.highlight>
 ---@alias util.theme.highlights util.theme.hl[]
