@@ -53,8 +53,10 @@ return {
     init = function()
       vim.api.nvim_create_autocmd("BufEnter", {
         pattern = "copilot-*",
-        callback = function(args)
-          ds.ft.set_options(args.buf, { wo = { cursorline = false, number = false, relativenumber = false } })
+        callback = function()
+          vim.opt_local.cursorline = false
+          vim.opt_local.number = false
+          vim.opt_local.relativenumber = false
         end,
       })
     end,
