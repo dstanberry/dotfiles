@@ -1,25 +1,6 @@
 ---@class util.buffer
 local M = {}
 
----Creates a sandboxed buffer that cannot be saved but has highlighting enabled for the filetype
----@param filetype string
-function M.create_scratch(filetype)
-  local create_buf = function(ft)
-    vim.cmd.new { args = { "[Scratch]" }, range = { 20 } }
-    vim.bo.bufhidden = "wipe"
-    vim.bo.buflisted = false
-    vim.bo.buftype = "nofile"
-    vim.bo.swapfile = false
-    vim.bo.filetype = ft or vim.bo.filetype
-  end
-  if filetype then return create_buf(filetype) end
-  vim.ui.input({
-    prompt = "scratch buffer filetype: ",
-    default = vim.bo.filetype,
-    completion = "filetype",
-  }, function(ft) return create_buf(ft) end)
-end
-
 ---@class util.buffer.delete.opts
 ---@field buf? number Buffer to delete. Defaults to the current buffer
 ---@field force? boolean Delete the buffer even if it is modified

@@ -65,14 +65,6 @@ vim.keymap.set(
   { silent = false, expr = true, desc = "substitute occurences of word under cursor" }
 )
 
--- change the word under the cursor to it's semantic opposite
-vim.keymap.set(
-  "n",
-  "<c-w><c-t>",
-  function() vim.cmd { cmd = "ToggleWord" } end,
-  { silent = false, desc = "substitute word under cursor with antonym" }
-)
-
 -- NOTE: handled by |smart-splits.nvim|
 -- switch to left window
 -- vim.keymap.set("n", "<c-h>", "<c-w><c-h>")
