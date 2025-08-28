@@ -1,6 +1,6 @@
 return {
   {
-    "echasnovski/mini.ai",
+    "nvim-mini/mini.ai",
     event = "LazyFile",
     opts = function()
       local ai = require "mini.ai"
@@ -136,7 +136,7 @@ return {
     end,
   },
   {
-    "echasnovski/mini.align",
+    "nvim-mini/mini.align",
     keys = {
       { "g=", desc = "mini.align: align", mode = { "v", "n" } },
       { "g+", desc = "mini.align: align with preview", mode = { "v", "n" } },
@@ -149,7 +149,7 @@ return {
     },
   },
   {
-    "echasnovski/mini.files",
+    "nvim-mini/mini.files",
     keys = function()
       local _cwd = function() require("mini.files").open(vim.api.nvim_buf_get_name(0), true) end
 
@@ -258,7 +258,7 @@ return {
     end,
   },
   {
-    "echasnovski/mini.hipatterns",
+    "nvim-mini/mini.hipatterns",
     event = "LazyFile",
     opts = function(_, opts)
       local hipatterns = require "mini.hipatterns"
@@ -407,7 +407,7 @@ return {
     end,
   },
   {
-    "echasnovski/mini.icons",
+    "nvim-mini/mini.icons",
     lazy = true,
     init = function()
       package.preload["nvim-web-devicons"] = function()
@@ -457,7 +457,7 @@ return {
     },
   },
   {
-    "echasnovski/mini.operators",
+    "nvim-mini/mini.operators",
     keys = {
       { "<leader>ss", desc = "mini.operators: apply sort on <pattern>" },
     },
@@ -470,7 +470,7 @@ return {
     },
   },
   {
-    "echasnovski/mini.pairs",
+    "nvim-mini/mini.pairs",
     event = "LazyFile",
     opts = {
       modes = { insert = true, command = true, terminal = false },
@@ -525,7 +525,7 @@ return {
     end,
   },
   {
-    "echasnovski/mini.splitjoin",
+    "nvim-mini/mini.splitjoin",
     keys = {
       { "gj", desc = "mini.splitjoin: join arguments" },
       { "gJ", desc = "mini.splitjoin: split arguments" },
@@ -535,7 +535,7 @@ return {
     },
   },
   {
-    "echasnovski/mini.surround",
+    "nvim-mini/mini.surround",
     keys = function(_, keys)
       local opts = ds.plugin.get_opts "mini.surround"
       local mappings = {
