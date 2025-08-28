@@ -3,6 +3,7 @@ return {
   "angular-language-server",
   "basedpyright",
   "bash-language-server",
+  "copilot-language-server",
   "clangd",
   "cmake-language-server",
   "css-lsp",
