@@ -3,9 +3,9 @@ local M = {}
 ---@class remote.lsp.config
 ---@field disabled? boolean
 ---@field defer_setup? boolean
----@field config? vim.lsp.ClientConfig|lspconfig.Config|{root_dir: fun(fname: string): string}
----@field default_config? vim.lsp.ClientConfig|lspconfig.Config|{root_dir: fun(fname: string): string}
----@field setup? fun(config: vim.lsp.ClientConfig|lspconfig.Config)
+---@field config? vim.lsp.ClientConfig|{root_dir: fun(fname: string): string}
+---@field default_config? vim.lsp.ClientConfig|{root_dir: fun(fname: string): string}
+---@field setup? fun(config: vim.lsp.ClientConfig)
 
 ---@class LspCommand: lsp.ExecuteCommandParams
 ---@field open? boolean
@@ -301,9 +301,8 @@ M.setup = function()
     },
     update_in_insert = false,
     virtual_text = false,
-    --- @class vim.diagnostic.Opts.Float
-    ---@field border? string | table[]
     float = {
+      ---@diagnostic disable-next-line: assign-type-mismatch
       border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
       focusable = false,
       show_header = true,

@@ -178,7 +178,8 @@ return {
       },
     },
     config = function(_, opts)
-      require("mini.files").setup(opts)
+      local files = require "mini.files"
+      files.setup(opts)
 
       local filter_show = function() return true end
       local filter_hide = function(fs_entry) return not vim.startswith(fs_entry.name, ".") end
@@ -187,21 +188,21 @@ return {
       local toggle_dotfiles = function()
         show_dotfiles = not show_dotfiles
         local new_filter = show_dotfiles and filter_show or filter_hide
-        require("mini.files").refresh { content = { filter = new_filter } }
+        files.refresh { content = { filter = new_filter } }
       end
 
       local map_split = function(buf_id, lhs, direction, close_on_file)
         local rhs = function()
           local new_target_window
-          local cur_target_window = require("mini.files").get_target_window()
+          local cur_target_window = files.get_target_window()
           if cur_target_window ~= nil then
             vim.api.nvim_win_call(cur_target_window, function()
               vim.cmd("belowright " .. direction .. " split")
               new_target_window = vim.api.nvim_get_current_win()
             end)
 
-            require("mini.files").set_target_window(new_target_window)
-            require("mini.files").go_in { close_on_file = close_on_file }
+            files.set_target_window(new_target_window)
+            files.go_in { close_on_file = close_on_file }
           end
         end
 
@@ -260,7 +261,7 @@ return {
     "echasnovski/mini.hipatterns",
     event = "LazyFile",
     opts = function(_, opts)
-      local hi = require "mini.hipatterns"
+      local hipatterns = require "mini.hipatterns"
 
       local vtext = ds.pad(ds.icons.misc.FilledCircleLarge, "right")
       local style = "full" -- "full" | "compact"
@@ -310,8 +311,8 @@ return {
           if not group:match "^groups" then return end
           vim.cmd.colorscheme(vim.g.colors_name)
           if group then cache[group] = nil end
-          for _, buf in ipairs(hi.get_enabled_buffers()) do
-            hi.update(buf)
+          for _, buf in ipairs(hipatterns.get_enabled_buffers()) do
+            hipatterns.update(buf)
           end
         end),
       })
@@ -353,7 +354,7 @@ return {
           return { virt_text = { { vtext, data.hl_group } }, virt_text_pos = "inline", priority = 2000 }
         end,
       }
-      local hex = hi.gen_highlighter.hex_color { priority = 2000, style = "inline", inline_text = vtext }
+      local hex = hipatterns.gen_highlighter.hex_color { priority = 2000, style = "inline", inline_text = vtext }
       opts.highlighters.hex_color = {
         pattern = function(buf)
           local f = get_config_file(buf)
@@ -373,7 +374,7 @@ return {
           local r, g, b = match:sub(2, 2), match:sub(3, 3), match:sub(4, 4)
           local hex_color = "#" .. r .. r .. g .. g .. b .. b
 
-          return MiniHipatterns.compute_hex_color_group(hex_color, "fg")
+          return hipatterns.compute_hex_color_group(hex_color, "fg")
         end,
         extmark_opts = function(_, _, data)
           return { virt_text = { { vtext, data.hl_group } }, virt_text_pos = "inline", priority = 2000 }
