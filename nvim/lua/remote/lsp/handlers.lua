@@ -72,24 +72,24 @@ end
 
 ---@param old_fname string
 ---@param new_fname string
----@param rename_fn? fun()
-M.on_rename = function(old_fname, new_fname, rename_fn)
-  local buf = vim.fn.bufnr(old_fname)
-  local renamed = false
-  for _, c in pairs(vim.lsp.get_clients { bufnr = buf }) do
-    if c:supports_method "workspace/willRenameFiles" then
+---@param callback? fun()
+M.on_rename = function(old_fname, new_fname, callback)
+  local changes = { files = { { oldUri = vim.uri_from_fname(old_fname), newUri = vim.uri_from_fname(new_fname) } } }
+  local clients = vim.lsp.get_clients()
+
+  for _, client in pairs(clients) do
+    if client:supports_method "workspace/willRenameFiles" then
       ---@diagnostic disable-next-line: invisible
-      local res = c:request_sync("workspace/willRenameFiles", {
-        files = { { oldUri = vim.uri_from_fname(old_fname), newUri = vim.uri_from_fname(new_fname) } },
-      }, 1000, 0)
-      if res and res.result then
-        renamed = true
-        vim.lsp.util.apply_workspace_edit(res.result, c.offset_encoding)
+      local response = client:request_sync("workspace/willRenameFiles", changes, 1000, 0)
+      if response and response.result then
+        vim.lsp.util.apply_workspace_edit(response.result, client.offset_encoding)
       end
     end
   end
-  if rename_fn and type(rename_fn) == "function" then rename_fn() end
-  if not renamed then ds.warn("Workspace cannot be updated to match file rename", { title = "LSP" }) end
+  if callback and type(callback) == "function" then callback() end
+  for _, client in ipairs(clients) do
+    if client.supports_method "workspace/didRenameFiles" then client.notify("workspace/didRenameFiles", changes) end
+  end
 end
 
 ---@param client vim.lsp.Client

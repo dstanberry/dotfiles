@@ -215,6 +215,7 @@ end
 ---If supported, the workspace can be updated with the updated filename
 function M.rename()
   local buf = vim.api.nvim_get_current_buf()
+  if not buf or buf < 0 then return end
   local oldfile = assert(realpath(vim.api.nvim_buf_get_name(buf)))
   local root = assert(realpath(vim.fs.dirname(oldfile) or vim.uv.cwd() or "."))
   local filename = oldfile:sub(#root + 2)
@@ -224,16 +225,20 @@ function M.rename()
     completion = "file",
   }, function(newfile)
     if not newfile or newfile == "" or newfile == filename then return end
-    if ds.replace(newfile, root, "") == "" or newfile:sub(#newfile) == "/" then
-      ds.warn "Filename not provided!"
-      return
-    end
+    if ds.replace(newfile, root, "") == "" or newfile:sub(#newfile) == "/" then return end
     vim.fn.mkdir(vim.fs.dirname(newfile), "p")
     require("remote.lsp.handlers").on_rename(oldfile, newfile, function()
-      vim.fn.rename(oldfile, newfile)
-      vim.cmd.edit(newfile)
+      local ret = vim.fn.rename(oldfile, newfile)
+      if ret ~= 0 then
+        ds.warn(("Failed to rename file: `%s`"):format(oldfile))
+        return
+      end
+      local new_buf = vim.fn.bufadd(newfile)
+      vim.bo[new_buf].buflisted = true
+      for _, win in ipairs(vim.fn.win_findbuf(buf)) do
+        vim.api.nvim_win_call(win, function() vim.cmd.buffer(new_buf) end)
+      end
       vim.api.nvim_buf_delete(buf, { force = true })
-      vim.fn.delete(oldfile)
     end)
   end)
 end
