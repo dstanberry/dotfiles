@@ -74,10 +74,6 @@ return {
         assistant = string.format(" %s %s ", ds.icons.kind.Copilot, "Copilot"),
         user = string.format(" %s %s ", ds.icons.misc.User, (vim.env.USER or "User"):gsub("^%l", string.upper)),
       },
-      selection = function(source)
-        local select = require "CopilotChat.select"
-        return select.visual(source)
-      end,
       window = vim.o.columns > 180 and { layout = "vertical", width = 82 } or { layout = "horizontal", height = 0.4 },
       sticky = { "#buffers" },
       prompts = {
