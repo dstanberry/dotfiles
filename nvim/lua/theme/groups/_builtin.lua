@@ -140,18 +140,10 @@ M.get = function(c)
     gitcommitDiscardedFile                     = { fg = c.blue1, bold = true },
     gitcommitSelectedFile                      = { fg = c.green2, bold = true },
 
-    -- lsp codelens highlighting
-    LspCodeLens                                = { fg = ds.color.lighten(c.gray1, 20) },
-    LspCodeLensText                            = { fg = ds.color.lighten(c.gray1, 20) },
-    LspCodeLensSeparator                       = { fg = ds.color.lighten(c.gray1, 20) },
+    -- inline completion highlighting
+    ComplHint                                  = { fg = c.gray1, italic = true },
+    ComplHintMore                              = { fg = c.blue3 },
 
-    -- lsp inlay hints
-    LspInlayHint                               = { fg = c.gray1, bg = ds.color.blend(c.gray1, c.bg2, 0.2), italic = true },
-
-    -- lsp document highlighting
-    LspReferenceText                           = { underline = true, sp = c.gray1 },
-    LspReferenceRead                           = { underline = true, sp = c.gray1 },
-    LspReferenceWrite                          = { bold = true, italic = true, underline = true, sp = c.gray1 },
 
     -- lsp diagnostic highlighting
     DiagnosticDeprecated                       = { sp = c.red3, italic = true, strikethrough = true },
@@ -171,6 +163,19 @@ M.get = function(c)
     DiagnosticUnderlineWarn                    = { undercurl = true, sp = c.yellow0 },
     DiagnosticUnderlineInfo                    = { undercurl = true, sp = c.aqua1 },
     DiagnosticUnderlineHint                    = { undercurl = true, sp = c.magenta0 },
+
+    -- lsp codelens highlighting
+    LspCodeLens                                = { fg = ds.color.lighten(c.gray1, 20) },
+    LspCodeLensText                            = { fg = ds.color.lighten(c.gray1, 20) },
+    LspCodeLensSeparator                       = { fg = ds.color.lighten(c.gray1, 20) },
+
+    -- lsp inlay hints
+    LspInlayHint                               = { fg = c.gray1, bg = ds.color.blend(c.gray1, c.bg2, 0.2), italic = true },
+
+    -- lsp document highlighting
+    LspReferenceText                           = { underline = true, sp = c.gray1 },
+    LspReferenceRead                           = { underline = true, sp = c.gray1 },
+    LspReferenceWrite                          = { bold = true, italic = true, underline = true, sp = c.gray1 },
 
     -- statusline highlighting
     StatusLine                                 = { fg = c.fg0, bg = c.gray0 },

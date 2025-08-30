@@ -3,15 +3,28 @@ local M = {}
 ---@class remote.lsp.config
 ---@field disabled? boolean
 ---@field defer_setup? boolean
----@field config? vim.lsp.ClientConfig|{root_dir: fun(fname: string): string}
----@field default_config? vim.lsp.ClientConfig|{root_dir: fun(fname: string): string}
----@field setup? fun(config: vim.lsp.ClientConfig)
+---@field config? vim.lsp.ClientConfig|vim.lsp.Config|{root_dir: fun(fname: string): string}
+---@field setup? fun(config: vim.lsp.ClientConfig|vim.lsp.Config|{root_dir: fun(fname: string): string})
 
 ---@class LspCommand: lsp.ExecuteCommandParams
 ---@field open? boolean
 ---@field handler? lsp.Handler
 
 ---@alias LspClientFilter {id?: number, bufnr?: number, name?: string, method?: string, filter?:fun(client: vim.lsp.Client):boolean}
+
+M.run_code_action = setmetatable({}, {
+  __index = function(_, action)
+    return function()
+      vim.lsp.buf.code_action {
+        apply = true,
+        context = {
+          only = { action },
+          diagnostics = {},
+        },
+      }
+    end
+  end,
+})
 
 ---@param opts LspCommand
 function M.execute_command(opts)
@@ -41,7 +54,7 @@ function M.get_clients(opts)
 end
 
 ---@return lsp.ClientCapabilities
-M.get_client_capabilities = function()
+function M.get_client_capabilities()
   local extras = {}
   if ds.plugin.is_installed "blink.cmp" then
     local ok, blink_cmp = pcall(require, "blink.cmp")
@@ -52,7 +65,7 @@ end
 
 ---@param opts? { method?: fun(...) }
 ---@return elem_or_list<fun(client: vim.lsp.Client, init_result: lsp.InitializeResult)>
-M.on_init = function(opts)
+function M.on_init(opts)
   opts = opts or {}
   return function(client)
     local default_request = client.rpc.request
@@ -73,7 +86,7 @@ end
 ---@param old_fname string
 ---@param new_fname string
 ---@param callback? fun()
-M.on_rename = function(old_fname, new_fname, callback)
+function M.on_rename(old_fname, new_fname, callback)
   local changes = { files = { { oldUri = vim.uri_from_fname(old_fname), newUri = vim.uri_from_fname(new_fname) } } }
   local clients = vim.lsp.get_clients()
 
@@ -94,12 +107,20 @@ end
 
 ---@param client vim.lsp.Client
 ---@param bufnr integer
-M.on_attach = function(client, bufnr)
-  if client.server_capabilities.codeActionProvider then
+function M.on_attach(client, bufnr)
+  -- remove lsp default keymaps
+  ds.plugin.keymap_del("n", "gO")
+  ds.plugin.keymap_del("n", "gra")
+  ds.plugin.keymap_del("n", "gri")
+  ds.plugin.keymap_del("n", "grn")
+  ds.plugin.keymap_del("n", "grr")
+  ds.plugin.keymap_del("n", "grt")
+
+  if client:supports_method("textDocument/codeAction", bufnr) then
     vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr, desc = "lsp: code action" })
   end
 
-  if client.server_capabilities.codeLensProvider then
+  if client:supports_method("textDocument/codeLens", bufnr) then
     local _lens = function()
       vim.ui.select({ "display", "refresh", "run" }, {
         prompt = "Code Lens",
@@ -133,7 +154,11 @@ M.on_attach = function(client, bufnr)
     })
   end
 
-  if client.server_capabilities.definitionProvider then
+  if client:supports_method "textDocument/completion" then
+    vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
+  end
+
+  if client:supports_method("textDocument/definition", bufnr) then
     local _definition = vim.lsp.buf.definition
     local _type_definition = vim.lsp.buf.type_definition
     if ds.plugin.is_installed "snacks.nvim" then
@@ -144,11 +169,7 @@ M.on_attach = function(client, bufnr)
     vim.keymap.set("n", "gt", _type_definition, { buffer = bufnr, desc = "lsp: goto type definition" })
   end
 
-  if client.server_capabilities.documentFormattingProvider then
-    ds.plugin.keymap_set({ "n", "v" }, "ff", ds.format.format, { buffer = bufnr, desc = "lsp: format document" })
-  end
-
-  if client.server_capabilities.documentHighlightProvider then
+  if client:supports_method("textDocument/documentHighlight", bufnr) then
     local _references = vim.lsp.buf.references
     if ds.plugin.is_installed "snacks.nvim" then _references = function() Snacks.picker.lsp_references() end end
     vim.keymap.set("n", "gr", _references, { buffer = bufnr, desc = "lsp: show references" })
@@ -168,20 +189,47 @@ M.on_attach = function(client, bufnr)
     })
   end
 
-  if client.server_capabilities.hoverProvider then
+  if client:supports_method("textDocument/formatting", bufnr) then
+    ds.plugin.keymap_set({ "n", "v" }, "ff", ds.format.format, { buffer = bufnr, desc = "lsp: format document" })
+  end
+
+  if client:supports_method("textDocument/hover", bufnr) then
     vim.keymap.set("n", "gk", vim.lsp.buf.hover, { buffer = bufnr, desc = "lsp: show documentation" })
   end
 
-  if client.server_capabilities.inlayHintProvider then
+  if client:supports_method "textDocument/implementation" then
+    vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "lsp: goto implementation" })
+  end
+
+  if client:supports_method("textDocument/inlayHint", bufnr) then
     local _inlay_hints = function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end
     vim.keymap.set("n", "g<bs>", _inlay_hints, { buffer = bufnr, desc = "lsp: toggle inlay hints" })
   end
 
-  if client.server_capabilities.renameProvider then
+  if client:supports_method("textDocument/rename", bufnr) then
     vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename, { buffer = bufnr, desc = "lsp: rename symbol" })
   end
 
-  if client:supports_method "workspace/willRenameFiles" then
+  if client:supports_method("textDocument/signatureHelp", bufnr) then
+    -- NOTE: handled by |noice.nvim|
+    -- local lsp_signature = vim.api.nvim_create_augroup("lsp_signature", { clear = true })
+    -- vim.api.nvim_create_autocmd("CursorHoldI", {
+    --   group = lsp_signature,
+    --   desc = "LSP: Show signature help",
+    --   buffer = bufnr,
+    --   callback = vim.lsp.buf.signature_help,
+    -- })
+    vim.keymap.set("i", "<c-s>", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
+    vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
+  end
+
+  if client:supports_method("textDocument/documentSymbol", bufnr) then
+    local _symbols = function() vim.lsp.buf.workspace_symbol "" end
+    vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "lsp: show documents symbols" })
+    vim.keymap.set("n", "gw", _symbols, { buffer = bufnr, desc = "lsp: show workspace symbols" })
+  end
+
+  if client:supports_method("workspace/willRenameFiles", bufnr) then
     local _rename = function()
       vim.ui.input({ prompt = "New filename: " }, function(name)
         if not name then return end
@@ -204,24 +252,6 @@ M.on_attach = function(client, bufnr)
     vim.keymap.set("n", "g-", _rename, { buffer = bufnr, desc = "lsp: rename file" })
   end
 
-  if client.server_capabilities.signatureHelpProvider then
-    -- NOTE: handled by |noice.nvim|
-    -- local lsp_signature = vim.api.nvim_create_augroup("lsp_signature", { clear = true })
-    -- vim.api.nvim_create_autocmd("CursorHoldI", {
-    --   group = lsp_signature,
-    --   desc = "LSP: Show signature help",
-    --   buffer = bufnr,
-    --   callback = vim.lsp.buf.signature_help,
-    -- })
-    vim.keymap.set("i", "<c-h>", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
-    vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
-  end
-
-  local _symbols = function() vim.lsp.buf.workspace_symbol "" end
-  vim.keymap.set("n", "gi", vim.lsp.buf.implementation, { buffer = bufnr, desc = "lsp: goto implementation" })
-  vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "lsp: show documents symbols" })
-  vim.keymap.set("n", "gw", _symbols, { buffer = bufnr, desc = "lsp: show workspace symbols" })
-
   local _previous = function() vim.diagnostic.jump { count = -1 } end
   local _next = function() vim.diagnostic.jump { count = 1 } end
   vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr, desc = "lsp: show line diagnostics" })
@@ -229,22 +259,8 @@ M.on_attach = function(client, bufnr)
   vim.keymap.set("n", "gp", _previous, { buffer = bufnr, desc = "lsp: previous diagnostic" })
 end
 
-M.run_code_action = setmetatable({}, {
-  __index = function(_, action)
-    return function()
-      vim.lsp.buf.code_action {
-        apply = true,
-        context = {
-          only = { action },
-          diagnostics = {},
-        },
-      }
-    end
-  end,
-})
-
 ---@param opts? LspClientFilter
-M.format = function(opts)
+function M.format(opts)
   local default_fmt = ds.format.default_formatter
   local ok, fmt = pcall(require, default_fmt.modname)
   if not (default_fmt.name and default_fmt.modname) then
@@ -265,7 +281,7 @@ M.format = function(opts)
 end
 
 ---@param opts? util.format.formatter | {filter?: (string|LspClientFilter)}
-M.formatter = function(opts)
+function M.formatter(opts)
   opts = opts or {}
   local filter = opts.filter or {}
   filter = type(filter) == "string" and { name = filter } or filter
@@ -288,21 +304,13 @@ M.formatter = function(opts)
   return ds.plugin.deep_merge(ret, opts) --[[@as util.format.formatter]]
 end
 
-M.setup = function()
+function M.setup()
   vim.diagnostic.config {
     severity_sort = true,
-    signs = {
-      text = {
-        [vim.diagnostic.severity.ERROR] = ds.icons.diagnostics.Error,
-        [vim.diagnostic.severity.WARN] = ds.icons.diagnostics.Warn,
-        [vim.diagnostic.severity.HINT] = ds.icons.diagnostics.Hint,
-        [vim.diagnostic.severity.INFO] = ds.icons.diagnostics.Info,
-      },
-    },
     update_in_insert = false,
     virtual_text = false,
+    underline = { severity = { min = vim.diagnostic.severity.WARN } },
     float = {
-      ---@diagnostic disable-next-line: assign-type-mismatch
       border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
       focusable = false,
       show_header = true,
@@ -311,8 +319,13 @@ M.setup = function()
     jump = {
       on_jump = function(_, bufnr) vim.diagnostic.open_float { bufnr = bufnr, scope = "cursor", focus = false } end,
     },
-    underline = {
-      severity = { min = vim.diagnostic.severity.WARN },
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = ds.icons.diagnostics.Error,
+        [vim.diagnostic.severity.WARN] = ds.icons.diagnostics.Warn,
+        [vim.diagnostic.severity.HINT] = ds.icons.diagnostics.Hint,
+        [vim.diagnostic.severity.INFO] = ds.icons.diagnostics.Info,
+      },
     },
   }
 

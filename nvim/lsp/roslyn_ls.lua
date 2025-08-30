@@ -1,10 +1,31 @@
 ---@class remote.lsp.config
 local M = {}
 
-M.defer_setup = true
-
 M.config = {
+  cmd = {
+    "Microsoft.CodeAnalysis.LanguageServer",
+    "--logLevel",
+    "Information",
+    "--extensionLogDirectory",
+    vim.fs.joinpath(vim.uv.os_tmpdir(), "roslyn", "logs"),
+    "--stdio",
+  },
+  offset_encoding = "utf-8",
+  capabilities = {
+    textDocument = {
+      diagnostic = {
+        dynamicRegistration = true,
+      },
+    },
+  },
   settings = {
+    ["csharp|background_analysis"] = {
+      dotnet_analyzer_diagnostics_scope = "fullSolution",
+      dotnet_compiler_diagnostics_scope = "fullSolution",
+    },
+    ["csharp|code_lens"] = {
+      dotnet_enable_references_code_lens = true,
+    },
     ["csharp|completion"] = {
       dotnet_provide_regex_completions = true,
       dotnet_show_completion_items_from_unimported_namespaces = true,
@@ -28,13 +49,14 @@ M.config = {
       dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
       dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
     },
+    ["csharp|symbol_search"] = {
+      dotnet_search_reference_assemblies = true,
+    },
     navigation = {
       dotnet_navigate_to_decompiled_sources = true,
     },
   },
   on_attach = function(client, bufnr)
-    local handlers = require "remote.lsp.handlers"
-
     local _unused = function()
       if not (client and bufnr) then return end
 
@@ -81,26 +103,9 @@ M.config = {
       end
     end
 
-    handlers.on_attach(client, bufnr)
-
-    vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (csharp)" })
+    vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (dotnet)" })
     vim.keymap.set("n", "<leader>lu", _unused, { buffer = bufnr, desc = "dotnet: remove unused imports" })
   end,
 }
-
-M.setup = function(opts)
-  vim.api.nvim_create_autocmd("BufReadPre", {
-    group = ds.augroup "lsp_roslyn",
-    pattern = "*.cs",
-    once = true,
-    callback = function()
-      require("roslyn").setup {
-        config = vim.tbl_deep_extend("force", opts or {}, {
-          cmd = { vim.fn.exepath "roslyn-language-server" },
-        }),
-      }
-    end,
-  })
-end
 
 return M

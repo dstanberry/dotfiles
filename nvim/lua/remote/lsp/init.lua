@@ -1,6 +1,5 @@
 return {
   { "Bilal2453/luvit-meta", lazy = true },
-  { "seblj/roslyn.nvim", lazy = true },
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },
   {
@@ -21,6 +20,17 @@ return {
         { path = "snacks.nvim", words = { "Snacks" } },
       },
     },
+    config = function(_, opts)
+      local lsp = require "lazydev.lsp"
+      ---@diagnostic disable-next-line: duplicate-set-field
+      lsp.update = function(client)
+        lsp.assert(client)
+        client:notify("workspace/didChangeConfiguration", {
+          settings = { Lua = {} },
+        })
+      end
+      require("lazydev").setup(opts)
+    end,
   },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
@@ -59,47 +69,48 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    event = "LazyFile",
+    -- event = "LazyFile",
+    event = "FileType",
     dependencies = { "williamboman/mason.nvim" },
     init = function() vim.lsp.log.set_level(vim.lsp.log_levels.ERROR) end,
     config = function()
-      local lspconfig = require "lspconfig"
-      local configs = require "lspconfig.configs"
       local handlers = require "remote.lsp.handlers"
-      local root = "remote/lsp/servers"
-      local servers = {
+      local defaults = { capabilities = handlers.get_client_capabilities(), flags = { debounce_text_changes = 150 } }
+      local servers = { ---@type remote.lsp.config[]
         cmake = {},
         cssls = { init_options = { provideFormatter = false } },
         docker_compose_language_service = {},
         dockerls = {},
+        emmet_language_server = {},
         helm_ls = {},
         html = { init_options = { provideFormatter = false } },
         terraformls = {},
       }
-      local defaults = {
-        capabilities = handlers.get_client_capabilities(),
-        on_attach = handlers.on_attach,
-        flags = { debounce_text_changes = 150 },
-      }
 
-      ds.foreach(servers, function(config, s) servers[s] = vim.tbl_deep_extend("force", defaults, config or {}) end)
       handlers.setup()
-      ds.fs.walk(root, function(path, name, type)
+      ds.fs.walk("lsp", function(path, name, type)
         if (type == "file" or type == "link") and name:match "%.lua$" then
-          name = name:sub(1, -5)
-          local fname = path:match(root .. "/(.*)"):sub(1, -5):gsub("/", ".")
-          local mod = require(root:gsub("/", ".") .. "." .. fname) ---@type remote.lsp.config
+          local fname = name:sub(1, -5)
+          local mod = assert(loadfile(path))() ---@type remote.lsp.config
           if mod.disabled then return end
-          if mod.default_config then
-            configs[name] = vim.tbl_deep_extend("force", configs[name] or {}, { default_config = mod.default_config })
-          end
           mod.config = vim.tbl_deep_extend("force", defaults, mod.config or {})
           if mod.setup then mod.setup(mod.config) end
           if mod.defer_setup then return end
-          servers = vim.tbl_deep_extend("force", servers, { [name] = mod.config })
+          servers = vim.tbl_deep_extend("force", servers, { [fname] = mod.config })
         end
       end)
-      ds.foreach(servers, function(config, server) lspconfig[server].setup(config) end)
+      ds.foreach(servers, function(config, server)
+        if not config.capabilities then config = vim.tbl_deep_extend("force", defaults, config.config or {}) end
+        vim.lsp.config(server, config)
+      end)
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = ds.augroup "lspconfig",
+        callback = function(args)
+          local client = assert(vim.lsp.get_client_by_id(args.data.client_id)) ---@type vim.lsp.Client
+          handlers.on_attach(client, args.buf)
+        end,
+      })
+      vim.lsp.enable(vim.tbl_keys(servers))
     end,
   },
 }

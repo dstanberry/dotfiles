@@ -41,7 +41,6 @@ return {
           mode = "buffers",
           numbers = "none",
           left_mouse_command = "buffer %d",
-          ---@diagnostic disable-next-line: assign-type-mismatch
           right_mouse_command = nil,
           middle_mouse_command = function(buf) ds.buffer.delete(buf) end,
           close_command = function(buf) ds.buffer.delete(buf) end,
@@ -70,7 +69,7 @@ return {
           },
           get_element_icon = function(element)
             local mini_icons = package.loaded["mini.icons"]
-            if not mini_icons then return ds.icons.status.Error end
+            if not mini_icons then return ds.icons.documents.File end
             if element.filetype == "octo" or element.path:match "^octo:" then
               return mini_icons.get("extension", element.filetype)
             end

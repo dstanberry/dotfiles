@@ -43,7 +43,6 @@ M.config = function()
     ds.icons.border.Default
   )
 
-  ---@diagnostic disable-next-line: assign-type-mismatch
   layouts.telescope.layout.backdrop = true
   layouts.telescope.layout[1][1].title = ""
   layouts.telescope.layout[1][2].border = "top"

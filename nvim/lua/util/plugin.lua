@@ -6,7 +6,7 @@ local M = {}
 ---Otherwise, it falls back to `vim.tbl_deep_extend` with **force** enabled.
 ---@param ... any Tables to merge.
 ---@return table The merged table.
-M.deep_merge = function(...)
+function M.deep_merge(...)
   local ok, Util = pcall(require, "lazy.core.util")
   if not ok then return vim.tbl_deep_extend("force", ...) end
   return Util.merge(...)
@@ -15,14 +15,14 @@ end
 ---Gets the path of a package managed by `mason.nvim`.
 ---@param pkg string The package name.
 ---@param path? string Optional subpath within the package.
----@param opts? { warn?: boolean } Options for the function.
+---@param opts? { bin?: boolean, warn?: boolean } Options for the function.
 ---@return string The full path to the package or subpath.
-M.get_pkg_path = function(pkg, path, opts)
+function M.get_pkg_path(pkg, path, opts)
   local root = vim.fs.joinpath(vim.fn.stdpath "data", "mason")
   opts = opts or {}
   opts.warn = opts.warn == nil and true or opts.warn
   path = path or ""
-  local ret = vim.fs.joinpath(root, "packages", pkg, path)
+  local ret = vim.fs.joinpath(root, (opts.bin and "bin" or "packages"), pkg, path)
   if opts.warn and not vim.uv.fs_stat(ret) then
     vim.notify(
       ("Package path not found for **%s**:\n- `%s`\nYou may need to force update the package."):format(pkg, path),
@@ -36,7 +36,7 @@ end
 ---Retrieves the options for a specific plugin.
 ---@param name string The name of the plugin.
 ---@return table The options for the plugin, or an empty table if not found.
-M.get_opts = function(name)
+function M.get_opts(name)
   local Plugin = {}
   local ok, Config = pcall(require, "lazy.core.config")
   if not ok then return Plugin end
@@ -50,7 +50,7 @@ end
 ---Checks if a plugin is installed.
 ---@param plugin string The name of the plugin.
 ---@return boolean True if the plugin is installed, false otherwise.
-M.is_installed = function(plugin)
+function M.is_installed(plugin)
   local ok, Config = pcall(require, "lazy.core.config")
   if not ok then return false end
   return Config.spec.plugins[plugin] ~= nil
@@ -59,7 +59,7 @@ end
 ---Checks if a plugin is loaded.
 ---@param name string The name of the plugin.
 ---@return boolean|{[string]:string}|{time:number}
-M.is_loaded = function(name)
+function M.is_loaded(name)
   local ok, Config = pcall(require, "lazy.core.config")
   if not ok then return false end
   return Config.plugins[name] and Config.plugins[name]._.loaded or false
@@ -70,7 +70,7 @@ end
 ---Otherwise, it sets up an autocommand to execute the function when the plugin is loaded.
 ---@param name string The name of the plugin.
 ---@param fn fun(name:string) The function to execute.
-M.on_load = function(name, fn)
+function M.on_load(name, fn)
   if M.is_loaded(name) then
     fn(name)
   else
@@ -86,12 +86,33 @@ M.on_load = function(name, fn)
   end
 end
 
+---**Safely** deletes a keymap if it is already defined and not managed by `lazy.nvim`
+---@param mode string | string[] The mode(s) for the keymap.
+---@param lhs string The left-hand side of the keymap.
+function M.keymap_del(mode, lhs)
+  local modes = type(mode) == "string" and { mode } or mode
+  local ok, Handler = pcall(require, "lazy.core.handler")
+  if not ok then
+    for _, m in ipairs(modes) do
+      if vim.fn.maparg(lhs, m) ~= "" then pcall(vim.keymap.del, m, lhs) end
+    end
+    return
+  end
+  local keys = Handler.handlers.keys ---@cast keys LazyKeysHandler
+  modes = vim.tbl_filter(function(m) ---@param m string
+    return not (keys.have and keys:have(lhs, m))
+  end, modes)
+  for _, m in ipairs(modes) do
+    if vim.fn.maparg(lhs, m) ~= "" then pcall(vim.keymap.del, m, lhs) end
+  end
+end
+
 ---**Safely** sets a keymap without clobbering any existing mappings
 ---@param mode string | string[] The mode(s) for the keymap.
 ---@param lhs string The left-hand side of the keymap.
 ---@param rhs string|function The right-hand side of the keymap.
 ---@param opts? vim.keymap.set.Opts Optional keymap options.
-M.keymap_set = function(mode, lhs, rhs, opts)
+function M.keymap_set(mode, lhs, rhs, opts)
   local modes = type(mode) == "string" and { mode } or mode
   local ok, Handler = pcall(require, "lazy.core.handler")
   if not ok then
@@ -108,7 +129,7 @@ M.keymap_set = function(mode, lhs, rhs, opts)
     opts = opts or {}
     opts.silent = opts.silent ~= false
     if opts.remap and not vim.g.vscode then opts.remap = nil end
-    vim.keymap.set(modes, lhs, rhs, opts)
+    if vim.fn.maparg(lhs) == "" then vim.keymap.set(modes, lhs, rhs, opts) end
   end
 end
 
@@ -118,7 +139,7 @@ end
 ---@param fn fun():R? The function to execute.
 ---@param opts? string|{msg:string, on_error:fun(msg)} Options for error handling.
 ---@return R The result of the function, or nil if an error occurred.
-M.try_catch = function(fn, opts)
+function M.try_catch(fn, opts)
   local ok, Util = pcall(require, "lazy.core.util")
   if not ok then return opts end
   return Util.try(fn, opts)
@@ -160,7 +181,7 @@ M.initialized = false
 ---Sets up the remote plugin ecosystem
 ---Initializes `lazy.nvim`` and configures its settings.
 ---@param opts? table Optional setup options.
-M.setup = function(opts)
+function M.setup(opts)
   if not ds.setting_enabled "remote_plugins" or M.initialized then return end
   M.initialized = true
   opts = opts or {}

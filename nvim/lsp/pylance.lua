@@ -1,9 +1,9 @@
 ---@class remote.lsp.config
 local M = {}
 
-M.default_config = {
-  filetypes = { "python" },
+M.config = {
   cmd = { "pylance", "--stdio" },
+  filetypes = { "python" },
   root_dir = function(fname)
     return ds.root.detectors.pattern(
       fname,
@@ -11,21 +11,6 @@ M.default_config = {
     )[1]
   end,
   single_file_support = true,
-  settings = {
-    python = {
-      telemetry = {
-        telemetryLevel = "off",
-      },
-    },
-  },
-  description = [[
-      https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance
-      `pylance`, Fast, feature-rich language support for Python
-      ]],
-}
-
-M.config = {
-  cmd = { vim.fn.exepath "pylance", "--stdio" },
   settings = {
     python = {
       analysis = {
@@ -76,8 +61,6 @@ M.config = {
         arguments = { vim.uri_from_bufnr(bufnr):gsub("file://", ""), params.range },
       }
     end
-
-    handlers.on_attach(client, bufnr)
 
     vim.lsp.handlers["workspace/executeCommand"] = function(_, result)
       if result and result.label == "Extract Method" then

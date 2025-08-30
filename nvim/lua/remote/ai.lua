@@ -1,11 +1,13 @@
 return {
   {
     "zbirenbaum/copilot.lua",
+    enabled = not vim.lsp.inline_completion,
     build = ":Copilot auth",
     event = "LazyFile",
     cmd = "Copilot",
     init = function()
-      ds.snippet.ai = function()
+      ---@diagnostic disable-next-line: duplicate-set-field
+      ds.cmp.inline.accept = function()
         local copilot = require "copilot.suggestion"
         if copilot.is_visible() then
           local chord = vim.api.nvim_replace_termcodes("<c-g>u", true, true, true)
@@ -20,6 +22,7 @@ return {
           end)
           return true
         end
+        return false
       end
     end,
     opts = {

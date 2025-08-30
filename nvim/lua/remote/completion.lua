@@ -6,9 +6,10 @@ return {
     build = "cargo build --release",
     event = "InsertEnter",
     dependencies = {
-      "giuxtaposition/blink-cmp-copilot",
+      "L3MON4D3/LuaSnip",
       "kristijanhusak/vim-dadbod-completion",
       { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
+      (not ds.cmp.inline.available() and "giuxtaposition/blink-cmp-copilot" or nil),
     },
     opts = { ---@type blink.cmp.Config
       appearance = { use_nvim_cmp_as_default = false, kind_icons = ds.icons.kind },
@@ -49,29 +50,39 @@ return {
       },
       keymap = {
         preset = "none",
-        ["<tab>"] = { ds.snippet.coalesce { "jump", "ai" }, "fallback" },
+        ["<tab>"] = { ds.cmp.coalesce { "snippet.jump", "inline.accept" }, "fallback" },
         ["<s-tab>"] = { "snippet_backward", "fallback" },
         ["<cr>"] = { "accept", "fallback" },
         ["<up>"] = { "select_prev", "fallback" },
         ["<down>"] = { "select_next", "fallback" },
+        ["<c-t>"] = { function() ds.cmp.inline.cycle(-1) end },
+        ["<c-g>"] = { function() ds.cmp.inline.cycle() end },
         ["<c-space>"] = { "show", "show_documentation", "hide_documentation" },
-        ["<esc>"] = { "cancel", "fallback" },
         ["<c-c>"] = { "hide", "fallback" },
+        ["<esc>"] = { "cancel", "fallback" },
       },
       cmdline = { enabled = false },
       sources = {
-        default = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "path", "snippets" },
+        default = {
+          "buffer",
+          "dadbod",
+          "lazydev",
+          "lsp",
+          "path",
+          "snippets",
+          not ds.cmp.inline.available() and "copilot" or nil,
+        },
         providers = {
           buffer = { score_offset = 10 },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
-          lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
-          copilot = {
+          copilot = not ds.cmp.inline.available() and {
             name = "copilot",
             module = "blink-cmp-copilot",
             kind = "Copilot",
             async = true,
             score_offset = 100,
-          },
+          } or nil,
+          lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
           path = {
             score_offset = 10,
             enabled = function() return not vim.tbl_contains({ "copilot-chat" }, vim.bo.filetype) end,

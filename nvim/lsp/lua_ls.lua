@@ -12,7 +12,7 @@ M.config = {
       diagnostics = {
         enable = true,
         disable = { "cast-local-type", "missing-parameter", "param-type-mismatch" },
-        globals = { "ds" },
+        globals = { "ds", "vim" },
       },
       doc = { privateName = { "^_" } },
       format = { enable = false },
