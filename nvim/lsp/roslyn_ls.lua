@@ -57,8 +57,6 @@ M.config = {
     },
   },
   on_attach = function(client, bufnr)
-    local handlers = require "remote.lsp.handlers"
-
     local _unused = function()
       if not (client and bufnr) then return end
 
@@ -104,8 +102,6 @@ M.config = {
         vim.lsp.util.apply_text_edits(edits, bufnr, client.offset_encoding)
       end
     end
-
-    handlers.on_attach(client, bufnr)
 
     vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (dotnet)" })
     vim.keymap.set("n", "<leader>lu", _unused, { buffer = bufnr, desc = "dotnet: remove unused imports" })

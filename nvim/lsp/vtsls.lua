@@ -45,6 +45,14 @@ M.config = {
     local _unused = handlers.run_code_action["source.removeUnused.ts"]
     local _fix = handlers.run_code_action["source.fixAll.ts"]
 
+    ds.format.register(handlers.formatter {
+      name = "vtsls: organizeImports",
+      primary = false,
+      priority = 200,
+      filter = "ruff",
+      format = _organize,
+    })
+
     local _source = function()
       local params = vim.lsp.util.make_range_params(0, client.offset_encoding)
       handlers.execute_command {
@@ -61,16 +69,6 @@ M.config = {
         open = true,
       }
     end
-
-    handlers.on_attach(client, bufnr)
-
-    ds.format.register(handlers.formatter {
-      name = "vtsls: organizeImports",
-      primary = false,
-      priority = 200,
-      filter = "ruff",
-      format = _organize,
-    })
 
     vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (typescript)" })
 

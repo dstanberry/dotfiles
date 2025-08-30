@@ -16,7 +16,10 @@ M.config = {
       { vim.fn.exepath "ngserver", "--stdio", "--tsProbeLocations", ts_dirs, "--ngProbeLocations", ng_dirs }
   end,
   on_attach = function(client, bufnr)
-    local handlers = require "remote.lsp.handlers"
+    client.server_capabilities.documentFormattingProvider = false
+    client.server_capabilities.renameProvider = false
+
+    require("remote.lsp.handlers").on_attach(client, bufnr)
 
     local _switch = function()
       local params = vim.lsp.util.make_position_params(0, client.offset_encoding)
@@ -39,11 +42,6 @@ M.config = {
         end
       end)
     end
-
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.renameProvider = false
-
-    handlers.on_attach(client, bufnr)
 
     vim.keymap.set("n", "go", _switch, { buffer = bufnr, desc = "lsp: to component/template" })
   end,

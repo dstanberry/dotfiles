@@ -70,7 +70,7 @@ return {
           },
           get_element_icon = function(element)
             local mini_icons = package.loaded["mini.icons"]
-            if not mini_icons then return ds.icons.status.Error end
+            if not mini_icons then return ds.icons.documents.File end
             if element.filetype == "octo" or element.path:match "^octo:" then
               return mini_icons.get("extension", element.filetype)
             end

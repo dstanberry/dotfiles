@@ -4,14 +4,27 @@ local M = {}
 ---@field disabled? boolean
 ---@field defer_setup? boolean
 ---@field config? vim.lsp.ClientConfig|vim.lsp.Config|{root_dir: fun(fname: string): string}
----@field default_config? vim.lsp.ClientConfig|{root_dir: fun(fname: string): string}
----@field setup? fun(config: vim.lsp.ClientConfig)
+---@field setup? fun(config: vim.lsp.ClientConfig|vim.lsp.Config|{root_dir: fun(fname: string): string})
 
 ---@class LspCommand: lsp.ExecuteCommandParams
 ---@field open? boolean
 ---@field handler? lsp.Handler
 
 ---@alias LspClientFilter {id?: number, bufnr?: number, name?: string, method?: string, filter?:fun(client: vim.lsp.Client):boolean}
+
+M.run_code_action = setmetatable({}, {
+  __index = function(_, action)
+    return function()
+      vim.lsp.buf.code_action {
+        apply = true,
+        context = {
+          only = { action },
+          diagnostics = {},
+        },
+      }
+    end
+  end,
+})
 
 ---@param opts LspCommand
 function M.execute_command(opts)
@@ -41,7 +54,7 @@ function M.get_clients(opts)
 end
 
 ---@return lsp.ClientCapabilities
-M.get_client_capabilities = function()
+function M.get_client_capabilities()
   local extras = {}
   if ds.plugin.is_installed "blink.cmp" then
     local ok, blink_cmp = pcall(require, "blink.cmp")
@@ -52,7 +65,7 @@ end
 
 ---@param opts? { method?: fun(...) }
 ---@return elem_or_list<fun(client: vim.lsp.Client, init_result: lsp.InitializeResult)>
-M.on_init = function(opts)
+function M.on_init(opts)
   opts = opts or {}
   return function(client)
     local default_request = client.rpc.request
@@ -73,7 +86,7 @@ end
 ---@param old_fname string
 ---@param new_fname string
 ---@param callback? fun()
-M.on_rename = function(old_fname, new_fname, callback)
+function M.on_rename(old_fname, new_fname, callback)
   local changes = { files = { { oldUri = vim.uri_from_fname(old_fname), newUri = vim.uri_from_fname(new_fname) } } }
   local clients = vim.lsp.get_clients()
 
@@ -94,7 +107,7 @@ end
 
 ---@param client vim.lsp.Client
 ---@param bufnr integer
-M.on_attach = function(client, bufnr)
+function M.on_attach(client, bufnr)
   if client.server_capabilities.codeActionProvider then
     vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr, desc = "lsp: code action" })
   end
@@ -229,22 +242,8 @@ M.on_attach = function(client, bufnr)
   vim.keymap.set("n", "gp", _previous, { buffer = bufnr, desc = "lsp: previous diagnostic" })
 end
 
-M.run_code_action = setmetatable({}, {
-  __index = function(_, action)
-    return function()
-      vim.lsp.buf.code_action {
-        apply = true,
-        context = {
-          only = { action },
-          diagnostics = {},
-        },
-      }
-    end
-  end,
-})
-
 ---@param opts? LspClientFilter
-M.format = function(opts)
+function M.format(opts)
   local default_fmt = ds.format.default_formatter
   local ok, fmt = pcall(require, default_fmt.modname)
   if not (default_fmt.name and default_fmt.modname) then
@@ -265,7 +264,7 @@ M.format = function(opts)
 end
 
 ---@param opts? util.format.formatter | {filter?: (string|LspClientFilter)}
-M.formatter = function(opts)
+function M.formatter(opts)
   opts = opts or {}
   local filter = opts.filter or {}
   filter = type(filter) == "string" and { name = filter } or filter
@@ -288,19 +287,12 @@ M.formatter = function(opts)
   return ds.plugin.deep_merge(ret, opts) --[[@as util.format.formatter]]
 end
 
-M.setup = function()
+function M.setup()
   vim.diagnostic.config {
     severity_sort = true,
-    signs = {
-      text = {
-        [vim.diagnostic.severity.ERROR] = ds.icons.diagnostics.Error,
-        [vim.diagnostic.severity.WARN] = ds.icons.diagnostics.Warn,
-        [vim.diagnostic.severity.HINT] = ds.icons.diagnostics.Hint,
-        [vim.diagnostic.severity.INFO] = ds.icons.diagnostics.Info,
-      },
-    },
     update_in_insert = false,
     virtual_text = false,
+    underline = { severity = { min = vim.diagnostic.severity.WARN } },
     float = {
       ---@diagnostic disable-next-line: assign-type-mismatch
       border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
@@ -311,8 +303,13 @@ M.setup = function()
     jump = {
       on_jump = function(_, bufnr) vim.diagnostic.open_float { bufnr = bufnr, scope = "cursor", focus = false } end,
     },
-    underline = {
-      severity = { min = vim.diagnostic.severity.WARN },
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = ds.icons.diagnostics.Error,
+        [vim.diagnostic.severity.WARN] = ds.icons.diagnostics.Warn,
+        [vim.diagnostic.severity.HINT] = ds.icons.diagnostics.Hint,
+        [vim.diagnostic.severity.INFO] = ds.icons.diagnostics.Info,
+      },
     },
   }
 
