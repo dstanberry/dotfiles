@@ -99,7 +99,10 @@ return {
           servers = vim.tbl_deep_extend("force", servers, { [name] = mod.config })
         end
       end)
-      ds.foreach(servers, function(config, server) lspconfig[server].setup(config) end)
+      ds.foreach(servers, function(config, server)
+        if not lspconfig[server] then lspconfig[server] = config end
+        lspconfig[server].setup(config)
+      end)
     end,
   },
 }

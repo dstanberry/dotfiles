@@ -60,7 +60,8 @@ return {
       },
       cmdline = { enabled = false },
       sources = {
-        default = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "path", "snippets" },
+        -- default = { "buffer", "copilot", "dadbod", "lazydev", "lsp", "path", "snippets" },
+        default = { "buffer", "dadbod", "lazydev", "lsp", "path", "snippets" },
         providers = {
           buffer = { score_offset = 10 },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },

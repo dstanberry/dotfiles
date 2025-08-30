@@ -1,10 +1,12 @@
 return {
   {
     "zbirenbaum/copilot.lua",
+    enabled = false,
     build = ":Copilot auth",
     event = "LazyFile",
     cmd = "Copilot",
     init = function()
+      ---@diagnostic disable-next-line: duplicate-set-field
       ds.snippet.ai = function()
         local copilot = require "copilot.suggestion"
         if copilot.is_visible() then
