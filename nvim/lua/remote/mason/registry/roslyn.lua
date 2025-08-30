@@ -1,3 +1,5 @@
+-- See `https://dev.azure.com/azure-public/vside/_artifacts/feed/vs-impl/NuGet/Microsoft.CodeAnalysis.LanguageServer.<system>/overview`
+
 local domain_api = {
   feeds = "https://feeds.dev.azure.com/azure-public/vside/_apis/packaging/Feeds",
   pkgs = "https://pkgs.dev.azure.com/azure-public/vside/_apis/packaging/feeds",
@@ -17,7 +19,7 @@ local system = ds.tbl_reduce(systems, function(acc, v, k)
   return acc
 end) or systems.linux_x64
 
-local version = "5.0.0-1.25111.6"
+local version = "5.0.0-2.25429.11"
 
 return {
   name = "roslyn",
@@ -51,7 +53,7 @@ return {
         return package_metadata
       end
 
-      local basedir = vim.fn.expand "$MASON"
+      -- local basedir = vim.fn.expand "$MASON"
       local package_metadata = get_package_info()
       local download_artifact = string.format(
         [[
@@ -66,26 +68,30 @@ return {
       ctx.spawn.bash { "-c", download_artifact:gsub("\n", " ") }
       ctx.spawn.unzip { "roslyn.zip" }
       ctx:link_bin(
-        "roslyn-language-server",
-        ctx:write_shell_exec_wrapper(
-          "roslyn-language-server",
-          table.concat({
-            "dotnet",
-            vim.fs.joinpath(
-              basedir,
-              "packages",
-              "roslyn",
-              "content",
-              "LanguageServer",
-              system,
-              "Microsoft.CodeAnalysis.LanguageServer.dll"
-            ),
-            "--logLevel=Information",
-            "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.get_log_path()),
-            "--stdio",
-          }, " ")
-        )
+        "Microsoft.CodeAnalysis.LanguageServer",
+        vim.fs.joinpath("content", "LanguageServer", system, "Microsoft.CodeAnalysis.LanguageServer")
       )
+      -- ctx:link_bin(
+      --   "roslyn-language-server",
+      --   ctx:write_shell_exec_wrapper(
+      --     "roslyn-language-server",
+      --     table.concat({
+      --       "dotnet",
+      --       vim.fs.joinpath(
+      --         basedir,
+      --         "packages",
+      --         "roslyn",
+      --         "content",
+      --         "LanguageServer",
+      --         system,
+      --         "Microsoft.CodeAnalysis.LanguageServer.dll"
+      --       ),
+      --       "--logLevel=Information",
+      --       "--extensionLogDirectory=" .. vim.fs.dirname(vim.lsp.log.get_filename()),
+      --       "--stdio",
+      --     }, " ")
+      --   )
+      -- )
     end,
   },
 }

@@ -1,6 +1,5 @@
 return {
   { "Bilal2453/luvit-meta", lazy = true },
-  { "seblj/roslyn.nvim", lazy = true },
   { "mrcjkb/rustaceanvim", version = "^4", ft = { "rust" } },
   { "b0o/schemastore.nvim", lazy = true, version = false },
   {
