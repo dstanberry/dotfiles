@@ -25,7 +25,7 @@ M.default_config = {
 }
 
 M.config = {
-  cmd = { vim.fn.exepath "pylance", "--stdio" },
+  cmd = { "pylance", "--stdio" },
   settings = {
     python = {
       analysis = {

@@ -96,7 +96,7 @@ M.setup = function(opts)
     callback = function()
       require("roslyn").setup {
         config = vim.tbl_deep_extend("force", opts or {}, {
-          cmd = { vim.fn.exepath "roslyn-language-server" },
+          cmd = { "roslyn-language-server" },
         }),
       }
     end,
