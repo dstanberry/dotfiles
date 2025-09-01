@@ -8,6 +8,7 @@ if vim.env.VSCODE then vim.g.vscode = true end
 
 _G.ds = require "util"
 ds.fs.load_settings()
+ds.ui.virtcolumn()
 
 vim.cmd.colorscheme "kdark"
 

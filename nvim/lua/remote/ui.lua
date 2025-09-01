@@ -415,13 +415,6 @@ return {
     },
   },
   {
-    "lukas-reineke/virt-column.nvim",
-    event = "BufReadPre",
-    opts = {
-      char = ds.icons.misc.VerticalBarRight,
-    },
-  },
-  {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = function()
