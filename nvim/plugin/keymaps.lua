@@ -362,6 +362,27 @@ vim.keymap.set("c", "%p", function() return vim.fs.normalize(vim.api.nvim_buf_ge
 })
 
 ---------------------------------------------------------------
+-- => SELECT
+---------------------------------------------------------------
+-- v0.11 creates this keymap by default
+-- jump to the next snippet placeholder
+-- vim.keymap.set(
+--   "s",
+--   "<tab>",
+--   function() return vim.snippet.active { direction = 1 } and "<cmd>lua vim.snippet.jump(1)<cr>" or "<tab>" end,
+--   { expr = true, desc = "jump to the next snippet placeholder" }
+-- )
+
+-- v0.11 creates this keymap by default
+-- jump to the previous snippet placeholder
+-- vim.keymap.set(
+--   { "i", "s" },
+--   "<s-tab>",
+--   function() return vim.snippet.active { direction = -1 } and "<cmd>lua vim.snippet.jump(-1)<cr>" or "<s-tab>" end,
+--   { expr = true, desc = "jump to the previous snippet placeholder" }
+-- )
+
+---------------------------------------------------------------
 -- => Terminal
 ---------------------------------------------------------------
 -- leave terminal mode
