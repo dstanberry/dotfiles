@@ -110,5 +110,44 @@ return {
         },
       }
     end,
+    config = function(_, opts)
+      -- HACK: temporarily monkey-patch `vim.lsp`` deprecation warnings until fixed upstream
+      local ok, lsp = pcall(require, "trouble.sources.lsp")
+      if ok and type(lsp) == "table" then
+        local Promise = require "trouble.promise"
+        lsp.request = function(method, params, ropts)
+          ropts = ropts or {}
+          local buf = vim.api.nvim_get_current_buf()
+          local clients = {} ---@type vim.lsp.Client[]
+          if ropts.client then
+            clients = { ropts.client }
+          else
+            if vim.lsp.get_clients then
+              clients = vim.lsp.get_clients { method = method, bufnr = buf }
+            else
+              clients = vim.lsp.get_clients { bufnr = buf }
+              clients = vim.tbl_filter(function(client) ---@param client vim.lsp.Client
+                return client:supports_method(method)
+              end, clients)
+            end
+          end
+          return Promise.all(vim.tbl_map(function(client)
+            return Promise.new(function(resolve)
+              local p = type(params) == "function" and params(client) or params --[[@as table]]
+              client:request(
+                method,
+                p,
+                function(err, result) resolve { client = client, result = result, err = err, params = p } end,
+                buf
+              )
+            end)
+          end, clients)):next(function(results)
+            ---@param v trouble.lsp.Response<any,any>
+            return vim.tbl_filter(function(v) return v.result end, results)
+          end)
+        end
+      end
+      require("trouble").setup(opts)
+    end,
   },
 }

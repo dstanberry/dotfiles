@@ -21,6 +21,7 @@ return {
       },
     },
     config = function(_, opts)
+      -- HACK: temporarily monkey-patch `vim.lsp`` deprecation warnings until fixed upstream
       local lsp = require "lazydev.lsp"
       ---@diagnostic disable-next-line: duplicate-set-field
       lsp.update = function(client)
