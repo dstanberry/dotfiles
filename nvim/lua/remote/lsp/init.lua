@@ -84,6 +84,7 @@ return {
         emmet_language_server = {},
         helm_ls = {},
         html = { init_options = { provideFormatter = false } },
+        marksman = { root_markers = { ".marksman.toml", ".git", ".zk" } },
         terraformls = {},
       }
 
