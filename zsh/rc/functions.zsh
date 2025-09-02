@@ -3,23 +3,22 @@
 # support custom sub-commands
 cargo() {
   local PKG=$CONFIG_HOME/shared/packages/cargo.txt
-  if is_darwin; then
-    PKG=$CONFIG_HOME/shared/packages/cargo-macos.txt
-  fi
-  if [ "$1" = "save" ]; then
-    command cargo install --list | grep -E '^\w+' | awk '{ print $1 }' > "$PKG"
-  elif [ "$1" = "load" ]; then
-    if [ "$EUID" -eq 0 ]; then
-      echo "cargo load is not supported for root user"
-      exit 1
-    fi
-    while IFS= read -r line; do
-      [ -n "$line" ] && cargo install ${(z)line}
-
-    done < "$PKG"
-  else
-    command cargo "$@"
-  fi
+  is_darwin && PKG=$CONFIG_HOME/shared/packages/cargo-macos.txt
+  case "$1" in
+    save)
+      command cargo install --list | grep -E '^\w+' | awk '{print $1}' >"$PKG"
+      return ;;
+    load)
+      [ "$EUID" -eq 0 ] && {
+        echo "cargo load is not supported for root user"
+        exit 1
+      }
+      while IFS= read -r line; do
+        [ -n "$line" ] && cargo install ${(z)line}
+      done <"$PKG"
+      return ;;
+  esac
+  command cargo "$@"
 }
 
 # manually remove duplicate entries in history
@@ -35,28 +34,18 @@ clean_hist() {
 # interactively delete file(s) by name
 del() {
   emulate -L zsh
-  if [ $# -eq 0 ]; then
-    echo "error: at least one argument is required"
-    return 1
-  fi
+  [ $# -gt 0 ] || { echo "error: at least one argument is required"; return 1; }
   local filename=$1
-  if [[ $filename == .* ]]; then
-    filename=${filename/#/\\}
-  fi
-  if [ $# -eq 2 ]; then
-    fd "^${filename}$" $2 -tf -X rm -i
-  else
-    fd "^${filename}$" -tf -X rm -i
-  fi
+  [[ $filename == .* ]] && filename=${filename/#/\\}
+  [ $# -eq 2 ] && { fd "^${filename}$" "$2" -tf -X rm -i; return; }
+  fd "^${filename}$" -tf -X rm -i
 }
 
 # use side-by-side diff view if shell width is large enough
 delta() {
-  if [[ -n "$COLUMNS" ]] && [[ "$COLUMNS" -gt 200 ]]; then
-    command delta --side-by-side --width "$COLUMNS" $@
-  else
-    command delta $@
-  fi
+  [[ -n "$COLUMNS" && "$COLUMNS" -gt 200 ]] \
+    && command delta --side-by-side --width "$COLUMNS" "$@" \
+    || command delta "$@"
 }
 
 # poor man's fd runtime configuration
@@ -93,186 +82,176 @@ fp() {
 # support custom sub-commands
 gem() {
   local PKG=$CONFIG_HOME/shared/packages/gem.txt
-  if [ "$1" = "load" ]; then
-    if [ "$EUID" -eq 0 ]; then
-      echo "gem load is not supported for root user"
-      exit 1
-    fi
-    while IFS= read -r line; do
-      [ -n "$line" ] && gem install ${(z)line}
-
-    done < "$PKG"
-  else
-    command gem "$@"
-  fi
+  case "$1" in
+    load)
+      [ "$EUID" -eq 0 ] && {
+        echo "gem load is not supported for root user"
+        exit 1
+      }
+      while IFS= read -r line; do
+        [ -n "$line" ] && gem install ${(z)line}
+      done <"$PKG"
+      return ;;
+  esac
+  command gem "$@"
 }
 
 # support custom sub-commands
 git() {
   emulate -L zsh
-  local git_root wt_path
-  if [ "$1" = "fstash" ]; then
-    gstash
-  elif [ "$1" = "wta" ]; then
-    local branches=("${(@f)$(git branch | cut -c 3-)}")
-    git_root=$(command git rev-parse --path-format=absolute --git-common-dir)
-    dir_name="${2//\//-}"
-    wt_path="$git_root/$dir_name"
-    if (($branches[(Ie)$2])); then
-      command git worktree add "$wt_path" "$2"
-    else
-      command git worktree add -b "$2" "$wt_path"
-    fi
-    [ -d "$wt_path" ] && cd $wt_path
-  elif [ "$1" = "wtl" ]; then
-    wt_path=$(git worktree list \
-      | fzf --exit-0 --no-multi \
-		--header="Switch worktree" \
-		--preview="git graph -50 --color=always" \
-      | awk '{print $1}')
-    [ -d "$wt_path" ] && cd $wt_path
-  elif [ "$1" = "track-remote" ]; then
-    command git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
-  else
-    command git "$@"
-  fi
+  case "$1" in
+    wta)
+      local branches=("${(@f)$(git branch | cut -c 3-)}")
+      local root=$(command git rev-parse --path-format=absolute \
+        --git-common-dir)
+      local dir_name="${2//\//-}"
+      local wt_path="$root/$dir_name"
+      (( $branches[(Ie)$2] )) \
+        && command git worktree add "$wt_path" "$2" \
+        || command git worktree add -b "$2" "$wt_path"
+      [ -d "$wt_path" ] && cd "$wt_path"; return ;;
+    wtl)
+      local wt_path
+      wt_path=$(git worktree list | fzf --exit-0 --no-multi \
+        --header="Switch worktree" \
+        --preview="git graph -50 --color=always" | awk '{print $1}')
+      [ -d "$wt_path" ] && cd "$wt_path"; return ;;
+    track-remote)
+      command git config remote.origin.fetch \
+        "+refs/heads/*:refs/remotes/origin/*"; return ;;
+  esac
+  command git "$@"
 }
 
 # support custom sub-commands
 go() {
   local PKG=$CONFIG_HOME/shared/packages/go.txt
-  if is_darwin; then
-    PKG=$CONFIG_HOME/shared/packages/go-macos.txt
-  fi
-  if [ "$1" = "load" ]; then
-    if [ "$EUID" -eq 0 ]; then
-      echo "go load is not supported for root user"
-      exit 1
-    fi
-    while IFS= read -r line; do
-      [ -n "$line" ] && go install ${(z)line}
-
-    done < "$PKG"
-  else
-    command go "$@"
-  fi
-}
-
-# simplistic git-stash management
-# |enter| shows the contents of the stash
-# |alt-b| checks the stash out as a branch, for easier merging
-# |alt-d| shows a diff of the stash against your current HEAD
-# |alt-s| populates the command line with the command to drop the stash
-gstash() {
-  local out q k ref sha
-  while stash=$(
-    git stash list \
-      --pretty="%C(auto)%gD%Creset %C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs%Creset" |
-    fzf --ansi --no-sort --query="$q" --print-query \
-      --header "alt-b: apply selected, alt-d: see diff, alt-s: drop selected" \
-      --preview "git stash show -p {1} --color=always" \
-    --expect=alt-b,alt-d,alt-s,enter);
-  do
-    out=(${(f)"$(echo "$stash")"})
-    q="${out[1]}"
-    k="${out[2]}"
-    ref="${out[3]}"
-    ref="${ref%% *}"
-    sha="${out[3]}"
-    sha="${sha#refs* }"
-    sha="${sha%% *}"
-    [[ -z "$ref" || -z "$sha" ]] && continue
-    if [[ "$k" == 'alt-b' ]]; then
-      git stash branch "stash-$sha" "$sha"
-      break;
-    elif [[ "$k" == 'alt-d' ]]; then
-      git diff "$sha"
-      break;
-    elif [[ "$k" == 'alt-s' ]]; then
-      print -z "git stash drop $ref"
-      break
-    else
-      git stash show -p "$sha"
-    fi
-  done
+  is_darwin && PKG=$CONFIG_HOME/shared/packages/go-macos.txt
+  case "$1" in
+    load)
+      [ "$EUID" -eq 0 ] && {
+        echo "go load is not supported for root user"
+        exit 1
+      }
+      while IFS= read -r line; do
+        [ -n "$line" ] && go install ${(z)line}
+      done <"$PKG"
+      return ;;
+  esac
+  command go "$@"
 }
 
 # print response headers, following redirects.
 headers() {
-  if [ $# -ne 1 ]; then
-    echo "error: a host argument is required"
-    return 1
-  fi
-  local REMOTE=$1
-  curl -sSL -D - "$REMOTE" -o /dev/null
+  [ $# -eq 1 ] || { echo "error: need a host"; return 1; }
+  curl -sSL -D - "$1" -o /dev/null
 }
 
 # support custom sub-commands
 luarocks() {
-  local PKG=$CONFIG_HOME/shared/packages/luarocks.txt
-  if [ "$1" = "load" ]; then
-    if [ "$EUID" -eq 0 ]; then
-      echo "luarocks load is not supported for root user"
-      exit 1
-    fi
-    while IFS= read -r line; do
-      [ -n "$line" ] && luarocks --tree="${XDG_DATA_HOME}/luarocks" install ${(z)line}
-    done < "$PKG"
-  else
-    command luarocks "$@"
-  fi
+  local LUA_VERSION="5.1"
+  local TREE="${XDG_DATA_HOME}/luarocks"
+  local PKG="$CONFIG_HOME/shared/packages/luarocks.txt"
+  case "$1" in
+    load)
+      local -a installed missing wanted
+      installed=("${(@f)$(luarocks \
+         --tree="$TREE" --lua-version="$LUA_VERSION" \
+         list --porcelain \
+         | awk -F'\t' 'NF{print $1}' \
+         | sort -u)}")
+      local line name
+      while IFS= read -r line; do
+        [[ -z "$line" || "$line" == \#* ]] && continue
+        name="${line%% *}"
+        if (( ! $installed[(Ie)$name] )); then
+          missing+="$line"
+        fi
+        wanted+="$line"
+      done < "$PKG"
+      if (( ${#missing} == 0 )); then
+        echo "luarocks: all requested rocks already installed"
+        return 0
+      fi
+      local rockspec
+      mkdir -p "$TREE"
+      rockspec="$TREE/zsh-rocks-user-rockspec-0.0-0.rockspec"
+      {
+        echo 'rockspec_format = "3.0"'
+        echo 'package = "zsh-rocks-user-rockspec"'
+        echo 'version = "0.0-0"'
+        echo 'source = { url = "no-url" }'
+        echo 'dependencies = {'
+        for line in "${wanted[@]}"; do
+          printf '  "%s",\n' "${line//"/\\"}"
+        done
+        echo '}'
+        echo 'build = { type = "builtin" }'
+      } > "$rockspec"
+      echo "luarocks: installing missing (${#missing}) via single rockspec"
+      command luarocks \
+          install \
+          --lua-version="$LUA_VERSION" \
+          --tree="$TREE" \
+          --server="https://nvim-neorocks.github.io/rocks-binaries/" \
+          --deps-only \
+          "$rockspec"
+      rm -rf -- "$rockspec"
+      ;;
+    *)
+      command luarocks "$@"
+      ;;
+  esac
 }
 
 # custom |zk| wrapper
 notes() {
   emulate -L zsh
-  if [ $# -eq 0 ] || [ "$1" = "list" ]; then
-    zk list
-  elif [ "$1" = "edit" ]; then
-    zk edit --interactive
-  elif [ "$1" = "new" ]; then
-    local dir=$(fd . "$ZK_NOTEBOOK_DIR" \
-      --type d \
-      --exclude '.zk' \
-      -X printf '%s\n' {/} \
-      | fzf --exit-0 --no-multi \
-        --header 'Create note within:' \
-        --bind 'focus:transform-header(echo Create note within {1})' \
-        --preview '(eza -lh --icons $ZK_NOTEBOOK_DIR/{1} ||
-        ls -lh $ZK_NOTEBOOK_DIR/{1}) 2> /dev/null')
-    if [ "$dir" = "" ]; then
-      exit 0
-    fi
-    local title=""
-    vared -p 'Note title: ' title
-    zk new "${dir}" --title "$title"
-  fi
+  [ $# -eq 0 ] && { zk list; return; }
+  case "$1" in
+    list) zk list; return ;;
+    edit) zk edit --interactive; return ;;
+    new)
+      local dir title=""
+      dir=$( fd . "$ZK_NOTEBOOK_DIR" \
+        --type d \
+        --exclude '.zk' \
+        -X printf '%s\n' {/} \
+        | fzf --exit-0 --no-multi \
+          --header 'Create note within:' \
+          --bind 'focus:transform-header(echo Create note within {1})' \
+          --preview '(eza -lh --icons $ZK_NOTEBOOK_DIR/{1} ||
+        ls -lh $ZK_NOTEBOOK_DIR/{1}) 2> /dev/null' )
+      [ -n "$dir" ] || return
+      vared -p 'Note title: ' title
+      zk new "${dir}" --title "$title"
+      ;;
+  esac
 }
 
 # support custom sub-commands
 npm() {
   local PKG=$CONFIG_HOME/shared/packages/npm.txt
-  if [ "$1" = "save" ]; then
-    if [ "$EUID" -eq 0 ]; then
-      npm list -g --depth=0 | awk '{ print $2 }' \
+  case "$1" in
+    save)
+      local cmd="sudo npm list -g --depth=0"
+      [ "$EUID" -eq 0 ] && cmd="npm list -g --depth=0"
+      $cmd | awk '{print $2}' \
         | sed -r 's/^\(empty\)//' \
-        | sed '/^$/d' | grep -v 'npm@' > "$PKG"
-    else
-      sudo npm list -g --depth=0 | awk '{ print $2 }' \
-        | sed -r 's/^\(empty\)//' \
-        | sed '/^$/d' | grep -v 'npm@' > "$PKG"
-    fi
-  elif [ "$1" = "load" ]; then
-    if [ "$EUID" -eq 0 ]; then
-      echo "npm load is not supported for root user"
-      exit 1
-    fi
-    while IFS= read -r line; do
-      [ -n "$line" ] && npm install -g ${(z)line}
-    done < "$PKG"
-  else
-    command npm "$@"
-  fi
+        | sed '/^$/d' \
+        | grep -v 'npm@' >"$PKG"
+      return ;;
+    load)
+      [ "$EUID" -eq 0 ] && {
+        echo "npm load is not supported for root user"
+        exit 1
+      }
+      while IFS= read -r line; do
+        [ -n "$line" ] && npm install -g ${(z)line}
+      done <"$PKG"
+      return ;;
+  esac
+  command npm "$@"
 }
 
 # set npm default configuration options
@@ -288,113 +267,96 @@ _npm_config() {
   if [[ "$EUID" -gt 0 ]] && [[ "$_current" != "$prefix" ]]; then
     npm config set prefix "$_prefix"
   fi
-  # print some arbitrary result so that it can be cached (by |evalcache|)
   echo "NPM_CONFIG_USERPREFIX=$_prefix"
 }
 _evalcache _npm_config
 
 # poor man's rg runtime configuration
 rg() {
-  command rg --colors line:fg:yellow \
+  command rg \
+    --colors line:fg:yellow \
     --colors line:style:bold \
     --colors path:fg:blue \
     --colors path:style:bold \
     --colors match:fg:magenta \
     --colors match:style:underline \
     --smart-case \
-      --pretty "$@" | less -iFMRSX
-  }
+    --pretty "$@" | less -iFMRSX
+}
 
-  # display information about a remote ssl certificate
-  ssl() {
-    emulate -L zsh
-    if [ $# -eq 0 ]; then
-      echo "error: a host argument is required"
-      return 1
-    fi
-    local REMOTE=$1
-    if [ $# -eq 2 ];then
-      local PORT=$2
-      echo | openssl s_client -showcerts -servername "$REMOTE" \
-        -connect "$REMOTE:$PORT" 2>/dev/null \
-        | openssl x509 -inform pem -noout -text
-    else
-      echo | openssl s_client -showcerts -servername "$REMOTE" \
-        -connect "$REMOTE:443" 2>/dev/null \
-        | openssl x509 -inform pem -noout -text
-    fi
+# display information about a remote ssl certificate
+ssl() {
+  emulate -L zsh
+  [ $# -gt 0 ] || {
+    echo "error: a host argument is required"
+    return 1
   }
+  local REMOTE=$1
+  local PORT=${2:-443}
+  echo | openssl s_client -showcerts -servername "$REMOTE" \
+    -connect "$REMOTE:$PORT" 2>/dev/null | \
+    openssl x509 -inform pem -noout -text
+}
 
-  # print a pruned version of a tree
-  subtree() {
-    tree -a --prune -P "$@"
-  }
+# print a pruned version of a tree
+subtree() {
+  tree -a --prune -P "$@"
+}
 
-  # shell profiler
-  profile() {
-    local shell=${1-$SHELL}
-    for i in $(seq 1 10); do time $shell -i -c exit; done
-  }
+# shell profiler
+profile() {
+  local shell=${1-$SHELL}
+  for i in $(seq 1 10); do time $shell -i -c exit; done
+}
 
-  # try to run tmux with session management
-  tmux() {
-    emulate -L zsh
-    local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
-    if [ -r "$SSH_AUTH_SOCK" ] && [ ! -L "$SSH_AUTH_SOCK" ]; then
-      ln -sf "$SSH_AUTH_SOCK" $SOCK_SYMLINK
-    fi
-    if [[ -n "$*" ]]; then
-      env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux "$@"
+# try to run tmux with session management
+tmux() {
+  emulate -L zsh
+  local SOCK_SYMLINK=~/.ssh/ssh_auth_sock
+  [ -r "$SSH_AUTH_SOCK" ] && [ ! -L "$SSH_AUTH_SOCK" ] && \
+    ln -sf "$SSH_AUTH_SOCK" "$SOCK_SYMLINK"
+  [ $# -gt 0 ] && { env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux "$@"; return; }
+  if [ -x .tmux ]; then
+    local DIGEST REPLY SESSION_NAME
+    DIGEST="$(openssl dgst -sha512 .tmux)"
+    grep -q "$DIGEST" "${TMUX_CONFIG_HOME}"/tmux.digests 2>/dev/null && { \
+      ./.tmux; return; }
+    cat .tmux
+    read -k 1 -r \
+      'REPLY?Trust (and run) this .tmux file? (t = trust, otherwise = skip) '
+    echo
+    [[ $REPLY =~ ^[Tt]$ ]] || {
+      SESSION_NAME=$(basename ${${PWD}//[.:]/_})
+      env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
       return
-    fi
-    if [ -x .tmux ]; then
-      local DIGEST
-      DIGEST="$(openssl dgst -sha512 .tmux)"
-      if ! grep -q "$DIGEST" "${TMUX_CONFIG_HOME}"/tmux.digests 2> /dev/null; then
-        cat .tmux
-        read -k 1 -r \
-          'REPLY?Trust (and run) this .tmux file? (t = trust, otherwise = skip) '
-        echo
-        if [[ $REPLY =~ ^[Tt]$ ]]; then
-          echo "$DIGEST" >> "${TMUX_CONFIG_HOME}"/tmux.digests
-          ./.tmux
-          return
-        fi
-      else
-        ./.tmux
-        return
-      fi
-    fi
-    local SESSION_NAME
-    SESSION_NAME=$(basename ${$(pwd)//[.:]/_})
-    env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
-  }
+    }
+    echo "$DIGEST" >>"${TMUX_CONFIG_HOME}"/tmux.digests
+    ./.tmux
+    return
+  fi
+  local SESSION_NAME
+  SESSION_NAME=$(basename ${${PWD}//[.:]/_})
+  env SSH_AUTH_SOCK=$SOCK_SYMLINK tmux new -A -s "$SESSION_NAME"
+}
 
-  # traverse parent directories in a trivial manner
-  up() {
-    if [[ "$#" == 0 ]]; then
-      cd ..
-    else
-      for ((i=0; i<$1; i++)) ; do
-        CDSTR="../$CDSTR"
-      done
-      cd "$CDSTR" || exit
-    fi
-  }
+# traverse parent directories in a trivial manner
+up() {
+  [ $# -eq 0 ] && { cd ..; return; }
+  local CDSTR=""
+  for ((i=0; i<$1; i++)); do CDSTR="../$CDSTR"; done
+  cd "$CDSTR" || exit
+}
 
-  # define configuration path for vim
-  vim() {
-    local MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
-    local __viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
-    __viminit+="${VIM_CONFIG_HOME}/after"
-    if is_darwin; then
-      # add fzf binary to rtp
-      __viminit+=",/usr/local/opt/fzf"
-    fi
-    __viminit+="|:source ${MYVIMRC}"
-    local viminit="VIMINIT='$__viminit'"
-    eval "$viminit command vim $*"
-  }
+# define configuration path for vim
+vim() {
+  local MYVIMRC="${VIM_CONFIG_HOME}/vimrc"
+  local __viminit=":set runtimepath+=${VIM_CONFIG_HOME},"
+  __viminit+="${VIM_CONFIG_HOME}/after"
+  is_darwin && __viminit+=",/usr/local/opt/fzf"
+  __viminit+="|:source ${MYVIMRC}"
+  local viminit="VIMINIT='$__viminit'"
+  eval "$viminit command vim $*"
+}
 
 # poor man's wget runtime configuration
 wget() {

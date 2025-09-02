@@ -207,6 +207,12 @@ if hash gpg 2> /dev/null; then
   export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
 fi
 
+# define configuration path for luarocks
+if hash luarocks 2> /dev/null; then
+  export LUA_PATH=$(luarocks path --lr-path)
+  export LUA_CPATH=$(luarocks path --lr-cpath)
+fi
+
 # define configuration path for mysql
 if hash mysql 2> /dev/null; then
   export MYSQL_HISTFILE="$XDG_DATA_HOME/mysql_history"
