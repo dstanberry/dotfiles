@@ -8,7 +8,6 @@ if vim.env.VSCODE then vim.g.vscode = true end
 
 _G.ds = require "util"
 ds.fs.load_settings()
-ds.ui.virtcolumn()
 
 vim.cmd.colorscheme "kdark"
 
@@ -16,6 +15,7 @@ ds.plugin.setup {
   on_init = function()
     ds.fs.load_dirhash(vim.env.SHELL)
     ds.root.setup()
+    ds.ui.virtcolumn()
     ds.color.sync_term_bg()
 
     vim.g.dotfiles_dir = vim.fs.joinpath(vim.env.HOME, ".config")
