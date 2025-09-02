@@ -60,7 +60,7 @@ if hash luarocks 2> /dev/null; then
   NEWPATH="$(luarocks path --lr-bin)":$NEWPATH
 fi
 
-# add lua binaries to path if present
+# add npm binaries to path if present
 if hash npm 2> /dev/null; then
   NPM="${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin"
   NEWPATH=$NPM:$NEWPATH
@@ -111,6 +111,6 @@ fi
 # ensure no duplicate entries are present in PATH
 dedup_pathvar NEWPATH
 NEWPATH=$(echo "$NEWPATH" | sed 's/::/:/g')
-# print the result so that it can be cached (by |evalcache|)
+# print the result so that it can be cached (by `evalcache`)
 echo "export PATH=$NEWPATH"
 unset NEWPATH
