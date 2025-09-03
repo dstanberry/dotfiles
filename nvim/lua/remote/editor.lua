@@ -92,12 +92,10 @@ return {
             format = function(buf) require("conform").format { bufnr = buf } end,
             sources = function(buf)
               local ret = require("conform").list_formatters(buf)
-              ---@param v conform.FormatterInfo
               return vim.tbl_map(function(v) return v.name end, ret)
             end,
           }
           ds.foreach(keys, function(entry)
-            ---@type util.format.toggle.opts
             local opts = vim.tbl_extend("force", {}, entry.opts)
             if ds.plugin.is_installed "snacks.nvim" then
               Snacks.toggle({
@@ -114,21 +112,53 @@ return {
       })
     end,
     opts = function()
-      local function first(bufnr, ...) end
-      ---@type conform.setupOpts
+      local config_resolvers = {
+        prettier = function(ctx)
+          local c = vim.fn.system { "prettier", "--find-config-path", ctx.filename }
+          if vim.v.shell_error == 0 and c and c ~= "" then return (c:gsub("%s+$", "")) end
+        end,
+        stylua = function(ctx)
+          local dir = ds.root.detectors.pattern(ctx.buf, { "stylua.toml" })[1]
+          if dir then return vim.fs.joinpath(dir, "stylua.toml") end
+        end,
+        ["markdownlint-cli2"] = function(ctx)
+          local conf
+          -- stylua: ignore
+          local patterns = {
+            ".markdownlint-cli2.jsonc", ".markdownlint-cli2.yaml",
+            ".markdownlint-cli2.cjs", ".markdownlint-cli2.mjs",
+            ".markdownlint.jsonc", ".markdownlint.json",
+            ".markdownlint.yaml", ".markdownlint.yml",
+            ".markdownlint.cjs", ".markdownlint.mjs",
+            "package.json",
+          }
+          ds.foreach(patterns, function(v)
+            if not conf then
+              local dir = ds.root.detectors.pattern(ctx.buf, { v })[1]
+              if dir then conf = vim.fs.joinpath(dir, v) end
+            end
+          end)
+          return conf
+        end,
+      }
+      local get_config = ds.memoize(function(tool, ctx)
+        local r = config_resolvers[tool]
+        return (r and r(ctx)) or false
+      end)
+
       return {
         default_format_opts = { async = false, quiet = false, lsp_format = "fallback", timeout_ms = 3000 },
         formatters_by_ft = {
           bash = { "shfmt" },
-          css = { "prettierd", "prettier", stop_after_first = true },
+          css = { "prettier" },
           go = { "goimports", "gofumpt" },
           groovy = { "npm-groovy-lint" },
-          html = { "prettierd", "prettier", stop_after_first = true },
-          javascript = { "prettierd", "prettier", stop_after_first = true },
-          javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+          html = { "prettier" },
+          javascript = { "prettier" },
+          javascriptreact = { "prettier" },
           jenkinsfile = { "npm-groovy-lint" },
-          json = { "prettierd", "prettier", stop_after_first = true },
-          jsonc = { "prettierd", "prettier", stop_after_first = true },
+          json = { "prettier" },
+          jsonc = { "prettier" },
           lua = { "stylua" },
           markdown = { "prettier", "markdownlint-cli2", "markdown-toc" },
           ["markdown.mdx"] = { "prettier", "markdownlint-cli2", "markdown-toc" },
@@ -136,22 +166,19 @@ return {
           -- python = { "injected", "black" },
           python = { "black" },
           rust = { "rustfmt" },
-          scss = { "prettierd", "prettier", stop_after_first = true },
+          scss = { "prettier" },
           sh = { "shfmt" },
           sql = { "sqlfluff" },
           terraform = { "terraform_fmt" },
           ["terraform-vars"] = { "terraform_fmt" },
           tf = { "terraform_fmt" },
-          typescript = { "prettierd", "prettier", stop_after_first = true },
-          typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+          typescript = { "prettier" },
+          typescriptreact = { "prettier" },
           yaml = { "yamlfmt" },
           zsh = { "beautysh" },
         },
-        ---@type table<string, conform.FormatterConfigOverride|fun(bufnr: integer): nil|conform.FormatterConfigOverride>
         formatters = {
-          beautysh = {
-            args = { "-i", "2", "-" },
-          },
+          beautysh = { args = { "-i", "2", "-" } },
           ["markdown-toc"] = {
             condition = function(_, ctx)
               for _, line in ipairs(vim.api.nvim_buf_get_lines(ctx.buf, 0, -1, false)) do
@@ -162,97 +189,28 @@ return {
           },
           ["markdownlint-cli2"] = {
             prepend_args = function(_, ctx)
-              local patterns = {
-                ".markdownlint-cli2.jsonc",
-                ".markdownlint-cli2.yaml",
-                ".markdownlint-cli2.cjs",
-                ".markdownlint-cli2.mjs",
-                ".markdownlint.jsonc",
-                ".markdownlint.json",
-                ".markdownlint.yaml",
-                ".markdownlint.yml",
-                ".markdownlint.cjs",
-                ".markdownlint.mjs",
-                "package.json",
-              }
-              local conf
-              ds.foreach(patterns, function(v, _)
-                if not conf then
-                  conf = ds.root.detectors.pattern(ctx.buf, { v })[1]
-                  if conf then conf = vim.fs.joinpath(conf, v) end
-                end
-              end)
-              return {
-                "--config",
-                conf or vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, "shared", "formatters", "def.markdownlint.json"),
-              }
+              local config = get_config("markdownlint-cli2", ctx)
+              local fallback = vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, "shared", "formatters", "def.markdownlint.json")
+              return { "--config", config or fallback }
             end,
           },
           prettier = {
             prepend_args = function(_, ctx)
-              local patterns = {
-                ".prettierrc",
-                ".prettierrc.jsonc",
-                ".prettierrc.json",
-                ".prettierrc.yaml",
-                ".prettierrc.js",
-                ".prettierrc.mjs",
-                ".prettierrc.cjs",
-                ".prettierrc.toml",
-                "package.json",
-              }
-              local conf
-              ds.foreach(patterns, function(v, _)
-                if not conf then
-                  conf = ds.root.detectors.pattern(ctx.buf, { v })[1]
-                  if conf then conf = vim.fs.joinpath(conf, v) end
-                end
-              end)
-              return {
-                "--config",
-                conf or vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, "shared", "formatters", "prettierrc.json"),
-              }
-            end,
-          },
-          prettierd = {
-            env = function(_, ctx)
-              local patterns = {
-                ".prettierrc",
-                ".prettierrc.jsonc",
-                ".prettierrc.json",
-                ".prettierrc.yaml",
-                ".prettierrc.js",
-                ".prettierrc.mjs",
-                ".prettierrc.cjs",
-                ".prettierrc.toml",
-                "package.json",
-              }
-              local conf
-              ds.foreach(patterns, function(v, _)
-                if not conf then
-                  conf = ds.root.detectors.pattern(ctx.buf, { v })[1]
-                  if conf then conf = vim.fs.joinpath(conf, v) end
-                end
-              end)
-              return {
-                PRETTIERD_DEFAULT_CONFIG = conf
-                  or vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, "shared", "formatters", "prettierrc.json"),
-              }
+              local config = get_config("prettier", ctx)
+              local fallback = vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, "shared", "formatters", "prettierrc.json")
+              return { "--config", config or fallback }
             end,
           },
           shfmt = {
             condition = function(_, ctx) return not vim.fs.basename(vim.api.nvim_buf_get_name(ctx.buf)):match "^%.env" end,
             prepend_args = { "-i", "2", "-ci", "-sr", "-s", "-bn" },
           },
-          sqlfluff = {
-            args = { "format", "--dialect=postgres", "-" },
-          },
+          sqlfluff = { args = { "format", "--dialect=postgres", "-" } },
           stylua = {
             args = function(_, ctx)
-              local conf = ds.root.detectors.pattern(ctx.buf, { "stylua.toml" })[1]
-              conf = conf and vim.fs.joinpath(conf, "stylua.toml")
-                or vim.fs.joinpath(vim.fn.stdpath "config", "stylua.toml")
-              return { "--config-path", conf, "--stdin-filepath", "$FILENAME", "-" }
+              local config = get_config("stylua", ctx)
+              local fallback = vim.fs.joinpath(vim.fn.stdpath "config", "stylua.toml")
+              return { "--config-path", config or fallback, "--stdin-filepath", "$FILENAME", "-" }
             end,
           },
         },

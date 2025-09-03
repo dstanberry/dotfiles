@@ -120,21 +120,6 @@ function M.reverse(list)
   return list
 end
 
---- @deprecated Use |vim.tbl_map()|
----
----Creates a new table populated with the results of calling a provided function
----on every key-value pair in the calling table
----@generic T: table
----@param list T[] | table
----@param callback fun(item: T, key: string | number, list): T
----@return T[] #A new table with each key-value pair being the result of the callback function
-function M.tbl_map(callback, list)
-  return M.tbl_reduce(list, function(acc, v, k)
-    table.insert(acc, callback(v, k))
-    return acc
-  end, {})
-end
-
 ---Searches for a partial match of a string `needle` in a list `haystack`
 ---@param haystack string[]
 ---@param needle string
@@ -177,6 +162,21 @@ function M.tbl_reduce(list, callback, acc)
     end
   end
   return acc
+end
+
+local memcache = {} ---@type table<(fun()), table<string, any>>
+
+---Creates a memoized version of the provided function `fn`
+---@generic T: fun()
+---@param fn T
+---@return T
+function M.memoize(fn)
+  return function(...)
+    local key = vim.inspect { ... }
+    memcache[fn] = memcache[fn] or {}
+    if memcache[fn][key] == nil then memcache[fn][key] = fn(...) end
+    return memcache[fn][key]
+  end
 end
 
 ---Adds whitespace to the start, end or both start and end of a string
