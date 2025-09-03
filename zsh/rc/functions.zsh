@@ -156,7 +156,8 @@ luarocks() {
     load)
       local -a installed missing wanted
       installed=("${(@f)$(luarocks \
-         --tree="$TREE" --lua-version="$LUA_VERSION" \
+         --lua-version="$LUA_VERSION" \
+         --tree="$TREE" \
          list --porcelain \
          | awk -F'\t' 'NF{print $1}' \
          | sort -u)}")
@@ -190,9 +191,9 @@ luarocks() {
       } > "$rockspec"
       echo "luarocks: installing missing (${#missing}) via single rockspec"
       command luarocks \
-          install \
           --lua-version="$LUA_VERSION" \
           --tree="$TREE" \
+          install \
           --server="https://nvim-neorocks.github.io/rocks-binaries/" \
           --deps-only \
           "$rockspec"

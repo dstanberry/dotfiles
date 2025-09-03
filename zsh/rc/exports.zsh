@@ -174,21 +174,25 @@ if test -d "$XDG_DATA_HOME/cargo" || hash cargo 2> /dev/null; then
 fi
 
 # define configuration path for dotnet
-if hash dotnet 2> /dev/null; then
-  export DOTNET_CLI_HOME="${CONFIG_HOME}/dotnet"
-  export DOTNET_CLI_TELEMETRY_OPTOUT=1
-  if test -d "/usr/local/share/dotnet"; then
-    export DOTNET_ROOT="/usr/local/share/dotnet"
-  elif is_gentoo && hash dotnet 2> /dev/null; then
-    _dotnet_root=$(eselect dotnet list 2> /dev/null \
-      | grep $(eselect dotnet show) 2> /dev/null \
-      | grep -oP '\(\K[^\)]+')
-    if test -d "$_dotnet_root"; then
-      export DOTNET_ROOT="$_dotnet_root"
-    fi
-    unset _dotnet_root
-  fi
-fi
+_dotnet_env() {
+  hash dotnet 2>/dev/null || return
+  print -r -- "export DOTNET_CLI_HOME=\"${CONFIG_HOME}/dotnet\""
+  print -r -- "export DOTNET_CLI_TELEMETRY_OPTOUT=1"
+  [ -d /usr/local/share/dotnet ] && {
+    print -r -- "export DOTNET_ROOT=\"/usr/local/share/dotnet\""
+    return
+  }
+  is_gentoo || return
+  local _dotnet_root
+  _dotnet_root=$(
+    eselect dotnet list 2>/dev/null \
+      | grep "$(eselect dotnet show)" 2>/dev/null \
+      | grep -oP '\(\K[^\)]+'
+  )
+  [ -d "$_dotnet_root" ] && \
+    print -r -- "export DOTNET_ROOT=\"$_dotnet_root\""
+}
+_evalcache _dotnet_env
 
 # define configuration path for rubygems
 if hash gem 2> /dev/null; then
@@ -208,10 +212,16 @@ if hash gpg 2> /dev/null; then
 fi
 
 # define configuration path for luarocks
-if hash luarocks 2> /dev/null; then
-  export LUA_PATH=$(luarocks path --lr-path)
-  export LUA_CPATH=$(luarocks path --lr-cpath)
-fi
+_luarocks_env() {
+  hash luarocks 2>/dev/null || return
+  if is_gentoo; then
+    print -r -- 'export LUA_PATH="/usr/share/lua/5.1/?.lua;$LUA_PATH"'
+  else
+    print -r -- "export LUA_PATH=\"$(luarocks path --lr-path)\""
+  fi
+  print -r -- "export LUA_CPATH=\"$(luarocks path --lr-cpath)\""
+}
+_evalcache _luarocks_env
 
 # define configuration path for mysql
 if hash mysql 2> /dev/null; then
@@ -280,11 +290,18 @@ if hash zoxide 2> /dev/null; then
 fi
 
 # load uv configuration when available
+_uv_complete() {
+  unfunction _uv_complete 2>/dev/null
+  hash uv 2>/dev/null || return
+  _evalcache uv generate-shell-completion zsh
+  _evalcache uvx --generate-shell-completion zsh
+}
+
 if hash uv 2> /dev/null; then
   export UV_CACHE_DIR="${XDG_CACHE_HOME}/uv"
   if [ ! -d "${UV_CACHE_DIR}" ]; then
     mkdir -p "${UV_CACHE_DIR}"
   fi
-  _evalcache uv generate-shell-completion zsh
-  _evalcache uvx --generate-shell-completion zsh
+  compdef _uv_complete uv
+  compdef _uv_complete uvx
 fi
