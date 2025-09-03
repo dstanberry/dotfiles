@@ -161,18 +161,18 @@ return {
       options = { use_as_default_explorer = false },
       windows = { preview = false },
       mappings = {
-        change_cwd = "gc",
+        change_cwd = "<a-c>",
         close = "q",
         go_in = "l",
         go_out = "h",
         go_in_plus = "<cr>",
-        go_out_plus = "",
+        go_out_plus = "-",
         go_in_vertical = "<c-v>",
-        reset = "<BS>",
+        reset = "<bs>",
         reveal_cwd = "@",
         show_help = "g?",
         synchronize = "=",
-        toggle_hidden = "g.",
+        toggle_hidden = "<a-h>",
         trim_left = "<",
         trim_right = ">",
       },
@@ -181,35 +181,9 @@ return {
       local files = require "mini.files"
       files.setup(opts)
 
+      local show_dotfiles = true
       local filter_show = function() return true end
       local filter_hide = function(fs_entry) return not vim.startswith(fs_entry.name, ".") end
-      local show_dotfiles = true
-
-      local toggle_dotfiles = function()
-        show_dotfiles = not show_dotfiles
-        local new_filter = show_dotfiles and filter_show or filter_hide
-        files.refresh { content = { filter = new_filter } }
-      end
-
-      local map_split = function(buf_id, lhs, direction, close_on_file)
-        local rhs = function()
-          local new_target_window
-          local cur_target_window = files.get_target_window()
-          if cur_target_window ~= nil then
-            vim.api.nvim_win_call(cur_target_window, function()
-              vim.cmd("belowright " .. direction .. " split")
-              new_target_window = vim.api.nvim_get_current_win()
-            end)
-
-            files.set_target_window(new_target_window)
-            files.go_in { close_on_file = close_on_file }
-          end
-        end
-
-        local desc = "mini.files: open in " .. direction .. " split"
-        if close_on_file then desc = desc .. " and close" end
-        vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
-      end
 
       local files_set_cwd = function()
         local cur_entry_path = MiniFiles.get_fs_entry().path
@@ -217,43 +191,55 @@ return {
         if cur_directory ~= nil then vim.fn.chdir(cur_directory) end
       end
 
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "MiniFilesWindowOpen",
-        callback = function(args)
-          local win_id = args.data.win_id
+      local toggle_dotfiles = function()
+        show_dotfiles = not show_dotfiles
+        files.refresh { content = { filter = show_dotfiles and filter_show or filter_hide } }
+      end
 
-          local config = vim.api.nvim_win_get_config(win_id)
-          config.border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default)
-          config.title_pos = "center"
-          vim.api.nvim_win_set_config(win_id, config)
-        end,
+      local map_split = function(buf_id, lhs, direction, close_on_file)
+        local rhs = function()
+          local new_target
+          local current_target = files.get_explorer_state().target_window
+          if current_target ~= nil then
+            vim.api.nvim_win_call(current_target, function()
+              vim.cmd("belowright " .. direction .. " split")
+              new_target = vim.api.nvim_get_current_win()
+            end)
+            files.set_target_window(new_target)
+            files.go_in { close_on_file = close_on_file }
+          end
+        end
+        local desc = ("mini.files: open in %s split"):format(direction)
+        if close_on_file then desc = desc .. " and close" end
+        vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
+      end
+
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "MiniFilesActionRename",
+        callback = function(args) require("remote.lsp.handlers").on_rename(args.data.from, args.data.to) end,
       })
 
       vim.api.nvim_create_autocmd("User", {
         pattern = "MiniFilesBufferCreate",
         callback = function(args)
           local buf_id = args.data.buf_id
-
-          vim.keymap.set(
-            "n",
-            opts.mappings.toggle_hidden,
-            toggle_dotfiles,
-            { buffer = buf_id, desc = "mini.files: toggle hidden" }
-          )
-          vim.keymap.set(
-            "n",
-            opts.mappings.change_cwd,
-            files_set_cwd,
-            { buffer = args.data.buf_id, desc = "mini.files: set cwd" }
-          )
-
-          map_split(buf_id, opts.mappings.go_in_vertical, "vertical", true)
+          local m = opts.mappings
+          vim.keymap.set("n", "<esc>", files.close, { buffer = buf_id, desc = "mini.files: close explorer" })
+          vim.keymap.set("n", m.toggle_hidden, toggle_dotfiles, { buffer = buf_id, desc = "mini.files: toggle hidden" })
+          vim.keymap.set("n", m.change_cwd, files_set_cwd, { buffer = args.data.buf_id, desc = "mini.files: set cwd" })
+          map_split(buf_id, m.go_in_vertical, "vertical", true)
         end,
       })
 
       vim.api.nvim_create_autocmd("User", {
-        pattern = "MiniFilesActionRename",
-        callback = function(args) require("remote.lsp.handlers").on_rename(args.data.from, args.data.to) end,
+        pattern = "MiniFilesWindowOpen",
+        callback = function(args)
+          local win_id = args.data.win_id
+          local config = vim.api.nvim_win_get_config(win_id)
+          config.border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default)
+          config.title_pos = "center"
+          vim.api.nvim_win_set_config(win_id, config)
+        end,
       })
     end,
   },

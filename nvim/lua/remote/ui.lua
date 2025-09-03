@@ -390,6 +390,7 @@ return {
         ["<c-h>"] = false,
         ["<c-t>"] = { "actions.select", opts = { tab = true } },
         ["<c-s>"] = { "actions.select", opts = { vertical = true } },
+        ["<esc>"] = "actions.close",
         ["-"] = "actions.parent",
         ["_"] = false,
         ["g."] = false,
