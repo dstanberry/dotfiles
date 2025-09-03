@@ -26,9 +26,7 @@ return {
       ---@diagnostic disable-next-line: duplicate-set-field
       lsp.update = function(client)
         lsp.assert(client)
-        client:notify("workspace/didChangeConfiguration", {
-          settings = { Lua = {} },
-        })
+        client:notify("workspace/didChangeConfiguration", { settings = { Lua = {} } })
       end
       require("lazydev").setup(opts)
     end,
@@ -47,30 +45,18 @@ return {
     keys = function()
       local keymap = require "ft.markdown.keymaps"
       local keys = {}
-      for k, v in pairs(keymap) do
-        table.insert(keys, { k, v[1], desc = v[2] or "", mode = v[3] or "n" })
-      end
+      ds.foreach(keymap, function(v, k) table.insert(keys, { k, v[1], desc = v[2] or "", mode = v[3] or "n" }) end)
       return keys
     end,
     opts = {
       picker = "snacks_picker",
-      lsp = {
-        config = {
-          cmd = { "zk", "lsp" },
-          name = "zk",
-          root_dir = vim.env.ZK_NOTEBOOK_DIR,
-        },
-      },
-      auto_attach = {
-        enabled = true,
-        filetypes = { "markdown" },
-      },
+      lsp = { config = { cmd = { "zk", "lsp" }, name = "zk", root_dir = vim.env.ZK_NOTEBOOK_DIR } },
+      auto_attach = { enabled = true, filetypes = { "markdown" } },
     },
     config = function(_, opts) require("zk").setup(opts) end,
   },
   {
     "neovim/nvim-lspconfig",
-    -- event = "LazyFile",
     event = "FileType",
     dependencies = { "williamboman/mason.nvim" },
     init = function() vim.lsp.log.set_level(vim.lsp.log_levels.ERROR) end,

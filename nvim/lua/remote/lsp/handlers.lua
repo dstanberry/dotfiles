@@ -155,7 +155,9 @@ function M.on_attach(client, bufnr)
   end
 
   if client:supports_method "textDocument/completion" then
-    vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
+    if not ds.plugin.is_installed "blink.cmp" then
+      vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
+    end
   end
 
   if client:supports_method("textDocument/definition", bufnr) then
