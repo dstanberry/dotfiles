@@ -1,13 +1,5 @@
 return {
   {
-    "vhyrro/luarocks.nvim",
-    priority = 1000,
-    lazy = false,
-    opts = {
-      rocks = { "tiktoken_core" },
-    },
-  },
-  {
     "folke/persistence.nvim",
     event = "LazyFile",
     opts = {
