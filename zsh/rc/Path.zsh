@@ -2,13 +2,9 @@
 
 # base directory for system-wide available scripts
 ULOCAL="/usr/local/bin"
-# base directory for user local binaries
-LOCAL="${HOME}/.local/bin"
-
 # include directory in PATH
-NEWPATH=$LOCAL:$ULOCAL:$PATH
+NEWPATH=$ULOCAL:$PATH
 unset ULOCAL
-unset LOCAL
 
 # HACK: set default gem configuration options
 _gem_config() {
@@ -107,6 +103,11 @@ elif is_wsl; then
   unset QMK
   unset WBEM
 fi
+
+# base directory for user local binaries
+LOCAL="${HOME}/.local/bin"
+NEWPATH=$LOCAL:$PATH
+unset LOCAL
 
 # ensure no duplicate entries are present in PATH
 dedup_pathvar NEWPATH
