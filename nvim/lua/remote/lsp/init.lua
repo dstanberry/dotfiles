@@ -69,6 +69,8 @@ return {
         docker_compose_language_service = {},
         dockerls = {},
         emmet_language_server = {},
+        gh_actions_ls = {},
+        graphql = {},
         helm_ls = {},
         html = { init_options = { provideFormatter = false } },
         marksman = { root_markers = { ".marksman.toml", ".git", ".zk" } },
