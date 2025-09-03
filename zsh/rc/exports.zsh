@@ -153,6 +153,10 @@ if is_darwin; then
   export LC_CTYPE=en_US.UTF-8
   export LC_ALL=en_US.UTF-8
 
+  # ensure brew overrides are defined
+  export BREW_PREFIX="${BREW_PREFIX:-/opt/homebrew}"
+  export MANPATH="$BREW_PREFIX/opt/coreutils/libexec/gnuman:${MANPATH}"
+
   # ensure brew apps are not quarantined
   export HOMEBREW_CASK_OPTS=--no-quarantine
 fi

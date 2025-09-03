@@ -6,65 +6,16 @@ ULOCAL="/usr/local/bin"
 NEWPATH=$ULOCAL:$PATH
 unset ULOCAL
 
-# HACK: set default gem configuration options
-_gem_config() {
-  OLDIFS=$IFS
-  IFS=:
-  P=""
-  for i in $(gem environment gempath); do
-    if [ -d "$i/bin" ]; then
-      P="$i/bin":$PATH
-    fi
-    ud=$(gem env | grep 'USER INSTALLATION DIRECTORY' | awk -F':' '{ print $2 }')
-    p="${ud##*/.gem/}"
-    if [ -d "$i/$p/bin" ]; then
-      P="$i/$p/bin":$PATH
-    fi
-  done
-  IFS=$OLDIFS
-  echo "$P"
-}
-
-# add ruby gems to path if present
-if hash gem 2> /dev/null; then
-  NEWPATH=$NEWPATH:"$(_gem_config)"
-fi
-
-# add cargo binaries to path if present
-CARGO="${CARGO_HOME:-$HOME/.local/share/cargo}/bin"
-if test -d "$CARGO" || hash cargo 2> /dev/null; then
-  NEWPATH=$CARGO:$NEWPATH
-fi
-unset CARGO
-
-# add dotnet installed tools to path if present
-if hash dotnet 2> /dev/null; then
-  DOTNET_TOOLS="${XDG_DATA_HOME:-$HOME/.local/share}/dotnet/tools"
-  NEWPATH=$NEWPATH:$DOTNET_TOOLS
-  unset DOTNET_TOOLS
-fi
-
-# add go binaries to path if present
-if hash go 2> /dev/null; then
-  GO="${GOPATH:-$HOME/.local/share/go}/bin"
-  NEWPATH=$GO:$NEWPATH
-  unset GO
-fi
-
-# add lua binaries to path if present
-if hash luarocks 2> /dev/null; then
-  NEWPATH="$(luarocks path --lr-bin)":$NEWPATH
-fi
-
-# add npm binaries to path if present
-if hash npm 2> /dev/null; then
-  NPM="${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin"
-  NEWPATH=$NPM:$NEWPATH
-  unset NPM
-fi
-
 # define macOS specific paths
 if is_darwin; then
+  # cull existing visual studio code paths
+  NEWPATH="$(echo $NEWPATH | tr : '\n' | grep -iv '/Applications/Visual' | paste -s -d: -)"
+
+  # re-add vscode path with escaped whitesapce
+  VSCODE="/Applications/Visual\ Studio\ Code.app/Contents/Resources/app/bin"
+  NEWPATH=$NEWPATH:$VSCODE
+  unset VSCODE
+
   # homebrew may install binaries here
   BREW="/usr/local/sbin"
   NEWPATH=$BREW:$NEWPATH
@@ -74,8 +25,26 @@ if is_darwin; then
   FZF="/usr/local/opt/fzf/bin"
   NEWPATH=$FZF:$NEWPATH
   unset FZF
+
+  # ensure homebrew binaries are available
+  BP="${BREW_PREFIX:-/opt/homebrew}"
+  B="$BP/bin"
+  S="$BP/sbin"
+  RUBY="$BP/opt/ruby/bin"
+  RUBYGEM="$BP/lib/ruby/gems/3.0.0/bin"
+  GNUBIN="$BP/opt/coreutils/libexec/gnubin"
+  NEWPATH=$B:$S:$RUBY:$RUBYGEM:$GNUBIN:$NEWPATH
+  echo "$(${BP}/bin/brew shellenv)"
+  unset B 
+  unset S 
+  unset BP 
+  unset RUBY
+  unset RUBYGEM
+  unset GNUBIN
+fi
+
 # define wsl specific paths
-elif is_wsl; then
+if is_wsl; then
   # HACK: expose native specific Windows utils
   WIN="/mnt/c/Windows"
   SYS32="/mnt/c/Windows/System32"
@@ -104,14 +73,70 @@ elif is_wsl; then
   unset WBEM
 fi
 
+# HACK: set default gem configuration options
+_gem_config() {
+  OLDIFS=$IFS
+  IFS=:
+  P=""
+  for i in $(gem environment gempath); do
+    if [ -d "$i/bin" ]; then
+      P="$i/bin":$NEWPATH
+    fi
+    ud=$(gem env | grep 'USER INSTALLATION DIRECTORY' | awk -F':' '{ print $2 }')
+    p="${ud##*/.gem/}"
+    if [ -d "$i/$p/bin" ]; then
+      P="$i/$p/bin":$NEWPATH
+    fi
+  done
+  IFS=$OLDIFS
+  echo "$P"
+}
+
+# add ruby gems to path if present
+if hash gem 2> /dev/null; then
+  NEWPATH=$NEWPATH:"$(_gem_config)"
+fi
+
+# add cargo binaries to path if present
+CARGO="${CARGO_HOME:-$HOME/.local/share/cargo}/bin"
+if test -d "$CARGO" || hash cargo 2> /dev/null; then
+  NEWPATH=$CARGO:$NEWPATH
+fi
+unset CARGO
+
+# add dotnet installed tools to path if present
+DOTNET_TOOLS="${XDG_DATA_HOME:-$HOME/.local/share}/dotnet/tools"
+if test -d "$DOTNET_TOOLS" || hash dotnet 2> /dev/null; then
+  NEWPATH=$DOTNET_TOOLS:$NEWPATH
+fi
+unset DOTNET_TOOLS
+
+# add go binaries to path if present
+GO="${GOPATH:-$HOME/.local/share/go}/bin"
+if test -d "$GO" || hash go 2> /dev/null; then
+  NEWPATH=$GO:$NEWPATH
+fi
+unset GO
+
+# add lua binaries to path if present
+if hash luarocks 2> /dev/null; then
+  NEWPATH="$(luarocks path --lr-bin)":$NEWPATH
+fi
+
+# add npm binaries to path if present
+if hash npm 2> /dev/null; then
+  NPM="${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin"
+  NEWPATH=$NPM:$NEWPATH
+  unset NPM
+fi
+
 # base directory for user local binaries
 LOCAL="${HOME}/.local/bin"
-NEWPATH=$LOCAL:$PATH
+NEWPATH=$LOCAL:$NEWPATH
 unset LOCAL
 
 # ensure no duplicate entries are present in PATH
 dedup_pathvar NEWPATH
 NEWPATH=$(echo "$NEWPATH" | sed 's/::/:/g')
-# print the result so that it can be cached (by `evalcache`)
 echo "export PATH=$NEWPATH"
 unset NEWPATH
