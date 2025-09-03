@@ -210,8 +210,8 @@ notes() {
   emulate -L zsh
   [ $# -eq 0 ] && { zk list; return; }
   case "$1" in
-    list) zk list; return ;;
     edit) zk edit --interactive; return ;;
+    list) zk list; return ;;
     new)
       local dir title=""
       dir=$( fd . "$ZK_NOTEBOOK_DIR" \
@@ -234,14 +234,6 @@ notes() {
 npm() {
   local PKG=$CONFIG_HOME/shared/packages/npm.txt
   case "$1" in
-    save)
-      local cmd="sudo npm list -g --depth=0"
-      [ "$EUID" -eq 0 ] && cmd="npm list -g --depth=0"
-      $cmd | awk '{print $2}' \
-        | sed -r 's/^\(empty\)//' \
-        | sed '/^$/d' \
-        | grep -v 'npm@' >"$PKG"
-      return ;;
     load)
       [ "$EUID" -eq 0 ] && {
         echo "npm load is not supported for root user"
@@ -251,26 +243,17 @@ npm() {
         [ -n "$line" ] && npm install -g ${(z)line}
       done <"$PKG"
       return ;;
+    save)
+      local cmd="sudo npm list -g --depth=0"
+      [ "$EUID" -eq 0 ] && cmd="npm list -g --depth=0"
+      $cmd | awk '{print $2}' \
+        | sed -r 's/^\(empty\)//' \
+        | sed '/^$/d' \
+        | grep -v 'npm@' >"$PKG"
+      return ;;
   esac
   command npm "$@"
 }
-
-# set npm default configuration options
-_npm_config() {
-  local _cache="${XDG_CACHE_HOME}/npm"
-  local _initmod="${XDG_CACHE_HOME}/npm"
-  local _notifier="false"
-  local _prefix="${XDG_DATA_HOME}/npm"
-  local _current=$(npm config get prefix)
-  npm config set cache "$_cache"
-  npm config set init-module "$_initmod"
-  npm config set update-notifier "$_notifier"
-  if [[ "$EUID" -gt 0 ]] && [[ "$_current" != "$prefix" ]]; then
-    npm config set prefix "$_prefix"
-  fi
-  echo "NPM_CONFIG_USERPREFIX=$_prefix"
-}
-_evalcache _npm_config
 
 # poor man's rg runtime configuration
 rg() {

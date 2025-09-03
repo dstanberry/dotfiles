@@ -11,7 +11,7 @@ unset ULOCAL
 unset LOCAL
 
 # HACK: set default gem configuration options
-function _gem_config() {
+_gem_config() {
   OLDIFS=$IFS
   IFS=:
   P=""

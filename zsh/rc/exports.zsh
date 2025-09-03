@@ -174,25 +174,25 @@ if test -d "$XDG_DATA_HOME/cargo" || hash cargo 2> /dev/null; then
 fi
 
 # define configuration path for dotnet
-_dotnet_env() {
-  hash dotnet 2>/dev/null || return
-  print -r -- "export DOTNET_CLI_HOME=\"${CONFIG_HOME}/dotnet\""
-  print -r -- "export DOTNET_CLI_TELEMETRY_OPTOUT=1"
-  [ -d /usr/local/share/dotnet ] && {
-    print -r -- "export DOTNET_ROOT=\"/usr/local/share/dotnet\""
-    return
+if hash dotnet 2> /dev/null; then
+  _dotnet_env() {
+    echo "export DOTNET_CLI_HOME=\"${CONFIG_HOME}/dotnet\""
+    echo "export DOTNET_CLI_TELEMETRY_OPTOUT=1"
+    [ -d /usr/local/share/dotnet ] && {
+      echo "export DOTNET_ROOT=\"/usr/local/share/dotnet\""
+      return
+    }
+    is_gentoo || return
+    local _dotnet_root
+    _dotnet_root=$(
+      eselect dotnet list 2>/dev/null \
+        | grep "$(eselect dotnet show)" 2>/dev/null \
+        | grep -oP '\(\K[^\)]+'
+    )
+    [ -d "$_dotnet_root" ] && echo "export DOTNET_ROOT=\"$_dotnet_root\""
   }
-  is_gentoo || return
-  local _dotnet_root
-  _dotnet_root=$(
-    eselect dotnet list 2>/dev/null \
-      | grep "$(eselect dotnet show)" 2>/dev/null \
-      | grep -oP '\(\K[^\)]+'
-  )
-  [ -d "$_dotnet_root" ] && \
-    print -r -- "export DOTNET_ROOT=\"$_dotnet_root\""
-}
-_evalcache _dotnet_env
+  _evalcache _dotnet_env
+fi
 
 # define configuration path for rubygems
 if hash gem 2> /dev/null; then
@@ -212,16 +212,16 @@ if hash gpg 2> /dev/null; then
 fi
 
 # define configuration path for luarocks
-_luarocks_env() {
-  hash luarocks 2>/dev/null || return
-  if is_gentoo; then
-    print -r -- 'export LUA_PATH="/usr/share/lua/5.1/?.lua;$LUA_PATH"'
-  else
-    print -r -- "export LUA_PATH=\"$(luarocks path --lr-path)\""
-  fi
-  print -r -- "export LUA_CPATH=\"$(luarocks path --lr-cpath)\""
-}
-_evalcache _luarocks_env
+if hash luarocks 2> /dev/null; then
+  _luarocks_env() {
+    echo "export LUA_PATH=\"$(luarocks path --lr-path)\""
+    if is_gentoo; then
+      echo "export LUA_PATH=\"/usr/share/lua/5.1/?.lua;$LUA_PATH\""
+    fi
+    echo "export LUA_CPATH=\"$(luarocks path --lr-cpath)\""
+  }
+  _evalcache _luarocks_env
+fi
 
 # define configuration path for mysql
 if hash mysql 2> /dev/null; then
@@ -245,6 +245,22 @@ fi
 # define configuration path for npm
 if hash npm 2> /dev/null; then
   export NPM_CONFIG_USERCONFIG="${CONFIG_HOME}/npm/npmrc"
+
+  _npm_config() {
+    local _cache="${XDG_CACHE_HOME}/npm"
+    local _initmod="${XDG_CACHE_HOME}/npm"
+    local _notifier="false"
+    local _prefix="${XDG_DATA_HOME}/npm"
+    local _current=$(npm config get prefix)
+    npm config set cache "$_cache"
+    npm config set init-module "$_initmod"
+    npm config set update-notifier "$_notifier"
+    if [[ "$EUID" -gt 0 ]] && [[ "$_current" != "$prefix" ]]; then
+      npm config set prefix "$_prefix"
+    fi
+    echo "NPM_CONFIG_USERPREFIX=$_prefix"
+  }
+  _evalcache _npm_config
 fi
 
 # define configuration path for postgresql
@@ -290,18 +306,18 @@ if hash zoxide 2> /dev/null; then
 fi
 
 # load uv configuration when available
-_uv_complete() {
-  unfunction _uv_complete 2>/dev/null
-  hash uv 2>/dev/null || return
-  _evalcache uv generate-shell-completion zsh
-  _evalcache uvx --generate-shell-completion zsh
-}
-
 if hash uv 2> /dev/null; then
   export UV_CACHE_DIR="${XDG_CACHE_HOME}/uv"
   if [ ! -d "${UV_CACHE_DIR}" ]; then
     mkdir -p "${UV_CACHE_DIR}"
   fi
+
+  _uv_complete() {
+    unfunction _uv_complete 2>/dev/null
+    hash uv 2>/dev/null || return
+    _evalcache uv generate-shell-completion zsh
+    _evalcache uvx --generate-shell-completion zsh
+  }
   compdef _uv_complete uv
   compdef _uv_complete uvx
 fi
