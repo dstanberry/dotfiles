@@ -20,20 +20,20 @@ Config.options.change_detection.enabled = false
 Config.options.defaults.cond = function(plugin) return vim.tbl_contains(enabled, plugin.name) or plugin.vscode end
 
 -- keep undo/redo lists in sync with vscode
-vim.keymap.set("n", "<c-r>", [[<cmd>lua require('vscode').action('redo')<cr>]])
-vim.keymap.set("n", "u", [[<cmd>lua require('vscode').action('undo')<cr>]])
+vim.keymap.set("n", "<c-r>", [[<cmd>lua require("vscode").action("redo")<cr>]])
+vim.keymap.set("n", "u", [[<cmd>lua require("vscode").action("undo")<cr>]])
 -- editor layout
-vim.keymap.set("n", "<c-left>", [[<cmd>lua require('vscode').action('workbench.action.decreaseViewSize')<cr>]])
-vim.keymap.set("n", "<c-right>", [[<cmd>lua require('vscode').action('workbench.action.increaseViewSize')<cr>]])
-vim.keymap.set("n", "<c-backspace>", [[<cmd>lua require('vscode').action('editor.action.fontZoomOut')<cr>]])
-vim.keymap.set("n", "<c-delete>", [[<cmd>lua require('vscode').action('editor.action.fontZoomIn')<cr>]])
+vim.keymap.set("n", "<c-left>", [[<cmd>lua require("vscode").action("workbench.action.decreaseViewSize")<cr>]])
+vim.keymap.set("n", "<c-right>", [[<cmd>lua require("vscode").action("workbench.action.increaseViewSize")<cr>]])
+vim.keymap.set("n", "<c-backspace>", [[<cmd>lua require("vscode").action("editor.action.fontZoomOut")<cr>]])
+vim.keymap.set("n", "<c-delete>", [[<cmd>lua require("vscode").action("editor.action.fontZoomIn")<cr>]])
 -- editor naviagtion
-vim.keymap.set("n", "<left>", [[<cmd>lua require('vscode').call('workbench.action.previousEditorInGroup')<cr>]])
-vim.keymap.set("n", "<right>", [[<cmd>lua require('vscode').call('workbench.action.nextEditorInGroup')<cr>]])
-vim.keymap.set("n", "<leader>wt", [[<cmd>lua require('vscode').action('workbench.action.terminal.toggleTerminal')<cr>]])
+vim.keymap.set("n", "<left>", [[<cmd>lua require("vscode").call("workbench.action.previousEditorInGroup")<cr>]])
+vim.keymap.set("n", "<right>", [[<cmd>lua require("vscode").call("workbench.action.nextEditorInGroup")<cr>]])
+vim.keymap.set("n", "<leader>wt", [[<cmd>lua require("vscode").action("workbench.action.terminal.toggleTerminal")<cr>]])
 -- file navigation
 vim.keymap.set("n", "<leader><space>", "<cmd>Find<cr>")
-vim.keymap.set("n", "<localleader>fg", [[<cmd>lua require('vscode').action('workbench.action.findInFiles')<cr>]])
+vim.keymap.set("n", "<localleader>fg", [[<cmd>lua require("vscode").action("workbench.action.findInFiles")<cr>]])
 -- lsp
 vim.keymap.set("n", "ff", function() vim.lsp.buf.format { async = true } end)
 vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename)
