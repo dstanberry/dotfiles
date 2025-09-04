@@ -2,7 +2,6 @@ if vim.loader then vim.loader.enable() end
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
-vim.g.health = { style = "float" }
 
 if vim.env.VSCODE then vim.g.vscode = true end
 
