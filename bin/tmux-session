@@ -1,187 +1,4 @@
-#!/bin/bash
-
-###############################################################
-# TMUX Extended Functionality
-###############################################################
-
-if [[ $# -eq 0 ]]; then
-  dir=$PWD
-elif [[ $# -eq 1 ]]; then
-  #--------------------------------------------------------------
-  # edit scrollback
-  #--------------------------------------------------------------
-  if [ "$1" == "show-scrollback" ]; then
-    file=$(mktemp).sh
-    tmux capture-pane -pS -32768 > "$file"
-    tmux new-window -n:scrollback "nvim -c \"lua require('util.window').term_scrollback()\" $file"
-    exit 0
-  #--------------------------------------------------------------
-  # session launcher
-  #--------------------------------------------------------------
-  elif [ "$1" == "new" ]; then
-    project_dirs=""
-    worktree_dirs=""
-    # shellcheck disable=SC2153
-    for f in "$HOME/Git"/*; do
-      if [ -d "$f" ]; then
-        if [ -d "$f/worktrees" ] || [ -d "$f/.git/worktrees" ]; then
-          worktree_list=$(git -C "$f" worktree list 2> /dev/null | awk '{print $1}')
-          if [ -n "$worktree_list" ]; then
-            # shellcheck disable=SC2066
-            for w in "$worktree_list"; do
-              worktree_dirs="$worktree_dirs $w"
-            done
-          fi
-        fi
-      fi
-    done
-    # shellcheck disable=SC2153
-    for f in "$HOME/Projects"/*/*; do
-      if [ -d "$f" ]; then
-        if [ -z "$project_dirs" ]; then
-          project_dirs="$f"
-        else
-          project_dirs="$project_dirs $f"
-        fi
-        if [ -d "$f/worktrees" ] || [ -d "$f/.git/worktrees" ]; then
-          worktree_list=$(git -C "$f" worktree list 2> /dev/null | awk '{print $1}')
-          if [ -n "$worktree_list" ]; then
-            # shellcheck disable=SC2066
-            for w in "$worktree_list"; do
-              worktree_dirs="$worktree_dirs $w"
-            done
-          fi
-        fi
-      fi
-    done
-    # shellcheck disable=SC2207
-    project_dirs=($(echo "$project_dirs" | cut -d " " --output-delimiter=" " -f 1-))
-    # shellcheck disable=SC2207
-    worktree_dirs=($(echo "$worktree_dirs" | cut -d " " --output-delimiter=" " -f 1-))
-    res_a=$(find -L "$HOME/Git" "$HOME/Projects" \
-      -maxdepth 1 -type d)
-    res_b=$(find -L "$XDG_CONFIG_HOME" "${project_dirs[@]}" "${worktree_dirs[@]}" \
-      -maxdepth 0 -type d)
-    # shellcheck disable=SC2059
-    dir=$(printf "$res_a\n$res_b" | sort -V | uniq | fzf \
-      --height='100%' \
-      --reverse --header='Create/Open Session' \
-      --preview '(glow -s dark {1}/README.md ||
-            bat --style=plain {1}/README.md ||
-            cat {1}/README.md ||
-            eza -lh --color=always --icons --git {1} ||
-            ls -lh {1}) 2> /dev/null')
-    if [ "$dir" == "" ]; then
-      exit 0
-    fi
-  #--------------------------------------------------------------
-  # persistent flaating window across all sessions
-  #--------------------------------------------------------------
-  elif [ "$1" == "toggle-float" ]; then
-    current_client="$(tmux display-message -p -F "#{session_name}")"
-    if [ "$current_client" == "float-repl" ]; then
-      tmux detach-client
-    else
-      tmux popup -d '#{pane_current_path}' -xC -yC -w90% -h80% \
-        -E "tmux attach -t float-repl || tmux new -s float-repl" || true
-    fi
-    exit 0
-  #--------------------------------------------------------------
-  # session switcher
-  #--------------------------------------------------------------
-  elif [ "$1" == "switch" ]; then
-    if not_in_tmux; then
-      echo "command only available within tmux"
-      exit 1
-    fi
-    current_client="$(tmux display-message -p -F "#{session_name}")"
-    tmux list-sessions -F "#S" \
-      | grep -v "^$current_client" \
-      | grep -v "^float-repl" \
-      | awk 'BEGIN {ORS=" "} {print $1, NR, "\"switch-client -t", $1 "\""}' \
-      | xargs tmux display-menu -T "Switch session"
-    exit 0
-  #--------------------------------------------------------------
-  # goto next session
-  #--------------------------------------------------------------
-  elif [ "$1" == "next" ]; then
-    if not_in_tmux; then
-      echo "command only available within tmux"
-      exit 1
-    fi
-    available_clients=$(tmux list-sessions -F "#S" \
-      | grep -v "^float-repl")
-    # shellcheck disable=SC2206
-    available_clients=(${available_clients//\\n/ })
-    current_client="$(tmux display-message -p -F "#{session_name}")"
-    if [ "$current_client" == "float-repl" ]; then
-      tmux display-message "Client switch not allowed in this session"
-    elif [ "${#available_clients[@]}" -eq 1 ]; then
-      tmux display-message "Can't switch to next client"
-    else
-      next_index=0
-      for i in "${!available_clients[@]}"; do
-        if [[ ${available_clients[$i]} == "${current_client}" ]]; then
-          next_index=$((i + 1))
-        fi
-      done
-      if [ "${#available_clients[@]}" -le "${next_index}" ]; then
-        next_index=0
-      fi
-      tmux switch-client -t "${available_clients[$next_index]}"
-    fi
-    exit 0
-  #--------------------------------------------------------------
-  # goto previous session
-  #--------------------------------------------------------------
-  elif [ "$1" == "previous" ]; then
-    if not_in_tmux; then
-      echo "command only available within tmux"
-      exit 1
-    fi
-    # shellcheck disable=SC2178
-    available_clients=$(tmux list-sessions -F "#S" \
-      | grep -v "^float-repl")
-    # shellcheck disable=SC2206
-    available_clients=(${available_clients//\\n/ })
-    current_client="$(tmux display-message -p -F "#{session_name}")"
-    if [ "$current_client" == "float-repl" ]; then
-      tmux display-message "Client switch not allowed in this session"
-    elif [ "${#available_clients[@]}" -eq 1 ]; then
-      tmux display-message "Can't switch to previous client"
-    else
-      next_index=${#available_clients[@]}
-      for i in "${!available_clients[@]}"; do
-        if [[ ${available_clients[$i]} == "${current_client}" ]]; then
-          next_index=$((i - 1))
-        fi
-      done
-      if [ "${next_index}" -lt 0 ]; then
-        next_index=${#available_clients[@]}
-        tmux switch-client -t "${available_clients[$((next_index - 1))]}"
-      else
-        tmux switch-client -t "${available_clients[$next_index]}"
-      fi
-    fi
-    exit 0
-  else
-    echo "'$1' is not a supported argument at this time"
-    exit 1
-  fi
-else
-  echo "unsupported number of arguments: 0 or 1 expected, got $#"
-  exit 1
-fi
-
-session_name="$(basename "$dir" | tr . _)"
-
-not_in_tmux() {
-  [ -z "$TMUX" ]
-}
-
-session_exists() {
-  tmux list-sessions | sed -E 's/:.*$//' | grep -q "^$session_name$"
-}
+#!/usr/bin/env zsh
 
 create_detached_session() {
   (TMUX='' tmux new-session -Ad -s "$session_name" -c "$dir")
@@ -191,11 +8,149 @@ create_if_needed_and_attach() {
   if not_in_tmux; then
     tmux new-session -As "$session_name" -c "$dir"
   else
-    if ! session_exists; then
-      create_detached_session
-    fi
+    session_exists || create_detached_session
     tmux switch-client -t "$session_name"
   fi
 }
 
+session_exists() {
+  tmux list-sessions 2>/dev/null | sed -E 's/:.*$//' | grep -q "^$session_name$"
+}
+
+not_in_tmux() {
+  [[ -z "$TMUX" ]]
+}
+
+# ----------------------------- Helpers ----------------------------- #
+
+_pick_directory() {
+  _get_session_dirs() {
+    local -a project_dirs worktree_dirs
+    local res_a res_b
+
+    _get_worktrees() {
+      local repo="$1" list
+      [[ -d $repo ]] || return 0
+      if [[ -d $repo/worktrees || -d $repo/.git/worktrees ]]; then
+        list=$(git -C "$repo" worktree list 2>/dev/null | awk '{print $1}')
+        [[ -n $list ]] || return 0
+        print -rl -- $list
+      fi
+    }
+
+    for d in "$HOME"/Git/*; do
+      [[ -d $d ]] || continue
+      while IFS= read -r w; do worktree_dirs+="$w"; done < <(_get_worktrees "$d")
+    done
+    for d in "$HOME"/Projects/*/*; do
+      [[ -d $d ]] || continue
+      project_dirs+="$d"
+      while IFS= read -r w; do worktree_dirs+="$w"; done < <(_get_worktrees "$d")
+    done
+    res_a=$(find -L "$HOME/Git" "$HOME/Projects" -maxdepth 1 -type d 2>/dev/null)
+    res_b=$(find -L "${XDG_CONFIG_HOME}" ${project_dirs:+"${project_dirs[@]}"} \
+      ${worktree_dirs:+"${worktree_dirs[@]}"} -maxdepth 0 -type d 2>/dev/null)
+    printf '%s\n%s\n' "$res_a" "$res_b" | sort -V | uniq
+  }
+
+  _get_session_dirs | fzf \
+    --height='100%' \
+    --reverse --header='Create/Open Session' \
+    --preview '(glow -s dark {1}/README.md || \
+          bat --style=plain {1}/README.md || \
+          cat {1}/README.md || \
+          eza -lh --color=always --icons --git {1} || \
+          ls -lh {1}) 2> /dev/null'
+}
+
+_show_scrollback() {
+  local file
+  file="$(mktemp).sh"
+  tmux capture-pane -pS -32768 > "$file"
+  tmux new-window -n:scrollback "nvim -c \"lua require('util.window').term_scrollback()\" $file"
+}
+
+_toggle_float() {
+  local current
+  current="$(tmux display-message -p -F '#{session_name}')"
+  if [[ $current == float-repl ]]; then
+    tmux detach-client
+  else
+    tmux popup -d '#{pane_current_path}' -xC -yC -w90% -h80% \
+      -E "tmux attach -t float-repl || tmux new -s float-repl" || true
+  fi
+}
+
+_next_session() {
+  if not_in_tmux; then
+    echo "command only available within tmux" >&2
+    return 1
+  fi
+  local -a available_clients
+  local current_client next_index=0
+  available_clients=("${(@f)$(tmux list-sessions -F '#S' | grep -v '^float-repl')}")
+  current_client="$(tmux display-message -p -F '#{session_name}')"
+  [[ $current_client == float-repl ]] && {
+    tmux display-message 'Client switch not allowed in this session'
+    return 0
+  }
+  (( ${#available_clients[@]} == 1 )) && {
+    tmux display-message "Can't switch to next client"
+    return 0
+  }
+  for idx in {1..$(( ${#available_clients[@]} ))}; do
+    [[ ${available_clients[$idx]} == "$current_client" ]] && next_index=$((idx + 1))
+  done
+  (( next_index > ${#available_clients[@]} )) && next_index=1
+  tmux switch-client -t "${available_clients[$next_index]}"
+}
+
+_previous_session() {
+  if not_in_tmux; then
+    echo "command only available within tmux" >&2
+    return 1
+  fi
+  local -a available_clients
+  local current_client next_index
+  available_clients=("${(@f)$(tmux list-sessions -F '#S' | grep -v '^float-repl')}")
+  current_client="$(tmux display-message -p -F '#{session_name}')"
+  [[ $current_client == float-repl ]] && {
+    tmux display-message 'Client switch not allowed in this session'
+    return 0
+  }
+  (( ${#available_clients[@]} == 1 )) && {
+    tmux display-message "Can't switch to previous client"
+    return 0
+  }
+  next_index=${#available_clients[@]}
+  for idx in {1..$(( ${#available_clients[@]} ))}; do
+    [[ ${available_clients[$idx]} == "$current_client" ]] && next_index=$((idx - 1))
+  done
+  (( next_index <= 0 )) && next_index=$(( ${#available_clients[@]} ))
+  tmux switch-client -t "${available_clients[next_index]}"
+}
+
+# --------------------------- Argument Parse ------------------------ #
+
+if (( $# == 0 )); then
+  dir=$PWD
+elif (( $# == 1 )); then
+  case "$1" in
+    new) dir=$(_pick_directory); [[ -z "$dir" ]] && exit 0 ;;
+    next) _next_session && exit 0 ;;
+    previous) _previous_session && exit 0 ;;
+    show-scrollback) _show_scrollback && exit 0 ;;
+    toggle-float) _toggle_float && exit 0 ;;
+    *)
+      echo "'$1' is not a supported argument at this time" >&2
+      exit 1 ;;
+  esac
+else
+  echo "unsupported number of arguments: 0 or 1 expected, got $#" >&2
+  exit 1
+fi
+
+# --------------------------- Session Attach ------------------------ #
+
+session_name="$(basename "$dir" | tr . _)"
 create_if_needed_and_attach

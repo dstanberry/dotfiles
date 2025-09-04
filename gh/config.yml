@@ -7,10 +7,7 @@ aliases:
   diff: pr diff
   mine: pr list --author @me
   review: |
-    !gh pr list \
-    | fzf --ansi --height '100%' --preview 'gh pr view {1}' --header-lines 3 \
-    | awk '{print $1}' \
-    | xargs -I {} sh -c 'gh pr checkout "$1" && nvim -c ":Octo pr edit ${1#"#"}"' -- {} 2> /dev/null || true
+    !zsh -ci fzf-gh-pr-widget
   repos: |
     !gh api --paginate graphql -f owner="$1" -f query='
       query($owner: String!, $per_page: Int = 100, $endCursor: String) {
