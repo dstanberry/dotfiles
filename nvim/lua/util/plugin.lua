@@ -12,21 +12,23 @@ function M.deep_merge(...)
   return Util.merge(...)
 end
 
+---@class util.plugin.pkg_path_spec
+---@field exe? boolean If true, returns the path to the executable in the `bin` directory,
+---@field path? string Optional subpath to append to the package directory.
+---@field warn? boolean If true (default), warns if the path does not exist.
+
 ---Gets the path of a package managed by `mason.nvim`.
 ---@param pkg string The package name.
----@param path? string Optional subpath within the package.
----@param opts? { bin?: boolean, warn?: boolean } Options for the function.
+---@param opts? util.plugin.pkg_path_spec Options for the function.
 ---@return string The full path to the package or subpath.
-function M.get_pkg_path(pkg, path, opts)
+function M.get_pkg_path(pkg, opts)
   local root = vim.fs.joinpath(vim.fn.stdpath "data", "mason")
   opts = opts or {}
   opts.warn = opts.warn == nil and true or opts.warn
-  path = path or (not opts.bin and "" or nil)
-  local ret = vim.fs.joinpath(root, (opts.bin and "bin" or "packages"), pkg, path)
-  print(vim.inspect(ret))
+  local ret = vim.fs.joinpath(root, (opts.exe and "bin" or "packages"), pkg, opts.path)
   if opts.warn and not vim.uv.fs_stat(ret) then
     vim.notify(
-      ("Package path not found for **%s**:\n- `%s`\nYou may need to force update the package."):format(pkg, path),
+      ("Package path not found for **%s**:\n- `%s`\nYou may need to force update the package."):format(pkg, opts.path),
       vim.log.levels.WARN,
       { title = "Mason" }
     )

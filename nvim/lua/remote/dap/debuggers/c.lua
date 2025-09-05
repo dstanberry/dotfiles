@@ -10,7 +10,7 @@ M.setup = function()
     type = "server",
     port = "${port}",
     executable = {
-      command = ds.plugin.get_pkg_path("codelldb", "extension/adapter/codelldb"),
+      command = ds.plugin.get_pkg_path("codelldb", { path = "extension/adapter/codelldb" }),
       args = { "--port", "${port}" },
       detached = ds.has "win32" and false or nil,
     },

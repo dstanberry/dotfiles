@@ -10,7 +10,8 @@ local initialize = function(bufnr)
   local _class = function() py.test_class() end
 
   local pypath = ds.has "win32" and { "Scipts", ".exe" } or { "bin", "" }
-  local interpreter = ds.plugin.get_pkg_path("debugpy", vim.fs.joinpath("venv", pypath[1], "python" .. pypath[2]))
+  local interpreter =
+    ds.plugin.get_pkg_path("debugpy", { path = vim.fs.joinpath("venv", pypath[1], "python" .. pypath[2]) })
   local venv_path
 
   py.setup(interpreter, { console = "integratedTerminal", include_configs = true, pythonPath = interpreter })

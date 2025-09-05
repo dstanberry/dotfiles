@@ -29,7 +29,10 @@ M.config = {
         globalPlugins = {
           {
             name = "@angular/language-server",
-            location = ds.plugin.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server"),
+            location = ds.plugin.get_pkg_path(
+              "angular-language-server",
+              { path = "/node_modules/@angular/language-server" }
+            ),
             enableForWorkspaceTypeScriptVersions = true,
           },
         },

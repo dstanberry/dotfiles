@@ -10,7 +10,7 @@ M.setup = function()
     type = "server",
     port = "${port}",
     executable = {
-      command = ds.plugin.get_pkg_path("dlv", nil, { bin = true }),
+      command = ds.plugin.get_pkg_path("dlv", { exe = true }),
       args = { "dap", "-l", "127.0.0.1:${port}" },
     },
   }

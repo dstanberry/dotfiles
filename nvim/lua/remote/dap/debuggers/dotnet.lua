@@ -5,7 +5,7 @@ M.setup = function()
 
   dap.adapters.netcoredbg = {
     type = "executable",
-    command = ds.plugin.get_pkg_path("netcoredbg", nil, { bin = true }),
+    command = ds.plugin.get_pkg_path("netcoredbg", { exe = true }),
     args = { "--interpreter=vscode" },
     options = { detached = false },
   }

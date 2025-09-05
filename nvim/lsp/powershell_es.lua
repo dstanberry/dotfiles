@@ -17,7 +17,7 @@ local command_fmt = {
   "-Stdio",
   "-LogLevel","Normal",
 }
-local basedir = ds.plugin.get_pkg_path("powershell-editor-services"):sub(1, -2)
+local basedir = ds.plugin.get_pkg_path "powershell-editor-services"
 local command = table.concat(command_fmt, " "):format(basedir, basedir, vim.fn.stdpath "cache", vim.fn.stdpath "cache")
 
 M.config = {
