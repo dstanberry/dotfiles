@@ -21,8 +21,9 @@ function M.get_pkg_path(pkg, path, opts)
   local root = vim.fs.joinpath(vim.fn.stdpath "data", "mason")
   opts = opts or {}
   opts.warn = opts.warn == nil and true or opts.warn
-  path = path or ""
+  path = path or (not opts.bin and "" or nil)
   local ret = vim.fs.joinpath(root, (opts.bin and "bin" or "packages"), pkg, path)
+  print(vim.inspect(ret))
   if opts.warn and not vim.uv.fs_stat(ret) then
     vim.notify(
       ("Package path not found for **%s**:\n- `%s`\nYou may need to force update the package."):format(pkg, path),

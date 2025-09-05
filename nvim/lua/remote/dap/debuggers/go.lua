@@ -10,7 +10,7 @@ M.setup = function()
     type = "server",
     port = "${port}",
     executable = {
-      command = vim.fn.exepath "dlv",
+      command = ds.plugin.get_pkg_path("dlv", nil, { bin = true }),
       args = { "dap", "-l", "127.0.0.1:${port}" },
     },
   }
