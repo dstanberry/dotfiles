@@ -1,5 +1,3 @@
-# shellcheck disable=SC2148
-
 # define XDG_CACHE_HOME
 export XDG_CACHE_HOME="$HOME/.cache"
 
@@ -250,7 +248,7 @@ fi
 if hash npm 2> /dev/null; then
   export NPM_CONFIG_USERCONFIG="${CONFIG_HOME}/npm/npmrc"
 
-  _npm_config() {
+  _npm_env() {
     local _cache="${XDG_CACHE_HOME}/npm"
     local _initmod="${XDG_CACHE_HOME}/npm"
     local _notifier="false"
@@ -264,7 +262,7 @@ if hash npm 2> /dev/null; then
     fi
     echo "NPM_CONFIG_USERPREFIX=$_prefix"
   }
-  _evalcache _npm_config
+  _evalcache _npm_env
 fi
 
 # define configuration path for postgresql
@@ -304,7 +302,7 @@ if hash zoxide 2> /dev/null; then
   export _ZO_DATA_DIR="$XDG_DATA_HOME/zoxide"
   export _ZO_EXCLUDE_DIRS="$HOME:$HOME/Downloads/*:*/.git:/tmp/*"
   export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS"
-  # NOTE: creating an alias for `cd` breaks vcs_info
+  # WARN: creating an alias for `cd` breaks vcs_info
   # _evalcache zoxide init --cmd cd zsh
   _evalcache zoxide init zsh
 fi

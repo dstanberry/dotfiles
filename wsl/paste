@@ -1,7 +1,4 @@
-#!/bin/bash
-
-# include helper functions
-source ${HOME}/.config/scripts/helpers.sh
+#!/usr/bin/env zsh
 
 # (wsl) get content of windows clipboard
 if is_wsl; then

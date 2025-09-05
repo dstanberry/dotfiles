@@ -400,6 +400,19 @@ if [ -d "$ZSH_CONFIG_HOME/rc" ]; then
 fi
 
 ###############################################################
+# Workspace Extras
+###############################################################
+# check for machine-specific rc files and source them if available
+if [ -d "$ZSH_CONFIG_HOME/rc.private" ]; then
+  for RC_FILE in $(find "$ZSH_CONFIG_HOME"/rc.private -type f | sort -V); do
+    case "$(basename $RC_FILE)" in
+      "Path.zsh" ) _evalcache source $RC_FILE ;;
+      *) source "$RC_FILE" ;;
+    esac
+  done
+fi
+
+###############################################################
 # Shell Prompt
 ###############################################################
 # load prompt definitions
@@ -514,13 +527,3 @@ function -record-command() {
 }
 
 add-zsh-hook preexec -record-command
-
-###############################################################
-# Extras
-###############################################################
-# check for machine-specific rc files and source them if available
-if [ -d "$ZSH_CONFIG_HOME/rc.private" ]; then
-  for RC_FILE in $(find "$ZSH_CONFIG_HOME"/rc.private -type f | sort -V); do
-    source "$RC_FILE"
-  done
-fi

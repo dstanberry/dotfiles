@@ -1,5 +1,3 @@
-# shellcheck disable=SC2148
-
 # define static named directories
 hash -d docs=~/Documents
 hash -d notes=~/Documents/_notes

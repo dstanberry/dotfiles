@@ -1,13 +1,8 @@
-# shellcheck disable=SC2148
-
 # support custom sub-commands
 cargo() {
   local PKG=$CONFIG_HOME/shared/packages/cargo.txt
   is_darwin && PKG=$CONFIG_HOME/shared/packages/cargo-macos.txt
   case "$1" in
-    save)
-      command cargo install --list | grep -E '^\w+' | awk '{print $1}' >"$PKG"
-      return ;;
     load)
       [ "$EUID" -eq 0 ] && {
         echo "cargo load is not supported for root user"
@@ -16,6 +11,9 @@ cargo() {
       while IFS= read -r line; do
         [ -n "$line" ] && cargo install ${(z)line}
       done <"$PKG"
+      return ;;
+    save)
+      command cargo install --list | grep -E '^\w+' | awk '{print $1}' >"$PKG"
       return ;;
   esac
   command cargo "$@"
@@ -214,15 +212,13 @@ notes() {
     list) zk list; return ;;
     new)
       local dir title=""
-      dir=$( fd . "$ZK_NOTEBOOK_DIR" \
-        --type d \
-        --exclude '.zk' \
-        -X printf '%s\n' {/} \
-        | fzf --exit-0 --no-multi \
-          --header 'Create note within:' \
-          --bind 'focus:transform-header(echo Create note within {1})' \
-          --preview '(eza -lh --icons $ZK_NOTEBOOK_DIR/{1} ||
-        ls -lh $ZK_NOTEBOOK_DIR/{1}) 2> /dev/null' )
+      dir=(
+        $( fd . "$ZK_NOTEBOOK_DIR" --type d --exclude '.zk' -X printf '%s\n' {/} |
+          fzf --ansi --exit-0 --no-multi \
+            --header 'Create note within:' \
+            --bind 'focus:transform-header(echo Create note within {1})' \
+            --preview '(eza -lh --icons $ZK_NOTEBOOK_DIR/{1} || ls -lh $ZK_NOTEBOOK_DIR/{1}) 2> /dev/null' )
+      )
       [ -n "$dir" ] || return
       vared -p 'Note title: ' title
       zk new "${dir}" --title "$title"

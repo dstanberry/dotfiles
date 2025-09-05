@@ -1,9 +1,8 @@
-# shellcheck disable=SC2148
+NEWPATH="$(echo $PATH | tr : '\n' | sed 's/ /\\ /g' | /usr/bin/paste -s -d: -)"
 
 # base directory for system-wide available scripts
 ULOCAL="/usr/local/bin"
-# include directory in PATH
-NEWPATH=$ULOCAL:$PATH
+NEWPATH=$ULOCAL:$NEWPATH
 unset ULOCAL
 
 # define macOS specific paths
@@ -35,12 +34,7 @@ if is_darwin; then
   GNUBIN="$BP/opt/coreutils/libexec/gnubin"
   NEWPATH=$B:$S:$RUBY:$RUBYGEM:$GNUBIN:$NEWPATH
   echo "$(${BP}/bin/brew shellenv)"
-  unset B 
-  unset S 
-  unset BP 
-  unset RUBY
-  unset RUBYGEM
-  unset GNUBIN
+  unset B BP GNUBIN RUBY RUBYGEM S
 fi
 
 # define wsl specific paths
@@ -51,26 +45,16 @@ if is_wsl; then
   PWSH="/mnt/c/Windows/System32/WindowsPowerShell/v1.0"
 
   NEWPATH=$WIN:$SYS32:$PWSH:$NEWPATH
-  unset WIN
-  unset SYS32
-  unset PWSH
+  unset PWSH SYS32 WIN
 
   # HACK: bridge windows utils with qmk build environment
   ARM="${XDG_DATA_HOME:-$HOME/.local/share}/gnu-arm-none-eabi/bin"
   QMK="$HOME/Git/qmk_distro_wsl/src/usr/bin"
   WBEM="/mnt/c/Windows/System32/Wbem"
-  if test -e "$ARM"; then
-    NEWPATH=$ARM:$NEWPATH
-  fi
-  if test -e "$QMK"; then
-    NEWPATH=$QMK:$NEWPATH
-  fi
-  if test -e "$WBEM"; then
-    NEWPATH=$WBEM:$NEWPATH
-  fi
-  unset ARM
-  unset QMK
-  unset WBEM
+  for d in "$ARM" "$QMK" "$WBEM"; do
+    [ -d "$d" ] && NEWPATH=$d:$NEWPATH
+  done
+  unset ARM QMK WBEM
 fi
 
 # HACK: set default gem configuration options
@@ -79,14 +63,10 @@ _gem_config() {
   IFS=:
   P=""
   for i in $(gem environment gempath); do
-    if [ -d "$i/bin" ]; then
-      P="$i/bin":$NEWPATH
-    fi
+    [ -d "$i/bin" ] && P="$i/bin":$NEWPATH
     ud=$(gem env | grep 'USER INSTALLATION DIRECTORY' | awk -F':' '{ print $2 }')
     p="${ud##*/.gem/}"
-    if [ -d "$i/$p/bin" ]; then
-      P="$i/$p/bin":$NEWPATH
-    fi
+    [ -d "$i/$p/bin" ] && P="$i/$p/bin":$NEWPATH
   done
   IFS=$OLDIFS
   echo "$P"
@@ -124,11 +104,11 @@ if hash luarocks 2> /dev/null; then
 fi
 
 # add npm binaries to path if present
-if hash npm 2> /dev/null; then
-  NPM="${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin"
+NPM="${XDG_DATA_HOME:-$HOME/.local/share}/npm/bin"
+if test -d "$NPM" || hash npm 2> /dev/null; then
   NEWPATH=$NPM:$NEWPATH
-  unset NPM
 fi
+unset NPM
 
 # base directory for user local binaries
 LOCAL="${HOME}/.local/bin"

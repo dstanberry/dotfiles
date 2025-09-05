@@ -1,5 +1,3 @@
-# shellcheck disable=SC2148
-
 # colorize cat output
 if hash bat 2> /dev/null; then
   alias cat="bat"
@@ -43,7 +41,7 @@ alias ports='sudo netstat -tulanp'
 # define alias to reload zsh configuration
 alias reload='exec zsh'
 
-# dirty hack to expose native specific Windows utils
+# expose native Windows utils
 if is_wsl; then
   alias open="cmd.exe /c start"
   alias xdg-open="cmd.exe /c start"
