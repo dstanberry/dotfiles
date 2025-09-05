@@ -47,17 +47,6 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- disable treesitter highlighting for tmux files
-vim.api.nvim_create_autocmd("BufReadPost", {
-  group = ftplugin,
-  pattern = { "tmux*.conf", "**/tmux/*.conf" },
-  callback = function(args)
-    if package.loaded["nvim-treesitter"] and vim.treesitter.highlighter.active[args.buf] then
-      vim.treesitter.stop(args.buf)
-    end
-  end,
-})
-
 -- disable line numbers and enusre filetype is set for terminal windows
 vim.api.nvim_create_autocmd("TermOpen", {
   group = ds.augroup "termui",

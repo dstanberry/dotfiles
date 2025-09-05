@@ -16,7 +16,10 @@ return {
     end,
     opts = {
       ensure_installed = "all",
-      highlight = { enable = true },
+      highlight = {
+        enable = true,
+        disable = { "tmux" },
+      },
       indent = { enabled = true },
       incremental_selection = {
         enable = true,
