@@ -2,19 +2,6 @@
 local M = {}
 
 M.config = {
-  on_new_config = function(new_config)
-    local project_root =
-      vim.fs.joinpath(ds.root.detectors.pattern(0, { "node_modules" })[1] or vim.uv.cwd(), "node_modules")
-    local ng_path = ds.plugin.get_pkg_path("angular-language-server", "/node_modules/@angular/language-server")
-    local ts_dirs = vim.iter({ ng_path, project_root }):join ","
-    local ng_dirs = vim
-      .iter({ ng_path, project_root })
-      :map(function(path) return vim.fs.joinpath(path, "@angular/language-service/node_modules") end)
-      :join ","
-
-    new_config.cmd =
-      { vim.fn.exepath "ngserver", "--stdio", "--tsProbeLocations", ts_dirs, "--ngProbeLocations", ng_dirs }
-  end,
   on_attach = function(client, bufnr)
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.renameProvider = false
