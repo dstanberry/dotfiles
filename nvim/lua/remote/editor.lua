@@ -276,7 +276,9 @@ return {
           condition = function(ctx) return vim.fs.basename(ctx.filename):match "^%.env" end,
         },
         shellcheck = {
-          condition = function(ctx) return not vim.fs.basename(ctx.filename):match "^%.env" end,
+          condition = function(ctx)
+            return vim.fs.basename(ctx.filename):match "^%.bash" or vim.fs.basename(ctx.filename):match "^%.sh"
+          end,
         },
         sqlfluff = {
           args = { "lint", "--format=json", "--dialect=postgres", "--exclude-rules=L044,LT02,LT12" },
