@@ -6,7 +6,7 @@ return {
   categories = { "LSP" },
   licenses = { "Microsoft" },
   source = {
-    id = "pkg:mason/github/microsoft/pylance-release@2025.6.103",
+    id = "pkg:mason/github/microsoft/pylance-release@2025.7.1",
     ---@module "mason.nvim"
     install = function(ctx)
       local download_artifact = [[
@@ -18,7 +18,6 @@ return {
       perl -pe 's/if\(!process.*?\)return!\[\];/if(false)return false;/g; s/throw new//g' extension/dist/server.bundle.js
         > extension/dist/server.nvim.js
     ]]
-      -- ctx.receipt:with_primary_source(ctx.receipt.unmanaged)
       ctx.spawn.bash { "-c", download_artifact:gsub("\n", " ") }
       ctx.spawn.unzip { "pylance.vsix" }
       ctx.spawn.bash { "-c", post_install_hook:gsub("\n", " ") }
