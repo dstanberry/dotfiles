@@ -332,10 +332,8 @@ function M.setup()
   }
 
   if ds.plugin.is_installed "snacks.nvim" then
-    local _document_symbols = function() Snacks.picker.lsp_symbols() end
-    local _workspace_symbols = function() Snacks.picker.lsp_workspace_symbols() end
-    vim.lsp.handlers["textDocument/documentSymbol"] = _document_symbols
-    vim.lsp.handlers["workspace/symbol"] = _workspace_symbols
+    vim.lsp.handlers["textDocument/documentSymbol"] = function() Snacks.picker.lsp_symbols() end
+    vim.lsp.handlers["workspace/symbol"] = function() Snacks.picker.lsp_workspace_symbols() end
   end
 end
 
