@@ -23,7 +23,6 @@ local command = table.concat(command_fmt, " "):format(basedir, basedir, vim.fn.s
 M.config = {
   bundle_path = basedir,
   cmd = { "pwsh", "-NoLogo", "-NoProfile", "-Command", command },
-  root_dir = function(fname) return ds.root.detectors.pattern(fname, { ".git" })[1] end,
   settings = {
     powershell = {
       codeFormatting = {
