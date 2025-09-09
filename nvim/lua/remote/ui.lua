@@ -106,6 +106,12 @@ return {
             },
             {
               text = ds.pad(ds.icons.groups.Tree, "right") .. "EXPLORER",
+              filetype = "oil",
+              highlight = "PanelHeading",
+              separator = true,
+            },
+            {
+              text = ds.pad(ds.icons.groups.Tree, "right") .. "EXPLORER",
               filetype = "snacks_layout_box",
               highlight = "PanelHeading",
               separator = true,
@@ -360,16 +366,51 @@ return {
   {
     "stevearc/oil.nvim",
     keys = function()
-      local _open = function() require("oil").open(ds.root.get()) end
+      local _sidebar = function()
+        local oil = require "oil"
+        local oil_util = require "oil.util"
+        local bufs = ds.buffer.filter()
+        local active = false
+
+        local __open = function()
+          local id = vim.api.nvim_get_current_win()
+          vim.cmd "leftabove vertical split | vertical resize 40"
+          oil.open(ds.root.get())
+          oil_util.run_after_load(0, function()
+            vim.w.is_oil_win = true
+            vim.w.oil_original_win = id
+          end)
+        end
+        ds.foreach(bufs, function(buf)
+          if vim.bo[buf].filetype == "oil" then
+            active = true
+            for _, win in ipairs(vim.fn.win_findbuf(buf)) do
+              vim.api.nvim_win_call(win, oil.close)
+            end
+          end
+        end)
+        if not active then __open() end
+      end
       local _float = function() require("oil").toggle_float() end
 
       return {
-        { "-", _open, desc = "oil: browse project" },
+        { "-", _sidebar, desc = "oil: browse project" },
         { "<leader>-", _float, desc = "oil: browse parent directory" },
       }
     end,
     init = function()
+      local group = ds.augroup "oil_extras"
+
+      vim.api.nvim_create_autocmd("FileType", {
+        group = group,
+        pattern = "oil",
+        callback = function()
+          vim.opt_local.number = false
+          vim.opt_local.relativenumber = false
+        end,
+      })
       vim.api.nvim_create_autocmd("User", {
+        group = group,
         pattern = "OilActionsPost",
         callback = function(event)
           if event.data.actions.type == "move" then
