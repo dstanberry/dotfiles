@@ -152,6 +152,7 @@ return {
           bash = { "shfmt" },
           css = { "prettier" },
           go = { "goimports", "gofumpt" },
+          graphql = { "prettier" },
           groovy = { "npm-groovy-lint" },
           html = { "prettier" },
           javascript = { "prettier" },
