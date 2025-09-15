@@ -20,16 +20,6 @@ return {
         { path = "snacks.nvim", words = { "Snacks" } },
       },
     },
-    config = function(_, opts)
-      -- HACK: temporarily monkey-patch `vim.lsp`` deprecation warnings until fixed upstream
-      local lsp = require "lazydev.lsp"
-      ---@diagnostic disable-next-line: duplicate-set-field
-      lsp.update = function(client)
-        lsp.assert(client)
-        client:notify("workspace/didChangeConfiguration", { settings = { Lua = {} } })
-      end
-      require("lazydev").setup(opts)
-    end,
   },
   {
     "rachartier/tiny-inline-diagnostic.nvim",
