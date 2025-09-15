@@ -36,7 +36,7 @@ return {
       show_folds = true,
       show_help = true,
       highlight_headers = true,
-      separator = "───",
+      -- separator = "---",
       headers = {
         assistant = string.format(" %s %s ", ds.icons.kind.Copilot, "Copilot"),
         tool = string.format(" %s %s ", ds.icons.misc.Gear, "Tool"),
