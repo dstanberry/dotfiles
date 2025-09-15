@@ -1,42 +1,5 @@
 return {
   {
-    "zbirenbaum/copilot.lua",
-    enabled = not vim.lsp.inline_completion,
-    build = ":Copilot auth",
-    event = "LazyFile",
-    cmd = "Copilot",
-    init = function()
-      ---@diagnostic disable-next-line: duplicate-set-field
-      ds.cmp.inline.accept = function()
-        local copilot = require "copilot.suggestion"
-        if copilot.is_visible() then
-          local chord = vim.api.nvim_replace_termcodes("<c-g>u", true, true, true)
-          if vim.api.nvim_get_mode().mode == "i" then vim.api.nvim_feedkeys(chord, "n", false) end
-          copilot.accept()
-          return true
-        end
-        if ds.cmp.visible "menu" and ds.cmp.visible "ghost_text" then
-          vim.schedule(function()
-            ds.cmp.confirm()
-            ds.cmp.show()
-          end)
-          return true
-        end
-        return false
-      end
-    end,
-    opts = {
-      filetypes = { ["*"] = true },
-      panel = { enabled = false },
-      suggestion = { enabled = false },
-      server_opts_overrides = {
-        settings = {
-          advanced = { debug = { acceptselfSignedCertificate = true } },
-        },
-      },
-    },
-  },
-  {
     "CopilotC-Nvim/CopilotChat.nvim",
     build = "make tiktoken",
     cmd = "CopilotChat",

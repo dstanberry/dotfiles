@@ -9,7 +9,6 @@ return {
       "L3MON4D3/LuaSnip",
       "kristijanhusak/vim-dadbod-completion",
       { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
-      (not ds.cmp.inline.available() and "giuxtaposition/blink-cmp-copilot" or nil),
     },
     opts = { ---@type blink.cmp.Config
       appearance = { use_nvim_cmp_as_default = false, kind_icons = ds.icons.kind },
@@ -70,18 +69,10 @@ return {
           "lsp",
           "path",
           "snippets",
-          not ds.cmp.inline.available() and "copilot" or nil,
         },
         providers = {
           buffer = { score_offset = 10 },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
-          copilot = not ds.cmp.inline.available() and {
-            name = "copilot",
-            module = "blink-cmp-copilot",
-            kind = "Copilot",
-            async = true,
-            score_offset = 100,
-          } or nil,
           lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
           path = {
             score_offset = 10,
