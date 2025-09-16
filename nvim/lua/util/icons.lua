@@ -89,7 +89,7 @@ M.kind = {
   Color = "",
   Constant = "",
   Constructor = "",
-  Copilot = "",
+  Copilot = "",
   Enum = "",
   EnumMember = "",
   Event = "",
@@ -128,6 +128,7 @@ M.misc = {
   BrailleBlank = "⠀", -- U+2800
   Calendar = "",
   CaretRight = "",
+  Check = "✅",
   CheckFilled = "",
   ChevronRight = "›",
   Circle = "",
@@ -184,6 +185,10 @@ M.misc = {
   VerticalBarSemi = "▍",
   VerticalBarThin = "▏",
   Watch = "",
+}
+
+M.spinners = {
+  Default = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
 }
 
 ---Status icons for Neovim's LSP, similar to `util.icons.diagnostics`

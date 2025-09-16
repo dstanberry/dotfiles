@@ -78,7 +78,7 @@ return {
           offsets = {
             {
               text = ds.pad(ds.icons.kind.Copilot, "right") .. "COPILOT CHAT",
-              filetype = "copilot-chat",
+              filetype = "codecompanion",
               highlight = "PanelHeading",
               separator = true,
               text_align = "center",
@@ -261,7 +261,7 @@ return {
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown", "octo" },
+    ft = { "codecompanion", "markdown", "octo" },
     opts = {
       dash = { width = 80 },
       code = {

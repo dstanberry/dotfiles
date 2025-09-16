@@ -1,85 +1,139 @@
 return {
   {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    build = "make tiktoken",
-    cmd = "CopilotChat",
-    keys = function()
-      local _chat = function() require("CopilotChat").select_prompt() end
-      local _clear = function() return require("CopilotChat").reset() end
-      local _toggle = function() require("CopilotChat").toggle() end
-
-      return {
-        { "<leader>c", mode = { "n", "v" }, "", desc = "+copilot" },
-        { "<leader>ca", mode = { "n", "v" }, _chat, desc = "copilot: quick chat" },
-        { "<leader>cc", mode = { "n", "v" }, _toggle, desc = "copilot: toggle chat" },
-        { "<leader>cm", function() vim.cmd "CopilotChatModels" end, desc = "copilot: select model" },
-        { "<leader>cx", mode = { "n", "v" }, _clear, desc = "copilot: clear history" },
-      }
-    end,
+    "olimorris/codecompanion.nvim",
+    dependencies = {
+      "ravitemer/codecompanion-history.nvim",
+      "franco-ruggeri/codecompanion-spinner.nvim",
+    },
+    cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
+    keys = {
+      { "<leader>c", mode = { "n", "x" }, "", desc = "+copilot" },
+      { "<leader>ca", mode = { "n", "x" }, ":CodeCompanionActions<cr>", desc = "copilot: select action" },
+      { "<leader>cc", "<cmd>CodeCompanionChat toggle<cr>", desc = "copilot: toggle chat" },
+    },
     init = function()
-      vim.api.nvim_create_autocmd("BufEnter", {
-        pattern = "copilot-*",
-        callback = function()
-          vim.opt_local.cursorline = false
-          vim.opt_local.number = false
-          vim.opt_local.relativenumber = false
+      local spinners = ds.icons.spinners.Default
+      local interval = 250
+      local timer
+
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "CodeCompanionRequestStarted",
+        callback = function(ctx)
+          timer = assert(vim.uv.new_timer())
+          timer:start(
+            0,
+            interval,
+            vim.schedule_wrap(function()
+              local spinner = spinners[math.floor(vim.uv.now() / interval) % #spinners + 1]
+              ds.info(
+                spinner .. " Processing...",
+                { title = "Copilot", icon = ds.icons.kind.Copilot, timeout = false, id = ctx.data.id }
+              )
+            end)
+          )
+        end,
+      })
+      vim.api.nvim_create_autocmd("User", {
+        pattern = "CodeCompanionRequestFinished",
+        callback = function(ctx)
+          timer:stop()
+          timer:close()
+          ds.info(
+            ds.icons.misc.Check .. "Request finished",
+            { title = "Copilot", icon = ds.icons.kind.Copilot, timeout = 2000, id = ctx.data.id }
+          )
         end,
       })
     end,
     opts = {
-      agent = "copilot",
-      model = "gpt-4.1",
-      auto_follow_cursor = true,
-      auto_insert_mode = false,
-      insert_at_end = false,
-      auto_fold = true,
-      show_folds = true,
-      show_help = true,
-      highlight_headers = true,
-      -- separator = "---",
-      headers = {
-        assistant = string.format(" %s %s ", ds.icons.kind.Copilot, "Copilot"),
-        tool = string.format(" %s %s ", ds.icons.misc.Gear, "Tool"),
-        user = string.format(" %s %s ", ds.icons.misc.User, (vim.env.USER or "User"):gsub("^%l", string.upper)),
+      display = {
+        chat = {
+          auto_scroll = true,
+          intro_message = "",
+          window = vim.tbl_deep_extend(
+            "force",
+            vim.o.columns > 180 and { layout = "vertical", width = 82 } or { layout = "horizontal", height = 0.4 },
+            {
+              opts = { number = false, relativenumber = false, statuscolumn = " " },
+            }
+          ),
+        },
       },
-      window = vim.o.columns > 180 and { layout = "vertical", width = 82 } or { layout = "horizontal", height = 0.4 },
-      sticky = { "#buffers" },
-      prompts = {
-        -- programming
-        Explain = {
-          sticky = { "#buffers" },
-          prompt = [[Provide a high-level overview of what the code does, including its key functions or classes and
-           their roles. Summarize the logic flow, highlight any notable or complex segments, and specify the expected
-           input and output with examples.]],
+      extensions = {
+        spinner = {},
+        history = {
+          opts = {
+            keymap = "gh",
+            auto_save = false,
+            save_chat_keymap = "gs",
+          },
         },
-        Fix = {
-          sticky = { "#buffers", "#diagnostics" },
-          prompt = [[Analyze the code for issues and provide suggestions on how it can be resolved using clear and
-          efficient solutions. The analysis should address syntax errors, logical errors, diagnostic errors,
-          performance ineffificiences, security vulnerabilities, code style, adherence to modern best practices,
-          and any other potential issues.]],
+      },
+      strategies = {
+        chat = {
+          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5" },
+          keymaps = {
+            close = { modes = { n = "q" }, opts = { nowait = true } },
+            send = { modes = { n = "<cr>", i = "<c-s>" } },
+            stop = { modes = { n = "<c-c>" } },
+            next_header = { modes = { n = "]]" } },
+            previous_header = { modes = { n = "[[" } },
+          },
+          roles = {
+            llm = function(adapter)
+              return string.format(
+                "%s %s (%s - %s)",
+                ds.icons.kind.Copilot,
+                "Code Assistant",
+                adapter.formatted_name,
+                adapter.model.name
+              )
+            end,
+            user = string.format("%s %s", ds.icons.misc.User, (vim.env.USER or "User"):gsub("^%l", string.upper)),
+          },
         },
-        Names = {
-          sticky = { "#buffers" },
-          prompt = [[Analyze the declared variables, objects and types, and suggest more descriptive and meaningful
-          names that improve code readability and maintainability. Follow modern best practices and recommendations
-          for the language]],
+        cmd = {
+          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5" },
         },
-        Refactor = {
-          sticky = { "#buffers" },
-          prompt = [[Refactor the code to enhance readability, maintainability, and efficiency. Focus on organizing the
-          structure, using clear and consistent naming, removing redundancies, simplifying logic, implementing robust
-          error handling, and improving comments or documentation for clarity.]],
+        inline = {
+          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5" },
+          keymaps = {
+            accept_change = { modes = { n = "dp" } },
+            reject_change = { modes = { n = "de" } },
+            always_accept = { modes = { n = "dy" } },
+          },
         },
-        Tests = {
-          sticky = { "#buffers" },
-          prompt = [[Generate unit tests using modern best practices for writing maintainable and effective unit tests
-          in this language, ensuring proper use of AAA (Arrange-Act-Assert), test isolation, and clear assertions]],
+      },
+      prompt_library = {
+        ["Simplify"] = {
+          strategy = "inline",
+          description = "Simplify the selected code.",
+          opts = {
+            modes = { "v" },
+            short_name = "simplify",
+            auto_submit = true,
+            stop_context_insertion = true,
+            user_prompt = false,
+          },
+          prompts = {
+            {
+              role = "system",
+              content = function(ctx)
+                return ([[I want you to act as a senior %s developer. I will send you some code,
+                and I want you to simplify the code while not diminishing its readability.]]):format(
+                  ctx.filetype
+                )
+              end,
+            },
+            {
+              role = "user",
+              content = function(ctx)
+                return require("codecompanion.helpers.actions").get_code(ctx.start_line, ctx.end_line)
+              end,
+              opts = { contains_code = true },
+            },
+          },
         },
-        -- note taking
-        Concise = "Rewrite the following text to make it more concise.",
-        Grammar = "Improve the grammar and wording of the following text.",
-        Spelling = "Correct any grammar and spelling errors in the following text.",
       },
     },
   },

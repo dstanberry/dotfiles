@@ -74,10 +74,7 @@ return {
           buffer = { score_offset = 10 },
           dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
           lazydev = { name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100 },
-          path = {
-            score_offset = 10,
-            enabled = function() return not vim.tbl_contains({ "copilot-chat" }, vim.bo.filetype) end,
-          },
+          path = { score_offset = 10 },
         },
       },
       snippets = {

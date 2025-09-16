@@ -20,7 +20,7 @@ M.disabled = {
     "qf",
     "term",
     -- plugin filetypes
-    "copilot-chat",
+    "codecompanion",
     "dbui",
     "DiffviewFiles",
     "gitcommit",
@@ -43,7 +43,7 @@ M.disabled = {
     "qf",
     "term",
     -- plugin filetypes
-    "copilot-chat",
+    "codecompanion",
     "dap-repl",
     "dbout",
     "dbui",

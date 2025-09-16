@@ -488,7 +488,7 @@ return {
         local cursor = vim.api.nvim_win_get_cursor(0)
         local next = line:sub(cursor[2] + 1, cursor[2] + 1)
         local before = line:sub(1, cursor[2])
-        if vim.tbl_contains({ "copilot-chat", "markdown" }, vim.bo.filetype) then
+        if vim.tbl_contains({ "codecompanion", "markdown" }, vim.bo.filetype) then
           if not opts[vim.bo.filetype] then return _o end
           if _o == "`" and before:match "^%s*``" then
             return "`\n```" .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
