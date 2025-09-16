@@ -153,16 +153,19 @@ M.get = function(c)
     DiagnosticWarn                             = { fg = c.yellow0 },
     DiagnosticInfo                             = { fg = c.aqua1 },
     DiagnosticHint                             = { fg = c.magenta0 },
+    DiagnosticOk                               = { fg = c.green0 },
 
     DiagnosticVirtualTextError                 = { fg = ds.color.blend(c.red0, c.bg2, 0.6) },
     DiagnosticVirtualTextWarn                  = { fg = ds.color.blend(c.yellow0, c.bg2, 0.6) },
     DiagnosticVirtualTextInfo                  = { fg = ds.color.blend(c.aqua1, c.bg2, 0.6) },
     DiagnosticVirtualTextHint                  = { fg = ds.color.blend(c.magenta0, c.bg2, 0.6) },
+    DiagnosticVirtualTextOk                    = { fg = ds.color.blend(c.green0, c.bg2, 0.6) },
 
     DiagnosticUnderlineError                   = { undercurl = true, sp = c.red0 },
     DiagnosticUnderlineWarn                    = { undercurl = true, sp = c.yellow0 },
     DiagnosticUnderlineInfo                    = { undercurl = true, sp = c.aqua1 },
     DiagnosticUnderlineHint                    = { undercurl = true, sp = c.magenta0 },
+    DiagnosticUnderlineOk                      = { undercurl = true, sp = c.green0 },
 
     -- lsp codelens highlighting
     LspCodeLens                                = { fg = ds.color.lighten(c.gray1, 20) },
