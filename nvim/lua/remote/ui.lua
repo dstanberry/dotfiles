@@ -282,7 +282,6 @@ return {
         sign = false,
         width = "block",
         min_width = 80,
-        icons = vim.tbl_map(function(i) return ds.pad(ds.icons.markdown["H" .. i], "right") end, vim.fn.range(1, 8)),
       },
       pipe_table = {
         head = "@markup.table",
