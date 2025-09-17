@@ -12,36 +12,68 @@ return {
       { "<leader>cc", "<cmd>CodeCompanionChat toggle<cr>", desc = "copilot: toggle chat" },
     },
     init = function()
-      local spinners = ds.icons.spinners.Default
-      local interval = 250
-      local timer
+      local group = ds.augroup "copilot_notif"
+      local sprites = ds.icons.spinners.Default
+      local frame_ms, tick_ms = 80, 150
+
+      ---@type table<string, {name:string, msg:string, is_done?:boolean, notify:fun(), timer:uv_timer_t?}>
+      local request_cache = {}
+
+      local animate = function()
+        local time_ms = math.floor(vim.uv.hrtime() / (1e6 * frame_ms))
+        local idx = time_ms % #sprites + 1
+        return sprites[idx]
+      end
+
+      local get_id = function(ctx)
+        local adapter = ctx.data and ctx.data.adapter or {}
+        local title = adapter.formatted_name or adapter.name or "Copilot"
+        local key = string.format("%s:%s", title, ctx.data and ctx.data.id or "-1")
+        return title, key
+      end
+
+      local create_notifier = function(key)
+        return function()
+          local req = request_cache[key]
+          if not req then return end
+          ds.info(req.msg, {
+            id = "copilot_progress",
+            title = req.name,
+            opts = function(notification) notification.icon = req.is_done and ds.icons.misc.Check or animate() end,
+          })
+        end
+      end
 
       vim.api.nvim_create_autocmd("User", {
         pattern = "CodeCompanionRequestStarted",
+        group = group,
         callback = function(ctx)
-          timer = assert(vim.uv.new_timer())
-          timer:start(
-            0,
-            interval,
-            vim.schedule_wrap(function()
-              local spinner = spinners[math.floor(vim.uv.now() / interval) % #spinners + 1]
-              ds.info(
-                spinner .. " Processing...",
-                { title = "Copilot", icon = ds.icons.kind.Copilot, timeout = false, id = ctx.data.id }
-              )
-            end)
-          )
+          if not ctx.data and ctx.adapter and ctx.adapter.name then return end
+          local spinner_timer = assert(vim.uv.new_timer())
+          local title, key = get_id(ctx)
+          local notify = create_notifier(key)
+          request_cache[key] = { name = title, msg = "Processing...", notify = notify, timer = spinner_timer }
+          spinner_timer:start(0, tick_ms, vim.schedule_wrap(notify))
+          notify()
         end,
       })
+
       vim.api.nvim_create_autocmd("User", {
         pattern = "CodeCompanionRequestFinished",
+        group = group,
         callback = function(ctx)
-          timer:stop()
-          timer:close()
-          ds.info(
-            ds.icons.misc.Check .. "Request finished",
-            { title = "Copilot", icon = ds.icons.kind.Copilot, timeout = 2000, id = ctx.data.id }
-          )
+          if not ctx.data and ctx.adapter and ctx.adapter.name then return end
+          local _, key = get_id(ctx)
+          local req = request_cache[key]
+          if not req then return end
+          req.is_done = true
+          req.msg = ctx.data.status == "success" and "Done" or (ctx.data.status == "error" and "Error") or "Cancelled"
+          req.notify()
+          request_cache[key] = nil
+          if req.timer then
+            req.timer:stop()
+            req.timer:close()
+          end
         end,
       })
     end,
