@@ -1,1 +1,2 @@
+tree-sitter-cli
 --git https://github.com/loichyan/nerdfix.git
