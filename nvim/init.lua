@@ -4,6 +4,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
 if vim.env.VSCODE then vim.g.vscode = true end
+vim.env.XDG_CONFIG_HOME = vim.env.XDG_CONFIG_HOME or vim.fs.joinpath(vim.env.HOME, ".config")
 
 _G.ds = require "util"
 ds.fs.load_settings()
@@ -17,7 +18,7 @@ ds.plugin.setup {
     ds.ui.virtcolumn()
     ds.color.sync_term_bg()
 
-    vim.g.dotfiles_dir = vim.fs.joinpath(vim.env.HOME, ".config")
+    vim.g.dotfiles_dir = vim.env.XDG_CONFIG_HOME
     vim.g.projects_dir = vim.env.projects_dir and vim.fs.normalize(vim.env.projects_dir)
       or vim.fs.joinpath(vim.env.HOME, "Projects")
 
