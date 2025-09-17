@@ -46,6 +46,7 @@ return {
       local indent = vim.tbl_get(opts, "indent", "enable")
       if highlight or indent then
         vim.api.nvim_create_autocmd("FileType", {
+          group = ds.augroup "treesitter",
           callback = function(event)
             local lang = vim.treesitter.language.get_lang(event.match)
             if not vim.tbl_contains(installed, lang) then return end
