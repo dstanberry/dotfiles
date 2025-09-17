@@ -1,10 +1,14 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    version = false,
     branch = "main",
-    build = ":TSUpdate",
-    lazy = true,
+    version = false,
+    build = function()
+      local ts = require "nvim-treesitter"
+      if not ts.get_installed then return ds.error "`nvim-treesitter` is out of date. Please update it." end
+      ts.update(nil, { summary = true })
+    end,
+    lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
     event = { "LazyFile", "VeryLazy" },
     cmd = { "TSInstall", "TSLog", "TSUninstall", "TSUpdate" },
     init = function() end,
@@ -27,7 +31,14 @@ return {
     },
     config = function(_, opts)
       local ts = require "nvim-treesitter"
-
+      if not ts.get_installed then
+        return ds.error "`nvim-treesitter` is out of date. Please update it."
+      elseif vim.fn.executable "tree-sitter" == 0 then
+        return ds.error {
+          "**treesitter-main** requires the `tree-sitter` CLI executable to be installed.",
+          "Run `:checkhealth nvim-treesitter` for more information.",
+        }
+      end
       ts.setup(opts)
 
       local installed = ts.get_installed "parsers"
@@ -59,40 +70,9 @@ return {
     },
   },
   {
-    "theHamsta/nvim-treesitter-pairs",
-    keys = {
-      { "%", function() require("nvim-treesitter.pairs").goto_partner() end, desc = "treesitter: goto partner" },
-      { "X", function() require("nvim-treesitter.pairs").delete_balanced() end, desc = "treesitter: delete balanced" },
-    },
-    config = function()
-      local nvim_treesitter_configs = require "nvim-treesitter.configs"
-      ---@diagnostic disable-next-line: missing-fields
-      nvim_treesitter_configs.setup {
-        pairs = {
-          enable = true,
-          disable = {},
-          highlight_pair_events = { "CursorMoved" },
-          highlight_self = false,
-          fallback_cmd_normal = "normal! %",
-          goto_right_end = false,
-          keymaps = {
-            goto_partner = "%",
-            delete_balanced = "X",
-          },
-          delete_balanced = {
-            only_on_first_char = false,
-            fallback_cmd_normal = nil,
-            longest_partner = false,
-          },
-        },
-      }
-    end,
-  },
-  {
     "nvim-treesitter/nvim-treesitter-textobjects",
     branch = "main",
     event = "VeryLazy",
-    opts = {},
     keys = function()
       -- stylua: ignore
       local move = {
@@ -107,7 +87,11 @@ return {
           local boundary = (key:sub(2, 2) == key:sub(2, 2):upper()) and "end" or "start"
           table.insert(acc2, {
             key,
-            function() require("nvim-treesitter-textobjects.move")[lhs](query, "textobjects") end,
+            function()
+              -- don't use treesitter if in diff mode and the key is one of the c/C keys
+              if vim.wo.diff and key:find "[cC]" then return vim.cmd("normal! " .. key) end
+              require("nvim-treesitter-textobjects.move")[lhs](query, "textobjects")
+            end,
             desc = ("goto %s %s %s"):format(direction, query:match "@([^%.]+)" or "", boundary),
             mode = { "n", "o", "x" },
             silent = true,
@@ -116,7 +100,12 @@ return {
         end, acc)
       end, {})
     end,
-    config = function(_, opts) require("nvim-treesitter-textobjects").setup(opts) end,
+    opts = {},
+    config = function(_, opts)
+      local ts = require "nvim-treesitter-textobjects"
+      if not ts.setup then return ds.error "`nvim-treesitter-textobjects` is out of date. Please update it." end
+      ts.setup(opts)
+    end,
   },
   {
     "HiPhish/rainbow-delimiters.nvim",
