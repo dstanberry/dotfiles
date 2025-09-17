@@ -2,18 +2,12 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     version = false,
+    branch = "main",
     build = ":TSUpdate",
-    lazy = vim.fn.argc(-1) == 0,
+    lazy = true,
     event = { "LazyFile", "VeryLazy" },
-    cmd = { "TSInstall", "TSUpdate", "TSUpdateSync" },
-    keys = {
-      { "=", desc = "treesitter: increment selection" },
-      { "<bs>", desc = "treesitter: decrement selection", mode = "x" },
-    },
-    init = function(plugin)
-      require("lazy.core.loader").add_to_rtp(plugin)
-      require "nvim-treesitter.query_predicates"
-    end,
+    cmd = { "TSInstall", "TSLog", "TSUninstall", "TSUpdate" },
+    init = function() end,
     opts = {
       ensure_installed = "all",
       highlight = {
@@ -30,48 +24,26 @@ return {
           node_decremental = "<bs>",
         },
       },
-      textobjects = {
-        move = {
-          enable = true,
-          -- NOTE: matches mnemonic used in |mini.ai| configuration
-          goto_next_start = {
-            ["]b"] = "@codeblock.outer",
-            ["]c"] = "@class.outer",
-            ["]f"] = "@function.outer",
-            ["]u"] = "@parameter.inner",
-          },
-          goto_next_end = {
-            ["]B"] = "@codeblock.outer",
-            ["]C"] = "@class.outer",
-            ["]F"] = "@function.outer",
-            ["]U"] = "@parameter.inner",
-          },
-          goto_previous_start = {
-            ["]b"] = "@codeblock.outer",
-            ["[c"] = "@class.outer",
-            ["[f"] = "@function.outer",
-            ["[u"] = "@parameter.inner",
-          },
-          goto_previous_end = {
-            ["]B"] = "@codeblock.outer",
-            ["[C"] = "@class.outer",
-            ["[F"] = "@function.outer",
-            ["[U"] = "@parameter.inner",
-          },
-        },
-        swap = {
-          enable = true,
-          swap_next = { ["]s"] = "@parameter.inner" },
-          swap_previous = { ["[s"] = "@parameter.inner" },
-        },
-      },
-      query_linter = {
-        enable = true,
-        use_virtual_text = true,
-        lint_events = { "BufWrite", "CursorHold" },
-      },
     },
-    config = function(_, opts) pcall(require("nvim-treesitter.configs").setup, opts) end,
+    config = function(_, opts)
+      local ts = require "nvim-treesitter"
+
+      ts.setup(opts)
+
+      local installed = ts.get_installed "parsers"
+      local highlight = vim.tbl_get(opts, "highlight", "enable")
+      local indent = vim.tbl_get(opts, "indent", "enable")
+      if highlight or indent then
+        vim.api.nvim_create_autocmd("FileType", {
+          callback = function(event)
+            local lang = vim.treesitter.language.get_lang(event.match)
+            if not vim.tbl_contains(installed, lang) then return end
+            if highlight then pcall(vim.treesitter.start) end
+            if indent then vim.bo[event.buf].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()" end
+          end,
+        })
+      end
+    end,
   },
   {
     "nvim-treesitter/nvim-treesitter-context",
@@ -118,33 +90,33 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
+    branch = "main",
     event = "VeryLazy",
-    config = function()
-      if ds.plugin.is_loaded "nvim-treesitter" then
-        local opts = ds.plugin.get_opts "nvim-treesitter"
-        ---@diagnostic disable-next-line: missing-fields
-        require("nvim-treesitter.configs").setup { textobjects = opts.textobjects or {} }
-      end
-      -- use the default vim text objects [c and C] instead of the treesitter ones in diff mode.
-      local move = require "nvim-treesitter.textobjects.move" ---@type table<string,fun(...)>
-      local configs = require "nvim-treesitter.configs"
-      for name, fn in pairs(move) do
-        if name:find "goto" == 1 then
-          move[name] = function(q, ...)
-            if vim.wo.diff then
-              local config = configs.get_module("textobjects.move")[name] ---@type table<string,string>
-              for key, query in pairs(config or {}) do
-                if q == query and key:find "[%]%[][cC]" then
-                  vim.cmd("normal! " .. key)
-                  return
-                end
-              end
-            end
-            return fn(q, ...)
-          end
-        end
-      end
+    opts = {},
+    keys = function()
+      -- stylua: ignore
+      local move = {
+        goto_next_start     = {["]b"] = "@codeblock.outer", ["]c"] = "@class.outer", ["]f"] = "@function.outer", ["]u"] = "@parameter.inner",},
+        goto_next_end       = {["]B"] = "@codeblock.outer", ["]C"] = "@class.outer", ["]F"] = "@function.outer", ["]U"] = "@parameter.inner",},
+        goto_previous_start = {["[b"] = "@codeblock.outer", ["[c"] = "@class.outer", ["[f"] = "@function.outer", ["[u"] = "@parameter.inner",},
+        goto_previous_end   = {["[B"] = "@codeblock.outer", ["[C"] = "@class.outer", ["[F"] = "@function.outer", ["[U"] = "@parameter.inner",},
+      }
+      return ds.tbl_reduce(move, function(acc, rhs, lhs)
+        return ds.tbl_reduce(rhs, function(acc2, query, key)
+          local direction = (key:sub(1, 1) == "[") and "previous" or "next"
+          local boundary = (key:sub(2, 2) == key:sub(2, 2):upper()) and "end" or "start"
+          table.insert(acc2, {
+            key,
+            function() require("nvim-treesitter-textobjects.move")[lhs](query, "textobjects") end,
+            desc = ("goto %s %s %s"):format(direction, query:match "@([^%.]+)" or "", boundary),
+            mode = { "n", "o", "x" },
+            silent = true,
+          })
+          return acc2
+        end, acc)
+      end, {})
     end,
+    config = function(_, opts) require("nvim-treesitter-textobjects").setup(opts) end,
   },
   {
     "HiPhish/rainbow-delimiters.nvim",
