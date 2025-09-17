@@ -12,6 +12,7 @@ return {
     },
     opts = { ---@type blink.cmp.Config
       appearance = { use_nvim_cmp_as_default = false, kind_icons = ds.icons.kind },
+      cmdline = { enabled = false },
       completion = {
         accept = { auto_brackets = { enabled = true } },
         menu = {
@@ -60,7 +61,6 @@ return {
         ["<c-c>"] = { "hide", "fallback" },
         ["<esc>"] = { "cancel", "fallback" },
       },
-      cmdline = { enabled = false },
       sources = {
         default = {
           "buffer",
