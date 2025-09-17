@@ -105,6 +105,7 @@ QToolTip {
     margin: 3px 0 3px 0;
     border-radius: 12px;
     border: 1px solid var(--surface1);
+    padding: 0 8px 0 8px;
 }
 .komorebi-workspaces .widget-container,
 .komorebi-active-layout .widget-container {
@@ -112,6 +113,7 @@ QToolTip {
     margin: 3px 0 3px 0;
     border-radius: 12px;
     border: 1px solid var(--surface0);
+    padding: 0 8px 0 8px;
 }
 .komorebi-workspaces .widget-container {
     border-top-left-radius: 6px;
@@ -288,6 +290,9 @@ QToolTip {
     color: #4e525c;
     font-size: 12px;
     background-color: rgba(0, 0, 0, 0);
+}
+.media-widget .widget-container {
+    padding: 0 0 0 32px;
 }
 .taskbar-widget {
     padding: 0;

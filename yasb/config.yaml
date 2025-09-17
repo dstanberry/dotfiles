@@ -77,11 +77,6 @@ widgets:
       hide_empty_workspaces: false
       hide_if_offline: true
       animation: true
-      container_padding:
-        top: 0
-        left: 8
-        bottom: 0
-        right: 8
   komorebi_active_layout:
     type: "komorebi.active_layout.ActiveLayoutWidget"
     options:
@@ -111,11 +106,6 @@ widgets:
         maximised: "MAX"
         floating: "FLOATING"
         paused: "PAUSED"
-      container_padding:
-        top: 0
-        left: 8
-        bottom: 0
-        right: 8
       callbacks:
         on_left: "toggle_float"
         on_middle: "toggle_monocle"
@@ -143,11 +133,6 @@ widgets:
   apps:
     type: "yasb.applications.ApplicationsWidget"
     options:
-      container_padding:
-        top: 0
-        left: 8
-        bottom: 0
-        right: 8
       label: "{data}"
       app_list:
         - { icon: "\uf422", launch: "search" }
@@ -176,11 +161,6 @@ widgets:
         next_track: "\ue893"
         play: "\ue768"
         pause: "\ue769"
-      container_padding:
-        top: 0
-        left: 0
-        bottom: 0
-        right: 32
   microphone:
     type: "yasb.microphone.MicrophoneWidget"
     options:
