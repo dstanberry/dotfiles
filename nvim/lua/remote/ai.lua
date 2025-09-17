@@ -49,11 +49,11 @@ return {
         group = group,
         callback = function(ctx)
           if not ctx.data and ctx.adapter and ctx.adapter.name then return end
-          local spinner_timer = assert(vim.uv.new_timer())
+          local timer = assert(vim.uv.new_timer())
           local title, key = get_id(ctx)
           local notify = create_notifier(key)
-          request_cache[key] = { name = title, msg = "Processing...", notify = notify, timer = spinner_timer }
-          spinner_timer:start(0, tick_ms, vim.schedule_wrap(notify))
+          request_cache[key] = { name = title, msg = "Processing...", notify = notify, timer = timer }
+          timer:start(0, tick_ms, vim.schedule_wrap(notify))
           notify()
         end,
       })
@@ -99,6 +99,11 @@ return {
             auto_save = false,
             save_chat_keymap = "gs",
           },
+        },
+      },
+      memory = {
+        opts = {
+          chat = { enabled = true },
         },
       },
       strategies = {
