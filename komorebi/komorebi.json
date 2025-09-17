@@ -42,10 +42,8 @@
     }
   },
   "display_index_preferences": {
-    /* left: portrait */
-    "0": "GSM5B55-5&25bf14bb&0&UID270592",
-    /* center: primary */
-    "1": "GSM7727-5&25bf14bb&0&UID270597"
+    "0": "GSM5B55-5&25bf14bb&1&UID270592",
+    "1": "GSM7727-5&25bf14bb&1&UID270597"
   },
   "monitors": [
     {
