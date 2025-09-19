@@ -10,6 +10,7 @@
 ---@field plugin util.plugin
 ---@field root util.root
 ---@field snippet util.snippet
+---@field treesitter util.treesitter
 ---@field ui util.ui
 local M = {}
 
