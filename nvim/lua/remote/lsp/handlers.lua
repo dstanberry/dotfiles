@@ -4,6 +4,7 @@ local M = {}
 ---@field disabled? boolean
 ---@field defer_setup? boolean
 ---@field config? vim.lsp.ClientConfig|vim.lsp.Config|{root_dir: fun(fname: string): string}
+---@field server_capabilities? lsp.ServerCapabilities?
 ---@field setup? fun(config: vim.lsp.ClientConfig|vim.lsp.Config|{root_dir: fun(fname: string): string})
 
 ---@class LspCommand: lsp.ExecuteCommandParams
@@ -107,7 +108,8 @@ end
 
 ---@param client vim.lsp.Client
 ---@param bufnr integer
-function M.on_attach(client, bufnr)
+---@param server_capabilities? lsp.ServerCapabilities?
+function M.on_attach(client, bufnr, server_capabilities)
   -- remove lsp default keymaps
   ds.plugin.keymap_del("n", "gO")
   ds.plugin.keymap_del("n", "gra")
@@ -115,6 +117,10 @@ function M.on_attach(client, bufnr)
   ds.plugin.keymap_del("n", "grn")
   ds.plugin.keymap_del("n", "grr")
   ds.plugin.keymap_del("n", "grt")
+
+  ds.foreach(server_capabilities or {}, function(v, k)
+    if client.server_capabilities[k] then client.server_capabilities[k] = v end
+  end)
 
   if client:supports_method("textDocument/codeAction", bufnr) then
     vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr, desc = "lsp: code action" })
@@ -189,6 +195,10 @@ function M.on_attach(client, bufnr)
       desc = "LSP: Clear highlighted symbol",
       callback = function() vim.lsp.buf.clear_references() end,
     })
+  end
+
+  if client:supports_method("textDocument/foldingRange", bufnr) then
+    ds.ft.set_options(bufnr, { wo = { foldexpr = "v:lua.vim.lsp.foldexpr()" } })
   end
 
   if client:supports_method("textDocument/formatting", bufnr) then
@@ -304,37 +314,6 @@ function M.formatter(opts)
     end,
   }
   return ds.plugin.deep_merge(ret, opts) --[[@as util.format.formatter]]
-end
-
-function M.setup()
-  vim.diagnostic.config {
-    severity_sort = true,
-    update_in_insert = false,
-    virtual_text = false,
-    underline = { severity = { min = vim.diagnostic.severity.WARN } },
-    float = {
-      border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
-      focusable = false,
-      show_header = true,
-      source = true,
-    },
-    jump = {
-      on_jump = function(_, bufnr) vim.diagnostic.open_float { bufnr = bufnr, scope = "cursor", focus = false } end,
-    },
-    signs = {
-      text = {
-        [vim.diagnostic.severity.ERROR] = ds.icons.diagnostics.Error,
-        [vim.diagnostic.severity.WARN] = ds.icons.diagnostics.Warn,
-        [vim.diagnostic.severity.HINT] = ds.icons.diagnostics.Hint,
-        [vim.diagnostic.severity.INFO] = ds.icons.diagnostics.Info,
-      },
-    },
-  }
-
-  if ds.plugin.is_installed "snacks.nvim" then
-    vim.lsp.handlers["textDocument/documentSymbol"] = function() Snacks.picker.lsp_symbols() end
-    vim.lsp.handlers["workspace/symbol"] = function() Snacks.picker.lsp_workspace_symbols() end
-  end
 end
 
 return M

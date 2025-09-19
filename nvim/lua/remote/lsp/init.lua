@@ -47,13 +47,39 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    event = "FileType",
+    event = "LazyFile",
     dependencies = { "williamboman/mason.nvim" },
     init = function() vim.lsp.log.set_level(vim.lsp.log_levels.ERROR) end,
-    config = function()
-      local handlers = require "remote.lsp.handlers"
-      local defaults = { capabilities = handlers.get_client_capabilities(), flags = { debounce_text_changes = 150 } }
-      local servers = { ---@type remote.lsp.config[]
+    opts = {
+      capabilities = { ---@type lsp.ClientCapabilities
+        workspace = {
+          fileOperations = { didRename = true, willRename = true },
+        },
+      },
+      diagnostics = { ---@type vim.diagnostic.Opts
+        severity_sort = true,
+        update_in_insert = false,
+        virtual_text = false,
+        underline = { severity = { min = vim.diagnostic.severity.WARN } },
+        float = {
+          border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
+          focusable = false,
+          show_header = true,
+          source = true,
+        },
+        jump = {
+          on_jump = function(_, bufnr) vim.diagnostic.open_float { bufnr = bufnr, scope = "cursor", focus = false } end,
+        },
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = ds.icons.diagnostics.Error,
+            [vim.diagnostic.severity.WARN] = ds.icons.diagnostics.Warn,
+            [vim.diagnostic.severity.HINT] = ds.icons.diagnostics.Hint,
+            [vim.diagnostic.severity.INFO] = ds.icons.diagnostics.Info,
+          },
+        },
+      },
+      servers = { ---@type remote.lsp.config[]
         cmake = {},
         cssls = { init_options = { provideFormatter = false } },
         docker_compose_language_service = {},
@@ -65,32 +91,46 @@ return {
         html = { init_options = { provideFormatter = false } },
         marksman = { root_markers = { ".marksman.toml", ".git", ".zk" } },
         terraformls = {},
-      }
+      },
+    },
+    config = vim.schedule_wrap(function(_, opts)
+      local handlers = require "remote.lsp.handlers"
+      local server_capabilities = {}
 
-      handlers.setup()
+      opts.servers = opts.servers or {} ---@type remote.lsp.config[]
+      opts.capabilities = vim.tbl_deep_extend("force", handlers.get_client_capabilities(), opts.capabilities or {})
+
+      vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+
       ds.fs.walk("lsp", function(path, name, type)
         if (type == "file" or type == "link") and name:match "%.lua$" then
           local fname = name:sub(1, -5)
           local mod = assert(loadfile(path))() ---@type remote.lsp.config
           if mod.disabled then return end
-          mod.config = vim.tbl_deep_extend("force", defaults, mod.config or {})
+          mod.config = vim.tbl_deep_extend("force", { capabilities = opts.capabilities }, mod.config or {})
           if mod.setup then mod.setup(mod.config) end
           if mod.defer_setup then return end
-          servers = vim.tbl_deep_extend("force", servers, { [fname] = mod.config })
+          opts.servers = vim.tbl_deep_extend("force", opts.servers or {}, { [fname] = mod.config })
+          server_capabilities =
+            vim.tbl_deep_extend("force", server_capabilities, { [fname] = (mod.server_capabilities or {}) })
         end
       end)
-      ds.foreach(servers, function(config, server)
-        if not config.capabilities then config = vim.tbl_deep_extend("force", defaults, config.config or {}) end
+
+      ds.foreach(opts.servers, function(config, server)
+        if not config.capabilities then
+          config = vim.tbl_deep_extend("force", { capabilities = opts.capabilities }, config or {})
+        end
         vim.lsp.config(server, config)
+        vim.lsp.enable(server)
       end)
+
       vim.api.nvim_create_autocmd("LspAttach", {
         group = ds.augroup "lspconfig",
-        callback = function(args)
-          local client = assert(vim.lsp.get_client_by_id(args.data.client_id)) ---@type vim.lsp.Client
-          handlers.on_attach(client, args.buf)
+        callback = function(event)
+          local client = assert(vim.lsp.get_client_by_id(event.data.client_id)) ---@type vim.lsp.Client
+          handlers.on_attach(client, event.buf, server_capabilities[client.name])
         end,
       })
-      vim.lsp.enable(vim.tbl_keys(servers))
-    end,
+    end),
   },
 }

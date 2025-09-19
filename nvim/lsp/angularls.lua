@@ -3,11 +3,6 @@ local M = {}
 
 M.config = {
   on_attach = function(client, bufnr)
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.renameProvider = false
-
-    require("remote.lsp.handlers").on_attach(client, bufnr)
-
     local _switch = function()
       local params = vim.lsp.util.make_position_params(0, client.offset_encoding)
 
@@ -32,6 +27,11 @@ M.config = {
 
     vim.keymap.set("n", "go", _switch, { buffer = bufnr, desc = "lsp: to component/template" })
   end,
+}
+
+M.server_capabilities = {
+  documentFormattingProvider = false,
+  renameProvider = false,
 }
 
 M.setup = function()

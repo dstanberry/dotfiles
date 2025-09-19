@@ -45,6 +45,20 @@ M.config = {
       usePlaceholders = true,
     },
   },
+  on_attach = function(client, _)
+    if not client.server_capabilities.semanticTokensProvider then
+      local semantic_tokens = client.config.capabilities.textDocument.semanticTokens
+      if not semantic_tokens then return end
+      client.server_capabilities.semanticTokensProvider = {
+        full = true,
+        legend = {
+          tokenTypes = semantic_tokens.tokenTypes,
+          tokenModifiers = semantic_tokens.tokenModifiers,
+        },
+        range = true,
+      }
+    end
+  end,
 }
 
 return M

@@ -64,7 +64,7 @@ end
 
 ---Configures buffer and window options based on filetype and additional options.
 ---@param buf number The buffer number to configure. Defaults to the current buffer.
----@param opts? table<string, any> A table of options to configure. Merges with defaults.
+---@param opts? { bo?: vim.api.keyset.option, wo?: vim.api.keyset.option } A table of options to configure. Merges with defaults.
 function M.set_options(buf, opts)
   buf = buf or vim.api.nvim_get_current_buf()
   opts = vim.tbl_deep_extend("force", M.defaults[vim.bo[buf].filetype or ""] or {}, opts or {})

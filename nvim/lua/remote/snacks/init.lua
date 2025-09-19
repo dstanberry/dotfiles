@@ -73,9 +73,15 @@ return {
       }
     end,
     config = function(_, opts)
+      -- INFO: vim.notify(...) shell games between `noice.nvim` and `snacks.nvim`
       local notify = vim.notify
-      require("snacks").setup(opts)
+      local snacks = require "snacks"
+
+      snacks.setup(opts)
+
       if ds.plugin.is_installed "noice.nvim" then vim.notify = notify end
+      vim.lsp.handlers["textDocument/documentSymbol"] = snacks.picker.lsp_symbols
+      vim.lsp.handlers["workspace/symbol"] = snacks.picker.lsp_workspace_symbols
     end,
   },
 }
