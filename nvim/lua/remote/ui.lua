@@ -297,6 +297,25 @@ return {
         head = "@markup.table",
         row = "@markup.table",
       },
+      overrides = {
+        filetype = {
+          codecompanion = {
+            html = {
+              tag = {
+                buf = { icon = ds.pad(ds.icons.misc.Layer, "right"), highlight = "SpecialChar" },
+                file = { icon = ds.pad(ds.icons.documents.File, "right"), highlight = "SpecialChar" },
+                group = { icon = ds.pad(ds.icons.misc.Tools, "right"), highlight = "SpecialChar" },
+                help = { icon = ds.pad(ds.icons.diagnostics.Hint, "right"), highlight = "SpecialChar" },
+                image = { icon = ds.pad(ds.icons.misc.Image, "right"), highlight = "SpecialChar" },
+                memory = { icon = ds.pad(ds.icons.misc.Brain, "right"), highlight = "SpecialChar" },
+                symbols = { icon = ds.pad(ds.icons.misc.Package, "right"), highlight = "SpecialChar" },
+                tool = { icon = ds.pad(ds.icons.misc.Wrench, "right"), highlight = "SpecialChar" },
+                url = { icon = ds.pad(ds.icons.misc.Link, "right"), highlight = "SpecialChar" },
+              },
+            },
+          },
+        },
+      },
     },
   },
   {

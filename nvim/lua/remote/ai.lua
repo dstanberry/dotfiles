@@ -5,11 +5,13 @@ return {
       "ravitemer/codecompanion-history.nvim",
       "franco-ruggeri/codecompanion-spinner.nvim",
     },
-    cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
+    cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd", "CodeCompanionHistory" },
     keys = {
-      { "<leader>c", mode = { "n", "x" }, "", desc = "+copilot" },
-      { "<leader>ca", mode = { "n", "x" }, ":CodeCompanionActions<cr>", desc = "copilot: select action" },
-      { "<leader>cc", "<cmd>CodeCompanionChat toggle<cr>", desc = "copilot: toggle chat" },
+      { "<leader>c", mode = { "n", "v" }, "", desc = "+copilot" },
+      { "<leader>ca", mode = { "n", "v" }, ":CodeCompanionActions<cr>", desc = "copilot: select chat action" },
+      { "<leader>cc", mode = { "v" }, "<cmd>CodeCompanionChat Add<cr>", desc = "copilot: toggle chat" },
+      { "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", desc = "copilot: toggle chat" },
+      { "<leader>ch", "<cmd>CodeCompanionHistory<cr>", desc = "copilot: show chat history" },
     },
     init = function()
       local group = ds.augroup "copilot_notif"
@@ -44,9 +46,15 @@ return {
         end
       end
 
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "CodeCompanionRequestStarted",
+      vim.api.nvim_create_autocmd("FileType", {
         group = group,
+        pattern = "codecompanion",
+        callback = vim.schedule_wrap(function() vim.opt_local.winhighlight = "Normal:NormalSB" end),
+      })
+
+      vim.api.nvim_create_autocmd("User", {
+        group = group,
+        pattern = "CodeCompanionRequestStarted",
         callback = function(ctx)
           if not ctx.data and ctx.adapter and ctx.adapter.name then return end
           local timer = assert(vim.uv.new_timer())
@@ -59,8 +67,8 @@ return {
       })
 
       vim.api.nvim_create_autocmd("User", {
-        pattern = "CodeCompanionRequestFinished",
         group = group,
+        pattern = "CodeCompanionRequestFinished",
         callback = function(ctx)
           if not ctx.data and ctx.adapter and ctx.adapter.name then return end
           local _, key = get_id(ctx)
@@ -108,7 +116,7 @@ return {
       },
       strategies = {
         chat = {
-          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5" },
+          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5", reasoning_effort = "minimal" },
           keymaps = {
             close = { modes = { n = "q" }, opts = { nowait = true } },
             send = { modes = { n = "<cr>", i = "<c-s>" } },
@@ -130,10 +138,10 @@ return {
           },
         },
         cmd = {
-          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5" },
+          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5", reasoning_effort = "minimal" },
         },
         inline = {
-          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5" },
+          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5", reasoning_effort = "minimal" },
           keymaps = {
             accept_change = { modes = { n = "dp" } },
             reject_change = { modes = { n = "de" } },
@@ -142,32 +150,20 @@ return {
         },
       },
       prompt_library = {
-        ["Simplify"] = {
-          strategy = "inline",
-          description = "Simplify the selected code.",
+        ["Refactor"] = {
+          strategy = "chat",
+          description = "Refactor the code and ensure any associated unit tests are updated if necessary and pass",
           opts = {
-            modes = { "v" },
-            short_name = "simplify",
-            auto_submit = true,
-            stop_context_insertion = true,
-            user_prompt = false,
+            short_name = "refactor",
+            is_default = true,
+            is_slash_cmd = true,
           },
           prompts = {
             {
-              role = "system",
-              content = function(ctx)
-                return ([[I want you to act as a senior %s developer. I will send you some code,
-                and I want you to simplify the code while not diminishing its readability.]]):format(
-                  ctx.filetype
-                )
-              end,
-            },
-            {
               role = "user",
-              content = function(ctx)
-                return require("codecompanion.helpers.actions").get_code(ctx.start_line, ctx.end_line)
+              content = function()
+                return ds.fs.read(vim.fs.joinpath(vim.fn.stdpath "config", "prompts/refactor.md"), "r", true)
               end,
-              opts = { contains_code = true },
             },
           },
         },
