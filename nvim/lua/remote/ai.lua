@@ -5,11 +5,13 @@ return {
       "ravitemer/codecompanion-history.nvim",
       "franco-ruggeri/codecompanion-spinner.nvim",
     },
-    cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd" },
+    cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd", "CodeCompanionHistory" },
     keys = {
-      { "<leader>c", mode = { "n", "x" }, "", desc = "+copilot" },
-      { "<leader>ca", mode = { "n", "x" }, ":CodeCompanionActions<cr>", desc = "copilot: select action" },
-      { "<leader>cc", "<cmd>CodeCompanionChat toggle<cr>", desc = "copilot: toggle chat" },
+      { "<leader>c", mode = { "n", "v" }, "", desc = "+copilot" },
+      { "<leader>ca", mode = { "n", "v" }, ":CodeCompanionActions<cr>", desc = "copilot: select chat action" },
+      { "<leader>cc", mode = { "v" }, "<cmd>CodeCompanionChat Add<cr>", desc = "copilot: toggle chat" },
+      { "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", desc = "copilot: toggle chat" },
+      { "<leader>ch", "<cmd>CodeCompanionHistory<cr>", desc = "copilot: show chat history" },
     },
     init = function()
       local group = ds.augroup "copilot_notif"
@@ -142,32 +144,58 @@ return {
         },
       },
       prompt_library = {
-        ["Simplify"] = {
-          strategy = "inline",
-          description = "Simplify the selected code.",
+        ["Refactor"] = {
+          strategy = "workflow",
+          description = "Refactor the code and ensure any associated unit tests are updated if necessary and pass",
           opts = {
-            modes = { "v" },
-            short_name = "simplify",
-            auto_submit = true,
-            stop_context_insertion = true,
-            user_prompt = false,
+            short_name = "refactor",
+            is_default = true,
+            is_slash_cmd = true,
           },
           prompts = {
             {
-              role = "system",
-              content = function(ctx)
-                return ([[I want you to act as a senior %s developer. I will send you some code,
-                and I want you to simplify the code while not diminishing its readability.]]):format(
-                  ctx.filetype
-                )
-              end,
+              {
+                role = "user",
+                opts = { auto_submit = false },
+                content = function(ctx)
+                  return ds.fs
+                    .read(vim.fs.joinpath(vim.fn.stdpath "config", "prompts/refactor.md"), "r", true)
+                    :format(ctx.filetype:gsub("^%l", string.upper))
+                end,
+              },
             },
             {
-              role = "user",
-              content = function(ctx)
-                return require("codecompanion.helpers.actions").get_code(ctx.start_line, ctx.end_line)
-              end,
-              opts = { contains_code = true },
+              {
+                role = "system",
+                content = "Resolve the following code diagnostic issues.",
+              },
+              {
+                role = "user",
+                opts = { auto_submit = false },
+                content = function(ctx)
+                  local diags = vim.diagnostic.get(ctx.bufnr)
+                  local content = ""
+                  for i, diag in ipairs(diags) do
+                    content = string.format(
+                      [=[
+                      %s%s. Issue - %s
+                        - Location: Line %s
+                        - Buffer: %s
+                        - Severity: %s
+                        - Message: %s\n
+                      ]=],
+                      content,
+                      i,
+                      i,
+                      diag.line_number,
+                      ctx.bufnr,
+                      diag.severity,
+                      diag.message
+                    )
+                  end
+                  return string.format("This is is the list of %s diagnostics to resolve:\n%s", ctx.filetype, content)
+                end,
+              },
             },
           },
         },
