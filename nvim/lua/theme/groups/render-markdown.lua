@@ -5,12 +5,20 @@ local M = {}
 M.get = function(c)
   -- stylua: ignore
   return {
-    RenderMarkdownH1Bg = { bg = ds.color.blend(c.blue0, c.bg2, 0.55) },
-    RenderMarkdownH2Bg = { bg = ds.color.blend(c.blue0, c.bg2, 0.5) },
-    RenderMarkdownH3Bg = { bg = ds.color.blend(c.blue0, c.bg2, 0.4) },
-    RenderMarkdownH4Bg = { bg = ds.color.blend(c.blue0, c.bg2, 0.3) },
-    RenderMarkdownH5Bg = { bg = ds.color.blend(c.blue0, c.bg2, 0.2) },
-    RenderMarkdownH6Bg = { bg = ds.color.blend(c.blue0, c.bg2, 0.15) }
+    RenderMarkdownH1         = { fg = c.bg2 },
+    RenderMarkdownH1Bg       = { fg = c.bg2, bg = c.blue1 },
+    RenderMarkdownH2         = { fg = c.bg2 },
+    RenderMarkdownH2Bg       = { fg = c.bg2, bg = c.blue1 },
+    RenderMarkdownH3         = { fg = c.bg2 },
+    RenderMarkdownH3Bg       = { fg = c.bg2, bg = c.blue1 },
+    RenderMarkdownH4         = { fg = c.bg2 },
+    RenderMarkdownH4Bg       = { fg = c.bg2, bg = c.blue1 },
+    RenderMarkdownH5         = { fg = c.bg2 },
+    RenderMarkdownH5Bg       = { fg = c.bg2, bg = c.blue1 },
+    RenderMarkdownH6         = { fg = c.bg2 },
+    RenderMarkdownH6Bg       = { fg = c.bg2, bg = c.blue1 },
+
+    RenderMarkdownCodeBorder = { bg = ds.color.darken(c.blue1, 65), bold = true },
   }
 end
 

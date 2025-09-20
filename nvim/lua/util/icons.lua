@@ -117,8 +117,14 @@ M.kind = {
 ---Markdown related icons.
 M.markdown = {
   Checked = "󰄲",
-  Unchecked = "󰄱",
+  H1 = "",
+  H2 = "",
+  H3 = "",
+  H4 = "",
+  H5 = "",
+  H6 = "",
   ListMinus = "•",
+  Unchecked = "󰄱",
 }
 
 ---Miscellaneous icons for various purposes.
@@ -141,6 +147,8 @@ M.misc = {
   DiagonalShrink = "󰘕",
   Diamond = "",
   DownArrow = "↓",
+  EigthBlockLower = "▁",
+  EigthBlockUpper = "▔",
   Ellipses = "⋯",
   Event = "⚡",
   Exit = "",

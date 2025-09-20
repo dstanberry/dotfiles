@@ -108,8 +108,8 @@ M.get = function(c)
     Bold                                       = { bold = true },
     Italic                                     = { italic = true },
 
-    htmlH1                                     = { fg = ds.color.lighten(c.blue3, 20), bold = true },
-    htmlH2                                     = { fg = ds.color.lighten(c.blue4, 30), bold = true },
+    htmlH1                                     = { fg = c.blue1, bold = true },
+    htmlH2                                     = { fg = c.blue0, bold = true },
 
     -- diff highlighting
     DiffAdd                                    = { bg = c.diff_add },
