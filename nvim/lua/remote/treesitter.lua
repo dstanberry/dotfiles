@@ -76,27 +76,41 @@ return {
     event = "VeryLazy",
     keys = function()
       -- stylua: ignore
-      local move = {
-        goto_next_start     = {["]b"] = "@codeblock.outer", ["]c"] = "@class.outer", ["]f"] = "@function.outer", ["]u"] = "@parameter.inner",},
-        goto_next_end       = {["]B"] = "@codeblock.outer", ["]C"] = "@class.outer", ["]F"] = "@function.outer", ["]U"] = "@parameter.inner",},
-        goto_previous_start = {["[b"] = "@codeblock.outer", ["[c"] = "@class.outer", ["[f"] = "@function.outer", ["[u"] = "@parameter.inner",},
-        goto_previous_end   = {["[B"] = "@codeblock.outer", ["[C"] = "@class.outer", ["[F"] = "@function.outer", ["[U"] = "@parameter.inner",},
-      }
-      return ds.tbl_reduce(move, function(acc, rhs, lhs)
+        local actions = {
+          goto_next_start     = { ["]b"] = "@codeblock.outer", ["]c"] = "@class.outer", ["]f"] = "@function.outer", ["]u"] = "@parameter.inner" },
+          goto_next_end       = { ["]B"] = "@codeblock.outer", ["]C"] = "@class.outer", ["]F"] = "@function.outer", ["]U"] = "@parameter.inner" },
+          goto_previous_start = { ["[b"] = "@codeblock.outer", ["[c"] = "@class.outer", ["[f"] = "@function.outer", ["[u"] = "@parameter.inner" },
+          goto_previous_end   = { ["[B"] = "@codeblock.outer", ["[C"] = "@class.outer", ["[F"] = "@function.outer", ["[U"] = "@parameter.inner" },
+          swap_next           = { ["]s"] = "@parameter.inner" },
+          swap_previous       = { ["[s"] = "@parameter.inner" },
+        }
+
+      return ds.tbl_reduce(vim.tbl_keys(actions), function(acc, name)
+        local rhs = actions[name]
+        local is_move = name:sub(1, 4) == "goto"
         return ds.tbl_reduce(rhs, function(acc2, query, key)
           local direction = (key:sub(1, 1) == "[") and "previous" or "next"
-          local boundary = (key:sub(2, 2) == key:sub(2, 2):upper()) and "end" or "start"
-          table.insert(acc2, {
-            key,
-            function()
-              -- don't use treesitter if in diff mode and the key is one of the c/C keys
-              if vim.wo.diff and key:find "[cC]" then return vim.cmd("normal! " .. key) end
-              require("nvim-treesitter-textobjects.move")[lhs](query, "textobjects")
-            end,
-            desc = ("goto %s %s %s"):format(direction, query:match "@([^%.]+)" or "", boundary),
-            mode = { "n", "o", "x" },
-            silent = true,
-          })
+          local label = (query:match "@([^%.]+)") or ""
+          local desc = is_move and ("goto %s %s %s"):format(direction, label, name:find "_end$" and "end" or "start")
+            or ("swap %s %s"):format(direction, label)
+
+          local rhs_fn = function()
+            -- don't use treesitter move if in diff mode and the key is one of the c/C keys
+            if is_move and vim.wo.diff and key:find "[cC]" then return vim.cmd("normal! " .. key) end
+            local mod = require("nvim-treesitter-textobjects." .. (is_move and "move" or "swap"))
+            if is_move then
+              mod[name](query, "textobjects")
+            else
+              mod[name](query)
+            end
+          end
+
+          local mapping = { key, rhs_fn, desc = desc }
+          if is_move then
+            mapping.mode = { "n", "o", "x" }
+            mapping.silent = true
+          end
+          table.insert(acc2, mapping)
           return acc2
         end, acc)
       end, {})
