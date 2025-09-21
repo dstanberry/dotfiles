@@ -45,6 +45,10 @@ M.disabled = {
     -- plugin filetypes
     "codecompanion",
     "dap-repl",
+    "dapui_breakpoints",
+    "dapui_scopes",
+    "dapui_stacks",
+    "dapui_watches",
     "dbout",
     "dbui",
     "DiffviewFileHistory",
@@ -53,6 +57,7 @@ M.disabled = {
     "mason",
     "noice",
     "octo_panel",
+    "oil",
     "snacks_terminal",
     "trouble",
   },

@@ -214,12 +214,15 @@ return {
         vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
       end
 
+      local group = ds.augroup "mini_files"
       vim.api.nvim_create_autocmd("User", {
+        group = group,
         pattern = "MiniFilesActionRename",
         callback = function(args) require("remote.lsp.handlers").on_rename(args.data.from, args.data.to) end,
       })
 
       vim.api.nvim_create_autocmd("User", {
+        group = group,
         pattern = "MiniFilesBufferCreate",
         callback = function(args)
           local buf_id = args.data.buf_id
@@ -232,6 +235,7 @@ return {
       })
 
       vim.api.nvim_create_autocmd("User", {
+        group = group,
         pattern = "MiniFilesWindowOpen",
         callback = function(args)
           local win_id = args.data.win_id

@@ -1,6 +1,8 @@
 ---@class util.plugin
 local M = {}
 
+local group = ds.augroup "lazy"
+
 ---Deeply merges multiple tables.
 ---If `lazy.nvim` is available, it uses its merge function.
 ---Otherwise, it falls back to `vim.tbl_deep_extend` with **force** enabled.
@@ -78,6 +80,7 @@ function M.on_load(name, fn)
     fn(name)
   else
     vim.api.nvim_create_autocmd("User", {
+      group = group,
       pattern = "LazyLoad",
       callback = function(args)
         if args.data == name then
@@ -209,8 +212,19 @@ function M.setup(opts)
   Event.mappings["User LazyFile"] = Event.mappings.LazyFile
 
   if opts.on_init and type(opts.on_init) == "function" then
-    vim.api.nvim_create_autocmd("User", { pattern = "VeryLazy", once = true, callback = opts.on_init })
+    vim.api.nvim_create_autocmd("User", {
+      group = group,
+      pattern = "VeryLazy",
+      once = true,
+      callback = opts.on_init,
+    })
   end
+
+  vim.api.nvim_create_autocmd("FileType", {
+    group = group,
+    pattern = "lazy",
+    callback = vim.schedule_wrap(function() vim.opt_local.cursorline = false end),
+  })
 
   require("lazy").setup {
     spec = {

@@ -47,6 +47,7 @@ return {
     end,
     init = function()
       vim.api.nvim_create_autocmd("User", {
+        group = ds.augroup "snacks",
         pattern = "VeryLazy",
         callback = res.notify.setup,
       })

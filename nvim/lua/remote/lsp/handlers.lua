@@ -224,7 +224,7 @@ function M.on_attach(client, bufnr, server_capabilities)
 
   if client:supports_method("textDocument/signatureHelp", bufnr) then
     -- NOTE: handled by |noice.nvim|
-    -- local lsp_signature = vim.api.nvim_create_augroup("lsp_signature", { clear = true })
+    -- local lsp_signature = ds.augroup "lsp_signature"
     -- vim.api.nvim_create_autocmd("CursorHoldI", {
     --   group = lsp_signature,
     --   desc = "LSP: Show signature help",

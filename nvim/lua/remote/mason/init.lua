@@ -42,13 +42,13 @@ return {
       end
       vim.api.nvim_create_autocmd("FileType", {
         pattern = "mason",
-        callback = function()
+        callback = vim.schedule_wrap(function()
           vim.opt_local.cursorline = false
           for _, tool in ipairs(pending) do
             local pkg = mason_registry.get_package(tool)
             if not pkg:is_installed() then pkg:install() end
           end
-        end,
+        end),
       })
     end,
   },

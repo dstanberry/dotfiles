@@ -78,6 +78,7 @@ return {
     end,
     init = function()
       vim.api.nvim_create_autocmd("User", {
+        group = ds.augroup "formatter",
         pattern = "VeryLazy",
         callback = function()
           local keys = {
@@ -322,7 +323,7 @@ return {
       end
 
       vim.api.nvim_create_autocmd(opts.events, {
-        group = ds.augroup "lint",
+        group = ds.augroup "linter",
         callback = ds.debounce(M.lint, 100),
       })
     end,

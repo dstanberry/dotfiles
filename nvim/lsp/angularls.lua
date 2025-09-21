@@ -36,6 +36,7 @@ M.server_capabilities = {
 
 M.setup = function()
   vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+    group = ds.augroup "lsp_angular",
     pattern = { "*.component.html", "*.container.html" },
     callback = function() vim.treesitter.start(nil, "angular") end,
   })

@@ -187,7 +187,7 @@ return {
     init = function()
       vim.treesitter.language.register("markdown", "octo")
       vim.api.nvim_create_autocmd("ExitPre", {
-        group = ds.augroup "octo_exitpre",
+        group = ds.augroup "octo",
         callback = function()
           local keep = { "octo" }
           for _, win in ipairs(vim.api.nvim_list_wins()) do

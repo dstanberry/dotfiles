@@ -14,7 +14,7 @@ return {
       { "<leader>ch", "<cmd>CodeCompanionHistory<cr>", desc = "copilot: show chat history" },
     },
     init = function()
-      local group = ds.augroup "copilot_notif"
+      local group = ds.augroup "copilot"
       local sprites = ds.icons.spinners.Default
       local frame_ms, tick_ms = 80, 150
 

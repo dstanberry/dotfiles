@@ -203,11 +203,10 @@ return {
       vim.api.nvim_create_autocmd("FileType", {
         group = ds.augroup "dadbod",
         pattern = { "dbout", "dbui" },
-        callback = function()
-          vim.opt_local.winhighlight = "Normal:NormalSB"
+        callback = vim.schedule_wrap(function()
           vim.opt_local.number = false
           vim.opt_local.relativenumber = false
-        end,
+        end),
       })
     end,
   },

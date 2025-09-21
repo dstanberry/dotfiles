@@ -15,8 +15,6 @@ setmetatable(M, {
   end,
 })
 
-M.augroup = ds.augroup "snacks"
-
 M.styles = {
   input = {
     row = 19,
