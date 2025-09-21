@@ -15,7 +15,34 @@ return {
     },
     config = function()
       local bufferline_groups = require "bufferline.groups"
+      local bufferline_offset = require "bufferline.offset"
       local bufferline = require "bufferline"
+
+      if not bufferline_offset.edgy then
+        local get = bufferline_offset.get
+        ---@diagnostic disable-next-line: duplicate-set-field
+        bufferline_offset.get = function()
+          if package.loaded.edgy then
+            local old_offset = get()
+            local layout = require("edgy.config").layout
+            local ret = { left = "", left_size = 0, right = "", right_size = 0 }
+            for _, pos in ipairs { "left", "right" } do
+              local sb = layout[pos]
+              local title = " Sidebar" .. string.rep(" ", sb.bounds.width - 8)
+              if sb and #sb.wins > 0 then
+                ret[pos] = old_offset[pos .. "_size"] > 0 and old_offset[pos]
+                  or pos == "left" and ("%#Bold#" .. title .. "%*" .. "%#BufferLineOffsetSeparator#│%*")
+                  or pos == "right" and ("%#BufferLineOffsetSeparator#│%*" .. "%#Bold#" .. title .. "%*")
+                ret[pos .. "_size"] = old_offset[pos .. "_size"] > 0 and old_offset[pos .. "_size"] or sb.bounds.width
+              end
+            end
+            ret.total_size = ret.left_size + ret.right_size
+            if ret.total_size > 0 then return ret end
+          end
+          return get()
+        end
+        bufferline_offset.edgy = true
+      end
       bufferline.setup {
         highlights = function(defaults)
           local hl = ds.tbl_reduce(defaults.highlights, function(highlight, attrs, name)
@@ -75,62 +102,6 @@ return {
             end
             return mini_icons.get(element.directory and "directory" or "file", element.path)
           end,
-          offsets = {
-            {
-              text = ds.pad(ds.icons.kind.Copilot, "right") .. "COPILOT CHAT",
-              filetype = "codecompanion",
-              highlight = "PanelHeading",
-              separator = true,
-              text_align = "center",
-            },
-            {
-              text = ds.pad(ds.icons.groups.Sql, "right") .. "DATABASE VIEWER",
-              filetype = "dbui",
-              highlight = "PanelHeading",
-              separator = true,
-              text_align = "center",
-            },
-            {
-              text = ds.pad(ds.icons.groups.StackFrame, "right") .. "DEBUGGER",
-              filetype = "dapui_scopes",
-              highlight = "PanelHeading",
-              separator = true,
-              text_align = "center",
-            },
-            {
-              text = ds.pad(ds.icons.groups.Diff, "right") .. "DIFF VIEW",
-              filetype = "DiffviewFiles",
-              highlight = "PanelHeading",
-              separator = true,
-              text_align = "center",
-            },
-            {
-              text = ds.pad(ds.icons.groups.Tree, "right") .. "EXPLORER",
-              filetype = "oil",
-              highlight = "PanelHeading",
-              separator = true,
-            },
-            {
-              text = ds.pad(ds.icons.groups.Tree, "right") .. "EXPLORER",
-              filetype = "snacks_layout_box",
-              highlight = "PanelHeading",
-              separator = true,
-            },
-            {
-              text = ds.pad(ds.icons.misc.Magnify, "right") .. "FIND / REPLACE",
-              filetype = "grug-far",
-              highlight = "PanelHeading",
-              separator = true,
-              text_align = "center",
-            },
-            {
-              text = ds.pad(ds.icons.groups.Tree, "right") .. "SYMBOLS",
-              filetype = "trouble",
-              highlight = "PanelHeading",
-              separator = true,
-              text_align = "center",
-            },
-          },
           groups = {
             items = {
               {
@@ -175,6 +146,91 @@ return {
           },
         },
       }
+    end,
+  },
+  {
+    "folke/edgy.nvim",
+    event = "VeryLazy",
+    keys = {
+      { "<leader>e", "+edgy" },
+      { "<leader>es", function() require("edgy").select() end, desc = "edgy: select window" },
+      { "<leader>et", function() require("edgy").toggle() end, desc = "edgy: toggle view(s)" },
+    },
+    opts = function()
+      local opts = {
+        animate = { enabled = false },
+        wo = { cursorline = false },
+        options = {
+          left = { size = 40 },
+          bottom = { size = 10 },
+          right = { size = 30 },
+          top = { size = 10 },
+        },
+        keys = {
+          ["<a-l>"] = function(win) win:resize("width", 2) end,
+          ["<a-h>"] = function(win) win:resize("width", -2) end,
+          ["<a-k>"] = function(win) win:resize("height", 2) end,
+          ["<a-j>"] = function(win) win:resize("height", -2) end,
+        },
+        top = {},
+        right = {
+          { ft = "grug-far", title = ds.icons.misc.Magnify .. " Grug Far", size = { width = 0.4 } },
+          { ft = "codecompanion", title = ds.icons.kind.Copilot .. " Copilot Chat", size = { width = 81 } },
+        },
+        bottom = {
+          "Trouble",
+          { ft = "help", size = { height = 20 }, filter = function(buf) return vim.bo[buf].buftype == "help" end },
+          { ft = "dbout", title = ds.icons.groups.Sql .. " DB Query Result" },
+          { ft = "qf", title = "QuickFix" },
+          {
+            ft = "noice",
+            size = { height = 0.4 },
+            filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == "" end,
+          },
+          {
+            ft = "snacks_terminal",
+            title = "%{b:snacks_terminal.id}: %{b:term_title}",
+            filter = function(_, win)
+              return vim.w[win].snacks_win
+                and vim.w[win].snacks_win.position == "bottom"
+                and vim.w[win].snacks_win.relative == "editor"
+                and not vim.w[win].trouble_preview
+            end,
+          },
+        },
+        left = {
+          { ft = "dapui_scopes", title = ds.icons.debug.Scopes .. " Scopes" },
+          { ft = "dapui_watches", title = ds.icons.debug.Watches .. " Watches" },
+          { ft = "dapui_breakpoints", title = ds.icons.debug.Breakpoint .. " Breakpoints" },
+          { ft = "dapui_stacks", title = ds.icons.debug.Stacks .. " Stacks" },
+          { ft = "dbui", title = ds.icons.groups.Sql .. " Database" },
+          { ft = "DiffviewFiles", title = ds.icons.groups.Diff .. " Diff View" },
+          {
+            ft = "oil",
+            title = ds.icons.groups.Tree .. " Explorer",
+            filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == "" end,
+          },
+          {
+            ft = "snacks_layout_box",
+            title = ds.icons.groups.Tree .. " Explorer",
+            filter = function(_, win) return vim.api.nvim_win_get_config(win).relative == "" end,
+          },
+        },
+      }
+      for _, pos in ipairs { "top", "right", "bottom", "left" } do
+        opts[pos] = opts[pos] or {}
+        table.insert(opts[pos], {
+          ft = "trouble",
+          filter = function(_, win)
+            return vim.w[win].trouble
+              and vim.w[win].trouble.position == pos
+              and vim.w[win].trouble.type == "split"
+              and vim.w[win].trouble.relative == "editor"
+              and not vim.w[win].trouble_preview
+          end,
+        })
+      end
+      return opts
     end,
   },
   {
@@ -300,6 +356,24 @@ return {
       overrides = {
         filetype = {
           codecompanion = {
+            heading = {
+              foregrounds = {
+                "RenderMarkdownCcH1",
+                "RenderMarkdownCcH2",
+                "RenderMarkdownCcH3",
+                "RenderMarkdownCcH4",
+                "RenderMarkdownCcH5",
+                "RenderMarkdownCcH6",
+              },
+              backgrounds = {
+                "RenderMarkdownCch1bg",
+                "rendermarkdowncch2bg",
+                "rendermarkdowncch3bg",
+                "rendermarkdowncch4bg",
+                "rendermarkdowncch5bg",
+                "rendermarkdownccH6Bg",
+              },
+            },
             html = {
               tag = {
                 buf = { icon = ds.pad(ds.icons.misc.Layer, "right"), highlight = "SpecialChar" },
@@ -394,48 +468,20 @@ return {
   {
     "stevearc/oil.nvim",
     keys = function()
-      local _sidebar = function()
-        local oil = require "oil"
-        local oil_util = require "oil.util"
-        local bufs = ds.buffer.filter()
-        local active = false
-
-        local __open = function()
-          local id = vim.api.nvim_get_current_win()
-          vim.cmd "leftabove vertical split | vertical resize 40"
-          oil.open(ds.root.get())
-          oil_util.run_after_load(0, function()
-            vim.w.is_oil_win = true
-            vim.w.oil_original_win = id
-          end)
-        end
-        ds.foreach(bufs, function(buf)
-          if vim.bo[buf].filetype == "oil" then
-            active = true
-            for _, win in ipairs(vim.fn.win_findbuf(buf)) do
-              vim.api.nvim_win_call(win, oil.close)
-            end
-          end
-        end)
-        if not active then __open() end
-      end
-      local _float = function() require("oil").toggle_float() end
-
       return {
-        { "-", _sidebar, desc = "oil: browse project" },
-        { "<leader>-", _float, desc = "oil: browse parent directory" },
+        { "-", function() require("oil").toggle_float(ds.root.get()) end, desc = "oil: browse project" },
       }
     end,
     init = function()
-      local group = ds.augroup "oil_extras"
-
+      local group = ds.augroup "oil"
       vim.api.nvim_create_autocmd("FileType", {
         group = group,
         pattern = "oil",
-        callback = function()
+        callback = vim.schedule_wrap(function()
           vim.opt_local.number = false
           vim.opt_local.relativenumber = false
-        end,
+          vim.opt_local.statuscolumn = " "
+        end),
       })
       vim.api.nvim_create_autocmd("User", {
         group = group,

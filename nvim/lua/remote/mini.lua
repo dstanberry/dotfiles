@@ -154,7 +154,7 @@ return {
       local _cwd = function() require("mini.files").open(vim.api.nvim_buf_get_name(0), true) end
 
       return {
-        { "<localleader>-", _cwd, desc = "mini.files: open parent directory" },
+        { "<leader>-", _cwd, desc = "mini.files: open parent directory" },
       }
     end,
     opts = {

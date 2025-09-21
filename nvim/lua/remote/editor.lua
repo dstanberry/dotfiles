@@ -245,6 +245,16 @@ return {
   {
     "MagicDuck/grug-far.nvim",
     cmd = "GrugFar",
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        group = ds.augroup "grug-far",
+        pattern = "grug-far",
+        callback = vim.schedule_wrap(function()
+          vim.opt_local.cursorline = false
+          vim.opt_local.wrap = false
+        end),
+      })
+    end,
     keys = function()
       local _finder = function()
         local grug = require "grug-far"

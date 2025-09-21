@@ -53,7 +53,7 @@ M.get = function(c)
     -- TermCursor                              = { fg = c.bg2, bg = c.fg2 },
     -- TermCursorNC                            = { fg = c.bg2, bg = c.fg2 },
     Title                                      = { fg = c.blue0, bold = true },
-    VertSplit                                  = { fg = c.bg3 },
+    VertSplit                                  = { fg = c.bgX },
     WinSeparator                               = { link = "VertSplit" },
     Visual                                     = { bg = c.bg_visual },
     VisualNOS                                  = { fg = c.blue1 },

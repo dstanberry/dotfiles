@@ -12,14 +12,6 @@ local dir_section = add(highlighter.sanitize "Winbar", { ds.pad("/", "right") })
 
 M.breadcrumbs = {
   get = function()
-    local dap_icons = {
-      ["DAP Breakpoints"] = ds.pad(ds.icons.debug.Breakpoint, "right"),
-      ["DAP Console"] = ds.pad(ds.icons.debug.REPL, "right"),
-      ["DAP Scopes"] = ds.pad(ds.icons.debug.Scopes, "right"),
-      ["DAP Stacks"] = ds.pad(ds.icons.debug.Stacks, "right"),
-      ["DAP Watches"] = ds.pad(ds.icons.debug.Watches, "right"),
-    }
-
     local get_relative_path = function(winid, dirpath)
       local cwd = vim.fs.normalize(vim.uv.cwd())
       local path = ds.replace(dirpath, cwd, "")
@@ -36,6 +28,7 @@ M.breadcrumbs = {
         local section
         if #v > 0 then
           local icon, icon_hl = ds.icons.status.Error, "Error"
+          local hl = highlighter.sanitize(icon_hl)
           if mini_icons then
             icon, icon_hl = mini_icons.get("file", fname)
           end
@@ -48,17 +41,7 @@ M.breadcrumbs = {
               icon = ds.icons.git.Issue
             end
           end
-          -- NOTE: oil.nvim
-          if parts[1] and parts[1]:match "^oil:" then
-            if mini_icons then
-              icon, icon_hl = mini_icons.get("directory", path)
-            end
-            file_hl = dir_hl
-          end
-          -- NOTE: nvim-dap
-          if fname and fname:match "^DAP" then icon = dap_icons[fname] or icon end
 
-          local hl = highlighter.sanitize(icon_hl)
           if #segments == 0 then
             section = k == #parts and add(hl, { ds.pad(icon, "both") }, true) .. add(file_hl, { v })
               or add(dir_hl, { ds.pad(v, "left") })

@@ -46,12 +46,6 @@ return {
         end
       end
 
-      vim.api.nvim_create_autocmd("FileType", {
-        group = group,
-        pattern = "codecompanion",
-        callback = vim.schedule_wrap(function() vim.opt_local.winhighlight = "Normal:NormalSB" end),
-      })
-
       vim.api.nvim_create_autocmd("User", {
         group = group,
         pattern = "CodeCompanionRequestStarted",
@@ -90,13 +84,11 @@ return {
         chat = {
           auto_scroll = true,
           intro_message = "",
-          window = vim.tbl_deep_extend(
-            "force",
-            vim.o.columns > 180 and { layout = "vertical", width = 82 } or { layout = "horizontal", height = 0.4 },
-            {
-              opts = { number = false, relativenumber = false, statuscolumn = " " },
-            }
-          ),
+          window = {
+            layout = "vertical",
+            width = 82,
+            opts = { number = false, relativenumber = false, statuscolumn = " " },
+          },
         },
       },
       extensions = {
