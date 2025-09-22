@@ -223,7 +223,10 @@ function M.setup(opts)
   vim.api.nvim_create_autocmd("FileType", {
     group = group,
     pattern = "lazy",
-    callback = vim.schedule_wrap(function() vim.opt_local.cursorline = false end),
+    callback = vim.schedule_wrap(function()
+      vim.opt_local.cursorline = false
+      vim.opt_local.listchars = vim.tbl_deep_extend("force", vim.opt_local.listchars:get(), { lead = " ", tab = "  " })
+    end),
   })
 
   require("lazy").setup {
