@@ -118,13 +118,7 @@ return {
           },
           roles = {
             llm = function(adapter)
-              return string.format(
-                "%s %s (%s - %s)",
-                ds.icons.kind.Copilot,
-                "Code Assistant",
-                adapter.formatted_name,
-                adapter.model.name
-              )
+              return string.format("%s %s (%s)", ds.icons.kind.Copilot, adapter.formatted_name, adapter.model.name)
             end,
             user = string.format("%s %s", ds.icons.misc.User, (vim.env.USER or "User"):gsub("^%l", string.upper)),
           },
