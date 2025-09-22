@@ -108,7 +108,7 @@ return {
       },
       strategies = {
         chat = {
-          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5", reasoning_effort = "minimal" },
+          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5" },
           keymaps = {
             close = { modes = { n = "q" }, opts = { nowait = true } },
             send = { modes = { n = "<cr>", i = "<c-s>" } },
@@ -130,10 +130,10 @@ return {
           },
         },
         cmd = {
-          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5", reasoning_effort = "minimal" },
+          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5" },
         },
         inline = {
-          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5", reasoning_effort = "minimal" },
+          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5" },
           keymaps = {
             accept_change = { modes = { n = "dp" } },
             reject_change = { modes = { n = "de" } },
