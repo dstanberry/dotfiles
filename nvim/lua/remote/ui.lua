@@ -181,6 +181,7 @@ return {
           "Trouble",
           { ft = "help", size = { height = 20 }, filter = function(buf) return vim.bo[buf].buftype == "help" end },
           { ft = "dbout", title = ds.icons.groups.Sql .. " DB Query Result" },
+          { ft = "neotest-output-panel", title = ds.icons.groups.Lab .. " Test Output", size = { height = 15 } },
           { ft = "qf", title = "QuickFix" },
           {
             ft = "noice",
