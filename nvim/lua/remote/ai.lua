@@ -101,9 +101,9 @@ return {
         spinner = {},
         history = {
           opts = {
-            keymap = "gh",
             auto_save = false,
-            save_chat_keymap = "gs",
+            keymap = "gh",
+            save_chat_keymap = "gH",
           },
         },
       },
