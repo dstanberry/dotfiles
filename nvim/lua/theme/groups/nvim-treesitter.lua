@@ -73,7 +73,7 @@ M.get = function(c)
     ["@markup.strong"]                = { bold = true },
     ["@markup.todo"]                  = { link = "Todo" },
     ["@markup.underline"]             = { link = "Underlined" },
-    ["@markup.quote"]                 = { fg = c.gray2 },
+    ["@markup.quote"]                 = { fg = c.overlay0 },
     ["@markup.warning"]               = { fg = c.bg2, bg = c.yellow2 },
     ["@module"]                       = { fg = c.blue1 },
     ["@module.builtin"]               = { fg = c.blue1, bold = true },

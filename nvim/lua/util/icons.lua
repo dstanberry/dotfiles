@@ -56,6 +56,7 @@ M.documents = {
   FolderOutlineClosed = "",
   FolderOutlineOpened = "",
   Project = "",
+  SymbolicLink = "",
 }
 
 ---Git related icons.
@@ -89,7 +90,7 @@ M.kind = {
   Color = "",
   Constant = "",
   Constructor = "",
-  Copilot = "",
+  Copilot = "",
   Enum = "",
   EnumMember = "",
   Event = "",

@@ -3,6 +3,7 @@
 ---@field lsp remote.lualine.component.lsp
 ---@field message remote.lualine.component.message
 ---@field metadata remote.lualine.component.metadata
+---@field status remote.lualine.component.status
 local M = {}
 
 setmetatable(M, {

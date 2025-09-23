@@ -19,6 +19,47 @@ return {
 
     vim.o.laststatus = vim.g.lualine_laststatus
 
+    local bold = { gui = "bold" }
+    local c_fg_conceal = { fg = vim.g.ds_colors.fg_conceal }
+    local c_fg_conceal_bold = { fg = vim.g.ds_colors.fg_conceal, gui = "bold" }
+    local c_gray2_italic = { fg = vim.g.ds_colors.gray2, gui = "italic" }
+    local c_overlay1 = { fg = vim.g.ds_colors.overlay1 }
+    local winbar_fname = { fg = ds.color.get_color "WinbarFilename", gui = "italic" }
+
+    local function sep(direction, padding_opts, condition)
+      return {
+        util.separator[direction],
+        padding = padding_opts or { left = 0, right = 1 },
+        cond = condition,
+      }
+    end
+
+    ---@param kind "symbols"|"colors"
+    local function get_diag(kind)
+      return vim.tbl_map(function(type)
+        local diag_type = "DiagnosticVirtualText" .. type:gsub("^%l", string.upper)
+        return kind == "symbols" and { fg = ds.color.get_color(diag_type) }
+          or ds.pad(ds.icons.status[type:gsub("^%l", string.upper)], "right")
+      end, { "error", "warn", "info", "hint" })
+    end
+
+    ---@param kind "symbols"|"colors"
+    local function get_diff(kind)
+      local diff_types = { "added", "modified", "removed" }
+      local result = {}
+      for _, type in ipairs(diff_types) do
+        if kind == "symbols" then
+          local icon_map = { added = "TextAdded", modified = "TextChanged", removed = "TextRemoved" }
+          result[type] = ds.pad(ds.icons.git[icon_map[type]], "right")
+        else
+          local colors = vim.g.ds_colors
+          local color_map = { added = "green2", modified = "yellow2", removed = "red1" }
+          result[type] = { fg = ds.color.blend(colors[color_map[type]], colors.white, 0.6) }
+        end
+      end
+      return result
+    end
+
     return {
       options = {
         theme = util.theme,
@@ -31,86 +72,40 @@ return {
         lualine_a = {
           { function() return ds.icons.misc.VerticalBarBold end, padding = { left = 0 } },
           { util.git.branch.get },
-          { util.separator.left, padding = { left = 0, right = 1 } },
+          sep "left",
         },
         lualine_b = {
-          {
-            util.metadata.root_dir.get,
-            color = { fg = vim.g.ds_colors.overlay1 },
-            cond = util.metadata.root_dir.cond,
-            padding = { right = 1 },
-          },
-          {
-            util.separator.left,
-            cond = util.metadata.root_dir.cond,
-            padding = { left = 0, right = 1 },
-          },
-          {
-            "vim.b.gitsigns_blame_line",
-            color = { fg = ds.color.get_color "WinbarFilename", gui = "italic" },
-            cond = function() return util.available_width(120) end,
-            padding = { right = 1 },
-          },
+          -- stylua: ignore
+          { util.metadata.root_dir.get, color = c_overlay1, cond = util.metadata.root_dir.cond, padding = { right = 1 } },
+          sep("left", nil, util.metadata.root_dir.cond),
+          { "vim.b.gitsigns_blame_line", color = winbar_fname, padding = { right = 1 } },
+          -- stylua: ignore
+          { util.status.codecompanion.adapter.get, color = winbar_fname, cond = util.status.codecompanion.adapter.cond },
         },
         lualine_c = {
-          {
-            "diff",
-            source = util.git.diff.get,
-            symbols = {
-              added = ds.pad(ds.icons.git.TextAdded, "right"),
-              modified = ds.pad(ds.icons.git.TextChanged, "right"),
-              removed = ds.pad(ds.icons.git.TextRemoved, "right"),
-            },
-            diff_color = {
-              added = { fg = ds.color.blend(vim.g.ds_colors.green2, vim.g.ds_colors.white, 0.6) },
-              modified = { fg = ds.color.blend(vim.g.ds_colors.yellow2, vim.g.ds_colors.white, 0.6) },
-              removed = { fg = ds.color.blend(vim.g.ds_colors.red1, vim.g.ds_colors.white, 0.6) },
-            },
-          },
+          { "diff", source = util.git.diff.get, symbols = get_diff "symbols", diff_color = get_diff "colors" },
         },
         lualine_x = {
-          {
-            util.message.noice.get,
-            color = { fg = vim.g.ds_colors.gray2, gui = "italic" },
-            cond = util.message.noice.cond,
-          },
-          { util.separator.right, cond = util.message.noice.cond, padding = { right = 1 } },
+          { util.message.noice.get, color = c_gray2_italic, cond = util.message.noice.cond },
+          sep("right", { right = 1 }, util.message.noice.cond),
+          { util.status.codecompanion.ctx.get, color = c_fg_conceal_bold, cond = util.status.codecompanion.ctx.cond },
+          sep("right", { right = 1 }, util.status.codecompanion.ctx.cond),
         },
         lualine_y = {
-          {
-            "diagnostics",
-            sources = { "nvim_diagnostic" },
-            symbols = {
-              error = ds.pad(ds.icons.status.Error, "right"),
-              warn = ds.pad(ds.icons.status.Warn, "right"),
-              info = ds.pad(ds.icons.status.Info, "right"),
-              hint = ds.pad(ds.icons.status.Hint, "right"),
-            },
-            diagnostics_color = {
-              error = { fg = ds.color.get_color "DiagnosticVirtualTextError" },
-              warn = { fg = ds.color.get_color "DiagnosticVirtualTextWarn" },
-              info = { fg = ds.color.get_color "DiagnosticVirtualTextInfo" },
-              hint = { fg = ds.color.get_color "DiagnosticVirtualTextHint" },
-            },
-          },
-          {
-            util.separator.right,
-            cond = function() return #vim.diagnostic.count() > 0 end,
-            padding = { left = 0, right = 1 },
-          },
-          { util.lsp.clients.get, padding = { right = 0 } },
-          { util.separator.right, padding = { left = 1, right = 0 } },
+          -- stylua: ignore
+          { "diagnostics", sources = { "nvim_diagnostic" }, symbols = get_diag "symbols", diagnostics_color = get_diag "colors" },
+          sep("right", { left = 0, right = 1 }, function() return #vim.diagnostic.count() > 0 end),
+          { util.lsp.clients.get, color = c_fg_conceal, padding = { right = 0 }, cond = util.lsp.clients.cond },
+          sep("right", { left = 1, right = 0 }, util.lsp.clients.cond),
           { "location" },
-          { util.separator.right, padding = { left = 0, right = 0 } },
-          { util.metadata.indentation.get },
-          { util.separator.right, padding = { left = 0, right = 0 } },
+          sep("right", { left = 0, right = 0 }),
+          { util.metadata.indentation.get, cond = function() return vim.bo.shiftwidth > 0 end },
+          sep("right", { left = 0, right = 0 }, function() return vim.bo.shiftwidth > 0 end),
           { "encoding" },
-          -- stylua: ignore
-          { util.separator.right, padding = { left = 0, right = 0 }, cond = function() return vim.bo.filetype ~= "" end },
+          sep("right", { left = 0, right = 0 }, function() return vim.bo.fileencoding ~= "" end),
           { "fileformat", icons_enabled = true, symbols = { unix = "lf", dos = "crlf", mac = "cr" } },
-          -- stylua: ignore
-          { util.separator.right, padding = { left = 0, right = 0 }, cond = function() return vim.bo.filetype ~= "" end },
-          { "filetype", color = { gui = "bold" } },
+          sep("right", { left = 0, right = 0 }, function() return vim.bo.fileformat ~= "" end),
+          { "filetype", color = bold, cond = function() return vim.bo.filetype ~= "" end },
         },
         lualine_z = {},
       },

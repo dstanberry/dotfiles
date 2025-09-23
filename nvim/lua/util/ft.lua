@@ -20,22 +20,13 @@ M.disabled = {
     "qf",
     "term",
     -- plugin filetypes
-    "codecompanion",
-    "dbui",
-    "DiffviewFiles",
-    "gitcommit",
-    "grug-far",
-    "lazy",
-    "mason",
-    "noice",
-    "oil",
     "snacks_dashboard",
     "snacks_input",
     "snacks_notif_history",
     "snacks_picker_input",
     "snacks_picker_list",
+    "snacks_picker_preview",
     "snacks_terminal",
-    "trouble",
   },
   winbar = {
     -- builtin filetypes
