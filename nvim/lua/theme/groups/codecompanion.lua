@@ -5,8 +5,11 @@ local M = {}
 M.get = function(c)
   -- stylua: ignore
   return {
-   CodeCompanionChatInfoBanner  = { fg = c.fg_comment },
-   CodeCompanionInlineDiffHint  = { fg = c.fg_comment },
+    CodeCompanionChatInfoBanner  = { fg = c.overlay1, bg = c.bg0 },
+    CodeCompanionInlineDiffHint  = { fg = c.overlay1, bg = c.bg0 },
+
+    -- custom
+    CodeCompanionInlineDiffTitle = { fg = c.blue0, bg = c.bg0, bold = true },
   }
 end
 

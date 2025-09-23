@@ -1,6 +1,7 @@
 return {
   {
     "olimorris/codecompanion.nvim",
+    url = "https://github.com/dstanberry/codecompanion.nvim",
     dependencies = {
       "ravitemer/codecompanion-history.nvim",
       "franco-ruggeri/codecompanion-spinner.nvim",
@@ -84,6 +85,11 @@ return {
         chat = {
           auto_scroll = true,
           intro_message = "",
+          diff_window = {
+            opts = {
+              winhighlight = table.concat({ "FloatBorder:FloatBorderSB", "Title:CodeCompanionInlineDiffTitle" }, ","),
+            },
+          },
           window = {
             layout = "vertical",
             width = 82,
