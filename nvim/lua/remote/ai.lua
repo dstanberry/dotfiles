@@ -105,6 +105,30 @@ return {
         opts = {
           chat = { enabled = true },
         },
+        devops = {
+          description = "Additional collection of instruction files",
+          files = {
+            ["analysis"] = {
+              description = "Analyze the code and provide suggestions for improvements, optimizations, or potential issues",
+              files = { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "analysis.md") },
+            },
+            ["refactor"] = {
+              description = "Refactor the code and ensure any associated unit tests are updated if necessary and pass",
+              files = { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "refactor.md") },
+            },
+            ["refactor+test"] = {
+              description = "Refactor the code and ensure any associated unit tests are written if necessary and pass",
+              files = {
+                vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "refactor.md"),
+                vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "test.md"),
+              },
+            },
+            ["test"] = {
+              description = "Generate unit tests for the given code, ensuring they cover various edge cases and scenarios",
+              files = { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "test.md") },
+            },
+          },
+        },
       },
       strategies = {
         chat = {
@@ -132,25 +156,6 @@ return {
             accept_change = { modes = { n = "dp" } },
             reject_change = { modes = { n = "de" } },
             always_accept = { modes = { n = "dy" } },
-          },
-        },
-      },
-      prompt_library = {
-        ["Refactor"] = {
-          strategy = "chat",
-          description = "Refactor the code and ensure any associated unit tests are updated if necessary and pass",
-          opts = {
-            short_name = "refactor",
-            is_default = true,
-            is_slash_cmd = true,
-          },
-          prompts = {
-            {
-              role = "user",
-              content = function()
-                return ds.fs.read(vim.fs.joinpath(vim.fn.stdpath "config", "prompts/refactor.md"), "r", true)
-              end,
-            },
           },
         },
       },
