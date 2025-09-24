@@ -1,7 +1,6 @@
 return {
   {
     "olimorris/codecompanion.nvim",
-    url = "https://github.com/dstanberry/codecompanion.nvim",
     dependencies = {
       "ravitemer/codecompanion-history.nvim",
       "franco-ruggeri/codecompanion-spinner.nvim",
