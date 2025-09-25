@@ -286,7 +286,7 @@ function M.virtcolumn(opts)
     reset_hl()
     virtcol_ns = vim.api.nvim_create_namespace "ds_virtual_colorcolumn"
     vim.api.nvim_set_decoration_provider(virtcol_ns, { on_win = virtcol_provider })
-    vim.api.nvim_create_autocmd("ColorScheme", { group = ds.augroup "virtual_colorcolumn", callback = reset_hl })
+    vim.api.nvim_create_autocmd("ColorScheme", { group = ds.augroup "util.ui.virtcol", callback = reset_hl })
     virtcol_initialized = true
   end
 

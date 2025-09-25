@@ -25,7 +25,7 @@ setmetatable(M, {
 ---The autocommand will be prefixed with "ds_" to avoid namespace collisions
 ---@param name string
 ---@return number
-function M.augroup(name) return vim.api.nvim_create_augroup("ds_" .. name, { clear = true }) end
+function M.augroup(name) return vim.api.nvim_create_augroup("ds." .. name, { clear = true }) end
 
 ---Limit the rate at which the provided function `callback` will execute
 ---by delaying it's execution for `delay` milliseconds

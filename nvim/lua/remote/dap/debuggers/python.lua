@@ -86,7 +86,7 @@ M.setup = function()
   local bufnr = vim.api.nvim_get_current_buf()
   if vim.bo[bufnr].filetype ~= "python" then
     vim.api.nvim_create_autocmd("FileType", {
-      group = ds.augroup "dap_python",
+      group = ds.augroup "remote.dap.python",
       pattern = "python",
       once = true,
       callback = function(args) initialize(args.buf) end,

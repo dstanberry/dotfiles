@@ -125,7 +125,7 @@ return {
       end)
 
       vim.api.nvim_create_autocmd("LspAttach", {
-        group = ds.augroup "lspconfig",
+        group = ds.augroup "remote.lsp.attach",
         callback = function(event)
           local client = assert(vim.lsp.get_client_by_id(event.data.client_id)) ---@type vim.lsp.Client
           handlers.on_attach(client, event.buf, server_capabilities[client.name])

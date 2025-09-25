@@ -480,7 +480,7 @@ return {
       }
     end,
     init = function()
-      local group = ds.augroup "oil"
+      local group = ds.augroup "remote.oil"
       vim.api.nvim_create_autocmd("FileType", {
         group = group,
         pattern = "oil",

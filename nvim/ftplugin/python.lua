@@ -1,6 +1,6 @@
 if vim.g.vscode then return end
 
-local group = ds.augroup "python_extmarks"
+local group = ds.augroup "ftplugin.python"
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave", "ModeChanged" }, {
   group = group,

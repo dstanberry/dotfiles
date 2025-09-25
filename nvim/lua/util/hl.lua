@@ -14,7 +14,7 @@ local highlight_groups = setmetatable({}, {
 })
 
 ---Autocmd group id to be used for `ColorScheme` events
-M.autocmd_group = ds.augroup "theme_highlights"
+M.autocmd_group = ds.augroup "util.hl"
 
 ---Used by `mini.hipatterns` to toggle live preview of highlight groups by name
 M.show_preview = false

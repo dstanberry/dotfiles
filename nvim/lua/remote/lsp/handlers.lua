@@ -143,7 +143,7 @@ function M.on_attach(client, bufnr, server_capabilities)
     end
     vim.keymap.set("n", "gl", _lens, { buffer = bufnr, desc = "lsp: code lens" })
 
-    local codelens = ds.augroup "lsp_codelens"
+    local codelens = ds.augroup "remote.lsp.codelens"
     vim.api.nvim_create_autocmd("BufEnter", {
       group = codelens,
       once = true,
@@ -182,7 +182,7 @@ function M.on_attach(client, bufnr, server_capabilities)
     if ds.plugin.is_installed "snacks.nvim" then _references = function() Snacks.picker.lsp_references() end end
     vim.keymap.set("n", "gr", _references, { buffer = bufnr, desc = "lsp: show references" })
 
-    local doc_highlight = ds.augroup "lsp_dochighlight"
+    local doc_highlight = ds.augroup "remote.lsp.document_highlight"
     vim.api.nvim_create_autocmd("CursorHold", {
       group = doc_highlight,
       buffer = bufnr,
@@ -224,7 +224,7 @@ function M.on_attach(client, bufnr, server_capabilities)
 
   if client:supports_method("textDocument/signatureHelp", bufnr) then
     -- NOTE: handled by |noice.nvim|
-    -- local lsp_signature = ds.augroup "lsp_signature"
+    -- local lsp_signature = ds.augroup "remote.lsp.signature_help"
     -- vim.api.nvim_create_autocmd("CursorHoldI", {
     --   group = lsp_signature,
     --   desc = "LSP: Show signature help",

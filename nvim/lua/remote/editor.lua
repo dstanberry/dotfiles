@@ -78,7 +78,7 @@ return {
     end,
     init = function()
       vim.api.nvim_create_autocmd("User", {
-        group = ds.augroup "formatter",
+        group = ds.augroup "remote.conform",
         pattern = "VeryLazy",
         callback = function()
           local keys = {
@@ -247,7 +247,7 @@ return {
     cmd = "GrugFar",
     init = function()
       vim.api.nvim_create_autocmd("FileType", {
-        group = ds.augroup "grug-far",
+        group = ds.augroup "remote.grug-far",
         pattern = "grug-far",
         callback = vim.schedule_wrap(function()
           vim.opt_local.cursorline = false
@@ -333,7 +333,7 @@ return {
       end
 
       vim.api.nvim_create_autocmd(opts.events, {
-        group = ds.augroup "linter",
+        group = ds.augroup "remote.nvim-lint",
         callback = ds.debounce(M.lint, 100),
       })
     end,

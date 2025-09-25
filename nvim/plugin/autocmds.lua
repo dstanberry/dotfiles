@@ -49,7 +49,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- disable line numbers and enusre filetype is set for terminal windows
 vim.api.nvim_create_autocmd("TermOpen", {
-  group = ds.augroup "termui",
+  group = ds.augroup "terminal",
   callback = function(args)
     vim.opt_local.relativenumber = false
     vim.opt_local.number = false
@@ -59,7 +59,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 
 -- highlighted copied region when yanked
 vim.api.nvim_create_autocmd("TextYankPost", {
-  group = ds.augroup "highlight_yank",
+  group = ds.augroup "hl_yank",
   callback = function() vim.hl.on_yank() end,
 })
 

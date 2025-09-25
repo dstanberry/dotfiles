@@ -103,7 +103,7 @@ end
 
 --- If supported, change the background color of the terminal emulator to match the current `colorscheme`
 function M.sync_term_bg()
-  local group = ds.augroup "terminal_emulator"
+  local group = ds.augroup "util.terminal.color"
 
   local parse_osc11 = function(sequence)
     local r, g, b = sequence:match "^\027%]11;rgb:(%x+)/(%x+)/(%x+)$"

@@ -168,7 +168,7 @@ end
 ---Sets up the root module by creating necessary autocommands and user commands.
 function M.setup()
   vim.api.nvim_create_autocmd({ "LspAttach", "BufWritePost", "DirChanged" }, {
-    group = ds.augroup "root_cache",
+    group = ds.augroup "util.root.cache",
     callback = function(event)
       M.cached_roots[event.buf] = nil
       M.cached_specs[event.buf] = nil

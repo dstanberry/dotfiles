@@ -1,7 +1,7 @@
 ---@class util.plugin
 local M = {}
 
-local group = ds.augroup "lazy"
+local group = ds.augroup "util.plugin"
 
 ---Deeply merges multiple tables.
 ---If `lazy.nvim` is available, it uses its merge function.

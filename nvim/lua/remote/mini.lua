@@ -214,7 +214,7 @@ return {
         vim.keymap.set("n", lhs, rhs, { buffer = buf_id, desc = desc })
       end
 
-      local group = ds.augroup "mini_files"
+      local group = ds.augroup "remote.mini_files"
       vim.api.nvim_create_autocmd("User", {
         group = group,
         pattern = "MiniFilesActionRename",

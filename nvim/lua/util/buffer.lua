@@ -247,7 +247,7 @@ end
 function M.send_to_term()
   local buf = vim.api.nvim_get_current_buf()
   local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
-  local group = ds.augroup "term_pipe"
+  local group = ds.augroup "util.terminal"
   vim.wo.number = false
   vim.wo.relativenumber = false
   vim.wo.statuscolumn = ""

@@ -201,7 +201,7 @@ return {
       vim.g.db_ui_execute_on_save = false
 
       vim.api.nvim_create_autocmd("FileType", {
-        group = ds.augroup "dadbod",
+        group = ds.augroup "remote.dadbod",
         pattern = { "dbout", "dbui" },
         callback = vim.schedule_wrap(function()
           vim.opt_local.number = false
