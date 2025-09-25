@@ -174,7 +174,7 @@ return {
         },
         top = {},
         right = {
-          { ft = "grug-far", title = ds.icons.misc.Magnify .. " Grug Far", size = { width = 0.4 } },
+          { ft = "grug-far", title = ds.icons.misc.Magnify .. " Find and Replace", size = { width = 0.4 } },
           { ft = "codecompanion", title = ds.icons.kind.Copilot .. " Copilot Chat", size = { width = 81 } },
         },
         bottom = {

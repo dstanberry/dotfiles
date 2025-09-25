@@ -78,9 +78,12 @@ return {
           -- stylua: ignore
           { util.metadata.root_dir.get, color = c_overlay1, cond = util.metadata.root_dir.cond, padding = { right = 1 } },
           sep("left", nil, util.metadata.root_dir.cond),
-          { "vim.b.gitsigns_blame_line", color = winbar_fname, padding = { right = 1 } },
+          -- stylua: ignore
+          { util.metadata.plugin_info.get, color = c_overlay1, cond = util.metadata.plugin_info.cond, padding = { right = 1 } },
+          sep("left", nil, util.metadata.plugin_info.cond),
           -- stylua: ignore
           { util.status.codecompanion.adapter.get, color = winbar_fname, cond = util.status.codecompanion.adapter.cond },
+          { "vim.b.gitsigns_blame_line", color = winbar_fname, padding = { right = 1 } },
         },
         lualine_c = {
           { "diff", source = util.git.diff.get, symbols = get_diff "symbols", diff_color = get_diff "colors" },

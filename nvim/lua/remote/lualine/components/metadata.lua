@@ -95,4 +95,39 @@ M.root_dir = {
   cond = function() return type(M.root_dir.get()) == "string" end,
 }
 
+M.plugin_info = {
+  icons = {
+    ["grug-far"] = { "󰥩 ", "Find and Replace" },
+    ["snacks_picker_input"] = { "󰋱", "Fuzzy Finder" },
+    ["snacks_picker_list"] = { "󰙅", "File Explorer" },
+    ["snacks_terminal"] = { " ", "Terminal" },
+    codecompanion = { " ", "AI Assistant" },
+    DiffviewFiles = { " ", "Diff Viewer" },
+    gitcommit = { " ", "Git Commit" },
+    lazy = { " ", "Plugin Manager" },
+    loclist = { "󰂖", "Location List" },
+    mason = { "󰈏 ", "Package Manager" },
+    minifiles = { "󰙅 ", "File Explorer" },
+    noice = { " ", "Messages" },
+    oil = { "󰙅 ", "File Explorer" },
+    quickfix = { " ", "Quickfix List" },
+    terminal = { " ", "Terminal" },
+    trouble = { "", "Quickfix / Location List" },
+  },
+  get = function()
+    local fname = vim.api.nvim_buf_get_name(0)
+    if fname:len() < 1 and vim.bo.buftype:len() < 1 then return "..." end
+    local ft = vim.bo.filetype == "qf" and vim.fn.win_gettype() or vim.bo.filetype
+    local msg = ""
+    if M.plugin_info.icons[ft] ~= nil then
+      for _, part in ipairs(M.plugin_info.icons[ft]) do
+        msg = string.format("%s %s", msg, part)
+      end
+    end
+    if #M.plugin_info.icons[ft] < 2 then msg = msg .. fname:gsub("%%", "%%%%") end
+    return msg
+  end,
+  cond = function() return vim.tbl_contains(vim.tbl_keys(M.plugin_info.icons), vim.bo.filetype) end,
+}
+
 return M
