@@ -1,7 +1,9 @@
 ---@class util.treesitter
 local M = {}
 
-M._cache = {}
+M._cache = {} ---@type table<number,{tick:number,scopes:{list:TSNode[],set:table<TSNode,boolean>}}>
+M._installed = nil ---@type table<string,boolean>?
+M._queries = {} ---@type table<string,boolean>
 
 local function get_root(bufnr)
   local parser = vim.treesitter.get_parser(bufnr, nil, { error = false })
@@ -44,12 +46,11 @@ local function get_cached_scopes(bufnr)
   return entry.scopes
 end
 
----Get all scope nodes for a buffer from cache (building if needed).
+---Clear cached scopes for a buffer.
 ---@param bufnr? number
----@return TSNode[] list
-function M.get_scopes(bufnr)
+function M.clear_cache(bufnr)
   bufnr = vim._resolve_bufnr(bufnr)
-  return get_cached_scopes(bufnr).list
+  M._cache[bufnr] = nil
 end
 
 ---Find the nearest containing scope for a node.
@@ -69,6 +70,59 @@ function M.containing_scope(node, bufnr, allow_fallback)
   if allow_fallback then return node end
 end
 
+function M.get_installed()
+  if not M._installed or #M._installed == 0 then
+    M._installed = {}
+    M._queries = {}
+    for _, lang in ipairs(require("nvim-treesitter").get_installed "parsers") do
+      M._installed[lang] = true
+    end
+  end
+  return M._installed or {}
+end
+
+---Collect scopes from a starting node up to the root scope.
+---@param node TSNode
+---@param bufnr? number
+---@return TSNode[] list
+function M.get_scope_tree(node, bufnr)
+  local scopes = {}
+  for s in M.iter_scope_tree(node, bufnr) do
+    table.insert(scopes, s)
+  end
+  return scopes
+end
+
+---Get all scope nodes for a buffer from cache (building if needed).
+---@param bufnr? number
+---@return TSNode[] list
+function M.get_scopes(bufnr)
+  bufnr = vim._resolve_bufnr(bufnr)
+  return get_cached_scopes(bufnr).list
+end
+
+---@param what string|number|nil
+---@param query? string
+---@overload fun(buf?:number):boolean
+---@overload fun(ft:string):boolean
+---@return boolean
+function M.has(what, query)
+  what = what or vim.api.nvim_get_current_buf()
+  what = type(what) == "number" and vim.bo[what].filetype or what --[[@as string]]
+  local lang = vim.treesitter.language.get_lang(what)
+  if lang == nil or M.get_installed()[lang] == nil then return false end
+  if query and not M.has_query(lang, query) then return false end
+  return true
+end
+
+---@param lang string
+---@param query string
+function M.has_query(lang, query)
+  local key = lang .. ":" .. query
+  if M._queries[key] == nil then M._queries[key] = vim.treesitter.query.get(lang, query) ~= nil end
+  return M._queries[key]
+end
+
 ---Iterator over scopes from a starting node up to the root scope.
 ---@param node TSNode
 ---@param bufnr? number
@@ -86,25 +140,6 @@ function M.iter_scope_tree(node, bufnr)
     last_node = scope:parent()
     return scope
   end
-end
-
----Collect scopes from a starting node up to the root scope.
----@param node TSNode
----@param bufnr? number
----@return TSNode[] list
-function M.get_scope_tree(node, bufnr)
-  local scopes = {}
-  for s in M.iter_scope_tree(node, bufnr) do
-    table.insert(scopes, s)
-  end
-  return scopes
-end
-
----Clear cached scopes for a buffer.
----@param bufnr? number
-function M.clear_cache(bufnr)
-  bufnr = vim._resolve_bufnr(bufnr)
-  M._cache[bufnr] = nil
 end
 
 return M
