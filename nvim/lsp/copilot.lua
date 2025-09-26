@@ -55,6 +55,14 @@ M.config = {
       telemetryLevel = "all",
     },
   },
+  handlers = {
+    didChangeStatus = function(err, res, _)
+      if err then return end
+      if res.status == "Error" then
+        ds.warn("Use `:LspCopilotSignIn` to sign in to Copilot", { title = "LSP: Copilot" })
+      end
+    end,
+  },
   on_attach = function(client, bufnr)
     if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlineCompletion, bufnr) then
       if ds.cmp.inline.available() then ds.cmp.inline.enable(true) end
