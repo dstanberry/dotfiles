@@ -171,6 +171,7 @@ return {
           ["<a-h>"] = function(win) win:resize("width", -2) end,
           ["<a-k>"] = function(win) win:resize("height", 2) end,
           ["<a-j>"] = function(win) win:resize("height", -2) end,
+          ["<a-w>"] = function(win) win:toggle_maximize() end,
         },
         top = {},
         right = {
@@ -178,17 +179,18 @@ return {
           {
             ft = "codecompanion",
             title = ds.icons.kind.Copilot .. " Copilot Chat",
-            size = { width = 81 },
+            size = { width = 84 },
             pinned = true,
             open = function() require("codecompanion").toggle() end,
           },
         },
         bottom = {
           "Trouble",
+          { ft = "qf", title = "QuickFix" },
           { ft = "help", size = { height = 20 }, filter = function(buf) return vim.bo[buf].buftype == "help" end },
           { ft = "dbout", title = ds.icons.groups.Sql .. " DB Query Result" },
           { ft = "neotest-output-panel", title = ds.icons.groups.Lab .. " Test Output", size = { height = 15 } },
-          { ft = "qf", title = "QuickFix" },
+          { ft = "dap-repl", title = ds.icons.debug.REPL .. " REPL" },
           {
             ft = "noice",
             size = { height = 0.4 },
