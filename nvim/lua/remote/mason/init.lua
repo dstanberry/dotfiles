@@ -13,7 +13,6 @@ return {
       },
       ui = {
         check_outdated_packages_on_open = true,
-        border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
         icons = {
           package_installed = ds.icons.misc.CheckFilled,
           package_pending = ds.icons.misc.RightArrowCircled,

@@ -6,7 +6,7 @@ M.get = function(c)
   -- stylua: ignore
   return {
     -- mini.files
-    MiniFilesBorder         = { link = "FloatBorderSB" },
+    MiniFilesBorder         = { link = "FloatBorder" },
     MiniFilesBorderModified = { fg = c.rose0, bg = c.bg0 },
     MiniFilesCursorLine     = { bg = c.bg0 },
     MiniFilesTitle          = { fg = c.gray2, bg = c.bg0 },

@@ -85,9 +85,7 @@ return {
           auto_scroll = true,
           intro_message = "",
           diff_window = {
-            opts = {
-              winhighlight = table.concat({ "FloatBorder:FloatBorderSB", "Title:CodeCompanionInlineDiffTitle" }, ","),
-            },
+            opts = { winhighlight = "Title:CodeCompanionInlineDiffTitle" },
           },
           window = {
             layout = "vertical",

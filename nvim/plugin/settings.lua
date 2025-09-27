@@ -154,4 +154,4 @@ vim.opt.wildignore = { -- list of file patterns to ifnore when expanding wildcar
   "NTUSER.*",
 }
 vim.opt.wildoptions = { "pum", "fuzzy" } -- enable completion menu
-vim.opt.winborder = "" -- define the default border style of floating windows.
+vim.opt.winborder = ds.icons.border.Default -- define the default border style of floating windows.

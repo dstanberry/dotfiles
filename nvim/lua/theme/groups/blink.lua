@@ -5,8 +5,8 @@ local M = {}
 M.get = function(c)
   -- stylua: ignore
   return {
-    BlinkCmpDocBorder         = { link = "FloatBorderSB" },
-    BlinkCmpMenuBorder        = { link = "FloatBorderSB" },
+    BlinkCmpDocBorder         = { link = "FloatBorder" },
+    BlinkCmpMenuBorder        = { link = "FloatBorder" },
 
     BlinkCmpGhostText         = { link = "Comment" },
 

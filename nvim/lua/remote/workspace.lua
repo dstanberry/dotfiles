@@ -59,7 +59,6 @@ return {
       local preview_opts = {
         type = "float",
         relative = "editor",
-        border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
         position = { 0.5, 0.5 },
         size = { width = 0.6, height = 0.5 },
         zindex = 200,

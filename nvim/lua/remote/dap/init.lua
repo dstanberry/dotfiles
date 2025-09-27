@@ -136,7 +136,6 @@ return {
           },
         },
         floating = {
-          border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
           max_height = nil,
           max_width = nil,
           mappings = {

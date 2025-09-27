@@ -33,8 +33,12 @@ M.get = function(c)
     NonText                                    = { fg = c.grayX },
     Normal                                     = { fg = c.fg1, bg = c.bg2 },
     NormalNC                                   = { fg = c.fg1, bg = c.bg2 },
-    FloatBorder                                = { fg = c.bg0, bg = c.bg0 },
+    -- custom alternate backgrounds
+    NormalSB                                   = { fg = c.fg1, bg = c.bgX },
+
+    FloatBorder                                = { fg = c.gray1, bg = c.bg0 },
     NormalFloat                                = { fg = c.white, bg = c.bg0 },
+
     NvimInternalError                          = { link = "Error" },
     PMenu                                      = { link = "NormalFloat" },
     PMenuSbar                                  = { fg = c.gray0, bg = c.bg0 },
@@ -60,9 +64,6 @@ M.get = function(c)
     WarningMsg                                 = { fg = c.yellow1 },
     Whitespace                                 = { link = "NonText" },
     WildMenu                                   = { link = "Visual" },
-    -- custom alternate backgrounds
-    FloatBorderSB                              = { fg = c.gray1, bg = c.bg0 },
-    NormalSB                                   = { fg = c.fg1, bg = c.bgX },
 
     -- standard syntax highlighting
     Constant                                   = { fg = c.orange0 },

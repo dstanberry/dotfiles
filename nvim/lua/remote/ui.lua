@@ -271,7 +271,6 @@ return {
           opts = {
             border = { style = ds.icons.border.Default },
             position = { row = 2 },
-            win_options = { winhighlight = { FloatBorder = "FloatBorderSB" } },
           },
         },
         signature = {
@@ -521,7 +520,6 @@ return {
         ["q"] = "actions.close",
       },
       float = {
-        border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
         max_width = math.floor(vim.o.columns * 0.35),
         max_height = math.floor(vim.o.lines * 0.4),
         win_options = {
@@ -532,11 +530,6 @@ return {
           winhighlight = "Title:OilFloatTitle",
         },
       },
-      keymaps_help = {
-        border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
-      },
-      preview = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
-      ssh = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
     },
   },
   {

@@ -27,16 +27,13 @@ M.styles = {
   notification_history = {
     wo = {
       cursorline = false,
-      winhighlight = "FloatBorder:FloatBorderSB,Title:SnacksNotifierHistoryTitle",
+      winhighlight = "Title:SnacksNotifierHistoryTitle",
     },
   },
   scratch = {
     wo = {
-      winhighlight = "FloatBorder:FloatBorderSB,CursorLine:SnacksScratchCursorLine",
+      winhighlight = "CursorLine:SnacksScratchCursorLine",
     },
-  },
-  snacks_image = {
-    border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
   },
   terminal = {
     wo = {

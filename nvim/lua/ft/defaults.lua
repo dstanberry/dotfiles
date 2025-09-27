@@ -107,10 +107,6 @@ return { ---@class ft.defaults
   },
   -- misc
   checkhealth = {
-    wo = {
-      number = false,
-      relativenumber = false,
-      winhighlight = "FloatBorder:FloatBorderSB",
-    },
+    wo = { number = false, relativenumber = false },
   },
 }

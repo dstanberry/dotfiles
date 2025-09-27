@@ -8,7 +8,6 @@ return {
     opts = {
       completion = { crates = { enabled = true } },
       lsp = { enabled = true, actions = true, completion = true, hover = true },
-      popup = { border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default) },
     },
   },
   {
@@ -62,7 +61,6 @@ return {
         virtual_text = false,
         underline = { severity = { min = vim.diagnostic.severity.WARN } },
         float = {
-          border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
           focusable = false,
           show_header = true,
           source = true,

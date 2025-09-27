@@ -240,7 +240,6 @@ return {
         callback = function(args)
           local win_id = args.data.win_id
           local config = vim.api.nvim_win_get_config(win_id)
-          config.border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default)
           config.title_pos = "center"
           vim.api.nvim_win_set_config(win_id, config)
         end,

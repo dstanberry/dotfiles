@@ -16,7 +16,6 @@ return {
       completion = {
         accept = { auto_brackets = { enabled = true } },
         menu = {
-          border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
           winblend = vim.o.pumblend,
           draw = {
             columns = { { "kind_icon" }, { "label", "label_description", gap = 1 }, { "kind" } },
@@ -40,10 +39,7 @@ return {
         documentation = {
           auto_show = true,
           auto_show_delay_ms = 200,
-          window = {
-            border = vim.tbl_map(function(icon) return { icon, "FloatBorderSB" } end, ds.icons.border.Default),
-            winblend = vim.o.pumblend,
-          },
+          window = { winblend = vim.o.pumblend },
         },
         ghost_text = { enabled = true },
         trigger = { show_on_trigger_character = true },
