@@ -132,6 +132,16 @@ function M.inline.cycle(count, opts)
   vim.lsp.inline_completion.select(vim.tbl_extend("force", { count = count }, opts or {}))
 end
 
+---Cycle through inline completion candidates.
+---Positive (or nil) count moves forward, negative moves backward.
+---@param count? integer
+---@param opts? vim.lsp.inline_completion.select.Opts
+function M.inline.next(count, opts)
+  if not M.inline.enabled { bufnr = opts and opts.bufnr } then return false end
+  M.inline.cycle(count, opts)
+  return true
+end
+
 ---Toggle inline completion.
 ---@param filter? vim.lsp.capability.enable.Filter
 function M.inline.toggle(filter)

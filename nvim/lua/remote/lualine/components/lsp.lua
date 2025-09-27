@@ -20,10 +20,18 @@ M.clients = {
       end
     end)
     c = ds.icons.misc.Extensions .. " " .. #clients
-    if ai then c = (c or "") .. ds.pad(ai, "left", 2) end
+    if ai and not ds.plugin.is_installed "sidekick.nvim" then c = (c or "") .. ds.pad(ai, "left", 2) end
     return c
   end,
   cond = function() return #vim.lsp.get_clients { bufnr = 0 } > 0 end,
+}
+
+M.copilot = {
+  get = function()
+    local status = require("sidekick.status").get()
+    return status and ds.pad(vim.tbl_get(ds.icons.ai, status.kind), "left", 2)
+  end,
+  cond = function() return require("sidekick.status").get() ~= nil end,
 }
 
 M.symbols = {

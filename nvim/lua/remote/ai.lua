@@ -119,7 +119,7 @@ return {
               description = "Refactor the code and ensure any associated unit tests are updated if necessary and pass",
               files = { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "refactor.md") },
             },
-            ["refactor+test"] = {
+            [string.format("refactor %s test", ds.icons.misc.ArrowSwap)] = {
               description = "Refactor the code and ensure any associated unit tests are written if necessary and pass",
               files = {
                 vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "refactor.md"),
@@ -163,5 +163,17 @@ return {
         },
       },
     },
+  },
+  {
+    "folke/sidekick.nvim",
+    keys = {
+      { "<tab>", ds.cmp.coalesce { "inline.next", "<tab>" }, mode = { "n" }, expr = true },
+    },
+    opts = function()
+      ds.cmp.inline.next = function()
+        local nes = require "sidekick.nes"
+        if nes.have() and (nes.jump() or nes.apply()) then return true end
+      end
+    end,
   },
 }

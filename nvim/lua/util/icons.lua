@@ -1,6 +1,14 @@
 ---@class util.icons
 local M = {}
 
+--- Icons for various AI-related tools and services.
+M.ai = {
+  Error = "",
+  Inactive = "",
+  Normal = "",
+  Warning = "",
+}
+
 ---Box drawing characters for window borders.
 M.border = {
   CompactRound = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
