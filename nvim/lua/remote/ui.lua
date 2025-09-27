@@ -435,7 +435,7 @@ return {
           border = "none",
           maxheight = 20,
           winblend = vim.o.pumblend,
-          winhighlight = "Normal:NormalSB",
+          winhighlight = "Normal:NormalAlt",
         },
       },
       enable_get_fold_virt_text = true,

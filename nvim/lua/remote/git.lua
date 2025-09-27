@@ -37,7 +37,7 @@ return {
           position = "left",
           width = 35,
           height = 10,
-          win_opts = { winhighlight = "Normal:NormalSB" },
+          win_opts = { winhighlight = "Normal:NormalAlt" },
         },
       },
       file_history_panel = {
@@ -45,7 +45,7 @@ return {
           position = "bottom",
           width = 35,
           height = 20,
-          win_opts = { winhighlight = "Normal:NormalSB" },
+          win_opts = { winhighlight = "Normal:NormalAlt" },
         },
       },
       keymaps = {

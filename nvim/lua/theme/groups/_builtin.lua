@@ -33,8 +33,8 @@ M.get = function(c)
     NonText                                    = { fg = c.grayX },
     Normal                                     = { fg = c.fg1, bg = c.bg2 },
     NormalNC                                   = { fg = c.fg1, bg = c.bg2 },
-    -- custom alternate backgrounds
-    NormalSB                                   = { fg = c.fg1, bg = c.bgX },
+    -- custom alternate background(s)
+    NormalAlt                                  = { fg = c.fg1, bg = c.bgX },
 
     FloatBorder                                = { fg = c.gray1, bg = c.bg0 },
     NormalFloat                                = { fg = c.white, bg = c.bg0 },
