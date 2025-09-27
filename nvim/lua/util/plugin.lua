@@ -238,6 +238,7 @@ function M.setup(opts)
     lockfile = vim.fs.joinpath(vim.fn.stdpath "config", "lua", "remote", "lazy-lock.json"),
     ui = {
       backdrop = 95,
+      border = vim.tbl_map(function(icon) return { icon, "FloatBorder" } end, ds.icons.border.Default),
       custom_keys = {
         ["<localleader>d"] = function(plugin) print(plugin) end,
         ["<localleader>t"] = function(plugin)
