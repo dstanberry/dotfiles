@@ -92,6 +92,10 @@ return {
             width = 82,
             opts = { number = false, relativenumber = false, statuscolumn = " " },
           },
+          token_count = function(tokens, _)
+            _G.codecompanion_ds_tokens = tokens
+            return ""
+          end,
         },
       },
       extensions = {

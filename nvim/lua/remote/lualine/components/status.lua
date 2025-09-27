@@ -18,7 +18,12 @@ M.codecompanion = {
       local buf = vim.api.nvim_get_current_buf()
       local data = _G.codecompanion_chat_metadata and _G.codecompanion_chat_metadata[buf]
       if not data.adapter and data.adapter.name then return "" end
-      return string.format("%s (%s)", data.adapter.name or "", data.adapter.model)
+      return string.format(
+        "%s (%s) - %d tokens",
+        data.adapter.name or "",
+        data.adapter.model,
+        _G.codecompanion_ds_tokens or 0
+      )
     end,
     cond = function() return package.loaded.codecompanion and vim.bo.filetype == "codecompanion" end,
   },
