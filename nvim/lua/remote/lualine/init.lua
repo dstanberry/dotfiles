@@ -82,7 +82,7 @@ return {
           { util.metadata.plugin_info.get, color = c_overlay1, cond = util.metadata.plugin_info.cond, padding = { right = 1 } },
           sep("left", nil, util.metadata.plugin_info.cond),
           -- stylua: ignore
-          { util.status.codecompanion.adapter.get, color = winbar_fname, cond = util.status.codecompanion.adapter.cond },
+          { util.message.codecompanion.adapter.get, color = winbar_fname, cond = util.message.codecompanion.adapter.cond },
           { "vim.b.gitsigns_blame_line", color = winbar_fname, padding = { right = 1 } },
         },
         lualine_c = {
@@ -91,8 +91,8 @@ return {
         lualine_x = {
           { util.message.noice.get, color = c_gray2_italic, cond = util.message.noice.cond },
           sep("right", { right = 1 }, util.message.noice.cond),
-          { util.status.codecompanion.ctx.get, color = c_fg_conceal_bold, cond = util.status.codecompanion.ctx.cond },
-          sep("right", { right = 1 }, util.status.codecompanion.ctx.cond),
+          { util.message.codecompanion.ctx.get, color = c_fg_conceal_bold, cond = util.message.codecompanion.ctx.cond },
+          sep("right", { right = 1 }, util.message.codecompanion.ctx.cond),
         },
         lualine_y = {
           -- stylua: ignore
