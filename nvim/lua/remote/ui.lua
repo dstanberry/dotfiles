@@ -171,7 +171,6 @@ return {
           ["<a-h>"] = function(win) win:resize("width", -2) end,
           ["<a-k>"] = function(win) win:resize("height", 2) end,
           ["<a-j>"] = function(win) win:resize("height", -2) end,
-          ["<a-w>"] = function(win) win:toggle_maximize() end,
         },
         top = {},
         right = {
