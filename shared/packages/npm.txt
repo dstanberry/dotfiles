@@ -1,3 +1,4 @@
+@github/copilot
 @github/copilot-language-server
 neovim
 pnpm
