@@ -4,6 +4,14 @@ local M = {}
 local util = require "remote.lualine.util"
 local highlighter = util.highlighter
 
+M.ai = {
+  get = function()
+    local status = require("sidekick.status").get()
+    return status and ds.pad(vim.tbl_get(ds.icons.ai, status.kind), "left", 2)
+  end,
+  cond = function() return require("sidekick.status").get() ~= nil end,
+}
+
 M.clients = {
   get = function()
     local winid = vim.api.nvim_get_current_win()
@@ -13,7 +21,7 @@ M.clients = {
     ds.foreach(vim.lsp.get_clients { bufnr = buf }, function(client)
       if client and client.name then
         if client.name == "copilot" then
-          ai = ds.pad(ds.icons.kind.Copilot, "right")
+          ai = ds.pad(ds.icons.ai.Normal, "right")
         else
           table.insert(clients, client.name)
         end
@@ -24,14 +32,6 @@ M.clients = {
     return c
   end,
   cond = function() return #vim.lsp.get_clients { bufnr = 0 } > 0 end,
-}
-
-M.copilot = {
-  get = function()
-    local status = require("sidekick.status").get()
-    return status and ds.pad(vim.tbl_get(ds.icons.ai, status.kind), "left", 2)
-  end,
-  cond = function() return require("sidekick.status").get() ~= nil end,
 }
 
 M.symbols = {

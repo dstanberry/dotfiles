@@ -6,7 +6,7 @@ local util = require "remote.lualine.util"
 M.codecompanion = {
   ctx = {
     get = function()
-      local base = ds.icons.kind.Copilot
+      local base = ds.icons.ai.Normal
       local buf = _G.codecompanion_current_context
       if not buf then return base end
       local filepath = vim.fs.normalize(vim.api.nvim_buf_get_name(buf))

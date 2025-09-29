@@ -99,9 +99,9 @@ return {
           { "diagnostics", sources = { "nvim_diagnostic" }, symbols = get_diag "symbols", diagnostics_color = get_diag "colors" },
           sep("right", { left = 0, right = 1 }, function() return #vim.diagnostic.count() > 0 end),
           { util.lsp.clients.get, color = c_fg_conceal, padding = { right = 0 }, cond = util.lsp.clients.cond },
-          { util.lsp.copilot.get, color = c_fg_conceal, padding = { right = 1 }, cond = util.lsp.copilot.cond },
+          { util.lsp.ai.get, color = c_fg_conceal, padding = { right = 1 }, cond = util.lsp.ai.cond },
           -- stylua: ignore
-          sep("right", { left = 1, right = 0 }, function() return util.lsp.clients.cond() or util.lsp.copilot.cond() end),
+          sep("right", { left = 1, right = 0 }, function() return util.lsp.clients.cond() or util.lsp.ai.cond() end),
           { "location" },
           sep("right", { left = 0, right = 0 }),
           { util.metadata.indentation.get, cond = function() return vim.bo.shiftwidth > 0 end },

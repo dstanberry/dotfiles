@@ -177,7 +177,7 @@ return {
           { ft = "grug-far", title = ds.icons.misc.Magnify .. " Find and Replace", size = { width = 0.4 } },
           {
             ft = "codecompanion",
-            title = ds.icons.kind.Copilot .. " Copilot Chat",
+            title = ds.icons.ai.Normal .. " Code Assistant",
             size = { width = 84 },
             pinned = true,
             open = function() require("codecompanion").toggle() end,
@@ -546,7 +546,7 @@ return {
           rules = {
             -- groups
             { pattern = "command", icon = " ", color = "azure" },
-            { pattern = "copilot", icon = " ", color = "grey" },
+            { pattern = "code assistant", icon = " ", color = "grey" },
             { pattern = "dap", icon = " ", color = "red" },
             { pattern = "debug", icon = " ", color = "red" },
             { pattern = "database", icon = " ", color = "yellow" },

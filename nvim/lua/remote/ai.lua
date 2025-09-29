@@ -7,11 +7,11 @@ return {
     },
     cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd", "CodeCompanionHistory" },
     keys = {
-      { "<leader>c", mode = { "n", "v" }, "", desc = "+copilot" },
-      { "<leader>ca", mode = { "n", "v" }, ":CodeCompanionActions<cr>", desc = "copilot: select chat action" },
-      { "<leader>cc", mode = { "v" }, "<cmd>CodeCompanionChat Add<cr>", desc = "copilot: toggle chat" },
-      { "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", desc = "copilot: toggle chat" },
-      { "<leader>ch", "<cmd>CodeCompanionHistory<cr>", desc = "copilot: show chat history" },
+      { "<leader>c", mode = { "n", "v" }, "", desc = "+code assistant" },
+      { "<leader>ca", mode = { "n", "v" }, ":CodeCompanionActions<cr>", desc = "codecompanion: select chat action" },
+      { "<leader>cc", mode = { "v" }, "<cmd>CodeCompanionChat Add<cr>", desc = "codecompanion: toggle chat" },
+      { "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", desc = "codecompanion: toggle chat" },
+      { "<leader>ch", "<cmd>CodeCompanionHistory<cr>", desc = "codecompanion: show chat history" },
     },
     init = function()
       local group = ds.augroup "remote.codecompanion"
@@ -149,7 +149,7 @@ return {
           },
           roles = {
             llm = function(adapter)
-              return string.format("%s %s (%s)", ds.icons.kind.Copilot, adapter.formatted_name, adapter.model.name)
+              return string.format("%s %s (%s)", ds.icons.ai.Normal, adapter.formatted_name, adapter.model.name)
             end,
             user = string.format("%s %s", ds.icons.misc.User, (vim.env.USER or "User"):gsub("^%l", string.upper)),
           },
@@ -170,8 +170,11 @@ return {
   },
   {
     "folke/sidekick.nvim",
+    -- stylua: ignore
     keys = {
       { "<tab>", ds.cmp.coalesce { "inline.next", "<tab>" }, mode = { "n" }, expr = true },
+      { "<leader>ca", mode = { "n" }, function() require("sidekick.cli").toggle() end, desc = "sidekick: toggle" },
+      { "<leader>ct", mode = { "n" }, function() require("sidekick.cli").select_tool() end, desc = "sidekick: select adapter" },
     },
     opts = function()
       ds.cmp.inline.next = function()
