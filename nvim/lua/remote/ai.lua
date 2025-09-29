@@ -173,8 +173,10 @@ return {
     -- stylua: ignore
     keys = {
       { "<tab>", ds.cmp.coalesce { "inline.next", "<tab>" }, mode = { "n" }, expr = true },
-      { "<leader>ca", mode = { "n" }, function() require("sidekick.cli").toggle() end, desc = "sidekick: toggle" },
-      { "<leader>ct", mode = { "n" }, function() require("sidekick.cli").select_tool() end, desc = "sidekick: select adapter" },
+      { "<localleader>c", mode = { "n", "v" }, "", desc = "+code assistant" },
+      { "<localleader>ca", mode = { "n" }, function() require("sidekick.cli").select_tool() end, desc = "sidekick: select adapter" },
+      { "<localleader>cc", mode = { "n" }, function() require("sidekick.cli").toggle() end, desc = "sidekick: toggle" },
+      { "<localleader>cp", mode = { "n" }, function() require("sidekick.cli").select_prompt() end, desc = "sidekick: toggle" },
     },
     opts = function()
       ds.cmp.inline.next = function()

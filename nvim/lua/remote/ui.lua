@@ -545,14 +545,15 @@ return {
         icons = {
           rules = {
             -- groups
-            { pattern = "command", icon = " ", color = "azure" },
             { pattern = "code assistant", icon = " ", color = "grey" },
+            { pattern = "command", icon = " ", color = "azure" },
             { pattern = "dap", icon = " ", color = "red" },
-            { pattern = "debug", icon = " ", color = "red" },
             { pattern = "database", icon = " ", color = "yellow" },
+            { pattern = "debug", icon = " ", color = "red" },
             { pattern = "lsp", icon = " ", color = "red" },
             { pattern = "notes", icon = " ", color = "purple" },
             { pattern = "quickfix", icon = " ", color = "grey" },
+            { pattern = "sidekick", icon = " ", color = "grey" },
             { pattern = "substitute", icon = " ", color = "green" },
             { pattern = "test", icon = " ", color = "yellow" },
             { pattern = "trouble", icon = " ", color = "yellow" },
