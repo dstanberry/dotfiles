@@ -26,7 +26,7 @@ local function sign_in(bufnr, client)
     end
 
     if result.status == "PromptUserDeviceFlow" then
-      ds.info(("Enter your one-time code `%s` in %s"):format(result.code, result.verificationUri))
+      ds.info(("Enter your one-time code `%s` in %s"):format(result.userCode, result.verificationUri))
     elseif result.status == "AlreadySignedIn" then
       ds.info(("Already signed in as ` %s `."):format(result.user))
     end
