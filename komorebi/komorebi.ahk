@@ -14,7 +14,8 @@ Komorebic(cmd) {
 }
 
 ; Reload Configuration
-#^r::Komorebic("reload-configuration")
+; #^r::Komorebic("reload-configuration")
+
 ; Restart Komorebi
 #^!`:: {
   try Komorebic("stop")
@@ -25,7 +26,6 @@ Komorebic(cmd) {
 #^!LShift::Komorebic("quick-load")
 
 ; Change window layout
-#^!0::Komorebic("toggle-lock")
 #^!1::Komorebic("toggle-float")
 #^!2::Komorebic("toggle-monocle")
 ; #^!3::Komorebic("retile")
@@ -41,6 +41,9 @@ Komorebic(cmd) {
 #^!g::Komorebic("focus right")
 #^!w::Komorebic("focus up")
 #^!s::Komorebic("focus down")
+
+; Pin/Unpin window
+#^!p::Komorebic("toggle-lock")
 
 ; Move windows
 #^!Left::Komorebic("move left")
