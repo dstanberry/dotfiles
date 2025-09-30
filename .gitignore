@@ -2,6 +2,7 @@
 !pg/psqlrc
 !pg/psqlrc-win
 !pgcli/config
+.copilot/
 angular/
 configstore
 dlv/
