@@ -9,9 +9,9 @@ return {
     keys = {
       { "<leader>c", mode = { "n", "v" }, "", desc = "+code assistant" },
       { "<leader>ca", mode = { "n", "v" }, ":CodeCompanionActions<cr>", desc = "codecompanion: select chat action" },
-      { "<leader>cc", mode = { "v" }, "<cmd>CodeCompanionChat Add<cr>", desc = "codecompanion: toggle chat" },
       { "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", desc = "codecompanion: toggle chat" },
       { "<leader>ch", "<cmd>CodeCompanionHistory<cr>", desc = "codecompanion: show chat history" },
+      { "<leader>cx", mode = { "v" }, "<cmd>CodeCompanionChat Add<cr>", desc = "codecompanion: add selection to chat" },
     },
     init = function()
       local group = ds.augroup "remote.codecompanion"
@@ -83,6 +83,7 @@ return {
       display = {
         chat = {
           auto_scroll = true,
+          fold_reasoning = true,
           intro_message = "",
           diff_window = {
             opts = { winhighlight = "Title:CodeCompanionInlineDiffTitle" },
@@ -100,18 +101,10 @@ return {
       },
       extensions = {
         spinner = {},
-        history = {
-          opts = {
-            auto_save = false,
-            keymap = "gh",
-            save_chat_keymap = "gH",
-          },
-        },
+        history = { opts = { auto_save = false, keymap = "gh", save_chat_keymap = "gH" } },
       },
       memory = {
-        opts = {
-          chat = { enabled = true },
-        },
+        opts = { chat = { enabled = true } },
         devops = {
           description = "Additional collection of instruction files",
           files = {
@@ -139,7 +132,7 @@ return {
       },
       strategies = {
         chat = {
-          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5" },
+          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-4.1" },
           keymaps = {
             close = { modes = { n = "q" }, opts = { nowait = true } },
             send = { modes = { n = "<cr>", i = "<c-s>" } },
@@ -154,11 +147,8 @@ return {
             user = string.format("%s %s", ds.icons.misc.User, (vim.env.USER or "User"):gsub("^%l", string.upper)),
           },
         },
-        cmd = {
-          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5" },
-        },
         inline = {
-          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-5" },
+          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-4.1" },
           keymaps = {
             accept_change = { modes = { n = "dp" } },
             reject_change = { modes = { n = "de" } },
@@ -170,13 +160,13 @@ return {
   },
   {
     "folke/sidekick.nvim",
-    -- stylua: ignore
     keys = {
       { "<tab>", ds.cmp.coalesce { "inline.next", "<tab>" }, mode = { "n" }, expr = true },
       { "<localleader>c", mode = { "n", "v" }, "", desc = "+code assistant" },
-      { "<localleader>ca", mode = { "n" }, function() require("sidekick.cli").select_tool() end, desc = "sidekick: select adapter" },
-      { "<localleader>cc", mode = { "n" }, function() require("sidekick.cli").toggle() end, desc = "sidekick: toggle" },
-      { "<localleader>cp", mode = { "n" }, function() require("sidekick.cli").select_prompt() end, desc = "sidekick: toggle" },
+      { "<localleader>ca", function() require("sidekick.cli").select_tool() end, desc = "sidekick: select cli tool" },
+      { "<localleader>cc", function() require("sidekick.cli").toggle() end, desc = "sidekick: toggle" },
+      -- stylua: ignore
+      { "<localleader>cp", mode = { "n", "v" }, function() require("sidekick.cli").select_prompt() end, desc = "sidekick: select prompt"},
     },
     opts = function()
       ds.cmp.inline.next = function()
