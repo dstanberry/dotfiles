@@ -44,6 +44,7 @@ M.disabled = {
     "noice",
     "octo_panel",
     "oil",
+    "sidekick_terminal",
     "snacks_layout_box",
     "snacks_terminal",
     "trouble",

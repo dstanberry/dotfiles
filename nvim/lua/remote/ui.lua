@@ -179,8 +179,13 @@ return {
             ft = "codecompanion",
             title = ds.icons.ai.Normal .. " Code Assistant",
             size = { width = 84 },
-            pinned = true,
             open = function() require("codecompanion").toggle() end,
+          },
+          {
+            ft = "sidekick_terminal",
+            title = ds.icons.ai.Normal .. " Code Assistant",
+            size = { width = 84 },
+            open = function() require("sidekick.cli").toggle() end,
           },
         },
         bottom = {

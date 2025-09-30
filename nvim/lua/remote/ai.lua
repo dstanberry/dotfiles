@@ -163,16 +163,39 @@ return {
     keys = {
       { "<tab>", ds.cmp.coalesce { "inline.next", "<tab>" }, mode = { "n" }, expr = true },
       { "<localleader>c", mode = { "n", "v" }, "", desc = "+code assistant" },
-      { "<localleader>ca", function() require("sidekick.cli").select_tool() end, desc = "sidekick: select cli tool" },
-      { "<localleader>cc", function() require("sidekick.cli").toggle() end, desc = "sidekick: toggle" },
       -- stylua: ignore
-      { "<localleader>cp", mode = { "n", "v" }, function() require("sidekick.cli").select_prompt() end, desc = "sidekick: select prompt"},
+      { "<localleader>ca", mode = { "n", "v" }, function() require("sidekick.cli").select_prompt() end, desc = "sidekick: select prompt"},
+      { "<localleader>cc", function() require("sidekick.cli").toggle() end, desc = "sidekick: toggle" },
     },
-    opts = function()
+    init = function()
       ds.cmp.inline.next = function()
         local nes = require "sidekick.nes"
         if nes.have() and (nes.jump() or nes.apply()) then return true end
       end
+    end,
+    opts = function()
+      return {
+        mux = {
+          backend = "tmux",
+          enabled = true,
+        },
+        cli = {
+          prompts = {
+            analyze = {
+              msg = ds.fs.read(vim.fs.joinpath(vim.fn.stdpath "config", "prompts/analysis.md"), "r", true),
+              diagnostics = true,
+            },
+            refactor = {
+              msg = ds.fs.read(vim.fs.joinpath(vim.fn.stdpath "config", "prompts/refactor.md"), "r", true),
+              diagnostics = true,
+            },
+            tests = {
+              msg = ds.fs.read(vim.fs.joinpath(vim.fn.stdpath "config", "prompts/test.md"), "r", true),
+              diagnostics = true,
+            },
+          },
+        },
+      }
     end,
   },
 }
