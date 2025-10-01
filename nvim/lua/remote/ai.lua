@@ -8,10 +8,10 @@ return {
     cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd", "CodeCompanionHistory" },
     keys = {
       { "<leader>c", mode = { "n", "v" }, "", desc = "+code assistant" },
-      { "<leader>ca", mode = { "n", "v" }, ":CodeCompanionActions<cr>", desc = "codecompanion: select chat action" },
-      { "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", desc = "codecompanion: toggle chat" },
-      { "<leader>ch", "<cmd>CodeCompanionHistory<cr>", desc = "codecompanion: show chat history" },
-      { "<leader>cx", mode = { "v" }, "<cmd>CodeCompanionChat Add<cr>", desc = "codecompanion: add selection to chat" },
+      { "<leader>ca", mode = { "n", "v" }, ":CodeCompanionActions<cr>", desc = "codecompanion: select action" },
+      { "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", desc = "codecompanion: toggle" },
+      { "<leader>ch", "<cmd>CodeCompanionHistory<cr>", desc = "codecompanion: show history" },
+      { "<leader>cx", mode = { "v" }, "<cmd>CodeCompanionChat Add<cr>", desc = "codecompanion: add selection" },
     },
     init = function()
       local group = ds.augroup "remote.codecompanion"
@@ -164,8 +164,10 @@ return {
       { "<tab>", ds.cmp.coalesce { "inline.next", "<tab>" }, mode = { "n" }, expr = true },
       { "<localleader>c", mode = { "n", "v" }, "", desc = "+code assistant" },
       -- stylua: ignore
-      { "<localleader>ca", mode = { "n", "v" }, function() require("sidekick.cli").select_prompt() end, desc = "sidekick: select prompt"},
+      { "<localleader>ca", mode = { "n", "v" }, function() require("sidekick.cli").prompt() end, desc = "sidekick: select prompt"},
       { "<localleader>cc", function() require("sidekick.cli").toggle() end, desc = "sidekick: toggle" },
+      -- stylua: ignore
+      { "<localleader>cx", mode = { "v" }, function() require("sidekick.cli").send() end, desc = "sidekick: add selection" },
     },
     init = function()
       ds.cmp.inline.next = function()
