@@ -109,22 +109,22 @@ return {
           description = "Additional collection of instruction files",
           files = {
             ["analysis"] = {
-              description = "Analyze the code and provide suggestions for improvements, optimizations, or potential issues",
+              description = "Review the code for improvements, optimizations, or issues per the markdown file's guidelines",
               files = { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "analysis.md") },
             },
             ["refactor"] = {
-              description = "Refactor the code and ensure any associated unit tests are updated if necessary and pass",
+              description = "Refactor the code, write or update unit tests if prompted to, and ensure they pass per the markdown file's guidelines",
               files = { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "refactor.md") },
             },
             [string.format("refactor %s test", ds.icons.misc.ArrowSwap)] = {
-              description = "Refactor the code and ensure any associated unit tests are written if necessary and pass",
+              description = "Refactor the code, write or update unit tests if prompted to, and ensure they pass per the markdown file's guidelines",
               files = {
                 vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "refactor.md"),
                 vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "test.md"),
               },
             },
             ["test"] = {
-              description = "Generate unit tests for the given code, ensuring they cover various edge cases and scenarios",
+              description = "Write or update unit tests",
               files = { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "test.md") },
             },
           },
@@ -184,16 +184,34 @@ return {
         cli = {
           prompts = {
             analyze = {
-              msg = ds.fs.read(vim.fs.joinpath(vim.fn.stdpath "config", "prompts/analysis.md"), "r", true),
+              msg = string.format(
+                "@%s\n%s",
+                vim.fs.joinpath(vim.fn.stdpath "config", "prompts/analysis.md"),
+                "Review the code for improvements, optimizations, or issues per the markdown file's guidelines."
+              ),
               diagnostics = true,
             },
             refactor = {
-              msg = ds.fs.read(vim.fs.joinpath(vim.fn.stdpath "config", "prompts/refactor.md"), "r", true),
-              diagnostics = true,
+              msg = string.format(
+                "@%s\n%s",
+                vim.fs.joinpath(vim.fn.stdpath "config", "prompts/refactor.md"),
+                "Refactor the code, write or update unit tests if prompted to, and ensure they pass per the markdown file's guidelines."
+              ),
+            },
+            [string.format("refactor %s test", ds.icons.misc.ArrowSwap)] = {
+              msg = string.format(
+                "@%s\n%s\n%s",
+                vim.fs.joinpath(vim.fn.stdpath "config", "prompts/refactor.md"),
+                vim.fs.joinpath(vim.fn.stdpath "config", "prompts/test.md"),
+                "Refactor the code, write or update unit tests if prompted to, and ensure they pass per the markdown file's guidelines."
+              ),
             },
             tests = {
-              msg = ds.fs.read(vim.fs.joinpath(vim.fn.stdpath "config", "prompts/test.md"), "r", true),
-              diagnostics = true,
+              msg = string.format(
+                "@%s\n%s",
+                vim.fs.joinpath(vim.fn.stdpath "config", "prompts/test.md"),
+                "Write or update unit tests per the markdown file's guidelines."
+              ),
             },
           },
         },
