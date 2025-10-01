@@ -107,13 +107,15 @@ function M.inline.available() return (vim.lsp.inline_completion and vim.lsp.inli
 ---@param filter? vim.lsp.capability.enable.Filter
 function M.inline.disable(filter)
   if not M.inline.enabled { bufnr = filter and filter.bufnr } then return end
-  vim.lsp.inline_completion.enable(false, filter)
+  M.inline.enable(false, filter)
 end
 
 ---Enable or disable inline completion for an optional scope filter.
 ---@param enable? boolean Defaults to true when nil
 ---@param filter? vim.lsp.capability.enable.Filter
-function M.inline.enable(enable, filter) vim.lsp.inline_completion.enable(enable, filter) end
+function M.inline.enable(enable, filter)
+  vim.schedule(function() vim.lsp.inline_completion.enable(enable, filter) end)
+end
 
 ---Query whether inline completion is enabled (optionally filtered).
 ---Returns false if the feature is not available.
@@ -146,7 +148,7 @@ end
 ---@param filter? vim.lsp.capability.enable.Filter
 function M.inline.toggle(filter)
   if not M.inline.enabled { bufnr = filter and filter.bufnr } then return end
-  vim.lsp.inline_completion.enable(not M.inline.is_enabled(filter), filter)
+  M.inline.enable(not M.inline.is_enabled(filter), filter)
 end
 
 return M
