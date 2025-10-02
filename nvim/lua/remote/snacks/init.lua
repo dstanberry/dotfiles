@@ -56,21 +56,22 @@ return {
       return { ---@type snacks.Config
         -- buffer/window options
         styles = res.styles,
-        -- plugins using default config
+        -- no config
         bigfile = { enabled = true },
         explorer = { replace_netrw = true },
-        gitbrowse = res.gitbrowse.config,
-        image = { force = not (ds.has "win32" or ds.has "wsl"), doc = { inline = false } },
-        notifier = { style = "compact", margin = { top = 1, right = 1, bottom = 2 } },
         quickfile = { enabled = true },
         scroll = { enabled = true },
         words = { enabled = true },
-        -- plugins with custom config
+        -- low config
+        image = { force = not (ds.has "win32" or ds.has "wsl"), doc = { inline = false } },
+        notifier = { style = "fancy", margin = { top = 1, right = 1, bottom = 2 } },
+        input = { win = { keys = { i_jk = { "jk", { "cmp_close", "cancel" }, mode = "i" } } } },
+        -- non-trivial config
+        gitbrowse = res.gitbrowse.config,
         dashboard = res.dashboard.config,
         indent = res.indent.config,
-        input = { win = { keys = { i_jk = { "jk", { "cmp_close", "cancel" }, mode = "i" } } } },
         lazygit = res.lazygit.config,
-        picker = res.picker.config(),
+        picker = res.picker.config,
       }
     end,
     config = function(_, opts)

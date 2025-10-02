@@ -15,6 +15,22 @@ M.get = function(c)
   local GRAY = ds.color.darken(c.gray0, 10)
   local GRAY_DARK = ds.color.darken(c.gray0, 25)
   local BLUE = ds.color.darken(c.blue1, 43)
+  local BG_L = ds.color.lighten(c.bg0, 40)
+
+  local HINT = ds.color.get_color "DiagnosticHint"
+  local INFO = ds.color.get_color "DiagnosticInfo"
+  local WARN = ds.color.get_color "DiagnosticWarn"
+  local ERROR = ds.color.get_color "DiagnosticError"
+
+  local HINT_D = ds.color.blend(HINT, c.bgX, 0.03)
+  local HINT_L = ds.color.blend(HINT, c.bgX, 0.1)
+  local INFO_D = ds.color.blend(INFO, c.bgX, 0.03)
+  local INFO_L = ds.color.blend(INFO, c.bgX, 0.1)
+  local WARN_D = ds.color.blend(WARN, c.bgX, 0.03)
+  local WARN_L = ds.color.blend(WARN, c.bgX, 0.1)
+  local ERROR_D = ds.color.blend(ERROR, c.bgX, 0.03)
+  local ERROR_L = ds.color.blend(ERROR, c.bgX, 0.1)
+  local OVERLAY_D = ds.color.blend(c.overlay0, GRAY_DARK, 0.2)
 
   -- stylua: ignore
   return {
@@ -42,30 +58,30 @@ M.get = function(c)
     SnacksIndent8               = { fg = YELLOW_LIGHT },
 
     -- notifier
-    SnacksNotifierTrace         = { fg   = c.white },
-    SnacksNotifierBorderTrace   = { fg = ds.color.get_color "DiagnosticHint" },
+    SnacksNotifierTrace         = { fg = c.white, bg = HINT_D },
+    SnacksNotifierBorderTrace   = { fg = HINT_L, bg = HINT_D },
     SnacksNotifierIconTrace     = { link = "DiagnosticHint" },
-    SnacksNotifierTitleTrace    = { fg = ds.color.get_color "DiagnosticHint" },
+    SnacksNotifierTitleTrace    = { fg = HINT },
 
-    SnacksNotifierDebug         = { fg   = c.white },
-    SnacksNotifierBorderDebug   = { fg = ds.color.get_color "DiagnosticHint" },
+    SnacksNotifierDebug         = { fg = c.white, bg = HINT_D },
+    SnacksNotifierBorderDebug   = { fg = HINT_L, bg = HINT_D },
     SnacksNotifierIconDebug     = { link = "DiagnosticHint" },
-    SnacksNotifierTitleDebug    = { fg = ds.color.get_color "DiagnosticHint" },
+    SnacksNotifierTitleDebug    = { fg = HINT },
 
-    SnacksNotifierInfo          = { fg   = c.white },
-    SnacksNotifierBorderInfo    = { fg = ds.color.get_color "DiagnosticInfo" },
+    SnacksNotifierInfo          = { fg = c.white, bg = INFO_D },
+    SnacksNotifierBorderInfo    = { fg = INFO_L, bg = INFO_D },
     SnacksNotifierIconInfo      = { link = "DiagnosticInfo" },
-    SnacksNotifierTitleInfo     = { fg = ds.color.get_color "DiagnosticInfo" },
+    SnacksNotifierTitleInfo     = { fg = INFO },
 
-    SnacksNotifierWarn          = { fg   = c.white },
-    SnacksNotifierBorderWarn    = { fg = ds.color.get_color "DiagnosticWarn" },
+    SnacksNotifierWarn          = { fg = c.white, bg = WARN_D },
+    SnacksNotifierBorderWarn    = { fg = WARN_L, bg = WARN_D },
     SnacksNotifierIconWarn      = { link = "DiagnosticWarn" },
-    SnacksNotifierTitleWarn     = { fg = ds.color.get_color "DiagnosticWarn" },
+    SnacksNotifierTitleWarn     = { fg = WARN },
 
-    SnacksNotifierError         = { fg   = c.white },
-    SnacksNotifierBorderError   = { fg = ds.color.get_color "DiagnosticError" },
+    SnacksNotifierError         = { fg = c.white, bg = ERROR_D },
+    SnacksNotifierBorderError   = { fg = ERROR_L, bg = ERROR_D },
     SnacksNotifierIconError     = { link = "DiagnosticError" },
-    SnacksNotifierTitleError    = { fg = ds.color.get_color "DiagnosticError" },
+    SnacksNotifierTitleError    = { fg = ERROR },
 
     SnacksNotifierHistory       = { fg = c.fg1, bg = c.bg0 },
     SnacksNotifierHistoryTitle  = { fg = c.blue0, bg = c.bg0, bold = true },
@@ -73,7 +89,7 @@ M.get = function(c)
     -- picker
     SnacksPicker                = { bg = GRAY_DARK },
     SnacksPickerBorder          = { fg = GRAY_DARK, bg = GRAY_DARK },
-    SnacksPickerBorderSB        = { fg = ds.color.blend(c.overlay0, GRAY_DARK, 0.2), bg = GRAY_DARK },
+    SnacksPickerBorderSB        = { fg = OVERLAY_D, bg = GRAY_DARK },
 
     SnacksPickerBoxTitle        = { fg = c.bg2, bg = c.red1, bold = true },
 
@@ -103,7 +119,7 @@ M.get = function(c)
     SnacksScratchDesc           = { fg = c.overlay1, bg = c.bg0, bold = true },
     SnacksScratchKey            = { fg = c.rose0, bg = c.bg0, bold = true},
 
-    SnacksScratchCursorLine     = { bg = ds.color.lighten(c.bg0, 40) },
+    SnacksScratchCursorLine     = { bg = BG_L },
   }
 end
 
