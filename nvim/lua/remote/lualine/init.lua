@@ -17,14 +17,8 @@ return {
     local lualine_require = require "lualine_require"
     lualine_require.require = require
 
-    vim.o.laststatus = vim.g.lualine_laststatus
-
-    local bold = { gui = "bold" }
-    local c_fg_conceal = { fg = vim.g.ds_colors.fg_conceal }
-    local c_fg_conceal_bold = { fg = vim.g.ds_colors.fg_conceal, gui = "bold" }
-    local c_gray2_italic = { fg = vim.g.ds_colors.gray2, gui = "italic" }
-    local c_overlay1 = { fg = vim.g.ds_colors.overlay1 }
-    local winbar_fname = { fg = ds.color.get_color "WinbarFilename", gui = "italic" }
+    local GIT, MSG, META = util.git, util.message, util.metadata
+    local colors = vim.g.ds_colors
 
     local function sep(direction, padding_opts, condition)
       return {
@@ -52,13 +46,14 @@ return {
           local icon_map = { added = "TextAdded", modified = "TextChanged", removed = "TextRemoved" }
           result[type] = ds.pad(ds.icons.git[icon_map[type]], "right")
         else
-          local colors = vim.g.ds_colors
           local color_map = { added = "green2", modified = "yellow2", removed = "red1" }
-          result[type] = { fg = ds.color.blend(colors[color_map[type]], colors.white, 0.6) }
+          result[type] = { fg = ds.color.blend(vim.g.ds_colors[color_map[type]], vim.g.ds_colors.white, 0.6) }
         end
       end
       return result
     end
+
+    vim.o.laststatus = vim.g.lualine_laststatus
 
     return {
       options = {
@@ -71,68 +66,74 @@ return {
       sections = {
         lualine_a = {
           { function() return ds.icons.misc.VerticalBarBold end, padding = { left = 0 } },
-          { util.git.branch.get },
+          { GIT.branch.get },
           sep "left",
         },
         lualine_b = {
-          -- stylua: ignore
-          { util.metadata.root_dir.get, color = c_overlay1, cond = util.metadata.root_dir.cond, padding = { right = 1 } },
-          sep("left", nil, util.metadata.root_dir.cond),
-          -- stylua: ignore
-          { util.metadata.plugin_info.get, color = c_overlay1, cond = util.metadata.plugin_info.cond, padding = { right = 1 } },
-          sep("left", nil, util.metadata.plugin_info.cond),
-          -- stylua: ignore
-          { util.message.codecompanion.adapter.get, color = winbar_fname, cond = util.message.codecompanion.adapter.cond },
-          { "vim.b.gitsigns_blame_line", color = winbar_fname, padding = { right = 1 } },
+          { META.root_dir.get, color = { fg = colors.overlay1 }, cond = META.root_dir.cond, padding = { right = 1 } },
+          sep("left", nil, META.root_dir.cond),
+
+          { META.plugin.get, color = { fg = colors.overlay1 }, cond = META.plugin.cond, padding = { right = 1 } },
+          sep("left", nil, META.plugin.cond),
         },
         lualine_c = {
-          { "diff", source = util.git.diff.get, symbols = get_diff "symbols", diff_color = get_diff "colors" },
+          { "vim.b.gitsigns_blame_line", color = { fg = colors.gray2, gui = "italic" }, padding = { right = 1 } },
+          { "diff", source = GIT.diff.get, symbols = get_diff "symbols", diff_color = get_diff "colors" },
+          -- stylua: ignore
+          { MSG.codecompanion.adapter.get, color = { fg = colors.gray2, gui = "italic" }, cond = MSG.codecompanion.adapter.cond },
         },
         lualine_x = {
-          { util.message.noice.get, color = c_gray2_italic, cond = util.message.noice.cond },
-          sep("right", { right = 1 }, util.message.noice.cond),
-          { util.message.codecompanion.ctx.get, color = c_fg_conceal_bold, cond = util.message.codecompanion.ctx.cond },
-          sep("right", { right = 1 }, util.message.codecompanion.ctx.cond),
+          { MSG.noice.get, color = { fg = colors.gray2, gui = "italic" }, cond = MSG.noice.cond },
+          sep("right", { right = 1 }, MSG.noice.cond),
+
+          -- stylua: ignore
+          { MSG.codecompanion.ctx.get, color = { fg = colors.fg_conceal, gui = "bold" }, cond = MSG.codecompanion.ctx.cond },
+          sep("right", { right = 1 }, MSG.codecompanion.ctx.cond),
         },
         lualine_y = {
           -- stylua: ignore
           { "diagnostics", sources = { "nvim_diagnostic" }, symbols = get_diag "symbols", diagnostics_color = get_diag "colors" },
           sep("right", { left = 0, right = 1 }, function() return #vim.diagnostic.count() > 0 end),
-          { util.lsp.clients.get, color = c_fg_conceal, padding = { right = 0 }, cond = util.lsp.clients.cond },
-          { util.lsp.ai.get, color = c_fg_conceal, padding = { right = 1 }, cond = util.lsp.ai.cond },
-          -- stylua: ignore
-          sep("right", { left = 1, right = 0 }, function() return util.lsp.clients.cond() or util.lsp.ai.cond() end),
+
+          { MSG.clients.get, color = MSG.clients.color, padding = { right = 0 }, cond = MSG.clients.cond },
+          { MSG.sidekick.get, color = MSG.sidekick.color, padding = { right = 1 }, cond = MSG.sidekick.cond },
+          sep("right", { left = 1, right = 0 }, function() return MSG.clients.cond() or MSG.sidekick.cond() end),
+
           { "location" },
           sep("right", { left = 0, right = 0 }),
-          { util.metadata.indentation.get, cond = function() return vim.bo.shiftwidth > 0 end },
+
+          { META.indentation.get, cond = function() return vim.bo.shiftwidth > 0 end },
           sep("right", { left = 0, right = 0 }, function() return vim.bo.shiftwidth > 0 end),
+
           { "encoding" },
           sep("right", { left = 0, right = 0 }, function() return vim.bo.fileencoding ~= "" end),
+
           { "fileformat", icons_enabled = true, symbols = { unix = "lf", dos = "crlf", mac = "cr" } },
           sep("right", { left = 0, right = 0 }, function() return vim.bo.fileformat ~= "" end),
-          { "filetype", color = bold, cond = function() return vim.bo.filetype ~= "" end },
+
+          { "filetype", icon_only = true, cond = function() return vim.bo.filetype ~= "" end },
         },
         lualine_z = {},
       },
       winbar = {
         lualine_a = {
-          { util.git.diffview.get, color = "WinbarContext", cond = util.git.diffview.cond },
-          { util.metadata.breadcrumbs.get, color = "WinbarContext", padding = { right = 0 } },
-          { util.lsp.symbols.get, color = "WinbarContext", cond = util.lsp.symbols.cond, padding = { left = 0 } },
+          { GIT.diffview.get, color = "WinbarContext", cond = GIT.diffview.cond },
+          { META.breadcrumbs.get, color = "WinbarContext", padding = { right = 0 } },
+          { MSG.symbols.get, color = "WinbarContext", cond = MSG.symbols.cond, padding = { left = 0 } },
         },
         lualine_b = {
           { function() return "%=" end, color = "WinbarContext" },
-          { util.git.merge_conflicts.get, color = "WinbarContext", cond = util.git.diffview.cond },
+          { GIT.merge_conflicts.get, color = "WinbarContext", cond = GIT.diffview.cond },
         },
       },
       inactive_winbar = {
         lualine_a = {
-          { util.git.diffview.get, color = "WinbarContext", cond = util.git.diffview.cond },
-          { util.metadata.breadcrumbs.get, color = "WinbarContext", padding = { right = 0 } },
+          { GIT.diffview.get, color = "WinbarContext", cond = GIT.diffview.cond },
+          { META.breadcrumbs.get, color = "WinbarContext", padding = { right = 0 } },
         },
         lualine_b = {
           { function() return "%=" end, color = "WinbarContext" },
-          { util.git.merge_conflicts.get, color = "WinbarContext", cond = util.git.diffview.cond },
+          { GIT.merge_conflicts.get, color = "WinbarContext", cond = GIT.diffview.cond },
         },
       },
     }

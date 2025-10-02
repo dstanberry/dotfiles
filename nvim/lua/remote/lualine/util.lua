@@ -1,6 +1,5 @@
 ---@class remote.lualine.util
 ---@field git remote.lualine.component.git
----@field lsp remote.lualine.component.lsp
 ---@field message remote.lualine.component.message
 ---@field metadata remote.lualine.component.metadata
 local M = {}
