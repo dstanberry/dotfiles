@@ -108,22 +108,15 @@ return {
         devops = {
           description = "Additional collection of instruction files",
           files = {
-            ["analysis"] = {
-              description = "Review the code for improvements, optimizations, or issues per the markdown file's guidelines",
+            analysis = {
+              description = "Review the code for improvements, optimizations, or issues",
               files = { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "analysis.md") },
             },
-            ["refactor"] = {
-              description = "Refactor the code, write or update unit tests if prompted to, and ensure they pass per the markdown file's guidelines",
+            refactor = {
+              description = "Refactor the code",
               files = { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "refactor.md") },
             },
-            [string.format("refactor %s test", ds.icons.misc.ArrowSwap)] = {
-              description = "Refactor the code, write or update unit tests if prompted to, and ensure they pass per the markdown file's guidelines",
-              files = {
-                vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "refactor.md"),
-                vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "test.md"),
-              },
-            },
-            ["test"] = {
+            test = {
               description = "Write or update unit tests",
               files = { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "test.md") },
             },
