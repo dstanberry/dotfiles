@@ -153,14 +153,13 @@ return {
   },
   {
     "folke/sidekick.nvim",
+    -- stylua: ignore
     keys = {
       { "<tab>", ds.cmp.coalesce { "inline.next", "<tab>" }, mode = { "n" }, expr = true },
-      { "<localleader>c", mode = { "n", "v" }, "", desc = "+code assistant" },
-      -- stylua: ignore
-      { "<localleader>ca", mode = { "n", "v" }, function() require("sidekick.cli").prompt() end, desc = "sidekick: select prompt"},
-      { "<localleader>cc", function() require("sidekick.cli").toggle() end, desc = "sidekick: toggle" },
-      -- stylua: ignore
-      { "<localleader>cx", mode = { "v" }, function() require("sidekick.cli").send() end, desc = "sidekick: add selection" },
+      { "<localleader>c", mode = { "n", "x" }, "", desc = "+code assistant" },
+      { "<localleader>ca", mode = { "n", "x" }, function() require("sidekick.cli").prompt() end, desc = "sidekick: select prompt" },
+      { "<localleader>cc", function() require("sidekick.cli").select { filter = { installed = true } } end, desc = "sidekick: select cli" },
+      { "<localleader>cx", mode = { "n", "x" }, function() require("sidekick.cli").send { msg = "{this}" } end, desc = "sidekick: add selection" },
     },
     init = function()
       ds.cmp.inline.next = function()
@@ -170,42 +169,35 @@ return {
     end,
     opts = function()
       return {
-        mux = {
-          backend = "tmux",
-          enabled = true,
-        },
+        mux = { enabled = false, backend = "tmux" },
         cli = {
+          context = {
+            analyze = function()
+              return {
+                { "@", "Bold" },
+                { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "analyze.md"), "SnacksPickerDir" },
+              }
+            end,
+            refactor = function()
+              return {
+                { "@", "Bold" },
+                { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "refactor.md"), "SnacksPickerDir" },
+              }
+            end,
+            test = function()
+              return {
+                { "@", "Bold" },
+                { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "test.md"), "SnacksPickerDir" },
+              }
+            end,
+          },
           prompts = {
-            analyze = {
-              msg = string.format(
-                "@%s\n%s",
-                vim.fs.joinpath(vim.fn.stdpath "config", "prompts/analysis.md"),
-                "Review the code for improvements, optimizations, or issues per the markdown file's guidelines."
-              ),
-              diagnostics = true,
-            },
-            refactor = {
-              msg = string.format(
-                "@%s\n%s",
-                vim.fs.joinpath(vim.fn.stdpath "config", "prompts/refactor.md"),
-                "Refactor the code, write or update unit tests if prompted to, and ensure they pass per the markdown file's guidelines."
-              ),
-            },
-            [string.format("refactor %s test", ds.icons.misc.ArrowSwap)] = {
-              msg = string.format(
-                "@%s\n%s\n%s",
-                vim.fs.joinpath(vim.fn.stdpath "config", "prompts/refactor.md"),
-                vim.fs.joinpath(vim.fn.stdpath "config", "prompts/test.md"),
-                "Refactor the code, write or update unit tests if prompted to, and ensure they pass per the markdown file's guidelines."
-              ),
-            },
-            tests = {
-              msg = string.format(
-                "@%s\n%s",
-                vim.fs.joinpath(vim.fn.stdpath "config", "prompts/test.md"),
-                "Write or update unit tests per the markdown file's guidelines."
-              ),
-            },
+            analyze = "Review the code for improvements, optimizations, or issues based on the instructions in:\n{analyze}",
+            refactor = "Refactor the code based on the instructions in:\n{refactor}",
+            tests = "Write or update unit tests based on the instructions in:\n{test}",
+          },
+          tools = {
+            amazon_q = { cmd = { "amazon_q" } },
           },
         },
       }
