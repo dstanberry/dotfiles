@@ -153,14 +153,19 @@ return {
   },
   {
     "folke/sidekick.nvim",
-    -- stylua: ignore
-    keys = {
-      { "<tab>", ds.cmp.coalesce { "inline.next", "<tab>" }, mode = { "n" }, expr = true },
-      { "<localleader>c", mode = { "n", "x" }, "", desc = "+code assistant" },
-      { "<localleader>ca", mode = { "n", "x" }, function() require("sidekick.cli").prompt() end, desc = "sidekick: select prompt" },
-      { "<localleader>cc", function() require("sidekick.cli").select { filter = { installed = true } } end, desc = "sidekick: select cli" },
-      { "<localleader>cx", mode = { "n", "x" }, function() require("sidekick.cli").send { msg = "{this}" } end, desc = "sidekick: add selection" },
-    },
+    keys = function()
+      local _prompt = function() require("sidekick.cli").prompt() end
+      local _toggle = function() require("sidekick.cli").toggle { filter = { installed = true } } end
+      local _send = function() require("sidekick.cli").send { msg = "{this}" } end
+
+      return {
+        { "<tab>", ds.cmp.coalesce { "inline.next", "<tab>" }, mode = { "n" }, expr = true },
+        { "<localleader>c", mode = { "n", "x" }, "", desc = "+code assistant" },
+        { "<localleader>ca", mode = { "n", "x" }, _prompt, desc = "sidekick: select prompt" },
+        { "<localleader>cc", _toggle, desc = "sidekick: toggle" },
+        { "<localleader>cx", mode = { "n", "x" }, _send, desc = "sidekick: add selection" },
+      }
+    end,
     init = function()
       ds.cmp.inline.next = function()
         local nes = require "sidekick.nes"
