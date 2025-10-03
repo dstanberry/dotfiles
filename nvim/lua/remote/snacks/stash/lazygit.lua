@@ -1,4 +1,4 @@
----@class remote.snacks.res.lazygit
+---@class remote.snacks.stash.lazygit
 local M = {}
 
 M.config = {

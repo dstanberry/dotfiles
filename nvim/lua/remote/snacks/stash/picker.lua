@@ -1,4 +1,4 @@
----@class remote.snacks.res.picker
+---@class remote.snacks.stash.picker
 local M = {}
 
 local flash = not ds.plugin.is_installed "flash.nvim" and { actions = {}, keys = {} }
@@ -81,7 +81,7 @@ local _config = function()
       grep = { layout = { preset = "vertical" } },
       grep_buffers = { layout = { preset = "ivy" } },
       help = { layout = { preset = "ivy" } },
-      lazy = { prompt = ds.pad(ds.icons.misc.Prompt, "both"), layout = { preset = "vertical" } },
+      lazy = { layout = { preset = "vertical" } },
       lsp_config = { layout = { preset = "vertical" } },
       lsp_declarations = { layout = { preset = "vertical" } },
       lsp_definitions = { layout = { preset = "vertical" } },
@@ -116,24 +116,7 @@ M.file_browser = function()
   local cwd = vim.fn.expand "%:p:h"
   Snacks.picker.files {
     cwd = cwd,
-    layout = "vscode",
-    -- TODO: add dynamic height when upstream implements a better API for it
-    -- on_show = function(picker)
-    --   picker.matcher.task:on("done", function()
-    --     if picker.closed then return end
-    --     local item_count = picker:count()
-    --     if item_count > 0 then
-    --       local layout = vim.deepcopy(picker.resolved_layout)
-    --       local curheight = layout.layout.height < 1 and math.floor(vim.o.lines * layout.layout.height - 5)
-    --         or layout.layout.height
-    --       local newheight = math.min(curheight, item_count + 3)
-    --       if layout.layout.height ~= newheight then
-    --         layout.layout.height = newheight
-    --         picker:set_layout(layout)
-    --       end
-    --     end
-    --   end)
-    -- end,
+    layout = { preset = "vscode", preview = true },
     actions = {
       parent = {
         action = function(picker, _)
