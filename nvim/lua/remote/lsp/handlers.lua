@@ -248,7 +248,7 @@ function M.on_attach(client, bufnr, server_capabilities)
         local old_fname = vim.api.nvim_buf_get_name(0)
         local new_fname = string.format("%s/%s", vim.fs.dirname(old_fname), name)
         ---@diagnostic disable-next-line: invisible
-        local res = client.request_sync("workspace/willRenameFiles", {
+        local res = client:request_sync("workspace/willRenameFiles", {
           files = {
             {
               oldUri = vim.uri_from_fname(old_fname),
