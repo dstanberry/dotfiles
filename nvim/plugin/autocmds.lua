@@ -29,7 +29,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 vim.api.nvim_create_autocmd("FileType", {
   group = ftplugin,
   pattern = { "help", "qf" },
-  callback = vim.schedule_wrap(function() vim.opt_local.winhighlight = "Normal:NormalAlt" end),
+  callback = vim.schedule_wrap(function() vim.opt_local.winhighlight = "Normal:NormalOverlay" end),
 })
 
 -- use `q` to close buffers associated with certain filetypes

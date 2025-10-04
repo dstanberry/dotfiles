@@ -34,7 +34,7 @@ M.get = function(c)
     Normal                                     = { fg = c.fg1, bg = c.bg2 },
     NormalNC                                   = { fg = c.fg1, bg = c.bg2 },
     -- custom alternate background(s)
-    NormalAlt                                  = { fg = c.fg1, bg = c.bgX },
+    NormalOverlay                              = { fg = c.fg1, bg = c.bgX },
 
     FloatBorder                                = { fg = c.gray1, bg = c.bg0 },
     NormalFloat                                = { fg = c.white, bg = c.bg0 },
