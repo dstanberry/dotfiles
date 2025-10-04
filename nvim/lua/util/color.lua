@@ -71,7 +71,7 @@ end
 ---@param name string highlight group name
 ---@param bg? boolean return the background color if `true` otherwise return the foreground color
 ---@return string? #hexadecimal color formatted as `#rrggbb`
-function M.get_color(name, bg)
+function M.get(name, bg)
   local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
   local color = nil
   if hl then
@@ -120,10 +120,10 @@ function M.sync_term_bg()
 
   local handle_term_reponse = function(args)
     local ok, original_bg = pcall(parse_osc11, args.data)
-    if not ok or type(original_bg) ~= "string" then original_bg = "#373737" end
+    if not ok or type(original_bg) ~= "string" then original_bg = vim.g.ds_colors.bg2 end
 
     local sync_bg = function()
-      local bg = ds.color.get_color("Normal", true)
+      local bg = ds.color.get("Normal", true)
       if bg == nil then return end
       if os.getenv "TMUX" then
         vim.fn.system "tmux set-option allow-passthrough on"

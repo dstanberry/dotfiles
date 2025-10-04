@@ -439,6 +439,10 @@ return {
         ["tsconfig.json"]       = { glyph = "", hl = "MiniIconsAzure" },
         zshrc                   = { glyph = "", hl = "MiniIconsGreen" },
       },
+      -- stylua: ignore
+      filetype = {
+        gotmpl = { glyph = "󰟓", hl = "MiniIconsGrey" },
+      },
       use_file_extension = function(ext, _)
         local _skipped = { "json", "scm", "txt", "yaml", "yml" }
         return not _skipped[ext:lower()]

@@ -58,10 +58,6 @@ M.breadcrumbs = {
 
     local winid = vim.api.nvim_get_current_win()
     local buf = vim.api.nvim_win_get_buf(winid)
-    local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-
-    if ds.tbl_match(ds.ft.empty.winbar, ft) then return " " end
-
     local filepath = vim.fs.normalize(vim.api.nvim_buf_get_name(buf))
     local dirpath, filename = (filepath):match "^(.+)/(.+)$"
     local _, bufid = pcall(vim.api.nvim_buf_get_var, buf, "bufid")
@@ -98,22 +94,23 @@ M.root_dir = {
 M.plugin = {
   icons = {
     ["grug-far"] = { "󰥩 ", "Find and Replace" },
-    ["sidekick_terminal"] = { " ", "AI Assistant" },
-    ["snacks_picker_input"] = { "󰋱", "Fuzzy Finder" },
-    ["snacks_picker_list"] = { "󰙅", "File Explorer" },
-    ["snacks_terminal"] = { " ", "Terminal" },
     codecompanion = { " ", "AI Assistant" },
+    DiffviewFileHistory = { " ", "Commit History" },
     DiffviewFiles = { " ", "Diff Viewer" },
     gitcommit = { " ", "Git Commit" },
     lazy = { " ", "Plugin Manager" },
-    loclist = { "󰂖", "Location List" },
-    mason = { "󰈏 ", "Package Manager" },
+    loclist = { "", "Location List" },
+    mason = { " ", "Package Manager" },
     minifiles = { "󰙅 ", "File Explorer" },
-    noice = { " ", "Messages" },
+    noice = { "󰍪 ", "Messages" },
     oil = { "󰙅 ", "File Explorer" },
-    quickfix = { " ", "Quickfix List" },
-    terminal = { " ", "Terminal" },
-    trouble = { "", "Quickfix / Location List" },
+    quickfix = { " ", "Quickfix List" },
+    sidekick_terminal = { " ", "AI Assistant" },
+    snacks_picker_input = { "󰋱", "Fuzzy Finder" },
+    snacks_picker_list = { "󰙅", "File Explorer" },
+    snacks_terminal = { " ", "Terminal" },
+    terminal = { " ", "Terminal" },
+    trouble = { " ", "Quickfix / Location List" },
   },
   get = function()
     local fname = vim.api.nvim_buf_get_name(0)

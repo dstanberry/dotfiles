@@ -82,8 +82,8 @@ return {
         pattern = "VeryLazy",
         callback = function()
           local keys = {
-            { key = "f<backspace>", opts = ds.format.make_toggle_opts(true) },
-            { key = "f<delete>", opts = ds.format.make_toggle_opts() },
+            { key = "f<backspace>", opts = ds.format.toggle(true) },
+            { key = "f<delete>", opts = ds.format.toggle() },
           }
           ds.format.register {
             name = "conform.nvim",

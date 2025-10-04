@@ -32,7 +32,7 @@ return {
     local function get_diag(kind)
       return vim.tbl_map(function(type)
         local diag_type = "DiagnosticVirtualText" .. type:gsub("^%l", string.upper)
-        return kind == "symbols" and { fg = ds.color.get_color(diag_type) }
+        return kind == "symbols" and { fg = ds.color.get(diag_type) }
           or ds.pad(ds.icons.status[type:gsub("^%l", string.upper)], "right")
       end, { "error", "warn", "info", "hint" })
     end
@@ -93,24 +93,24 @@ return {
         lualine_y = {
           -- stylua: ignore
           { "diagnostics", sources = { "nvim_diagnostic" }, symbols = get_diag "symbols", diagnostics_color = get_diag "colors" },
-          sep("right", { left = 0, right = 1 }, function() return #vim.diagnostic.count() > 0 end),
 
+          sep("right", { left = 1, right = 0 }, function() return MSG.clients.cond() or MSG.sidekick.cond() end),
           { MSG.clients.get, color = MSG.clients.color, padding = { right = 0 }, cond = MSG.clients.cond },
           { MSG.sidekick.get, color = MSG.sidekick.color, padding = { right = 1 }, cond = MSG.sidekick.cond },
-          sep("right", { left = 1, right = 0 }, function() return MSG.clients.cond() or MSG.sidekick.cond() end),
 
-          { "location" },
           sep("right", { left = 0, right = 0 }),
+          { "location" },
 
-          { META.indentation.get, cond = function() return vim.bo.shiftwidth > 0 end },
           sep("right", { left = 0, right = 0 }, function() return vim.bo.shiftwidth > 0 end),
+          { META.indentation.get, cond = function() return vim.bo.shiftwidth > 0 end },
 
-          { "encoding" },
           sep("right", { left = 0, right = 0 }, function() return vim.bo.fileencoding ~= "" end),
+          { "encoding" },
 
-          { "fileformat", icons_enabled = true, symbols = { unix = "lf", dos = "crlf", mac = "cr" } },
           sep("right", { left = 0, right = 0 }, function() return vim.bo.fileformat ~= "" end),
+          { "fileformat", icons_enabled = true, symbols = { unix = "lf", dos = "crlf", mac = "cr" } },
 
+          sep("right", { left = 0, right = 0 }, function() return vim.bo.filetype ~= "" end),
           { "filetype", icon_only = true, cond = function() return vim.bo.filetype ~= "" end },
         },
         lualine_z = {},

@@ -168,6 +168,7 @@ return {
     end,
     init = function()
       ds.cmp.inline.next = function()
+        if not ds.cmp.inline.enabled() then return end
         local nes = require "sidekick.nes"
         if nes.have() and (nes.jump() or nes.apply()) then return true end
       end

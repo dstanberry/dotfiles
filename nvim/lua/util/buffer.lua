@@ -212,7 +212,7 @@ function M.quickfix_delete(buf)
 end
 
 ---Change the filename (and/or filepath) of the current buffer given that it exists on disk.
----If supported, the workspace can be updated with the updated filename
+---If supported, workspace references can be updated with the new filename.
 function M.rename()
   local buf = vim.api.nvim_get_current_buf()
   if not buf or buf < 0 then return end

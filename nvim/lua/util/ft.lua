@@ -11,7 +11,7 @@ setmetatable(M, {
   end,
 })
 
----Filetypes disabled for specific UI components
+---Filetypes disabled for statusline and winbar
 ---@type table<string, string[]>
 M.disabled = {
   statusline = {
@@ -38,6 +38,8 @@ M.disabled = {
     "dbout",
     "dbui",
     "DiffviewFileHistory",
+    "DiffviewFilePanel",
+    "DiffviewFiles",
     "grug-far",
     "lazy",
     "mason",
@@ -51,19 +53,6 @@ M.disabled = {
   },
 }
 
----Filetypes considered empty for specific UI components
----@type table<string, string[]>
-M.empty = {
-  statusline = {},
-  winbar = {
-    -- builtin filetypes
-    "help",
-    -- plugin filetypes
-    "DiffviewFilePanel",
-    "DiffviewFiles",
-  },
-}
-
 ---Filetypes that can be closed quickly with 'q'
 ---@type string[]
 M.quick_close = {
@@ -73,11 +62,6 @@ M.quick_close = {
   "man",
   "notify",
   "qf",
-  -- plugin filetypes
-  "dbout",
-  "neotest-output",
-  "neotest-output-panel",
-  "neotest-summary",
 }
 
 return M

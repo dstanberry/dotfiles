@@ -18,19 +18,19 @@ M.get = function(c)
     RenderMarkdownH6         = { fg = c.bg2 },
     RenderMarkdownH6Bg       = { fg = c.bg2, bg = c.blue1 },
 
-    -- `codecompanion` overrides
-    RenderMarkdownCcH1         = { fg = c.bg0 },
-    RenderMarkdownCcH1Bg       = { fg = c.bg0, bg = c.blue1 },
-    RenderMarkdownCcH2         = { fg = c.bg0 },
-    RenderMarkdownCcH2Bg       = { fg = c.bg0, bg = c.blue1 },
-    RenderMarkdownCcH3         = { fg = c.bg0 },
-    RenderMarkdownCcH3Bg       = { fg = c.bg0, bg = c.blue1 },
-    RenderMarkdownCcH4         = { fg = c.bg0 },
-    RenderMarkdownCcH4Bg       = { fg = c.bg0, bg = c.blue1 },
-    RenderMarkdownCcH5         = { fg = c.bg0 },
-    RenderMarkdownCcH5Bg       = { fg = c.bg0, bg = c.blue1 },
-    RenderMarkdownCcH6         = { fg = c.bg0 },
-    RenderMarkdownCcH6Bg       = { fg = c.bg0, bg = c.blue1 },
+    -- `NormalFloat` overrides
+    NormalFloatH1            = { fg = c.bg0 },
+    NormalFloatH1Bg          = { fg = c.bg0, bg = c.blue1 },
+    NormalFloatH2            = { fg = c.bg0 },
+    NormalFloatH2Bg          = { fg = c.bg0, bg = c.blue1 },
+    NormalFloatH3            = { fg = c.bg0 },
+    NormalFloatH3Bg          = { fg = c.bg0, bg = c.blue1 },
+    NormalFloatH4            = { fg = c.bg0 },
+    NormalFloatH4Bg          = { fg = c.bg0, bg = c.blue1 },
+    NormalFloatH5            = { fg = c.bg0 },
+    NormalFloatH5Bg          = { fg = c.bg0, bg = c.blue1 },
+    NormalFloatH6            = { fg = c.bg0 },
+    NormalFloatH6Bg          = { fg = c.bg0, bg = c.blue1 },
 
     RenderMarkdownCodeBorder = { bg = ds.color.darken(c.blue1, 65), bold = true },
   }

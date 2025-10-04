@@ -141,7 +141,7 @@ end
 ---Generates a configuration table for keymaps to toggle auto-formatting functionality.
 ---@param curbuf? boolean
 ---@return util.format.toggle.opts
-function M.make_toggle_opts(curbuf)
+function M.toggle(curbuf)
   local name = M.default_formatter.modname or "lsp"
   local desc = ("auto format (%s)"):format((curbuf and "buffer" or "global"))
   local status = function() return not curbuf and (vim.g.autoformat == nil or vim.g.autoformat) or M.enabled() end

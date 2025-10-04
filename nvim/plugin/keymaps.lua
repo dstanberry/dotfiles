@@ -1,6 +1,6 @@
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- => Normal
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- HACK: treat ctrl-i as ctrl-i (... and try to not conflate with <tab>)
 -- https://github.com/neovim/neovim/issues/20126
 vim.keymap.set("n", "<c-i>", "<c-i>", { noremap = true })
@@ -138,17 +138,17 @@ vim.keymap.set("n", "Q", "<nop>", { desc = "<disabled>" })
 -- yank to end of line
 vim.keymap.set("n", "Y", "y$", { desc = "copy to end of line" })
 
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- => Normal | Operator-Pending
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- perform motion to beginning of the current line
 vim.keymap.set("o", "H", "^", { desc = "to start of line" })
 -- perform motion to end of the current line
 vim.keymap.set("o", "L", "g_", { desc = "to end of line" })
 
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- => Normal | LocalLeader
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- prepare to run most recent ex-command
 vim.keymap.set("n", "<localleader><localleader>c", ":<up>", { silent = false, desc = "run last command" })
 
@@ -182,9 +182,9 @@ vim.keymap.set("n", "<localleader><localleader>x", function()
   end
 end, { silent = false, desc = "save and execute current document" })
 
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- => Normal | 'Third' Leader Prefix
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- delete text and preserve clipboard state
 vim.keymap.set("n", "<bs>d", '"_d', { silent = false, desc = "+delete (preserve clipboard)" })
 vim.keymap.set("n", "<bs>D", '"_D', { silent = false, desc = "delete to end of line (preserve clipboard)" })
@@ -202,9 +202,9 @@ vim.keymap.set("n", "<bs>Q", function() vim.cmd.quitall { bang = true } end, { d
 -- delete the current buffer
 vim.keymap.set("n", "<bs>z", ds.buffer.delete, { silent = false, desc = "delete current buffer" })
 
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- => Insert
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- insert newline above current line
 vim.keymap.set("i", "<c-enter>", "<c-o>O")
 -- insert newline below current line
@@ -235,9 +235,9 @@ vim.keymap.set("i", "?", "?<c-g>u")
 -- exit insert mode
 vim.keymap.set("i", "jk", "<esc>")
 
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- => Visual
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- move between windows.
 vim.keymap.set("v", "<c-h>", "<c-w>h", { desc = "goto left window" })
 vim.keymap.set("v", "<c-j>", "<c-w>j", { desc = "goto lower window" })
@@ -314,9 +314,9 @@ vim.keymap.set("x", "<c-down>", ":move '>+<cr>gv=gv", { desc = "move selection u
 -- shift selected text up
 vim.keymap.set("x", "<c-up>", ":move -2<cr>gv=gv", { desc = "move selection down" })
 
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- => Command
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- move to the beginning of the command
 vim.keymap.set("c", "<c-a>", "<home>", { silent = false, desc = "goto start of line" })
 -- move to the end of the command
@@ -361,30 +361,13 @@ vim.keymap.set("c", "%p", function() return vim.fs.normalize(vim.api.nvim_buf_ge
   desc = "insert filepath",
 })
 
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- => SELECT
----------------------------------------------------------------
--- v0.11 creates this keymap by default
--- jump to the next snippet placeholder
--- vim.keymap.set(
---   "s",
---   "<tab>",
---   function() return vim.snippet.active { direction = 1 } and "<cmd>lua vim.snippet.jump(1)<cr>" or "<tab>" end,
---   { expr = true, desc = "jump to the next snippet placeholder" }
--- )
+------------------------------------------------------------------------------------------------------------------------
 
--- v0.11 creates this keymap by default
--- jump to the previous snippet placeholder
--- vim.keymap.set(
---   { "i", "s" },
---   "<s-tab>",
---   function() return vim.snippet.active { direction = -1 } and "<cmd>lua vim.snippet.jump(-1)<cr>" or "<s-tab>" end,
---   { expr = true, desc = "jump to the previous snippet placeholder" }
--- )
-
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- => Terminal
----------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 -- leave terminal mode
 vim.keymap.set("t", "<esc><esc>", [[<c-\><c-n>]], { desc = "leave terminal mode" })
 

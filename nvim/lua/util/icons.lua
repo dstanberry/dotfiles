@@ -63,7 +63,7 @@ M.documents = {
   FolderOpened = "󰝰",
   FolderOutlineClosed = "",
   FolderOutlineOpened = "",
-  Project = "",
+  Project = "",
   SymbolicLink = "",
 }
 
@@ -83,7 +83,7 @@ M.git = {
 
 ---Icons used to convey groupings or categories.
 M.groups = {
-  Book = "",
+  Book = "",
   Diff = "",
   Lab = "",
   Pinned = "",
@@ -207,6 +207,7 @@ M.misc = {
   Wrench = "󰯠",
 }
 
+---Animated sprites for indicating loading or processing states.
 M.spinners = {
   Default = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" },
 }

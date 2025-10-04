@@ -16,7 +16,6 @@ M.config = {
     local filetypes = ds.extend(
       ds.ft.disabled.statusline,
       ds.ft.disabled.winbar,
-      ds.ft.empty.winbar,
       { "checkhealth", "diff", "git" },
       { "log", "markdown", "txt" }
     )
