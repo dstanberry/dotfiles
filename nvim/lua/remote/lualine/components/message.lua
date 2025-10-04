@@ -10,7 +10,7 @@ M.clients = {
     local buf = vim.api.nvim_win_get_buf(winid)
     local clients = {}
     local c, ai
-    ds.foreach(vim.lsp.get_clients { bufnr = buf }, function(client)
+    ds.tbl_each(vim.lsp.get_clients { bufnr = buf }, function(client)
       if client and client.name then
         if client.name == "copilot" then
           ai = ds.pad(ds.icons.ai.Normal, "right")
@@ -23,7 +23,7 @@ M.clients = {
     if ai and not ds.plugin.is_installed "sidekick.nvim" then c = (c or "") .. ds.pad(ai, "left", 2) end
     return c
   end,
-  color = function() return { fg = ds.color.get_color "Conceal" } end,
+  color = function() return { fg = ds.color.get "Conceal" } end,
   cond = function() return #vim.lsp.get_clients { bufnr = 0 } > 0 end,
 }
 
@@ -81,7 +81,7 @@ M.sidekick = {
   color = function()
     local status = require("sidekick.status").get()
     local hl = status and (status.busy and "DiagnosticWarn" or vim.tbl_get(M.sidekick.icons, status.kind, 2))
-    return { fg = ds.color.get_color(hl or "Comment") }
+    return { fg = ds.color.get(hl or "Comment") }
   end,
   cond = function() return require("sidekick.status").get() ~= nil end,
 }
@@ -129,13 +129,11 @@ M.symbols = {
   cond = function()
     local buf = vim.api.nvim_get_current_buf()
     local fname = vim.api.nvim_buf_get_name(buf)
-    return not (
-      fname:match "%[Scratch%]"
-      or vim.bo[buf].ft:match "dapui_"
-      or vim.bo[buf].ft:match "oil"
-      or vim.tbl_contains(ds.ft.empty.winbar, vim.bo[buf].ft)
-      or vim.tbl_contains(ds.ft.disabled.winbar, vim.bo[buf].ft)
-    )
+    local function excludes(bufnr, name)
+      local ft = vim.bo[bufnr].ft
+      return name:match "scratch" or ft:match "dapui_" or ft:match "oil" or vim.tbl_contains(ds.ft.disabled.winbar, ft)
+    end
+    return vim.api.nvim_buf_is_valid(buf) and not (vim.wo.diff and excludes(buf, fname))
   end,
 }
 

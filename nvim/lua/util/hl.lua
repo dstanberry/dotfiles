@@ -27,6 +27,10 @@ function M.add(name, args)
   _cache[name] = args
 end
 
+---Returns a copy of currently cached highlight group definitions
+---@return util.theme.hl
+function M.get() return vim.deepcopy(_cache) end
+
 ---Sets and caches highlight groups
 ---@param groups util.theme.hl
 function M.set(groups)
@@ -35,9 +39,5 @@ function M.set(groups)
     _cache[k] = v
   end
 end
-
----Returns a copy of currently cached highlight group definitions
----@return util.theme.hl
-function M.get() return vim.deepcopy(_cache) end
 
 return M

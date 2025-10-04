@@ -48,10 +48,10 @@ end
 ---@type table<string,ft.treesitter.action>
 M.treesitter = {}
 
----Parses the syntax tree of a buffer using Tree-sitter and applies a callback to Python trees.
+---Parses the syntax tree of a buffer using Tree-sitter and applies a callback
 ---@param lang string The language to parse
 ---@param bufnr number The buffer number to parse.
----@param callback fun(tree: userdata) The function to call for each Python syntax tree.
+---@param callback fun(tree: userdata) The function to call for each syntax tree.
 function M.treesitter.parse(lang, bufnr, callback)
   local root_parser = vim.treesitter.get_parser(bufnr)
   if not root_parser then return end

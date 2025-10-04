@@ -56,9 +56,10 @@ function M.detectors.lsp(buf)
   if not filepath then return {} end
   local roots = {} ---@type string[]
   for _, client in pairs(vim.lsp.get_clients { bufnr = buf }) do
-    local workspace = client.config.workspace_folders
-    for _, ws in pairs(workspace or {}) do
-      roots[#roots + 1] = vim.uri_to_fname(ws.uri)
+    for _, workspace in
+      pairs(vim.tbl_deep_extend("keep", client.config.workspace_folders or {}, client.workspace_folders or {}))
+    do
+      roots[#roots + 1] = workspace.uri and vim.uri_to_fname(workspace.uri) or workspace.name
     end
     if client.root_dir then roots[#roots + 1] = client.root_dir end
   end
@@ -142,7 +143,7 @@ function M.list()
   lines[#lines + 1] = "```lua"
   lines[#lines + 1] = "root_detectors = " .. vim.inspect(spec)
   lines[#lines + 1] = "```"
-  ds.info(lines, { title = "Root Workspace(s)", ft = "markdown" })
+  ds.info(lines, { id = "ds.util.root", title = "Root Workspace(s)", ft = "markdown" })
 end
 
 ---Return the root directory for the current document based on:
@@ -177,15 +178,18 @@ function M.setup()
 
   vim.api.nvim_create_user_command("Workspace", function(opts)
     local cmd = unpack(opts.fargs)
-    if not cmd or cmd == "list" then
+    local actions = {
+      add = vim.lsp.buf.add_workspace_folder,
+      remove = vim.lsp.buf.remove_workspace_folder,
+      list = function() end,
+    }
+    local action = actions[cmd]
+    if action then
+      action()
       M.list()
-    elseif cmd == "add" then
-      vim.lsp.buf.add_workspace_folder()
-    elseif cmd == "remove" then
-      vim.lsp.buf.remove_workspace_folder()
-    else
-      ds.error(("Invalid workspace operation: '%s'"):format(cmd), { title = "Root Workspace(s)" })
+      return
     end
+    ds.error(("Invalid workspace operation: '%s'"):format(cmd), { id = "ds.util.root", title = "Root Workspace(s)" })
   end, {
     nargs = "*",
     complete = function(_, line)

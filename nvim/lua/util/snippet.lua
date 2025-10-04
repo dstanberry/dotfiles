@@ -61,7 +61,7 @@ function M.expand(snippet)
         %s
         ```
       ]]):format(msg, vim.bo.filetype, snippet),
-      { title = "snippet" }
+      { id = "ds.util.snippet", title = "Snippet" }
     )
   end
 

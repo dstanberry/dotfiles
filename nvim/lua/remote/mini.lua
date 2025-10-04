@@ -439,6 +439,10 @@ return {
         ["tsconfig.json"]       = { glyph = "", hl = "MiniIconsAzure" },
         zshrc                   = { glyph = "", hl = "MiniIconsGreen" },
       },
+      -- stylua: ignore
+      filetype = {
+        gotmpl = { glyph = "󰟓", hl = "MiniIconsGrey" },
+      },
       use_file_extension = function(ext, _)
         local _skipped = { "json", "scm", "txt", "yaml", "yml" }
         return not _skipped[ext:lower()]
@@ -493,9 +497,7 @@ return {
         local before = line:sub(1, cursor[2])
         if vim.tbl_contains({ "codecompanion", "markdown" }, vim.bo.filetype) then
           if not opts[vim.bo.filetype] then return _o end
-          if _o == "`" and before:match "^%s*``" then
-            return "`\n```" .. vim.api.nvim_replace_termcodes("<up>", true, true, true)
-          end
+          if _o == "`" and before:match "^%s*``" then return "`\n```" .. vim.keycode "<up>" end
         end
         if opts.skip_next and next ~= "" and next:match(opts.skip_next) then return _o end
         if opts.skip_ts and #opts.skip_ts > 0 then

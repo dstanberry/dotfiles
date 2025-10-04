@@ -188,7 +188,7 @@ local virtcol_opts = {
   virtcolumn = "",
   exclude = {
     buftypes = { "nofile", "quickfix", "terminal", "prompt" },
-    filetypes = ds.extend(ds.ft.disabled.statusline, ds.ft.disabled.winbar, ds.ft.empty.winbar),
+    filetypes = vim.tbl_extend("keep", ds.ft.disabled.statusline, ds.ft.disabled.winbar),
   },
 }
 

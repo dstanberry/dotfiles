@@ -102,10 +102,10 @@ return {
         group = ds.augroup "remote.treesitter.textobjects",
         callback = function(args)
           if not ds.treesitter.has(args.match, "textobjects") then return end
-          ds.foreach(opts.keys or {}, function(queries, name)
+          ds.tbl_each(opts.keys or {}, function(queries, name)
             local is_move = name:sub(1, 4) == "goto"
             local mode = is_move and { "n", "o", "x" } or { "n" }
-            ds.foreach(queries, function(query, lhs)
+            ds.tbl_each(queries, function(query, lhs)
               local direction = (lhs:sub(1, 1) == "[") and "previous" or "next"
               local label = (query:match "@([^%.]+)") or ""
               local desc = is_move

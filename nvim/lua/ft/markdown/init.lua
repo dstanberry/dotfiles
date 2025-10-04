@@ -125,7 +125,7 @@ local insert_heading = function(data, previous_heading, text)
   end
   vim.api.nvim_buf_set_lines(0, target_row, target_end, false, { text })
   vim.api.nvim_win_set_cursor(0, { cursor_target, #text + 1 })
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("A", true, true, true), "n", true)
+  vim.api.nvim_feedkeys(vim.keycode "A", "n", true)
 end
 
 ---@param bufnr number

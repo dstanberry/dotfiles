@@ -370,20 +370,20 @@ return {
           codecompanion = {
             heading = {
               foregrounds = {
-                "RenderMarkdownCcH1",
-                "RenderMarkdownCcH2",
-                "RenderMarkdownCcH3",
-                "RenderMarkdownCcH4",
-                "RenderMarkdownCcH5",
-                "RenderMarkdownCcH6",
+                "NormalFloatH1",
+                "NormalFloatH2",
+                "NormalFloatH3",
+                "NormalFloatH4",
+                "NormalFloatH5",
+                "NormalFloatH6",
               },
               backgrounds = {
-                "RenderMarkdownCch1bg",
-                "rendermarkdowncch2bg",
-                "rendermarkdowncch3bg",
-                "rendermarkdowncch4bg",
-                "rendermarkdowncch5bg",
-                "rendermarkdownccH6Bg",
+                "NormalFloatH1Bg",
+                "NormalFloatH2Bg",
+                "NormalFloatH3Bg",
+                "NormalFloatH4Bg",
+                "NormalFloatH5Bg",
+                "NormalFloatH6Bg",
               },
             },
             html = {

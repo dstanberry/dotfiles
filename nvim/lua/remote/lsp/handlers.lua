@@ -118,7 +118,7 @@ function M.on_attach(client, bufnr, server_capabilities)
   ds.plugin.keymap_del("n", "grr")
   ds.plugin.keymap_del("n", "grt")
 
-  ds.foreach(server_capabilities or {}, function(v, k)
+  ds.tbl_each(server_capabilities or {}, function(v, k)
     if client.server_capabilities[k] then client.server_capabilities[k] = v end
   end)
 

@@ -41,12 +41,12 @@ function M.coalesce(actions, fallback)
   return function()
     for _, action_name in ipairs(actions) do
       local func = action_name:match "([^.]+)$"
-      local mod = M.replace(action_name, "." .. func, "")
+      local mod = action_name:gsub("%." .. vim.pesc(func) .. "$", "")
       local target = mod == func and M[func]
 
       if mod ~= func then
         local parts = vim.split(mod, ".", { plain = true })
-        target = M.tbl_reduce(parts, function(current, part) return current and current[part] or nil end, M)
+        target = vim.tbl_get(M, unpack(parts))
         if target then target = target[func] end
       end
       if type(target) == "function" then
@@ -74,26 +74,14 @@ function M.debounce(callback, delay)
   end
 end
 
----Combines multiple number-indexed tables into a single table.
----@param ... table
----@return table
-function M.extend(...)
-  local tables = { ... } -- {table1, table2, table3, ...}
-  local result = {}
-  for _, t in ipairs(tables) do
-    table.move(t, 1, #t, #result + 1, result)
-  end
-  return result
-end
-
 ---Prints the lua formatted representation of `filepath` as a module
 ---@param filepath string
 ---@return string modname
 function M.get_module(filepath)
-  local mod, sep
-  sep = ds.has "win32" and "\\" or "/"
-  mod = (filepath:match "lua%S(.+)%.lua$" or ""):format(sep):gsub(sep, "."):gsub("%.init", "")
-  return mod or ""
+  local mod = filepath:match "lua%S(.+)%.lua$"
+  if not mod then return "" end
+  mod = M.has "win32" and mod:gsub("[/\\]", ".") or mod:gsub("/", ".")
+  return mod:gsub("%.init$", "")
 end
 
 ---Wrapper for Vim's `has` feature detection function
@@ -107,17 +95,8 @@ function M.has(feature) return vim.fn.has(feature) > 0 end
 ---@param list T[] | table
 ---@param callback fun(value: any, key: string | number)
 function M.tbl_any(list, callback)
-  for k, v in pairs(list) do
-    if callback(v, k) then return true end
-  end
-  return false
-end
-
-local tbl_keys_numeric = function(list)
-  for k, _ in pairs(list) do
-    if type(k) ~= "number" then return false end
-  end
-  return true
+  local keys = vim.tbl_keys(list)
+  return vim.tbl_contains(keys, true, { predicate = function(k) return callback(list[k], k) end })
 end
 
 ---Iterate over each key-value pair in the provided table and apply the callback function.
@@ -126,8 +105,8 @@ end
 ---@generic T:table
 ---@param list table<any, T>
 ---@param callback fun(item: T, key: any)
-function M.foreach(list, callback)
-  if tbl_keys_numeric(list) then
+function M.tbl_each(list, callback)
+  if vim.isarray(list) then
     for i, v in ipairs(list) do
       callback(v, i)
     end
@@ -138,37 +117,16 @@ function M.foreach(list, callback)
   end
 end
 
---- Reverse a list in place.
---- This function modifies the input list by reversing its elements.
---- @generic T
---- @param list T[] The list to be reversed. Must be a table with sequential numeric keys.
---- @return T[] The reversed list (same reference as the input list).
-function M.reverse(list)
-  local len = #list
-  for i = 1, math.floor(len * 0.5) do
-    local opposite = len - i + 1
-    list[i], list[opposite] = list[opposite], list[i]
-  end
-  return list
-end
-
 ---Searches for a partial match of a string `needle` in a list `haystack`
 ---@param haystack string[]
 ---@param needle string
 ---@return boolean, number # Returns true if found and the position in the list
 function M.tbl_match(haystack, needle)
-  local found = false
-  local pos = -1
-  for k, v in pairs(haystack) do
-    local safe_v = string.gsub(v, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
-    local match = string.match(needle, safe_v) or ""
-    if v == needle or #match > 0 then
-      found = true
-      pos = k
-      break
-    end
+  for k, v in ipairs(haystack) do
+    local match = string.match(needle, vim.pesc(v)) or ""
+    if v == needle or #match > 0 then return true, k end
   end
-  return found, pos
+  return false, -1
 end
 
 ---Converts a list of items into a value by iterating over each pair and transforming them
@@ -182,7 +140,7 @@ end
 ---@return S
 function M.tbl_reduce(list, callback, acc)
   acc = acc or {}
-  if tbl_keys_numeric(list) then
+  if vim.isarray(list) then
     for i, v in ipairs(list) do
       acc = callback(acc, v, i)
       assert(acc ~= nil, "The accumulator must be returned on each iteration")
@@ -194,6 +152,20 @@ function M.tbl_reduce(list, callback, acc)
     end
   end
   return acc
+end
+
+---Reverse a list in place.
+---This function modifies the input list by reversing its elements.
+---@generic T
+---@param list T[] The list to be reversed. Must be a table with sequential numeric keys.
+---@return T[] The reversed list (same reference as the input list).
+function M.tbl_reverse(list)
+  local len = #list
+  for i = 1, (len / 2) do
+    local opposite = len - i + 1
+    list[i], list[opposite] = list[opposite], list[i]
+  end
+  return list
 end
 
 local memcache = {} ---@type table<(fun()), table<string, any>>
@@ -254,8 +226,8 @@ end
 ---@return string
 ---@return integer count
 function M.replace(str, pattern, repl, n)
-  pattern = string.gsub(pattern, "[%(%)%.%+%-%*%?%[%]%^%$%%]", "%%%1") -- escape pattern
-  repl = string.gsub(repl, "[%%]", "%%%%") -- escape replacement
+  pattern = vim.pesc(pattern)
+  if type(repl) == "string" then repl = string.gsub(repl, "[%%]", "%%%%") end
   return string.gsub(str, pattern, repl, n)
 end
 

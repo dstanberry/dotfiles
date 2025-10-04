@@ -16,7 +16,7 @@ local initialize = function(bufnr)
 
   py.setup(interpreter, { console = "integratedTerminal", include_configs = true, pythonPath = interpreter })
 
-  ds.foreach({ "env", "venv" }, function(v, _)
+  ds.tbl_each({ "env", "venv" }, function(v, _)
     if not venv_path then
       venv_path = ds.root.detectors.pattern(bufnr, { v })[1]
       if venv_path then venv_path = vim.fs.joinpath(venv_path, v) end

@@ -177,7 +177,7 @@ end
 ---@return util.buffer.lsp.range_params
 function M.make_lsp_range_params(range)
   local params = {}
-  ds.foreach({ "start", "end" }, function(v, k)
+  ds.tbl_each({ "start", "end" }, function(v, k)
     local row, col = unpack(range[k])
     col = (vim.o.selection ~= "exclusive" and v == "end") and col + 1 or col
     params[v] = { line = row == 0 and row or row - 1, character = col == 0 and col or col - 1 }
@@ -208,11 +208,11 @@ function M.quickfix_delete(buf)
   end
   vim.fn.setqflist({}, "r", { items = qfl })
   vim.fn.setpos(".", { buf, line, 1, 0 })
-  vim.api.nvim_replace_termcodes("<esc>", true, false, true)
+  vim.keycode "<esc>"
 end
 
 ---Change the filename (and/or filepath) of the current buffer given that it exists on disk.
----If supported, the workspace can be updated with the updated filename
+---If supported, workspace references can be updated with the new filename.
 function M.rename()
   local buf = vim.api.nvim_get_current_buf()
   if not buf or buf < 0 then return end

@@ -14,9 +14,7 @@ end
 
 ---Cancel the current completion, undoing the preview from auto_insert
 function M.cancel()
-  if vim.fn.pumvisible() == 1 then
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-e>", true, false, true), "n", false)
-  end
+  if vim.fn.pumvisible() == 1 then vim.api.nvim_feedkeys(vim.keycode "<c-e>", "n", false) end
 end
 
 ---Trigger completion with given options.
@@ -28,15 +26,13 @@ function M.complete(opts)
   vim.fn.complete(opts.startcol or vim.fn.col "." - 1, opts.items or {})
   if opts.select and vim.fn.pumvisible() == 1 then
     local s = M.info({ "selected" }).selected
-    if s == -1 then vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-n>", true, false, true), "n", false) end
+    if s == -1 then vim.api.nvim_feedkeys(vim.keycode "<c-n>", "n", false) end
   end
 end
 
 ---Confirm the current completion.
 function M.confirm()
-  if vim.fn.pumvisible() == 1 then
-    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<c-y>", true, false, true), "n", false)
-  end
+  if vim.fn.pumvisible() == 1 then vim.api.nvim_feedkeys(vim.keycode "<c-y>", "n", false) end
 end
 
 ---Hide the completion menu.

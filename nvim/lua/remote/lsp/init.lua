@@ -34,7 +34,7 @@ return {
     keys = function()
       local keymap = require "ft.markdown.keymaps"
       local keys = {}
-      ds.foreach(keymap, function(v, k) table.insert(keys, { k, v[1], desc = v[2] or "", mode = v[3] or "n" }) end)
+      ds.tbl_each(keymap, function(v, k) table.insert(keys, { k, v[1], desc = v[2] or "", mode = v[3] or "n" }) end)
       return keys
     end,
     opts = {
@@ -113,7 +113,7 @@ return {
         end
       end)
 
-      ds.foreach(opts.servers, function(config, server)
+      ds.tbl_each(opts.servers, function(config, server)
         vim.lsp.config(server, config)
         vim.lsp.enable(server)
       end)

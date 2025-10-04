@@ -7,7 +7,7 @@ return {
       if luasnip.in_snippet() and luasnip.choice_active() then
         luasnip.change_choice(direction)
       else
-        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys or "", true, true, true), "n", true)
+        vim.api.nvim_feedkeys(vim.keycode(keys or ""), "n", true)
       end
     end
 

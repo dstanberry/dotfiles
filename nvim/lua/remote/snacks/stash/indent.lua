@@ -13,10 +13,10 @@ M.config = {
     hl = vim.tbl_map(function(i) return "SnacksIndent" .. i end, vim.fn.range(1, 8)),
   },
   filter = function(buf)
-    local filetypes = ds.extend(
+    local filetypes = vim.tbl_extend(
+      "keep",
       ds.ft.disabled.statusline,
       ds.ft.disabled.winbar,
-      ds.ft.empty.winbar,
       { "checkhealth", "diff", "git" },
       { "log", "markdown", "txt" }
     )

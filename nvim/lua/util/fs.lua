@@ -46,7 +46,7 @@ function M.read(file, mode, resume)
   if not (fd or resume) then vim.notify(("Could not open file (%s)"):format(file), vim.log.levels.ERROR) end
   if fd then
     local data = fd:read "*a"
-    fd.close()
+    fd:close()
     return data
   end
 end

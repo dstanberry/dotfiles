@@ -17,10 +17,10 @@ M.get = function(c)
   local BLUE = ds.color.darken(c.blue1, 43)
   local BG_L = ds.color.lighten(c.bg0, 40)
 
-  local HINT = ds.color.get_color "DiagnosticHint"
-  local INFO = ds.color.get_color "DiagnosticInfo"
-  local WARN = ds.color.get_color "DiagnosticWarn"
-  local ERROR = ds.color.get_color "DiagnosticError"
+  local HINT = ds.color.get "DiagnosticHint"
+  local INFO = ds.color.get "DiagnosticInfo"
+  local WARN = ds.color.get "DiagnosticWarn"
+  local ERROR = ds.color.get "DiagnosticError"
 
   local HINT_D = ds.color.blend(HINT, c.bgX, 0.03)
   local HINT_L = ds.color.blend(HINT, c.bgX, 0.1)

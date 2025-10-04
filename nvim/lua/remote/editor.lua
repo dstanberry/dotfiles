@@ -82,8 +82,8 @@ return {
         pattern = "VeryLazy",
         callback = function()
           local keys = {
-            { key = "f<backspace>", opts = ds.format.make_toggle_opts(true) },
-            { key = "f<delete>", opts = ds.format.make_toggle_opts() },
+            { key = "f<backspace>", opts = ds.format.toggle(true) },
+            { key = "f<delete>", opts = ds.format.toggle() },
           }
           ds.format.register {
             name = "conform.nvim",
@@ -96,7 +96,7 @@ return {
               return vim.tbl_map(function(v) return v.name end, ret)
             end,
           }
-          ds.foreach(keys, function(entry)
+          ds.tbl_each(keys, function(entry)
             local opts = vim.tbl_extend("force", {}, entry.opts)
             if ds.plugin.is_installed "snacks.nvim" then
               Snacks.toggle({
@@ -134,7 +134,7 @@ return {
             ".markdownlint.cjs", ".markdownlint.mjs",
             "package.json",
           }
-          ds.foreach(patterns, function(v)
+          ds.tbl_each(patterns, function(v)
             if not conf then
               local dir = ds.root.detectors.pattern(ctx.buf, { v })[1]
               if dir then conf = vim.fs.joinpath(dir, v) end
@@ -302,7 +302,7 @@ return {
       local M = {}
       local lint = require "lint"
 
-      ds.foreach(opts.linters, function(linter, name)
+      ds.tbl_each(opts.linters, function(linter, name)
         if type(linter) == "table" and type(lint.linters[name]) == "table" then
           lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name], linter)
           if type(linter.prepend_args) == "table" then
