@@ -1,7 +1,5 @@
 ---@class remote.lsp.config
-local M = {}
-
-M.defer_setup = true
+local M = { defer_setup = true }
 
 M.config = {
   default_settings = {

@@ -110,7 +110,7 @@ end
 ---@param bufnr integer
 ---@param server_capabilities? lsp.ServerCapabilities?
 function M.on_attach(client, bufnr, server_capabilities)
-  -- remove lsp default keymaps
+  -- remove default lsp keymaps
   ds.plugin.keymap_del("n", "gO")
   ds.plugin.keymap_del("n", "gra")
   ds.plugin.keymap_del("n", "gri")
@@ -197,6 +197,12 @@ function M.on_attach(client, bufnr, server_capabilities)
     })
   end
 
+  if client:supports_method("textDocument/documentSymbol", bufnr) then
+    local _symbols = function() vim.lsp.buf.workspace_symbol "" end
+    vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "lsp: show documents symbols" })
+    vim.keymap.set("n", "gw", _symbols, { buffer = bufnr, desc = "lsp: show workspace symbols" })
+  end
+
   if client:supports_method("textDocument/foldingRange", bufnr) then
     ds.ft.set_options(bufnr, { wo = { foldexpr = "v:lua.vim.lsp.foldexpr()" } })
   end
@@ -233,12 +239,6 @@ function M.on_attach(client, bufnr, server_capabilities)
     -- })
     vim.keymap.set("i", "<c-s>", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
     vim.keymap.set("n", "gh", vim.lsp.buf.signature_help, { buffer = bufnr, desc = "lsp: signature help" })
-  end
-
-  if client:supports_method("textDocument/documentSymbol", bufnr) then
-    local _symbols = function() vim.lsp.buf.workspace_symbol "" end
-    vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "lsp: show documents symbols" })
-    vim.keymap.set("n", "gw", _symbols, { buffer = bufnr, desc = "lsp: show workspace symbols" })
   end
 
   if client:supports_method("workspace/willRenameFiles", bufnr) then

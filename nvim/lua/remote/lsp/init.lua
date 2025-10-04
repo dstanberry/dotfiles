@@ -94,10 +94,10 @@ return {
     config = vim.schedule_wrap(function(_, opts)
       local handlers = require "remote.lsp.handlers"
       local server_capabilities = {}
-
       opts.servers = opts.servers or {} ---@type remote.lsp.config[]
       opts.capabilities = vim.tbl_deep_extend("force", handlers.get_client_capabilities(), opts.capabilities or {})
 
+      vim.lsp.config("*", { capabilities = opts.capabilities })
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
       ds.fs.walk("lsp", function(path, name, type)
@@ -105,8 +105,7 @@ return {
           local fname = name:sub(1, -5)
           local mod = assert(loadfile(path))() ---@type remote.lsp.config
           if mod.disabled then return end
-          mod.config = vim.tbl_deep_extend("force", { capabilities = opts.capabilities }, mod.config or {})
-          if mod.setup then mod.setup(mod.config) end
+          if mod.setup then mod.setup(mod.config or {}) end
           if mod.defer_setup then return end
           opts.servers = vim.tbl_deep_extend("force", opts.servers or {}, { [fname] = mod.config })
           server_capabilities =
@@ -115,9 +114,6 @@ return {
       end)
 
       ds.foreach(opts.servers, function(config, server)
-        if not config.capabilities then
-          config = vim.tbl_deep_extend("force", { capabilities = opts.capabilities }, config or {})
-        end
         vim.lsp.config(server, config)
         vim.lsp.enable(server)
       end)

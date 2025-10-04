@@ -10,7 +10,6 @@ M.config = {
     "setup.cfg",
     "requirements.txt",
     "Pipfile",
-    "pyrightconfig.json",
     ".git",
   },
   single_file_support = true,

@@ -1,7 +1,5 @@
 ---@class remote.lsp.config
-local M = {}
-
-M.defer_setup = not ds.has "win32"
+local M = { defer_setup = not ds.has "win32" }
 
 -- stylua: ignore
 local command_fmt = {

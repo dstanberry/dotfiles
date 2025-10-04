@@ -1,7 +1,5 @@
 ---@class remote.lsp.config
-local M = {}
-
-M.disabled = true
+local M = { disabled = true }
 
 M.config = {
   init_options = {
