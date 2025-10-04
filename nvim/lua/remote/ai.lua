@@ -39,7 +39,7 @@ return {
           local req = request_cache[key]
           if not req then return end
           ds.info(req.msg, {
-            id = "copilot_progress",
+            id = "ds.remote.codecompanion",
             title = req.name,
             opts = function(notification) notification.icon = req.is_done and ds.icons.misc.Check or animate() end,
           })

@@ -100,6 +100,7 @@ return {
             local opts = vim.tbl_extend("force", {}, entry.opts)
             if ds.plugin.is_installed "snacks.nvim" then
               Snacks.toggle({
+                notify = false,
                 wk_desc = { enabled = opts.enabled, disabled = opts.disabled },
                 name = opts.desc,
                 get = opts.get,

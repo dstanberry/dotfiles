@@ -98,7 +98,7 @@ function M.list(buf)
   if not have then lines[#lines + 1] = "\n***No formatters available for this buffer.***" end
   ds[enabled and "info" or "warn"](
     table.concat(lines, "\n"),
-    { id = "util.format", title = "LSP: Formatting (" .. (enabled and "enabled" or "disabled") .. ")" }
+    { id = "ds.util.format", title = "LSP: Formatting (" .. (enabled and "enabled" or "disabled") .. ")" }
   )
 end
 
