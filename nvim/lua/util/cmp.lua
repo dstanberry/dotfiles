@@ -61,28 +61,6 @@ end
 ---@return boolean
 function M.visible() return vim.fn.pumvisible() == 1 end
 
----Map a list of action names to their corresponding functions.
----If an action is found and returns a truthy value, the mapping stops.
----If no action is found or all return falsy values, the fallback is executed.
----@param actions string[] # List of action names to map.
----@param fallback? string|fun() # Optional fallback function or string to execute if no action succeeds.
----@return fun(): boolean|string|nil # A function that executes the mapped actions or fallback.
-function M.coalesce(actions, fallback)
-  return function()
-    for _, name in ipairs(actions) do
-      local fn = M[name]
-        or M.inline[name:match "^inline%.([^.]+)$"]
-        or ds.snippet[name]
-        or ds.snippet[name:match "^snippet%.([^.]+)$"]
-      if type(fn) == "function" then
-        local ret = fn()
-        if ret then return true end
-      end
-    end
-    return type(fallback) == "function" and fallback() or (type(fallback) == "string" and fallback or nil)
-  end
-end
-
 ---@class util.cmp.inline
 M.inline = M.inline or {}
 

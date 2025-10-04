@@ -46,7 +46,7 @@ return {
       },
       keymap = {
         preset = "none",
-        ["<tab>"] = { ds.cmp.coalesce { "snippet.jump", "inline.next", "inline.accept" }, "fallback" },
+        ["<tab>"] = { ds.coalesce { "snippet.jump", "cmp.inline.next", "cmp.inline.accept" }, "fallback" },
         ["<s-tab>"] = { "snippet_backward", "fallback" },
         ["<cr>"] = { "accept", "fallback" },
         ["<up>"] = { "select_prev", "fallback" },

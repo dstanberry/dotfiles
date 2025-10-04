@@ -159,7 +159,7 @@ return {
       local _send = function() require("sidekick.cli").send { msg = "{this}" } end
 
       return {
-        { "<tab>", ds.cmp.coalesce { "inline.next", "<tab>" }, mode = { "n" }, expr = true },
+        { "<tab>", ds.coalesce({ "cmp.inline.next" }, "<tab>"), mode = { "n" }, expr = true },
         { "<localleader>c", mode = { "n", "x" }, "", desc = "+code assistant" },
         { "<localleader>ca", mode = { "n", "x" }, _prompt, desc = "sidekick: select prompt" },
         { "<localleader>cc", _toggle, desc = "sidekick: toggle" },

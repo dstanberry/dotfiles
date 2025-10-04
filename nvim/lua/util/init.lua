@@ -27,6 +27,37 @@ setmetatable(M, {
 ---@return number
 function M.augroup(name) return vim.api.nvim_create_augroup("ds." .. name, { clear = true }) end
 
+---Map a list of action names to their corresponding functions.
+---If an action is found and returns a truthy value, the mapping stops.
+---If no action is found or all return falsy values, the fallback is executed.
+---Actions are resolved as dot-separated paths within the util module. (e.g., `{ "cmp.accept", "cmp.inline.accept" }`)
+---@param actions string[] List of action names as dot-separated module paths
+---@param fallback? string|fun(): any Optional fallback executed if all actions fail or return falsy
+---@return fun(): boolean|string|any Function that executes the action chain and returns:
+---  - `true` if any action succeeds
+---  - fallback result if provided and all actions fail
+---  - `nil` if no fallback and all actions fail
+function M.coalesce(actions, fallback)
+  return function()
+    for _, action_name in ipairs(actions) do
+      local func = action_name:match "([^.]+)$"
+      local mod = M.replace(action_name, "." .. func, "")
+      local target = mod == func and M[func]
+
+      if mod ~= func then
+        local parts = vim.split(mod, ".", { plain = true })
+        target = M.tbl_reduce(parts, function(current, part) return current and current[part] or nil end, M)
+        if target then target = target[func] end
+      end
+      if type(target) == "function" then
+        local result = target()
+        if result then return true end
+      end
+    end
+    return type(fallback) == "function" and fallback() or (type(fallback) == "string" and fallback or nil)
+  end
+end
+
 ---Limit the rate at which the provided function `callback` will execute
 ---by delaying it's execution for `delay` milliseconds
 ---@param callback fun(...)
@@ -65,7 +96,7 @@ function M.get_module(filepath)
   return mod or ""
 end
 
----Wrapper for Vim's `|has|`feature detection function
+---Wrapper for Vim's `has` feature detection function
 ---@param feature string
 ---@return boolean
 function M.has(feature) return vim.fn.has(feature) > 0 end
@@ -180,7 +211,7 @@ function M.memoize(fn)
   end
 end
 
----Adds whitespace to the start, end or both start and end of a string
+---Adds whitespace to the start, end, or both start and end of a string
 ---@param s string
 ---@param direction "left"|"right"|"both"
 ---@param amount? number #Repeat pad `n` times to the left/right of string or both sides
