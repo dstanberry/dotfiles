@@ -1,0 +1,21 @@
+gui:
+  border: "rounded"
+  language: "en"
+  mouseEvents: true
+  nerdFontsVersion: "3"
+  scrollHeight: 2
+  scrollPastBottom: true
+  showBottomLine: false
+  showCommandLog: true
+  theme:
+    defaultFgColor:
+      - default
+    activeBorderColor:
+      - blue
+      - bold
+    inactiveBorderColor:
+      - "#5f5f5f"
+    optionsTextColor:
+      - blue
+    selectedLineBgColor:
+      - "#48525e"
