@@ -24,8 +24,10 @@ preserving observable behavior and public APIs.
 - Prefer idiomatic language features and standard library over custom
   implementations
 - Use pattern matching, null-safe operators, and collection utilities to
-  simplify control flow
+  simplify control flow simplify control flow
 - Replace long chains and nested loops/conditionals with clearer constructs
+- Prefer concise expressions over verbose if-else blocks when readability is
+  maintained (e.g., ternary operators, logical short-circuiting)
 
 **Performance & Resource Management:**
 
