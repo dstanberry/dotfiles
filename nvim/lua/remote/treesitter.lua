@@ -43,6 +43,7 @@ return {
 
       local installed = ts.get_installed "parsers"
       local highlight = vim.tbl_get(opts, "highlight", "enable")
+      local disabled_hl = vim.tbl_get(opts, "highlight", "disable") or {}
       local indent = vim.tbl_get(opts, "indent", "enable")
       if highlight or indent then
         vim.api.nvim_create_autocmd("FileType", {
@@ -50,7 +51,7 @@ return {
           callback = function(event)
             local lang = vim.treesitter.language.get_lang(event.match)
             if not vim.tbl_contains(installed, lang) then return end
-            if highlight then pcall(vim.treesitter.start) end
+            if highlight and not vim.tbl_contains(disabled_hl, event.match) then pcall(vim.treesitter.start) end
             if indent then vim.bo[event.buf].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()" end
           end,
         })
