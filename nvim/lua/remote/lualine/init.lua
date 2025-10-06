@@ -94,11 +94,11 @@ return {
           -- stylua: ignore
           { "diagnostics", sources = { "nvim_diagnostic" }, symbols = get_diag "symbols", diagnostics_color = get_diag "colors" },
 
-          sep("right", { left = 1, right = 0 }, function() return MSG.clients.cond() or MSG.sidekick.cond() end),
+          sep("right", { left = 1, right = 1 }, function() return MSG.clients.cond() or MSG.sidekick.cond() end),
           { MSG.clients.get, color = MSG.clients.color, padding = { right = 0 }, cond = MSG.clients.cond },
           { MSG.sidekick.get, color = MSG.sidekick.color, padding = { right = 1 }, cond = MSG.sidekick.cond },
 
-          sep("right", { left = 0, right = 0 }),
+          sep("right", { left = 1, right = 0 }),
           { "location" },
 
           sep("right", { left = 0, right = 0 }, function() return vim.bo.shiftwidth > 0 end),
