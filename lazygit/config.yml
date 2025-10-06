@@ -3,9 +3,12 @@ disableStartupPopups: false
 notARepository: "prompt"
 promptToReturnFromSubprocess: true
 quitOnTopLevelReturn: false
-os:
-  edit: "nvim --server $NVIM --remote-tab {{filename}}"
 git:
+  autoFetch: true
+  autoRefresh: true
+  disableForcePushing: false
+  overrideGpg: true
+  skipHookPrefix: WIP
   commit:
     signOff: false
   log:
@@ -19,28 +22,31 @@ git:
     colorArg: always
     pager: delta --dark --paging=never
     useConfig: false
-  autoFetch: true
-  autoRefresh: true
-  disableForcePushing: false
-  overrideGpg: true
-  skipHookPrefix: WIP
 gui:
   border: "rounded"
-  commitLength:
-    show: true
   enlargedSideViewLocation: 'top'
   language: "en"
+  mouseEvents: true
+  nerdFontsVersion: "3"
+  scrollHeight: 2
+  scrollPastBottom: true
+  showBottomLine: false
+  showCommandLog: true
+  skipDiscardChangeWarning: false
+  skipStashWarning: true
   authorColors:
     "Demaro Stanberry": "#8ed6ec"
     "*": cyan
-  branchColors:
-    "main": "#b5e4ff"
-    "master": "#b5e4ff"
-    "develop": "#4ed1a1"
   branchColorPatterns:
     "feat/.+": "#d08770"
     "feature/.+": "#d08770"
     "fix/.+": "#a76369"
+  branchColors:
+    "main": "#b5e4ff"
+    "master": "#b5e4ff"
+    "develop": "#4ed1a1"
+  commitLength:
+    show: true
   theme:
     defaultFgColor:
       - default
@@ -59,14 +65,6 @@ gui:
       - default
     cherryPickedCommitFgColor:
       - magenta
-  mouseEvents: true
-  scrollHeight: 2
-  scrollPastBottom: true
-  showBottomLine: false
-  showCommandLog: true
-  nerdFontsVersion: "3"
-  skipStashWarning: true
-  skipDiscardChangeWarning: false
 customCommands:
   - key: "d"
     command: "git diff {{.SelectedFile.Name}}"
@@ -81,3 +79,5 @@ keybinding:
     scrollUpMain: "<c-f>"
   files:
     toggleTreeView: "-"
+os:
+  edit: "nvim --server $NVIM --remote-tab {{filename}}"
