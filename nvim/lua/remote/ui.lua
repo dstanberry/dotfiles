@@ -50,17 +50,17 @@ return {
             local is_group = formatted:match "group"
             local is_offset = formatted:match "offset"
             local is_separator = formatted:match "separator"
-            if not is_group or (is_group and is_separator) then attrs.bg = vim.g.ds_colors.bg2 end
-            if is_separator and not (is_group or is_offset) then attrs.fg = vim.g.ds_colors.bg2 end
+            if not is_group or (is_group and is_separator) then attrs.bg = ds.color "bg2" end
+            if is_separator and not (is_group or is_offset) then attrs.fg = ds.color "bg2" end
             highlight[name] = attrs
             return highlight
           end)
           hl.buffer_selected.italic = false
           hl.buffer_visible.bold = true
           hl.buffer_visible.italic = false
-          hl.buffer_visible.fg = vim.g.ds_colors.gray1
+          hl.buffer_visible.fg = ds.color "gray1"
           hl.tab_selected.bold = true
-          hl.tab_selected.fg = vim.g.ds_colors.red1
+          hl.tab_selected.fg = ds.color "red1"
           return hl
         end,
         options = {
@@ -106,7 +106,7 @@ return {
             items = {
               {
                 name = "Notes",
-                highlight = { fg = vim.g.ds_colors.overlay1 },
+                highlight = { fg = ds.color "overlay1" },
                 auto_close = false,
                 matcher = function(buf)
                   return (vim.env.ZK_NOTEBOOK_DIR and vim.env.ZK_NOTEBOOK_DIR ~= "")
@@ -120,7 +120,7 @@ return {
               {
                 name = "SQL",
                 auto_close = false,
-                highlight = { fg = vim.g.ds_colors.orange0 },
+                highlight = { fg = ds.color "orange0" },
                 matcher = function(buf) return buf.name:match "%.sql$" end,
                 separator = {
                   style = bufferline_groups.separator.pill,
@@ -128,7 +128,7 @@ return {
               },
               {
                 name = "Unit Tests",
-                highlight = { fg = vim.g.ds_colors.rose1 },
+                highlight = { fg = ds.color "rose1" },
                 auto_close = false,
                 matcher = function(buf)
                   return buf.name:match "_spec%."
@@ -412,12 +412,12 @@ return {
       signs = false,
       sign_priority = 0,
       colors = {
-        error = { ds.color.blend(vim.g.ds_colors.red1, vim.g.ds_colors.gray1, 0.31) },
-        warning = { ds.color.blend(vim.g.ds_colors.rose0, vim.g.ds_colors.gray1, 0.31) },
-        info = { ds.color.blend(vim.g.ds_colors.magenta1, vim.g.ds_colors.gray1, 0.31) },
-        hint = { ds.color.blend(vim.g.ds_colors.aqua1, vim.g.ds_colors.gray1, 0.31) },
-        default = { ds.color.blend(vim.g.ds_colors.blue0, vim.g.ds_colors.gray1, 0.31) },
-        test = { ds.color.blend(vim.g.ds_colors.green0, vim.g.ds_colors.gray1, 0.31) },
+        error = { ds.color.blend(ds.color "red1", ds.color "gray1", 0.31) },
+        warning = { ds.color.blend(ds.color "rose0", ds.color "gray1", 0.31) },
+        info = { ds.color.blend(ds.color "magenta1", ds.color "gray1", 0.31) },
+        hint = { ds.color.blend(ds.color "aqua1", ds.color "gray1", 0.31) },
+        default = { ds.color.blend(ds.color "blue0", ds.color "gray1", 0.31) },
+        test = { ds.color.blend(ds.color "green0", ds.color "gray1", 0.31) },
       },
     },
   },

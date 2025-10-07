@@ -125,7 +125,7 @@ return {
       },
       strategies = {
         chat = {
-          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-4.1" },
+          adapter = { name = "copilot", model = ds.env "copilot_model" or "gpt-4.1" },
           keymaps = {
             close = { modes = { n = "q" }, opts = { nowait = true } },
             send = { modes = { n = "<cr>", i = "<c-s>" } },
@@ -141,7 +141,7 @@ return {
           },
         },
         inline = {
-          adapter = { name = "copilot", model = vim.g.ds_env.copilot_model or "gpt-4.1" },
+          adapter = { name = "copilot", model = ds.env "copilot_model" or "gpt-4.1" },
           keymaps = {
             accept_change = { modes = { n = "dp" } },
             reject_change = { modes = { n = "de" } },

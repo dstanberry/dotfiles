@@ -1,5 +1,8 @@
 ---@class util.color
-local M = {}
+---@overload fun(name?: string)
+local M = setmetatable({}, {
+  __call = function(m, ...) return m.get_palette(...) end,
+})
 
 local clamp = function(val, min, max)
   if val == nil then return end
@@ -84,6 +87,11 @@ function M.get(name, bg)
   return color and string.format("#%06x", color) or nil
 end
 
+---Retrieves a color from the active colorscheme palette.
+---@param name? string color name
+---@return string?,util.theme.palette? #hexadecimal color formatted as `#rrggbb` or the entire palette if `name` is not provided
+M.get_palette = function(name) return name and vim.tbl_get(vim.g, "ds_colors", name) or vim.g.ds_colors end
+
 ---Adjusts the brightness of a color by a given amount.
 ---@param hex string hexadecimal color formatted as `#rrggbb``
 ---@param amount integer amout to adjust by
@@ -120,7 +128,7 @@ function M.sync_term_bg()
 
   local handle_term_reponse = function(args)
     local ok, original_bg = pcall(parse_osc11, args.data)
-    if not ok or type(original_bg) ~= "string" then original_bg = vim.g.ds_colors.bg2 end
+    if not ok or type(original_bg) ~= "string" then original_bg = ds.color "bg2" end
 
     local sync_bg = function()
       local bg = ds.color.get("Normal", true)

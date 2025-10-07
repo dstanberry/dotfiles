@@ -8,7 +8,7 @@ if vim.env.VSCODE then vim.g.vscode = true end
 vim.env.XDG_CONFIG_HOME = vim.env.XDG_CONFIG_HOME or vim.fs.joinpath(vim.env.HOME, ".config")
 
 _G.ds = require "util"
-ds.fs.load_settings()
+ds.env.load_settings()
 
 vim.cmd.colorscheme "kdark"
 

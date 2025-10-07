@@ -42,34 +42,34 @@ M.separator = {
 M.theme = function()
   return {
     command = {
-      a = { fg = vim.g.ds_colors.magenta1, bg = vim.g.ds_colors.gray0, gui = "bold" },
-      b = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
-      c = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
+      a = { fg = ds.color "magenta1", bg = ds.color "gray0", gui = "bold" },
+      b = { fg = ds.color "white", bg = ds.color "gray0" },
+      c = { fg = ds.color "white", bg = ds.color "gray0" },
     },
     inactive = {
-      a = { fg = vim.g.ds_colors.fg1, bg = vim.g.ds_colors.gray0 },
-      b = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
-      c = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
+      a = { fg = ds.color "fg1", bg = ds.color "gray0" },
+      b = { fg = ds.color "white", bg = ds.color "gray0" },
+      c = { fg = ds.color "white", bg = ds.color "gray0" },
     },
     insert = {
-      a = { fg = vim.g.ds_colors.green2, bg = vim.g.ds_colors.gray0, gui = "bold" },
-      b = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
-      c = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
+      a = { fg = ds.color "green2", bg = ds.color "gray0", gui = "bold" },
+      b = { fg = ds.color "white", bg = ds.color "gray0" },
+      c = { fg = ds.color "white", bg = ds.color "gray0" },
     },
     normal = {
-      a = { fg = vim.g.ds_colors.blue1, bg = vim.g.ds_colors.gray0, gui = "bold" },
-      b = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
-      c = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
+      a = { fg = ds.color "blue1", bg = ds.color "gray0", gui = "bold" },
+      b = { fg = ds.color "white", bg = ds.color "gray0" },
+      c = { fg = ds.color "white", bg = ds.color "gray0" },
     },
     replace = {
-      a = { fg = vim.g.ds_colors.orange0, bg = vim.g.ds_colors.gray0, gui = "bold" },
-      b = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
-      c = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
+      a = { fg = ds.color "orange0", bg = ds.color "gray0", gui = "bold" },
+      b = { fg = ds.color "white", bg = ds.color "gray0" },
+      c = { fg = ds.color "white", bg = ds.color "gray0" },
     },
     visual = {
-      a = { fg = vim.g.ds_colors.red1, bg = vim.g.ds_colors.gray0, gui = "bold" },
-      b = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
-      c = { fg = vim.g.ds_colors.white, bg = vim.g.ds_colors.gray0 },
+      a = { fg = ds.color "red1", bg = ds.color "gray0", gui = "bold" },
+      b = { fg = ds.color "white", bg = ds.color "gray0" },
+      c = { fg = ds.color "white", bg = ds.color "gray0" },
     },
   }
 end

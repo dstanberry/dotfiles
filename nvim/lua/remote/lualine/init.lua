@@ -18,7 +18,6 @@ return {
     lualine_require.require = require
 
     local GIT, MSG, META = util.git, util.message, util.metadata
-    local colors = vim.g.ds_colors
 
     local function sep(direction, padding_opts, condition)
       return {
@@ -47,7 +46,7 @@ return {
           result[type] = ds.pad(ds.icons.git[icon_map[type]], "right")
         else
           local color_map = { added = "green2", modified = "yellow2", removed = "red1" }
-          result[type] = { fg = ds.color.blend(vim.g.ds_colors[color_map[type]], vim.g.ds_colors.white, 0.6) }
+          result[type] = { fg = ds.color.blend(ds.color(color_map[type]), ds.color "white", 0.6) }
         end
       end
       return result
@@ -70,24 +69,25 @@ return {
           sep "left",
         },
         lualine_b = {
-          { META.root_dir.get, color = { fg = colors.overlay1 }, cond = META.root_dir.cond, padding = { right = 1 } },
+          -- stylua: ignore
+          { META.root_dir.get, color = { fg = ds.color "overlay1" }, cond = META.root_dir.cond, padding = { right = 1 } },
           sep("left", nil, META.root_dir.cond),
 
-          { META.plugin.get, color = { fg = colors.overlay1 }, cond = META.plugin.cond, padding = { right = 1 } },
+          { META.plugin.get, color = { fg = ds.color "overlay1" }, cond = META.plugin.cond, padding = { right = 1 } },
           sep("left", nil, META.plugin.cond),
         },
         lualine_c = {
-          { "vim.b.gitsigns_blame_line", color = { fg = colors.gray2, gui = "italic" }, padding = { right = 1 } },
+          { "vim.b.gitsigns_blame_line", color = { fg = ds.color "gray2", gui = "italic" }, padding = { right = 1 } },
           { "diff", source = GIT.diff.get, symbols = get_diff "symbols", diff_color = get_diff "colors" },
           -- stylua: ignore
-          { MSG.codecompanion.adapter.get, color = { fg = colors.gray2, gui = "italic" }, cond = MSG.codecompanion.adapter.cond },
+          { MSG.codecompanion.adapter.get, color = { fg = ds.color "gray2", gui = "italic" }, cond = MSG.codecompanion.adapter.cond },
         },
         lualine_x = {
-          { MSG.noice.get, color = { fg = colors.gray2, gui = "italic" }, cond = MSG.noice.cond },
+          { MSG.noice.get, color = { fg = ds.color "gray2", gui = "italic" }, cond = MSG.noice.cond },
           sep("right", { right = 1 }, MSG.noice.cond),
 
           -- stylua: ignore
-          { MSG.codecompanion.ctx.get, color = { fg = colors.fg_conceal, gui = "bold" }, cond = MSG.codecompanion.ctx.cond },
+          { MSG.codecompanion.ctx.get, color = { fg = ds.color "fg_conceal", gui = "bold" }, cond = MSG.codecompanion.ctx.cond },
           sep("right", { right = 1 }, MSG.codecompanion.ctx.cond),
         },
         lualine_y = {

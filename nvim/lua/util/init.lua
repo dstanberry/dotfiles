@@ -2,6 +2,7 @@
 ---@field buffer util.buffer
 ---@field cmp util.cmp
 ---@field color util.color
+---@field env util.env
 ---@field format util.format
 ---@field fs util.fs
 ---@field ft util.ft
@@ -235,8 +236,8 @@ end
 ---@param setting string
 ---@return boolean enabled
 function M.setting_enabled(setting)
-  if not vim.g.ds_env.settings or vim.g.ds_env.settings[setting] == nil then return true end
-  return vim.g.ds_env.settings[setting] == true
+  local value = M.env.get { "settings", setting }
+  return value == true or value == ""
 end
 
 return M

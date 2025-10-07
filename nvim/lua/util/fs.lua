@@ -25,14 +25,6 @@ function M.load_dirhash(shell)
   loader "rc.private"
 end
 
----Utility function to load machine-specific overrides that can disable various configuration options/settings
-function M.load_settings()
-  local file = M.read(vim.fs.joinpath(vim.fn.stdpath "config", "dotenv.json"), "r")
-  local options = file and vim.json.decode(file) or {}
-
-  vim.g.ds_env = options
-end
-
 ---Utility function to read a file on disk
 ---@param file string
 ---@param mode? openmode

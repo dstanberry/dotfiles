@@ -256,7 +256,6 @@ return {
       local style = "full" -- "full" | "compact"
       local filetypes = { "css", "html" }
 
-      local colors ---@type util.theme.palette
       local cache = {} ---@type table<string,table<string,string>>
       local hl_groups = {} ---@type table<string,boolean>
 
@@ -265,7 +264,7 @@ return {
         if not hl_groups[group] then
           hl = type(hl) == "string" and { link = hl } or hl
           hl = vim.deepcopy(hl, true)
-          hl.fg = hl.fg or vim.g.ds_colors.gray2
+          hl.fg = hl.fg or ds.color "gray2"
           if hl.fg == hl.bg then hl.fg = nil end
           vim.api.nvim_set_hl(0, group, hl)
           hl_groups[group] = true
@@ -314,7 +313,7 @@ return {
           if not f then return end
           load_highlights(f)
           if f:match "^groups" then return f and '^%s*%[?"?()[%w_%.@]+()"?%]?%s*=' end
-          return f and 'ds%.hl%.new%("?()[%w_%.@]+()"?%)?%s*,'
+          return f and 'ds%.hl%.add%("?()[%w_%.@]+()"?%)?%s*,'
         end,
         group = function(buf, match, _)
           local name = get_config_file(buf)
@@ -325,18 +324,15 @@ return {
       opts.highlighters.nvim_hl_colors = {
         pattern = {
           "%f[%w]()c%.[%w_%.]+()%f[%W]",
+          'ds%.color%("?()[%w_%.@]+()"?%)?%s*',
+          'ds%.color%s*"?()[%w_%.@]+()"?%s*',
           "%f[%w]()vim%.g%.ds_colors%.[%w_%.]+()%f[%W]",
           "%f[%w]()vim%.g%.terminal_color_%d+()%f[%W]",
         },
         group = function(_, match)
           local parts = vim.split(match, ".", { plain = true })
-          local t = _G --[[@as table]]
-          if parts[1]:sub(1, 1) == "c" then
-            table.remove(parts, 1)
-            colors = colors or vim.g.ds_colors
-            t = colors
-          end
-          local color = vim.tbl_get(t, unpack(parts))
+          if parts[1]:sub(1, 1) == "c" then table.remove(parts, 1) end
+          local color = ds.color(unpack(parts))
           return type(color) == "string" and get_hl_group { fg = color }
         end,
         extmark_opts = function(_, _, data)

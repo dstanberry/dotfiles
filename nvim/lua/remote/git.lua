@@ -202,7 +202,7 @@ return {
       enable_builtin = true,
       default_to_projects_v2 = false,
       default_merge_method = "squash",
-      github_hostname = vim.g.ds_env.github_hostname or "github.com",
+      github_hostname = ds.env "github_hostname" or "github.com",
       picker = "snacks",
       ssh_aliases = {},
     },

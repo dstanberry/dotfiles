@@ -1,7 +1,7 @@
 ---@class remote.snacks.stash.gitbrowse
 local M = {}
 
-local ghe = vim.g.ds_env.github_hostname
+local ghe = ds.env "github_hostname"
 
 M.config = {
   open = ds.has "wsl" and function(url) vim.system { "cmd.exe", "/c", "start", url } end or nil,
