@@ -72,6 +72,11 @@ ds.plugin.setup {
           local root = vim.fs.find({ "Chart.yaml", "Chart.yml" }, { path = path, upward = true })[1]
           return root and "helm" or "yaml"
         end,
+        config = function(path, bufnr)
+          if not vim.api.nvim_buf_is_valid(bufnr) then return vim.bo[bufnr].filetype or "config" end
+          local sibling = vim.fs.find({ "HEAD", "FETCH_HEAD" }, { path = path, upward = true, limit = 2 })
+          return #sibling == 2 and "gitconfig" or "config"
+        end,
       },
     }
   end,
