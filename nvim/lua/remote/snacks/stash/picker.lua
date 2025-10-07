@@ -1,37 +1,6 @@
 ---@class remote.snacks.stash.picker
 local M = {}
 
-local flash = not ds.plugin.is_installed "flash.nvim" and { actions = {}, keys = {} }
-  or {
-    actions = {
-      flash = function(picker)
-        require("flash").jump {
-          pattern = "^",
-          label = { after = { 0, 0 } },
-          search = {
-            mode = "search",
-            exclude = {
-              function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "snacks_picker_list" end,
-            },
-          },
-          action = function(match)
-            local idx = picker.list:row2idx(match.pos[1])
-            picker.list:_move(idx, true, true)
-          end,
-        }
-      end,
-    },
-    keys = { ["<a-s>"] = { "flash", mode = { "i", "n" } }, ["s"] = { "flash" } },
-  }
-
-local trouble = not ds.plugin.is_installed "trouble.nvim" and { actions = {}, keys = {} }
-  or {
-    actions = {
-      trouble_open = function(...) return require("trouble.sources.snacks").actions.trouble_open.action(...) end,
-    },
-    keys = { ["<c-q>"] = { "trouble_open", mode = { "i", "n" } } },
-  }
-
 ---@return snacks.picker.Config
 local _config = function()
   local layouts = require "snacks.picker.config.layouts"
@@ -56,6 +25,42 @@ local _config = function()
     function(icon) return { icon, "SnacksPickerBorderSB" } end,
     ds.icons.border.Default
   )
+
+  local flash = { actions = {}, keys = {} }
+  local trouble = { actions = {}, keys = {} }
+
+  if ds.plugin.is_installed "flash.nvim" then
+    flash = {
+      actions = {
+        flash = function(picker)
+          require("flash").jump {
+            pattern = "^",
+            label = { after = { 0, 0 } },
+            search = {
+              mode = "search",
+              exclude = {
+                function(win) return vim.bo[vim.api.nvim_win_get_buf(win)].filetype ~= "snacks_picker_list" end,
+              },
+            },
+            action = function(match)
+              local idx = picker.list:row2idx(match.pos[1])
+              picker.list:_move(idx, true, true)
+            end,
+          }
+        end,
+      },
+      keys = { ["<a-s>"] = { "flash", mode = { "i", "n" } }, ["s"] = { "flash" } },
+    }
+  end
+
+  if ds.plugin.is_installed "trouble.nvim" then
+    trouble = {
+      actions = {
+        trouble_open = function(...) return require("trouble.sources.snacks").actions.trouble_open.action(...) end,
+      },
+      keys = { ["<c-q>"] = { "trouble_open", mode = { "i", "n" } } },
+    }
+  end
 
   ---@module 'snacks.nvim'
   ---@type snacks.picker.Config

@@ -253,52 +253,55 @@ return {
       local hipatterns = require "mini.hipatterns"
 
       local vtext = ds.pad(ds.icons.misc.FilledCircleLarge, "right")
-      local style = "full" -- "full" | "compact"
       local filetypes = { "css", "html" }
-
+      local style = "full" ---@type "full"|"compact"
+      local PRIORITY = 2000
       local cache = {} ---@type table<string,table<string,string>>
       local hl_groups = {} ---@type table<string,boolean>
+      local load_hl
 
-      local get_hl_group = function(hl)
-        local group = vim.inspect(hl):gsub("%W+", "_")
-        if not hl_groups[group] then
-          hl = type(hl) == "string" and { link = hl } or hl
-          hl = vim.deepcopy(hl, true)
-          hl.fg = hl.fg or ds.color "gray2"
-          if hl.fg == hl.bg then hl.fg = nil end
-          vim.api.nvim_set_hl(0, group, hl)
-          hl_groups[group] = true
+      load_hl = function(group_name, hl_spec)
+        if not hl_spec then
+          if cache[group_name] then return cache[group_name] end
+          cache[group_name] = {}
+          local base = ds.hl.get()
+          for k, v in pairs(base) do
+            cache[group_name][k] = load_hl(nil, v)
+          end
+          return cache[group_name]
         end
+
+        local group = vim.inspect(hl_spec):gsub("%W+", "_")
+        if hl_groups[group] then return group end
+        local hl = type(hl_spec) == "string" and { link = hl_spec } or vim.deepcopy(hl_spec, true)
+        hl.fg = hl.fg or ds.color "gray2"
+        if hl.fg == hl.bg then hl.fg = nil end
+        vim.api.nvim_set_hl(0, group, hl)
+        hl_groups[group] = true
         return group
       end
 
-      local load_highlights = function(group)
-        if cache[group] then return end
-        cache[group] = {}
-        local base = ds.hl.get()
-        for k, v in pairs(base) do
-          cache[group][k] = get_hl_group(v)
-        end
+      local get_id = function(buf)
+        local fname = vim.fs.normalize(vim.api.nvim_buf_get_name(buf or 0))
+        if not fname:find "lua/theme" then return end
+        return vim.fs.basename(vim.fs.dirname(fname)) .. "_" .. vim.fn.fnamemodify(fname, ":t:r")
       end
 
-      local get_config_file = function(buf)
-        local fname = vim.api.nvim_buf_get_name(buf or 0)
-        fname = vim.fs.normalize(fname)
-        if not fname:find "lua/theme" then return end
-        local base = vim.fs.basename(vim.fs.dirname(fname))
-        fname = base .. "_" .. vim.fn.fnamemodify(fname, ":t:r")
-        return fname
+      local can_hl = function(buf, colorscheme)
+        local id = get_id(buf)
+        if colorscheme then return ds.hl.show_preview and id end
+        return id or vim.tbl_contains(filetypes, vim.bo[buf].ft) or vim.b.minihipatterns_enabled
       end
 
       vim.api.nvim_create_autocmd("BufWritePost", {
         group = ds.hl.autocmd_group,
         pattern = "*/lua/theme/**.lua",
         callback = vim.schedule_wrap(function(args)
-          local group = get_config_file(args.buf) or ""
+          local id = get_id(args.buf) or ""
+          if not id:match "^groups" then return end
           hl_groups = {}
-          if not group:match "^groups" then return end
+          cache[id] = nil
           vim.cmd.colorscheme(vim.g.colors_name)
-          if group then cache[group] = nil end
           for _, buf in ipairs(hipatterns.get_enabled_buffers()) do
             hipatterns.update(buf)
           end
@@ -308,18 +311,16 @@ return {
       opts.highlighters = opts.highlighters or {}
       opts.highlighters.nvim_hl_groups = {
         pattern = function(buf)
-          if not ds.hl.show_preview then return end
-          local f = get_config_file(buf)
+          local f = can_hl(buf, true)
           if not f then return end
-          load_highlights(f)
-          if f:match "^groups" then return f and '^%s*%[?"?()[%w_%.@]+()"?%]?%s*=' end
-          return f and 'ds%.hl%.add%("?()[%w_%.@]+()"?%)?%s*,'
+          load_hl(f)
+          return f:match "^groups" and '^%s*%[?"?()[%w_%.@]+()"?%]?%s*=' or 'ds%.hl%.add%("?()[%w_%.@]+()"?%)?%s*,'
         end,
         group = function(buf, match, _)
-          local name = get_config_file(buf)
-          return name and cache[name][match]
+          local id = get_id(buf)
+          return id and cache[id][match]
         end,
-        extmark_opts = { priority = 2000 },
+        extmark_opts = { priority = PRIORITY },
       }
       opts.highlighters.nvim_hl_colors = {
         pattern = {
@@ -333,60 +334,49 @@ return {
           local parts = vim.split(match, ".", { plain = true })
           if parts[1]:sub(1, 1) == "c" then table.remove(parts, 1) end
           local color = ds.color(unpack(parts))
-          return type(color) == "string" and get_hl_group { fg = color }
+          return type(color) == "string" and load_hl(nil, { fg = color })
         end,
         extmark_opts = function(_, _, data)
-          return { virt_text = { { vtext, data.hl_group } }, virt_text_pos = "inline", priority = 2000 }
+          return { virt_text = { { vtext, data.hl_group } }, virt_text_pos = "inline", priority = PRIORITY }
         end,
       }
-      local hex = hipatterns.gen_highlighter.hex_color { priority = 2000, style = "inline", inline_text = vtext }
+      local hex = hipatterns.gen_highlighter.hex_color { priority = PRIORITY, style = "inline", inline_text = vtext }
       opts.highlighters.hex_color = {
-        pattern = function(buf)
-          local f = get_config_file(buf)
-          if not (f or vim.tbl_contains(filetypes, vim.bo[buf].ft) or vim.b.minihipatterns_enabled) then return end
-          return hex.pattern()
-        end,
+        pattern = function(buf) return can_hl(buf, false) and hex.pattern() end,
         group = hex.group,
         extmark_opts = function(_, _, data)
-          return { virt_text = { { vtext, data.hl_group } }, virt_text_pos = "inline", priority = 2000 }
+          return { virt_text = { { vtext, data.hl_group } }, virt_text_pos = "inline", priority = PRIORITY }
         end,
       }
       opts.highlighters.hex_shorthand = {
         pattern = "()#%x%x%x()%f[^%x%w]",
         group = function(_, _, data)
-          ---@type string
           local match = data.full_match
           local r, g, b = match:sub(2, 2), match:sub(3, 3), match:sub(4, 4)
           local hex_color = "#" .. r .. r .. g .. g .. b .. b
-
           return hipatterns.compute_hex_color_group(hex_color, "fg")
         end,
         extmark_opts = function(_, _, data)
-          return { virt_text = { { vtext, data.hl_group } }, virt_text_pos = "inline", priority = 2000 }
+          return { virt_text = { { vtext, data.hl_group } }, virt_text_pos = "inline", priority = PRIORITY }
         end,
       }
       opts.highlighters.tailwind = {
         pattern = function(buf)
           if not vim.tbl_contains(filetypes, vim.bo[buf].ft) then return end
-          if style == "full" then
-            return "%f[%w:-]()[%w:-]+%-[a-z%-]+%-%d+()%f[^%w:-]"
-          elseif style == "compact" then
-            return "%f[%w:-][%w:-]+%-()[a-z%-]+%-%d+()%f[^%w:-]"
-          end
+          return style == "full" and "%f[%w:-]()[%w:-]+%-[a-z%-]+%-%d+()%f[^%w:-]"
+            or "%f[%w:-][%w:-]+%-()[a-z%-]+%-%d+()%f[^%w:-]"
         end,
         group = function(_, _, data)
           local match = data.full_match
           local color, shade = match:match "[%w-]+%-([a-z%-]+)%-(%d+)"
-          shade = tonumber(shade)
-          local bg = vim.tbl_get(ds.ft.css.tailwind(), color, shade)
-          if bg then
-            local hl = "MiniHipatternsTailwind" .. color .. shade
-            vim.api.nvim_set_hl(0, hl, { fg = "#" .. bg })
-            return hl
-          end
+          local bg = vim.tbl_get(ds.ft.css.tailwind(), color, tonumber(shade))
+          if not bg then return end
+          local hl = "MiniHipatternsTailwind" .. color .. tonumber(shade)
+          vim.api.nvim_set_hl(0, hl, { fg = "#" .. bg })
+          return hl
         end,
         extmark_opts = function(_, _, data)
-          return { virt_text = { { vtext, data.hl_group } }, virt_text_pos = "inline", priority = 2000 }
+          return { virt_text = { { vtext, data.hl_group } }, virt_text_pos = "inline", priority = PRIORITY }
         end,
       }
     end,
