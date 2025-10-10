@@ -1,4 +1,25 @@
 {
   "printWidth": 80,
-  "proseWrap": "always"
+  "proseWrap": "always",
+  "overrides": [
+    {
+      "files": [
+        "*.graphql",
+        "*.html",
+        "*.js",
+        "*.json",
+        "*.json5",
+        "*.jsonc",
+        "*.jsx",
+        "*.ts",
+        "*.tsx",
+        "*.vue",
+        "*.yaml",
+        "*.yml"
+      ],
+      "options": {
+        "printWidth": 120
+      }
+    }
+  ]
 }
