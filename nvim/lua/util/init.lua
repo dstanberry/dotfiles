@@ -118,18 +118,6 @@ function M.tbl_each(list, callback)
   end
 end
 
----Searches for a partial match of a string `needle` in a list `haystack`
----@param haystack string[]
----@param needle string
----@return boolean, number # Returns true if found and the position in the list
-function M.tbl_match(haystack, needle)
-  for k, v in ipairs(haystack) do
-    local match = string.match(needle, vim.pesc(v)) or ""
-    if v == needle or #match > 0 then return true, k end
-  end
-  return false, -1
-end
-
 ---Converts a list of items into a value by iterating over each pair and transforming them
 ---with a callback function.
 ---If the keys in the table are all numeric, it will perform an ordered iteration over each pair.
