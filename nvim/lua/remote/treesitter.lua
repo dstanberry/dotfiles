@@ -14,11 +14,8 @@ return {
     init = function() end,
     opts = {
       ensure_installed = "all",
-      highlight = {
-        enable = true,
-        disable = { "tmux" },
-      },
-      indent = { enabled = true },
+      highlight = { enable = true, disable = { "tmux" } },
+      indent = { enable = true },
       incremental_selection = {
         enable = true,
         keymaps = {
@@ -39,23 +36,26 @@ return {
           "Run `:checkhealth nvim-treesitter` for more information.",
         }
       end
+      local installed = ts.get_installed "parsers"
       ts.setup(opts)
 
-      local installed = ts.get_installed "parsers"
-      local highlight = vim.tbl_get(opts, "highlight", "enable")
-      local disabled_hl = vim.tbl_get(opts, "highlight", "disable") or {}
-      local indent = vim.tbl_get(opts, "indent", "enable")
-      if highlight or indent then
-        vim.api.nvim_create_autocmd("FileType", {
-          group = ds.augroup "remote.treesitter",
-          callback = function(event)
-            local lang = vim.treesitter.language.get_lang(event.match)
-            if not vim.tbl_contains(installed, lang) then return end
-            if highlight and not vim.tbl_contains(disabled_hl, event.match) then pcall(vim.treesitter.start) end
-            if indent then vim.bo[event.buf].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()" end
-          end,
-        })
-      end
+      vim.api.nvim_create_autocmd("FileType", {
+        group = ds.augroup "remote.treesitter",
+        callback = function(event)
+          local lang = vim.treesitter.language.get_lang(event.match)
+          if not vim.tbl_contains(installed, lang) then return end
+          local enabled = function(feat, query)
+            local feature = vim.tbl_get(opts, feat) or {}
+            return feature.enable ~= false
+              and not (type(feature.disable) == "table" and vim.tbl_contains(feature.disable, lang))
+              and ds.treesitter.has(event.match, query)
+          end
+          if enabled("highlight", "highlights") then pcall(vim.treesitter.start) end
+          if enabled("indent", "indents") then
+            vim.bo[event.buf].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
+          end
+        end,
+      })
     end,
   },
   {
