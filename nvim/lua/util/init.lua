@@ -28,6 +28,15 @@ setmetatable(M, {
 ---@return number
 function M.augroup(name) return vim.api.nvim_create_augroup("ds." .. name, { clear = true }) end
 
+---Logs a message at the INFO log level using `vim.notify`
+function M.info(msg, opts) vim.notify(type(msg) ~= "string" and vim.inspect(msg) or msg, vim.log.levels.INFO, opts) end
+
+---Logs a message at the WARN log level using `vim.notify`
+function M.warn(msg, opts) vim.notify(type(msg) ~= "string" and vim.inspect(msg) or msg, vim.log.levels.WARN, opts) end
+
+---Logs a message at the ERROR log level using `vim.notify`
+function M.error(msg, opts) vim.notify(type(msg) ~= "string" and vim.inspect(msg) or msg, vim.log.levels.ERROR, opts) end
+
 ---Map a list of action names to their corresponding functions.
 ---If an action is found and returns a truthy value, the mapping stops.
 ---If no action is found or all return falsy values, the fallback is executed.
@@ -220,7 +229,7 @@ function M.replace(str, pattern, repl, n)
   return string.gsub(str, pattern, repl, n)
 end
 
----Provides a machine-local way of disabling various custom configuration options/settings
+---Provides a machine-local way of modifying the default behavior of a plugin or feature
 ---@param setting string
 ---@return boolean enabled
 function M.setting_enabled(setting)
