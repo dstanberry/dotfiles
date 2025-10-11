@@ -14,31 +14,26 @@ setmetatable(M, {
   end,
 })
 
----Options module for configuring buffer-local and window-local settings.
----@alias ft.options.kind fun(name: string, value: any, opts?: vim.api.keyset.option)
----@type table<string,ft.options.kind>
-M.options = {}
-
----Sets buffer-local options for a given buffer.
----@param buf number The buffer number to set options for.
----@param bo table<string, any> A table of buffer-local options to set.
----@param opts? vim.api.keyset.option Additional options for setting the buffer.
-function M.options.bo(buf, bo, opts)
-  bo = bo or {}
-  opts = vim.tbl_deep_extend("force", { buf = buf }, opts or {})
-  for k, v in pairs(bo) do
-    vim.api.nvim_set_option_value(k, v, opts)
+---Configures buffer and window options based on filetype and additional options.
+---@param buf number The buffer number to configure. Defaults to the current buffer.
+---@param options? table<string,boolean|number|string|table> A table of options to configure. Optional: Merges with defaults.
+---@param merge_defaults? boolean Whether to merge with default options for the filetype. Defaults to true.
+function M.set_options(buf, options, merge_defaults)
+  buf = buf or vim.api.nvim_get_current_buf()
+  options = options or {}
+  if merge_defaults ~= false then
+    options = vim.tbl_deep_extend("force", M.defaults[vim.bo[buf].filetype or ""] or {}, options)
   end
-end
+  if not vim.api.nvim_buf_is_valid(buf) then return end
 
----Sets window-local options for a given window.
----@param win number The window number to set options for.
----@param wo table<string, any> A table of window-local options to set.
----@param opts? vim.api.keyset.option Additional options for setting the buffer.
-function M.options.wo(win, wo, opts)
-  wo = wo or {}
-  opts = vim.tbl_deep_extend("force", { scope = "local", win = win }, opts or {})
-  for k, v in pairs(wo) do
+  local ok, parser = pcall(vim.treesitter.get_parser, buf)
+  local relnum = vim.b[buf].ts_highlight or (ok and parser ~= nil)
+  local opts, wo_opts = {}, {}
+
+  if not relnum then wo_opts.relativenumber = false end
+  options = vim.tbl_deep_extend("keep", options, wo_opts)
+  opts = vim.tbl_deep_extend("force", { scope = "local" }, opts or {})
+  for k, v in pairs(options) do
     vim.api.nvim_set_option_value(k, v, opts)
   end
 end
@@ -60,25 +55,6 @@ function M.treesitter.parse(lang, bufnr, callback)
     local tree_language = language_tree:lang()
     if tree_language == lang then callback(TStree) end
   end)
-end
-
----Configures buffer and window options based on filetype and additional options.
----@param buf number The buffer number to configure. Defaults to the current buffer.
----@param opts? { bo?: vim.api.keyset.option, wo?: vim.api.keyset.option } A table of options to configure. Merges with defaults.
-function M.set_options(buf, opts)
-  buf = buf or vim.api.nvim_get_current_buf()
-  opts = vim.tbl_deep_extend("force", M.defaults[vim.bo[buf].filetype or ""] or {}, opts or {})
-
-  for _, win in ipairs(vim.fn.win_findbuf(buf)) do
-    if not vim.api.nvim_win_is_valid(win) or vim.api.nvim_win_get_buf(win) ~= buf then return end
-    local ok, parser = pcall(vim.treesitter.get_parser, buf)
-    opts = vim.tbl_deep_extend("keep", opts, {
-      wo = { relativenumber = vim.b[buf].ts_highlight or (ok and parser ~= nil) },
-    })
-    M.options.wo(win, opts.wo)
-  end
-
-  M.options.bo(buf, opts.bo)
 end
 
 return M

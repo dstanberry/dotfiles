@@ -204,7 +204,7 @@ function M.on_attach(client, bufnr, server_capabilities)
   end
 
   if client:supports_method("textDocument/foldingRange", bufnr) then
-    ds.ft.set_options(bufnr, { wo = { foldexpr = "v:lua.vim.lsp.foldexpr()" } })
+    ds.ft.set_options(bufnr, { foldmethod = "expr", foldexpr = "v:lua.vim.lsp.foldexpr()" }, false)
   end
 
   if client:supports_method("textDocument/formatting", bufnr) then

@@ -8,12 +8,13 @@ return {
       if not ts.get_installed then return ds.error "`nvim-treesitter` is out of date. Please update it." end
       ts.update(nil, { summary = true })
     end,
-    lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
+    lazy = vim.fn.argc(-1) == 0,
     event = { "LazyFile", "VeryLazy" },
     cmd = { "TSInstall", "TSLog", "TSUninstall", "TSUpdate" },
     init = function() end,
     opts = {
       ensure_installed = "all",
+      folds = { enable = true },
       highlight = { enable = true, disable = { "tmux" } },
       indent = { enable = true },
       incremental_selection = {
@@ -50,9 +51,16 @@ return {
               and not (type(feature.disable) == "table" and vim.tbl_contains(feature.disable, lang))
               and ds.treesitter.has(event.match, query)
           end
+          if enabled("folds", "folds") then
+            ds.ft.set_options(
+              event.buf,
+              { foldmethod = "expr", foldexpr = "v:lua.require('util.ui').foldexpr()" },
+              false
+            )
+          end
           if enabled("highlight", "highlights") then pcall(vim.treesitter.start) end
           if enabled("indent", "indents") then
-            vim.bo[event.buf].indentexpr = "v:lua.require('nvim-treesitter').indentexpr()"
+            ds.ft.set_options(event.buf, { indentexpr = "v:lua.require('nvim-treesitter').indentexpr()" }, false)
           end
         end,
       })
