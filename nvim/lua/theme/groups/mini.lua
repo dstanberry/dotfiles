@@ -7,7 +7,7 @@ M.get = function(c)
   return {
     -- mini.files
     MiniFilesBorder         = { link = "FloatBorder" },
-    MiniFilesBorderModified = { fg = c.rose0, bg = c.bg0 },
+    MiniFilesBorderModified = { fg = c.rose1, bg = c.bg0 },
     MiniFilesCursorLine     = { bg = c.bg0 },
     MiniFilesTitle          = { fg = c.gray2, bg = c.bg0 },
     MiniFilesTitleFocused   = { fg = c.blue1, bg = c.bg0 },
@@ -21,7 +21,7 @@ M.get = function(c)
     MiniIconsGrey           = { fg = c.overlay1 },
     MiniIconsCyan           = { fg = c.cyan0 },
     MiniIconsBlue           = { fg = c.blue0 },
-    MiniIconsRed            = { fg = c.rose0 },
+    MiniIconsRed            = { fg = c.rose1 },
 
     -- mini.indentscope
     MiniIndentscopeSymbol   = { link = "@punctuation.bracket" }

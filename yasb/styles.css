@@ -32,18 +32,18 @@
 	/* kdark */
     --rosewater: #e4c1be;
     --flamingo: #cd8d88;
-	--pink: #eab8e0;
+	--pink: #c49fc0;
 	--mauve: #ac72a0;
 	--red: #bf616a;
-	--maroon: #a76369;
+	--maroon: #9d6066;
 	--peach: #d08770;
-	--yellow: #e0af68;
+	--yellow: #ddc380;
 	--green: #97b182;
-	--teal: #79bdaf;
+	--teal: #7ab5a5;
 	--sky: #77b3c5;
 	--sapphire: #5f8f9d;
 	--blue: #6f8fb4;
-	--blue1: #97b6e5; /* 'blue4' in nvim palette */
+	--blue1: #95abd6; /* 'blue4' in nvim palette */
 	--lavender: #94628a;
 	--text: #d8dee9;
 	--subtext1: #c9d1d9;

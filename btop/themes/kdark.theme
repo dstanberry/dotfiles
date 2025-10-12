@@ -43,19 +43,19 @@ theme[temp_mid]="#e0af68"
 theme[temp_end]="#bf616a"
 
 # CPU graph colors
-theme[cpu_start]="#79bdaf"
+theme[cpu_start]="#7ab5a5"
 theme[cpu_mid]="#5f8f9d"
-theme[cpu_end]="#8ed6ec"
+theme[cpu_end]="#89b8c4"
 
 # Mem/Disk free meter
 theme[free_start]="#ac72a0"
-theme[free_mid]="#8ed6ec"
+theme[free_mid]="#89b8c4"
 theme[free_end]="#6f8fb4"
 
 # Mem/Disk cached meter
 theme[cached_start]="#5f8f9d"
 theme[cached_mid]="#6f8fb4"
-theme[cached_end]="#8ed6ec"
+theme[cached_end]="#89b8c4"
 
 # Mem/Disk available meter
 theme[available_start]="#d08770"
@@ -64,7 +64,7 @@ theme[available_end]="#bf616a"
 
 # Mem/Disk used meter
 theme[used_start]="#97b182"
-theme[used_mid]="#79bdaf"
+theme[used_mid]="#7ab5a5"
 theme[used_end]="#77b3c5"
 
 # Download graph colors
@@ -74,7 +74,7 @@ theme[download_end]="#bf616a"
 
 # Upload graph colors
 theme[upload_start]="#97b182"
-theme[upload_mid]="#79bdaf"
+theme[upload_mid]="#7ab5a5"
 theme[upload_end]="#77b3c5"
 
 # Process box color gradient for threads, mem and cpu usage

@@ -35,12 +35,12 @@ gui:
   skipDiscardChangeWarning: false
   skipStashWarning: true
   authorColors:
-    "Demaro Stanberry": "#8ed6ec"
+    "Demaro Stanberry": "#89b8c4"
     "*": cyan
   branchColorPatterns:
     "feat/.+": "#d08770"
     "feature/.+": "#d08770"
-    "fix/.+": "#a76369"
+    "fix/.+": "#9d6066"
   branchColors:
     "main": "#b5e4ff"
     "master": "#b5e4ff"

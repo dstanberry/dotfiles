@@ -23,9 +23,9 @@
   "border_colours": {
     "unfocused": "#59595e",
     "unfocused_locked": "#94628a",
-    "floating": "#97b6e5",
-    "single": "#97b6e5",
-    "stack": "#f7768e",
+    "floating": "#95abd6",
+    "single": "#95abd6",
+    "stack": "#d88085",
     "monocle": "#7f849c"
   },
   "stackbar": {
@@ -34,7 +34,7 @@
     "label": "Title",
     "tabs": {
       "width": 200,
-      "focused_text": "#f7768e",
+      "focused_text": "#d88085",
       "unfocused_text": "#5a5a5a",
       "background": "#373737",
       "font_family": "Futura PT",

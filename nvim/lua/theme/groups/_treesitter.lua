@@ -103,9 +103,9 @@ M.get = function(c)
     ["@variable"]                     = { fg = c.fg1 },
     ["@variable.builtin"]             = { fg = c.fg2, bold = true },
     ["@variable.member"]              = { fg = c.fg1 },
-    ["@variable.parameter"]           = { fg = c.rose0 },
-    ["@variable.parameter.builtin"]   = { fg = c.rose0, bold = true },
-    ["@variable.parameter.reference"] = { fg = c.rose0 },
+    ["@variable.parameter"]           = { fg = c.rose1 },
+    ["@variable.parameter.builtin"]   = { fg = c.rose1, bold = true },
+    ["@variable.parameter.reference"] = { fg = c.rose1 },
 
     -- custom treesitter extended highlighting
     ["@markup.codeblock"]             = { link = "@markup.raw.markdown_inline"},

@@ -129,7 +129,7 @@ if hash fzf 2> /dev/null; then
     --color=gutter:#303033,border:#303033,scrollbar:#373737
     --color=preview-bg:#1f2021,preview-border:#59595e,preview-scrollbar:#3e3e33
     --color=info:#5f5f5f,prompt:#93b379,pointer:#bebebe
-    --color=marker:#b04b57,spinner:#516882,header:#97b6e5'
+    --color=marker:#b04b57,spinner:#516882,header:#95abd6'
 
   # define default behaviour for ctrl-t
   export FZF_CTRL_T_OPTS="
