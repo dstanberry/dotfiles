@@ -142,7 +142,7 @@ function M.toggle(curbuf)
   local name = M.default_formatter.modname or "lsp"
   local desc = ("auto format (%s)"):format((curbuf and "buffer" or "global"))
   local status = function() return not curbuf and (vim.g.autoformat == nil or vim.g.autoformat) or M.enabled() end
-  return ds.toggle({ name = name, desc = desc, get = status, set = M.enable }, curbuf)
+  return ds.toggle_config({ name = name, desc = desc, get = status, set = M.enable }, curbuf)
 end
 
 return M

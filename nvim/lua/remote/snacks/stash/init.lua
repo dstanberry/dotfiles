@@ -3,7 +3,7 @@
 ---@field gitbrowse remote.snacks.stash.gitbrowse
 ---@field lazygit remote.snacks.stash.lazygit
 ---@field indent remote.snacks.stash.indent
----@field notify remote.snacks.stash.notify
+---@field util remote.snacks.stash.util
 ---@field picker remote.snacks.stash.picker
 ---@field scratch remote.snacks.stash.scratch
 local M = {}

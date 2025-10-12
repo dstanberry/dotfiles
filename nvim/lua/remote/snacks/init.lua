@@ -51,7 +51,7 @@ return {
       vim.api.nvim_create_autocmd("User", {
         group = ds.augroup "remote.snacks",
         pattern = "VeryLazy",
-        callback = stash.notify.setup,
+        callback = stash.util.setup,
       })
     end,
     opts = function()

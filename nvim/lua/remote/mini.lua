@@ -249,13 +249,6 @@ return {
   {
     "nvim-mini/mini.hipatterns",
     event = "LazyFile",
-    keys = {
-      {
-        "<localleader><localleader>th",
-        function() vim.b.minihipatterns_enabled = not vim.b.minihipatterns_enabled end,
-        desc = "mini.hipatterns: toggle highlighters",
-      },
-    },
     init = function()
       vim.api.nvim_create_autocmd("User", {
         group = ds.augroup "remote.mini_hipatterns",
@@ -264,7 +257,7 @@ return {
           local keys = {
             {
               key = "<localleader>th",
-              make_opts = function()
+              opts = function()
                 local name = "mini.hipatterns"
                 local get = function() return vim.b.minihipatterns_enabled == nil or vim.b.minihipatterns_enabled end
                 local set = function()
@@ -276,24 +269,11 @@ return {
                     { title = name, id = "ds.remote.mini_hipatterns" }
                   )
                 end
-                return ds.toggle { name = name, desc = "buffer highlights", get = get, set = set }
+                return ds.toggle_config { name = name, desc = "buffer highlights", get = get, set = set }
               end,
             },
           }
-          ds.tbl_each(keys, function(entry)
-            local opts = vim.tbl_extend("force", {}, entry.make_opts())
-            if ds.plugin.is_installed "snacks.nvim" then
-              Snacks.toggle({
-                notify = false,
-                wk_desc = { enabled = opts.enabled, disabled = opts.disabled },
-                name = opts.desc,
-                get = opts.get,
-                set = opts.set,
-              }):map(entry.key)
-            else
-              if opts.map and type(opts.map) == "function" then opts.map(entry.key) end
-            end
-          end)
+          ds.tbl_each(keys, function(entry) ds.toggle_keymap(entry.key, entry.opts() or {}) end)
         end,
       })
     end,

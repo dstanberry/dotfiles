@@ -244,17 +244,15 @@ end
 ---@param opts {name: string, desc: string, set: fun(state:boolean, ...), get: fun():boolean }
 ---@param ... any Additional arguments to pass to the set function
 ---@return util.keymap_toggle.opts
-function M.toggle(opts, ...)
-  local extra_args = { ... }
-  local status = opts.get
-
+function M.toggle_config(opts, ...)
+  local setter_args = { ... }
   ---@type util.keymap_toggle.opts
   return {
     enabled = opts.name .. ": disable ",
     disabled = opts.name .. ": enable ",
     desc = opts.desc,
-    get = status,
-    set = function(state) opts.set(state, unpack(extra_args)) end,
+    get = opts.get,
+    set = function(state) opts.set(state, unpack(setter_args)) end,
     map = function(lhs, keymap_opts)
       keymap_opts = vim.tbl_deep_extend(
         "force",
@@ -264,11 +262,18 @@ function M.toggle(opts, ...)
       vim.keymap.set(
         keymap_opts.mode,
         lhs,
-        function() opts.set(not status(), unpack(extra_args)) end,
+        function() opts.set(not opts.get(), unpack(setter_args)) end,
         { desc = keymap_opts.desc, noremap = true, silent = true }
       )
     end,
   }
+end
+
+---Creates a "toggle" keymap using the provided key and options.
+---@param key string The key combination to map
+---@param opts util.keymap_toggle.opts Toggle options containing get, set, desc, etc.
+function M.toggle_keymap(key, opts)
+  if opts.map and type(opts.map) == "function" then opts.map(key) end
 end
 
 return M

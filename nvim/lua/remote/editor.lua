@@ -96,20 +96,7 @@ return {
             { key = "f<backspace>", opts = ds.format.toggle(true) },
             { key = "f<delete>", opts = ds.format.toggle() },
           }
-          ds.tbl_each(keys, function(entry)
-            local opts = vim.tbl_extend("force", {}, entry.opts)
-            if ds.plugin.is_installed "snacks.nvim" then
-              Snacks.toggle({
-                notify = false,
-                wk_desc = { enabled = opts.enabled, disabled = opts.disabled },
-                name = opts.desc,
-                get = opts.get,
-                set = opts.set,
-              }):map(entry.key)
-            else
-              if opts.map and type(opts.map) == "function" then opts.map(entry.key) end
-            end
-          end)
+          ds.tbl_each(keys, function(entry) ds.toggle_keymap(entry.key, entry.opts or {}) end)
         end,
       })
     end,
