@@ -200,7 +200,7 @@ return {
           prettier = {
             prepend_args = function(_, ctx)
               local config = get_config("prettier", ctx)
-              config = vim.uv.fs_realpath(config) or nil
+              config = vim.uv.fs_realpath(config or "")
               local fallback = vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, "shared", "formatters", "prettierrc.json")
               return { "--config", config or fallback }
             end,
