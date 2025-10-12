@@ -20,7 +20,9 @@ vim.keymap.set("i", "<c-w><c-l>", ds.ft.markdown.insert_link, { buffer = bufnr, 
 vim.keymap.set({ "n", "v" }, "<localleader>ib", ds.ft.markdown.toggle_bullet, { buffer = bufnr, desc = "markdown: toggle bullet" })
 vim.keymap.set({ "n", "v" }, "<localleader>ic", ds.ft.markdown.toggle_checkbox, { buffer = bufnr, desc = "markdown: toggle checkbox" })
 
+if not ds.has "win32" then
 -- NOTE: Completion engine will handle this better
 -- vim.keymap.set("i", "[[", markdown.zk.insert_link, { buffer = bufnr, desc = "zk: insert link to note" })
 vim.keymap.set("v", "{{", ds.ft.markdown.zk.insert_link_from_selection, { buffer = bufnr, desc = "zk: insert link to note" })
 -- stylua: ignore end
+end

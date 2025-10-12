@@ -146,6 +146,7 @@ return {
   },
   {
     "mrjones2014/smart-splits.nvim",
+    enabled = not ds.has "win32",
     keys = function()
       local _resize_left = function() require("smart-splits").resize_left(1) end
       local _resize_down = function() require("smart-splits").resize_down(1) end

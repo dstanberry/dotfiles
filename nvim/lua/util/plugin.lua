@@ -236,6 +236,8 @@ function M.setup(opts)
     defaults = { lazy = true },
     root = vim.fs.joinpath(vim.fn.stdpath "data", "lazy"),
     lockfile = vim.fs.joinpath(vim.fn.stdpath "config", "lua", "remote", "lazy-lock.json"),
+    diff = { cmd = "terminal_git" },
+    rocks = { enabled = not ds.has "win32" },
     ui = {
       backdrop = 95,
       border = vim.tbl_map(function(icon) return { icon, "FloatBorder" } end, ds.icons.border.Default),
@@ -249,7 +251,6 @@ function M.setup(opts)
         end,
       },
     },
-    diff = { cmd = "terminal_git" },
     performance = {
       cache = { enabled = true },
       rtp = {
