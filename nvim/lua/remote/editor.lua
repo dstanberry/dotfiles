@@ -81,10 +81,6 @@ return {
         group = ds.augroup "remote.conform",
         pattern = "VeryLazy",
         callback = function()
-          local keys = {
-            { key = "f<backspace>", opts = ds.format.toggle(true) },
-            { key = "f<delete>", opts = ds.format.toggle() },
-          }
           ds.format.register {
             name = "conform.nvim",
             modname = "conform",
@@ -95,6 +91,10 @@ return {
               local ret = require("conform").list_formatters(buf)
               return vim.tbl_map(function(v) return v.name end, ret)
             end,
+          }
+          local keys = {
+            { key = "f<backspace>", opts = ds.format.toggle(true) },
+            { key = "f<delete>", opts = ds.format.toggle() },
           }
           ds.tbl_each(keys, function(entry)
             local opts = vim.tbl_extend("force", {}, entry.opts)

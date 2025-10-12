@@ -237,4 +237,38 @@ function M.setting_enabled(setting)
   return value == true or value == ""
 end
 
+---@alias util.keymap_toggle.map fun(string, vim.keymap.set.Opts)
+---@alias util.keymap_toggle.opts {desc: string, enabled:string, disabled: string, map:util.keymap_toggle.map, set:fun(state:boolean), get:fun():boolean}
+
+---Generates a configuration table for keymaps to toggle functionality.
+---@param opts {name: string, desc: string, set: fun(state:boolean, ...), get: fun():boolean }
+---@param ... any Additional arguments to pass to the set function
+---@return util.keymap_toggle.opts
+function M.toggle(opts, ...)
+  local extra_args = { ... }
+  local status = opts.get
+
+  ---@type util.keymap_toggle.opts
+  return {
+    enabled = opts.name .. ": disable ",
+    disabled = opts.name .. ": enable ",
+    desc = opts.desc,
+    get = status,
+    set = function(state) opts.set(state, unpack(extra_args)) end,
+    map = function(lhs, keymap_opts)
+      keymap_opts = vim.tbl_deep_extend(
+        "force",
+        { mode = "n", desc = ("%s: toggle %s"):format(opts.name, opts.desc) },
+        keymap_opts or {}
+      )
+      vim.keymap.set(
+        keymap_opts.mode,
+        lhs,
+        function() opts.set(not status(), unpack(extra_args)) end,
+        { desc = keymap_opts.desc, noremap = true, silent = true }
+      )
+    end,
+  }
+end
+
 return M

@@ -135,29 +135,14 @@ function M.resolve(buf)
   end, M.formatters)
 end
 
----@alias util_format.toggle.map fun(string, vim.keymap.set.Opts)
----@alias util.format.toggle.opts {desc: string, enabled:string, disabled: string, map:util_format.toggle.map, set:fun(state:boolean), get:fun():boolean}
-
----Generates a configuration table for keymaps to toggle auto-formatting functionality.
+---Toggle auto-formatting either globally or only for the current buffer.
 ---@param curbuf? boolean
----@return util.format.toggle.opts
+---@return util.keymap_toggle.opts
 function M.toggle(curbuf)
   local name = M.default_formatter.modname or "lsp"
   local desc = ("auto format (%s)"):format((curbuf and "buffer" or "global"))
   local status = function() return not curbuf and (vim.g.autoformat == nil or vim.g.autoformat) or M.enabled() end
-
-  ---@type util.format.toggle.opts
-  return {
-    enabled = name .. ": disable ",
-    disabled = name .. ": enable ",
-    desc = desc,
-    get = status,
-    set = function(state) M.enable(state, curbuf) end,
-    -- stylua: ignore
-    map = function(lhs, opts)
-      opts = vim.tbl_deep_extend("force", { mode = "n", desc = ("%s: toggle %s"):format(name, desc) }, opts or {})
-      vim.keymap.set( opts.mode, lhs, function() M.enable(not status(), curbuf) end, { desc = opts.desc, noremap = true, silent = true }) end,
-  }
+  return ds.toggle({ name = name, desc = desc, get = status, set = M.enable }, curbuf)
 end
 
 return M
