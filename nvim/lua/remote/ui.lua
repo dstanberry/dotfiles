@@ -630,6 +630,7 @@ return {
             { "<localleader>m", group = "notes (markdown)" },
             { "<localleader>q", group = "quickfix (trouble)" },
             { "<localleader>s", group = "search" },
+            { "<localleader>t", group = "toggle" },
           },
           {
             mode = "v",

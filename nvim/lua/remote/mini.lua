@@ -249,6 +249,54 @@ return {
   {
     "nvim-mini/mini.hipatterns",
     event = "LazyFile",
+    keys = {
+      {
+        "<localleader><localleader>th",
+        function() vim.b.minihipatterns_enabled = not vim.b.minihipatterns_enabled end,
+        desc = "mini.hipatterns: toggle highlighters",
+      },
+    },
+    init = function()
+      vim.api.nvim_create_autocmd("User", {
+        group = ds.augroup "remote.mini_hipatterns",
+        pattern = "VeryLazy",
+        callback = function()
+          local keys = {
+            {
+              key = "<localleader>th",
+              make_opts = function()
+                local name = "mini.hipatterns"
+                local get = function() return vim.b.minihipatterns_enabled == nil or vim.b.minihipatterns_enabled end
+                local set = function()
+                  vim.b.minihipatterns_enabled = not vim.b.minihipatterns_enabled
+                  local enabled = vim.b.minihipatterns_enabled == true
+                  vim.cmd "do BufRead"
+                  ds[enabled and "info" or "warn"](
+                    ("- [%s] buffer highlighter %s"):format(enabled and "x" or " ", enabled and "enabled" or "disabled"),
+                    { title = name, id = "ds.remote.mini_hipatterns" }
+                  )
+                end
+                return ds.toggle { name = name, desc = "buffer highlights", get = get, set = set }
+              end,
+            },
+          }
+          ds.tbl_each(keys, function(entry)
+            local opts = vim.tbl_extend("force", {}, entry.make_opts())
+            if ds.plugin.is_installed "snacks.nvim" then
+              Snacks.toggle({
+                notify = false,
+                wk_desc = { enabled = opts.enabled, disabled = opts.disabled },
+                name = opts.desc,
+                get = opts.get,
+                set = opts.set,
+              }):map(entry.key)
+            else
+              if opts.map and type(opts.map) == "function" then opts.map(entry.key) end
+            end
+          end)
+        end,
+      })
+    end,
     opts = function(_, opts)
       local hipatterns = require "mini.hipatterns"
 
@@ -309,7 +357,7 @@ return {
       })
 
       opts.highlighters = opts.highlighters or {}
-      opts.highlighters.nvim_hl_groups = {
+      opts.highlighters.NVIM_GROUPS = {
         pattern = function(buf)
           local f = can_hl(buf, true)
           if not f then return end
@@ -322,7 +370,7 @@ return {
         end,
         extmark_opts = { priority = PRIORITY },
       }
-      opts.highlighters.nvim_hl_colors = {
+      opts.highlighters.NVIM_COLORS = {
         pattern = {
           "%f[%w]()c%.[%w_%.]+()%f[%W]",
           'ds%.color%("?()[%w_%.@]+()"?%)?%s*',
@@ -341,15 +389,15 @@ return {
         end,
       }
       local hex = hipatterns.gen_highlighter.hex_color { priority = PRIORITY, style = "inline", inline_text = vtext }
-      opts.highlighters.hex_color = {
+      opts.highlighters.HEX = {
         pattern = function(buf) return can_hl(buf, false) and hex.pattern() end,
         group = hex.group,
         extmark_opts = function(_, _, data)
           return { virt_text = { { vtext, data.hl_group } }, virt_text_pos = "inline", priority = PRIORITY }
         end,
       }
-      opts.highlighters.hex_shorthand = {
-        pattern = "()#%x%x%x()%f[^%x%w]",
+      opts.highlighters.HEX_ABBR = {
+        pattern = function(buf) return can_hl(buf, false) and "()#%x%x%x()%f[^%x%w]" end,
         group = function(_, _, data)
           local match = data.full_match
           local r, g, b = match:sub(2, 2), match:sub(3, 3), match:sub(4, 4)
@@ -360,9 +408,9 @@ return {
           return { virt_text = { { vtext, data.hl_group } }, virt_text_pos = "inline", priority = PRIORITY }
         end,
       }
-      opts.highlighters.tailwind = {
+      opts.highlighters.TAILWIND_CSS = {
         pattern = function(buf)
-          if not vim.tbl_contains(filetypes, vim.bo[buf].ft) then return end
+          if not not can_hl(buf, false) then return end
           return style == "full" and "%f[%w:-]()[%w:-]+%-[a-z%-]+%-%d+()%f[^%w:-]"
             or "%f[%w:-][%w:-]+%-()[a-z%-]+%-%d+()%f[^%w:-]"
         end,
