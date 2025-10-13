@@ -66,16 +66,14 @@ vim.keymap.set(
 )
 
 -- NOTE: handled by |smart-splits.nvim|
-if ds.has "win32" then
-  -- switch to left window
-  vim.keymap.set("n", "<c-h>", "<c-w><c-h>")
-  -- switch to bottom window
-  vim.keymap.set("n", "<c-j>", "<c-w><c-j>")
-  -- switch to top window
-  vim.keymap.set("n", "<c-k>", "<c-w><c-k>")
-  -- switch to right window
-  vim.keymap.set("n", "<c-l>", "<c-w><c-l>")
-end
+-- switch to left window
+-- vim.keymap.set("n", "<c-h>", "<c-w><c-h>")
+-- switch to bottom window
+-- vim.keymap.set("n", "<c-j>", "<c-w><c-j>")
+-- switch to top window
+-- vim.keymap.set("n", "<c-k>", "<c-w><c-k>")
+-- switch to right window
+-- vim.keymap.set("n", "<c-l>", "<c-w><c-l>")
 
 -- decrease active split horizontal size
 vim.keymap.set("n", "<a-h>", "<c-w><", { desc = "decrease window width" })
