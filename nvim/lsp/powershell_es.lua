@@ -16,11 +16,14 @@ local command_fmt = {
   "-LogLevel","Normal",
 }
 local basedir = ds.plugin.get_pkg_path "powershell-editor-services"
-local command = table.concat(command_fmt, " "):format(basedir, basedir, vim.fn.stdpath "cache", vim.fn.stdpath "cache")
+local cache = vim.fn.stdpath "cache"
+local command = table.concat(command_fmt, " "):format(basedir, basedir, cache, cache)
 
 M.config = {
   bundle_path = basedir,
-  cmd = { "pwsh", "-NoLogo", "-NoProfile", "-Command", command },
+  cmd = function(dispatchers)
+    return vim.lsp.rpc.start({ "pwsh.exe", "-NoLogo", "-NoProfile", "-Command", command }, dispatchers)
+  end,
   settings = {
     powershell = {
       codeFormatting = {
