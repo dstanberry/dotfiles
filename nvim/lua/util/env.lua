@@ -9,7 +9,7 @@ local M = setmetatable({}, {
 ---Can be a dot-separated string or a list of strings for nested access.
 function M.get(name)
   name = type(name) == "table" and name or vim.split(name, ".", { plain = true })
-  return name and vim.tbl_get(vim.g, "ds_env", unpack(name)) or ""
+  return vim.tbl_get(vim.g, "ds_env", unpack(name))
 end
 
 ---Utility function to load machine-specific overrides that can disable various configuration options/settings
