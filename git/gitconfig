@@ -83,6 +83,11 @@
 [diff]
 	algorithm = histogram
 	compactionHeuristic = true
+	submodule = log
+
+[fetch]
+	prune = true
+	pruneTag = true
 
 [format]
 	pretty = format:%C(yellow)%h%Creset%C(auto)%d%Creset %C(magenta)(%cr) %C(cyan)%aN%Creset %s%Creset
@@ -104,11 +109,12 @@
 	decorate = short
 
 [merge]
-	tool = nvim
 	prompt = false
+	tool = nvimdiff
 
-[mergetool "nvim"]
+[mergetool "nvimdiff"]
 	cmd = nvim +"DiffviewOpen"
+	keepBackup = false
 
 [pager]
 	diff = delta
@@ -120,11 +126,20 @@
 	status = true
 
 [pull]
-	rebase = false
+	rebase = true
+
+[push]
+	default = current
+	autoSetupRemote = true
+	followTags = true
 
 [rebase]
-	autosquash = true
 	autoStash = true
+	autoSquash = true
+	updateRefs = true
+
+[rerere]
+	enabled = true
 
 [status]
 	submoduleSummary = true
