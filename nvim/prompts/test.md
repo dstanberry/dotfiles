@@ -5,6 +5,8 @@ appropriate testing frameworks.
 
 #### Requirements
 
+- Ensure fenced code blocks and markdown tables have lines no longer than 80
+  characters.
 - **Structure**: Follow Arrange–Act–Assert (AAA) pattern with single behavior
   per test
 - **Framework**: Use modern, idiomatic testing libraries for the target language
@@ -26,4 +28,5 @@ appropriate testing frameworks.
 - **Layout**: Follow standard project structure with conventional naming
 - **Performance**: Fast execution with no external dependencies
 
-If language/framework unspecified, ask one clarifying question.
+If language/framework unspecified and/or confidence in task is below 100%, ask
+one clarifying question.

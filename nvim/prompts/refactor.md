@@ -12,6 +12,8 @@ preserving observable behavior and public APIs.
 - Ensure functional parity; explicitly call out unavoidable behavior changes
 - If any refactoring aspect is ambiguous or risky, ask targeted clarifying
   questions before proceeding
+- Ensure fenced code blocks and markdown tables have lines no longer than 80
+  characters.
 
 #### Refactoring Principles
 

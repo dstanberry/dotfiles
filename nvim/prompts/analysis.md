@@ -48,3 +48,5 @@ provided code, with explicit assumptions.
 - Include concrete examples and naming improvements
 - Do not rewrite code; focus on explanation, structure, and naming clarity
 - Provide concrete, actionable suggestions tailored to the code/files
+- Ensure fenced code blocks and markdown tables have lines no longer than 80
+  characters.
