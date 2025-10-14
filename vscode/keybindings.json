@@ -1,0 +1,7 @@
+[
+  {
+    "key": "ctrl+k ctrl+b",
+    "command": "workbench.action.toggleActivityBarVisibility",
+    "when": "editorFocus"
+  }
+]
