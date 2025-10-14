@@ -14,6 +14,18 @@ filter RemoveTrailingSeparator {
 	$_ -replace "[/\\]$", ''
 }
 
+function FixInvokePrompt {
+	$previousOutputEncoding = [Console]::OutputEncoding
+	[Console]::OutputEncoding = [Text.Encoding]::UTF8
+	try {
+		[Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt()
+	}
+ finally {
+		[Console]::OutputEncoding = $previousOutputEncoding
+	}
+
+}
+
 function Get-Glyph {
 	param([int] $Code)
 	if ((0 -le $Code) -and ($Code -le 0xFFFF)) {
@@ -40,16 +52,4 @@ function Get-ItemLength {
 function Test-Administrator {
 	$user = [Security.Principal.WindowsIdentity]::GetCurrent();
 	(New-Object Security.Principal.WindowsPrincipal $user).IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)
-}
-
-function FixInvokePrompt {
-	$previousOutputEncoding = [Console]::OutputEncoding
-	[Console]::OutputEncoding = [Text.Encoding]::UTF8
-	try {
-		[Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt()
-	}
- finally {
-		[Console]::OutputEncoding = $previousOutputEncoding
-	}
-
 }
