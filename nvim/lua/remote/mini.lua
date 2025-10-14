@@ -259,10 +259,23 @@ return {
               key = "<localleader>th",
               opts = function()
                 local name = "mini.hipatterns"
-                local get = function() return vim.b.minihipatterns_enabled == nil or vim.b.minihipatterns_enabled end
+                local get = function()
+                  local buf = vim.api.nvim_get_current_buf()
+                  local fname = vim.api.nvim_buf_get_name(buf)
+                  if fname:match "nvim/lua/theme/groups" then return ds.hl.show_preview end
+                  return vim.b.minihipatterns_enabled == nil or vim.b.minihipatterns_enabled
+                end
                 local set = function()
-                  vim.b.minihipatterns_enabled = not vim.b.minihipatterns_enabled
-                  local enabled = vim.b.minihipatterns_enabled == true
+                  local buf = vim.api.nvim_get_current_buf()
+                  local fname = vim.api.nvim_buf_get_name(buf)
+                  local enabled
+                  if fname:match "nvim/lua/theme/groups" then
+                    ds.hl.show_preview = not ds.hl.show_preview
+                    enabled = ds.hl.show_preview == true
+                  else
+                    vim.b.minihipatterns_enabled = not vim.b.minihipatterns_enabled
+                    enabled = vim.b.minihipatterns_enabled == true
+                  end
                   vim.cmd "do BufRead"
                   ds[enabled and "info" or "warn"](
                     ("- [%s] buffer highlighter %s"):format(enabled and "x" or " ", enabled and "enabled" or "disabled"),
