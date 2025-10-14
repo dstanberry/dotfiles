@@ -1,0 +1,372 @@
+{
+  "$help": "https://aka.ms/terminal-documentation",
+  "$schema": "https://aka.ms/terminal-profiles-schema-preview",
+  "alwaysOnTop": false,
+  "alwaysShowNotificationIcon": false,
+  "confirmCloseAllTabs": true,
+  "copyFormatting": "all",
+  "copyOnSelect": true,
+  "defaultProfile": "{1d2d9f1c-0192-5285-8115-38593c2c526e}",
+  "disableAnimations": false,
+  "focusFollowMouse": false,
+  "launchMode": "focus",
+  "minimizeToNotificationArea": false,
+  "showTabsInTitlebar": true,
+  "startOnUserLogin": true,
+  "theme": "KDark",
+  "trimBlockSelection": true,
+  "trimPaste": true,
+  "wordDelimiters": " /\\()\"'-.,:;<>~!@#$%^&*|+=[]{}~?\u2502",
+  "actions": [
+    {
+      "id": "User.sendInput.ControlI",
+      "command": { "action": "sendInput", "input": "\u001b[105;5u" }
+    },
+    {
+      "id": "User.sendInput.ControlBackspace",
+      "command": { "action": "sendInput", "input": "\u001b[8;5u" }
+    },
+    {
+      "id": "User.sendInput.ShiftEnter",
+      "command": { "action": "sendInput", "input": "\u001b[13;2u" }
+    },
+    {
+      "id": "User.sendInput.ControlSpace",
+      "command": { "action": "sendInput", "input": "\u001b[64;5u" }
+    },
+    {
+      "id": "User.sendInput.ControlShiftEnter",
+      "command": { "action": "sendInput", "input": "\u001b[13;6u" }
+    },
+    {
+      "id": "User.sendInput.ControlEnter",
+      "command": { "action": "sendInput", "input": "\u001b[13;5u" }
+    }
+  ],
+  "keybindings": [
+    // disabled keybinds
+    { "id": null, "keys": "alt+enter" },
+    { "id": null, "keys": "ctrl+c" },
+    { "id": null, "keys": "ctrl+v" },
+    // clipboard
+    { "id": "Terminal.CopyToClipboard", "keys": "ctrl+shift+c" },
+    { "id": "Terminal.PasteFromClipboard", "keys": "ctrl+shift+v" },
+    // text manipulation
+    { "id": "Terminal.ResetFontSize", "keys": "ctrl+shift+`" },
+    { "id": "Terminal.IncreaseFontSize", "keys": "ctrl+shift+delete" },
+    { "id": "Terminal.DecreaseFontSize", "keys": "ctrl+shift+backspace" },
+    { "id": "Terminal.ClearBuffer", "keys": "ctrl+shift+g" },
+    // app management
+    { "id": "Terminal.ToggleFocusMode", "keys": "ctrl+;" },
+    { "id": "Terminal.ToggleCommandPalette", "keys": "ctrl+shift+p" },
+    { "id": "Terminal.OpenSettingsUI", "keys": "ctrl+shift+s" },
+    // passthrough
+    { "id": "User.sendInput.ControlShiftEnter", "keys": "ctrl+shift+enter" },
+    { "id": "User.sendInput.ControlBackspace", "keys": "ctrl+backspace" },
+    { "id": "User.sendInput.ControlEnter", "keys": "ctrl+enter" },
+    // { "id": "User.sendInput.ControlSpace", "keys": "ctrl+space" },
+    { "id": "User.sendInput.ControlI", "keys": "ctrl+i" },
+    { "id": "User.sendInput.ShiftEnter", "keys": "shift+enter" },
+    // window/pane management
+    { "id": "Terminal.DuplicatePaneRight", "keys": "ctrl+shift+/" },
+    { "id": "Terminal.DuplicatePaneDown", "keys": "ctrl+shift+minus" },
+    { "id": "Terminal.MoveFocusDown", "keys": "ctrl+shift+j" },
+    { "id": "Terminal.MoveFocusUp", "keys": "ctrl+shift+k" },
+    { "id": "Terminal.MoveFocusLeft", "keys": "ctrl+shift+h" },
+    { "id": "Terminal.MoveFocusRight", "keys": "ctrl+shift+l" },
+    { "id": "Terminal.ResizePaneDown", "keys": "alt+shift+j" },
+    { "id": "Terminal.ResizePaneUp", "keys": "alt+shift+k" },
+    { "id": "Terminal.ResizePaneLeft", "keys": "alt+shift+h" },
+    { "id": "Terminal.ResizePaneRight", "keys": "alt+shift+l" },
+    { "id": "Terminal.TogglePaneZoom", "keys": "ctrl+shift+z" },
+    // tab navigation
+    { "id": "Terminal.PrevTab", "keys": "ctrl+shift+d" },
+    { "id": "Terminal.NextTab", "keys": "ctrl+shift+f" },
+    { "id": "Terminal.CloseTab", "keys": "ctrl+shift+w" }
+  ],
+  "profiles": {
+    "defaults": {
+      "antialiasingMode": "cleartype",
+      "bellStyle": "none",
+      "closeOnExit": "graceful",
+      "colorScheme": "KDark",
+      "cursorShape": "filledBox",
+      "font": {
+        "builtinGlyphs": true,
+        "cellHeight": "1.50",
+        "face": "Cartograph CF,Symbols Nerd Font,LegacyComputing",
+        "features": {
+          "calt": 1,
+          "liga": 1,
+          "ss01": 0
+        },
+        "size": 10,
+        "weight": "light"
+      },
+      "intenseTextStyle": "all",
+      "padding": "4, 5, 0, 1",
+      "scrollbarState": "hidden",
+      "useAcrylic": false
+    },
+    "list": [
+      {
+        "guid": "{1d2d9f1c-0192-5285-8115-38593c2c526e}",
+        "hidden": false,
+        "icon": "%userprofile%/.config/wt/assets/gentoo.ico",
+        "name": "Gentoo",
+        "source": "Windows.Terminal.Wsl",
+        "startingDirectory": "/home/demaro"
+      },
+      {
+        "commandline": "pwsh.exe -NoLogo",
+        "guid": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+        "hidden": false,
+        "icon": "%userprofile%/.config/wt/assets/pwsh.ico",
+        "name": "PowerShell Core",
+        "source": "Windows.Terminal.PowershellCore"
+      },
+      {
+        "commandline": "powershell.exe -NoLogo",
+        "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+        "hidden": false,
+        "icon": "%userprofile%/.config/wt/assets/microsoft.ico",
+        "name": "Windows PowerShell"
+      },
+      {
+        "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+        "hidden": false,
+        "icon": "%userprofile%/.config/wt/assets/ms-dos.ico",
+        "name": "Command Prompt"
+      },
+      {
+        "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
+        "hidden": true,
+        "name": "Azure Cloud Shell",
+        "source": "Windows.Terminal.Azure"
+      },
+      {
+        "guid": "{6ded2573-59d6-5b93-8014-be395890e140}",
+        "hidden": false,
+        "name": "Developer Command Prompt for VS 2022",
+        "source": "Windows.Terminal.VisualStudio"
+      },
+      {
+        "guid": "{6f0c077b-1cea-56f3-aa10-c4a51b22574c}",
+        "hidden": false,
+        "name": "Developer PowerShell for VS 2022",
+        "source": "Windows.Terminal.VisualStudio"
+      },
+      {
+        "commandline": "C:/tools/msys64/msys2_shell.cmd -defterm -here -no-start -use-full-path -msys",
+        "guid": "{71160544-14d8-4194-af25-d05feeac7233}",
+        "hidden": false,
+        "name": "MSYS / MSYS2",
+        "startingDirectory": "C:/tools/msys64/home/%USERNAME%"
+      },
+      {
+        "commandline": "C:/tools/msys64/msys2_shell.cmd -defterm -here -no-start -use-full-path -mingw64",
+        "guid": "{17da3cac-b318-431e-8a3e-7fcdefe6d114}",
+        "hidden": false,
+        "name": "MINGW64 / MSYS2",
+        "startingDirectory": "C:/tools/msys64/home/%USERNAME%"
+      }
+    ]
+  },
+  "newTabMenu": [
+    {
+      "profile": "{1d2d9f1c-0192-5285-8115-38593c2c526e}",
+      "type": "profile"
+    },
+    {
+      "profile": "{574e775e-4f2a-5b96-ac1e-a2962a402336}",
+      "type": "profile"
+    },
+    {
+      "type": "separator"
+    },
+    {
+      "allowEmpty": false,
+      "entries": [
+        {
+          "profile": "{71160544-14d8-4194-af25-d05feeac7233}",
+          "type": "profile"
+        },
+        {
+          "profile": "{17da3cac-b318-431e-8a3e-7fcdefe6d114}",
+          "type": "profile"
+        }
+      ],
+      "icon": null,
+      "inline": "never",
+      "name": "Linux",
+      "type": "folder"
+    },
+    {
+      "allowEmpty": false,
+      "entries": [
+        {
+          "profile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
+          "type": "profile"
+        },
+        {
+          "profile": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
+          "type": "profile"
+        }
+      ],
+      "icon": null,
+      "inline": "never",
+      "name": "Legacy",
+      "type": "folder"
+    },
+    {
+      "allowEmpty": false,
+      "entries": [
+        {
+          "profile": "{6ded2573-59d6-5b93-8014-be395890e140}",
+          "type": "profile"
+        },
+        {
+          "profile": "{6f0c077b-1cea-56f3-aa10-c4a51b22574c}",
+          "type": "profile"
+        }
+      ],
+      "icon": null,
+      "inline": "never",
+      "name": "Visual Studio",
+      "type": "folder"
+    }
+  ],
+  "schemes": [
+    {
+      "name": "Catppuccin Frappe",
+      "foreground": "#C6D0F5",
+      "background": "#303446",
+      "cursorColor": "#F2D5CF",
+      "selectionBackground": "#626880",
+      "black": "#51576D",
+      "blue": "#8CAAEE",
+      "cyan": "#81C8BE",
+      "green": "#A6D189",
+      "purple": "#F4B8E4",
+      "red": "#E78284",
+      "white": "#B5BFE2",
+      "yellow": "#E5C890",
+      "brightBlack": "#626880",
+      "brightBlue": "#8CAAEE",
+      "brightCyan": "#81C8BE",
+      "brightGreen": "#A6D189",
+      "brightPurple": "#F4B8E4",
+      "brightRed": "#E78284",
+      "brightWhite": "#A5ADCE",
+      "brightYellow": "#E5C890"
+    },
+    {
+      "name": "Catppuccin Mocha",
+      "cursorColor": "#F5E0DC",
+      "background": "#1E1E2E",
+      "foreground": "#CDD6F4",
+      "selectionBackground": "#585B70",
+      "black": "#45475A",
+      "blue": "#89B4FA",
+      "cyan": "#94E2D5",
+      "green": "#A6E3A1",
+      "purple": "#F5C2E7",
+      "red": "#F38BA8",
+      "white": "#BAC2DE",
+      "yellow": "#F9E2AF",
+      "brightBlack": "#585B70",
+      "brightBlue": "#89B4FA",
+      "brightCyan": "#94E2D5",
+      "brightGreen": "#A6E3A1",
+      "brightPurple": "#F5C2E7",
+      "brightRed": "#F38BA8",
+      "brightWhite": "#A6ADC8",
+      "brightYellow": "#F9E2AF"
+    },
+    {
+      "name": "KDark",
+      "cursorColor": "#92929D",
+      "background": "#303031",
+      "foreground": "#c9d1d9",
+      "selectionBackground": "#48525e",
+      "black": "#59595e",
+      "blue": "#6f8fb4",
+      "cyan": "#77b3c5",
+      "green": "#7f966d",
+      "purple": "#94628a",
+      "red": "#bf616a",
+      "white": "#c9d1d9",
+      "yellow": "#d3b67d",
+      "brightBlack": "#59595e",
+      "brightBlue": "#6f8fb4",
+      "brightCyan": "#77b3c5",
+      "brightGreen": "#7f966d",
+      "brightPurple": "#94628a",
+      "brightRed": "#bf616a",
+      "brightWhite": "#c9d1d9",
+      "brightYellow": "#d3b67d"
+    }
+  ],
+  "themes": [
+    {
+      "name": "Catppuccin Frappe",
+      "tab": {
+        "background": "#303446FF",
+        "iconStyle": "default",
+        "showCloseButton": "hover",
+        "unfocusedBackground": null
+      },
+      "tabRow": {
+        "background": "#232634FF",
+        "unfocusedBackground": "#232634FF"
+      },
+      "window": {
+        "applicationTheme": "dark",
+        "experimental.rainbowFrame": false,
+        "frame": null,
+        "unfocusedFrame": null,
+        "useMica": false
+      }
+    },
+    {
+      "name": "Catppuccin Mocha",
+      "tab": {
+        "background": "#1E1E2EFF",
+        "iconStyle": "default",
+        "showCloseButton": "hover",
+        "unfocusedBackground": null
+      },
+      "tabRow": {
+        "background": "#1E1E2EFF",
+        "unfocusedBackground": "#1E1E2EFF"
+      },
+      "window": {
+        "applicationTheme": "dark",
+        "experimental.rainbowFrame": false,
+        "frame": null,
+        "unfocusedFrame": null,
+        "useMica": false
+      }
+    },
+    {
+      "name": "KDark",
+      "tab": {
+        "background": "terminalBackground",
+        "iconStyle": "default",
+        "showCloseButton": "hover",
+        "unfocusedBackground": null
+      },
+      "tabRow": {
+        "background": "terminalBackground",
+        "unfocusedBackground": "#373737FF"
+      },
+      "window": {
+        "applicationTheme": "dark",
+        "experimental.rainbowFrame": false,
+        "frame": null,
+        "unfocusedFrame": null,
+        "useMica": false
+      }
+    }
+  ]
+}
