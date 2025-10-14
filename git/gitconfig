@@ -61,21 +61,21 @@
 
 [delta]
 	colorMoved = default
-	commit-decoration-style = "#bebebe" box ul
-	features = line-numbers decorationj
+	commit-decoration-style = "#b8bec9" box ul
+	features = line-numbers decorations syntax-highlighing
 	file-decoration-style = none
 	file-style = omit
 	hunk-header-style = file line-number syntax
     hunk-header-file-style = "#6f8fb4" bold
 	hunk-header-decoration-style = black box ul
     hunk-header-line-number-style = bold dim
-	line-numbers-left-style = "#5f5f5f"
-	line-numbers-right-style = "#5f5f5f"
+	line-numbers-left-style = "#59595e"
+	line-numbers-right-style = "#59595e"
 	line-numbers-minus-style = "#f75149"
 	line-numbers-plus-style = "#3fb950"
 	line-numbers-zero-style = 243
-	plus-style = syntax "#132E1f"
-	minus-style = syntax "#36191c"
+	plus-style = syntax "#1a2b1e"
+	minus-style = syntax "#2b1e1f"
 	minus-emph-style = syntax "#882728"
 	plus-emph-style = syntax "#226d33"
 	syntax-theme = kdark

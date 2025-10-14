@@ -14,7 +14,7 @@ gui:
       - blue
       - bold
     inactiveBorderColor:
-      - "#5f5f5f"
+      - "#59595e"
     optionsTextColor:
       - blue
     selectedLineBgColor:

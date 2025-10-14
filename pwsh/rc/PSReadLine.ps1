@@ -4,7 +4,7 @@ $PSReadlineOptions = @{
 	HistorySearchCursorMovesToEnd = $true
 	Colors = @{
 		"Command" = "Green"
-		"InlinePrediction" = "#5f5f5f"
+		"InlinePrediction" = "#59595e"
 		"Operator" = "White"
 		"Parameter" = "White"
 	}

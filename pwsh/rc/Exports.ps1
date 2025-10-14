@@ -37,12 +37,12 @@ $env:FZF_DEFAULT_OPTS = '
 --marker=""
 --scrollbar="▌▐"
 --color=dark
---color=fg:#bebebe,bg:#303033,hl:#93b379
---color=fg+:#dfe3ec,bg+:#303033,hl+:#93b379
---color=gutter:#303033,border:#303033,scrollbar:#373737
---color=preview-bg:#1f2021,preview-border:#59595e,preview-scrollbar:#3e3e33
---color=info:#5f5f5f,prompt:#93b379,pointer:#bebebe
---color=marker:#b04b57,spinner:#516882,header:#97b6e5
+--color=fg:#b8bec9,bg:#303031,hl:#7f966d
+--color=fg+:#d8dee9,bg+:#303031,hl+:#97b182
+--color=gutter:#303031,border:#303031,scrollbar:#373737
+--color=preview-bg:#1f2021,preview-border:#59595e,preview-scrollbar:#3a3c3d
+--color=info:#59595e,prompt:#7f966d,pointer:#b8bec9
+--color=marker:#bf616a,spinner:#5f8f9d,header:#6f8fb4
 '
 # define default behaviour for ctrl-t
 $env:FZF_CTRL_T_OPTS = "

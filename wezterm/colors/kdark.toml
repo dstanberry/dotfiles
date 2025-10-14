@@ -34,11 +34,11 @@ background = "#373737"
 
 [colors.tab_bar.active_tab]
 bg_color = "#373737"
-fg_color = "#bebebe"
+fg_color = "#b8bec9"
 
 [colors.tab_bar.inactive_tab]
 bg_color = "#373737"
-fg_color = "#5f5f5f"
+fg_color = "#59595e"
 
 [colors.tab_bar.inactive_tab_hover]
 bg_color = "#373737"

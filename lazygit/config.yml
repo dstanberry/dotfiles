@@ -19,9 +19,8 @@ git:
     args: ""
     manualCommit: false
   paging:
+    pager: delta --dark --paging=never --line-numbers --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
     colorArg: always
-    pager: delta --dark --paging=never
-    useConfig: false
 gui:
   border: "rounded"
   enlargedSideViewLocation: 'top'
@@ -42,9 +41,9 @@ gui:
     "feature/.+": "#d08770"
     "fix/.+": "#9d6066"
   branchColors:
-    "main": "#b5e4ff"
-    "master": "#b5e4ff"
-    "develop": "#4ed1a1"
+    "main": "#76627a"
+    "master": "#76627a"
+    "develop": "#6c7086"
   commitLength:
     show: true
   theme:
@@ -54,7 +53,7 @@ gui:
       - blue
       - bold
     inactiveBorderColor:
-      - "#5f5f5f"
+      - "#59595e"
     optionsTextColor:
       - blue
     selectedLineBgColor:

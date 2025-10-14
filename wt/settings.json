@@ -286,7 +286,7 @@
     {
       "name": "KDark",
       "cursorColor": "#92929D",
-      "background": "#303031",
+      "background": "#373737",
       "foreground": "#c9d1d9",
       "selectionBackground": "#48525e",
       "black": "#59595e",
@@ -297,14 +297,14 @@
       "red": "#bf616a",
       "white": "#c9d1d9",
       "yellow": "#d3b67d",
-      "brightBlack": "#59595e",
-      "brightBlue": "#6f8fb4",
-      "brightCyan": "#77b3c5",
-      "brightGreen": "#7f966d",
-      "brightPurple": "#94628a",
-      "brightRed": "#bf616a",
-      "brightWhite": "#c9d1d9",
-      "brightYellow": "#d3b67d"
+      "brightBlack": "#97979f",
+      "brightBlue": "#81a1c1",
+      "brightCyan": "#7ab5a5",
+      "brightGreen": "#97b182",
+      "brightPurple": "#ac72a0",
+      "brightRed": "#c97470",
+      "brightWhite": "#d8dee9",
+      "brightYellow": "#ddc380"
     }
   ],
   "themes": [
