@@ -82,7 +82,7 @@ local _config = function()
       explorer = { hidden = true, ignored = true },
       files = { prompt = ds.pad(ds.icons.misc.Prompt, "both"), layout = { preset = "telescope" } },
       git_log = { layout = { preset = "vertical" } },
-      git_status = { layout = { preset = "select" } },
+      git_status = { layout = { preset = "ivy" } },
       grep = { layout = { preset = "vertical" } },
       grep_buffers = { layout = { preset = "ivy" } },
       help = { layout = { preset = "ivy" } },
@@ -96,7 +96,7 @@ local _config = function()
       lsp_type_definitions = { layout = { preset = "vertical" } },
       lsp_workspace_symbols = { layout = { preset = "vertical" } },
       registers = { layout = { preset = "vscode" } },
-      spelling = { layout = { preset = "vscode" } },
+      spelling = { layout = { preset = "select" } },
       todo_comments = { layout = { preset = "vertical" } },
     },
     win = {
