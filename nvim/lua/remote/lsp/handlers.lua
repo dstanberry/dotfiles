@@ -48,7 +48,7 @@ function M.get_clients(opts)
     ret = vim.lsp.get_active_clients(opts)
     if opts and opts.method then
       ---@param client vim.lsp.Client
-      ret = vim.tbl_filter(function(client) return client.supports_method(opts.method, { bufnr = opts.bufnr }) end, ret)
+      ret = vim.tbl_filter(function(client) return client:supports_method(opts.method, { bufnr = opts.bufnr }) end, ret)
     end
   end
   return opts and opts.filter and vim.tbl_filter(opts.filter, ret) or ret
@@ -102,7 +102,7 @@ function M.on_rename(old_fname, new_fname, callback)
   end
   if callback and type(callback) == "function" then callback() end
   for _, client in ipairs(clients) do
-    if client.supports_method "workspace/didRenameFiles" then client.notify("workspace/didRenameFiles", changes) end
+    if client:supports_method "workspace/didRenameFiles" then client:notify("workspace/didRenameFiles", changes) end
   end
 end
 
@@ -307,7 +307,7 @@ function M.formatter(opts)
     sources = function(buf)
       local clients = M.get_clients(ds.plugin.deep_merge({}, filter, { bufnr = buf }))
       local ret = vim.tbl_filter(function(client) ---@param client vim.lsp.Client
-        return client.supports_method "textDocument/formatting" or client.supports_method "textDocument/rangeFormatting"
+        return client:supports_method "textDocument/formatting" or client:supports_method "textDocument/rangeFormatting"
       end, clients)
       ---@param client vim.lsp.Client
       return vim.tbl_map(function(client) return client.name end, ret)

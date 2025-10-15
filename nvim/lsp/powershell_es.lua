@@ -24,30 +24,16 @@ M.config = {
   cmd = function(dispatchers)
     return vim.lsp.rpc.start({ "pwsh.exe", "-NoLogo", "-NoProfile", "-Command", command }, dispatchers)
   end,
+  init_options = { enableProfileLoading = false, locale = "en-us" },
   settings = {
     powershell = {
-      codeFormatting = {
-        addWhitespaceAroundPipe = true,
-        autoCorrectAliases = false,
-        ignoreOneLineBlock = true,
-        newLineAfterCloseBrace = true,
-        newLineAfterOpenBrace = true,
-        openBraceOnSameLine = true,
-        pipelineIndentationStyle = "NoIndentation",
-        preset = "Custom",
-        trimWhitespaceAroundPipe = false,
-        useConstantStrings = false,
-        useCorrectCasing = false,
-        whitespaceAfterSeparator = true,
-        whitespaceAroundOperator = true,
-        whitespaceAroundPipe = true,
-        whitespaceBeforeOpenBrace = true,
-        whitespaceBeforeOpenParen = true,
-        whitespaceBetweenParameters = false,
-        whitespaceInsideBrace = true,
-      },
+      codeFormatting = { preset = "OTBS" },
     },
   },
+  on_attach = function()
+    local handlers = require "remote.lsp.handlers"
+    ds.format.register(handlers.formatter { name = "pwsh: lsp", primary = false, priority = 200 })
+  end,
 }
 
 return M
