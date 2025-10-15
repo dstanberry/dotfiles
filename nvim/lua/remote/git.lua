@@ -109,6 +109,9 @@ return {
       current_line_blame = true,
       current_line_blame_formatter = ds.icons.git.Commit .. " <author>, <author_time:%R>",
       current_line_blame_opts = { virt_text = false, virt_text_pos = "eol", delay = 150 },
+      preview_config = {
+        border = vim.tbl_map(function(icon) return { icon, "FloatBorder" } end, ds.icons.border.Default),
+      },
       signs = {
         add = { text = ds.icons.misc.VerticalBarMiddle },
         change = { text = ds.icons.misc.VerticalBarMiddle },
@@ -130,9 +133,9 @@ return {
         end
         return added .. changed .. removed
       end,
-      on_attach = function(bufnr)
+      on_attach = function(buf)
         local gs = package.loaded.gitsigns
-        local function map(mode, lhs, rhs, desc) vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc }) end
+        local function map(mode, lhs, rhs, desc) vim.keymap.set(mode, lhs, rhs, { buffer = buf, desc = desc }) end
 
         local _next = function()
           if vim.wo.diff then
