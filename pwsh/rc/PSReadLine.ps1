@@ -17,8 +17,7 @@ Set-PSReadlineOption -ShowToolTips:$false
 try {
 	Set-PSReadLineOption -PredictionSource History
 	Set-PSReadLineKeyHandler -Key Ctrl+RightArrow -Function ForwardWord
-}
-catch {
+} catch {
 	Set-PSReadLineKeyHandler -Key Ctrl+RightArrow -Function ShellNextWord
 }
 

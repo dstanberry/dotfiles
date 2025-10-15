@@ -22,11 +22,9 @@ function Invoke-EvalCache {
 
 	if ($env:ZSH_EVALCACHE_DISABLE -eq "true" -or $Force) {
 		& $Command
-	}
-	elseif (Test-Path $cacheFile) {
+	} elseif (Test-Path $cacheFile) {
 		. $cacheFile
-	}
-	else {
+	} else {
 		Write-Host "evalcache: $Name initialization not cached, caching output..." -ForegroundColor Yellow
 		$output = & $Command
 		$output | Out-File -FilePath $cacheFile -Encoding UTF8

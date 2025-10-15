@@ -15,8 +15,7 @@ function CompletePaths {
 			($_.PSProvider.Name -eq 'FileSystem') -and
 			(Test-Path Function:\Format-ColorizedFilename)) {
 			Format-ColorizedFilename $_
-		}
-		else {
+		} else {
 			$_.PSChildName
 		}
 	}
@@ -31,11 +30,9 @@ function CompletePaths {
 
 			$completionText = if ($wordToComplete -match '^\.{1,2}$') {
 				$wordToComplete
-			}
-			elseif (!($wordToComplete | IsRooted) -and ($_ | Resolve-Path -Relative | IsDescendedFrom ..)) {
+			} elseif (!($wordToComplete | IsRooted) -and ($_ | Resolve-Path -Relative | IsDescendedFrom ..)) {
 				$_ | Resolve-Path -Relative
-			}
-			else {
+			} else {
 				$fullPath -replace "^$($HOME | NormaliseAndEscape)", "~"
 			}
 
@@ -44,9 +41,9 @@ function CompletePaths {
 			}
 
 			$completionText = $completionText |
-			RemoveTrailingSeparator |
-			SurroundAndTerminate $trailChar |
-			EscapeWildcards
+				RemoveTrailingSeparator |
+				SurroundAndTerminate $trailChar |
+				EscapeWildcards
 
 			if ($_.PSProvider.Name -eq 'Registry') {
 				$completionText = $completionText -replace $_.PSDrive.Root, "$($_.PSDrive.Name):"
@@ -56,16 +53,14 @@ function CompletePaths {
 				$n = ++$seenNames[$_]
 				if ($n -le 1) {
 					$_ 
-				}
-				else {
+				} else {
 					"$_ ($n)" 
 				}
 			}
 
 			$tooltip = if ($cde.ToolTip) {
 				&$cde.ToolTip $_ $isListTruncated 
-			}
-			else {
+			} else {
 				$_ 
 			}
 
@@ -79,28 +74,24 @@ function CompletePaths {
 
 	$wordToExpand = if ($wordToComplete) {
 		$wordToComplete | RemoveSurroundingQuotes 
-	}
- else {
+	} else {
 		'./' 
 	}
 
 	$maxCompletions =
 	if ($cde.MaxCompletions) {
 		$cde.MaxCompletions
-	}
- else {
+	} else {
 		$columnPadding = 5
 		$winSize = $Host.UI.RawUI.WindowSize
 		$options = if (Get-Module PSReadLine) {
 			Get-PSReadLineOption 
-		}
-		else {
+		} else {
 			@{ShowToolTips = $false; ExtraPromptLineCount = 0; CompletionQueryItems = 256 }
 		}
 		$tooltipHeight = if ($options.ShowToolTips) {
 			2 
-		}
-		else {
+		} else {
 			0 
 		}
 		$promptLines = 1 + $options.ExtraPromptLineCount
@@ -125,7 +116,7 @@ function CompletePaths {
 		$cde.CDABLE_VARS -and
 		$completions.Length -lt $maxCompletions -and
 		$wordToComplete -match '[^/\\]+' -and # separate variable from slashes before or after it
-    ($maybeVar = Get-Variable "$($Matches[0])*" -ValueOnly | Where-Object { Test-Path $_ -PathType Container })
+		($maybeVar = Get-Variable "$($Matches[0])*" -ValueOnly | Where-Object { Test-Path $_ -PathType Container })
 	) {
 		Expand-Path @switches ($wordToExpand -replace $Matches[0], $maybeVar)
 	}
@@ -140,8 +131,8 @@ function CompletePaths {
 	}
 
 	$allCompletions |
-	Select-Object -Unique |
-	Sort-Object { !$_.PSIsContainer, $_.PSChildName } |
-	Select-Object -First $maxCompletions |
-	CompletionResult $isListTruncated
+		Select-Object -Unique |
+		Sort-Object { !$_.PSIsContainer, $_.PSChildName } |
+		Select-Object -First $maxCompletions |
+		CompletionResult $isListTruncated
 }

@@ -9,20 +9,17 @@ function Get-FileSystemCmd {
 		if ($script:UseFd) {
 			if ($dirOnly) {
 				"$($script:DefaultFileSystemFdCmd -f $dir) --type directory"
-			}
-			else {
+			} else {
 				$script:DefaultFileSystemFdCmd -f $dir
 			}
-		}
-		else {
+		} else {
 			$cmd = $script:DefaultFileSystemCmd
 			if ($dirOnly) {
 				$cmd = $script:DefaultFileSystemCmdDirOnly
 			}
 			$script:ShellCmd -f ($cmd -f $dir)
 		}
-	}
-	else {
+	} else {
 		$script:ShellCmd -f ($env:FZF_DEFAULT_COMMAND -f $dir)
 	}
 }
@@ -37,16 +34,13 @@ function Invoke-CustomFuzzyEdit() {
 				$prevDir = $PWD.ProviderPath
 				Set-Location $Directory
 				Invoke-Expression (Get-FileSystemCmd .) | Invoke-Fzf -Multi -Preview "$script:PreviewCmd" | ForEach-Object { $files += "$_" }
-			}
-			else {
+			} else {
 				$files += $Directory
 				$Directory = Split-Path -Parent $Directory
 			}
 		}
-	}
-	catch {
-	}
-	finally {
+	} catch {
+	} finally {
 		if ($prevDir) {
 			Set-Location $prevDir
 		}
@@ -60,12 +54,10 @@ function Invoke-CustomFuzzyEdit() {
 				Set-Location $Directory
 			}
 			$cmd = Invoke-Editor -FileList $files
-            ($Editor, $Arguments) = $cmd.Split(' ')
+			($Editor, $Arguments) = $cmd.Split(' ')
 			Start-Process $Editor -ArgumentList $Arguments -Wait:$Wait -NoNewWindow
-		}
-		catch {
-		}
-		finally {
+		} catch {
+		} finally {
 			if ($prevDir) {
 				Set-Location $prevDir
 			}
@@ -104,9 +96,9 @@ function Invoke-ProjectSwitcher() {
 		$env:PROJECTS_DIR.Replace("/", "\")
 	)
 	$mru + $git_dirs + $project_dirs + $worktree_dirs |`
-		Sort-Object -Unique |`
-		Invoke-Fzf -Height "100%" -Preview "$previewer" |`
-		Set-Location
+			Sort-Object -Unique |`
+			Invoke-Fzf -Height "100%" -Preview "$previewer" |`
+			Set-Location
 	FixInvokePrompt
 }
 
@@ -135,7 +127,7 @@ function Invoke-FuzzyGrep() {
 			--header '╱ CTRL-R (ripgrep mode) ╱ CTRL-F (fzf mode) ╱' `
 			--preview 'bat --style=numbers {1} --highlight-line {2}' `
 			--preview-window 'up,60%,border-bottom,+{2}+3/3,~3' | `
-			ForEach-Object { $results += $_ }
+				ForEach-Object { $results += $_ }
 
 		if (-not [string]::IsNullOrEmpty($results)) {
 			$split = $results.Split(':')
@@ -145,6 +137,7 @@ function Invoke-FuzzyGrep() {
 			Write-Host "Executing '$cmd'..."
 			Invoke-Expression -Command $cmd
 		}
-	}
-	catch { Write-Error "Error occurred: $_" }
+	} catch {
+		Write-Error "Error occurred: $_" 
+ }
 }

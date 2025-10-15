@@ -34,8 +34,7 @@ function get_vcs_metadata {
 		if ($status.HasWorking) {
 			if ($status.HasUntracked -and $status.Working.length -gt 1) {
 				Write-Host "$(Get-Glyph 0x25AA)" -NoNewline -ForegroundColor Red
-			}
-			elseif ($status.HasUntracked -eq $false) {
+			} elseif ($status.HasUntracked -eq $false) {
 				Write-Host "$(Get-Glyph 0x25AA)" -NoNewline -ForegroundColor Red
 			}
 		}

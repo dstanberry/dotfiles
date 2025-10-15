@@ -16,8 +16,7 @@ function Expand-Path {
 	Process {
 		$delimiterGroup = if ($WordDelimiters) {
 			'[{0}]' -f [Regex]::Escape($WordDelimiters -join '')
-		}
-		else {
+		} else {
 			'$^' 
 		}
 
@@ -25,8 +24,7 @@ function Expand-Path {
 		$replacement = ('../' * [Math]::Max(0, $multiDot.Length - 1)) -replace '.$'
 		$uncShare = if ($Path -match '^\\\\([a-z0-9_.$-]+)\\([a-z0-9_.$-]+)') {
 			$Matches[0] 
-		}
-		else {
+		} else {
 			'' 
 		}
 
@@ -44,13 +42,12 @@ function Expand-Path {
 
 		$wildcardedPaths = if ($SearchPaths -and -not ($Path | IsRootedOrRelative)) {
 			@($wildcardedPath) + ($SearchPaths | Join-Path -ChildPath $wildcardedPath)
-		}
-		else {
+		} else {
 			$wildcardedPath 
 		}
 
 		Get-Item $wildcardedPaths -Force:$Force -ErrorAction Ignore |
-		Where-Object { (!$File -or !$_.PSIsContainer) -and (!$Directory -or $_.PSIsContainer) } |
-		Select-Object -First $MaxResults
+			Where-Object { (!$File -or !$_.PSIsContainer) -and (!$Directory -or $_.PSIsContainer) } |
+			Select-Object -First $MaxResults
 	}
 }

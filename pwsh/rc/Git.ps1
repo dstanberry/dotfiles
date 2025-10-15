@@ -15,7 +15,7 @@ function Get-GitStashes() {
 		Preview = 'git.exe stash show -p {1} --color=always'
 	}
 	git stash list --pretty="%C(auto)%gD%Creset %C(yellow)%h %>(14)%Cgreen%cr %C(blue)%gs%Creset" |
-	Invoke-Fzf @fzfArguments | ForEach-Object { $result += $_ }
+		Invoke-Fzf @fzfArguments | ForEach-Object { $result += $_ }
 	if ($result.Count -gt 0) {
 		$out = $result.Split(@("`r`n", "`r", "`n"), [StringSplitOptions]::None)
 		if ($out.Count -ne 3) {
@@ -32,16 +32,13 @@ function Get-GitStashes() {
 		if ($null -ne $sha -and $null -ne $ref) {
 			if ($k -eq "alt-b") {
 				git stash branch "stash-$sha" "$sha"
-			}
-			elseif ($k -eq "alt-d") {
+			} elseif ($k -eq "alt-d") {
 				git diff "$sha"
-			}
-			elseif ($k -eq "alt-s") {
+			} elseif ($k -eq "alt-s") {
 				[Microsoft.PowerShell.PSConsoleReadLine]::ShellBackwardWord()
 				[Microsoft.PowerShell.PSConsoleReadLine]::ShellKillWord()
 				Remove-GitStash -Stash "$ref"
-			}
-			else {
+			} else {
 				git stash show -p "$sha"
 			}
 		}
@@ -58,15 +55,14 @@ function Remove-GitStash {
 		try {
 			Write-Warning "Stash $Stash will be deleted"
 			if ($PSCmdlet.ShouldProcess(
-                        ("Deleting stash {0}" -f $Stash),
-                        ("Would you like to drop stash {0}?" -f $Stash),
+					("Deleting stash {0}" -f $Stash),
+					("Would you like to drop stash {0}?" -f $Stash),
 					"Drop stash"
 				)
 			) {
 				Invoke-Expression "git.exe stash drop ""$Stash"""
 			}
-		}
-		catch {
+		} catch {
 			Throw "$($_.Exception.Message)"
 		}
 	}
@@ -81,8 +77,7 @@ function Add-GitWorktree {
 	$Worktree_Path = "$Worktree_Base/$Name"
 	if ((Split-Path -Path (Resolve-Path ".." -ErrorAction Ignore) -Leaf) -eq ".worktree") {
 		$Worktree_Path = "../$Name"
-	}
-	elseif (! (Resolve-Path $Worktree_Base -ErrorAction Ignore)) {
+	} elseif (! (Resolve-Path $Worktree_Base -ErrorAction Ignore)) {
 		New-Item -Path $Worktree_Base -ItemType Directory | Out-Null
 	}
 	git.exe worktree add $Worktree_Path
@@ -98,8 +93,7 @@ function Add-GitWorktree-From-Current {
 	$Worktree_Path = "$Worktree_Base/$Name"
 	if ((Split-Path -Path (Resolve-Path ".." -ErrorAction Ignore) -Leaf) -eq ".worktree") {
 		$Worktree_Path = "../$Name"
-	}
-	elseif (! (Resolve-Path $Worktree_Base -ErrorAction Ignore)) {
+	} elseif (! (Resolve-Path $Worktree_Base -ErrorAction Ignore)) {
 		New-Item -Path $Worktree_Base -ItemType Directory | Out-Null
 	}
 	git.exe worktree add -b $Name $Worktree_Path $(git.exe symbolic-ref --short HEAD)
@@ -123,13 +117,18 @@ function Switch-GitWorktree {
 # support custom sub-commands
 function global:git {
 	try {
-		if ($args[0] -eq "fstash") { Get-GitStashes }
-		elseif ($args[0] -eq "wta") { Add-GitWorktree $args[1] }
-		elseif ($args[0] -eq "wtb") { Add-GitWorktree-From-Current $args[1] }
-		elseif ($args[0] -eq "wtl") { Switch-GitWorktree }
-		else { git.exe @args }
-	}
-	catch {
+		if ($args[0] -eq "fstash") {
+			Get-GitStashes 
+  } elseif ($args[0] -eq "wta") {
+			Add-GitWorktree $args[1] 
+  } elseif ($args[0] -eq "wtb") {
+			Add-GitWorktree-From-Current $args[1] 
+  } elseif ($args[0] -eq "wtl") {
+			Switch-GitWorktree 
+  } else {
+			git.exe @args 
+  }
+	} catch {
 		Throw "$($_.Exception.Message)"
 	}
 }

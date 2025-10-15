@@ -42,7 +42,7 @@ $null = New-Module ds {
 		
 		# Purge old cache files
 		Get-ChildItem "$cacheDir\compiled-*.ps1" -ErrorAction SilentlyContinue |
-		Remove-Item -Force
+			Remove-Item -Force
 		
 		# Compile all scripts into single file
 		$compiledContent = @()

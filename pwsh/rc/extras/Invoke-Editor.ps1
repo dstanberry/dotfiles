@@ -9,14 +9,16 @@ function Invoke-Editor() {
 	if ($null -ne $env:VSCODE_PID) {
 		$editor = 'code'
 		$editorOptions += ' --reuse-window'
-	}
-	else {
-		$editor = if ($ENV:VISUAL) { $ENV:VISUAL }elseif ($ENV:EDITOR) { $ENV:EDITOR }
+	} else {
+		$editor = if ($ENV:VISUAL) {
+			$ENV:VISUAL 
+  } elseif ($ENV:EDITOR) {
+			$ENV:EDITOR 
+  }
 		if ($null -eq $editor) {
 			if (!$IsWindows) {
 				$editor = 'vim'
-			}
-			else {
+			} else {
 				$editor = 'code'
 			}
 		}
@@ -28,30 +30,25 @@ function Invoke-Editor() {
 				$FileList[$i] = '"{0}"' -f $(Resolve-Path $FileList[$i].Trim('"'))
 			}
 			"$editor$editorOptions {0}" -f ($FileList -join ' ')
-		}
-		else {
+		} else {
 			"$editor$editorOptions --goto ""{0}:{1}""" -f $(Resolve-Path $FileList.Trim('"')), $LineNum
 		}
-	}
-	elseif ($editor -match '[gn]?vi[m]?') {
+	} elseif ($editor -match '[gn]?vi[m]?') {
 		if ($FileList -is [array] -and $FileList.length -gt 1) {
 			for ($i = 0; $i -lt $FileList.Count; $i++) {
 				$FileList[$i] = '"{0}"' -f $(Resolve-Path $FileList[$i].Trim('"'))
 			}
 			"$editor$editorOptions {0}" -f ($FileList -join ' ')
-		}
-		else {
+		} else {
 			"$editor$editorOptions ""{0}"" +{1}" -f $(Resolve-Path $FileList.Trim('"')), $LineNum
 		}
-	}
-	elseif ($editor -eq 'nano') {
+	} elseif ($editor -eq 'nano') {
 		if ($FileList -is [array] -and $FileList.length -gt 1) {
 			for ($i = 0; $i -lt $FileList.Count; $i++) {
 				$FileList[$i] = '"{0}"' -f $(Resolve-Path $FileList[$i].Trim('"'))
 			}
 			"$editor$editorOptions {0}" -f ($FileList -join ' ')
-		}
-		else {
+		} else {
 			"$editor$editorOptions  +{1} {0}" -f $(Resolve-Path $FileList.Trim('"')), $LineNum
 		}
 	}

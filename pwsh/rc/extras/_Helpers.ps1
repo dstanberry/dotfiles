@@ -7,7 +7,7 @@ filter EscapeWildcards {
 }
 
 filter RemoveSurroundingQuotes {
-  ($_ -replace "^'", '') -replace "'$", ''
+	($_ -replace "^'", '') -replace "'$", ''
 }
 
 filter RemoveTrailingSeparator {
@@ -19,8 +19,7 @@ function FixInvokePrompt {
 	[Console]::OutputEncoding = [Text.Encoding]::UTF8
 	try {
 		[Microsoft.PowerShell.PSConsoleReadLine]::InvokePrompt()
-	}
- finally {
+	} finally {
 		[Console]::OutputEncoding = $previousOutputEncoding
 	}
 
