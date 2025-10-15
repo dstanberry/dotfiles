@@ -1,4 +1,5 @@
 ---@class ft.markdown
+---@field preview ft.markdown.preview
 ---@field zk ft.markdown.zk
 local M = {}
 
