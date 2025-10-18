@@ -86,6 +86,11 @@ return { ---@class ft.defaults
     spell = false,
     wrap = true,
   },
+  ps1 = {
+    colorcolumn = "120",
+    expandtab = true,
+    shiftwidth = 2,
+  },
   python = {
     colorcolumn = "80",
     expandtab = true,
