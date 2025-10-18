@@ -45,26 +45,6 @@ function get_vcs_metadata {
 			Write-Host " $(Get-Glyph 0xF02FB) " -NoNewline -ForegroundColor Yellow
 		}
 	}
-	if ($last = Get-History -Count 1) {
-		$delta = $last.EndExecutionTime.Subtract($last.StartExecutionTime).TotalMilliseconds
-		$timespan = [TimeSpan]::FromMilliseconds($delta)
-		$elapsed = ""
-		if ($timespan.Days -gt 0) {
-			$elapsed = "{0}d" -f $timespan.Days
-		}
-		if ($timespan.Hours -gt 0) {
-			$elapsed += "{0}h" -f $timespan.Hours
-		}
-		if ($timespan.Minutes -gt 0) {
-			$elapsed += "{0}m" -f $timespan.Minutes
-		}
-		if ($elapsed -eq "" && $timespan.Seconds -gt 0) {
-			$elapsed += "{0}s" -f $timespan.Seconds
-		}
-		if ($elapsed -ne "0s") {
-			Write-Host " $elapsed" -NoNewline -ForegroundColor "#808080"
-		}
-	}
 }
 
 function global:Prompt {
@@ -97,6 +77,27 @@ function global:Prompt {
 	Write-Host "$([char]27)[1m$cwd$([char]27)[24m" -NoNewline -ForegroundColor DarkBlue -BackgroundColor Black
 
 	get_vcs_metadata
+
+	if ($last = Get-History -Count 1) {
+		$delta = $last.EndExecutionTime.Subtract($last.StartExecutionTime).TotalMilliseconds
+		$timespan = [TimeSpan]::FromMilliseconds($delta)
+		$elapsed = ""
+		if ($timespan.Days -gt 0) {
+			$elapsed = "{0}d" -f $timespan.Days
+		}
+		if ($timespan.Hours -gt 0) {
+			$elapsed += "{0}h" -f $timespan.Hours
+		}
+		if ($timespan.Minutes -gt 0) {
+			$elapsed += "{0}m" -f $timespan.Minutes
+		}
+		if ($elapsed -eq "" && $timespan.Seconds -gt 0) {
+			$elapsed += "{0}s" -f $timespan.Seconds
+		}
+		if ($elapsed -ne "0s") {
+			Write-Host "$(Write-Prompt " $elapsed" -ForegroundColor "#808080")" -NoNewline
+		}
+	}
 
 	if ($origRetval) {
 		Write-Host "`n $([char]27)[1m$(Get-Glyph 0x276F)$([char]27)[24m" -NoNewline -ForegroundColor Green -BackgroundColor Black
