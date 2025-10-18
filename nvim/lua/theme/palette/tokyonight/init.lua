@@ -18,6 +18,7 @@ local c = {
 
   rose0       = "#bb616b",
   rose1       = "#f7768e",
+  rose2       = "#f7768e",
 
   red0        = "#914c54",
   red1        = "#db4b4b",
@@ -26,14 +27,17 @@ local c = {
 
   orange0     = "#ff9e64",
   orange1     = "#e0af68",
+  orange2     = "#e0af68",
 
   yellow0     = "#c49a5a",
   yellow1     = "#e0af68",
   yellow2     = "#e0af68",
+  yellow3     = "#e0af68",
 
   green0      = "#41a6b5",
   green1      = "#73daca",
   green2      = "#9ece6a",
+  green3      = "#9ece6a",
 
   cyan0       = "#7dcfff",
   cyan1       = "#7dcfff",
@@ -51,6 +55,7 @@ local c = {
 
   purple0     = "#bb9af7",
   purple1     = "#9d7cd8",
+  purple2     = "#9d7cd8",
 
   magenta0    = "#bb9af7",
   magenta1    = "#c0caf5",

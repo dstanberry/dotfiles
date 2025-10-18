@@ -18,6 +18,7 @@ local c = {
 
   rose0       = "#eebebe", --flamingo
   rose1       = "#f2d5cf", --rosewater
+  rose2       = "#f2d5cf",
 
   red0        = "#ea999c", --maroon
   red1        = "#e78284", --red
@@ -26,14 +27,17 @@ local c = {
 
   orange0     = "#ef9f76", --peach
   orange1     = "#dd936d",
+  orange2     = "#dd936d",
 
   yellow0     = "#f1d398",
   yellow1     = "#e5c890", --yellow
   yellow2     = "#c8ae7d",
+  yellow3     = "#c8ae7d",
 
   green0      = "#b3e294",
   green1      = "#a6d189", --green
   green2      = "#b0f8af",
+  green3      = "#b0f8af",
 
   cyan0       = "#8bd5ca",
   cyan1       = "#81c8be", --teal
@@ -51,6 +55,7 @@ local c = {
 
   purple0     = "#babbf1", --lavender
   purple1     = "#ca9ee6", --mauve
+  purple2     = "#ca9ee6",
 
   magenta0    = "#c299b6",
   magenta1    = "#ddb9d7",
