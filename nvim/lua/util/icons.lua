@@ -138,6 +138,7 @@ M.markdown = {
 ---Miscellaneous icons for various purposes.
 M.misc = {
   ArrowSwap = " ",
+  ArrowCollapseRight = "",
   Block = "█",
   BrailleBlank = "⠀", -- U+2800
   Brain = "󰧑",

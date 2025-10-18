@@ -176,6 +176,7 @@ return {
     opts = function()
       return {
         mux = { enabled = false, backend = "tmux" },
+        signs = { enabled = true, icon = ds.icons.misc.ArrowCollapseRight },
         cli = {
           context = {
             analyze = function()
