@@ -1,5 +1,8 @@
 if not vim.g.vscode then return {} end
 
+local Config = require "lazy.core.config"
+local vscode = require "vscode"
+
 vim.g.snacks_animate = false
 
 local enabled = {
@@ -14,26 +17,33 @@ local enabled = {
   "ts-comments.nvim",
 }
 
-local Config = require "lazy.core.config"
 Config.options.checker.enabled = false
 Config.options.change_detection.enabled = false
 Config.options.defaults.cond = function(plugin) return vim.tbl_contains(enabled, plugin.name) or plugin.vscode end
 
--- keep undo/redo lists in sync with vscode
-vim.keymap.set("n", "<c-r>", [[<cmd>lua require("vscode").action("redo")<cr>]])
-vim.keymap.set("n", "u", [[<cmd>lua require("vscode").action("undo")<cr>]])
 -- editor layout
-vim.keymap.set("n", "<c-left>", [[<cmd>lua require("vscode").action("workbench.action.decreaseViewSize")<cr>]])
-vim.keymap.set("n", "<c-right>", [[<cmd>lua require("vscode").action("workbench.action.increaseViewSize")<cr>]])
-vim.keymap.set("n", "<c-backspace>", [[<cmd>lua require("vscode").action("editor.action.fontZoomOut")<cr>]])
-vim.keymap.set("n", "<c-delete>", [[<cmd>lua require("vscode").action("editor.action.fontZoomIn")<cr>]])
--- editor naviagtion
-vim.keymap.set("n", "<left>", [[<cmd>lua require("vscode").call("workbench.action.previousEditorInGroup")<cr>]])
-vim.keymap.set("n", "<right>", [[<cmd>lua require("vscode").call("workbench.action.nextEditorInGroup")<cr>]])
-vim.keymap.set("n", "<leader>wt", [[<cmd>lua require("vscode").action("workbench.action.terminal.toggleTerminal")<cr>]])
--- file navigation
+vim.keymap.set("n", "<c-left>", function() vscode.action "workbench.action.decreaseViewSize" end)
+vim.keymap.set("n", "<c-right>", function() vscode.action "workbench.action.increaseViewSize" end)
+vim.keymap.set("n", "<c-backspace>", function() vscode.action "editor.action.fontZoomOut" end)
+vim.keymap.set("n", "<c-delete>", function() vscode.action "editor.action.fontZoomIn" end)
+
+-- editor navigation
+vim.keymap.set("n", "<left>", function() vscode.call "workbench.action.previousEditorInGroup" end)
+vim.keymap.set("n", "<right>", function() vscode.call "workbench.action.nextEditorInGroup" end)
+vim.keymap.set("n", "<leader>wt", function() vscode.action "workbench.action.terminal.toggleTerminal" end)
+vim.keymap.set("n", "<bs>q", "<cmd>quit!<cr>", { desc = "close current window" })
+vim.keymap.set("n", "<bs>Q", "<cmd>quitall!<cr>", { desc = "close application" })
+vim.keymap.set("n", "<bs>z", "<cmd>tabclose<cr>", { silent = false, desc = "delete current buffer" })
+
+-- (fuzzy) finder
 vim.keymap.set("n", "<leader><space>", "<cmd>Find<cr>")
-vim.keymap.set("n", "<localleader>fg", [[<cmd>lua require("vscode").action("workbench.action.findInFiles")<cr>]])
+vim.keymap.set("n", "<localleader>fg", function() vscode.action "workbench.action.findInFiles" end)
+
+--git
+vim.keymap.set("n", "<leader>gg", function() vscode.action "workbench.view.scm" end)
+vim.keymap.set("n", "<localleader>go", function() vscode.action "issue.openGithubPermalink" end)
+vim.keymap.set("n", "<localleader>gy", function() vscode.action "issue.copyGithubPermalink" end)
+
 -- lsp
 vim.keymap.set("n", "ff", function() vim.lsp.buf.format { async = true } end)
 vim.keymap.set("n", "g<leader>", vim.lsp.buf.rename)
@@ -45,6 +55,9 @@ vim.keymap.set("n", "gr", vim.lsp.buf.references)
 vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol)
 vim.keymap.set("n", "gt", vim.lsp.buf.type_definition)
 vim.keymap.set("n", "gw", function() vim.lsp.buf.workspace_symbol "" end)
+
+-- terminal
+vim.keymap.set("n", "<leader>wt", function() vscode.call "workbench.action.terminal.toggleTerminal" end)
 
 return {
   {
