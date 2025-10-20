@@ -51,16 +51,16 @@ return {
               and not (type(feature.disable) == "table" and vim.tbl_contains(feature.disable, lang))
               and ds.treesitter.has(event.match, query)
           end
+          if enabled("highlight", "highlights") then pcall(vim.treesitter.start, event.buf) end
+          if enabled("indent", "indents") then
+            ds.ft.set_options(event.buf, { indentexpr = "v:lua.require('nvim-treesitter').indentexpr()" }, false)
+          end
           if enabled("folds", "folds") then
             ds.ft.set_options(
               event.buf,
               { foldmethod = "expr", foldexpr = "v:lua.require('util.ui').foldexpr()" },
               false
             )
-          end
-          if enabled("highlight", "highlights") then pcall(vim.treesitter.start) end
-          if enabled("indent", "indents") then
-            ds.ft.set_options(event.buf, { indentexpr = "v:lua.require('nvim-treesitter').indentexpr()" }, false)
           end
         end,
       })
