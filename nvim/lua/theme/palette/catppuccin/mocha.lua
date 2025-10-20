@@ -63,6 +63,7 @@ local c = {
 
   overlay0    = "#6c7086",
   overlay1    = "#7f849c",
+  overlay2    = "#9399b2",
 
   diff_add    = "#a5e2a0",
   diff_delete = "#f38ba8",

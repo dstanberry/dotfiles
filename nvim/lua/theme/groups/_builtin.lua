@@ -29,15 +29,15 @@ M.get = function(c)
     ModeMsg                    = { fg = c.fg0, bold = true },
     MoreMsg                    = { fg = c.blue3 },
     MsgArea                    = { fg = c.fg0 },
-    -- MsgSeparator            = { fg = c.fg0 },
+    -- MsgSeparator            = {},
     NonText                    = { fg = c.grayX },
     Normal                     = { fg = c.fg1, bg = c.bg2 },
     NormalNC                   = { fg = c.fg1, bg = c.bg2 },
     -- custom alternate background(s)
-    NormalOverlay              = { fg = c.fg1, bg = c.bgX },
+    NormalOverlay              = { fg = c.fg0, bg = c.bgX },
+    NormalSB                   = { fg = c.fg0, bg = c.bg0 },
 
     NvimInternalError          = { link = "Error" },
-
 
     FloatShadow                = { bg = ds.color.blend(c.bg1, c.bg2, 0.5) },
     FloatShadowThrough         = { bg = ds.color.blend(c.bg1, c.bg2, 0.45) },
@@ -46,8 +46,8 @@ M.get = function(c)
 
     PMenu                      = { link = "NormalFloat" },
     PMenuBorder                = { link = "FloatBorder" },
-    -- PMenuShadow             = { link = "FloatShadow" },
-    -- PMenuShadowThrough      = { link = "FloatShadowThrough" },
+    -- PMenuShadow             = {},
+    -- PMenuShadowThrough      = {},
     PMenuSbar                  = { fg = c.gray0, bg = c.bg0 },
     PMenuSel                   = { fg = c.bg3, bg = c.blue1 },
 
@@ -62,8 +62,8 @@ M.get = function(c)
     SpellCap                   = { sp = c.yellow2, undercurl = true },
     SpellLocal                 = { sp = c.aqua0, undercurl = true },
     SpellRare                  = { sp = c.purple0, undercurl = true },
-    -- TermCursor              = { fg = c.bg2, bg = c.fg2 },
-    -- TermCursorNC            = { fg = c.bg2, bg = c.fg2 },
+    -- TermCursor              = {},
+    -- TermCursorNC            = {},
     Title                      = { fg = c.blue0, bold = true },
     VertSplit                  = { fg = c.bgX },
     WinSeparator               = { link = "VertSplit" },
@@ -79,7 +79,7 @@ M.get = function(c)
     Character                  = { fg = c.green2 },
     String                     = { fg = c.green2 },
     Number                     = { fg = c.orange2 },
-    -- Float                   = { fg = orange1 },
+    -- Float                   = {},
 
     Identifier                 = { fg = c.magenta1 },
     Function                   = { fg = c.blue2 },
@@ -149,11 +149,6 @@ M.get = function(c)
     gitcommitDiscardedFile     = { fg = c.blue1, bold = true },
     gitcommitSelectedFile      = { fg = c.green2, bold = true },
 
-    -- inline completion highlighting
-    ComplHint                  = { fg = c.gray1, italic = true },
-    ComplHintMore              = { fg = c.blue3 },
-
-
     -- lsp diagnostic highlighting
     DiagnosticDeprecated       = { sp = c.red3, italic = true, strikethrough = true },
     DiagnosticUnnecessary      = { fg = c.gray2, italic = true },
@@ -176,6 +171,10 @@ M.get = function(c)
     DiagnosticUnderlineHint    = { undercurl = true, sp = c.magenta0 },
     DiagnosticUnderlineOk      = { undercurl = true, sp = c.green0 },
 
+    -- lsp inline completion highlighting
+    ComplHint                  = { fg = c.gray1, italic = true },
+    ComplHintMore              = { fg = c.blue3 },
+
     -- lsp codelens highlighting
     LspCodeLens                = { fg = ds.color.lighten(c.gray1, 20) },
     LspCodeLensText            = { fg = ds.color.lighten(c.gray1, 20) },
@@ -192,9 +191,6 @@ M.get = function(c)
     -- statusline highlighting
     StatusLine                 = { fg = c.fg0, bg = c.gray0 },
     StatusLineNC               = { fg = c.gray1, bg = c.gray0 },
-    -- custom statusline highlighting
-    StatusLineContext          = { fg = ds.color.lighten(c.bg4, 25), bg = c.gray0 },
-    StatusLineSpecial          = { fg = c.fg_conceal, bg = c.gray0 },
 
     -- tabline highlighting
     TabLine                    = { fg = c.gray1, bg = c.bg2 },

@@ -10,6 +10,12 @@ return {
       -- hide the statusline on the starter page
       vim.o.laststatus = 0
     end
+    vim.api.nvim_create_autocmd("ColorScheme", {
+      group = ds.augroup "remote.lualine",
+      callback = vim.schedule_wrap(function()
+        if ds.plugin.is_installed "lazy.nvim" then vim.cmd "Lazy reload lualine.nvim" end
+      end),
+    })
   end,
   opts = function()
     local util = require "remote.lualine.util"
@@ -20,9 +26,11 @@ return {
     local GIT, MSG, META = util.git, util.message, util.metadata
 
     local function sep(direction, padding_opts, condition)
+      local v = { left = "╲", right = "╱" }
       return {
-        util.separator[direction],
+        function() return v[direction] end,
         padding = padding_opts or { left = 0, right = 1 },
+        color = { fg = ds.color.lighten(ds.color.get("StatusLine", true), 10) },
         cond = condition,
       }
     end

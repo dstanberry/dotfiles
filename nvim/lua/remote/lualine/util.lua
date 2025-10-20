@@ -34,42 +34,37 @@ M.highlighter = {
   reset = "%*",
 }
 
-M.separator = {
-  left = function() return M.highlighter.sanitize "StatusLineContext" .. "╲" .. M.highlighter.reset end,
-  right = function() return M.highlighter.sanitize "StatusLineContext" .. "╱" .. M.highlighter.reset end,
-}
-
 M.theme = function()
   return {
     command = {
-      a = { fg = ds.color "magenta1", bg = ds.color "gray0", gui = "bold" },
-      b = { fg = ds.color "white", bg = ds.color "gray0" },
-      c = { fg = ds.color "white", bg = ds.color "gray0" },
+      a = { fg = ds.color "magenta1", bg = ds.color.get("StatusLine", true), gui = "bold" },
+      b = { fg = ds.color "white", bg = ds.color.get("StatusLine", true) },
+      c = { fg = ds.color "white", bg = ds.color.get("StatusLine", true) },
     },
     inactive = {
-      a = { fg = ds.color "fg1", bg = ds.color "gray0" },
-      b = { fg = ds.color "white", bg = ds.color "gray0" },
-      c = { fg = ds.color "white", bg = ds.color "gray0" },
+      a = { fg = ds.color "fg1", bg = ds.color.get("StatusLine", true) },
+      b = { fg = ds.color "white", bg = ds.color.get("StatusLine", true) },
+      c = { fg = ds.color "white", bg = ds.color.get("StatusLine", true) },
     },
     insert = {
-      a = { fg = ds.color "green2", bg = ds.color "gray0", gui = "bold" },
-      b = { fg = ds.color "white", bg = ds.color "gray0" },
-      c = { fg = ds.color "white", bg = ds.color "gray0" },
+      a = { fg = ds.color "green2", bg = ds.color.get("StatusLine", true), gui = "bold" },
+      b = { fg = ds.color "white", bg = ds.color.get("StatusLine", true) },
+      c = { fg = ds.color "white", bg = ds.color.get("StatusLine", true) },
     },
     normal = {
-      a = { fg = ds.color "blue1", bg = ds.color "gray0", gui = "bold" },
-      b = { fg = ds.color "white", bg = ds.color "gray0" },
-      c = { fg = ds.color "white", bg = ds.color "gray0" },
+      a = { fg = ds.color "blue1", bg = ds.color.get("StatusLine", true), gui = "bold" },
+      b = { fg = ds.color "white", bg = ds.color.get("StatusLine", true) },
+      c = { fg = ds.color "white", bg = ds.color.get("StatusLine", true) },
     },
     replace = {
-      a = { fg = ds.color "orange0", bg = ds.color "gray0", gui = "bold" },
-      b = { fg = ds.color "white", bg = ds.color "gray0" },
-      c = { fg = ds.color "white", bg = ds.color "gray0" },
+      a = { fg = ds.color "orange0", bg = ds.color.get("StatusLine", true), gui = "bold" },
+      b = { fg = ds.color "white", bg = ds.color.get("StatusLine", true) },
+      c = { fg = ds.color "white", bg = ds.color.get("StatusLine", true) },
     },
     visual = {
-      a = { fg = ds.color "red1", bg = ds.color "gray0", gui = "bold" },
-      b = { fg = ds.color "white", bg = ds.color "gray0" },
-      c = { fg = ds.color "white", bg = ds.color "gray0" },
+      a = { fg = ds.color "red1", bg = ds.color.get("StatusLine", true), gui = "bold" },
+      b = { fg = ds.color "white", bg = ds.color.get("StatusLine", true) },
+      c = { fg = ds.color "white", bg = ds.color.get("StatusLine", true) },
     },
   }
 end

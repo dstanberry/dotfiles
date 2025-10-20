@@ -184,7 +184,7 @@ end
 local virtcol_opts = {
   enabled = true,
   char = ds.icons.misc.VerticalBarRight,
-  highlight = "NonText",
+  highlight = "ColorColumn",
   virtcolumn = "",
   exclude = {
     buftypes = { "nofile", "quickfix", "terminal", "prompt" },
@@ -280,9 +280,18 @@ function M.virtcolumn(opts)
 
   if not virtcol_initialized then
     local reset_hl = function()
-      vim.api.nvim_set_hl(0, "VirtColumn", { link = "Whitespace", default = true })
+      local hl = virtcol_opts.highlight
+      local defaults = { link = virtcol_opts.highlight or "NonText" }
+      if vim.tbl_contains({ "ColorColumn", "VirtColumn" }, hl) then
+        local fg, bg = ds.color.get "ColorColumn", ds.color.get("ColorColumn", true)
+        defaults = (bg and not fg) and { fg = bg } or { fg = fg }
+        virtcol_opts.highlight = "VirtColumn"
+      end
+      vim.api.nvim_set_hl(0, "TreesitterContextSeparator", defaults)
+      vim.api.nvim_set_hl(0, "VirtColumn", vim.tbl_deep_extend("keep", { default = true }, defaults))
       vim.api.nvim_set_hl(0, "ColorColumn", {})
     end
+
     reset_hl()
     virtcol_ns = vim.api.nvim_create_namespace "ds_virtual_colorcolumn"
     vim.api.nvim_set_decoration_provider(virtcol_ns, { on_win = virtcol_provider })

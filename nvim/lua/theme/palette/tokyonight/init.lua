@@ -2,9 +2,9 @@
 ---@type util.theme.palette
 ---@diagnostic disable-next-line: missing-fields
 local c = {
-  bg0         = "#1a1b26",
+  bg0         = "#0c0e14",
   bg1         = "#16161e",
-  bg2         = "#16161e",
+  bg2         = "#1a1b26",
   bg3         = "#1c1d29",
   bg4         = "#202330",
 

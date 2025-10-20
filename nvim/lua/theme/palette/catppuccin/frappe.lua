@@ -10,7 +10,7 @@ local c = {
 
   fg0         = "#a5adce", --subtext0
   fg1         = "#b5bfe2", --subtext1
-  fg2         = "#cdd6f4", --text
+  fg2         = "#c6d0f5", --text
 
   gray0       = "#414559", --surface0
   gray1       = "#51576d", --surface1
@@ -63,6 +63,7 @@ local c = {
 
   overlay0    = "#737994",
   overlay1    = "#838ba7",
+  overlay2    = "#949cbb",
 
   diff_add    = "#a5e2a0",
   diff_delete = "#f38ba8",

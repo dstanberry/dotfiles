@@ -3,6 +3,13 @@ local M = {}
 ---@param c util.theme.palette
 ---@return util.theme.hl
 M.get = function(c)
+  local RED = ds.color.blend(ds.color.lighten(c.red2, 20), c.red1, 0.7)
+  local ORANGE = ds.color.blend(ds.color.lighten(c.orange1, 15), c.yellow1, 0.3)
+  local GREEN = ds.color.blend(ds.color.lighten(c.green3, 30), c.cyan1, 0.2)
+  local BLUE = ds.color.blend(ds.color.lighten(c.blue1, 10), c.aqua1, 0.25)
+  local INDIGO = ds.color.blend(ds.color.lighten(c.blue1, 10), c.purple1, 0.4)
+  local VIOLET = ds.color.blend(ds.color.lighten(c.magenta2, 25), c.purple2, 0.3)
+
   -- stylua: ignore
   return {
     -- treesitter highlighting
@@ -110,12 +117,12 @@ M.get = function(c)
     -- custom treesitter extended highlighting
     ["@markup.codeblock"]             = { link = "@markup.raw.markdown_inline"},
     ["@markup.dash"]                  = { fg = c.overlay0, bold = true },
-    ["@markup.heading.1"]             = { link = "htmlH1" },
-    ["@markup.heading.2"]             = { link = "htmlH2" },
-    ["@markup.heading.3"]             = { link = "@variable.builtin" },
-    ["@markup.heading.4"]             = { link = "@variable.builtin" },
-    ["@markup.heading.5"]             = { link = "@variable.builtin" },
-    ["@markup.heading.6"]             = { link = "@variable.builtin" },
+    ["@markup.heading.1"]             = { fg = BLUE, bold = true },
+    ["@markup.heading.2"]             = { fg = INDIGO, bold = true },
+    ["@markup.heading.3"]             = { fg = VIOLET, bold = true },
+    ["@markup.heading.4"]             = { fg = RED, bold = true },
+    ["@markup.heading.5"]             = { fg = ORANGE, bold = true },
+    ["@markup.heading.6"]             = { fg = GREEN, bold = true },
     ["@markup.table"]                 = { link = "@punctuation.special" },
     ["@variable.member.yaml"]         = { fg = c.aqua1 },
 

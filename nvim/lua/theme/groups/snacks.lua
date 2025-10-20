@@ -14,7 +14,6 @@ M.get = function(c)
 
   local GRAY = ds.color.darken(c.gray0, 10)
   local GRAY_DARK = ds.color.darken(c.gray0, 25)
-  local BLUE = ds.color.darken(c.blue1, 43)
   local BG_L = ds.color.lighten(c.bg0, 40)
 
   local HINT = ds.color.get "DiagnosticHint"
@@ -97,7 +96,7 @@ M.get = function(c)
     SnacksPickerInputTitle      = { fg = c.red1, bg = GRAY_DARK, bold = true },
 
     SnacksPickerList            = { bg = GRAY_DARK },
-    SnacksPickerListCursorLine  = { bg = BLUE, bold = true },
+    SnacksPickerListCursorLine  = { bg = c.bg4, bold = true },
 
     SnacksPickerPreview         = { bg = c.bg0 },
     SnacksPickerPreviewBorder   = { fg = c.bg0, bg = c.bg0 },

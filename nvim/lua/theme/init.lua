@@ -17,7 +17,7 @@ N.dirs = {
 N.groups = {}
 
 ---@param theme util.theme.name
-N.cache.file = function(theme) return vim.fn.stdpath "cache" .. "/colorscheme-" .. theme .. ".json" end
+N.cache.file = function(theme) return vim.fs.joinpath(vim.fn.stdpath "cache", ("colorscheme-%s.json"):format(theme)) end
 
 ---@param theme util.theme.name
 N.cache.read = function(theme)
@@ -50,14 +50,18 @@ M.apply = function(theme, c)
 
   local cache = N.cache.read(theme)
   local inputs = { colors = c, plugins = N.groups }
-  local g = cache and vim.deep_equal(inputs, cache.inputs) and cache.groups
+  -- local g = cache and vim.deep_equal(inputs, cache.inputs) and cache.groups
+  local g
 
   if not g then
     g = {}
     for _, mod in ipairs(N.groups) do
-      local ret = loadfile(N.dirs.root .. N.dirs.groups .. mod .. ".lua")()
-      for k, v in pairs(ret.get(c)) do
+      local spec = loadfile(vim.fs.joinpath(N.dirs.root .. N.dirs.groups, mod .. ".lua"))()
+      local t_mod = vim.fs.joinpath(N.dirs.root .. N.dirs.palettes, theme:gsub("%-.*", ""), "groups", mod .. ".lua")
+      local t_spec = vim.uv.fs_stat(t_mod) and loadfile(t_mod)().get(c)
+      for k, v in pairs(spec.get(c)) do
         g[k] = v
+        if t_spec and t_spec[k] ~= nil then g[k] = t_spec[k] end
       end
       N.cache.write(theme, { groups = g, inputs = inputs })
     end
@@ -96,7 +100,7 @@ M.load = function(theme, bg)
   bg = bg or "dark"
   local t = vim.split(theme, "-")
   local path = N.dirs.palettes .. table.concat(t, "/")
-  if not (vim.uv.fs_stat(N.dirs.root .. path .. ".lua") or pcall(require, path)) then return end
+  if not (vim.uv.fs_stat(vim.fs.joinpath(N.dirs.root, path .. ".lua")) or pcall(require, path)) then return end
   local _bg = vim.o.background
   if _bg ~= bg then vim.o.background = bg end
   if vim.g.colors_name then vim.cmd "highlight clear" end

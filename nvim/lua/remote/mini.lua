@@ -262,14 +262,14 @@ return {
                 local get = function()
                   local buf = vim.api.nvim_get_current_buf()
                   local fname = vim.api.nvim_buf_get_name(buf)
-                  if fname:match "nvim/lua/theme/groups" then return ds.hl.show_preview end
+                  if fname:match "nvim/lua/theme" then return ds.hl.show_preview end
                   return vim.b.minihipatterns_enabled == nil or vim.b.minihipatterns_enabled
                 end
                 local set = function()
                   local buf = vim.api.nvim_get_current_buf()
                   local fname = vim.api.nvim_buf_get_name(buf)
                   local enabled
-                  if fname:match "nvim/lua/theme/groups" then
+                  if fname:match "nvim/lua/theme" then
                     ds.hl.show_preview = not ds.hl.show_preview
                     enabled = ds.hl.show_preview == true
                   else
@@ -336,7 +336,7 @@ return {
 
       vim.api.nvim_create_autocmd("BufWritePost", {
         group = ds.hl.autocmd_group,
-        pattern = "*/lua/theme/**.lua",
+        pattern = vim.fs.joinpath(vim.fn.stdpath "config", "lua/theme/**.lua"),
         callback = vim.schedule_wrap(function(args)
           local id = get_id(args.buf) or ""
           if not id:match "^groups" then return end
