@@ -3,7 +3,6 @@ local stash = require "remote.snacks.stash"
 return {
   {
     "folke/snacks.nvim",
-    url = "https://github.com/dstanberry/snacks.nvim",
     priority = 1000,
     lazy = false,
     keys = function()
