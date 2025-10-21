@@ -28,6 +28,15 @@ end
 ---@alias util.ui.sign.type "mark"|"sign"|"fold"|"git"
 ---@alias util.ui.sign.spec {name: string, text: string, texthl: string, priority: number, type: util.ui.sign.type}
 
+---@class util.ui.fold.spec
+---@field start number Line number where deepest fold starts
+---@field level number Fold level, when zero other fields are N/A
+---@field llevel number Lowest level that starts in v:lnum
+---@field lines number Number of lines from v:lnum to end of closed fold
+
+---@type ffi.namespace*
+local C
+
 local sign_opts = {
   left = { "mark", "sign" },
   right = { "fold", "git" },
@@ -36,7 +45,7 @@ local sign_opts = {
     git_hl = true,
   },
   git = {
-    plugins = { "GitSign", "MiniDiffSign" },
+    plugins = { "GitSign" },
   },
   refresh = 50,
 }
@@ -46,6 +55,25 @@ local icon_cache = {} ---@type table<string,string>
 local sign_cache = {}
 local cache_enabled = false
 
+local _ffi = function()
+  if not C then
+    local ffi = require "ffi"
+    ffi.cdef [[
+      typedef struct {} Error;
+      typedef struct {} win_T;
+      typedef struct {
+        int start;  // line number where deepest fold starts
+        int level;  // fold level, when zero other fields are N/A
+        int llevel; // lowest level that starts in v:lnum
+        int lines;  // number of lines from v:lnum to end of closed fold
+      } foldinfo_T;
+      foldinfo_T fold_info(win_T* wp, int lnum);
+      win_T *find_window_by_handle(int Window, Error *err);
+    ]]
+    C = ffi.C
+  end
+  return C
+end
 local cache_signs = function()
   if cache_enabled then return end
   cache_enabled = true
@@ -106,6 +134,18 @@ local get_buf_signs = function(buf)
 end
 
 ---@param win number
+---@param lnum number
+local get_fold_info = function(win, lnum)
+  pcall(_ffi)
+  if not C then return end
+  local ffi = require "ffi"
+  local err = ffi.new "Error"
+  local wp = C.find_window_by_handle(win, err)
+  if wp == nil then return end
+  return C.fold_info(wp, lnum) ---@type util.ui.fold.spec
+end
+
+---@param win number
 ---@param buf number
 ---@param lnum number
 ---@return util.ui.sign.spec[]
@@ -120,8 +160,11 @@ local get_signs = function(win, buf, lnum)
   vim.api.nvim_win_call(win, function()
     if vim.fn.foldclosed(vim.v.lnum) >= 0 then
       signs[#signs + 1] = { text = vim.opt.fillchars:get().foldclose or "", texthl = "Folded", type = "fold" }
-    elseif not M.skip_foldexpr[buf] and vim.fn.foldlevel(lnum) > vim.fn.foldlevel(lnum - 1) then
-      signs[#signs + 1] = { text = vim.opt.fillchars:get().foldopen or "", type = "fold" }
+    elseif not M.skip_foldexpr[buf] then
+      local info = get_fold_info(win, lnum)
+      if info and info.level > 0 and info.start == lnum then
+        signs[#signs + 1] = { text = vim.opt.fillchars:get().foldopen or "", type = "fold" }
+      end
     end
   end)
   table.sort(signs, function(a, b) return (a.priority or 0) > (b.priority or 0) end)
@@ -134,40 +177,60 @@ function M.statuscolumn()
   local _get = function()
     if not cache_enabled then cache_signs() end
     local win = vim.g.statusline_winid
-    local buf = vim.api.nvim_win_get_buf(win)
-    local is_file = vim.bo[buf].buftype == ""
-    local show_signs = vim.wo[win].signcolumn ~= "no"
+    local lnum = vim.wo[win].number
+    local relnum = vim.wo[win].relativenumber
+    local show_signs = vim.v.virtnum == 0 and vim.wo[win].signcolumn ~= "no"
     local components = { "", "", "" } -- left, middle, right
+    if not (show_signs or lnum or relnum) then return "" end
+
+    if (lnum or relnum) and vim.v.virtnum == 0 then
+      local num ---@type number
+      if relnum and lnum and vim.v.relnum == 0 then
+        num = vim.v.lnum
+      elseif relnum then
+        num = vim.v.relnum
+      else
+        num = vim.v.lnum
+      end
+      components[2] = "%=" .. num .. " "
+    end
+
     if show_signs then
+      local buf = vim.api.nvim_win_get_buf(win)
+      local is_file = vim.bo[buf].buftype == ""
       local signs = get_signs(win, buf, vim.v.lnum)
-      ---@param types util.ui.sign.type[]
-      local function find(types)
-        for _, t in ipairs(types) do
-          for _, s in ipairs(signs) do
-            if s.type == t then return s end
+
+      if #signs > 0 then
+        local signs_by_type = {} ---@type table<util.ui.sign.type,util.ui.sign.spec>
+        for _, s in ipairs(signs) do
+          signs_by_type[s.type] = signs_by_type[s.type] or s
+        end
+        local find = function(types) ---@param types util.ui.sign.type[]
+          for _, t in ipairs(types) do
+            if signs_by_type[t] then return signs_by_type[t] end
           end
         end
+
+        local left, right = find(sign_opts.left), find(sign_opts.right)
+        if sign_opts.folds.git_hl then
+          local git = find { "git" }
+          if git and left and left.type == "fold" then left.texthl = git.texthl end
+          if git and right and right.type == "fold" then right.texthl = git.texthl end
+        end
+        components[1] = left and get_icon(left) or "  "
+        components[3] = is_file and (right and get_icon(right) or "  ") or ""
+      else
+        components[1] = "  "
+        components[3] = is_file and "  " or ""
       end
-      local left = find(sign_opts.left)
-      local right = find(sign_opts.right)
-      if sign_opts.folds.git_hl then
-        local git = find { "git" }
-        if git and left and left.type == "fold" then left.texthl = git.texthl end
-        if git and right and right.type == "fold" then right.texthl = git.texthl end
-      end
-      components[1] = left and get_icon(left) or "  "
-      components[3] = is_file and (right and get_icon(right) or "  ") or ""
     end
-    local is_num = vim.wo[win].number
-    local is_relnum = vim.wo[win].relativenumber
-    if (is_num or is_relnum) and vim.v.virtnum == 0 then components[2] = "%=%l " end
-    if vim.v.virtnum ~= 0 then components[2] = "%= " end
-    return table.concat(components, "")
+    local ret = table.concat(components, "")
+    return ("%%@v:lua.require('util.ui').statuscolumn_fold@%s%%T"):format(ret)
   end
   -- use cache if available
   local win = vim.g.statusline_winid
   local buf = vim.api.nvim_win_get_buf(win)
-  local key = ("%d:%d:%d"):format(win, buf, vim.v.lnum)
+  local key = ("%d:%d:%d:%d:%d"):format(win, buf, vim.v.lnum, vim.v.virtnum ~= 0 and 1 or 0, vim.v.relnum)
   if cache[key] then return cache[key] end
   local ok, ret = pcall(_get)
   if ok then
@@ -175,6 +238,14 @@ function M.statuscolumn()
     return ret
   end
   return ""
+end
+
+function M.statuscolumn_fold()
+  local pos = vim.fn.getmousepos()
+  vim.api.nvim_win_set_cursor(pos.winid, { pos.line, 1 })
+  vim.api.nvim_win_call(pos.winid, function()
+    if vim.fn.foldlevel(pos.line) > 0 then vim.cmd "normal! za" end
+  end)
 end
 
 ---@alias util.ui.virtcolumn.config.exclude {filetypes?:string[], buftypes?:string[]}
