@@ -64,10 +64,6 @@ local c = {
   overlay0    = "#737994",
   overlay1    = "#838ba7",
   overlay2    = "#949cbb",
-
-  diff_add    = "#a5e2a0",
-  diff_delete = "#f38ba8",
-  diff_text   = "#87b2f9"
 }
 
 -- stylua: ignore start
@@ -82,7 +78,10 @@ c.fg_comment  = "#9399b2"
 
 c.grayX       = ds.color.darken(c.gray1, 25)
 
-c.diff_change = ds.color.blend(c.diff_text, c.bg3, 0.2)
+c.diff_add    = ds.color.blend(c.green1, c.bg2, 0.18)
+c.diff_delete = ds.color.blend(c.red1, c.bg2, 0.18)
+c.diff_text   = ds.color.blend(c.blue1, c.bg2, 0.30)
+c.diff_change = ds.color.blend(c.blue1, c.bg2, 0.07)
 -- stylua: ignore end
 
 return c
