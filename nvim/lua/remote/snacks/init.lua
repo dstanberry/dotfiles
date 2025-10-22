@@ -79,6 +79,8 @@ return {
       local snacks = require "snacks"
 
       snacks.setup(opts)
+      vim.lsp.handlers["callHierarchy/incomingCalls"] = snacks.picker.lsp_incoming_calls
+      vim.lsp.handlers["callHierarchy/outgoingCalls"] = snacks.picker.lsp_outgoing_calls
       vim.lsp.handlers["textDocument/documentSymbol"] = snacks.picker.lsp_symbols
       vim.lsp.handlers["workspace/symbol"] = snacks.picker.lsp_workspace_symbols
     end,

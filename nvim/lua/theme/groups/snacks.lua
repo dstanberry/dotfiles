@@ -87,8 +87,7 @@ M.get = function(c)
 
     -- picker
     SnacksPicker                = { bg = GRAY_DARK },
-    SnacksPickerBorder          = { fg = GRAY_DARK, bg = GRAY_DARK },
-    SnacksPickerBorderSB        = { fg = OVERLAY_D, bg = GRAY_DARK },
+    SnacksPickerBorder          = { fg = OVERLAY_D, bg = GRAY_DARK },
 
     SnacksPickerBoxTitle        = { fg = c.bg2, bg = c.red1, bold = true },
 

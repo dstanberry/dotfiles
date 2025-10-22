@@ -5,13 +5,19 @@ local M = {}
 local _config = function()
   local layouts = require "snacks.picker.config.layouts"
 
-  layouts.select.layout.border = vim.tbl_map(
-    function(icon) return { icon, "SnacksPickerBorderSB" } end,
-    ds.icons.border.Default
-  )
+  local flash = { actions = {}, keys = {} }
+  local trouble = { actions = {}, keys = {} }
+
+  layouts.default.layout[1].border = "rounded"
+  layouts.default.layout[2].border = "rounded"
+
+  layouts.select.layout.border = true
+
+  layouts.sidebar.layout[1].border = "rounded"
 
   layouts.telescope.layout.backdrop = true
   layouts.telescope.layout[1][1].title = ""
+  layouts.telescope.layout[1][1].border = "hpad"
   layouts.telescope.layout[1][2].border = "top"
   layouts.telescope.layout[1][2].height = 2
   layouts.telescope.layout[2].width = 0.6
@@ -21,13 +27,8 @@ local _config = function()
   layouts.vertical.layout[3].height = 0.7
 
   layouts.vscode.layout.row = 0
-  layouts.vscode.layout.border = vim.tbl_map(
-    function(icon) return { icon, "SnacksPickerBorderSB" } end,
-    ds.icons.border.Default
-  )
-
-  local flash = { actions = {}, keys = {} }
-  local trouble = { actions = {}, keys = {} }
+  layouts.vscode.layout[1].border = "rounded"
+  layouts.vscode.layout.border = true
 
   if ds.plugin.is_installed "flash.nvim" then
     flash = {
@@ -120,8 +121,8 @@ M.config = _config()
 M.file_browser = function()
   local cwd = vim.fn.expand "%:p:h"
   Snacks.picker.files {
+    layout = "ivy",
     cwd = cwd,
-    layout = { preset = "vscode", preview = true },
     actions = {
       parent = {
         action = function(picker, _)

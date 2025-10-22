@@ -26,12 +26,14 @@ M.styles = {
     },
   },
   notification_history = {
+    border = "rounded",
     wo = {
       cursorline = false,
       winhighlight = "Title:SnacksNotifierHistoryTitle",
     },
   },
   scratch = {
+    border = "rounded",
     wo = {
       winhighlight = "CursorLine:SnacksScratchCursorLine",
     },
