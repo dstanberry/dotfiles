@@ -122,6 +122,18 @@ function M.on_attach(client, bufnr, server_capabilities)
     if client.server_capabilities[k] then client.server_capabilities[k] = v end
   end)
 
+  local supported_methods = vim.tbl_filter(function(m) return client:supports_method(m.method, bufnr) end, {
+    { key = "gyi", method = "callHierarchy/incomingCalls", cmd = "incoming_calls", desc = "lsp: incoming calls" },
+    { key = "gyo", method = "callHierarchy/outgoingCalls", cmd = "outgoing_calls", desc = "lsp: outgoing calls" },
+  })
+
+  if not vim.tbl_isempty(supported_methods) then
+    vim.keymap.set("n", "gy", "", { buffer = bufnr, desc = "+lsp: call hierarchy" })
+    for _, m in ipairs(supported_methods) do
+      vim.keymap.set("n", m.key, vim.lsp.buf[m.cmd], { buffer = bufnr, desc = m.desc })
+    end
+  end
+
   if client:supports_method("textDocument/codeAction", bufnr) then
     vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr, desc = "lsp: code action" })
   end
