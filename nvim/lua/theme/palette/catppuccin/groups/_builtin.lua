@@ -7,7 +7,6 @@ M.get = function(c)
   return {
     -- vim editor colors
     ColorColumn          = { bg = c.gray0 },
-    Conceal              = { fg = c.overlay1 },
     CurSearch            = { fg = c.bg1, bg = c.red1 },
     IncSearch            = { fg = c.bg1, bg = ds.color.blend(c.aqua1, c.bg2, 0.9) },
     Substitute           = { fg = ds.color.blend(c.red1, c.magenta2, 0.5), bg = c.gray1 },
@@ -27,7 +26,6 @@ M.get = function(c)
     ModeMsg              = { fg = c.fg2, bold = true },
     MoreMsg              = { fg = c.blue1 },
     MsgArea              = { fg = c.fg2 },
-    NonText              = { fg = c.overlay0 },
     Normal               = { fg = c.fg2, bg = c.bg2 },
     NormalNC             = { fg = c.fg2, bg = c.bg2 },
     -- custom alternate background(s)

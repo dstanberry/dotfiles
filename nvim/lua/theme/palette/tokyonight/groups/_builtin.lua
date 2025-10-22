@@ -7,7 +7,6 @@ M.get = function(c)
   return {
     -- vim editor colors
     ColorColumn                = { bg = c.black },
-    Conceal                    = { fg = c.gray2 },
     CurSearch                  = { link = "IncSearch" },
     Search                     = { fg = c.fg2, bg = ds.color.blend(c.blue3, c.bg2, 0.4) },
     Cursor                     = { fg = c.bg2, bg = c.fg2 },
@@ -21,7 +20,6 @@ M.get = function(c)
     LineNrBelow                = { fg = c.gray1 },
     MatchParen                 = { fg = c.orange1, bold = true },
     MoreMsg                    = { fg = c.blue1 },
-    NonText                    = { fg = c.gray2 },
     Normal                     = { fg = c.fg2, bg = c.bg2 },
     NormalNC                   = { fg = c.fg2, bg = c.bg2 },
     -- custom alternate background(s)
