@@ -100,6 +100,7 @@ vim.opt.foldlevel = 99 -- define the fold level
 vim.opt.foldmethod = "expr" -- define how the fold level is calculated
 vim.opt.foldtext = "" -- specify the text displayed for a closed fold
 vim.opt.grepformat = vim.opt.grepformat ^ { "%f:%l:%c:%m" } -- grep output format
+vim.opt.fileformat = "unix" -- set default file format
 vim.opt.formatexpr = "v:lua.require('util.format').formatexpr()" -- define the function used for automatic formatting
 vim.bo.formatoptions = "cjlnqr" -- define how formatting is to be done
 vim.opt.grepprg = "rg --vimgrep" -- define program used to grep files
