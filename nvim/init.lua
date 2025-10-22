@@ -10,7 +10,7 @@ vim.env.XDG_CONFIG_HOME = vim.env.XDG_CONFIG_HOME or vim.fs.joinpath(vim.env.HOM
 _G.ds = require "util"
 ds.env.load_settings()
 
-vim.cmd.colorscheme "kdark"
+vim.cmd.colorscheme(ds.env "theme" or "kdark")
 
 ds.plugin.setup {
   on_init = function()
