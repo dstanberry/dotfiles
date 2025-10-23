@@ -34,9 +34,9 @@ M.get = function(c)
 
     FloatShadow          = { fg = c.overlay0 },
     FloatShadowThrough   = { bg = ds.color.blend(c.bg1, c.bg2, 0.45) },
-    FloatBorder          = { fg = c.blue1, bg = c.bg1 },
-    FloatTitle           = { fg = c.fg0, bg = c.bg1 },
-    NormalFloat          = { fg = c.fg2, bg = c.bg1 },
+    FloatBorder          = { fg = c.blue1, bg = c.bg0 },
+    FloatTitle           = { fg = c.fg0, bg = c.bg0 },
+    NormalFloat          = { fg = c.fg2, bg = c.bg0 },
 
     PMenu                = { fg = c.overlay2, bg = c.bg1 },
     PMenuBorder          = { link = "FloatBorder" },

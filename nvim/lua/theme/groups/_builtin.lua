@@ -36,6 +36,7 @@ M.get = function(c)
     -- custom alternate background(s)
     NormalOverlay              = { fg = c.fg0, bg = c.bgX },
     NormalSB                   = { fg = c.fg0, bg = c.bg0 },
+    Title                      = { fg = c.blue1, bold = true },
 
     NvimInternalError          = { link = "Error" },
 
@@ -43,6 +44,7 @@ M.get = function(c)
     FloatShadowThrough         = { bg = ds.color.blend(c.bg1, c.bg2, 0.45) },
     FloatBorder                = { fg = c.gray1, bg = c.bg0 },
     NormalFloat                = { fg = c.white, bg = c.bg0 },
+    FloatTitle                 = { fg = c.blue1, bg = c.bg0, bold = true },
 
     PMenu                      = { link = "NormalFloat" },
     PMenuBorder                = { link = "FloatBorder" },
@@ -64,7 +66,6 @@ M.get = function(c)
     SpellRare                  = { sp = c.purple0, undercurl = true },
     -- TermCursor              = {},
     -- TermCursorNC            = {},
-    Title                      = { fg = c.blue0, bold = true },
     VertSplit                  = { fg = c.bgX },
     WinSeparator               = { link = "VertSplit" },
     Visual                     = { bg = c.bg_visual },

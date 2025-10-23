@@ -29,11 +29,11 @@ M.get = function(c)
     NormalNC                   = { fg = c.fg2, bg = c.bg2 },
     -- custom alternate background(s)
     NormalOverlay              = { fg = c.fg1, bg = c.bgX },
-    NormalSB                   = { fg = c.fg1, bg = c.bg1 },
+    NormalSB                   = { fg = c.fg1, bg = c.bg0 },
 
-    FloatBorder                = { fg = BORDER, bg = c.bg1 },
-    FloatTitle                 = { fg = BORDER, bg = c.bg1 },
-    NormalFloat                = { fg = c.fg2, bg = c.bg1 },
+    FloatBorder                = { fg = BORDER, bg = c.bg0 },
+    FloatTitle                 = { fg = BORDER, bg = c.bg0 },
+    NormalFloat                = { fg = c.fg2, bg = c.bg0 },
 
     PMenu                      = { fg = c.fg2, bg = c.bg1 },
     PMenuMatch                 = { fg = c.aqua1, bg = c.bg1 },
