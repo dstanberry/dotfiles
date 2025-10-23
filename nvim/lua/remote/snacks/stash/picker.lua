@@ -11,8 +11,6 @@ local _config = function()
   layouts.default.layout[1].border = "rounded"
   layouts.default.layout[2].border = "rounded"
 
-  layouts.select.layout.border = true
-
   layouts.sidebar.layout[1].border = "rounded"
 
   layouts.telescope.layout.backdrop = true
@@ -99,6 +97,10 @@ local _config = function()
       registers = { layout = { preset = "vscode" } },
       spelling = { layout = { preset = "select" } },
       todo_comments = { layout = { preset = "vertical" } },
+    },
+    previewers = {
+      diff = { builtin = false, cmd = { "delta" } },
+      git = { builtin = false },
     },
     win = {
       input = {

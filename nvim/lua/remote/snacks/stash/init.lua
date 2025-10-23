@@ -17,10 +17,10 @@ setmetatable(M, {
 
 M.styles = {
   input = {
+    border = "rounded",
     row = 19,
   },
   notification = {
-    border = vim.tbl_map(function(icon) return { icon, "FloatBorder" } end, ds.icons.border.Default),
     wo = {
       wrap = true,
     },

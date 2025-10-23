@@ -37,6 +37,7 @@ return {
         { "<leader>gf", function() Snacks.picker.git_status() end, desc = "git: show changed files" },
         { "<leader>gg", function() Snacks.lazygit.open() end, desc = "git: lazygit" },
         { "<leader>gl", function() Snacks.lazygit.log_file() end, desc = "git: lazygit log" },
+        { ll "gl", function() Snacks.picker.git_log() end, desc = "git: log (pickaxe)" },
         { ll "go", function() Snacks.gitbrowse.open() end, desc = "git: open in browser", mode = { "n", "v" } },
         { ll "gy", function() Snacks.gitbrowse.open(copy) end, desc = "git: copy remote url", mode = { "n", "v" } },
         -- window
@@ -65,7 +66,7 @@ return {
         words = { enabled = true },
         -- low config
         image = { force = not (ds.has "win32" or ds.has "wsl"), doc = { inline = false } },
-        notifier = { style = "fancy", margin = { top = 1, right = 1, bottom = 2 } },
+        notifier = { style = "fancy", gap = 1, margin = { top = 1, right = 1, bottom = 2 } },
         input = { win = { keys = { i_jk = { "jk", { "cmp_close", "cancel" }, mode = "i" } } } },
         -- non-trivial config
         gitbrowse = stash.gitbrowse.config,
