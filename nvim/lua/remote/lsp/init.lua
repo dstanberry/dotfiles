@@ -23,7 +23,26 @@ return {
   {
     "rachartier/tiny-inline-diagnostic.nvim",
     event = "LspAttach",
-    opts = { blend = { factor = 0.15 }, options = { throttle = 50 } },
+    init = function()
+      if ds.plugin.is_installed "sidekick.nvim" then
+        local group = ds.augroup "remote.tiny-inline-diagnostic"
+        vim.api.nvim_create_autocmd("User", {
+          group = group,
+          pattern = "SidekickNesHide",
+          callback = function() require("tiny-inline-diagnostic").enable() end,
+        })
+        vim.api.nvim_create_autocmd("User", {
+          group = group,
+          pattern = "SidekickNesShow",
+          callback = function() require("tiny-inline-diagnostic").disable() end,
+        })
+      end
+    end,
+    opts = {
+      preset = "powerline",
+      blend = { factor = 0.15 },
+      options = { throttle = 50 },
+    },
   },
   {
     "mickael-menu/zk-nvim",
