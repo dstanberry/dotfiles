@@ -97,7 +97,7 @@ M.get = function(c)
     SnacksPickerInputTitle     = { fg = c.red1, bg = GRAY_DARK, bold = true },
 
     SnacksPickerList           = { bg = GRAY_DARK },
-    SnacksPickerListCursorLine = { bg = c.bg4, bold = true },
+    SnacksPickerListCursorLine = { bg = c.bg_visual, bold = true },
 
     SnacksPickerPreview        = { bg = c.bg0 },
     SnacksPickerPreviewBorder  = { fg = c.bg0, bg = c.bg0 },
