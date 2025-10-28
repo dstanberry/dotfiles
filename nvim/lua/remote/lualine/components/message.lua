@@ -79,11 +79,12 @@ M.sidekick = {
     return status and ds.pad(vim.tbl_get(M.sidekick.icons, status.kind, 1), "left", 2)
   end,
   color = function()
+    if not package.loaded.sidekick then return {} end
     local status = require("sidekick.status").get()
     local hl = status and (status.busy and "DiagnosticWarn" or vim.tbl_get(M.sidekick.icons, status.kind, 2))
     return { fg = ds.color.get(hl or "Comment") }
   end,
-  cond = function() return require("sidekick.status").get() ~= nil end,
+  cond = function() return package.loaded.sidekick and require("sidekick.status").get() ~= nil end,
 }
 
 M.symbols = {
