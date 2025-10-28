@@ -84,7 +84,6 @@ return {
         dockerls = {},
         emmet_language_server = {},
         gh_actions_ls = {},
-        graphql = {},
         helm_ls = {},
         html = { init_options = { provideFormatter = false } },
         marksman = { root_markers = { ".marksman.toml", ".git", ".zk" } },
@@ -100,10 +99,11 @@ return {
       vim.lsp.config("*", { capabilities = opts.capabilities })
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
-      ds.fs.walk("lsp", function(path, name, type)
-        if (type == "file" or type == "link") and name:match "%.lua$" then
+      ds.fs.walk("lsp", function(path, name, kind)
+        if (kind == "file" or kind == "link") and name:match "%.lua$" then
           local fname = name:sub(1, -5)
           local mod = assert(loadfile(path))() ---@type remote.lsp.config
+          if type(mod) == "function" then mod = mod() end
           if mod.disabled then return end
           if mod.setup then mod.setup(mod.config or {}) end
           if mod.defer_setup then return end

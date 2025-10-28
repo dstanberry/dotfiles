@@ -24,8 +24,8 @@ M.setup = function()
         return coroutine.create(function(_c)
           local root = ds.root.get()
           local targets = {}
-          ds.fs.walk(root, function(_path, _, type)
-            if (type == "file" or type == "link") and _path:match "/target/debug/" then table.insert(targets, _path) end
+          ds.fs.walk(root, function(_path, _, kind)
+            if (kind == "file" or kind == "link") and _path:match "/target/debug/" then table.insert(targets, _path) end
           end)
           if #targets == 1 then return coroutine.resume(_c, targets[1]) end
           vim.ui.select(

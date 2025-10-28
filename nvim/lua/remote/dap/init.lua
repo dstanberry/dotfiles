@@ -154,8 +154,8 @@ return {
       end
 
       local root = "remote/dap/debuggers"
-      ds.fs.walk(root, function(path, name, type)
-        if (type == "file" or type == "link") and name:match "%.lua$" then
+      ds.fs.walk(root, function(path, name, kind)
+        if (kind == "file" or kind == "link") and name:match "%.lua$" then
           local ok, mod = pcall(require, ds.get_module(path))
           if ok and mod.setup then mod.setup() end
         end

@@ -48,9 +48,9 @@ end
 ---@param path string
 ---@param fn fun(path: string, name:string, type:util.fs.walker.filetype)
 function M.walk(path, fn)
-  M.walker(path, function(child, name, type)
-    if type == "directory" then M.walk(child, fn) end
-    fn(child, name, type)
+  M.walker(path, function(child, name, kind)
+    if kind == "directory" then M.walk(child, fn) end
+    fn(child, name, kind)
   end)
 end
 
