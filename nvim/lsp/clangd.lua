@@ -12,4 +12,4 @@ M.config = {
   init_options = { clangdFileStatus = true },
 }
 
-return M
+return function() return M end

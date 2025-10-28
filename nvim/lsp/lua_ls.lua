@@ -38,4 +38,4 @@ M.config = {
   },
 }
 
-return M
+return function() return M end

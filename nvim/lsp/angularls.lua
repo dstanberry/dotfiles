@@ -27,6 +27,11 @@ M.config = {
 
     vim.keymap.set("n", "go", _switch, { buffer = bufnr, desc = "lsp: to component/template" })
   end,
+  root_dir = function(bufnr, on_dir)
+    local markers = vim.lsp.config["angularls"].root_markers
+    local is_ng_project = vim.fs.root(bufnr, markers) ~= nil
+    if is_ng_project then on_dir(vim.fs.root(bufnr, vim.lsp.config["angularls"].root_markers)) end
+  end,
 }
 
 M.server_capabilities = {
@@ -42,4 +47,4 @@ M.setup = function()
   })
 end
 
-return M
+return function() return M end

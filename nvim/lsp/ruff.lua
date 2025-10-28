@@ -30,4 +30,4 @@ M.server_capabilities = {
   documentFormattingProvider = false,
 }
 
-return M
+return function() return M end
