@@ -6,6 +6,7 @@ local _config = function()
   local layouts = require "snacks.picker.config.layouts"
 
   local flash = { actions = {}, keys = {} }
+  local sidekick = { actions = {}, keys = {} }
   local trouble = { actions = {}, keys = {} }
 
   layouts.default.layout[1].border = "rounded"
@@ -52,6 +53,15 @@ local _config = function()
     }
   end
 
+  if ds.plugin.is_installed "sidekick.nvim" then
+    sidekick = {
+      actions = {
+        sidekick_send = function(...) return require("sidekick.cli.picker.snacks").send(...) end,
+      },
+      keys = { ["<a-a>"] = { "sidekick_send", mode = { "i", "n" } } },
+    }
+  end
+
   if ds.plugin.is_installed "trouble.nvim" then
     trouble = {
       actions = {
@@ -66,7 +76,7 @@ local _config = function()
   return {
     icons = { kinds = vim.tbl_deep_extend("keep", ds.icons.kind, ds.icons.type) },
     prompt = ds.pad(ds.icons.misc.Prompt, "right"),
-    actions = vim.tbl_extend("force", flash.actions, trouble.actions, {
+    actions = vim.tbl_extend("force", flash.actions, sidekick.actions, trouble.actions, {
       toggle_cwd = function(p) ---@param p snacks.Picker
         local root = ds.root.get { buf = p.input.filter.current_buf, normalize = true }
         local cwd = vim.fs.normalize(vim.uv.cwd() or ".")
@@ -104,7 +114,7 @@ local _config = function()
     },
     win = {
       input = {
-        keys = vim.tbl_extend("force", flash.keys, trouble.keys, {
+        keys = vim.tbl_extend("force", flash.keys, sidekick.keys, trouble.keys, {
           ["<a-c>"] = { "toggle_cwd", mode = { "i", "n" } },
           ["<c-/>"] = { "toggle_help", mode = { "i", "n" } },
           ["<c-d>"] = { "preview_scroll_down", mode = { "i", "n" } },

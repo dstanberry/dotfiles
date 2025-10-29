@@ -7,11 +7,11 @@ return {
     },
     cmd = { "CodeCompanion", "CodeCompanionActions", "CodeCompanionChat", "CodeCompanionCmd", "CodeCompanionHistory" },
     keys = {
-      { "<leader>c", mode = { "n", "v" }, "", desc = "+code assistant" },
-      { "<leader>ca", mode = { "n", "v" }, ":CodeCompanionActions<cr>", desc = "codecompanion: select action" },
-      { "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", desc = "codecompanion: toggle" },
-      { "<leader>ch", "<cmd>CodeCompanionHistory<cr>", desc = "codecompanion: show history" },
-      { "<leader>cx", mode = { "v" }, "<cmd>CodeCompanionChat Add<cr>", desc = "codecompanion: add selection" },
+      { "<localleader>c", mode = { "n", "v" }, "", desc = "+code assistant" },
+      { "<localleader>ca", mode = { "n", "v" }, ":CodeCompanionActions<cr>", desc = "codecompanion: select action" },
+      { "<localleader>cc", "<cmd>CodeCompanionChat Toggle<cr>", desc = "codecompanion: toggle" },
+      { "<localleader>ch", "<cmd>CodeCompanionHistory<cr>", desc = "codecompanion: show history" },
+      { "<localleader>cx", mode = { "v" }, "<cmd>CodeCompanionChat Add<cr>", desc = "codecompanion: add selection" },
     },
     init = function()
       local group = ds.augroup "remote.codecompanion"
@@ -160,10 +160,10 @@ return {
 
       return {
         { "<tab>", ds.coalesce({ "cmp.inline.next" }, "<tab>"), mode = { "n" }, expr = true },
-        { "<localleader>c", mode = { "n", "x" }, "", desc = "+code assistant" },
-        { "<localleader>ca", mode = { "n", "x" }, _prompt, desc = "sidekick: select prompt" },
-        { "<localleader>cc", _toggle, desc = "sidekick: toggle" },
-        { "<localleader>cx", mode = { "n", "x" }, _send, desc = "sidekick: add selection" },
+        { "<leader>c", mode = { "n", "x" }, "", desc = "+code assistant" },
+        { "<leader>ca", mode = { "n", "x" }, _prompt, desc = "sidekick: select prompt" },
+        { "<leader>cc", _toggle, desc = "sidekick: toggle" },
+        { "<leader>cx", mode = { "n", "x" }, _send, desc = "sidekick: add selection" },
       }
     end,
     init = function()
@@ -175,7 +175,7 @@ return {
     end,
     opts = function()
       return {
-        mux = { enabled = false, backend = "tmux" },
+        mux = { enabled = true, backend = "tmux" },
         signs = { enabled = true, icon = ds.icons.misc.ArrowCollapseRight },
         cli = {
           context = {
