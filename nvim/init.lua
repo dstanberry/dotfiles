@@ -66,7 +66,6 @@ ds.plugin.setup {
         [".*/git/config"] = "gitconfig",
         [".*/git/gitconfig"] = "gitconfig",
         [".*/git/ignore"] = "gitignore",
-        [".*/kitty/.+%.conf"] = "bash",
         ["requirements[%w_.-]+%.txt"] = "requirements",
         [".*%.y[a]ml"] = function(path, _)
           local root = vim.fs.find({ "Chart.yaml", "Chart.yml" }, { path = path, upward = true })[1]
