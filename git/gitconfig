@@ -12,13 +12,11 @@
 	remotes = remote --verbose
 
 	abbr = !sh -c 'git rev-parse --short ${1-`echo HEAD`}' -
-	ack = grep --break --heading
-	amend = commit --amend --verbose
+	amend = commit --amend --no-edit
 	count = !git --no-pager log --oneline | wc -l
 	dupes = !git ls-tree -r HEAD | cut -c 13- | sort | uniq -D -w 40
 	reword = commit --amend --only --verbose --
 	rollback = !sh -c 'git reset --merge HEAD~${1-1}' -
-	shoehorn = commit --amend --no-edit
 	staged = diff --cached --ignore-submodules=dirty
 	uncommit = reset --soft HEAD^
 	unstage = restore --staged --patch
@@ -32,7 +30,6 @@
 	hist = !git --paginate log
 	min-graph = !git --paginate log --graph --all --simplify-by-decoration
 	prev = !git --paginate log -1
-
 
 	; review = "!nvim -c \"DiffviewOpen origin/HEAD...HEAD\""
 	review= "!nvim -c \"DiffviewFileHistory --range=origin/HEAD...HEAD --right-only --no-merges\""
@@ -82,6 +79,12 @@
 	prune = true
 	pruneTag = true
 
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+
 [format]
 	pretty = format:%C(yellow)%h%Creset%C(auto)%d%Creset %C(magenta)(%cr) %C(cyan)%aN%Creset %s%Creset
 
@@ -102,6 +105,7 @@
 	decorate = short
 
 [merge]
+	conflictstyle = zdiff3
 	prompt = false
 	tool = nvimdiff
 
