@@ -1,0 +1,21 @@
+{
+  "name": "kdark",
+  "displayName": "KDark",
+  "description": " Custom dark theme for VS Code inspired by Nord color palette.",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.105.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "KDark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/KDark-color-theme.json"
+      }
+    ]
+  }
+}
