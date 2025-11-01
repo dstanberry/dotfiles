@@ -2,6 +2,9 @@
 local M = {}
 
 M.setup = function()
+  if vim.env.GH_FORCE_TTY then vim.env.GH_FORCE_TTY = nil end
+  if ds.plugin.is_installed "bufferline.nvim" then pcall(require, "bufferline") end
+
   ds.log = function(...) Snacks.debug.inspect(...) end
   ds.bt = function() Snacks.debug.backtrace() end
 

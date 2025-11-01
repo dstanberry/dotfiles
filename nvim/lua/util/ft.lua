@@ -44,7 +44,6 @@ M.disabled = {
     "lazy",
     "mason",
     "noice",
-    "octo_panel",
     "oil",
     "sidekick_terminal",
     "snacks_layout_box",

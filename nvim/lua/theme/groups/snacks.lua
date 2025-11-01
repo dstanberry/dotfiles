@@ -48,6 +48,10 @@ M.get = function(c)
     SnacksDashboardShortCut    = { fg = c.overlay1 },
     SnacksDashboardSpecial     = { fg = c.fg_conceal },
 
+    -- gh
+    SnacksGhNormal            = { link = "Normal"},
+    SnacksGhBorder            = { fg = c.bg0, bg = c.bg0 },
+
     -- indent
     SnacksIndent1              = { fg = CYAN },
     SnacksIndent2              = { fg = ORANGE },

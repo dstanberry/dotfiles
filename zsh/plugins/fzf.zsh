@@ -28,7 +28,6 @@ fi
       --bind 'start:preview(echo Loading pull requests ...)+reload:GH_FORCE_TTY=95% gh pr list --limit=1000' \
       --bind 'load:transform:(( FZF_TOTAL_COUNT )) || echo become:echo No pull requests' \
       --bind 'ctrl-o:execute-silent:gh pr view --web {1}' \
-      --bind 'ctrl-v:become:pr={1} && gh pr checkout {1} && nvim -c ":Octo pr edit ${pr#"#"}"' \
       --bind 'enter:become:gh pr checkout {1}' \
       --footer 'Press Enter to checkout / CTRL-O to open in browser / CTRL-V to open in eitor' "$@"
   }
@@ -92,7 +91,7 @@ fi
           --preview '(glow -s dark {1}/README.md ||
             bat --style=plain {1}/README.md || cat {1}/README.md ||
             eza -lh --color=always --icons --git {1} ||
-            ls -lh {1}) 2> /dev/null'
+        ls -lh {1}) 2> /dev/null'
       )
       if [ -z "$selected_dir" ]; then
         zle redisplay

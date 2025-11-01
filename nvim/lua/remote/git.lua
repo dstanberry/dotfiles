@@ -165,49 +165,4 @@ return {
       end,
     },
   },
-  {
-    "pwntester/octo.nvim",
-    event = { { event = "BufReadCmd", pattern = "octo://*" } },
-    cmd = "Octo",
-    keys = {
-      { "<leader>gp", function() vim.cmd "Octo pr list" end, desc = "octo: list pull requests" },
-      { "<leader>gP", function() vim.cmd "Octo pr search" end, desc = "octo: search pull requests" },
-      -- prefix
-      { "<localleader>a", "", desc = "octo: +assignee", ft = "octo" },
-      { "<localleader>c", "", desc = "octo: +comment/code", ft = "octo" },
-      { "<localleader>l", "", desc = "octo: +label", ft = "octo" },
-      { "<localleader>i", "", desc = "octo: +issue", ft = "octo" },
-      { "<localleader>r", "", desc = "octo: +react", ft = "octo" },
-      { "<localleader>p", "", desc = "octo: +pull request", ft = "octo" },
-      { "<localleader>pr", "", desc = "octo: +rebase", ft = "octo" },
-      { "<localleader>ps", "", desc = "octo: +squash", ft = "octo" },
-      { "<localleader>v", "", desc = "octo: +review", ft = { "octo", "octo_panel" } },
-      { "<localleader>g", "", desc = "octo: +go to issue", ft = "octo" },
-      -- trigger completion menu
-      { "@", "@<c-x><c-o>", mode = "i", ft = "octo", silent = true },
-      { "#", "#<c-x><c-o>", mode = "i", ft = "octo", silent = true },
-    },
-    init = function()
-      vim.treesitter.language.register("markdown", "octo")
-      vim.api.nvim_create_autocmd("ExitPre", {
-        group = ds.augroup "remote.octo",
-        callback = function()
-          local keep = { "octo" }
-          for _, win in ipairs(vim.api.nvim_list_wins()) do
-            local buf = vim.api.nvim_win_get_buf(win)
-            if vim.tbl_contains(keep, vim.bo[buf].filetype) then vim.bo[buf].buftype = "" end
-          end
-        end,
-      })
-    end,
-    opts = {
-      use_local_fs = false,
-      enable_builtin = true,
-      default_to_projects_v2 = false,
-      default_merge_method = "squash",
-      github_hostname = ds.env "github_hostname" or "github.com",
-      picker = "snacks",
-      ssh_aliases = {},
-    },
-  },
 }

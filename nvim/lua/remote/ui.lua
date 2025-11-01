@@ -2,7 +2,7 @@ return {
   { "MunifTanjim/nui.nvim", lazy = true },
   {
     "akinsho/bufferline.nvim",
-    event = { "LazyFile", { event = "BufReadCmd", pattern = "octo://*" } },
+    event = { "LazyFile", { event = "BufReadCmd", pattern = "gh://*" } },
     lazy = vim.fn.argc(-1) == 0,
     keys = {
       { "<left>", "<cmd>BufferLineCyclePrev<cr>", desc = "bufferline: goto next buffer" },
@@ -97,8 +97,8 @@ return {
           get_element_icon = function(element)
             local mini_icons = package.loaded["mini.icons"]
             if not mini_icons then return ds.icons.documents.File end
-            if element.filetype == "octo" or element.path:match "^octo:" then
-              return mini_icons.get("extension", element.filetype)
+            if element.filetype == "markdown.gh" or element.path:match "^gh:" then
+              return mini_icons.get("filetype", element.filetype)
             end
             return mini_icons.get(element.directory and "directory" or "file", element.path)
           end,
@@ -329,7 +329,7 @@ return {
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "codecompanion", "markdown", "octo" },
+    ft = { "codecompanion", "markdown" },
     opts = {
       dash = { width = 80 },
       code = {
@@ -574,7 +574,6 @@ return {
             { pattern = "find", icon = " ", color = "green" },
             { pattern = "git", icon = " ", color = "green" },
             { pattern = "harpoon", icon = "󰛢 ", color = "cyan" },
-            { pattern = "octo", icon = " ", color = "green" },
             { pattern = "search", icon = " ", color = "green" },
             { plugin = "grug-far", icon = " ", color = "blue" },
             -- secondary actions

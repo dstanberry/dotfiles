@@ -32,10 +32,12 @@ return {
         { ll "<leader>", function() Snacks.picker.files { cwd = nvim_conf } end, desc = "picker: find config files" },
         { ll "fe", function() stash.picker.file_browser() end, desc = "picker: find relative files" },
         { ll "fg", function() Snacks.picker.grep() end, desc = "picker: find in files (grep)" },
-        -- git
+        -- git(hub)
         { "<leader>gd", function() stash.picker.git_diff_tree() end, desc = "git: diff tree" },
         { "<leader>gf", function() Snacks.picker.git_status() end, desc = "git: show changed files" },
         { "<leader>gg", function() Snacks.lazygit.open() end, desc = "git: lazygit" },
+        { "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "github: find issues (open)" },
+        { "<leader>gp", function() Snacks.picker.gh_pr() end, desc = "github: find pull requests (open)" },
         { "<leader>gl", function() Snacks.lazygit.log_file() end, desc = "git: lazygit log" },
         { ll "gl", function() Snacks.picker.git_log() end, desc = "git: log (pickaxe)" },
         { ll "go", function() Snacks.gitbrowse.open() end, desc = "git: open in browser", mode = { "n", "v" } },

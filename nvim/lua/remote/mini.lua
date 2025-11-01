@@ -444,7 +444,6 @@ return {
         bash  = { glyph = "", hl = "MiniIconsGreen" },
         md    = { glyph = "", hl = "MiniIconsYellow" },
         mdx   = { glyph = "", hl = "MiniIconsYellow" },
-        octo  = { glyph = "", hl = "MiniIconsGrey" },
         zsh   = { glyph = "", hl = "MiniIconsGreen" },
         zshrc = { glyph = "", hl = "MiniIconsGreen" },
       },
@@ -468,7 +467,8 @@ return {
       },
       -- stylua: ignore
       filetype = {
-        gotmpl = { glyph = "󰟓", hl = "MiniIconsGrey" },
+        gotmpl          = { glyph = "󰟓", hl = "MiniIconsGrey" },
+        ["markdown.gh"] = { glyph = "", hl = "MiniIconsGrey" },
       },
       use_file_extension = function(ext, _)
         local _skipped = { "json", "scm", "txt", "yaml", "yml" }

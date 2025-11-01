@@ -33,9 +33,8 @@ M.breadcrumbs = {
             icon, icon_hl = mini_icons.get("file", fname)
           end
 
-          -- NOTE: octo.nvim
-          if parts[1] and parts[1]:match "^octo:" then
-            if parts[#parts - 1] == "pull" then
+          if parts[1] and parts[1]:match "^gh:" then
+            if parts[#parts - 1] == "pr" then
               icon = ds.icons.git.PullRequest
             elseif parts[#parts - 1] == "issue" then
               icon = ds.icons.git.Issue
