@@ -353,13 +353,13 @@ return {
         width = "block",
       },
       heading = {
-        border = false,
+        border = true,
         sign = false,
-        icons = vim.tbl_map(function(i) return ds.icons.markdown["H" .. i] end, vim.fn.range(1, 6)),
-        left_pad = 1,
-        right_pad = 0,
-        position = "right",
-        width = "block",
+        above = ds.icons.misc.EigthBlockLower,
+        below = ds.icons.misc.EigthBlockUpper,
+        icons = vim.tbl_map(function(i) return ds.pad(ds.icons.markdown["H" .. i], "right") end, vim.fn.range(1, 6)),
+        left_pad = 0,
+        position = "left",
       },
       pipe_table = {
         head = "@markup.table",
@@ -368,24 +368,6 @@ return {
       overrides = {
         filetype = {
           codecompanion = {
-            heading = {
-              foregrounds = {
-                "NormalFloatH1",
-                "NormalFloatH2",
-                "NormalFloatH3",
-                "NormalFloatH4",
-                "NormalFloatH5",
-                "NormalFloatH6",
-              },
-              backgrounds = {
-                "NormalFloatH1Bg",
-                "NormalFloatH2Bg",
-                "NormalFloatH3Bg",
-                "NormalFloatH4Bg",
-                "NormalFloatH5Bg",
-                "NormalFloatH6Bg",
-              },
-            },
             html = {
               tag = {
                 buf = { icon = ds.pad(ds.icons.misc.Layer, "right"), highlight = "SpecialChar" },
