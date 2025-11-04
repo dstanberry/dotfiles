@@ -19,6 +19,9 @@ ds.plugin.setup {
     ds.ui.virtcolumn()
     ds.color.sync_term_bg()
 
+    if vim.env.GH_FORCE_TTY then vim.env.GH_FORCE_TTY = nil end
+    if ds.env "github_hostname" then vim.env.GH_HOST = ds.env "github_hostname" end
+
     vim.g.dotfiles_dir = vim.env.XDG_CONFIG_HOME
     vim.g.projects_dir = vim.env.projects_dir and vim.fs.normalize(vim.env.projects_dir)
       or vim.fs.joinpath(vim.env.HOME, "Projects")
