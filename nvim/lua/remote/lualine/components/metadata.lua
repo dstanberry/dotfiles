@@ -93,6 +93,7 @@ M.root_dir = {
 M.plugin = {
   icons = {
     ["grug-far"] = { "󰥩 ", "Find and Replace" },
+    ["markdown.gh"] = { " ", "GitHub Issue/PR" },
     codecompanion = { " ", "AI Assistant" },
     DiffviewFileHistory = { " ", "Commit History" },
     DiffviewFiles = { " ", "Diff Viewer" },
