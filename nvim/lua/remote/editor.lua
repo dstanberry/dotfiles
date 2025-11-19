@@ -3,7 +3,7 @@ return {
   {
     "monaqa/dial.nvim",
     keys = function()
-      local dial = function(increment)
+      local function dial(increment)
         local mode = vim.fn.mode(true)
         -- Use visual commands for VISUAL 'v', VISUAL LINE 'V' and VISUAL BLOCK '\22'
         local is_visual = mode == "v" or mode == "V" or mode == "\22"
@@ -69,8 +69,8 @@ return {
     lazy = true,
     cmd = "ConformInfo",
     keys = function()
-      local _format = function() ds.format.format { force = true } end
-      local _formatInjected = function() require("conform").format { formatters = { "injected" }, timeout_ms = 3000 } end
+      local function _format() ds.format.format { force = true } end
+      local function _formatInjected() require("conform").format { formatters = { "injected" }, timeout_ms = 3000 } end
       return {
         { "ff", mode = { "n", "v" }, _format, desc = "conform: format document" },
         { "fj", mode = { "n", "v" }, _formatInjected, desc = "conform: format injected language(s)" },
@@ -212,10 +212,10 @@ return {
     "folke/flash.nvim",
     event = "LazyFile",
     keys = function()
-      local _jump = function() require("flash").jump() end
-      local _remote = function() require("flash").remote() end
-      local _treesitter = function() require("flash").treesitter() end
-      local _treesitter_search = function() require("flash").treesitter_search() end
+      local function _jump() require("flash").jump() end
+      local function _remote() require("flash").remote() end
+      local function _treesitter() require("flash").treesitter() end
+      local function _treesitter_search() require("flash").treesitter_search() end
 
       return {
         { "r", mode = "o", _remote, desc = "flash: do operation on <pattern>" },
@@ -245,7 +245,7 @@ return {
       })
     end,
     keys = function()
-      local _finder = function()
+      local function _finder()
         local grug = require "grug-far"
         local ext = vim.bo.buftype == "" and vim.fn.expand "%:e"
         grug.open { transient = true, prefills = { filesFilter = ext and ext ~= "" and "*." .. ext or nil } }
@@ -305,7 +305,7 @@ return {
       end)
       lint.linters_by_ft = opts.linters_by_ft
 
-      M.lint = function()
+      function M.lint()
         local names = lint._resolve_linter_by_ft(vim.bo.filetype)
 
         if #names == 0 then vim.list_extend(names, lint.linters_by_ft["_"] or {}) end

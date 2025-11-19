@@ -2,7 +2,7 @@ local M = {}
 
 ---@param c util.theme.palette
 ---@return util.theme.hl
-M.get = function(c)
+function M.get(c)
   local BLUE_DARK = ds.color.blend(c.blue2, c.bg0, 0.08)
   -- stylua: ignore
   return {

@@ -5,7 +5,7 @@ require("remote.luasnip.nodes").setup_snip_env()
 
 local handlers = {}
 local node_types = { function_declaration = true, method_declaration = true, func_literal = true }
-local ptr = function(text) return string.find(text, "*", 1, true) ~= nil end
+local function ptr(text) return string.find(text, "*", 1, true) ~= nil end
 local data_types = {
   ["string"] = function() return t [[""]] end,
   int = function() return t "0" end,
@@ -23,8 +23,8 @@ local data_types = {
   [ptr] = function() return t "nil" end,
 }
 
-local type2node = function(text, info)
-  local same_type = function(dt, ...) return type(dt) == "string" and dt == text or dt(...) end
+local function type2node(text, info)
+  local function same_type(dt, ...) return type(dt) == "string" and dt == text or dt(...) end
   for data_type, fn in pairs(data_types) do
     if same_type(data_type, text) then return fn(text, info) end
   end
@@ -47,14 +47,14 @@ handlers.type_identifier = function(node, info)
   return { type2node(text, info) }
 end
 
-local first = function(list, predicate)
+local function first(list, predicate)
   for i = 1, #list do
     local v = list[i]
     if predicate(v) then return v end
   end
 end
 
-local ret = function(info)
+local function ret(info)
   local cursor_node = vim.treesitter.get_node()
   local scope = ds.treesitter.get_scope_tree(cursor_node, 0)
 
@@ -78,7 +78,7 @@ local ret = function(info)
   return t ""
 end
 
-local go_type = function(args) return sn(nil, ret { index = 0, err_name = args[1][1], func_name = args[2][1] }) end
+local function go_type(args) return sn(nil, ret { index = 0, err_name = args[1][1], func_name = args[2][1] }) end
 
 return {
   s(

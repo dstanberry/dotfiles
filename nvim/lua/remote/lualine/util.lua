@@ -11,7 +11,7 @@ setmetatable(M, {
   end,
 })
 
-M.add = function(highlight, items, join)
+function M.add(highlight, items, join)
   local out = ""
   local sep = join and "" or " "
   for _, item in pairs(items) do
@@ -26,7 +26,7 @@ M.add = function(highlight, items, join)
   return string.format("%s%s%s", highlight, out, sep)
 end
 
-M.available_width = function(width) return vim.api.nvim_get_option_value("columns", {}) >= width end
+function M.available_width(width) return vim.api.nvim_get_option_value("columns", {}) >= width end
 
 M.highlighter = {
   sanitize = function(group) return "%#" .. group .. "#" end,
@@ -34,7 +34,7 @@ M.highlighter = {
   reset = "%*",
 }
 
-M.theme = function()
+function M.theme()
   return {
     command = {
       a = { fg = ds.color "magenta1", bg = ds.color.get("StatusLine", true), gui = "bold" },

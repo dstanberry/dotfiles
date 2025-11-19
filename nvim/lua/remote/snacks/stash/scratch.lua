@@ -1,7 +1,7 @@
 ---@class remote.snacks.stash.scratch
 local M = {}
 
-M.select = function()
+function M.select()
   local items = require("snacks").scratch.list()
   local widths = { 0, 0, 0, 0 }
 

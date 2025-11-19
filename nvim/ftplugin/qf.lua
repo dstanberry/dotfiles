@@ -7,7 +7,7 @@ vim.opt_local.winfixheight = true
 vim.opt_local.wrap = false
 
 local bufnr = vim.api.nvim_get_current_buf()
-local confirm = function()
+local function confirm()
   local linenr = vim.fn.line "."
   vim.cmd.cc { count = linenr }
 end
@@ -18,7 +18,7 @@ vim.keymap.set("v", "d", ds.buffer.quickfix_delete, { buffer = bufnr, desc = "qu
 vim.keymap.set("n", "H", function() pcall(vim.cmd.colder) end, { buffer = bufnr, desc = "quickfix: goto older item" })
 vim.keymap.set("n", "L", function() pcall(vim.cmd.cnewer) end, { buffer = bufnr, desc = "quickfix: goto newer item" })
 
-local adjust_height = function(min_height, max_height)
+local function adjust_height(min_height, max_height)
   local line_end = vim.fn.line "$" + 1
   local ceil = math.min(line_end, max_height)
   local size = math.max(min_height, ceil)

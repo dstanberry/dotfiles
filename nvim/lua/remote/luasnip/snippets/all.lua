@@ -3,7 +3,7 @@ local rutil = require "remote.luasnip.util"
 ---@diagnostic disable: undefined-global
 require("remote.luasnip.nodes").setup_snip_env()
 
-local generate_lorem = function(words)
+local function generate_lorem(words)
   local ret = {}
   for w = 1, words + 1, 1 do
     table.insert(ret, f(function() return vim.fn.systemlist("lorem --lines " .. w) end))
@@ -11,11 +11,11 @@ local generate_lorem = function(words)
   return ret
 end
 
-local shebang = function(_, _)
+local function shebang(_, _)
   return sn(nil, { f(function() return rutil.commentstring(1)[1] end), t "!/usr/bin/env ", i(1, vim.bo.filetype) })
 end
 
-local todo_nodes = function(aliases, opts)
+local function todo_nodes(aliases, opts)
   local alias_nodes = vim.tbl_map(function(alias) return i(nil, alias) end, aliases)
   return fmt("{} {}: {} {}", {
     f(function() return rutil.commentstring(opts.ctype)[1] end),
@@ -25,7 +25,7 @@ local todo_nodes = function(aliases, opts)
   })
 end
 
-local todo_comment = function(context, aliases, opts)
+local function todo_comment(context, aliases, opts)
   context = context or {}
   if not context.trig then return error("context doesn't include a `trig` key which is mandatory", 2) end
   aliases = type(aliases) == "string" and { aliases } or aliases

@@ -22,8 +22,8 @@ return {
       c(1, {
         fmt("function({})", { r(1, "params") }),
         fmt("function {}({})", { r(1, "name"), r(2, "params") }),
-        fmt("local {} = function({})", { r(1, "name"), r(2, "params") }),
         fmt("local function {}({})", { r(1, "name"), r(2, "params") }),
+        fmt("local {} = function({})", { r(1, "name"), r(2, "params") }),
       }),
       d(2, rutil.saved_text, {}, { user_args = { { text = "-- TODO", indent = true } } }),
     }),

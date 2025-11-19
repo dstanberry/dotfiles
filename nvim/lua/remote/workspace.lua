@@ -17,23 +17,23 @@ return {
     event = "LazyFile",
     cmd = { "Trouble" },
     keys = function()
-      local _definitions = function() vim.cmd { cmd = "Trouble", args = { "lsp_def", "toggle" } } end
-      local _implementation = function() vim.cmd { cmd = "Trouble", args = { "lsp_impl", "toggle" } } end
-      local _references = function() vim.cmd { cmd = "Trouble", args = { "lsp_ref", "toggle" } } end
-      local _symbols = function() vim.cmd { cmd = "Trouble", args = { "symbols", "toggle" } } end
-      local _type_definitions = function() vim.cmd { cmd = "Trouble", args = { "lsp_type_def", "toggle" } } end
-      local _diagnostics = function() vim.cmd { cmd = "Trouble", args = { "lsp_diag", "toggle" } } end
-      local _diagnostics_cascade = function() vim.cmd { cmd = "Trouble", args = { "lsp_diag_cascade", "toggle" } } end
-      local _location_list = function() vim.cmd { cmd = "Trouble", args = { "loclist", "toggle" } } end
-      local _quickfix_list = function() vim.cmd { cmd = "Trouble", args = { "qflist", "toggle" } } end
-      local _next = function()
+      local function _definitions() vim.cmd { cmd = "Trouble", args = { "lsp_def", "toggle" } } end
+      local function _implementation() vim.cmd { cmd = "Trouble", args = { "lsp_impl", "toggle" } } end
+      local function _references() vim.cmd { cmd = "Trouble", args = { "lsp_ref", "toggle" } } end
+      local function _symbols() vim.cmd { cmd = "Trouble", args = { "symbols", "toggle" } } end
+      local function _type_definitions() vim.cmd { cmd = "Trouble", args = { "lsp_type_def", "toggle" } } end
+      local function _diagnostics() vim.cmd { cmd = "Trouble", args = { "lsp_diag", "toggle" } } end
+      local function _diagnostics_cascade() vim.cmd { cmd = "Trouble", args = { "lsp_diag_cascade", "toggle" } } end
+      local function _location_list() vim.cmd { cmd = "Trouble", args = { "loclist", "toggle" } } end
+      local function _quickfix_list() vim.cmd { cmd = "Trouble", args = { "qflist", "toggle" } } end
+      local function _next()
         if require("trouble").is_open() then
           require("trouble").next { skip_groups = true, jump = true }
         else
           pcall(vim.cmd.cnext)
         end
       end
-      local _previous = function()
+      local function _previous()
         if require("trouble").is_open() then
           require("trouble").prev { skip_groups = true, jump = true }
         else

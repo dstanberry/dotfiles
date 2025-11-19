@@ -21,20 +21,20 @@ return {
       ---@type table<string, {name:string, msg:string, is_done?:boolean, notify:fun(), timer:uv_timer_t?}>
       local request_cache = {}
 
-      local animate = function()
+      local function animate()
         local time_ms = math.floor(vim.uv.hrtime() / (1e6 * frame_ms))
         local idx = time_ms % #sprites + 1
         return sprites[idx]
       end
 
-      local get_id = function(ctx)
+      local function get_id(ctx)
         local adapter = ctx.data and ctx.data.adapter or {}
         local title = adapter.formatted_name or adapter.name or "Copilot"
         local key = string.format("%s:%s", title, ctx.data and ctx.data.id or "-1")
         return title, key
       end
 
-      local create_notifier = function(key)
+      local function create_notifier(key)
         return function()
           local req = request_cache[key]
           if not req then return end
@@ -154,9 +154,9 @@ return {
   {
     "folke/sidekick.nvim",
     keys = function()
-      local _prompt = function() require("sidekick.cli").prompt() end
-      local _toggle = function() require("sidekick.cli").toggle { filter = { installed = true } } end
-      local _send = function() require("sidekick.cli").send { msg = "{this}" } end
+      local function _prompt() require("sidekick.cli").prompt() end
+      local function _toggle() require("sidekick.cli").toggle { filter = { installed = true } } end
+      local function _send() require("sidekick.cli").send { msg = "{this}" } end
 
       return {
         { "<tab>", ds.coalesce({ "cmp.inline.next" }, "<tab>"), mode = { "n" }, expr = true },

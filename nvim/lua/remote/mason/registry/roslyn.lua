@@ -31,7 +31,7 @@ return {
   source = {
     id = ("pkg:mason/github/microsoft/roslyn@%s"):format(version),
     install = function(ctx)
-      local get_package_info = function()
+      local function get_package_info()
         local latest_package = vim.fn.system {
           "curl",
           "-s",

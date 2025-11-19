@@ -3,7 +3,7 @@ require("remote.luasnip.nodes").setup_snip_env()
 
 local M = {}
 
-M.commentstring = function(ctype)
+function M.commentstring(ctype)
   ctype = ctype or 1
   local commentstring = vim.split(vim.bo.commentstring, "%s", true)
   local left = commentstring[1] and vim.trim(commentstring[1]) or ""
@@ -11,7 +11,7 @@ M.commentstring = function(ctype)
   return { left, right }
 end
 
-M.get_case_node = function(index)
+function M.get_case_node(index)
   return d(index, function()
     return sn(
       nil,
@@ -30,11 +30,11 @@ M.get_case_node = function(index)
   end, {})
 end
 
-M.repeat_node = function(index)
+function M.repeat_node(index)
   return f(function(args) return args[1] end, { index })
 end
 
-M.repeat_node_segment = function(args, _, _, delim, ext)
+function M.repeat_node_segment(args, _, _, delim, ext)
   local text = args[1][1] or ""
   if ext then
     local stripped = text:match "(.+)%..+$"
@@ -48,7 +48,7 @@ M.repeat_node_segment = function(args, _, _, delim, ext)
   return sn(nil, { c(1, options) })
 end
 
-M.saved_text = function(_, snip, state, user_args)
+function M.saved_text(_, snip, state, user_args)
   local nodes = {}
   state = state or {}
   user_args = user_args or {}

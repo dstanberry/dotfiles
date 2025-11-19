@@ -12,7 +12,7 @@ local dir_section = add(highlighter.sanitize "Winbar", { ds.pad("/", "right") })
 
 M.breadcrumbs = {
   get = function()
-    local get_relative_path = function(winid, dirpath)
+    local function get_relative_path(winid, dirpath)
       local cwd = vim.fs.normalize(vim.uv.cwd())
       local path = ds.replace(dirpath, cwd, "")
       if path == "" then return "" end
@@ -20,7 +20,7 @@ M.breadcrumbs = {
       return #path > limit and "..." or path
     end
 
-    local format_sections = function(path, fname)
+    local function format_sections(path, fname)
       local parts = path and vim.split(path, "/") or {}
       local mini_icons = package.loaded["mini.icons"]
       table.insert(parts, fname)

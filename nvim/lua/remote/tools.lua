@@ -24,16 +24,16 @@ return {
     dependencies = { "nvim-neotest/nvim-nio", "nvim-neotest/neotest-python" },
     keys = function()
       ---@diagnostic disable-next-line: missing-fields
-      local _debug = function() require("neotest").run.run { vim.fn.expand "%", strategy = "dap" } end
-      local _file = function() require("neotest").run.run(vim.fn.expand "%") end
-      local _dir = function() require("neotest").run.run(vim.uv.cwd()) end
-      local _nearest = function() require("neotest").run.run() end
-      local _last = function() require("neotest").run.run_last() end
-      local _summary = function() require("neotest").summary.toggle() end
-      local _out = function() require("neotest").output.open { enter = true, auto_close = true } end
-      local _panel = function() require("neotest").output_panel.toggle() end
-      local _stop = function() require("neotest").run.stop() end
-      local _watch = function() require("neotest").watch.toggle(vim.fn.expand "%") end
+      local function _debug() require("neotest").run.run { vim.fn.expand "%", strategy = "dap" } end
+      local function _file() require("neotest").run.run(vim.fn.expand "%") end
+      local function _dir() require("neotest").run.run(vim.uv.cwd()) end
+      local function _nearest() require("neotest").run.run() end
+      local function _last() require("neotest").run.run_last() end
+      local function _summary() require("neotest").summary.toggle() end
+      local function _out() require("neotest").output.open { enter = true, auto_close = true } end
+      local function _panel() require("neotest").output_panel.toggle() end
+      local function _stop() require("neotest").run.stop() end
+      local function _watch() require("neotest").watch.toggle(vim.fn.expand "%") end
 
       return {
         { "<leader>t", "", desc = "+test" },
@@ -135,18 +135,18 @@ return {
   {
     "mrjones2014/smart-splits.nvim",
     keys = function()
-      local _resize_left = function() require("smart-splits").resize_left(1) end
-      local _resize_down = function() require("smart-splits").resize_down(1) end
-      local _resize_up = function() require("smart-splits").resize_up(1) end
-      local _resize_right = function() require("smart-splits").resize_right(1) end
-      local _move_left = function() require("smart-splits").move_cursor_left() end
-      local _move_down = function() require("smart-splits").move_cursor_down() end
-      local _move_up = function() require("smart-splits").move_cursor_up() end
-      local _move_right = function() require("smart-splits").move_cursor_right() end
-      local _swap_left = function() require("smart-splits").swap_buf_left() end
-      local _swap_down = function() require("smart-splits").swap_buf_down() end
-      local _swap_up = function() require("smart-splits").swap_buf_up() end
-      local _swap_right = function() require("smart-splits").swap_buf_right() end
+      local function _resize_left() require("smart-splits").resize_left(1) end
+      local function _resize_down() require("smart-splits").resize_down(1) end
+      local function _resize_up() require("smart-splits").resize_up(1) end
+      local function _resize_right() require("smart-splits").resize_right(1) end
+      local function _move_left() require("smart-splits").move_cursor_left() end
+      local function _move_down() require("smart-splits").move_cursor_down() end
+      local function _move_up() require("smart-splits").move_cursor_up() end
+      local function _move_right() require("smart-splits").move_cursor_right() end
+      local function _swap_left() require("smart-splits").swap_buf_left() end
+      local function _swap_down() require("smart-splits").swap_buf_down() end
+      local function _swap_up() require("smart-splits").swap_buf_up() end
+      local function _swap_right() require("smart-splits").swap_buf_right() end
 
       return {
         { "<a-h>", _resize_left, desc = "smart-splits: resize left" },
@@ -173,7 +173,7 @@ return {
     dependencies = { "tpope/vim-dadbod" },
     cmd = { "DBUI", "DBUIToggle", "DBUIAddConnection" },
     keys = function()
-      local _edit = function() vim.cmd.edit(vim.fs.joinpath(vim.fn.stdpath "data", "db", "connections.json")) end
+      local function _edit() vim.cmd.edit(vim.fs.joinpath(vim.fn.stdpath "data", "db", "connections.json")) end
 
       return {
         { "<localleader>de", _edit, desc = "dadbod: edit database connections" },

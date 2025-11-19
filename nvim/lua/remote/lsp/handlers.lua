@@ -139,7 +139,7 @@ function M.on_attach(client, bufnr, server_capabilities)
   end
 
   if client:supports_method("textDocument/codeLens", bufnr) then
-    local _lens = function()
+    local function _lens()
       vim.ui.select({ "display", "refresh", "run" }, {
         prompt = "Code Lens",
         format_item = function(item) return "Code lens " .. item end,
@@ -210,7 +210,7 @@ function M.on_attach(client, bufnr, server_capabilities)
   end
 
   if client:supports_method("textDocument/documentSymbol", bufnr) then
-    local _symbols = function() vim.lsp.buf.workspace_symbol "" end
+    local function _symbols() vim.lsp.buf.workspace_symbol "" end
     vim.keymap.set("n", "gs", vim.lsp.buf.document_symbol, { buffer = bufnr, desc = "lsp: show documents symbols" })
     vim.keymap.set("n", "gw", _symbols, { buffer = bufnr, desc = "lsp: show workspace symbols" })
   end
@@ -232,7 +232,7 @@ function M.on_attach(client, bufnr, server_capabilities)
   end
 
   if client:supports_method("textDocument/inlayHint", bufnr) then
-    local _inlay_hints = function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end
+    local function _inlay_hints() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()) end
     vim.keymap.set("n", "g<bs>", _inlay_hints, { buffer = bufnr, desc = "lsp: toggle inlay hints" })
   end
 
@@ -254,7 +254,7 @@ function M.on_attach(client, bufnr, server_capabilities)
   end
 
   if client:supports_method("workspace/willRenameFiles", bufnr) then
-    local _rename = function()
+    local function _rename()
       vim.ui.input({ prompt = "New filename: " }, function(name)
         if not name then return end
         local old_fname = vim.api.nvim_buf_get_name(0)
@@ -276,8 +276,8 @@ function M.on_attach(client, bufnr, server_capabilities)
     vim.keymap.set("n", "g-", _rename, { buffer = bufnr, desc = "lsp: rename file" })
   end
 
-  local _previous = function() vim.diagnostic.jump { count = -1 } end
-  local _next = function() vim.diagnostic.jump { count = 1 } end
+  local function _previous() vim.diagnostic.jump { count = -1 } end
+  local function _next() vim.diagnostic.jump { count = 1 } end
   vim.keymap.set("n", "g.", vim.diagnostic.open_float, { buffer = bufnr, desc = "lsp: show line diagnostics" })
   vim.keymap.set("n", "gn", _next, { buffer = bufnr, desc = "lsp: next diagnostic" })
   vim.keymap.set("n", "gp", _previous, { buffer = bufnr, desc = "lsp: previous diagnostic" })

@@ -45,7 +45,7 @@ return {
         callback = function(event)
           local lang = vim.treesitter.language.get_lang(event.match)
           if not vim.tbl_contains(installed, lang) then return end
-          local enabled = function(feat, query)
+          local function enabled(feat, query)
             local feature = vim.tbl_get(opts, feat) or {}
             return feature.enable ~= false
               and not (type(feature.disable) == "table" and vim.tbl_contains(feature.disable, lang))
@@ -120,7 +120,7 @@ return {
               local desc = is_move
                   and ("goto %s %s %s"):format(direction, label, name:find "_end$" and "end" or "start")
                 or ("swap %s %s"):format(direction, label)
-              local rhs = function()
+              local function rhs()
                 local mod = require("nvim-treesitter-textobjects." .. (is_move and "move" or "swap"))
                 if is_move then
                   mod[name](query, "textobjects")

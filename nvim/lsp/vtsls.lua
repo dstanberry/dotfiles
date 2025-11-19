@@ -56,7 +56,7 @@ M.config = {
       format = _organize,
     })
 
-    local _source = function()
+    local function _source()
       local params = vim.lsp.util.make_range_params(0, client.offset_encoding)
       handlers.execute_command {
         command = "typescript.goToSourceDefinition",
@@ -65,7 +65,7 @@ M.config = {
       }
     end
 
-    local _refs = function()
+    local function _refs()
       handlers.execute_command {
         command = "typescript.findAllReferences",
         arguments = { vim.uri_from_bufnr(0) },

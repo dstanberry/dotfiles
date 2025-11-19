@@ -1,13 +1,13 @@
 local M = {}
 
-local initialize = function(bufnr)
+local function initialize(bufnr)
   if M.initialized then return end
 
   local dap = require "dap"
   local py = require "dap-python"
 
-  local _method = function() py.test_method() end
-  local _class = function() py.test_class() end
+  local function _method() py.test_method() end
+  local function _class() py.test_class() end
 
   local pypath = ds.has "win32" and { "Scipts", ".exe" } or { "bin", "" }
   local interpreter =
@@ -82,7 +82,7 @@ end
 
 M.initialized = false
 
-M.setup = function()
+function M.setup()
   local bufnr = vim.api.nvim_get_current_buf()
   if vim.bo[bufnr].filetype ~= "python" then
     vim.api.nvim_create_autocmd("FileType", {

@@ -91,7 +91,7 @@ return {
     config = function(_, opts)
       require("mini.ai").setup(opts)
       ds.plugin.on_load("which-key.nvim", function()
-        local mini_motions = function()
+        local function mini_motions()
           local motions = {
             { " ", desc = "mini.ai: whitespace" },
             { "'", desc = "mini.ai: ' string" },
@@ -151,7 +151,7 @@ return {
   {
     "nvim-mini/mini.files",
     keys = function()
-      local _cwd = function() require("mini.files").open(vim.api.nvim_buf_get_name(0), true) end
+      local function _cwd() require("mini.files").open(vim.api.nvim_buf_get_name(0), true) end
 
       return {
         { "<leader>-", _cwd, desc = "mini.files: open parent directory" },
@@ -182,22 +182,22 @@ return {
       files.setup(opts)
 
       local show_dotfiles = true
-      local filter_show = function() return true end
-      local filter_hide = function(fs_entry) return not vim.startswith(fs_entry.name, ".") end
+      local function filter_show() return true end
+      local function filter_hide(fs_entry) return not vim.startswith(fs_entry.name, ".") end
 
-      local files_set_cwd = function()
+      local function files_set_cwd()
         local cur_entry_path = MiniFiles.get_fs_entry().path
         local cur_directory = vim.fs.dirname(cur_entry_path)
         if cur_directory ~= nil then vim.fn.chdir(cur_directory) end
       end
 
-      local toggle_dotfiles = function()
+      local function toggle_dotfiles()
         show_dotfiles = not show_dotfiles
         files.refresh { content = { filter = show_dotfiles and filter_show or filter_hide } }
       end
 
-      local map_split = function(buf_id, lhs, direction, close_on_file)
-        local rhs = function()
+      local function map_split(buf_id, lhs, direction, close_on_file)
+        local function rhs()
           local new_target
           local current_target = files.get_explorer_state().target_window
           if current_target ~= nil then
@@ -259,13 +259,13 @@ return {
               key = "<localleader>th",
               opts = function()
                 local name = "mini.hipatterns"
-                local get = function()
+                local function get()
                   local buf = vim.api.nvim_get_current_buf()
                   local fname = vim.api.nvim_buf_get_name(buf)
                   if fname:match "nvim/lua/theme" then return ds.hl.show_preview end
                   return vim.b.minihipatterns_enabled == nil or vim.b.minihipatterns_enabled
                 end
-                local set = function()
+                local function set()
                   local buf = vim.api.nvim_get_current_buf()
                   local fname = vim.api.nvim_buf_get_name(buf)
                   local enabled
@@ -322,13 +322,13 @@ return {
         return group
       end
 
-      local get_id = function(buf)
+      local function get_id(buf)
         local fname = vim.fs.normalize(vim.api.nvim_buf_get_name(buf or 0))
         if not fname:find "lua/theme" then return end
         return vim.fs.basename(vim.fs.dirname(fname)) .. "_" .. vim.fn.fnamemodify(fname, ":t:r")
       end
 
-      local can_hl = function(buf, colorscheme)
+      local function can_hl(buf, colorscheme)
         local id = get_id(buf)
         if colorscheme then return ds.hl.show_preview and id end
         return id or vim.tbl_contains(filetypes, vim.bo[buf].ft) or vim.b.minihipatterns_enabled

@@ -8,7 +8,7 @@ return {
       { "rcarriga/nvim-dap-ui", dependencies = { "nvim-neotest/nvim-nio" } },
     },
     keys = function()
-      local get_args = function(config)
+      local function get_args(config)
         local args = type(config.args) == "function" and (config.args() or {}) or config.args or {}
         config = vim.deepcopy(config)
         config.args = function()
@@ -18,24 +18,24 @@ return {
         return config
       end
 
-      local _breakpoint = function() require("dap").toggle_breakpoint() end
-      local _conditional = function() require("dap").set_breakpoint(vim.fn.input "Breakpoint condition: ") end
-      local _args = function() require("dap").continue { before = get_args } end
-      local _run = function() require("dap").continue() end
+      local function _breakpoint() require("dap").toggle_breakpoint() end
+      local function _conditional() require("dap").set_breakpoint(vim.fn.input "Breakpoint condition: ") end
+      local function _args() require("dap").continue { before = get_args } end
+      local function _run() require("dap").continue() end
       -- stylua: ignore start
       ---@diagnostic disable-next-line: missing-fields
-      local _console = function() require("dapui").float_element("console", { enter = true, width = 200, position = "center" }) end
+      local function _console() require("dapui").float_element("console", { enter = true, width = 200, position = "center" }) end
       -- stylua: ignore end
-      local _eval = function() require("dapui").eval() end
-      local _expr = function() require("dapui").eval(vim.fn.input "Evaluate expression: ") end
-      local _hover = function() require("dap.ui.widgets").hover() end
-      local _into = function() require("dap").step_into() end
-      local _over = function() require("dap").step_over() end
-      local _out = function() require("dap").step_out() end
-      local _repl = function() require("dap").repl.toggle { height = 15 } end
-      local _stop = function() require("dap").terminate() end
-      local _ui = function() require("dapui").toggle() end
-      local _watch = function() require("dapui").elements.watches.add() end
+      local function _eval() require("dapui").eval() end
+      local function _expr() require("dapui").eval(vim.fn.input "Evaluate expression: ") end
+      local function _hover() require("dap.ui.widgets").hover() end
+      local function _into() require("dap").step_into() end
+      local function _over() require("dap").step_over() end
+      local function _out() require("dap").step_out() end
+      local function _repl() require("dap").repl.toggle { height = 15 } end
+      local function _stop() require("dap").terminate() end
+      local function _ui() require("dapui").toggle() end
+      local function _watch() require("dapui").elements.watches.add() end
 
       return {
         { "<leader>db", _breakpoint, desc = "dap: toggle breakpoint" },

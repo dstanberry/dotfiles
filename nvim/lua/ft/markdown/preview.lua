@@ -8,7 +8,7 @@ local M = setmetatable({}, {
 local jids = {}
 
 ---@param buf? number
-M.stop = function(buf)
+function M.stop(buf)
   local stopped = false
   buf = buf or vim.api.nvim_get_current_buf()
   if not vim.api.nvim_buf_is_valid(buf) then
@@ -29,7 +29,7 @@ M.stop = function(buf)
 end
 
 ---@param cmd string[]
-local start = function(cmd)
+local function start(cmd)
   local jid = vim.fn.jobstart(cmd, {
     on_exit = function(_, code)
       if not vim.tbl_contains({ 0, 143 }, code) then
@@ -45,7 +45,7 @@ local start = function(cmd)
 end
 
 ---@param buf? number
-M.launch = function(buf)
+function M.launch(buf)
   if M.stop() then return end
   buf = buf or vim.api.nvim_get_current_buf()
   local url = "http://localhost:3333"

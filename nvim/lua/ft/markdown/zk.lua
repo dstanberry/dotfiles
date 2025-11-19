@@ -32,7 +32,7 @@ local templates = {
 ---* Opens a notes picker, and edits the selected notes
 ---@param opts? table additional options
 ---@param picker_opts? table options for the picker
-M.edit = function(opts, picker_opts)
+function M.edit(opts, picker_opts)
   opts = opts or {}
   picker_opts = vim.tbl_extend("keep", picker_opts or {}, {
     picker = "snacks_picker",
@@ -46,7 +46,7 @@ end
 ---@param opts? table additional options
 ---@param picker_opts? table options for the picker
 ---@param cb function
-M.pick_tags = function(opts, picker_opts, cb)
+function M.pick_tags(opts, picker_opts, cb)
   opts = opts or {}
   picker_opts = vim.tbl_extend("keep", picker_opts or {}, {
     picker = "snacks_picker",
@@ -60,7 +60,7 @@ end
 ---@param opts? table additional options
 ---@param picker_opts? table options for the picker
 ---@param cb function
-M.pick_notes = function(opts, picker_opts, cb)
+function M.pick_notes(opts, picker_opts, cb)
   opts = opts or {}
   picker_opts = vim.tbl_extend("keep", picker_opts or {}, {
     picker = "snacks_picker",
@@ -72,7 +72,7 @@ end
 ---Override of zk API |new(...)|
 ---* Opens a templates picker and creates/edits a new note based on the template chosen
 ---@param opts? table additional options
-M.new = function(opts)
+function M.new(opts)
   opts = opts or {}
   opts.title = "Daily Note"
   vim.ui.select(
@@ -95,7 +95,7 @@ end
 ---and creates/edits a new note based on the template chosen using the
 ---|`text selection`| as either the title or body of the note
 ---@param opts? table additional options
-M.new_from_selection = function(opts)
+function M.new_from_selection(opts)
   opts = opts or {}
   if not opts.location and (opts.location ~= "title" or opts.location ~= "content") then
     ds.error(("Invalid option to create note: '%s'"):format(tostring(opts.location)), { title = "Zk" })
@@ -112,7 +112,7 @@ end
 ---Opens a picker and inserts a link to the note
 ---in the current document using the title of the selected note
 ---@param opts? table additional options
-M.insert_link = function(opts)
+function M.insert_link(opts)
   opts = opts or {}
   M.pick_notes(opts, { title = "Notes (insert link to note)", multi_select = false }, function(note)
     zka.link(note.path, zku.get_lsp_location_from_caret(), nil, {}, function(err, res)
@@ -124,7 +124,7 @@ end
 ---Opens a picker and inserts a link to the note
 ---in the current document using the current text selection
 ---@param opts? table additional options
-M.insert_link_from_selection = function(opts)
+function M.insert_link_from_selection(opts)
   opts = opts or {}
   local lines, range = ds.buffer.get_visual_selection()
   local selection = table.concat(lines)
@@ -141,7 +141,7 @@ end
 
 ---Opens a picker and edits the selection containing the current |grep| pattern
 ---@param opts? table additional options
-M.live_grep = function(opts)
+function M.live_grep(opts)
   opts = opts or {}
   local notebook_path = opts.notebook_path and opts.notebook_path or zku.resolve_notebook_path(0)
   local notebook_root = zku.notebook_root(notebook_path)

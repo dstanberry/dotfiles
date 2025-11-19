@@ -2,7 +2,7 @@
 local M = {}
 
 ---@return snacks.picker.Config
-local _config = function()
+local function _config()
   local layouts = require "snacks.picker.config.layouts"
 
   local flash = { actions = {}, keys = {} }
@@ -132,7 +132,7 @@ end
 
 M.config = _config()
 
-M.file_browser = function()
+function M.file_browser()
   local cwd = vim.fn.expand "%:p:h"
   Snacks.picker.files {
     layout = "ivy",
@@ -157,7 +157,7 @@ M.file_browser = function()
   }
 end
 
-M.git_diff_tree = function()
+function M.git_diff_tree()
   Snacks.picker.pick {
     layout = "ivy",
     preview = "file",

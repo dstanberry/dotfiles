@@ -9,7 +9,7 @@ return {
       local copy = stash.gitbrowse.copy_url
       local lazy_rtp = vim.fs.joinpath(vim.fn.stdpath "data", "lazy")
       local nvim_conf = tostring(vim.fn.stdpath "config")
-      local ll = function(key) return "<localleader>" .. key end
+      local function ll(key) return "<localleader>" .. key end
 
       return {
         -- lsp

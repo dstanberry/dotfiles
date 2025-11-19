@@ -41,7 +41,7 @@ M.diffview = {
 
 M.merge_conflicts = {
   get = function()
-    local format_label = function(winid, bufnr)
+    local function format_label(winid, bufnr)
       local ret = ""
       local diffview_label = vim.api.nvim_buf_get_var(bufnr, "diffview_label")
       local diffview_view = vim.api.nvim_buf_get_var(bufnr, "diffview_view")

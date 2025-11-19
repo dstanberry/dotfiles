@@ -151,7 +151,7 @@ function M.try_catch(fn, opts)
   return Util.try(fn, opts)
 end
 
-local delay_notifications = function()
+local function delay_notifications()
   local notifications = {}
   local orig = vim.notify
 

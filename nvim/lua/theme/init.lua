@@ -40,7 +40,7 @@ N.cache.clear = function(theme) vim.uv.fs_unlink(N.cache.file(theme)) end
 --- Defines highlight groups using the provided color palette
 ---@param theme util.theme.name
 ---@param c util.theme.palette
-M.apply = function(theme, c)
+function M.apply(theme, c)
   ds.fs.walk(N.dirs.root .. N.dirs.groups, function(path, name, kind)
     if (kind == "file" or kind == "link") and name:match "%.lua$" then
       name = path:match(N.dirs.root .. N.dirs.groups .. "/(.*)"):sub(1, -5):gsub("/", ".")
@@ -96,7 +96,7 @@ end
 ---Sets the active neovim theme based on the provided `colorscheme`
 ---@param theme util.theme.name
 ---@param bg? util.theme.mode
-M.load = function(theme, bg)
+function M.load(theme, bg)
   bg = bg or "dark"
   local t = vim.split(theme, "-")
   local path = N.dirs.palettes .. table.concat(t, "/")
@@ -110,7 +110,7 @@ M.load = function(theme, bg)
 end
 
 ---Clears the neovim cache for all colorschemes in the colors directory
-M.clear_cache = function()
+function M.clear_cache()
   ds.fs.walk("colors", function(_, name, kind)
     if (kind == "file" or kind == "link") and name:match "%.lua$" then
       local theme = name:sub(1, -5)

@@ -55,7 +55,7 @@ local icon_cache = {} ---@type table<string,string>
 local sign_cache = {}
 local cache_enabled = false
 
-local _ffi = function()
+local function _ffi()
   if not C then
     local ffi = require "ffi"
     ffi.cdef [[
@@ -74,7 +74,7 @@ local _ffi = function()
   end
   return C
 end
-local cache_signs = function()
+local function cache_signs()
   if cache_enabled then return end
   cache_enabled = true
   local timer = assert(vim.uv.new_timer())
@@ -85,14 +85,14 @@ local cache_signs = function()
 end
 
 ---@param name string
-local is_git_sign = function(name)
+local function is_git_sign(name)
   for _, pattern in ipairs(sign_opts.git.plugins) do
     if name:find(pattern) then return true end
   end
 end
 
 ---@param sign? util.ui.sign.spec
-local get_icon = function(sign)
+local function get_icon(sign)
   if not sign then return "  " end
   local key = (sign.text or "") .. (sign.texthl or "")
   if icon_cache[key] then return icon_cache[key] end
@@ -104,7 +104,7 @@ end
 
 ---@param buf number
 ---@return util.ui.sign.spec[]
-local get_buf_signs = function(buf)
+local function get_buf_signs(buf)
   local signs = {} ---@type util.ui.sign.spec[]
   -- extmarks
   local extmarks = vim.api.nvim_buf_get_extmarks(buf, -1, 0, -1, { details = true, type = "sign" })
@@ -135,7 +135,7 @@ end
 
 ---@param win number
 ---@param lnum number
-local get_fold_info = function(win, lnum)
+local function get_fold_info(win, lnum)
   pcall(_ffi)
   if not C then return end
   local ffi = require "ffi"
@@ -149,7 +149,7 @@ end
 ---@param buf number
 ---@param lnum number
 ---@return util.ui.sign.spec[]
-local get_signs = function(win, buf, lnum)
+local function get_signs(win, buf, lnum)
   local buf_signs = sign_cache[buf]
   if not buf_signs then
     buf_signs = get_buf_signs(buf)
@@ -174,7 +174,7 @@ end
 ---Determine what content is shown in the editor gutter and the order, e.g. sign, fold and number
 ---@return string
 function M.statuscolumn()
-  local _get = function()
+  local function _get()
     if not cache_enabled then cache_signs() end
     local win = vim.g.statusline_winid
     local lnum = vim.wo[win].number
@@ -205,7 +205,7 @@ function M.statuscolumn()
         for _, s in ipairs(signs) do
           signs_by_type[s.type] = signs_by_type[s.type] or s
         end
-        local find = function(types) ---@param types util.ui.sign.type[]
+        local function find(types) ---@param types util.ui.sign.type[]
           for _, t in ipairs(types) do
             if signs_by_type[t] then return signs_by_type[t] end
           end
@@ -266,7 +266,7 @@ local virtcol_opts = {
 local virtcol_ns ---@type integer|nil
 local virtcol_initialized = false
 
-local virtcol_columns = function(win, buf)
+local function virtcol_columns(win, buf)
   local cc = vim.api.nvim_get_option_value("colorcolumn", { win = win })
   local cc_list = cc ~= "" and vim.split(cc, ",") or {}
   local vc_list = virtcol_opts.virtcolumn ~= "" and vim.split(virtcol_opts.virtcolumn, ",") or {}
@@ -290,7 +290,7 @@ local virtcol_columns = function(win, buf)
   return out
 end
 
-local virtcol_provider = function(_, win, buf, topline, botline_guess)
+local function virtcol_provider(_, win, buf, topline, botline_guess)
   if not virtcol_opts.enabled then return false end
   local bt = vim.api.nvim_get_option_value("buftype", { buf = buf })
   if not vim.api.nvim_buf_is_valid(buf) or vim.tbl_contains(virtcol_opts.exclude.buftypes, bt) then return false end
@@ -350,7 +350,7 @@ function M.virtcolumn(opts)
   end
 
   if not virtcol_initialized then
-    local reset_hl = function()
+    local function reset_hl()
       local hl = virtcol_opts.highlight
       local defaults = { link = virtcol_opts.highlight or "NonText" }
       if vim.tbl_contains({ "ColorColumn", "VirtColumn" }, hl) then

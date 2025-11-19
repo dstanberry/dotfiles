@@ -4,7 +4,7 @@ local M = setmetatable({}, {
   __call = function(m, ...) return m.get_palette(...) end,
 })
 
-local clamp = function(val, min, max)
+local function clamp(val, min, max)
   if val == nil then return end
   if val < min then
     return min
@@ -14,12 +14,12 @@ local clamp = function(val, min, max)
   return val
 end
 
-local hex_to_rgb = function(c)
+local function hex_to_rgb(c)
   c = string.lower(c)
   return { tonumber(c:sub(2, 3), 16), tonumber(c:sub(4, 5), 16), tonumber(c:sub(6, 7), 16) }
 end
 
-local rgb_to_hex = function(rgb)
+local function rgb_to_hex(rgb)
   local hex = ""
   for _, v in pairs(rgb) do
     hex = hex .. ("%02X"):format(v)
@@ -27,7 +27,7 @@ local rgb_to_hex = function(rgb)
   return "#" .. hex
 end
 
-local saturate = function(rgb, amount)
+local function saturate(rgb, amount)
   local c = {}
   for i, v in ipairs(rgb) do
     c[i] = clamp(v * amount, 0, 255)
@@ -45,7 +45,7 @@ function M.blend(foreground, background, alpha)
   local bg = hex_to_rgb(background)
   local fg = hex_to_rgb(foreground)
 
-  local blendChannel = function(i)
+  local function blendChannel(i)
     local ret = (alpha * fg[i] + ((1 - alpha) * bg[i]))
     return math.floor(math.min(math.max(0, ret), 255) + 0.5)
   end
@@ -90,7 +90,7 @@ end
 ---Retrieves a color from the active colorscheme palette.
 ---@param name? string color name
 ---@return string?,util.theme.palette? #hexadecimal color formatted as `#rrggbb` or the entire palette if `name` is not provided
-M.get_palette = function(name) return name and vim.tbl_get(vim.g, "ds_colors", name) or vim.g.ds_colors end
+function M.get_palette(name) return name and vim.tbl_get(vim.g, "ds_colors", name) or vim.g.ds_colors end
 
 ---Adjusts the brightness of a color by a given amount.
 ---@param hex string hexadecimal color formatted as `#rrggbb``
@@ -113,7 +113,7 @@ end
 function M.sync_term_bg()
   local group = ds.augroup "util.terminal.color"
 
-  local parse_osc11 = function(sequence)
+  local function parse_osc11(sequence)
     local r, g, b = sequence:match "^\027%]11;rgb:(%x+)/(%x+)/(%x+)$"
     if not (r and g and b) then
       local a
@@ -122,15 +122,15 @@ function M.sync_term_bg()
     end
     if not (r and g and b) then return end
     if not (r:len() <= 4 and g:len() <= 4 and b:len() <= 4) then return end
-    local parse_osc_hex = function(c) return c:len() == 1 and (c .. c) or c:sub(1, 2) end
+    local function parse_osc_hex(c) return c:len() == 1 and (c .. c) or c:sub(1, 2) end
     return "#" .. parse_osc_hex(r) .. parse_osc_hex(g) .. parse_osc_hex(b)
   end
 
-  local handle_term_reponse = function(args)
+  local function handle_term_reponse(args)
     local ok, original_bg = pcall(parse_osc11, args.data)
     if not ok or type(original_bg) ~= "string" then original_bg = ds.color "bg2" end
 
-    local sync_bg = function()
+    local function sync_bg()
       local bg = ds.color.get("Normal", true)
       if bg == nil then return end
       if os.getenv "TMUX" then

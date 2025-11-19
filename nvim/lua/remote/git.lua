@@ -3,7 +3,7 @@ return {
     "sindrets/diffview.nvim",
     cmd = { "DiffviewOpen", "DiffviewFileHistory" },
     keys = function()
-      local _toggle = function()
+      local function _toggle()
         local action = require("diffview.lib").get_current_view() and "Close" or "Open"
         vim.cmd("Diffview" .. action)
       end
@@ -137,14 +137,14 @@ return {
         local gs = package.loaded.gitsigns
         local function map(mode, lhs, rhs, desc) vim.keymap.set(mode, lhs, rhs, { buffer = buf, desc = desc }) end
 
-        local _next = function()
+        local function _next()
           if vim.wo.diff then
             vim.cmd.normal { "]c", bang = true }
           else
             gs.nav_hunk "next"
           end
         end
-        local _prev = function()
+        local function _prev()
           if vim.wo.diff then
             vim.cmd.normal { "[c", bang = true }
           else

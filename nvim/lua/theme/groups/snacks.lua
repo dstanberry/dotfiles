@@ -2,7 +2,7 @@ local M = {}
 
 ---@param c util.theme.palette
 ---@return util.theme.hl
-M.get = function(c)
+function M.get(c)
   local CYAN = "#73c1b9"
   local CYAN_LIGHT = "#80d3dd"
   local PINK = "#dec7d0"

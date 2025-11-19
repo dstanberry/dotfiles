@@ -49,7 +49,7 @@ function M.delete(opts)
   if vim.api.nvim_buf_is_valid(buf) then pcall(vim.cmd, (opts.wipe and "bwipeout! " or "bdelete! ") .. buf) end
 end
 
-local realpath = function(path) return (vim.uv.fs_realpath(path) or path) end
+local function realpath(path) return (vim.uv.fs_realpath(path) or path) end
 
 ---Edit a new file relative to the same directory as the current buffer
 function M.edit()

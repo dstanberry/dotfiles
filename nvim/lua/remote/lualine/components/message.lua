@@ -93,7 +93,7 @@ M.symbols = {
     get = function() return "" end,
   },
   get = function()
-    local calculate_data = function(symbols)
+    local function calculate_data(symbols)
       symbols = symbols:gsub("%%#StatusLine#", ""):gsub("%%%%", "%%")
       local bc = util.metadata.breadcrumbs.get():gsub("%%#.-#", "")
       local sep = ds.pad(ds.icons.misc.FoldClosed, "right", 2)

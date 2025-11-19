@@ -250,10 +250,10 @@ return {
     "folke/noice.nvim",
     event = "VeryLazy",
     keys = function()
-      local _scroll_up = function()
+      local function _scroll_up()
         if not require("noice.lsp").scroll(4) then return "<c-d>" end
       end
-      local _scroll_down = function()
+      local function _scroll_down()
         if not require("noice.lsp").scroll(-4) then return "<c-f>" end
       end
       return {

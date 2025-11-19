@@ -1,7 +1,7 @@
 ---@class remote.snacks.stash.util
 local M = {}
 
-M.setup = function()
+function M.setup()
   if ds.plugin.is_installed "bufferline.nvim" then pcall(require, "bufferline") end
 
   ds.log = function(...) Snacks.debug.inspect(...) end

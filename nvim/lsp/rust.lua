@@ -16,8 +16,8 @@ M.config = {
   },
   server = {
     on_attach = function(_, bufnr)
-      local _action = function() vim.cmd.RustLsp "codeAction" end
-      local _debug = function() vim.cmd.RustLsp "debuggables" end
+      local function _action() vim.cmd.RustLsp "codeAction" end
+      local function _debug() vim.cmd.RustLsp "debuggables" end
 
       vim.keymap.set("n", "ga", _action, { buffer = bufnr, desc = "rust: code action" })
       vim.keymap.set("n", "<leader>da", _debug, { buffer = bufnr, desc = "rust: debug with args" })
@@ -25,6 +25,6 @@ M.config = {
   },
 }
 
-M.setup = function(opts) vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {}) end
+function M.setup(opts) vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {}) end
 
 return M

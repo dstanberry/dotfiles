@@ -3,7 +3,7 @@ local M = {}
 
 M.config = {
   on_attach = function(client, bufnr)
-    local _switch = function()
+    local function _switch()
       local params = vim.lsp.util.make_position_params(0, client.offset_encoding)
 
       vim.lsp.buf_request(bufnr, "angular/getTemplateLocationForComponent", params, function(_, result)
@@ -39,7 +39,7 @@ M.server_capabilities = {
   renameProvider = false,
 }
 
-M.setup = function()
+function M.setup()
   vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
     group = ds.augroup "lsp.angularls",
     pattern = { "*.component.html", "*.container.html" },

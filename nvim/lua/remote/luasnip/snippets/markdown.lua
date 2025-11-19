@@ -17,7 +17,7 @@ local function repeat_list(_, _, _, prefix)
   })
 end
 
-local make_table = function(_, snip)
+local function make_table(_, snip)
   local col = tonumber(snip.captures[1]) or 0
   local row = snip.captures[2] and tonumber(snip.captures[2]) or col
   if row == 0 or col == 0 then

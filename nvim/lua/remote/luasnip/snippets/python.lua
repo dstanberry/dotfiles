@@ -3,7 +3,7 @@ local rutil = require "remote.luasnip.util"
 ---@diagnostic disable: undefined-global
 require("remote.luasnip.nodes").setup_snip_env()
 
-local dataclass = function(_, snip, old_state, _)
+local function dataclass(_, snip, old_state, _)
   local nodes = {}
   table.insert(nodes, snip.captures[1] == "d" and t { "@dataclass", "" } or t { "" })
   local snip_node = sn(nil, nodes)
@@ -14,7 +14,7 @@ end
 local init_fn
 init_fn = function() return sn(nil, c(1, { t "", sn(1, { t ", ", i(1), d(2, init_fn) }) })) end
 
-local init_params = function(args)
+local function init_params(args)
   local node = {}
   local a = args[1][1]
   if #a == 0 then

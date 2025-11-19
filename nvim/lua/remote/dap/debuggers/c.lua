@@ -1,6 +1,6 @@
 local M = {}
 
-M.setup = function()
+function M.setup()
   local dap = require "dap"
   local vscode = require "dap.ext.vscode"
 

@@ -15,7 +15,7 @@ local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_python_extmarks"
 ---@param def "method"|"class"
 ---@param end_row? number
 ---@return TSNode[]
-M.get_defs = function(bufnr, def, end_row)
+function M.get_defs(bufnr, def, end_row)
   local query_tree = vim.treesitter.query.parse(
     "python",
     [[
@@ -35,7 +35,7 @@ end
 
 ---@param bufnr number
 ---@param tree TSTree
-M.parse_document = function(bufnr, tree)
+function M.parse_document(bufnr, tree)
   local query_tree = vim.treesitter.query.parse("python", [[(string_start) @string_init]])
   for id, node, _, _ in query_tree:iter_captures(tree:root()) do
     local name = query_tree.captures[id]
@@ -55,14 +55,14 @@ end
 
 ---@param bufnr number
 ---@param clear_buf? boolean
-M.reset_extmarks = function(bufnr, clear_buf)
+function M.reset_extmarks(bufnr, clear_buf)
   local line = vim.fn.line "."
   if clear_buf then return pcall(vim.api.nvim_buf_clear_namespace, bufnr, NAMESPACE_ID, 0, -1) end
   pcall(vim.api.nvim_buf_clear_namespace, bufnr, NAMESPACE_ID, line - 1, line + 1)
 end
 
 ---@param bufnr number
-M.set_extmarks = function(bufnr)
+function M.set_extmarks(bufnr)
   vim.api.nvim_buf_clear_namespace(bufnr, NAMESPACE_ID, 0, -1)
   ds.ft.treesitter.parse("python", bufnr, function(tree) M.parse_document(bufnr, tree) end)
 end

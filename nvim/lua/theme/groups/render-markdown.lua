@@ -2,7 +2,7 @@ local M = {}
 
 ---@param c util.theme.palette
 ---@return util.theme.hl
-M.get = function(c)
+function M.get(c)
   local RED = ds.color.blend(ds.color.lighten(c.red2, 20), c.red1, 0.7)
   local ORANGE = ds.color.blend(ds.color.lighten(c.orange1, 15), c.yellow1, 0.3)
   local GREEN = ds.color.blend(ds.color.lighten(c.green3, 30), c.cyan1, 0.2)

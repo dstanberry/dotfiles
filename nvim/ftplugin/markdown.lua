@@ -3,16 +3,16 @@ if vim.g.vscode then return end
 local buf = vim.api.nvim_get_current_buf()
 local map = vim.keymap.set
 
-local _show_preview = function() ds.ft.markdown.preview(buf) end
-local _stop_preview = function() ds.ft.markdown.preview.stop(buf) end
+local function _show_preview() ds.ft.markdown.preview(buf) end
+local function _stop_preview() ds.ft.markdown.preview.stop(buf) end
 
 map("n", "<leader>mp", _show_preview, { buffer = buf, desc = "markdown: preview document" })
 map("n", "<leader>ms", _stop_preview, { buffer = buf, desc = "markdown: stop preview of document" })
 
 if package.loaded["nvim-treesitter"] then
-  local _adjacent = function() ds.ft.markdown.insert_adjacent_heading(buf) end
-  local _inner = function() ds.ft.markdown.insert_inner_heading(buf) end
-  local _outer = function() ds.ft.markdown.insert_outer_heading(buf) end
+  local function _adjacent() ds.ft.markdown.insert_adjacent_heading(buf) end
+  local function _inner() ds.ft.markdown.insert_inner_heading(buf) end
+  local function _outer() ds.ft.markdown.insert_outer_heading(buf) end
 
   map("n", "<localleader>ia", _adjacent, { buffer = buf, desc = "markdown: insert adjacent heading" })
   map("n", "<localleader>ii", _inner, { buffer = buf, desc = "markdown: insert inner heading" })

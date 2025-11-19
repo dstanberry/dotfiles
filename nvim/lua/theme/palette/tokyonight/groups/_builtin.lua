@@ -2,7 +2,7 @@ local M = {}
 
 ---@param c util.theme.palette
 ---@return util.theme.hl
-M.get = function(c)
+function M.get(c)
   local BORDER = ds.color.blend(c.aqua1, "#000000", 0.8)
   local GIT_ADD = "#b8db87"
   local GIT_CHANGE = "#7ca1f2"

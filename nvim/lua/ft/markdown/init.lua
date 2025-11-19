@@ -32,9 +32,9 @@ local MD_Q = vim.treesitter.query.parse(
     ]]
 )
 
-M.insert_checkbox = function() vim.api.nvim_put({ "[ ] " }, "c", true, true) end
+function M.insert_checkbox() vim.api.nvim_put({ "[ ] " }, "c", true, true) end
 
-M.insert_link = function()
+function M.insert_link()
   local url = vim.fn.getreg "*"
   local link = string.format("[](%s)", url)
   local cursor = vim.fn.getpos "."
@@ -42,7 +42,7 @@ M.insert_link = function()
   vim.fn.setpos(".", { cursor[1], cursor[2], cursor[3] + 1, cursor[4] })
 end
 
-M.insert_list_marker = function()
+function M.insert_list_marker()
   local cursor = vim.api.nvim_win_get_cursor(0)
   local capture_node = vim.treesitter.get_node { bufnr = 0, pos = { cursor[1] - 1, 0 } }
   if capture_node then
@@ -64,7 +64,7 @@ M.insert_list_marker = function()
 end
 
 ---@param bufnr number
-local get_all_headings = function(bufnr)
+local function get_all_headings(bufnr)
   local data = {}
   local root
   local root_parser = vim.treesitter.get_parser(bufnr)
@@ -101,7 +101,7 @@ local get_all_headings = function(bufnr)
   return data
 end
 
-local get_previous_heading = function(data)
+local function get_previous_heading(data)
   if not data then return end
   local current_pos = vim.api.nvim_win_get_cursor(0)
   local previous = data[1] or { level = 0, index = 0 }
@@ -112,7 +112,7 @@ local get_previous_heading = function(data)
   return previous
 end
 
-local insert_heading = function(data, previous_heading, text)
+local function insert_heading(data, previous_heading, text)
   local target_row, target_end, cursor_target
   if not (data and previous_heading) then return end
   if previous_heading.index ~= #data then
@@ -130,7 +130,7 @@ local insert_heading = function(data, previous_heading, text)
 end
 
 ---@param bufnr number
-M.insert_adjacent_heading = function(bufnr)
+function M.insert_adjacent_heading(bufnr)
   local data = get_all_headings(bufnr)
   local previous_heading = get_previous_heading(data) or 0
   previous_heading.level = math.max(previous_heading.level, 2)
@@ -139,7 +139,7 @@ M.insert_adjacent_heading = function(bufnr)
 end
 
 ---@param bufnr number
-M.insert_inner_heading = function(bufnr)
+function M.insert_inner_heading(bufnr)
   local data = get_all_headings(bufnr)
   local previous_heading = get_previous_heading(data) or 0
   previous_heading.level = math.max(previous_heading.level, 1)
@@ -149,7 +149,7 @@ M.insert_inner_heading = function(bufnr)
 end
 
 ---@param bufnr number
-M.insert_outer_heading = function(bufnr)
+function M.insert_outer_heading(bufnr)
   local data = get_all_headings(bufnr)
   local previous_heading = get_previous_heading(data) or 0
   previous_heading.level = math.max(previous_heading.level, 3)
@@ -158,7 +158,7 @@ M.insert_outer_heading = function(bufnr)
   insert_heading(data, previous_heading, text_ready)
 end
 
-local get_lines = function()
+local function get_lines()
   local line_start, line_end
   if vim.fn.getpos("'<")[2] == vim.fn.getcurpos()[2] and vim.fn.getpos("'<")[3] == vim.fn.getcurpos()[3] then
     line_start = vim.fn.getpos("'<")[2]
@@ -170,7 +170,7 @@ local get_lines = function()
   return line_start, line_end, vim.fn.getline(line_start, line_end)
 end
 
-M.toggle_bullet = function()
+function M.toggle_bullet()
   local newlines = {}
   local line_start, line_end, lines = get_lines()
   for _, line in ipairs(lines) do
@@ -187,7 +187,7 @@ M.toggle_bullet = function()
   end
 end
 
-M.toggle_checkbox = function()
+function M.toggle_checkbox()
   local newlines = {}
   local line_start, line_end, lines = get_lines()
   for _, line in ipairs(lines) do

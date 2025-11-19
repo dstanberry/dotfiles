@@ -7,7 +7,7 @@ local M = {}
 ---@param capture_node TSNode
 ---@param capture_text string
 ---@param range { start_row: integer, start_col: integer, end_row: integer, end_col: integer }
-M.class_values = function(bufnr, ns, capture_node, capture_text, range)
+function M.class_values(bufnr, ns, capture_node, capture_text, range)
   local attr_name = vim.treesitter.get_node_text(capture_node:parent():prev_named_sibling(), bufnr)
   if attr_name == "class" then
     vim.api.nvim_buf_set_extmark(bufnr, ns, range.row_start, range.col_start, {

@@ -23,7 +23,7 @@ M.detectors = {}
 
 local default_spec = { "lsp", { ".git" }, "cwd" }
 
-local normalize = function(path)
+local function normalize(path)
   if path:sub(1, 1) == "~" then
     local home = vim.uv.os_homedir()
     if home and (home:sub(-1) == "\\" or home:sub(-1) == "/") then home = home:sub(1, -2) end
@@ -33,16 +33,16 @@ local normalize = function(path)
   return path:sub(-1) == "/" and path:sub(1, -2) or path
 end
 
-local realpath = function(path)
+local function realpath(path)
   if path == "" or path == nil then return nil end
   path = vim.uv.fs_realpath(path) or path
   return normalize(path)
 end
 
-local bufpath = function(buf) return realpath(vim.api.nvim_buf_get_name(assert(buf))) end
+local function bufpath(buf) return realpath(vim.api.nvim_buf_get_name(assert(buf))) end
 
 ---@diagnostic disable-next-line: unused-local, unused-function
-local cwd = function() return realpath(vim.uv.cwd()) end
+local function cwd() return realpath(vim.uv.cwd()) end
 
 ---Detects the root directories based on the current working directory.
 ---@return util.root.dirs[]

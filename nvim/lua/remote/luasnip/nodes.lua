@@ -63,6 +63,6 @@ local snip_defs = {
   node_util = require "luasnip.nodes.util",
 }
 
-M.setup_snip_env = function() setfenv(2, vim.tbl_extend("force", _G, snip_defs)) end
+function M.setup_snip_env() setfenv(2, vim.tbl_extend("force", _G, snip_defs)) end
 
 return M

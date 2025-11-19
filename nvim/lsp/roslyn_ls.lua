@@ -57,7 +57,7 @@ M.config = {
     },
   },
   on_attach = function(client, bufnr)
-    local _unused = function()
+    local function _unused()
       if not (client and bufnr) then return end
 
       local request = {

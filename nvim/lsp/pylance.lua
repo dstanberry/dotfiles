@@ -46,7 +46,7 @@ M.config = {
   on_attach = function(client, bufnr)
     local handlers = require "remote.lsp.handlers"
 
-    local _method = function()
+    local function _method()
       local _, range = ds.buffer.get_visual_selection()
       local params = ds.buffer.make_lsp_range_params(range)
       handlers.execute_command {
@@ -55,7 +55,7 @@ M.config = {
       }
     end
 
-    local _variable = function()
+    local function _variable()
       local _, range = ds.buffer.get_visual_selection()
       local params = ds.buffer.make_lsp_range_params(range)
       handlers.execute_command {

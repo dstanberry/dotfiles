@@ -3,7 +3,7 @@ local M = {}
 
 local sep = string.match(package.config, "^[^\n]")
 
-local include_paths = function(fname, ext)
+local function include_paths(fname, ext)
   ext = ext or "lua"
   local paths = string.gsub(package.path, "%?", fname)
   paths = string.gmatch(paths, "[^%;]+")
@@ -12,7 +12,7 @@ local include_paths = function(fname, ext)
   end
 end
 
-local include_rtpaths = function(fname, ext)
+local function include_rtpaths(fname, ext)
   ext = ext or "lua"
   local rtpaths = vim.api.nvim_list_runtime_paths()
   local modfile, initfile = string.format("%s.%s", fname, ext), string.format("init.%s", ext)
@@ -24,7 +24,7 @@ local include_rtpaths = function(fname, ext)
   end
 end
 
-M.include_expr = function(module)
+function M.include_expr(module)
   local fname = module:gsub("%.", sep)
   local f
   f = include_paths(fname, "lua")

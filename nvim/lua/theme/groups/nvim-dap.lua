@@ -2,7 +2,7 @@ local M = {}
 
 ---@param c util.theme.palette
 ---@return util.theme.hl
-M.get = function(c)
+function M.get(c)
   -- stylua: ignore
   return {
     DapBreakpointActiveLine = { bg = ds.color.blend(c.yellow2, c.bg3, 0.14) },

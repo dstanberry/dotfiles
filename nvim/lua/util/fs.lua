@@ -7,7 +7,7 @@ function M.load_dirhash(shell)
   if ds.has "win32" then return end
   local term = shell:find "zsh" and "zsh"
   if not (term and vim.env.XDG_CONFIG_HOME) then return end
-  local loader = function(rc_dir)
+  local function loader(rc_dir)
     local path = vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, term, rc_dir, "hashes." .. term)
     local cmd = ([[%s -c "source %s; hash -d"]]):format(term, path)
     local dirs = vim.fn.system(cmd)

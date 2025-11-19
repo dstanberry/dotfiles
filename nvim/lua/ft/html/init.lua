@@ -13,7 +13,7 @@ local NAMESPACE_ID = vim.api.nvim_create_namespace "ds_html_extmarks"
 
 ---@param bufnr number
 ---@param tree TSTree
-M.parse_document = function(bufnr, tree)
+function M.parse_document(bufnr, tree)
   local query_tree = vim.treesitter.query.parse(
     "html",
     [[
@@ -41,14 +41,14 @@ end
 
 ---@param bufnr number
 ---@param clear_buf? boolean
-M.reset_extmarks = function(bufnr, clear_buf)
+function M.reset_extmarks(bufnr, clear_buf)
   local line = vim.fn.line "."
   if clear_buf then return pcall(vim.api.nvim_buf_clear_namespace, bufnr, NAMESPACE_ID, 0, -1) end
   pcall(vim.api.nvim_buf_clear_namespace, bufnr, NAMESPACE_ID, line - 1, line + 1)
 end
 
 ---@param bufnr number
-M.set_extmarks = function(bufnr)
+function M.set_extmarks(bufnr)
   vim.api.nvim_buf_clear_namespace(bufnr, NAMESPACE_ID, 0, -1)
   ds.ft.treesitter.parse("html", bufnr, function(tree) M.parse_document(bufnr, tree) end)
 end
