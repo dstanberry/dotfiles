@@ -18,9 +18,9 @@ git:
   merging:
     args: ""
     manualCommit: false
-  paging:
-    pager: delta --dark --paging=never --line-numbers --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
-    colorArg: always
+  pagers:
+    - pager: delta --dark --paging=never --line-numbers --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+      colorArg: always
 gui:
   border: "rounded"
   enlargedSideViewLocation: 'top'
