@@ -2,7 +2,7 @@
 local M = {}
 
 ---@return snacks.picker.Config
-local function _config()
+M.config = (function()
   local layouts = require "snacks.picker.config.layouts"
 
   local flash = { actions = {}, keys = {} }
@@ -128,9 +128,7 @@ local function _config()
       },
     },
   }
-end
-
-M.config = _config()
+end)()
 
 function M.file_browser()
   local cwd = vim.fn.expand "%:p:h"
@@ -155,6 +153,16 @@ function M.file_browser()
       },
     },
   }
+end
+
+---@param opts snacks.picker.Explorer.Config
+function M.file_explorer(opts)
+  local pickers = Snacks.picker.get { source = "explorer" }
+  for _, p in pairs(pickers) do
+    local action = p:is_focused() and p.close or p.focus
+    action(p)
+  end
+  if #pickers == 0 then Snacks.picker.explorer(opts) end
 end
 
 function M.git_diff_tree()

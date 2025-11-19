@@ -23,7 +23,7 @@ return {
         { "<leader>fb", function() Snacks.picker.grep_buffers() end, desc = "picker: find in buffers (grep)" },
         { "<leader>fB", function() Snacks.picker.buffers() end, desc = "picker: find files (buffers)" },
         -- stylua: ignore
-        { "<leader>fe", function() Snacks.picker.explorer { follow_file = true } end, desc = "picker: toggle explorer" },
+        { "<leader>fe", function() stash.picker.file_explorer { follow_file = true } end, desc = "picker: toggle explorer" },
         { "<leader>fk", function() Snacks.picker.help() end, desc = "picker: help pages" },
         { "<leader>fl", function() Snacks.picker.lazy() end, desc = "picker: find plugin specs" },
         { "<leader>fp", function() Snacks.picker.files { cwd = lazy_rtp } end, desc = "picker: find remote plugins" },
