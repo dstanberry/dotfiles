@@ -12,7 +12,7 @@ local shortcuts = {
   ["Microsoft Outlook"] = { "5", { "File", "New", "Main Window" } },
 }
 
-local showOrHide = function(appName)
+local function showOrHide(appName)
   local app = hs.application.get(appName)
   if app then
     if not app:mainWindow() then

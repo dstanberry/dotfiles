@@ -78,7 +78,7 @@ local SWITCHERS = setmetatable({}, {
   end,
 })
 
-local chain = function(movements)
+local function chain(movements)
   local chainResetInterval = 2 -- seconds
   local cycleLength = #movements
   local sequenceNumber = 1
@@ -107,7 +107,7 @@ local chain = function(movements)
   end
 end
 
-local moveToSpace = function(keys, direction)
+local function moveToSpace(keys, direction)
   if SPACE_MOVEMENT_CONFIG.inProgress then return end
   SPACE_MOVEMENT_CONFIG.inProgress = true
 
