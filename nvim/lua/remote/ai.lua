@@ -2,16 +2,24 @@ return {
   {
     "folke/sidekick.nvim",
     keys = function()
-      local function _prompt() require("sidekick.cli").prompt() end
+      local function _prompt()
+        require("sidekick.cli").prompt {
+          cb = function(_, text)
+            if text then require("sidekick.cli").send { filter = { installed = true }, text = text } end
+          end,
+        }
+      end
+      local function _file() require("sidekick.cli").send { filter = { installed = true }, msg = "{file}" } end
+      local function _selection() require("sidekick.cli").send { filter = { installed = true }, msg = "{this}" } end
       local function _toggle() require("sidekick.cli").toggle { filter = { installed = true } } end
-      local function _send() require("sidekick.cli").send { msg = "{this}" } end
 
       return {
         { "<tab>", ds.coalesce({ "cmp.inline.next" }, "<tab>"), mode = { "n" }, expr = true },
         { "<leader>c", mode = { "n", "x" }, "", desc = "+code assistant" },
         { "<leader>ca", mode = { "n", "x" }, _prompt, desc = "sidekick: select prompt" },
         { "<leader>cc", _toggle, desc = "sidekick: toggle" },
-        { "<leader>cx", mode = { "n", "x" }, _send, desc = "sidekick: add selection" },
+        { "<leader>cx", _file, desc = "sidekick: add file" },
+        { "<leader>cx", mode = { "x" }, _selection, desc = "sidekick: add selection" },
       }
     end,
     init = function()
@@ -30,19 +38,19 @@ return {
             analyze = function()
               return {
                 { "@", "Bold" },
-                { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "analyze.md"), "SnacksPickerDir" },
+                { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "analyze.md"), "@module" },
               }
             end,
             refactor = function()
               return {
                 { "@", "Bold" },
-                { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "refactor.md"), "SnacksPickerDir" },
+                { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "refactor.md"), "@module" },
               }
             end,
             test = function()
               return {
                 { "@", "Bold" },
-                { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "test.md"), "SnacksPickerDir" },
+                { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "test.md"), "@module" },
               }
             end,
           },
