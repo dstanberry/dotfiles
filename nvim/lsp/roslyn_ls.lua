@@ -57,6 +57,10 @@ M.config = {
     },
   },
   on_attach = function(client, bufnr)
+    local handlers = require "remote.lsp.handlers"
+
+    ds.format.register(handlers.formatter { name = "roslyn: lsp", primary = false, priority = 200 })
+
     local function _unused()
       if not (client and bufnr) then return end
 
