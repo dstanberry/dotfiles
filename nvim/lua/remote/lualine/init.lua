@@ -37,11 +37,16 @@ return {
 
     ---@param kind "symbols"|"colors"
     local function get_diag(kind)
-      return vim.tbl_map(function(type)
-        local diag_type = "DiagnosticVirtualText" .. type:gsub("^%l", string.upper)
-        return kind == "symbols" and { fg = ds.color.get(diag_type) }
-          or ds.pad(ds.icons.status[type:gsub("^%l", string.upper)], "right")
-      end, { "error", "warn", "info", "hint" })
+      local result = {}
+      for _, type in ipairs { "error", "warn", "info", "hint" } do
+        if kind == "colors" then
+          local hl = "DiagnosticVirtualText" .. type:gsub("^%l", string.upper)
+          result[type] = { fg = ds.color.get(hl) }
+        else
+          result[type] = ds.pad(ds.icons.status[type:gsub("^%l", string.upper)], "right")
+        end
+      end
+      return result
     end
 
     ---@param kind "symbols"|"colors"
