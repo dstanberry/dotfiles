@@ -3,6 +3,7 @@ local M = {}
 
 local defaults = {
   updateImportsOnFileMove = { enabled = "always" },
+  preferences = { useAliasesForRenames = false },
   suggest = { completeFunctionCalls = true },
   inlayHints = {
     enumMemberValues = { enabled = true },
@@ -52,7 +53,7 @@ M.config = {
       name = "vtsls: organizeImports",
       primary = false,
       priority = 200,
-      filter = "ruff",
+      filter = "vtsls",
       format = _organize,
     })
 

@@ -32,7 +32,9 @@ M.config = {
   },
   on_attach = function()
     local handlers = require "remote.lsp.handlers"
-    ds.format.register(handlers.formatter { name = "pwsh: lsp", primary = false, priority = 200 })
+    ds.format.register(
+      handlers.formatter { name = "pwsh: lsp", primary = false, priority = 200, filter = "powershell_es" }
+    )
   end,
 }
 
