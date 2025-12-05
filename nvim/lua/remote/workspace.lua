@@ -47,6 +47,7 @@ return {
         { "gR", _references, desc = "trouble: lsp references" },
         { "gS", _symbols, desc = "trouble: lsp document symbols" },
         { "gT", _type_definitions, desc = "trouble: lsp type definitions" },
+        { "gW", mode = "n", "", desc = "+lsp: workspace diagnostics" },
         { "gWa", _diagnostics, desc = "trouble: workspace diagnostics" },
         { "gWf", _diagnostics_cascade, desc = "trouble: filtered diagnostics" },
         { "<localleader>ql", _location_list, desc = "trouble: location list" },

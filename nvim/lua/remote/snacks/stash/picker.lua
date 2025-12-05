@@ -90,12 +90,13 @@ M.config = (function()
       command_history = { layout = { preset = "vscode" } },
       explorer = { hidden = true, ignored = true },
       files = { prompt = ds.pad(ds.icons.misc.Prompt, "both"), layout = { preset = "telescope" } },
+      gh_diff = { auto_close = false, layout = { preset = "left" } },
       gh_issue = { layout = { preset = "vertical" } },
       gh_pr = { layout = { preset = "vertical" } },
       git_log = { layout = { preset = "vertical" } },
       git_status = { layout = { preset = "ivy" } },
       grep = { layout = { preset = "vertical" } },
-      grep_buffers = { layout = { preset = "ivy" } },
+      grep_buffers = { layout = { preset = "vertical" } },
       help = { layout = { preset = "ivy" } },
       lazy = { layout = { preset = "vertical" } },
       lsp_config = { layout = { preset = "vertical" } },
@@ -125,6 +126,12 @@ M.config = (function()
           ["<c-u>"] = { "<c-s-u>", expr = true, mode = "i" },
           ["jk"] = { "close", mode = "i" },
         }),
+      },
+      preview = {
+        keys = {
+          ["<a-d>"] = { "list_down" },
+          ["<a-f>"] = { "list_up" },
+        },
       },
     },
   }
@@ -156,7 +163,7 @@ function M.file_browser()
 end
 
 ---@param opts snacks.picker.Explorer.Config
-function M.file_explorer(opts)
+function M.explorer(opts)
   local pickers = Snacks.picker.get { source = "explorer" }
   for _, p in pairs(pickers) do
     local action = p:is_focused() and p.close or p.focus
