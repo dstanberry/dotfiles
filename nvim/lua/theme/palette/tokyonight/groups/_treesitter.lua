@@ -46,7 +46,7 @@ function M.get(c)
     ["@markup.list.markdown"]         = { fg = c.orange2, bold = true },
     ["@markup.list.unchecked"]        = { fg = c.blue3 },
     ["@markup.note"]                  = { fg = c.bg2, bg = c.aqua0 },
-    ["@markup.raw.markdown_inline"]   = { bg = c.bg2, fg = c.blue3 },
+    ["@markup.raw.markdown_inline"]   = { fg = c.blue3, bg = ds.color.blend(c.blue4, c.bg0, 0.08) },
     ["@module"]                       = { link = "Include" },
     ["@module.builtin"]               = { fg = c.red3 },
     ["@operator"]                     = { fg = c.aqua3 },

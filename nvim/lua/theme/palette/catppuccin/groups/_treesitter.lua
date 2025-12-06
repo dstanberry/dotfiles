@@ -38,6 +38,7 @@ function M.get(c)
     ["@markup.list"]                  = { fg = c.cyan1 },
     ["@markup.list.checked"]          = { fg = c.green1 },
     ["@markup.math"]                  = { fg = c.blue1 },
+    ["@markup.raw.markdown_inline"]   = { bg = ds.color.blend(c.blue4, c.bg0, 0.06) },
     ["@markup.quote"]                 = { fg = c.magenta2 },
     ["@markup.raw"]                   = { fg = c.green1 },
     ["@markup.strikethrough"]         = { fg = c.fg2, strikethrough = true },
