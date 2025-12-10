@@ -22,7 +22,6 @@ return {
       local ordinal_numbers = { "first", "second", "third", "fourth", "fifth", "sixth", "seventh", "eighth", "ninth", "tenth" }
       -- stylua: ignore
       local months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" }
-      local weekdays = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" }
       return {
         dials_by_ft = {
           javascript = "typescript",
@@ -33,17 +32,18 @@ return {
         },
         groups = {
           default = {
-            augend.constant.alias.bool,
+            augend.date.alias["%Y/%m/%d"],
             augend.integer.alias.decimal,
             augend.integer.alias.decimal_int,
             augend.integer.alias.hex,
             augend.semver.alias.semver,
-            augend.date.alias["%Y/%m/%d"],
+            augend.constant.alias.bool,
+            augend.constant.alias.en_weekday,
+            augend.constant.alias.en_weekday_full,
             augend.constant.new { elements = { "True", "False" }, word = true, cyclic = true },
             augend.constant.new { elements = { "and", "or" }, word = true, cyclic = true },
             augend.constant.new { elements = { "&&", "||" }, word = false, cyclic = true },
             augend.constant.new { elements = ordinal_numbers, word = true, cyclic = true },
-            augend.constant.new { elements = weekdays, word = true, cyclic = true },
             augend.constant.new { elements = months, word = true, cyclic = true },
           },
           markdown = {
