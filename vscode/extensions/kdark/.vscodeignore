@@ -1,4 +1,6 @@
-.vscode/**
-.vscode-test/**
 .gitignore
+.vscode-test/**
+.vscode/**
+create-icon.py
+venv/**
 vsc-extension-quickstart.md

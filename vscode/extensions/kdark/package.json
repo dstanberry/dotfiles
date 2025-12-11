@@ -1,10 +1,22 @@
 {
   "name": "kdark",
   "displayName": "KDark",
-  "description": " Custom dark theme for VS Code inspired by Nord color palette.",
+  "description": "Custom dark theme for VS Code inspired by Nord color palette.",
   "version": "0.1.0",
+  "publisher": "dstanberry",
+  "homepage": "https://github.com/dstanberry/dotfiles/blob/main/vscode/extensions/kdark",
+  "license": "MIT",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.105.0"
+  },
+  "galleryBanner": {
+    "color": "#303031",
+    "theme": "dark"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dstanberry/dotfiles/blob/main/vscode/extensions/kdark"
   },
   "categories": [
     "Themes"
@@ -17,5 +29,8 @@
         "path": "./themes/KDark-color-theme.json"
       }
     ]
+  },
+  "scripts": {
+    "package": "vsce package"
   }
 }
