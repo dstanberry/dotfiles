@@ -133,7 +133,6 @@ vim.opt.signcolumn = "yes" -- show sign column to prevent visual jitter
 vim.opt.spelllang = "en_us" -- set preferred language
 vim.opt.spelloptions:append "noplainbuffer" -- spell checker can only be available for buffers with a valid filetype
 vim.opt.splitkeep = "screen" -- keep text on the same screen line
-vim.opt.statuscolumn = [[%!v:lua.require('util.ui').statuscolumn()]] -- define the function used to populate the statuscolumn
 vim.opt.smoothscroll = true -- when line wrap enabled, scroll by screen line instead of by line
 vim.opt.updatetime = 200 -- inactive duration before saving to swap file and trigger |CursorHold|
 vim.opt.virtualedit = "block" -- allow cursor to move where there is no text in visual block mode

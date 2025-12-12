@@ -69,6 +69,7 @@ return {
         image = { force = not (ds.has "win32" or ds.has "wsl"), doc = { inline = false } },
         notifier = { style = "fancy", gap = 1, margin = { top = 1, right = 1, bottom = 2 } },
         input = { win = { keys = { i_jk = { "jk", { "cmp_close", "cancel" }, mode = "i" } } } },
+        statuscolumn = { folds = { git_hl = true, open = true } },
         -- non-trivial config
         gitbrowse = stash.gitbrowse.config,
         dashboard = stash.dashboard.config,
