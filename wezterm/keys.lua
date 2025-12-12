@@ -73,8 +73,8 @@ function M.setup(config)
   config.disable_default_key_bindings = true
   config.keys = {
     -- font
-    { mods = M.primary_mod, key = "backspace", action = wezterm.action.DecreaseFontSize },
-    { mods = M.primary_mod, key = "delete", action = wezterm.action.IncreaseFontSize },
+    { mods = M.primary_mod, key = "phys:Backspace", action = wezterm.action.DecreaseFontSize },
+    { mods = M.primary_mod, key = "phys:Delete", action = wezterm.action.IncreaseFontSize },
     -- scrollback
     { mods = M.primary_mod, key = "d", action = wezterm.action.ScrollByPage(0.5) },
     { mods = M.primary_mod, key = "e", action = wezterm.action.EmitEvent "edit-scrollback-in-nvim" },
