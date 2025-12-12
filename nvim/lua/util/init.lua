@@ -2,6 +2,7 @@
 ---@field buffer util.buffer
 ---@field cmp util.cmp
 ---@field color util.color
+---@field colorcolumn util.colorcolumn
 ---@field env util.env
 ---@field format util.format
 ---@field fs util.fs
@@ -12,7 +13,6 @@
 ---@field root util.root
 ---@field snippet util.snippet
 ---@field treesitter util.treesitter
----@field ui util.ui
 local M = {}
 
 setmetatable(M, {
@@ -23,7 +23,7 @@ setmetatable(M, {
 })
 
 ---Creates (and clears if previously defined) a new autocommand group.
----The autocommand will be prefixed with "ds_" to avoid namespace collisions
+---The autocommand will be prefixed with "ds." to avoid namespace collisions
 ---@param name string
 ---@return number
 function M.augroup(name) return vim.api.nvim_create_augroup("ds." .. name, { clear = true }) end

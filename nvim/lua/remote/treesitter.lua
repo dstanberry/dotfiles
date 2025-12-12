@@ -56,11 +56,7 @@ return {
             ds.ft.set_options(event.buf, { indentexpr = "v:lua.require('nvim-treesitter').indentexpr()" }, false)
           end
           if enabled("folds", "folds") then
-            ds.ft.set_options(
-              event.buf,
-              { foldmethod = "expr", foldexpr = "v:lua.require('util.ui').foldexpr()" },
-              false
-            )
+            ds.ft.set_options(event.buf, { foldmethod = "expr", foldexpr = "v:lua.vim.treesitter.foldexpr()" }, false)
           end
         end,
       })

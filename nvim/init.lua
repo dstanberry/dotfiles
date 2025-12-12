@@ -16,7 +16,7 @@ ds.plugin.setup {
   on_init = function()
     ds.fs.load_dirhash(vim.env.SHELL)
     ds.root.setup()
-    ds.ui.virtcolumn()
+    ds.colorcolumn()
     ds.color.sync_term_bg()
 
     if vim.env.GH_FORCE_TTY then vim.env.GH_FORCE_TTY = nil end
