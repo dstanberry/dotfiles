@@ -15,11 +15,12 @@ local systems = {
 }
 
 local system = ds.tbl_reduce(systems, function(acc, v, k)
-  if require("mason-core.platform").is[k] then return v end
+  local platform = require "mason-core.platform"
+  if platform and platform.is[k] then return v end
   return acc
 end) or systems.linux_x64
 
-local version = "5.0.0-2.25429.11"
+local version = "5.3.0-2.25608.6"
 
 return {
   name = "roslyn",

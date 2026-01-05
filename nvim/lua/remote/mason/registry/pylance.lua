@@ -6,7 +6,7 @@ return {
   categories = { "LSP" },
   licenses = { "Microsoft" },
   source = {
-    id = "pkg:mason/github/microsoft/pylance-release@2025.7.1",
+    id = "pkg:mason/github/microsoft/pylance-release@2025.10.4",
     ---@module "mason.nvim"
     install = function(ctx)
       local download_artifact = [[
