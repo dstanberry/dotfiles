@@ -101,7 +101,6 @@ return {
   },
   {
     "lewis6991/gitsigns.nvim",
-    version = "*",
     event = "LazyFile",
     opts = {
       numhl = false,
