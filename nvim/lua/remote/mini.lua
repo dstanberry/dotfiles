@@ -568,6 +568,30 @@ return {
       mappings = vim.tbl_filter(function(m) return m[1] and #m[1] > 0 end, mappings)
       return vim.list_extend(mappings, keys)
     end,
+    init = function()
+      local opts = {
+        markdown = {
+          ["b"] = { input = { "%*%*().-()%*%*" }, output = { left = "**", right = "**" } },
+          ["c"] = { input = { "%`().-()%`" }, output = { left = "`", right = "`" } },
+          ["i"] = { input = { "%*().-()%*" }, output = { left = "*", right = "*" } },
+          ["l"] = {
+            input = { "%[().-()%]%([^)]+%)" },
+            output = function()
+              local href = require("mini.surround").user_input "HREF"
+              return { left = "[", right = "](" .. href .. ")" }
+            end,
+          },
+        },
+      }
+      vim.api.nvim_create_autocmd("FileType", {
+        group = ds.augroup "remote.mini_surround",
+        pattern = table.concat(vim.tbl_keys(opts), ","),
+        callback = function(args)
+          local ft = vim.bo[args.buf].filetype
+          vim.b.minisurround_config = { custom_surroundings = opts[ft] or {} }
+        end,
+      })
+    end,
     opts = {
       mappings = {
         add = "<leader>sa",
