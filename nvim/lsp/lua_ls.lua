@@ -1,7 +1,4 @@
----@class remote.lsp.config
-local M = {}
-
-M.config = {
+return {
   settings = {
     Lua = {
       codeLens = { enable = true },
@@ -37,5 +34,3 @@ M.config = {
     },
   },
 }
-
-return function() return M end

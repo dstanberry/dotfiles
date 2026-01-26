@@ -1,7 +1,6 @@
----@class remote.lsp.config
-local M = { defer_setup = true }
-
-M.config = {
+return {
+  _defer_setup = true,
+  _setup = function(opts) vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {}) end,
   default_settings = {
     ["rust-analyzer"] = {
       assist = { importGranularity = "module", importPrefix = "by_self" },
@@ -24,7 +23,3 @@ M.config = {
     end,
   },
 }
-
-function M.setup(opts) vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {}) end
-
-return M

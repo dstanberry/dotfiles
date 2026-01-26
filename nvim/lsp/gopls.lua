@@ -1,7 +1,4 @@
----@class remote.lsp.config
-local M = {}
-
-M.config = {
+return {
   settings = {
     gopls = {
       analyses = {
@@ -60,5 +57,3 @@ M.config = {
     end
   end,
 }
-
-return function() return M end

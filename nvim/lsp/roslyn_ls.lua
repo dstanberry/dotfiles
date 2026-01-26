@@ -1,7 +1,4 @@
----@class remote.lsp.config
-local M = {}
-
-M.config = {
+return {
   cmd = {
     "Microsoft.CodeAnalysis.LanguageServer",
     "--logLevel",
@@ -113,5 +110,3 @@ M.config = {
     vim.keymap.set("n", "<leader>lu", _unused, { buffer = bufnr, desc = "dotnet: remove unused imports" })
   end,
 }
-
-return function() return M end

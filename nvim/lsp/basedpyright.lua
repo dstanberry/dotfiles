@@ -1,7 +1,5 @@
----@class remote.lsp.config
-local M = { disabled = true }
-
-M.config = {
+return {
+  _disabled = true,
   settings = {
     basedpyright = {
       analysis = {
@@ -14,5 +12,3 @@ M.config = {
     },
   },
 }
-
-return function() return M end

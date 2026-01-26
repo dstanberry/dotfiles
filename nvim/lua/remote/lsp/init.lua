@@ -49,7 +49,7 @@ return {
     enabled = not ds.has "win32",
     dependencies = { "williamboman/mason.nvim" },
     event = (vim.env.ZK_NOTEBOOK_DIR and vim.env.ZK_NOTEBOOK_DIR ~= "")
-      and { "BufRead " .. vim.env.ZK_NOTEBOOK_DIR .. "/**/*.md" },
+      and { "BufRead " .. vim.fs.joinpath(vim.env.ZK_NOTEBOOK_DIR, "**", "*.md") },
     keys = function()
       local keymap = require "ft.markdown.keymaps"
       local keys = {}
@@ -121,20 +121,20 @@ return {
       ds.fs.walk("lsp", function(path, name, kind)
         if (kind == "file" or kind == "link") and name:match "%.lua$" then
           local fname = name:sub(1, -5)
-          local mod = assert(loadfile(path))() ---@type remote.lsp.config
-          if type(mod) == "function" then mod = mod() end
-          if mod.disabled then return end
-          if mod.setup then mod.setup(mod.config or {}) end
-          if mod.defer_setup then return end
-          opts.servers = vim.tbl_deep_extend("force", opts.servers or {}, { [fname] = mod.config })
-          server_capabilities =
-            vim.tbl_deep_extend("force", server_capabilities, { [fname] = (mod.server_capabilities or {}) })
+          local config = assert(loadfile(path))() ---@type table
+          if config._disabled then return end
+          if config._setup then config._setup(config) end
+          if config._defer_setup then return end
+          if config._server_capabilities then
+            server_capabilities =
+              vim.tbl_deep_extend("force", server_capabilities, { [fname] = config._server_capabilities })
+          end
+          -- Strip custom hooks and register clean config
+          local clean_config = vim.tbl_filter(function(k) return type(k) ~= "string" or not k:match "^_" end, config)
+          opts.servers = vim.tbl_deep_extend("force", opts.servers or {}, { [fname] = clean_config })
+          vim.lsp.config(fname, clean_config)
+          vim.lsp.enable(fname)
         end
-      end)
-
-      ds.tbl_each(opts.servers, function(config, server)
-        vim.lsp.config(server, config)
-        vim.lsp.enable(server)
       end)
 
       vim.api.nvim_create_autocmd("LspAttach", {

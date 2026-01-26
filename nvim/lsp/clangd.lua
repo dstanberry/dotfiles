@@ -1,7 +1,4 @@
----@class remote.lsp.config
-local M = {}
-
-M.config = {
+return {
   cmd = {
     "clangd",
     "--background-index",
@@ -11,5 +8,3 @@ M.config = {
   },
   init_options = { clangdFileStatus = true },
 }
-
-return function() return M end

@@ -1,6 +1,3 @@
----@class remote.lsp.config
-local M = {}
-
 local function sign_in(bufnr, client)
   client:request("signIn", vim.empty_dict(), function(error, result)
     if error then
@@ -44,7 +41,7 @@ local function sign_out(_, client)
   end)
 end
 
-M.config = {
+return {
   cmd = { "copilot-language-server", "--stdio" },
   init_options = {
     editorInfo = { name = "Neovim", version = tostring(vim.version()) },
@@ -74,5 +71,3 @@ M.config = {
     )
   end,
 }
-
-return function() return M end

@@ -1,6 +1,3 @@
----@class remote.lsp.config
-local M = {}
-
 local defaults = {
   updateImportsOnFileMove = { enabled = "always" },
   preferences = { useAliasesForRenames = false },
@@ -15,7 +12,7 @@ local defaults = {
   },
 }
 
-M.config = {
+return {
   settings = {
     complete_function_calls = true,
     vtsls = {
@@ -132,5 +129,3 @@ M.config = {
     end
   end,
 }
-
-return function() return M end

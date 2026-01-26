@@ -1,7 +1,15 @@
----@class remote.lsp.config
-local M = {}
-
-M.config = {
+return {
+  _setup = function()
+    vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+      group = ds.augroup "lsp.angularls",
+      pattern = { "*.component.html", "*.container.html" },
+      callback = function() vim.treesitter.start(nil, "angular") end,
+    })
+  end,
+  _server_capabilities = {
+    documentFormattingProvider = false,
+    renameProvider = false,
+  },
   on_attach = function(client, bufnr)
     local function _switch()
       local params = vim.lsp.util.make_position_params(0, client.offset_encoding)
@@ -33,18 +41,3 @@ M.config = {
     if is_ng_project then on_dir(vim.fs.root(bufnr, vim.lsp.config["angularls"].root_markers)) end
   end,
 }
-
-M.server_capabilities = {
-  documentFormattingProvider = false,
-  renameProvider = false,
-}
-
-function M.setup()
-  vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
-    group = ds.augroup "lsp.angularls",
-    pattern = { "*.component.html", "*.container.html" },
-    callback = function() vim.treesitter.start(nil, "angular") end,
-  })
-end
-
-return function() return M end

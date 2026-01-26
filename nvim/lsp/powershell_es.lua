@@ -1,6 +1,3 @@
----@class remote.lsp.config
-local M = { defer_setup = not ds.has "win32" }
-
 -- stylua: ignore
 local command_fmt = {
   "%s/PowerShellEditorServices/Start-EditorServices.ps1",
@@ -19,7 +16,8 @@ local basedir = ds.plugin.get_pkg_path "powershell-editor-services"
 local cache = vim.fn.stdpath "cache"
 local command = table.concat(command_fmt, " "):format(basedir, basedir, cache, cache)
 
-M.config = {
+return {
+  _defer_setup = not ds.has "win32",
   bundle_path = basedir,
   cmd = function(dispatchers)
     return vim.lsp.rpc.start({ "pwsh.exe", "-NoLogo", "-NoProfile", "-Command", command }, dispatchers)
@@ -37,5 +35,3 @@ M.config = {
     )
   end,
 }
-
-return function() return M end

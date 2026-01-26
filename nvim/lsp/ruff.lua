@@ -1,7 +1,8 @@
----@class remote.lsp.config
-local M = {}
-
-M.config = {
+return {
+  _server_capabilities = {
+    hoverProvider = false,
+    documentFormattingProvider = false,
+  },
   cmd_env = { RUFF_TRACE = "messages" },
   init_options = {
     settings = {
@@ -24,10 +25,3 @@ M.config = {
     vim.keymap.set("n", "<leader>lo", _organize, { buffer = bufnr, desc = "python: organize imports" })
   end,
 }
-
-M.server_capabilities = {
-  hoverProvider = false,
-  documentFormattingProvider = false,
-}
-
-return function() return M end

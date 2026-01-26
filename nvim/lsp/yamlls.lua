@@ -1,7 +1,4 @@
----@class remote.lsp.config
-local M = {}
-
-M.config = {
+return {
   before_init = function(_, new_config)
     new_config.settings.yaml.schemas =
       vim.tbl_deep_extend("force", new_config.settings.yaml.schemas or {}, require("schemastore").yaml.schemas())
@@ -24,5 +21,3 @@ M.config = {
     },
   },
 }
-
-return function() return M end

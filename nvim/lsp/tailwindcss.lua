@@ -1,7 +1,4 @@
----@class remote.lsp.config
-local M = {}
-
-M.config = {
+return {
   filetypes = {
     "aspnetcorerazor",
     "css",
@@ -20,5 +17,3 @@ M.config = {
     "typescriptreact",
   },
 }
-
-return function() return M end

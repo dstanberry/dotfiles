@@ -1,7 +1,5 @@
----@class remote.lsp.config
-local M = { disabled = true }
-
-M.config = {
+return {
+  _disabled = true,
   init_options = {
     activateSnykCode = "true",
     activateSnykIac = "false",
@@ -16,5 +14,3 @@ M.config = {
     enableTelemetry = "false",
   },
 }
-
-return function() return M end

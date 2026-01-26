@@ -1,7 +1,4 @@
----@class remote.lsp.config
-local M = {}
-
-M.config = {
+return {
   cmd = { "pylance", "--stdio" },
   filetypes = { "python" },
   root_markers = {
@@ -89,5 +86,3 @@ M.config = {
     vim.keymap.set({ "n", "v" }, "<leader>lv", _variable, { buffer = bufnr, desc = "python: extract variable" })
   end,
 }
-
-return function() return M end
