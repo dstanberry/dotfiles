@@ -1,9 +1,9 @@
-### Unit Test Generation
+# Unit test Generation
 
 Generate maintainable, idiomatic unit tests using industry best practices and
 appropriate testing frameworks.
 
-#### Requirements
+## Requirements
 
 - Ensure fenced code blocks and markdown tables have lines no longer than 80
   characters.

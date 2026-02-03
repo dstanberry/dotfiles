@@ -1,9 +1,9 @@
-### Code Refactor
+# Code Refactor
 
 Refactor code to improve clarity, maintainability, and efficiency while
 preserving observable behavior and public APIs.
 
-#### Core Constraints
+## Core Constraints
 
 - Do not change public APIs: exported names, function signatures, return
   types/values, side effects, or I/O behavior.
@@ -15,7 +15,7 @@ preserving observable behavior and public APIs.
 - Ensure fenced code blocks and markdown tables have lines no longer than 80
   characters.
 
-#### Refactoring Principles
+## Refactoring Principles
 
 **Structure & Design:**
 
@@ -56,7 +56,7 @@ preserving observable behavior and public APIs.
 - Keep docstrings/comments accurate, concise, and non-redundant
 - Retain or improve type annotations; remove only if obsolete or misleading
 
-#### Naming Conventions
+## Naming Conventions
 
 - Use terse, intention-revealing names aligned with domain concepts
 - Follow explicit naming/style instructions in task/repository (highest
@@ -65,14 +65,14 @@ preserving observable behavior and public APIs.
 - Maintain consistency with language ecosystem best practices
 - Provide brief mapping of significant renames (old → new)
 
-#### Error Handling
+## Error Handling
 
 - Validate inputs and fail fast with clear, actionable errors
 - Distinguish recoverable vs. unrecoverable errors
 - Propagate or log errors; never swallow them silently
 - Preserve existing error types/messages unless clearly incorrect; note changes
 
-#### Testing and Regression Safety
+## Testing and Regression Safety
 
 - Add/modify unit tests only if explicitly requested or tests were provided
 - All tests must pass locally and follow modern best practices:
@@ -80,7 +80,7 @@ preserving observable behavior and public APIs.
   - Clear assertions with minimal boilerplate comments
 - Consider edge cases and concurrency where applicable
 
-#### Deliverables
+## Deliverables
 
 1. Refactored code
 2. Brief rationale covering:
@@ -89,7 +89,7 @@ preserving observable behavior and public APIs.
    - Assumptions, limitations, or TODOs
    - Known behavior or performance implications
 
-#### Final Checklist
+## Final Checklist
 
 - [ ] Behavior unchanged; public APIs stable
 - [ ] Names improved; intent clearer

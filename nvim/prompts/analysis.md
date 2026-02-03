@@ -1,9 +1,9 @@
-### Code Review
+# Code Review
 
 Provide a concise, high‑impact code review using bullets, grounded in the
 provided code, with explicit assumptions.
 
-#### Structure & Flow
+## Structure & Flow
 
 - **Purpose**: Code responsibilities, key modules/classes/functions and roles
 - **Architecture**: High-level boundaries, dependencies, entry points
@@ -11,7 +11,7 @@ provided code, with explicit assumptions.
 - **I/O**: Error handling, side effects, external interactions (I/O, network,
   DB)
 
-#### Inputs & Outputs
+## Inputs & Outputs
 
 - **Inputs**: Parameters, environment variables, configuration (types,
   constraints, defaults)
@@ -20,7 +20,7 @@ provided code, with explicit assumptions.
   - Format: Inputs (shape, types) → Steps (brief) → Output (shape, types) +
     Notes (edge cases, errors)
 
-#### Analysis & Quality
+## Analysis & Quality
 
 - **Complex Segments**: Non-obvious logic, performance paths, concurrency/async,
   recursion
@@ -40,7 +40,7 @@ provided code, with explicit assumptions.
 | -------- | ----------- | ---------------------------------- |
 | `symbol` | `newSymbol` | Clarifies purpose, unit, and scope |
 
-#### Requirements
+## Requirements
 
 - Use bullet points over prose; quote identifiers with inline code; use fenced
   blocks for examples
