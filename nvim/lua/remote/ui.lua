@@ -360,6 +360,8 @@ return {
         icons = vim.tbl_map(function(i) return ds.pad(ds.icons.markdown["H" .. i], "right") end, vim.fn.range(1, 6)),
         left_pad = 0,
         position = "left",
+        width = "block",
+        min_width = 80,
       },
       pipe_table = {
         head = "@markup.table",
