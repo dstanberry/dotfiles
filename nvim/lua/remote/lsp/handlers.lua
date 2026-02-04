@@ -139,36 +139,43 @@ function M.on_attach(client, bufnr, server_capabilities)
   end
 
   if client:supports_method("textDocument/codeLens", bufnr) then
+    vim.b[bufnr].codelens_enabled = true
+    local codelens = ds.augroup "remote.lsp.codelens"
+
     local function _lens()
-      vim.ui.select({ "display", "refresh", "run" }, {
+      vim.ui.select({ "run", "toggle" }, {
         prompt = "Code Lens",
-        format_item = function(item) return "Code lens " .. item end,
+        format_item = function(item) return item:gsub("^%l", string.upper) .. " Code lens" end,
       }, function(choice)
-        if choice == "display" then
-          vim.lsp.codelens.display(vim.lsp.codelens.get(bufnr), bufnr, client.id)
-        elseif choice == "refresh" then
-          vim.lsp.codelens.refresh { bufnr = bufnr }
-        elseif choice == "run" then
-          vim.lsp.codelens.run()
+        if choice == "run" then
+          vim.lsp.codelens.run { client_id = client.id }
+        elseif choice == "toggle" then
+          local enabled = not vim.b[bufnr].codelens_enabled
+          vim.b[bufnr].codelens_enabled = enabled
+          vim.lsp.codelens.enable(enabled, { bufnr = bufnr })
         end
       end)
     end
     vim.keymap.set("n", "gl", _lens, { buffer = bufnr, desc = "lsp: code lens" })
 
-    local codelens = ds.augroup "remote.lsp.codelens"
+    local function _refresh(args)
+      if not args and args.buf then return end
+      if vim.b[args.buf].codelens_enabled then pcall(vim.lsp.codelens.enable, true, { bufnr = args.buf }) end
+    end
+
     vim.api.nvim_create_autocmd("BufEnter", {
       group = codelens,
       once = true,
       buffer = bufnr,
       desc = "LSP: Code Lens refresh",
-      callback = function(args) pcall(vim.lsp.codelens.refresh, { bufnr = args.buf }) end,
+      callback = _refresh,
     })
 
     vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
       group = codelens,
       buffer = bufnr,
       desc = "LSP: Code Lens refresh",
-      callback = function(args) pcall(vim.lsp.codelens.refresh, { bufnr = args.buf }) end,
+      callback = _refresh,
     })
   end
 
