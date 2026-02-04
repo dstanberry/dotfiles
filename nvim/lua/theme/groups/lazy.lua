@@ -6,7 +6,7 @@ function M.get(c)
   -- stylua: ignore
   return {
     LazyButton       = { fg = c.white, bg = c.bg3 },
-    LazyButtonActive = { bg = ds.color.get("Visual", true), bold = true }
+    LazyButtonActive = { fg = c.grayX, bg = ds.color.blend(c.blue4, ds.color.get("Visual", true), 0.8), bold = true }
   }
 end
 
