@@ -120,8 +120,9 @@ return {
 
       ds.fs.walk("lsp", function(path, name, kind)
         if (kind == "file" or kind == "link") and name:match "%.lua$" then
-          local fname = name:sub(1, -5)
           local config = assert(loadfile(path))() ---@type table
+          local fname = name:sub(1, -5)
+          local clean_config = {}
           if config._disabled then return end
           if config._setup then config._setup(config) end
           if config._defer_setup then return end
@@ -129,8 +130,9 @@ return {
             server_capabilities =
               vim.tbl_deep_extend("force", server_capabilities, { [fname] = config._server_capabilities })
           end
-          -- Strip custom hooks and register clean config
-          local clean_config = vim.tbl_filter(function(k) return type(k) ~= "string" or not k:match "^_" end, config)
+          ds.tbl_each(vim.tbl_keys(config), function(v)
+            if type(v) ~= "string" or not tostring(v):match "^_" then clean_config[v] = config[v] end
+          end)
           opts.servers = vim.tbl_deep_extend("force", opts.servers or {}, { [fname] = clean_config })
           vim.lsp.config(fname, clean_config)
           vim.lsp.enable(fname)
