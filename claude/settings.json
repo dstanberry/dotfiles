@@ -1,0 +1,18 @@
+{
+  "alwaysThinkingEnabled": true,
+  "permissions": {
+    "ask": [],
+    "allow": [
+      "Bash(npm run test)",
+      "Bash(npm run lint)",
+      "Bash(npm run build)",
+      "Bash(npm run test:*)",
+      "Bash(npx vitest run:*)"
+    ],
+    "deny": []
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.config/claude/statusline.sh"
+  }
+}

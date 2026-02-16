@@ -26,6 +26,9 @@ if ! test -d "${XDG_RUNTIME_DIR}"; then
   chmod 0700 "${XDG_RUNTIME_DIR}"
 fi
 
+# define location of claude code configuration
+export CLAUDE_CONFIG_DIR="${CONFIG_HOME}/claude"
+
 # announce true color support (this is incorrect but required)
 export COLORTERM=truecolor
 
@@ -78,7 +81,7 @@ export ZK_NOTEBOOK_DIR="${HOME}/Documents/_notes/zettelkasten/vault"
 
 # define location of eza config
 if hash eza 2> /dev/null; then
-	export EZA_CONFIG_DIR="${CONFIG_HOME}/eza"
+  export EZA_CONFIG_DIR="${CONFIG_HOME}/eza"
 fi
 
 # (no direct export) load angular completions when available
@@ -121,7 +124,7 @@ if hash fzf 2> /dev/null; then
     --color=selected-bg:#51576d \
     --color=spinner:#f2d5cf"
 
-    fzf_catppuccin_macchiato=" \
+  fzf_catppuccin_macchiato=" \
       --color=bg+:#363a4f \
       --color=bg:#24273a \
       --color=border:#6e738d \

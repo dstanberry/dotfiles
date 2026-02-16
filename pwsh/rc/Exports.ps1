@@ -8,6 +8,10 @@ $env:EDITOR = "nvim"
 # define configuration path for bat
 $env:BAT_CONFIG_PATH = "$env:CONFIG_HOME\bat\bat.conf"
 
+
+# define location of claude code configuration
+$env:CLAUDE_CONFIG_DIR = "$env:CONFIG_HOME\claude"
+
 # define configuration path for rust/cargo
 $env:CARGO_HOME = "$env:DATA_HOME\cargo"
 $env:RUSTUP_HOME = "$env:DATA_HOME\rustup"
