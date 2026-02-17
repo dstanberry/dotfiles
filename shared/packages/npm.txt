@@ -1,5 +1,6 @@
 @github/copilot
 @github/copilot-language-server
+@mermaid-js/mermaid-cli
 neovim
 pnpm
 yarn
