@@ -15,7 +15,7 @@ appropriate testing frameworks.
 - **Coverage**: Include happy paths, edge cases, error scenarios, and boundary
   conditions
 - **Naming**: Use descriptive names following
-  `behavior_condition_expectedResult` pattern
+  `<behavior condition expectedResult>` pattern
 - **Comments**: Write only meaningful comments that explain *why*, not *what*.
   Update docstrings when changing function behavior. Remove outdated, obvious,
   or template comments. Preserve helpful type annotations.

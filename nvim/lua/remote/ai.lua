@@ -38,25 +38,25 @@ return {
             analyze = function()
               return {
                 { "@", "Bold" },
-                { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "analyze.md"), "@module" },
+                { vim.fs.joinpath(vim.g.dotfiles_dir, "prompts", "analysis.md"), "@module" },
               }
             end,
             refactor = function()
               return {
                 { "@", "Bold" },
-                { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "refactor.md"), "@module" },
+                { vim.fs.joinpath(vim.g.dotfiles_dir, "prompts", "refactor.md"), "@module" },
               }
             end,
             test = function()
               return {
                 { "@", "Bold" },
-                { vim.fs.joinpath(vim.fn.stdpath "config", "prompts", "test.md"), "@module" },
+                { vim.fs.joinpath(vim.g.dotfiles_dir, "prompts", "test.md"), "@module" },
               }
             end,
           },
           prompts = {
             analyze = "Review the code for improvements, optimizations, or issues based on the instructions in:\n{analyze}",
-            refactor = "Refactor the code based on the instructions in:\n{refactor}",
+            refactor = "Safely refactor the code based on the instructions in:\n{refactor}",
             tests = "Write or update unit tests based on the instructions in:\n{test}",
           },
           tools = {
