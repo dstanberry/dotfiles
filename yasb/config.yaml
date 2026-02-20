@@ -8,7 +8,7 @@ komorebi:
 bars:
   primary-bar:
     enabled: true
-    screens: ["34GK950F"]
+    screens: ["LG ULTRAGEAR"]
     class_name: "yasb-bar"
     alignment:
       position: "top"
