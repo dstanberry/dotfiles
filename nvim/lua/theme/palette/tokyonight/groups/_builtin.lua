@@ -100,10 +100,10 @@ function M.get(c)
     DiagnosticInfo             = { fg = c.aqua0 },
     DiagnosticHint             = { fg = c.cyan1 },
 
-    DiagnosticVirtualTextError = { fg = c.red2, bg = ds.color.blend(c.red2, "#000000", 0.1) },
-    DiagnosticVirtualTextWarn  = { fg = c.yellow1, bg = ds.color.blend(c.yellow1, "#000000", 0.1) },
-    DiagnosticVirtualTextInfo  = { fg = c.aqua0, bg = ds.color.blend(c.aqua0, "#000000", 0.1) },
-    DiagnosticVirtualTextHint  = { fg = c.cyan1, bg = ds.color.blend(c.cyan1, "#000000", 0.1) },
+    DiagnosticVirtualTextError = { fg = ds.color.blend(c.red2, c.bg2, 0.6) },
+    DiagnosticVirtualTextWarn  = { fg = ds.color.blend(c.yellow1, c.bg2, 0.6) },
+    DiagnosticVirtualTextInfo  = { fg = ds.color.blend(c.aqua0, c.bg2, 0.6) },
+    DiagnosticVirtualTextHint  = { fg = ds.color.blend(c.cyan1, c.bg2, 0.6) },
 
     DiagnosticUnderlineError   = { undercurl = true, sp = c.red2 },
     DiagnosticUnderlineWarn    = { undercurl = true, sp = c.yellow1 },
