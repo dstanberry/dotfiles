@@ -1,5 +1,28 @@
 {
   "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/master/schema.asc.json",
+  "Adobe Creative": {
+    "floating": [
+      {
+        "kind": "Exe",
+        "id": "Lightroom.exe",
+        "matching_strategy": "Equals"
+      },
+      {
+        "kind": "Exe",
+        "id": "Photoshop.exe",
+        "matching_strategy": "Equals"
+      }
+    ]
+  },
+  "Affinity Designer": {
+    "floating": [
+      {
+        "kind": "Exe",
+        "id": "Designer.exe",
+        "matching_strategy": "Equals"
+      }
+    ]
+  },
   "ApplicationFrameHost": {
     "tray_and_multi_window": [
       {
@@ -21,29 +44,6 @@
       {
         "kind": "Exe",
         "id": "kodi.exe",
-        "matching_strategy": "Equals"
-      }
-    ]
-  },
-  "Adobe Creative": {
-    "floating": [
-      {
-        "kind": "Exe",
-        "id": "Lightroom.exe",
-        "matching_strategy": "Equals"
-      },
-      {
-        "kind": "Exe",
-        "id": "Photoshop.exe",
-        "matching_strategy": "Equals"
-      }
-    ]
-  },
-  "Affinity Designer": {
-    "floating": [
-      {
-        "kind": "Exe",
-        "id": "Designer.exe",
         "matching_strategy": "Equals"
       }
     ]

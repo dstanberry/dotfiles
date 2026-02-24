@@ -273,6 +273,15 @@
       }
     ]
   },
+  "Battlestate Games Launcher": {
+    "floating": [
+      {
+        "kind": "Exe",
+        "id": "BsgLauncher.exe",
+        "matching_strategy": "Equals"
+      }
+    ]
+  },
   "Beeper": {
     "tray_and_multi_window": [
       {
@@ -473,6 +482,15 @@
       {
         "kind": "Exe",
         "id": "datagrip64.exe",
+        "matching_strategy": "Equals"
+      }
+    ]
+  },
+  "Dell Display Manager": {
+    "ignore": [
+      {
+        "kind": "Exe",
+        "id": "DDM.exe",
         "matching_strategy": "Equals"
       }
     ]
@@ -1455,6 +1473,15 @@
       ]
     ]
   },
+  "MicMute": {
+    "floating": [
+      {
+        "kind": "Exe",
+        "id": "MicMute.exe",
+        "matching_strategy": "Equals"
+      }
+    ]
+  },
   "Microsoft Active Accessibility": {
     "ignore": [
       {
@@ -1492,6 +1519,15 @@
       {
         "kind": "Exe",
         "id": "EXCEL.EXE",
+        "matching_strategy": "Equals"
+      }
+    ]
+  },
+  "Microsoft IME Pad": {
+    "floating": [
+      {
+        "kind": "Exe",
+        "id": "IMEPADSV.EXE",
         "matching_strategy": "Equals"
       }
     ]
@@ -1563,17 +1599,10 @@
           "matching_strategy": "StartsWith"
         }
       ]
-     ]
+    ]
   },
   "Microsoft Teams": {
     "tray_and_multi_window": [
-      {
-        "kind": "Class",
-        "id": "TeamsWebView",
-        "matching_strategy": "Equals"
-      }
-    ],
-    "object_name_change": [
       {
         "kind": "Class",
         "id": "TeamsWebView",
@@ -2731,7 +2760,7 @@
         {
           "kind": "Title",
           "id": " - Microsoft Visual Studio",
-          "matching_strategy": "DoesNotEndWith"
+          "matching_strategy": "DoesNotContain"
         }
       ]
     ],
