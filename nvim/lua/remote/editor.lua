@@ -273,6 +273,14 @@ return {
         tf = { "terraform_validate" },
       },
       linters = {
+        ["markdownlint-cli2"] = {
+          prepend_args = function(ctx)
+            if not ds.plugin.is_installed "conform.nvim" then return end
+            local mod = ds.plugin.get_opts "conform.nvim"
+            local fn = mod.formatters and mod.formatters["markdownlint-cli2"]
+            if fn and type(fn.prepend_args) == "function" then return fn.prepend_args(nil, ctx) end
+          end,
+        },
         dotenv_linter = {
           condition = function(ctx) return vim.fs.basename(ctx.filename):match "^%.env" end,
         },
@@ -290,17 +298,32 @@ return {
       local M = {}
       local lint = require "lint"
 
+      local function list_extend(dst, src, start, finish)
+        for i = start or 1, finish or #src do
+          table.insert(dst, tonumber(i), src[i])
+        end
+        return dst
+      end
+
       ds.tbl_each(opts.linters, function(linter, name)
-        if type(linter) == "table" and type(lint.linters[name]) == "table" then
-          lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name], linter)
-          if type(linter.prepend_args) == "table" then
-            lint.linters[name].args = lint.linters[name].args or {}
-            vim.list_extend(lint.linters[name].args, linter.prepend_args)
-          elseif type(linter.args) == "table" then
-            lint.linters[name].args = linter.args
-          end
-        else
+        if type(linter) ~= "table" and type(lint.linters[name]) ~= "table" then
           lint.linters[name] = linter
+          return
+        end
+
+        lint.linters[name] = vim.tbl_deep_extend("force", lint.linters[name], linter)
+        if type(linter.prepend_args) == "function" then
+          local args =
+            linter.prepend_args { buf = vim.api.nvim_get_current_buf(), filename = vim.api.nvim_buf_get_name(0) }
+          if type(args) == "table" then
+            lint.linters[name].args = lint.linters[name].args or {}
+            list_extend(lint.linters[name].args, args)
+          end
+        elseif type(linter.prepend_args) == "table" then
+          lint.linters[name].args = lint.linters[name].args or {}
+          list_extend(lint.linters[name].args, linter.prepend_args)
+        elseif type(linter.args) == "table" then
+          lint.linters[name].args = linter.args
         end
       end)
       lint.linters_by_ft = opts.linters_by_ft
