@@ -320,6 +320,9 @@ return {
           position = { row = -2 },
           win_options = { winblend = vim.o.pumblend },
         },
+        popupmenu = {
+          border = { style = ds.icons.border.Default },
+        },
       },
     },
     config = function(_, opts)
