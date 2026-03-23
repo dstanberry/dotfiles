@@ -41,18 +41,9 @@ return {
   },
   on_attach = function(client, bufnr)
     local handlers = require "remote.lsp.handlers"
-    local _organize = handlers.run_code_action["source.organizeImports"]
     local _missing = handlers.run_code_action["source.addMissingImports.ts"]
     local _unused = handlers.run_code_action["source.removeUnused.ts"]
     local _fix = handlers.run_code_action["source.fixAll.ts"]
-
-    ds.format.register(handlers.formatter {
-      name = "vtsls: organizeImports",
-      primary = false,
-      priority = 200,
-      filter = "vtsls",
-      format = _organize,
-    })
 
     local function _source()
       local params = vim.lsp.util.make_range_params(0, client.offset_encoding)
@@ -76,7 +67,6 @@ return {
     vim.keymap.set("n", "<leader>ld", _source, { buffer = bufnr, desc = "typescript: goto source definition" })
     vim.keymap.set("n", "<leader>lr", _refs, { buffer = bufnr, desc = "typescript: show file references" })
 
-    vim.keymap.set("n", "<leader>lo", _organize, { buffer = bufnr, desc = "typescript: organize imports" })
     vim.keymap.set("n", "<leader>lm", _missing, { buffer = bufnr, desc = "typescript: add missing imports" })
     vim.keymap.set("n", "<leader>lu", _unused, { buffer = bufnr, desc = "typescript: remove unused imports" })
     vim.keymap.set("n", "<leader>lf", _fix, { buffer = bufnr, desc = "typescript: fix all problems" })

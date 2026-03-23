@@ -111,12 +111,7 @@ end
 ---@param server_capabilities? lsp.ServerCapabilities?
 function M.on_attach(client, bufnr, server_capabilities)
   -- remove default lsp keymaps
-  ds.plugin.keymap_del("n", "gO")
-  ds.plugin.keymap_del("n", "gra")
-  ds.plugin.keymap_del("n", "gri")
-  ds.plugin.keymap_del("n", "grn")
-  ds.plugin.keymap_del("n", "grr")
-  ds.plugin.keymap_del("n", "grt")
+  ds.tbl_each({ "gO", "gra", "gri", "grn", "grr", "grt" }, function(k) ds.plugin.keymap_del("n", k) end)
 
   ds.tbl_each(server_capabilities or {}, function(v, k)
     if client.server_capabilities[k] then client.server_capabilities[k] = v end
@@ -136,6 +131,27 @@ function M.on_attach(client, bufnr, server_capabilities)
 
   if client:supports_method("textDocument/codeAction", bufnr) then
     vim.keymap.set("n", "ga", vim.lsp.buf.code_action, { buffer = bufnr, desc = "lsp: code action" })
+
+    local actions = vim.tbl_get(client, "server_capabilities", "codeActionProvider", "codeActionKinds") or {}
+    local caps = client.dynamic_capabilities:get("codeActionProvider", {})
+
+    for _, v in ipairs(caps or {}) do
+      vim.list_extend(actions, vim.tbl_get(v, "registerOptions", "codeActionKinds") or {})
+    end
+    actions = vim.list.unique(actions)
+
+    if vim.tbl_contains(actions, "source.organizeImports") then
+      ds.format.register(M.formatter {
+        name = "lsp: source.organizeImports",
+        primary = false,
+        priority = 200,
+        filter = client.name,
+        format = M.run_code_action["source.organizeImports"],
+      })
+
+      -- stylua: ignore
+      vim.keymap.set("n", "go", M.run_code_action["source.organizeImports"], { buffer = bufnr, desc = "lsp: organize imports" })
+    end
   end
 
   if client:supports_method("textDocument/codeLens", bufnr) then
