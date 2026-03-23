@@ -33,7 +33,8 @@ return {
       end)
     end
 
-    vim.keymap.set("n", "go", _switch, { buffer = bufnr, desc = "lsp: to component/template" })
+    vim.keymap.set("n", "<leader>l", "", { buffer = bufnr, desc = "+lsp (angular)" })
+    vim.keymap.set("n", "<leader>ls", _switch, { buffer = bufnr, desc = "angular: goto component/template" })
   end,
   root_dir = function(bufnr, on_dir)
     local markers = vim.lsp.config["angularls"].root_markers
