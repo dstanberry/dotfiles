@@ -118,6 +118,11 @@ return {
       vim.lsp.config("*", { capabilities = opts.capabilities })
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
+      ds.tbl_each(opts.servers, function(cfg, server)
+        vim.lsp.config(server, cfg)
+        vim.lsp.enable(server)
+      end)
+
       ds.fs.walk("lsp", function(path, name, kind)
         if (kind == "file" or kind == "link") and name:match "%.lua$" then
           local config = assert(loadfile(path))() ---@type table
@@ -133,7 +138,6 @@ return {
           ds.tbl_each(vim.tbl_keys(config), function(v)
             if type(v) ~= "string" or not tostring(v):match "^_" then clean_config[v] = config[v] end
           end)
-          opts.servers = vim.tbl_deep_extend("force", opts.servers or {}, { [fname] = clean_config })
           vim.lsp.config(fname, clean_config)
           vim.lsp.enable(fname)
         end

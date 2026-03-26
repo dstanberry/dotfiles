@@ -1,6 +1,6 @@
 return {
   on_attach = function(_, bufnr)
     local fname = vim.api.nvim_buf_get_name(bufnr)
-    if vim.fs.basename(fname):match "^%.env" then vim.schedule(function() vim.cmd "LspStop bashls" end) end
+    if vim.fs.basename(fname):match "^%.env" then vim.schedule(function() vim.cmd "lsp stop bashls" end) end
   end,
 }

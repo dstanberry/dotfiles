@@ -4,7 +4,7 @@ return {
       vim.tbl_deep_extend("force", new_config.settings.yaml.schemas or {}, require("schemastore").yaml.schemas())
   end,
   on_attach = function(_, bufnr)
-    if vim.bo[bufnr].filetype == "helm" then vim.schedule(function() vim.cmd "LspStop ++force yamlls" end) end
+    if vim.bo[bufnr].filetype == "helm" then vim.schedule(function() vim.cmd "lsp stop yamlls" end) end
   end,
   capabilities = {
     textDocument = {
