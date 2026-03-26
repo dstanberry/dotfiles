@@ -58,7 +58,7 @@ function M.edit()
   local root = assert(realpath(vim.fs.dirname(file) or vim.uv.cwd() or "."))
   vim.ui.input({
     prompt = "File Name: ",
-    default = vim.fs.joinpath(root, ""),
+    default = vim.fs.joinpath(root, "/"),
     completion = "file",
   }, function(newfile)
     if not newfile or newfile == "" or newfile == file:sub(#root + 2) then return end
@@ -222,7 +222,7 @@ function M.rename()
   local filename = oldfile:sub(#root + 2)
   vim.ui.input({
     prompt = "New File Name: ",
-    default = vim.fs.joinpath(root, ""),
+    default = vim.fs.joinpath(root, "/"),
     completion = "file",
   }, function(newfile)
     if not newfile or newfile == "" or newfile == filename then return end
