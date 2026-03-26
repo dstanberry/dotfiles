@@ -13,12 +13,12 @@ format_tokens() {
 
   if [ "$total" -ge "$MILLION" ]; then
     formatted=$(echo "scale=1; $total / $MILLION" | bc)
-    echo " │ $icon ${formatted}M"
+    echo " │ $icon ${formatted}M tokens"
   elif [ "$total" -ge "$THOUSAND" ]; then
     formatted=$(echo "scale=1; $total / $THOUSAND" | bc)
-    echo " │ $icon ${formatted}K"
+    echo " │ $icon ${formatted}K tokens"
   else
-    echo " │ $icon $total"
+    echo " │ $icon $total tokens"
   fi
 }
 
@@ -49,47 +49,27 @@ get_git_branch() {
   fi
 }
 
-# Calculate session and billing tokens in single pass
-get_tokens() {
-  local file=$1
-  local result
-
-  result=$(awk '
-    match($0, /"input_tokens":([0-9]+),"output_tokens":([0-9]+)/, arr) {
-      last_input = arr[1]
-      last_output = arr[2]
-      total_input += arr[1]
-      total_output += arr[2]
-    }
-    END {
-      if (last_input) {
-        print last_input + last_output
-        print total_input + total_output
-      }
-    }
-  ' "$file" 2> /dev/null)
-
-  if [ -n "$result" ]; then
-    local session_total billing_total
-    session_total=$(echo "$result" | sed -n '1p')
-    billing_total=$(echo "$result" | sed -n '2p')
-
-    echo "$(format_tokens "$session_total" "🎯")$(format_tokens "$billing_total" "💰")"
-  fi
-}
-
 main() {
-  local input model_name current_dir transcript_path
+  local input model_name current_dir
   local git_branch tokens
+  local session_total billing_total
 
   input=$(cat)
   model_name=$(echo "$input" | jq -r '.model.display_name')
-  current_dir=$(echo "$input" | jq -r '.workspace.current_directory')
-  transcript_path=$(echo "$input" | jq -r '.transcript_path')
+  current_dir=$(echo "$input" | jq -r '.workspace.current_dir')
   git_branch=$(get_git_branch "$current_dir")
 
-  if [ -f "$transcript_path" ]; then
-    tokens=$(get_tokens "$transcript_path")
+  session_total=$(echo "$input" | jq -r '
+      (.context_window.current_usage.input_tokens // 0) +
+      (.context_window.current_usage.output_tokens // 0)
+    ')
+  billing_total=$(echo "$input" | jq -r '
+      (.context_window.total_input_tokens // 0) +
+      (.context_window.total_output_tokens // 0)
+    ')
+
+  if [ "$session_total" -gt 0 ]; then
+    tokens="$(format_tokens "$session_total" "🪙")$(format_tokens "$billing_total" "💰")"
   fi
 
   printf "%s %s%s" \

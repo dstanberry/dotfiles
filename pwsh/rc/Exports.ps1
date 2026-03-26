@@ -8,9 +8,12 @@ $env:EDITOR = "nvim"
 # define configuration path for bat
 $env:BAT_CONFIG_PATH = "$env:CONFIG_HOME\bat\bat.conf"
 
-
 # define location of claude code configuration
 $env:CLAUDE_CONFIG_DIR = "$env:CONFIG_HOME\claude"
+
+# define location of claude code configuration
+$env:COPILOT_HOME = "$env:CONFIG_HOME\ai\copilot"
+$env:COPILOT_CUSTOM_INSTRUCTIONS_DIRS = "$env:CONFIG_HOME\ai\claude\agents"
 
 # define configuration path for rust/cargo
 $env:CARGO_HOME = "$env:DATA_HOME\cargo"
