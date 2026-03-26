@@ -1,0 +1,18 @@
+{
+  "banner": "never",
+  "render_markdown": true,
+  "screen_reader": false,
+  "theme": "auto",
+  "skill_directories": [
+    "/home/demaro/.config/ai/claude/skills",
+    "/Users/dstanber/.config/ai/claude/skills"
+  ],
+  "trusted_folders": [
+    "/home/demaro/.config",
+    "/home/demaro/Projects",
+    "/Users/dstanber/.config",
+    "/Users/dstanber/Projects"
+  ],
+  "firstLaunchAt": "2026-03-11T00:00:00.000Z",
+  "model": "gpt-5-mini"
+}

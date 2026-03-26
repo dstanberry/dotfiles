@@ -34,30 +34,13 @@ return {
         signs = { enabled = true, icon = ds.icons.misc.ArrowCollapseRight },
         cli = {
           mux = { enabled = true, backend = "tmux" },
-          context = {
-            analyze = function()
-              return {
-                { "@", "Bold" },
-                { vim.fs.joinpath(vim.g.dotfiles_dir, "prompts", "analysis.md"), "@module" },
-              }
-            end,
-            refactor = function()
-              return {
-                { "@", "Bold" },
-                { vim.fs.joinpath(vim.g.dotfiles_dir, "prompts", "refactor.md"), "@module" },
-              }
-            end,
-            test = function()
-              return {
-                { "@", "Bold" },
-                { vim.fs.joinpath(vim.g.dotfiles_dir, "prompts", "test.md"), "@module" },
-              }
-            end,
-          },
           prompts = {
-            analyze = "Review the code for improvements, optimizations, or issues based on the instructions in:\n{analyze}",
-            refactor = "Safely refactor the code based on the instructions in:\n{refactor}",
-            tests = "Write or update unit tests based on the instructions in:\n{test}",
+            analyze = "Perform a code review of the following for quality, security and maintainability:\n- {buffers}",
+            analyze_this = "Perform a code review of the following for quality, security and maintainability:\n- {file|this}",
+            refactor = "Refactor the following code. Analyze it first, then make changes:\n- {buffers}",
+            refactor_this = "Refactor the following code. Analyze it first, then make changes:\n- {file|this}",
+            test = "Write or update tests for the following using test-first development (red-green-refactor):\n- {buffers}",
+            test_this = "Write or update tests for the following using test-first development (red-green-refactor):\n- {file|this}",
           },
           tools = {
             amazon_q = { cmd = { "amazon_q" } },

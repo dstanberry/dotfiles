@@ -26,7 +26,7 @@ preserving observable behavior and public APIs.
 - Prefer idiomatic language features and standard library over custom
   implementations
 - Use pattern matching, null-safe operators, and collection utilities to
-  simplify control flow simplify control flow
+  simplify control flow
 - Replace long chains and nested loops/conditionals with clearer constructs
 - Prefer concise expressions over verbose if-else blocks when readability is
   maintained (e.g., ternary operators, logical short-circuiting)
@@ -43,34 +43,44 @@ preserving observable behavior and public APIs.
 
 - Remove dead code, unused declarations, and unnecessary assignments
 - Keep side effects explicit
-- Use intention-revealing names for variables, functions, and types
 - Follow language's standard formatting and linting conventions
 - Prefer immutability where practical (const/let, final/val, immutable
   collections)
 
-**Documentation & Comments:**
+**Documentation & Comments** — see [coding standards](coding.md) for rules:
 
-- Write only meaningful comments that explain *why*, not *what*
 - Update docstrings when changing function behavior
 - Remove outdated, obvious, or template comments
-- Keep docstrings/comments accurate, concise, and non-redundant
-- Retain or improve type annotations; remove only if obsolete or misleading
+
+## Refactor Candidates
+
+Look for these patterns as refactor opportunities:
+
+- **Duplication** → Extract function/class
+- **Long methods** → Break into private helpers (keep tests on public interface)
+- **Shallow modules** → Combine or deepen
+- **Feature envy** → Move logic to where data lives
+- **Primitive obsession** → Introduce value objects
+- **Existing code** the new code reveals as problematic
 
 ## Naming Conventions
 
-- Use terse, intention-revealing names aligned with domain concepts
-- Follow explicit naming/style instructions in task/repository (highest
+Follow [coding standards](coding.md) for naming rules. Additionally, when
+refactoring:
+
+- Follow explicit naming/style instructions in the task or repository (highest
   priority)
-- If none exist, infer prevailing conventions from active file and project
-- Maintain consistency with language ecosystem best practices
-- Provide brief mapping of significant renames (old → new)
+- Infer prevailing conventions from the active file and project when no
+  explicit instructions exist
+- Provide a brief mapping of significant renames (old → new)
 
 ## Error Handling
 
-- Validate inputs and fail fast with clear, actionable errors
-- Distinguish recoverable vs. unrecoverable errors
-- Propagate or log errors; never swallow them silently
-- Preserve existing error types/messages unless clearly incorrect; note changes
+Follow [coding standards](coding.md) for error handling rules. Additionally,
+when refactoring:
+
+- Preserve existing error types and messages unless clearly incorrect; note any
+  changes
 
 ## Testing and Regression Safety
 

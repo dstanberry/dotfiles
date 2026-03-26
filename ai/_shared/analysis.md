@@ -28,8 +28,9 @@ provided code, with explicit assumptions.
 - **Naming Issues**: Ambiguous/terse names across variables, objects, types
 - **Code Cleanup**: Dead code, unused declarations, unnecessary assignments,
   magic numbers
-- **Standards**: Project conventions, then language best practices (camelCase,
-  snake_case, etc.)
+- **Standards**: Apply [coding standards](coding.md) as the authority for
+  naming, comments, types, and error handling; then project conventions and
+  language best practices (camelCase, snake_case, etc.)
 - **Safety**: API preservation, immutability, visibility, cohesion, modularity,
   - **Comments**: Meaningful *why* explanations, updated docstrings, no
     testability outdated/obvious/template

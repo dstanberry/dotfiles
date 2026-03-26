@@ -27,7 +27,11 @@ if ! test -d "${XDG_RUNTIME_DIR}"; then
 fi
 
 # define location of claude code configuration
-export CLAUDE_CONFIG_DIR="${CONFIG_HOME}/claude"
+export CLAUDE_CONFIG_DIR="${CONFIG_HOME}/ai/claude"
+
+# define location of claude code configuration
+export COPILOT_HOME="${CONFIG_HOME}/ai/copilot"
+export COPILOT_CUSTOM_INSTRUCTIONS_DIRS="${CONFIG_HOME}/ai/claude/agents"
 
 # announce true color support (this is incorrect but required)
 export COLORTERM=truecolor
@@ -113,7 +117,7 @@ if hash fzf 2> /dev/null; then
     --color=border:#737994 \
     --color=fg+:#c6d0f5 \
     --color=fg:#c6d0f5 \
-    --color=header:#e78284
+    --color=header:#e78284 \
     --color=hl+:#e78284 \
     --color=hl:#e78284 \
     --color=info:#ca9ee6 \
@@ -170,13 +174,13 @@ if hash fzf 2> /dev/null; then
     --color=hl:#7f966d \
     --color=info:#59595e \
     --color=marker:#bf616a
-    --color=pointer:#b8bec9 \
+  --color=pointer:#b8bec9 \
     --color=preview-bg:#1f2021 \
     --color=preview-border:#59595e \
     --color=preview-scrollbar:#3a3c3d \
     --color=prompt:#7f966d \
     --color=scrollbar:#373737 \
-    --color=spinner:#5f8f9d"
+  --color=spinner:#5f8f9d"
 
   fzf_tokyonight=" \
     --color=bg+:#283457 \

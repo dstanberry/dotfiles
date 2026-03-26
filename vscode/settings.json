@@ -2,7 +2,7 @@
   // ***************************************************************************
   // ** EXTENSIONS
   // ***************************************************************************
-  "flake8.args": [],
+  "claudeCode.environmentVariables": [{ "name": "CLAUDE_CONFIG_DIR", "value": "$HOME/.config/ai/claude" }],
   "prettier.arrowParens": "always",
   "prettier.bracketSpacing": true,
   "prettier.endOfLine": "lf",

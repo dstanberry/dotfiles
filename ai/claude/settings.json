@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(echo *)",
+      "Bash(mkdir *)",
+      "Bash(npm run build)",
+      "Bash(npm run lint)",
+      "Bash(npm run test)",
+      "Bash(npm run test:*)",
+      "Bash(npx vitest run:*)",
+      "Bash(printenv *)",
+      "Edit(ai/_memory/*)",
+      "Edit(_memory/*)",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.config/ai/claude/statusline.sh"
+  },
+  "alwaysThinkingEnabled": true,
+  "extraKnownMarketplaces": {
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      }
+    }
+  }
+}
