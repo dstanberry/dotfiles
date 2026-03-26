@@ -19,7 +19,6 @@ dotnet/.nuget/NuGet/*
 dotnet/.nuget/packages/
 !dotnet/.nuget/NuGet/NuGet.Config.tmpl
 
-gh-dash/config.private.yml
 gh/hosts.yml
 git/config
 github-copilot/
