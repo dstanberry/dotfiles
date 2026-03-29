@@ -268,11 +268,6 @@ if is_darwin; then
   export HOMEBREW_CASK_OPTS=--no-quarantine
 fi
 
-# define configuration path for ack
-if hash ack 2> /dev/null; then
-  export ACKRC="${CONFIG_HOME}/ack/ackrc"
-fi
-
 # define configuration path for bat
 if hash bat 2> /dev/null; then
   export BAT_CONFIG_PATH="${CONFIG_HOME}/bat/bat.conf"
