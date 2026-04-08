@@ -155,7 +155,8 @@ function M.on_attach(client, bufnr, server_capabilities)
   end
 
   if client:supports_method("textDocument/codeLens", bufnr) then
-    vim.b[bufnr].codelens_enabled = true
+    if vim.b[bufnr].codelens_enabled == nil then vim.b[bufnr].codelens_enabled = true end
+
     local codelens = ds.augroup "remote.lsp.codelens"
 
     local function _lens()

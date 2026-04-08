@@ -1,7 +1,7 @@
 return {
   settings = {
     Lua = {
-      codeLens = { enable = true },
+      codeLens = { enable = false },
       completion = {
         callSnippet = "Replace",
         showWord = "Disable",
