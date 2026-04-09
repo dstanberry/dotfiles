@@ -93,7 +93,7 @@ M.config = (function()
       gh_diff = { auto_close = false, layout = { preset = "left" } },
       gh_issue = { layout = { preset = "vertical" } },
       gh_pr = { layout = { preset = "vertical" } },
-      git_log = { layout = { preset = "vertical" } },
+      git_log = { layout = { preset = "ivy" } },
       git_status = { layout = { preset = "ivy" } },
       grep = { layout = { preset = "vertical" } },
       grep_buffers = { layout = { preset = "vertical" } },
@@ -176,20 +176,20 @@ function M.git_diff_tree()
   Snacks.picker.pick {
     layout = "ivy",
     preview = "file",
-    title = "Git Branch Modification(s)",
+    title = "Git Outgoing Changes",
     finder = function(opts, ctx)
       local root = Snacks.git.get_root()
-      return require("snacks.picker.source.proc").proc({
-        opts,
-        {
+      return require("snacks.picker.source.proc").proc(
+        vim.tbl_deep_extend("force", opts, {
           cmd = "git",
           args = { "diff-tree", "--no-commit-id", "--name-only", "--diff-filter=d", "HEAD@{u}..HEAD", "-r" },
           transform = function(item)
             item.cwd = root
             item.file = item.text
           end,
-        },
-      }, ctx)
+        }),
+        ctx
+      )
     end,
   }
 end

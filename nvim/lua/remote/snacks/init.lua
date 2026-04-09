@@ -36,7 +36,7 @@ return {
         { "<leader>gf", function() Snacks.picker.git_status() end, desc = "git: show changed files" },
         { "<leader>gg", function() Snacks.lazygit.open() end, desc = "git: lazygit" },
         { "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "github: find issues (open)" },
-        { "<leader>gp", function() Snacks.picker.gh_pr() end, desc = "github: find pull requests (open)" },
+        { "<leader>gp", function() Snacks.picker.gh_pr { state = "all" } end, desc = "github: find pull requests" },
         { "<leader>gl", function() Snacks.lazygit.log_file() end, desc = "git: lazygit log" },
         { ll "gl", function() Snacks.picker.git_log() end, desc = "git: log (pickaxe)" },
         { ll "go", function() Snacks.gitbrowse.open() end, desc = "git: open in browser", mode = { "n", "v" } },
