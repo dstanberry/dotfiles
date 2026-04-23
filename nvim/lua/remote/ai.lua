@@ -14,7 +14,7 @@ return {
       local function _toggle() require("sidekick.cli").toggle { filter = { installed = true } } end
 
       return {
-        { "<tab>", ds.coalesce({ "cmp.inline.next" }, "<tab>"), mode = { "n" }, expr = true },
+        { "<tab>", ds.coalesce({ "cmp.inline.accept" }, "<tab>"), mode = { "n" }, expr = true },
         { "<leader>c", mode = { "n", "x" }, "", desc = "+code assistant" },
         { "<leader>ca", mode = { "n", "x" }, _prompt, desc = "sidekick: select prompt" },
         { "<leader>cc", _toggle, desc = "sidekick: toggle" },
@@ -23,9 +23,11 @@ return {
       }
     end,
     init = function()
-      ds.cmp.inline.next = function()
+      local inline_accept = ds.cmp.inline.accept
+      ds.cmp.inline.accept = function()
         if not ds.cmp.inline.enabled() then return end
         local nes = require "sidekick.nes"
+        if inline_accept() then return true end
         if nes.have() and (nes.jump() or nes.apply()) then return true end
       end
     end,
