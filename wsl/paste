@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+source "${ZDOTDIR:-$HOME/.config/zsh}/site-functions/__helpers"
+
 # (wsl) get content of windows clipboard
 if is_wsl; then
   powershell.exe -NoProfile Get-Clipboard | sed 's/\r$//' | sed -z '$ s/\n$//'

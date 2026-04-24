@@ -1,9 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
-# include helper functions
-source ${HOME}/.config/scripts/helpers.sh
+source "${ZDOTDIR:-$HOME/.config/zsh}/site-functions/__helpers"
 
-# (wsl) send text to windows cipboard
+# (wsl) send text to windows clipboard
 if is_wsl; then
   tee <&0 | clip.exe
   exit 0
