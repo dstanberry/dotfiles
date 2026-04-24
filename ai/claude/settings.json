@@ -1,4 +1,5 @@
 {
+  "alwaysThinkingEnabled": true,
   "permissions": {
     "allow": [
       "Bash(echo *)",
@@ -19,7 +20,28 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "$HOME/.config/ai/claude/statusline.sh"
+    "command": "python3 $HOME/.config/ai/claude/scripts/context-statusline.py"
   },
-  "alwaysThinkingEnabled": true
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/.config/ai/claude/scripts/context-waterline.py"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/.config/ai/claude/scripts/context-waterline.py"
+          }
+        ]
+      }
+    ]
+  }
 }

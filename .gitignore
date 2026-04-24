@@ -11,6 +11,8 @@ ai/claude/*
 !ai/claude/hooks/**
 !ai/claude/rules/
 !ai/claude/rules/**
+!ai/claude/scripts/
+!ai/claude/scripts/**
 !ai/claude/skills/
 !ai/claude/skills/**
 
