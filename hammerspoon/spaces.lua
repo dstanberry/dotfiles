@@ -47,7 +47,7 @@ local GRID = {
 }
 
 local SPACE_MOVEMENT_CONFIG = {
-  mouseOffset = { x = 5, y = 12 },
+  mouseOffset = { y = 12 },
   delays = { switch = 0.2, release = 0.5 },
   inProgress = false,
 }
@@ -186,8 +186,7 @@ local function moveToSpace(keys, direction)
   win:raise()
 
   local frame = win:frame()
-  local clickPos =
-    hs.geometry.point(frame.x + SPACE_MOVEMENT_CONFIG.mouseOffset.x, frame.y + SPACE_MOVEMENT_CONFIG.mouseOffset.y)
+  local clickPos = hs.geometry.point(frame.x + frame.w / 2, frame.y + SPACE_MOVEMENT_CONFIG.mouseOffset.y)
   local centerPos = hs.geometry.point(frame.x + frame.w / 2, frame.y + frame.h / 2)
 
   hs.mouse.absolutePosition(clickPos)
