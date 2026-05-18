@@ -140,9 +140,15 @@ go() {
 }
 
 # print response headers, following redirects.
-headers() {
+hops() {
   [ $# -eq 1 ] || { echo "error: need a host"; return 1; }
   curl -sSL -D - "$1" -o /dev/null
+}
+
+# inspect a single HTTP hop without following redirects.
+hop() {
+  [ $# -ge 1 ] || { echo "error: need a url"; return 1; }
+  curl -vks "$@" 2>&1
 }
 
 # support custom sub-commands
