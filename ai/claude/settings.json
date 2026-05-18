@@ -1,26 +1,18 @@
 {
-  "alwaysThinkingEnabled": true,
   "permissions": {
     "allow": [
       "Bash(echo *)",
       "Bash(mkdir *)",
-      "Bash(npm run build)",
-      "Bash(npm run lint)",
-      "Bash(npm run test)",
-      "Bash(npm run test:*)",
-      "Bash(npx vitest run:*)",
       "Bash(printenv *)",
+      "Edit(.claude/memory/*)",
       "Edit(ai/_memory/*)",
+      "Write(.claude/memory/*)",
       "Write(ai/_memory/*)",
       "WebFetch",
       "WebSearch"
     ],
     "deny": [],
     "ask": []
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "python3 $HOME/.config/ai/claude/scripts/context-statusline.py"
   },
   "hooks": {
     "Stop": [
@@ -43,5 +35,10 @@
         ]
       }
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "python3 $HOME/.config/ai/claude/scripts/context-statusline.py"
+  },
+  "alwaysThinkingEnabled": true
 }
