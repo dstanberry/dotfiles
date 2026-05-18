@@ -3,12 +3,12 @@ return {
   {
     "saghen/blink.cmp",
     version = false,
-    build = "cargo build --release",
+    build = function() require("blink.cmp").build():wait(60000) end,
     event = "InsertEnter",
     dependencies = {
+      "saghen/blink.lib",
       "L3MON4D3/LuaSnip",
       "kristijanhusak/vim-dadbod-completion",
-      { "saghen/blink.compat", version = false, opts = { impersonate_nvim_cmp = true } },
     },
     opts = { ---@type blink.cmp.Config
       appearance = { use_nvim_cmp_as_default = false, kind_icons = ds.icons.kind },
@@ -22,19 +22,6 @@ return {
             components = { kind_icon = { width = { fill = true } } },
             treesitter = { "lsp" },
           },
-          direction_priority = function()
-            local blink_cmp = require "blink.cmp"
-            local ctx = blink_cmp.get_context()
-            local item = blink_cmp.get_selected_item()
-            if ctx == nil or item == nil then return { "s", "n" } end
-            local item_text = item.textEdit ~= nil and item.textEdit.newText or item.insertText or item.label
-            local is_multi_line = item_text:find "\n" ~= nil
-            if is_multi_line or vim.g.blink_cmp_upwards_ctx_id == ctx.id then
-              vim.g.blink_cmp_upwards_ctx_id = ctx.id
-              return { "n", "s" }
-            end
-            return { "s", "n" }
-          end,
         },
         documentation = {
           auto_show = true,
