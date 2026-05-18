@@ -180,15 +180,28 @@ function global:go {
 }
 
 # print response headers, following redirects.
-function global:headers {
+function global:hops {
 	try {
 		if ($args.Length -eq 0) {
-			Write-Error "error: a host argument is required"
+			Write-Error "error: need a host"
 		} else {
-			curl -sSL -D - "${args[0]}" -o NUL 
+			curl -sSL -D - "${args[0]}" -o NUL
   }
 	} catch {
-		Throw "$($_.Exception.Message)" 
+		Throw "$($_.Exception.Message)"
+ }
+}
+
+# inspect a single HTTP hop without following redirects.
+function global:hop {
+	try {
+		if ($args.Length -eq 0) {
+			Write-Error "error: need a url"
+		} else {
+			curl -vks @args 2>&1
+  }
+	} catch {
+		Throw "$($_.Exception.Message)"
  }
 }
 
