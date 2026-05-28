@@ -60,7 +60,7 @@ vim.api.nvim_create_autocmd("TermOpen", {
 -- highlighted copied region when yanked
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = ds.augroup "hl_yank",
-  callback = function() vim.hl.on_yank() end,
+  callback = function() vim.hl.hl_op() end,
 })
 
 -- define common conventions for various filetypes

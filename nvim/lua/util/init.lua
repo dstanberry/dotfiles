@@ -26,7 +26,7 @@ setmetatable(M, {
 ---The autocommand will be prefixed with "ds." to avoid namespace collisions
 ---@param name string
 ---@return number
-function M.augroup(name) return vim.api.nvim_create_augroup("ds." .. name, { clear = true }) end
+function M.augroup(name, opts) return vim.api.nvim_create_augroup("ds." .. name, opts or { clear = true }) end
 
 ---Logs a message at the INFO log level using `vim.notify`
 function M.info(msg, opts) vim.notify(type(msg) ~= "string" and vim.inspect(msg) or msg, vim.log.levels.INFO, opts) end
