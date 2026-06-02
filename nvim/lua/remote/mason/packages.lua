@@ -22,7 +22,7 @@ return {
   "npm-groovy-lint",
   "powershell-editor-services",
   "pylance",
-  "roslyn",
+  "roslyn-language-server",
   "ruff",
   "rust-analyzer",
   "snyk-ls",
