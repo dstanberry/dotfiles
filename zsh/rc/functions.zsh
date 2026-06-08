@@ -98,7 +98,7 @@ gem() {
 git() {
   emulate -L zsh
   case "$1" in
-    wta)
+    wt-add)
       local branches=("${(@f)$(git branch | cut -c 3-)}")
       local root=$(command git rev-parse --path-format=absolute \
         --git-common-dir)
@@ -108,12 +108,21 @@ git() {
         && command git worktree add "$wt_path" "$2" \
         || command git worktree add -b "$2" "$wt_path"
       [ -d "$wt_path" ] && cd "$wt_path"; return ;;
-    wtl)
+    wt-list)
       local wt_path
       wt_path=$(git worktree list | fzf --exit-0 --no-multi \
         --header="Switch worktree" \
         --preview="git graph -50 --color=always" | awk '{print $1}')
       [ -d "$wt_path" ] && cd "$wt_path"; return ;;
+    wt-sync)
+      local linker
+      linker="$(command git rev-parse --path-format=absolute \
+        --git-common-dir)/hooks/link-assets.sh"
+      [ -x "$linker" ] || {
+        echo "wt-sync: linker not found or not executable: $linker" >&2
+        return 1
+      }
+      "$linker" "${2:-$PWD}"; return ;;
     track-remote)
       command git config remote.origin.fetch \
         "+refs/heads/*:refs/remotes/origin/*"; return ;;
