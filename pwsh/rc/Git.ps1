@@ -73,31 +73,19 @@ function Add-GitWorktree {
 		[Parameter(Mandatory = $true)]
 		[string] $Name
 	)
-	$Worktree_Base = "$(Get-Location)/.worktree"
-	$Worktree_Path = "$Worktree_Base/$Name"
-	if ((Split-Path -Path (Resolve-Path ".." -ErrorAction Ignore) -Leaf) -eq ".worktree") {
-		$Worktree_Path = "../$Name"
-	} elseif (! (Resolve-Path $Worktree_Base -ErrorAction Ignore)) {
-		New-Item -Path $Worktree_Base -ItemType Directory | Out-Null
+	$GitCommonDir = git.exe rev-parse --path-format=absolute --git-common-dir
+	if ($LASTEXITCODE -ne 0) { return }
+	$DirName = $Name -replace '/', '-'
+	$WtPath = "$GitCommonDir/$DirName"
+	git.exe show-ref --verify --quiet "refs/heads/$Name"
+	if ($LASTEXITCODE -eq 0) {
+		git.exe worktree add $WtPath $Name
+	} else {
+		git.exe worktree add -b $Name $WtPath
 	}
-	git.exe worktree add $Worktree_Path
-	Set-Location $Worktree_Path
-}
-
-function Add-GitWorktree-From-Current {
-	param(
-		[Parameter(Mandatory = $true)]
-		[string] $Name
-	)
-	$Worktree_Base = "$(Get-Location)/.worktree"
-	$Worktree_Path = "$Worktree_Base/$Name"
-	if ((Split-Path -Path (Resolve-Path ".." -ErrorAction Ignore) -Leaf) -eq ".worktree") {
-		$Worktree_Path = "../$Name"
-	} elseif (! (Resolve-Path $Worktree_Base -ErrorAction Ignore)) {
-		New-Item -Path $Worktree_Base -ItemType Directory | Out-Null
+	if (Test-Path $WtPath) {
+		Set-Location $WtPath
 	}
-	git.exe worktree add -b $Name $Worktree_Path $(git.exe symbolic-ref --short HEAD)
-	Set-Location $Worktree_Path
 }
 
 function Switch-GitWorktree {
@@ -118,15 +106,15 @@ function Switch-GitWorktree {
 function global:git {
 	try {
 		if ($args[0] -eq "fstash") {
-			Get-GitStashes 
-  } elseif ($args[0] -eq "wta") {
-			Add-GitWorktree $args[1] 
-  } elseif ($args[0] -eq "wtb") {
-			Add-GitWorktree-From-Current $args[1] 
-  } elseif ($args[0] -eq "wtl") {
-			Switch-GitWorktree 
+			Get-GitStashes
+  } elseif ($args[0] -eq "wt-add") {
+			Add-GitWorktree $args[1]
+  } elseif ($args[0] -eq "wt-list") {
+			Switch-GitWorktree
+  } elseif ($args[0] -eq "track-remote") {
+			git.exe config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
   } else {
-			git.exe @args 
+			git.exe @args
   }
 	} catch {
 		Throw "$($_.Exception.Message)"
