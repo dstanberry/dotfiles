@@ -84,7 +84,7 @@ return { ---@class ft.defaults
     iskeyword = vim.opt.iskeyword:append "-",
     listchars = vim.opt.listchars:append "eol: ",
     spell = false,
-    wrap = true,
+    wrap = false,
   },
   ps1 = {
     colorcolumn = "120",
