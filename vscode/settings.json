@@ -2,7 +2,15 @@
   // ***************************************************************************
   // ** EXTENSIONS
   // ***************************************************************************
-  "claudeCode.environmentVariables": [{ "name": "CLAUDE_CONFIG_DIR", "value": "$HOME/.config/ai/claude" }],
+  "claudeCode.preferredLocation": "panel",
+  "claudeCode.environmentVariables": [
+    {
+      "name": "CLAUDE_CONFIG_DIR",
+      "value": "$HOME/.config/ai/claude"
+    }
+  ],
+  "markdown-preview-github-styles.colorTheme": "dark",
+  "markdown-preview-github-styles.darkTheme": "dark_dimmed",
   "prettier.arrowParens": "always",
   "prettier.bracketSpacing": true,
   "prettier.endOfLine": "lf",
@@ -62,6 +70,7 @@
   // ***************************************************************************
   // ** EDITOR
   // ***************************************************************************
+  "diffEditor.ignoreTrimWhitespace": true,
   "editor.bracketPairColorization.enabled": true,
   "editor.cursorBlinking": "expand",
   "editor.cursorSmoothCaretAnimation": "on",
@@ -107,39 +116,47 @@
   // ** COPILOT
   // ***************************************************************************
   "chat.editing.confirmEditRequestRemoval": false,
+  "chat.viewSessions.orientation": "stacked",
+  "chat.tools.terminal.enableAutoApprove": true,
+  "chat.tools.terminal.autoApprove": {
+    "git": true,
+    "npm": true,
+    "npx": true
+  },
   "github.copilot.nextEditSuggestions.enabled": true,
   // ***************************************************************************
   // ** LANGUAGES
   // ***************************************************************************
+  "emmet.includeLanguages": {
+    "javascript": "html"
+  },
+  "html.autoClosingTags": false,
   "html.format.enable": false,
   "html.format.indentInnerHtml": false,
   "html.format.preserveNewLines": true,
   "html.format.wrapAttributes": "auto",
   "html.format.wrapLineLength": 240,
-  "markdown.preview.breaks": true,
-  "python.analysis.typeCheckingMode": "basic",
-  "emmet.includeLanguages": {
-    "javascript": "html"
-  },
-  // ***************************************************************************
-  // ** CODELENS
-  // ***************************************************************************
-  "html.autoClosingTags": false,
   "html.suggest.html5": true,
   "html.validate.scripts": true,
   "html.validate.styles": true,
-  "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
-  "javascript.inlayHints.parameterNames.enabled": "all",
-  "javascript.inlayHints.parameterTypes.enabled": true,
-  "javascript.inlayHints.variableTypes.enabled": true,
-  "javascript.referencesCodeLens.enabled": true,
-  "javascript.updateImportsOnFileMove.enabled": "prompt",
-  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
-  "typescript.inlayHints.parameterNames.enabled": "all",
-  "typescript.inlayHints.parameterTypes.enabled": true,
-  "typescript.inlayHints.variableTypes.enabled": true,
-  "typescript.referencesCodeLens.enabled": true,
-  "typescript.updateImportsOnFileMove.enabled": "prompt",
+  "markdown.preview.breaks": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.defaultInterpreterPath": "",
+  // ***************************************************************************
+  // ** CODELENS
+  // ***************************************************************************
+  "js.inlayHints.functionLikeReturnTypes.enabled": true,
+  "js.inlayHints.parameterNames.enabled": "all",
+  "js.inlayHints.parameterTypes.enabled": true,
+  "js.inlayHints.variableTypes.enabled": true,
+  "js.referencesCodeLens.enabled": true,
+  "js.updateImportsOnFileMove.enabled": "prompt",
+  "ts.inlayHints.functionLikeReturnTypes.enabled": true,
+  "ts.inlayHints.parameterNames.enabled": "all",
+  "ts.inlayHints.parameterTypes.enabled": true,
+  "ts.inlayHints.variableTypes.enabled": true,
+  "ts.referencesCodeLens.enabled": true,
+  "ts.updateImportsOnFileMove.enabled": "always",
   // ***************************************************************************
   // ** FTDETECT
   // ***************************************************************************
@@ -174,6 +191,20 @@
   "[css]": {
     "editor.suggest.insertMode": "replace"
   },
+  "[dockercompose]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": false,
+      "strings": true
+    },
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.foldingStrategy": "indentation"
@@ -206,7 +237,8 @@
       "other": "off"
     },
     "editor.wrappingIndent": "indent",
-    "files.trimTrailingWhitespace": false
+    "files.trimTrailingWhitespace": false,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
@@ -279,7 +311,7 @@
   "window.commandCenter": true,
   "window.menuBarVisibility": "compact",
   "window.title": "",
-  "workbench.colorTheme": "GitHub Dark",
+  "workbench.colorTheme": "Catppuccin Frappé",
   "workbench.iconTheme": "catppuccin-frappe",
   "workbench.layoutControl.enabled": false,
   "workbench.productIconTheme": "icons-carbon",
