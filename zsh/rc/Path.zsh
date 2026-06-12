@@ -35,6 +35,11 @@ if is_darwin; then
   NEWPATH=$B:$S:$RUBY:$RUBYGEM:$GNUBIN:$NEWPATH
   echo "$(${BP}/bin/brew shellenv)"
   unset B BP GNUBIN RUBY RUBYGEM S
+
+  # ensure nwovim (via bob manager) is available
+  NVIM="${XDG_DATA_HOME:-$HOME/.local/share}/bob/nvim-bin"
+  NEWPATH=$NVIM:$NEWPATH
+  unset NVIM
 fi
 
 # define wsl specific paths
