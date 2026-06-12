@@ -189,7 +189,7 @@ return {
               local config = get_config("prettier", ctx)
               config = vim.uv.fs_realpath(config or "")
               local fallback = vim.fs.joinpath(vim.env.XDG_CONFIG_HOME, "shared", "formatters", "prettierrc.json")
-              return { "--config", config or fallback, "--ignore-gitignore" }
+              return { "--config", config or fallback }
             end,
           },
           shfmt = {
@@ -298,6 +298,22 @@ return {
       local M = {}
       local lint = require "lint"
 
+      function M.lint()
+        local names = lint._resolve_linter_by_ft(vim.bo.filetype)
+
+        if #names == 0 then vim.list_extend(names, lint.linters_by_ft["_"] or {}) end
+        vim.list_extend(names, lint.linters_by_ft["*"] or {})
+
+        local ctx = { filename = vim.api.nvim_buf_get_name(0) }
+        ctx.dirname = vim.fs.dirname(ctx.filename)
+        names = vim.tbl_filter(function(name)
+          local linter = lint.linters[name]
+          if not linter then ds.warn("Linter not found: " .. name) end
+          return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
+        end, names)
+        if #names > 0 then lint.try_lint(names) end
+      end
+
       local function list_extend(dst, src, start, finish)
         for i = start or 1, finish or #src do
           table.insert(dst, tonumber(i), src[i])
@@ -327,22 +343,6 @@ return {
         end
       end)
       lint.linters_by_ft = opts.linters_by_ft
-
-      function M.lint()
-        local names = lint._resolve_linter_by_ft(vim.bo.filetype)
-
-        if #names == 0 then vim.list_extend(names, lint.linters_by_ft["_"] or {}) end
-        vim.list_extend(names, lint.linters_by_ft["*"] or {})
-
-        local ctx = { filename = vim.api.nvim_buf_get_name(0) }
-        ctx.dirname = vim.fs.dirname(ctx.filename)
-        names = vim.tbl_filter(function(name)
-          local linter = lint.linters[name]
-          if not linter then ds.warn("Linter not found: " .. name) end
-          return linter and not (type(linter) == "table" and linter.condition and not linter.condition(ctx))
-        end, names)
-        if #names > 0 then lint.try_lint(names) end
-      end
 
       vim.api.nvim_create_autocmd(opts.events, {
         group = ds.augroup "remote.nvim-lint",

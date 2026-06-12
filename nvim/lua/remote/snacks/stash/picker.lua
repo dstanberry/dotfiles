@@ -88,6 +88,8 @@ M.config = (function()
     sources = {
       buffers = { layout = { preset = "ivy" } },
       command_history = { layout = { preset = "vscode" } },
+      diagnostics = { layout = { preset = "ivy" } },
+      diagnostics_buffer = { layout = { preset = "ivy" } },
       explorer = { hidden = true, ignored = true },
       files = { prompt = ds.pad(ds.icons.misc.Prompt, "both"), layout = { preset = "telescope" } },
       gh_diff = { auto_close = false, layout = { preset = "left" } },

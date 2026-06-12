@@ -16,6 +16,8 @@ return {
         { "]]", function() Snacks.words.jump(vim.v.count1) end, desc = "lsp: goto next reference" },
         { "[[", function() Snacks.words.jump(-vim.v.count1) end, desc = "lsp: goto prev reference" },
         { ll "fl", function() Snacks.picker.lsp_config() end, desc = "lsp: show config" },
+        { "<leader>gw", function() Snacks.picker.diagnostics_buffer() end, desc = "lsp: buffer diagnostics" },
+        { "<leader>gW", function() Snacks.picker.diagnostics() end, desc = "lsp: workspace diagnostics" },
         -- files
         { "<leader><leader>", function() Snacks.picker.files() end, desc = "picker: find files" },
         { "<leader>f;", function() Snacks.picker.command_history() end, desc = "picker: find in command history" },
@@ -82,6 +84,8 @@ return {
       local snacks = require "snacks"
 
       snacks.setup(opts)
+      snacks.toggle.diagnostics():map "<leader>bw"
+
       vim.lsp.handlers["callHierarchy/incomingCalls"] = snacks.picker.lsp_incoming_calls
       vim.lsp.handlers["callHierarchy/outgoingCalls"] = snacks.picker.lsp_outgoing_calls
       vim.lsp.handlers["textDocument/documentSymbol"] = snacks.picker.lsp_symbols
