@@ -286,7 +286,7 @@ fi
 # define configuration path for dotnet
 if hash dotnet 2> /dev/null; then
   _dotnet_env() {
-    echo "export DOTNET_CLI_HOME=\"${CONFIG_HOME}/dotnet\""
+    echo "export DOTNET_CLI_HOME=\"${XDG_CONFIG_HOME}/dotnet\""
     echo "export DOTNET_CLI_TELEMETRY_OPTOUT=1"
     [ -d /usr/local/share/dotnet ] && {
       echo "export DOTNET_ROOT=\"/usr/local/share/dotnet\""
