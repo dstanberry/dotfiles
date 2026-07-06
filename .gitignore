@@ -46,11 +46,13 @@ iterm2/
 karabiner/automatic_backups/
 lazygit/state.yml
 lnav/
-macos/Brewfile.lock.json
 npm/
 NuGet/
 nvim/dotenv.json
 nvim/lua/remote/lazy-lock.json
+
+homebrew/trust.json.lock
+homebrew/Brewfile.lock.json
 
 pg/*
 !pg/psqlrc

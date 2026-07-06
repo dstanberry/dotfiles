@@ -1,0 +1,3 @@
+{
+  "trustedtaps": ["buo/cask-upgrade", "microsoft/mssql-release"]
+}
