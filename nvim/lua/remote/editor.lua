@@ -119,7 +119,6 @@ return {
             ".markdownlint.jsonc", ".markdownlint.json",
             ".markdownlint.yaml", ".markdownlint.yml",
             ".markdownlint.cjs", ".markdownlint.mjs",
-            "package.json",
           }
           ds.tbl_each(patterns, function(v)
             if not conf then
