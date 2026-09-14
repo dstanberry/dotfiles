@@ -1,7 +1,6 @@
 return {
   -- language servers
   "angular-language-server",
-  "basedpyright",
   "bash-language-server",
   "clangd",
   "cmake-language-server",
