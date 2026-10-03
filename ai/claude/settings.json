@@ -73,5 +73,6 @@
     "type": "command",
     "command": "python3 $HOME/.config/ai/claude/scripts/context-statusline.py"
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "tui": "fullscreen"
 }
