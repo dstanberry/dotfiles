@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+
+set -euo pipefail
+
+win="${1:-}"
+[ -z "$win" ] && exit 0
+tmux list-panes -t "$win" >/dev/null 2>&1 || exit 0
+
+count=$(tmux list-panes -t "$win" | wc -l)
+[ "$count" -le 1 ] && exit 0
+
+main_title=$(tmux display-message -t "${win}.1" -p '#{pane_title}' 2>/dev/null) || exit 0
+case "$main_title" in
+  "*"*) ;;
+  *) exit 0 ;;
+esac
+
+main_left=$(tmux display-message -t "${win}.1" -p '#{pane_left}')
+[ "$main_left" -ne 0 ] && exit 0
+
+floor_pct=65
+win_width=$(tmux display-message -t "$win" -p '#{window_width}')
+floor_cols=$(( window_width * floor_pct / 100 ))
+
+main_width=$(tmux display-message -t "${win}.1" -p '#{pane_width}')
+if [ "$min_width" -lt "$floor_cols" ]; then
+  tmux resize-pane -t "${win}.1" -x "$floor_cols" 2>/dev/null || true
+fi
