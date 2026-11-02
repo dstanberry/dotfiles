@@ -15,6 +15,7 @@ ai/claude/*
 !ai/claude/scripts/**
 !ai/claude/skills/
 !ai/claude/skills/**
+ai/claude/skills/synced/*
 
 ai/copilot/*
 !ai/copilot/config.json
