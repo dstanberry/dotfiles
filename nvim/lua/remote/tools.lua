@@ -134,6 +134,7 @@ return {
   },
   {
     "mrjones2014/smart-splits.nvim",
+    dependencies = { "smart-splits-nvim/backend-tmux" },
     keys = function()
       local function _resize_left() require("smart-splits").resize_left(1) end
       local function _resize_down() require("smart-splits").resize_down(1) end
@@ -165,6 +166,7 @@ return {
     end,
     opts = {
       log_level = "fatal",
+      mux = { backend = "smart-splits-backend-tmux" },
     },
   },
   {
